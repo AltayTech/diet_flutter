@@ -1,0 +1,9 @@
+{
+  "appName": "کارسو",
+  "login": "ورود",
+  "register": "ثبت نام",
+  "mobileOrEmail": "شماره موبایل / ایمیل",
+  "password": "کلمه عبور",
+  "confirmPassword": "تکرار کلمه عبور",
+  "forgetPassword": "رمز عبورت رو فراموش کردی؟"
+}
