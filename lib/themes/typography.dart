@@ -1,6 +1,6 @@
+import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/locale.dart';
 import 'package:flutter/material.dart';
-import 'package:karsu/themes/colors.dart';
-import 'package:karsu/themes/locale.dart';
 import 'package:sizer/sizer.dart';
 
 // todo: resolve locale at runtime in app.dart

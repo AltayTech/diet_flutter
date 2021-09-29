@@ -1,8 +1,11 @@
+import 'package:behandam/app/app.dart';
+import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 late Locale appInitialLocale;
-
+final RouteObserver<PageRoute> routeObserver = RouteObserver();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
   appInitialLocale = await _initializeLocale;

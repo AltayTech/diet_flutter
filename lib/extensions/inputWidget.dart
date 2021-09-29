@@ -1,6 +1,7 @@
+import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:karsu/base/resourceful_state.dart';
-import 'package:karsu/themes/colors.dart';
+
 import 'package:sizer/sizer.dart';
 class InputWidget extends StatefulWidget{
   String? labelText;

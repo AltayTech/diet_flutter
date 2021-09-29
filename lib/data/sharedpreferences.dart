@@ -1,4 +1,5 @@
-import 'package:karsu/themes/locale.dart';
+
+import 'package:behandam/themes/locale.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AppSharedPreferences {

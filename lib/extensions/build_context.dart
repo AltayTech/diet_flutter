@@ -1,9 +1,7 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 extension ContextExtensions on BuildContext {
-  /// Localized strings of project
-  AppLocalizations intl() {
+  AppLocalizations get intl {
     return AppLocalizations.of(this)!;
   }
 }
