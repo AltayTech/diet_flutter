@@ -1,3 +1,4 @@
+import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -51,7 +52,7 @@ class _RepositoryImpl extends Repository {
     );
     _dio.interceptors.add(CustomInterceptors());
     // _dio.interceptors.add(LoggingInterceptor());
-    // _dio.interceptors.add(ErrorHandlerInterceptor());
+     _dio.interceptors.add(ErrorHandlerInterceptor());
     _apiClient = RestClient(_dio,baseUrl: FlavorConfig.instance.variables['baseUrl']);
     // _cache = MemoryDataSource();
   }
