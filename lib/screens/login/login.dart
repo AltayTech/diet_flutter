@@ -1,4 +1,5 @@
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/auth/country-code.dart';
 import 'package:behandam/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String dropdownValue = 'One';
   bool _validate = false;
   late String phoneNumber;
- late LoginBloc loginBloc;
+  late LoginBloc loginBloc;
+  var _selectedLocation;
 
 
   @override
@@ -31,13 +33,10 @@ class _LoginScreenState extends State<LoginScreen> {
     listenBloc();
   }
 
-  void listenBloc()
-  {
+  void listenBloc() {
     loginBloc.navigateToVerify.listen((event) {
       if(event == true)
         VxNavigator.of(context).push(Uri.parse(Routes.pass));
-      else
-        print("there isn't such a user");
     });
     loginBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
@@ -48,6 +47,40 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement dispose
     loginBloc.dispose();
     super.dispose();
+  }
+
+  StreamBuilder _dropDownMenu() {
+    return StreamBuilder(
+      stream: loginBloc.subjectList,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
+
+        if (snapshot.hasData) {
+          print(snapshot.error);
+          return DropdownButton<Country>(
+            isExpanded: true,
+            icon: Icon(Icons.arrow_drop_down),
+            iconSize: 12,
+            elevation: 6,
+            style: TextStyle(color: Colors.black),
+            value: _selectedLocation = loginBloc.subject,
+            onChanged: (newValue) {
+              setState(() {
+                _selectedLocation = newValue;
+              });
+            },
+            items: snapshot.data.map<DropdownMenuItem<Country>>((Country data) {
+              return DropdownMenuItem<Country>(
+                child: Text("(+ ${data.code} ) ${data.name}"),
+                value: data,
+              );
+            }).toList(),
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
+    );
   }
 
   @override
@@ -94,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: 250.0,
+                      width: 230.0,
                       child: TextField(
                         controller: _text,
                         decoration: InputDecoration(
@@ -116,21 +149,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                     ),
-                    DropdownButton(
-                        icon: Icon(Icons.arrow_drop_down),
-                        value: dropdownValue,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!;
-                          });
-                        },
-                        items: <String>['One', 'Two', 'Free', 'Four']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList()),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width:80,
+                        child:_dropDownMenu(),),
+                    )
+
                   ],
                 ),
               ),

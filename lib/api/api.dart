@@ -21,7 +21,7 @@ abstract class RestClient {
   // factory RestClient(Dio dio) = _RestClient;
 
 
-  @GET("/countries")
+  @GET("/country")
   NetworkResult<List<Country>> getCountries();
 
   @GET("/check-user-status?mobile={mobile}")

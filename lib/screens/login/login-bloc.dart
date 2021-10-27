@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:behandam/base/network_response.dart';
+import 'package:behandam/data/entity/auth/country-code.dart';
 import 'package:behandam/data/entity/auth/status.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:dio/dio.dart';
 
@@ -12,11 +14,18 @@ import '../../base/repository.dart';
 
 
 class LoginBloc{
+  LoginBloc(){
+    fetchCountries();
+  }
 
   final _repository = Repository.getInstance();
 
+  late Country _subject;
+  final _subjectList = BehaviorSubject<List<Country>>();
   final _navigateToVerify = LiveEvent();
   final _showServerError = LiveEvent();
+  Country get subject => _subject;
+  Stream<List<Country>> get subjectList => _subjectList.stream;
   Stream get navigateToVerify => _navigateToVerify.stream;
   Stream get showServerError => _showServerError.stream;
 
@@ -24,11 +33,9 @@ class LoginBloc{
     _repository.status(phoneNumber).then((value) {
       _navigateToVerify.fire(true);
       print('value: $value');
-    }
-
-            ).onError((error,stackTrack){
+    }).onError((error,stackTrack){
               var messageResponse;
-              print("onError2: $error");
+              print("onError: $error");
               switch (error.runtimeType) {
                 case DioError:
                   {
@@ -50,13 +57,13 @@ class LoginBloc{
 
   void fetchCountries() async {
    _repository.country().then((value) {
-     _navigateToVerify.fire(true);
+     _subjectList.value = value.data!;
+     value.data!.forEach((element){
+       if(element.code == "98") {
+         _subject = element;
+       }
+     });
    });
-    // getResponse.data.forEach((element){
-    //   if(element.code == "98") {
-    //    var _selectedLocation = element;
-    //   }
-    // });
   }
 
   void dispose() {

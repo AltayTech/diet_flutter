@@ -1,4 +1,4 @@
-import 'package:behandam/data/entity/auth/language.dart';
+import 'package:behandam/data/entity/language.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 
