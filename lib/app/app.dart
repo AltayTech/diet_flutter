@@ -56,7 +56,7 @@ class _AppState extends State<App> {
 
               // generate title from localization instead of `MaterialApp.title` property
               onGenerateTitle: (BuildContext context) => context.intl.appName,
-              key: navigatorKey,
+
               debugShowCheckedModeBanner: false,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocale.supportedLocales,
@@ -70,16 +70,13 @@ class _AppState extends State<App> {
                   )),
               locale: locale,
               localeResolutionCallback: resolveLocale,
+              scaffoldMessengerKey: navigatorMessengerKey,
               // navigatorObservers: [routeObserver],
               // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
               // routes: Routes.all,
               routeInformationParser: VxInformationParser(),
               backButtonDispatcher: RootBackButtonDispatcher(),
-              routerDelegate: VxNavigator(routes: {
-                '/': (_, __) => MaterialPage(child: LoginScreen()),
-                Routes.pass: (_, __) => MaterialPage(child: PasswordScreen()),
-                // Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
-              }));
+              routerDelegate:navigator);
         },
       ),
     );
@@ -124,3 +121,8 @@ class _AppState extends State<App> {
     bloc.dispose();
   }
 }
+final navigator= VxNavigator(routes: {
+  '/': (_, __) => MaterialPage(child: LoginScreen()),
+  Routes.pass: (_, __) => MaterialPage(child: PasswordScreen()),
+  // Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
+});

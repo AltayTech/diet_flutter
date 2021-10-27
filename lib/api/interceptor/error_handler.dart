@@ -1,18 +1,16 @@
 import 'dart:io';
 
 import 'package:behandam/api/error/error_observer.dart';
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/network_response.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/status.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
+import 'package:velocity_x/velocity_x.dart';
 
 /// Global error handler for dio requests
 class ErrorHandlerInterceptor extends Interceptor {
@@ -60,47 +58,44 @@ class ErrorHandlerInterceptor extends Interceptor {
     return super.onError(err, handler);
   }
 
-  BuildContext? get _context => navigatorKey.currentContext;
-
-  NavigatorState? get _state => navigatorKey.currentState;
+  BuildContext? get _context => navigatorMessengerKey.currentContext;
 
   //FirebaseCrashlytics get _crashlytics => FirebaseCrashlytics.instance;
 
   void _showToastIfNotRelease(DioError err) async {
     final packageInfo = await PackageInfo.fromPlatform();
-      _showToast(err);
-
+    _showToast(err);
   }
 
   void _showToast(DioError err) {
-
     if (_context == null) {
       return;
     }
-    try {
-      final intl = _context!.intl;
-    }catch (e){
-      print('$e');
-    }
+    final intl = _context!.intl;
     String? message;
     if (err.response?.statusCode == HttpStatus.internalServerError) {
-      //message = intl.serverInternalError;
+      message = intl.serverInternalError;
     }
     print('ttt');
-   // print('ttt ${err.response.toString()}');
+    // print('ttt ${err.response.toString()}');
 
     if (message == null && err.response?.data != null && err.response?.data != '') {
-
-      message =  NetworkResponse<dynamic>.fromJson(err.response!.data,(json) => CheckStatus.fromJson(json as Map<String, dynamic>)).error!.message;
+      message = NetworkResponse<dynamic>.fromJson(
+              err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
+          .error!
+          .message;
     }
-    //message ??= intl.httpErrorWithCode(err.response?.statusCode.toString() ?? 'Unknown');
+    message ??= intl.httpErrorWithCode(err.response?.statusCode.toString() ?? 'Unknown');
     //Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
-    Utils.getSnackbarMessage(_context!, message!);
+    //Utils.getSnackbarMessage(_context!, message);
+    navigatorMessengerKey.currentState!.showSnackBar(SnackBar(
+      content: Text(message),
+    ));
   }
 
   void _handleUnauthorizedError() async {
     await AppSharedPreferences.logout();
-    _state?.pushNamedAndRemoveUntil(Routes.login, ModalRoute.withName(Routes.login));
+    navigator.routeManager.clearAndPush(Uri(path: Routes.login));
   }
 
   void _submitNonFatalReport(DioError err, [String? message]) {
@@ -119,7 +114,7 @@ class ErrorHandlerInterceptor extends Interceptor {
     if (_context == null) {
       return;
     }
-   /* await DialogUtils.showDialogPage(
+    /* await DialogUtils.showDialogPage(
       context: _context!,
       isDismissible: false,
       child: MaintenancePage(),
@@ -132,7 +127,7 @@ class ErrorHandlerInterceptor extends Interceptor {
     if (_context == null) {
       return;
     }
-   // await DialogUtils.showDialogPage(context: _context!, child: NetworkAlertPage());
+    // await DialogUtils.showDialogPage(context: _context!, child: NetworkAlertPage());
     dioErrorObserver.retryForInternetConnectivity();
     dioErrorObserver.retryForLoadingPage();
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver();
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+final GlobalKey<ScaffoldMessengerState> navigatorMessengerKey = GlobalKey();
 
 abstract class Routes {
   static const home = '/home';

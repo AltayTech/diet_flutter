@@ -1,3 +1,4 @@
+import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country-code.dart';
 import 'package:behandam/routes.dart';
@@ -10,13 +11,13 @@ import '../../helper/Arc.dart';
 import 'login-bloc.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen();
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ResourcefulState<LoginScreen> {
   final _text = TextEditingController();
   String dropdownValue = 'One';
   bool _validate = false;
@@ -85,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
