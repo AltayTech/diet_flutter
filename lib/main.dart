@@ -1,5 +1,6 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
   appInitialLocale = await _initializeLocale;
   updateStatusBar();
+  FlavorConfig(
+    color: Colors.green,
+    name: 'Preview',
+    variables: {
+      'baseUrl': 'https://debug.behaminplus.ir/behandam-diet/api',
+      "baseUrlFile": "https://behandam.kermany.com/helia-service",
+      'isProduction': false
+    },
+  );
   runApp(App());
 }
 
