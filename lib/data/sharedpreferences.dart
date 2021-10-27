@@ -10,8 +10,8 @@ abstract class AppSharedPreferences {
     return (await preference).getString(_keyAuthToken) ?? 'null';
   }
 
-  static Future<void> setAuthToken(String value) async {
-    (await preference).setString(_keyAuthToken, value);
+  static Future<void> setAuthToken(String? value) async {
+    (await preference).setString(_keyAuthToken, value ?? _nullString);
   }
 
   static Future<bool> get isLoggedIn async {
@@ -29,9 +29,13 @@ abstract class AppSharedPreferences {
   static Future<void> setLocaleCode(String value) async {
     (await preference).setString(_keyLocaleCode, value);
   }
-
+  static Future<void> logout() async {
+    await setAuthToken(null);
+    await setIsLoggedIn(false);
+  }
 
   static const _keyIsLoggedIn = 'isLoggedIn';
   static const _keyAuthToken = 'authToken';
   static const _keyLocaleCode = 'localeCode';
+  static const _nullString = 'null';
 }

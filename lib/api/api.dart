@@ -2,9 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-
-
-import 'shared_prefrence.dart';
 import '../base/network_response.dart';
 
 import '../data/entity/auth/country-code.dart';
@@ -43,44 +40,6 @@ abstract class RestClient {
   NetworkResult<RegisterOutput> registerWithPhoneNumber(@Body() Register mobile);
 }
 
-// class RestApiClient {
-//   static String? token = '';
-//   static String? routeName;
-//   static String? deviceName = "huawei";
-//
-//   RestApiClient() {
-//     if (token == null) {
-//       if (SharedPreference.pref != null) {
-//         token = SharedPreference.pref?.getString(SharedP.token.toString())??'';
-//       } else {
-//         SharedPreference.iniSharedPreference();
-//         try {
-//           if (SharedPreference.pref != null) {
-//             token = SharedPreference.pref?.getString(SharedP.token.toString())??'';
-//           }
-//         } on Exception catch (error) {
-//           print("Exception $error");
-//         }
-//       }
-//     }else{
-//       print("token ==> " + token!);
-//     }
-//
-//     Dio dio = Dio();
-//     dio.options.headers = <String, String?>{
-//       'Content-Type': 'application/json; charset=UTF-8',
-//       'Authorization': 'Bearer $token',
-//       'Accept-Language': 'fa',
-//       'user_agent': 'behandam/$deviceName',
-//       'X-Route': routeName ?? "null",
-//     };
-//
-//     dio.interceptors.add(CustomInterceptors());
-//     client = RestClient(dio, baseUrl: FlavorConfig.instance.variables["baseUrl"]);
-//   }
-//
-//   RestClient? client;
-// }
 class CustomInterceptors extends InterceptorsWrapper {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
