@@ -85,7 +85,7 @@ class ErrorHandlerInterceptor extends Interceptor {
       message =  NetworkResponse<dynamic>.fromJson(err.response!.data,(json) => CheckStatus.fromJson(json as Map<String, dynamic>)).error!.message;
     }
     message ??= intl.httpErrorWithCode(err.response?.statusCode.toString() ?? 'Unknown');
-    Fluttertoast.showToast(msg: message!, toastLength: Toast.LENGTH_LONG);
+    Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
   }
 
   void _handleUnauthorizedError() async {
