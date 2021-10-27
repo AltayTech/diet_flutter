@@ -1,3 +1,12 @@
 {
-  "appName": "Karsu"
+  "appName": "Karsu",
+  "login": "Login",
+  "register": "Sign Up",
+  "mobileOrEmail": "mobile/Email",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "forgetPassword": "Forget Password",
+  "farsi": "فارسی",
+  "english": "English",
+  "arabic": "العربية"
 }
