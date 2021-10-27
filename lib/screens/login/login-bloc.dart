@@ -33,26 +33,27 @@ class LoginBloc{
     _repository.status(phoneNumber).then((value) {
       _navigateToVerify.fire(true);
       print('value: $value');
-    }).onError((error,stackTrack){
-              var messageResponse;
-              print("onError: $error");
-              switch (error.runtimeType) {
-                case DioError:
-                  {
-                    final res = (error as DioError).response;
-                    try {
-                      messageResponse = NetworkResponse<dynamic>.fromJson(res?.data,(json) => CheckStatus.fromJson(json as Map<String, dynamic>)).error!.message;
-                    } on Exception catch (error) {
-                      messageResponse = null;
-                    }
-                    break;
-                  }
-                default:
-                  messageResponse = null;
-              }
-              print('messageResponse : $messageResponse');
-       _showServerError.fireMessage(messageResponse);
     });
+    //     .onError((error,stackTrack){
+    //           var messageResponse;
+    //           print("onError: $error");
+    //           switch (error.runtimeType) {
+    //             case DioError:
+    //               {
+    //                 final res = (error as DioError).response;
+    //                 try {
+    //                   messageResponse = NetworkResponse<dynamic>.fromJson(res?.data,(json) => CheckStatus.fromJson(json as Map<String, dynamic>)).error!.message;
+    //                 } on Exception catch (error) {
+    //                   messageResponse = null;
+    //                 }
+    //                 break;
+    //               }
+    //             default:
+    //               messageResponse = null;
+    //           }
+    //           print('messageResponse : $messageResponse');
+    //    _showServerError.fireMessage(messageResponse);
+    // });
   }
 
   void fetchCountries() async {

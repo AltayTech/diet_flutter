@@ -53,33 +53,33 @@ class _AppState extends State<App> {
         builder: (context, AsyncSnapshot<Locale> snapshot) {
           final locale = snapshot.data ?? appInitialLocale;
           return MaterialApp.router(
-            // generate title from localization instead of `MaterialApp.title` property
-            onGenerateTitle: (BuildContext context) => context.intl.appName,
-            debugShowCheckedModeBanner: false,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocale.supportedLocales,
-            theme: ThemeData(
-              scaffoldBackgroundColor: AppColors.scaffold,
-              primarySwatch: AppMaterialColors.primary,
-              accentColor: AppColors.primary,
-              textTheme: buildTextTheme(locale),
-              appBarTheme: AppBarTheme(
-                backgroundColor: AppColors.primary,
-              )
-            ),
-            locale: locale,
-            localeResolutionCallback: resolveLocale,
-            // navigatorObservers: [routeObserver],
-            // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
-            // routes: Routes.all,
-            routeInformationParser: VxInformationParser(),
-            backButtonDispatcher: RootBackButtonDispatcher(),
-            routerDelegate: VxNavigator(routes: {
-          '/': (_, __) => MaterialPage(child: LoginScreen()),
-              Routes.pass: (_,__) => MaterialPage(child:PasswordScreen()),
-          // Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
-          })
-          );
+
+              // generate title from localization instead of `MaterialApp.title` property
+              onGenerateTitle: (BuildContext context) => context.intl.appName,
+              key: navigatorKey,
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocale.supportedLocales,
+              theme: ThemeData(
+                  scaffoldBackgroundColor: AppColors.scaffold,
+                  primarySwatch: AppMaterialColors.primary,
+                  accentColor: AppColors.primary,
+                  textTheme: buildTextTheme(locale),
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: AppColors.primary,
+                  )),
+              locale: locale,
+              localeResolutionCallback: resolveLocale,
+              // navigatorObservers: [routeObserver],
+              // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
+              // routes: Routes.all,
+              routeInformationParser: VxInformationParser(),
+              backButtonDispatcher: RootBackButtonDispatcher(),
+              routerDelegate: VxNavigator(routes: {
+                '/': (_, __) => MaterialPage(child: LoginScreen()),
+                Routes.pass: (_, __) => MaterialPage(child: PasswordScreen()),
+                // Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
+              }));
         },
       ),
     );
@@ -107,8 +107,10 @@ class _AppState extends State<App> {
   /// resolve locale when device locale is changed
   Locale resolveLocale(Locale? locale, Iterable<Locale> supportedLocales) {
     for (var supportedLocale in supportedLocales) {
-      final isLanguageEqual = supportedLocale.languageCode == locale?.languageCode;
-      final isCountryCodeEqual = supportedLocale.countryCode == locale?.countryCode;
+      final isLanguageEqual =
+          supportedLocale.languageCode == locale?.languageCode;
+      final isCountryCodeEqual =
+          supportedLocale.countryCode == locale?.countryCode;
       if (isLanguageEqual && isCountryCodeEqual) {
         return supportedLocale;
       }

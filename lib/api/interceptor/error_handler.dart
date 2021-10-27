@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:behandam/api/error/error_observer.dart';
 import 'package:behandam/base/network_response.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/status.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
@@ -67,25 +68,34 @@ class ErrorHandlerInterceptor extends Interceptor {
 
   void _showToastIfNotRelease(DioError err) async {
     final packageInfo = await PackageInfo.fromPlatform();
-    if (!kReleaseMode || packageInfo.packageName.endsWith('.stage')) {
       _showToast(err);
-    }
+
   }
 
   void _showToast(DioError err) {
+
     if (_context == null) {
       return;
     }
-    final intl = _context!.intl;
+    try {
+      final intl = _context!.intl;
+    }catch (e){
+      print('$e');
+    }
     String? message;
     if (err.response?.statusCode == HttpStatus.internalServerError) {
-      message = intl.serverInternalError;
+      //message = intl.serverInternalError;
     }
+    print('ttt');
+   // print('ttt ${err.response.toString()}');
+
     if (message == null && err.response?.data != null && err.response?.data != '') {
+
       message =  NetworkResponse<dynamic>.fromJson(err.response!.data,(json) => CheckStatus.fromJson(json as Map<String, dynamic>)).error!.message;
     }
-    message ??= intl.httpErrorWithCode(err.response?.statusCode.toString() ?? 'Unknown');
-    Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
+    //message ??= intl.httpErrorWithCode(err.response?.statusCode.toString() ?? 'Unknown');
+    //Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
+    Utils.getSnackbarMessage(_context!, message!);
   }
 
   void _handleUnauthorizedError() async {
