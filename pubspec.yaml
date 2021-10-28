@@ -36,6 +36,11 @@ dependencies:
   logger: ^1.1.0
   json_annotation: ^4.1.0
   sizer: ^2.0.15
+  flutter_flavor: ^3.0.1
+  velocity_x: ^3.3.0
+  persian_number_utility: ^0.3.4
+  package_info_plus: ^1.0.6
+  shamsi_date: ^0.15.0
 
 dev_dependencies:
   json_serializable: ^5.0.2

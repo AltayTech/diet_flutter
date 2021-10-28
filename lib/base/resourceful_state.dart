@@ -1,6 +1,7 @@
 import 'package:behandam/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/extensions/build_context.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 abstract class ResourcefulState <T extends StatefulWidget> extends State<T> {

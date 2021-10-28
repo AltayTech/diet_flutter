@@ -5,5 +5,17 @@
   "mobileOrEmail": "شماره موبایل / ایمیل",
   "password": "کلمه عبور",
   "confirmPassword": "تکرار کلمه عبور",
-  "forgetPassword": "رمز عبورت رو فراموش کردی؟"
+  "forgetPassword": "رمز عبورت رو فراموش کردی؟",
+  "farsi": "فارسی",
+  "english": "English",
+  "serverInternalError": "خطایی در ارتباط با سرور رخ داده، لطفا بعدا تلاش کنید",
+  "httpErrorWithCode": "خطای با کد {code} رخ داد، اگر مشکل برطرف نشد با پشتیبانی تماس بگیرید.",
+  "@httpErrorWithCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "arabic": "العربية"
 }
