@@ -5,6 +5,7 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/main.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/home/home.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/typography.dart';
@@ -62,12 +63,11 @@ class _AppState extends State<App> {
               supportedLocales: AppLocale.supportedLocales,
               theme: ThemeData(
                   scaffoldBackgroundColor: AppColors.scaffold,
-                  primarySwatch: AppMaterialColors.primary,
-                  accentColor: AppColors.primary,
                   textTheme: buildTextTheme(locale),
                   appBarTheme: AppBarTheme(
                     backgroundColor: AppColors.primary,
-                  )),
+                  ),
+                  colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary).copyWith(secondary: AppColors.primary)),
               locale: locale,
               localeResolutionCallback: resolveLocale,
               scaffoldMessengerKey: navigatorMessengerKey,
@@ -122,7 +122,8 @@ class _AppState extends State<App> {
   }
 }
 final navigator= VxNavigator(routes: {
-  '/': (_, __) => MaterialPage(child: LoginScreen()),
+  '/': (_, __) => MaterialPage(child: HomeScreen()),
+  Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
   Routes.pass: (_, __) => MaterialPage(child: PasswordScreen()),
   // Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
 });
