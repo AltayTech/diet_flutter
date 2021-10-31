@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:behandam/themes/colors.dart';
 
 class MyArc extends StatelessWidget {
   final double diameter;
@@ -21,12 +22,12 @@ class MyPainter extends CustomPainter {
   MyPainter(this.ctx);
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Color(0xFFEAE5E5);
+    Paint paint = Paint()..color = AppColors.ArcColor;
     canvas.drawArc(
       Rect.fromCenter(
         center: Offset(size.height / 2, size.width),
         height: size.height,
-        width: MediaQuery.of(ctx).size.width,
+        width: MediaQuery.of(ctx).size.height,
       ),
       pi,
       pi,

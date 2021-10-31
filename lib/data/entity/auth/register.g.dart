@@ -12,8 +12,9 @@ Register _$RegisterFromJson(Map<String, dynamic> json) => Register()
   ..mobile = json['mobile'] as String?
   ..password = json['password'] as String?
   ..verifyCode = json['code'] as String?
-  ..gender = json['gender'] as int?
-  ..countryId = json['country_id'] as int?;
+  ..gender = json['gender'] as bool?
+  ..countryId = json['country_id'] as int?
+  ..appId = json['app_id'] as String?;
 
 Map<String, dynamic> _$RegisterToJson(Register instance) => <String, dynamic>{
       'first_name': instance.firstName,
@@ -23,6 +24,7 @@ Map<String, dynamic> _$RegisterToJson(Register instance) => <String, dynamic>{
       'code': instance.verifyCode,
       'gender': instance.gender,
       'country_id': instance.countryId,
+      'app_id': instance.appId,
     };
 
 RegisterOutput _$RegisterOutputFromJson(Map<String, dynamic> json) =>

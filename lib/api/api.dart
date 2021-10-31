@@ -10,6 +10,7 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user-info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/auth/sign-in.dart';
 part 'api.g.dart';
 
 typedef NetworkResult<T> = Future<NetworkResponse<T>>;
@@ -27,17 +28,20 @@ abstract class RestClient {
   @GET("/check-user-status?mobile={mobile}")
   NetworkResult<CheckStatus> checkUserStatus(@Path('mobile') String? mobile);
 
-  @POST("/send-verification-code")
-  NetworkResult<VerificationCode> sendVerificationCode(@Body() User mobile);
+  @POST("/login?mobile={mobile}&password={pass}")
+  NetworkResult<SignIn> signInWithPhoneNumber(@Path('mobile') String? mobile, @Path('pass') String? pass);
 
-  @PATCH("/verify")
-  NetworkResult<VerifyOutput> verifyUser(@Body() VerificationCode code);
+  @POST("/send-verification-code?mobile={mobile}")
+  NetworkResult<VerificationCode> sendVerificationCode(@Path('mobile') String? mobile);
+
+  @GET("/verify?mobile={mobile}&verification_code={code}")
+  NetworkResult<VerifyOutput> verifyUser(@Path('mobile') String? mobile, @Path('code') String? code);
 
   @PATCH("/reset-password")
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);
 
   @POST("/register")
-  NetworkResult<RegisterOutput> registerWithPhoneNumber(@Body() Register mobile);
+  NetworkResult<RegisterOutput> register(@Body() Register reg);
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

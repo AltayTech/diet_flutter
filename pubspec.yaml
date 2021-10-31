@@ -41,6 +41,8 @@ dependencies:
   persian_number_utility: ^0.3.4
   package_info_plus: ^1.0.6
   shamsi_date: ^0.15.0
+  rolling_switch: ^0.0.2
+  pin_code_fields: ^7.3.0
 
 dev_dependencies:
   json_serializable: ^5.0.2

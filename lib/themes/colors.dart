@@ -8,6 +8,8 @@ abstract class AppColors {
   static const onSurface = Colors.black;
   static const scaffold = Color(0xFFF5F8FE);
   static const onScaffold = onSurface;
+  static const ArcColor = Color(0xFAEDECEC);
+  static const btnColor = Color(0xfffd5d5f);
 }
 
 abstract class AppMaterialColors {

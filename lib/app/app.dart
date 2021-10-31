@@ -1,10 +1,14 @@
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/app/provider.dart';
+import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/main.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/home/home.dart';
+import 'package:behandam/screens/lgn_reg/register.dart';
+import 'package:behandam/screens/lgn_reg/verify.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/typography.dart';
@@ -13,8 +17,8 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../screens/login/login.dart';
-import '../screens/login/pass.dart';
+import '../screens/lgn_reg/login.dart';
+import '../screens/lgn_reg/pass.dart';
 
 class App extends StatefulWidget {
   @override
@@ -123,6 +127,8 @@ class _AppState extends State<App> {
 }
 final navigator= VxNavigator(routes: {
   '/': (_, __) => MaterialPage(child: LoginScreen()),
-  Routes.pass: (_, __) => MaterialPage(child: PasswordScreen()),
-  // Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
+  Routes.home: (_, __) => MaterialPage(child: HomeScreen()),
+  Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(),arguments: param),
+  Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(),arguments: param),
+  Routes.register: (_, param) => MaterialPage(child: RegisterScreen(),arguments: param),
 });

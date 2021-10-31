@@ -5,10 +5,9 @@ final GlobalKey<ScaffoldMessengerState> navigatorMessengerKey = GlobalKey();
 
 abstract class Routes {
   static const home = '/home';
-  static const auth = '/auth';
   static const login = '/login';
   static const pass = '/pass';
-  static const entrance = '/entrance';
+  static const register = '/register';
   static const verify = '/verify';
 
   /// All available routes to Navigator
