@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:math' as Math;
 import 'dart:ui' as ui;
-import 'package:device_info/device_info.dart';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logifan/extensions/string.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 abstract class DeviceUtils {
   static String get platform {
@@ -19,23 +21,26 @@ abstract class DeviceUtils {
 
   static Future<String> get platformVersion async {
     return await _getDeviceInfo(
-      (androidInfo) => androidInfo.version.sdkInt.toString(),
-      (iosInfo) => iosInfo.systemVersion,
+      (androidInfo) => androidInfo.version.sdkInt!.toString(),
+      (iosInfo) => iosInfo.systemVersion!,
+          (webDeviceInfo) => webDeviceInfo.hardwareConcurrency.toString(),
     );
   }
 
   static Future<String> get deviceId async {
     return await _getDeviceInfo(
-      (androidInfo) => androidInfo.androidId,
-      (iosInfo) => iosInfo.identifierForVendor,
+      (androidInfo) => androidInfo.androidId!,
+      (iosInfo) => iosInfo.identifierForVendor!,
+      (webDeviceInfo) => webDeviceInfo.vendor!,
     );
   }
 
   static Future<String> get deviceName async {
     return await _getDeviceInfo(
       (androidInfo) =>
-          '${androidInfo.brand.capitalize()} ${androidInfo.model} ${androidInfo.device}',
-      (iosInfo) => iosInfo.name,
+          '${androidInfo.brand!.capitalize()} ${androidInfo.model} ${androidInfo.device}',
+      (iosInfo) => iosInfo.name!,
+      (webDeviceInfo) => webDeviceInfo.userAgent!,
     );
   }
 
@@ -43,6 +48,7 @@ abstract class DeviceUtils {
     final String isPhysical = await _getDeviceInfo(
       (androidInfo) => androidInfo.isPhysicalDevice.toString(),
       (iosInfo) => iosInfo.isPhysicalDevice.toString(),
+      (webDeviceInfo) => webDeviceInfo.userAgent.toString(),
     );
     if (isPhysical == 'true') {
       return false;
@@ -50,14 +56,43 @@ abstract class DeviceUtils {
     return true;
   }
 
+  static Future<String> makeUserAgent() async {
+    String userAgent = '';
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String appVersion = packageInfo.version;
+    // print('userAgent $appName / $packageName / $appVersion / $buildNumber');
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (kIsWeb) {
+      final webBrowserInfo = await deviceInfo.webBrowserInfo;
+      userAgent = 'Behandam/$appVersion (Web/${webBrowserInfo.userAgent})';
+    }else if (Platform.isIOS) {
+      print('is ios');
+      var iosInfo = await deviceInfo.iosInfo;
+      var systemName = iosInfo.systemName;
+      var iosVersion = iosInfo.systemVersion;
+      var name = iosInfo.name;
+      userAgent = 'Behandam/$appVersion $systemName/$iosVersion (Apple/${iosInfo.utsname.machine})';
+      print('user agent $userAgent');
+    } else if (Platform.isAndroid) {
+      var androidInfo = await deviceInfo.androidInfo;
+      var release = androidInfo.version.release;
+      var model = androidInfo.model;
+      var brand = androidInfo.brand;
+      userAgent = 'Behandam/$appVersion Android/$release ($brand/$model)';
+      print('user agent $userAgent');
+    }
+    return userAgent;
+  }
   static Future<String> _getDeviceInfo(
     String Function(AndroidDeviceInfo) androidDeviceInfo,
     String Function(IosDeviceInfo) iosDeviceInfo,
+    String Function(WebBrowserInfo) webDeviceInfo,
   ) async {
     final deviceInfo = DeviceInfoPlugin();
     var identifier = 'null';
     if (kIsWeb) {
-      return 'null';
+      final webBrowserInfo = await deviceInfo.webBrowserInfo;
+      identifier = webDeviceInfo.call(webBrowserInfo);
     }
     if (Platform.isAndroid) {
       final androidInfo = await deviceInfo.androidInfo;

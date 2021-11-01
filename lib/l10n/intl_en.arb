@@ -8,5 +8,24 @@
   "forgetPassword": "Forget Password",
   "farsi": "فارسی",
   "english": "English",
+  "serverInternalError": "خطایی در ارتباط با سرور رخ داده، لطفا بعدا تلاش کنید",
+  "httpErrorWithCode": "خطای با کد {code} رخ داد، اگر مشکل برطرف نشد با پشتیبانی تماس بگیرید.",
+  "@httpErrorWithCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "profile": "پروفایل",
+  "editProfile": "ویرایش پروفایل",
+  "changePassword": "تغییر رمز عبور",
+  "exit": "خروج",
+  "requestBackPayment": "درخواست بازگشت وجه",
+  "getPdfTerm": "دریافت نسخه pdf دوره جاری",
+  "help": "راهنما",
+  "mySportProgram": "برنامه ورزشی من",
+  "contactMe": "تماس با ما",
+  "aboutMe": "درباره ما",
   "arabic": "العربية"
 }
