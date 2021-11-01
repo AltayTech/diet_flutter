@@ -14,9 +14,11 @@ class Register {
   @JsonKey(name: "code")
   String? verifyCode;
   @JsonKey(name: "gender")
-  int? gender;
+  bool? gender;
   @JsonKey(name: "country_id")
   int? countryId;
+  @JsonKey(name: "app_id")
+  String? appId;
   // @JsonKey(name: "route_name")
   // String? routeName;
 

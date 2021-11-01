@@ -14,20 +14,21 @@ class _RestClient implements RestClient {
   String? baseUrl;
 
   @override
-  Future<NetworkResponse<List<Country>>> getCountries() async {
+  Future<NetworkResponse<List<CountryCode>>> getCountries() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<List<Country>>>(
+        _setStreamType<NetworkResponse<List<CountryCode>>>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/country',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<List<Country>>.fromJson(
+    final value = NetworkResponse<List<CountryCode>>.fromJson(
         _result.data!,
         (json) => (json as List<dynamic>)
-            .map<Country>((i) => Country.fromJson(i as Map<String, dynamic>))
+            .map<CountryCode>(
+                (i) => CountryCode.fromJson(i as Map<String, dynamic>))
             .toList());
     return value;
   }
@@ -52,15 +53,34 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<SignIn>> signInWithPhoneNumber(mobile, pass) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<SignIn>>(
+            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/login?mobile=$mobile&password=$pass',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<SignIn>.fromJson(
+      _result.data!,
+      (json) => SignIn.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<VerificationCode>> sendVerificationCode(mobile) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    _data.addAll(mobile.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<VerificationCode>>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/send-verification-code',
+                .compose(_dio.options, '/send-verification-code?mobile=$mobile',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<VerificationCode>.fromJson(
@@ -71,15 +91,16 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<VerifyOutput>> verifyUser(code) async {
+  Future<NetworkResponse<VerifyOutput>> verifyUser(mobile, code) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    _data.addAll(code.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<VerifyOutput>>(Options(
-                method: 'PATCH', headers: <String, dynamic>{}, extra: _extra)
-            .compose(_dio.options, '/verify',
+                method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            .compose(
+                _dio.options, '/verify?mobile=$mobile&verification_code=$code',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<VerifyOutput>.fromJson(
@@ -109,12 +130,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<RegisterOutput>> registerWithPhoneNumber(
-      mobile) async {
+  Future<NetworkResponse<RegisterOutput>> register(reg) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(mobile.toJson());
+    _data.addAll(reg.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<RegisterOutput>>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)

@@ -1,4 +1,5 @@
 import 'package:behandam/api/interceptor/error_handler.dart';
+import 'package:behandam/api/interceptor/global.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -10,6 +11,7 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user-info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/auth/sign-in.dart';
 
 
 abstract class Repository {
@@ -20,17 +22,19 @@ abstract class Repository {
     return _instance!;
   }
 
-  NetworkResult<List<Country>> country();
+  NetworkResult<List<CountryCode>> country();
 
   NetworkResult<CheckStatus> status(String mobile);
 
-  NetworkResult<VerificationCode> verificationCode(User mobile);
+  NetworkResult<SignIn> signIn(String mobile, String pass);
 
-  NetworkResult<VerifyOutput> verify(VerificationCode code);
+  NetworkResult<VerificationCode> verificationCode(String mobile);
+
+  NetworkResult<VerifyOutput> verify(String mobile, String code);
 
   NetworkResult<ResetOutput> reset(Reset password);
 
-  NetworkResult<RegisterOutput> register(Register mobile);
+  NetworkResult<RegisterOutput> register(Register register);
 
 }
 
@@ -51,21 +55,21 @@ class _RepositoryImpl extends Repository {
       sendTimeout: sendTimeout,
     );
     _dio.interceptors.add(CustomInterceptors());
-    // _dio.interceptors.add(LoggingInterceptor());
+    _dio.interceptors.add(GlobalInterceptor());
      _dio.interceptors.add(ErrorHandlerInterceptor());
     _apiClient = RestClient(_dio,baseUrl: FlavorConfig.instance.variables['baseUrl']);
     // _cache = MemoryDataSource();
   }
 
   @override
-  NetworkResult<List<Country>> country() async{
+  NetworkResult<List<CountryCode>> country() async{
     var response = await _apiClient.getCountries();
     return response;
   }
 
   @override
-  NetworkResult<RegisterOutput> register(Register mobile) async{
-    var response = await _apiClient.registerWithPhoneNumber(mobile);
+  NetworkResult<RegisterOutput> register(Register register) async{
+    var response = await _apiClient.register(register);
     return response;
   }
 
@@ -78,19 +82,24 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<CheckStatus> status(String mobile) async{
     var response = await _apiClient.checkUserStatus(mobile);
-    print('response: $response');
     return response;
   }
 
   @override
-  NetworkResult<VerificationCode> verificationCode(User mobile) async{
+  NetworkResult<VerificationCode> verificationCode(String mobile) async{
     var response = await _apiClient.sendVerificationCode(mobile);
     return response;
   }
 
   @override
-  NetworkResult<VerifyOutput> verify(VerificationCode code) async{
-    var response = await _apiClient.verifyUser(code);
+  NetworkResult<VerifyOutput> verify(String mobile, String code) async{
+    var response = await _apiClient.verifyUser(mobile, code);
+    return response;
+  }
+
+  @override
+  NetworkResult<SignIn> signIn(String mobile, String pass) async{
+    var response = await _apiClient.signInWithPhoneNumber(mobile, pass);
     return response;
   }
 

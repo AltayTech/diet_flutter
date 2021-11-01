@@ -76,7 +76,6 @@ class ErrorHandlerInterceptor extends Interceptor {
     if (err.response?.statusCode == HttpStatus.internalServerError) {
       message = intl.serverInternalError;
     }
-    print('ttt');
     // print('ttt ${err.response.toString()}');
 
     if (message == null && err.response?.data != null && err.response?.data != '') {
