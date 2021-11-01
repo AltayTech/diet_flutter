@@ -23,12 +23,12 @@ class LoginRegisterBloc{
 
   final _repository = Repository.getInstance();
 
-  late Country _subject;
-  final _subjectList = BehaviorSubject<List<Country>>();
+  late CountryCode _subject;
+  final _subjectList = BehaviorSubject<List<CountryCode>>();
   final _navigateToVerify = LiveEvent();
   final _showServerError = LiveEvent();
-  Country get subject => _subject;
-  Stream<List<Country>> get subjectList => _subjectList.stream;
+  CountryCode get subject => _subject;
+  Stream<List<CountryCode>> get subjectList => _subjectList.stream;
   Stream get navigateToVerify => _navigateToVerify.stream;
   Stream get showServerError => _showServerError.stream;
 
@@ -68,9 +68,7 @@ class LoginRegisterBloc{
 
   void verifyMethod(String mobile, String code) async {
     _repository.verify(mobile, code).then((value) {
-      (value.data!.verified == true)
-      ?_navigateToVerify.fire(true)
-      :_navigateToVerify.fire(false);
+      _navigateToVerify.fire(value.data!.verified);
     });
   }
 

@@ -14,20 +14,21 @@ class _RestClient implements RestClient {
   String? baseUrl;
 
   @override
-  Future<NetworkResponse<List<Country>>> getCountries() async {
+  Future<NetworkResponse<List<CountryCode>>> getCountries() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<List<Country>>>(
+        _setStreamType<NetworkResponse<List<CountryCode>>>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/country',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<List<Country>>.fromJson(
+    final value = NetworkResponse<List<CountryCode>>.fromJson(
         _result.data!,
         (json) => (json as List<dynamic>)
-            .map<Country>((i) => Country.fromJson(i as Map<String, dynamic>))
+            .map<CountryCode>(
+                (i) => CountryCode.fromJson(i as Map<String, dynamic>))
             .toList());
     return value;
   }

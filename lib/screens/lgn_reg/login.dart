@@ -26,7 +26,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   late String phoneNumber;
   late  String number;
   late LoginRegisterBloc loginBloc;
-  late Country _selectedLocation;
+  late CountryCode _selectedLocation;
 
 
   @override
@@ -54,6 +54,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       Utils.getSnackbarMessage(context, event);
     });
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -70,21 +71,21 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
         if (snapshot.hasData) {
           print(snapshot.error);
           return DropdownButtonHideUnderline(
-            child: DropdownButton<Country>(
+            child: DropdownButton<CountryCode>(
               isExpanded: true,
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 22,
               // elevation: 6,
               style: TextStyle(color: Colors.black),
               value: _selectedLocation = loginBloc.subject,
-              onChanged: (Country? newValue) {
+              onChanged: (CountryCode? newValue) {
                 setState(() {
                   _selectedLocation = newValue!;
                 });
               },
-              items: snapshot.data.map<DropdownMenuItem<Country>>((Country data) {
-                return DropdownMenuItem<Country>(
-                  child: Text(" ${data.code} +"),
+              items: snapshot.data.map<DropdownMenuItem<CountryCode>>((CountryCode data) {
+                return DropdownMenuItem<CountryCode>(
+                  child: Center(child: Text(" ${data.code} +  ${data.name}",style: TextStyle(fontSize: 12.0),)),
                   value: data,
                 );
               }).toList(),
@@ -113,11 +114,11 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 right: 0.0,
                 left: 0.0,
                 child: Center(
-                    child: Text('به اندام دکتر کرمانی', style: TextStyle(fontSize: 22.0))
+                    child: Text('به اندام دکتر کرمانی', style: TextStyle(fontSize: 22.0,fontFamily: 'Iransans-Bold'))
                 ),
               ),
               Positioned(
-                top: 80.0,
+                top: 120.0,
                 right: 0.0,
                 left: 0.0,
                 child: Center(
@@ -130,7 +131,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             ],
         ),
               Padding(
-                padding: const EdgeInsets.only(right: 10.0,left: 10.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

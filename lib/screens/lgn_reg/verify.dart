@@ -102,7 +102,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     ),
                   ),
                   Positioned(
-                    top: 60.0,
+                    top: 120.0,
                     right: 0.0,
                     left: 0.0,
                     child: Center(

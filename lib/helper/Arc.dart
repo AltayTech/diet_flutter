@@ -3,15 +3,15 @@ import 'dart:math';
 import 'package:behandam/themes/colors.dart';
 
 class MyArc extends StatelessWidget {
-  final double diameter;
+  final double? diameter;
 
-  const MyArc({this.diameter = 200});
+  const MyArc({this.diameter});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: MyPainter(context),
-      size: Size(diameter, diameter),
+      size: Size(diameter!, diameter!),
     );
   }
 }
@@ -26,7 +26,7 @@ class MyPainter extends CustomPainter {
     canvas.drawArc(
       Rect.fromCenter(
         center: Offset(size.height / 2, size.width),
-        height: size.height,
+        height: size.height * 1.5,
         width: MediaQuery.of(ctx).size.height,
       ),
       pi,

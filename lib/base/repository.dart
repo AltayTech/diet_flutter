@@ -22,7 +22,7 @@ abstract class Repository {
     return _instance!;
   }
 
-  NetworkResult<List<Country>> country();
+  NetworkResult<List<CountryCode>> country();
 
   NetworkResult<CheckStatus> status(String mobile);
 
@@ -62,7 +62,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<List<Country>> country() async{
+  NetworkResult<List<CountryCode>> country() async{
     var response = await _apiClient.getCountries();
     return response;
   }

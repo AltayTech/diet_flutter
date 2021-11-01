@@ -75,7 +75,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                     ),
                   ),
                   Positioned(
-                    top: 60.0,
+                    top: 120.0,
                     right: 0.0,
                     left: 0.0,
                     child: Center(
@@ -96,7 +96,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                       padding: EdgeInsets.all(15.0),
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0),
                         color: AppColors.ArcColor),
-                      child: Center(child: Text("+ ${args['mobile']}", textDirection: TextDirection.ltr))),
+                      child: Center(child: Text("+ $args", textDirection: TextDirection.ltr))),
                     SizedBox(height: 20.0),
                     Container(
                       decoration: BoxDecoration(
@@ -142,7 +142,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                                 // User user = User();
                                 // user.mobile = widget.mobile;
                                 // user.password = _password;
-                                loginBloc.passwordMethod(args['mobile'], _password!);
+                                loginBloc.passwordMethod(args, _password!);
                                 setState(() {
                                   _text.text.isEmpty ? _validate = true : _validate = false;
                                 });

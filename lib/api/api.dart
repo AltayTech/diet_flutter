@@ -23,7 +23,7 @@ abstract class RestClient {
 
 
   @GET("/country")
-  NetworkResult<List<Country>> getCountries();
+  NetworkResult<List<CountryCode>> getCountries();
 
   @GET("/check-user-status?mobile={mobile}")
   NetworkResult<CheckStatus> checkUserStatus(@Path('mobile') String? mobile);
