@@ -1,23 +1,18 @@
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 
-enum BottomNavItem{
-  PROFILE,
-  SUPPORT,
-  DIET,
-  VITRINE,
-  STATUS
-}
+enum BottomNavItem { PROFILE, SUPPORT, DIET, VITRINE, STATUS }
 
 class BottomNav extends StatelessWidget {
   final BottomNavItem currentTab;
 
   BottomNav({required this.currentTab});
 
-  Widget item(String imageAddress,BottomNavItem type, String title,BuildContext context) {
+  Widget item(String imageAddress, BottomNavItem type, String title, BuildContext context) {
     return GestureDetector(
       onTap: () {
         switch (type) {
@@ -26,11 +21,10 @@ class BottomNav extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(context, UserProfile.routeName, (route) => false);*/
             break;
           case BottomNavItem.SUPPORT:
-           // Navigator.pushNamedAndRemoveUntil(context, TicketTab.routeName, (route) => false);
+            // Navigator.pushNamedAndRemoveUntil(context, TicketTab.routeName, (route) => false);
             break;
           case BottomNavItem.DIET:
-
-          /*  if (token == null) {
+            /*  if (token == null) {
               Navigator.pushNamedAndRemoveUntil(context, LaunchRoute.routeName, (route) => false);
             } else if (title != currentTab && token != null) {
               // getLastPage(context);
@@ -38,55 +32,66 @@ class BottomNav extends StatelessWidget {
             }*/
             break;
           case BottomNavItem.VITRINE:
-           /* if (title != currentTab)
+          /* if (title != currentTab)
               Navigator.pushNamedAndRemoveUntil(context, HealthTools.routeName, (route) => false);
             break;*/
           case BottomNavItem.STATUS:
-          /*  if (title != currentTab)
+            /*  if (title != currentTab)
               Navigator.pushNamedAndRemoveUntil(context, Status.routeName, (route) => false);*/
             break;
         }
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 1.h),
+        padding: EdgeInsets.symmetric(horizontal: 1.w),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Expanded(child: Container(
-              width: double.maxFinite,
-              child: Stack(
+            Expanded(
+              child: Container(
+                width: double.maxFinite,
                 alignment: Alignment.center,
-                children: [
-                  SvgPicture.asset(
-                    imageAddress,
-                    width: 5.h,
-                    height: 5.h,
-                    color: BottomNavItem.PROFILE == currentTab ? Theme.of(context).primaryColor : Color(0xff646464),
-                    fit: BoxFit.fitWidth,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(child: SvgPicture.asset(
+                      imageAddress,
+                      width: 3.h,
+                      height: 3.h,
+                      color: BottomNavItem.PROFILE == type
+                          ? Theme.of(context).primaryColor
+                          : AppColors.iconsColor,
+                      fit: BoxFit.fitWidth,
+                    ),),
+                    if (type == BottomNavItem.PROFILE && MemoryApp.inboxCount >= 0)
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: Container(
+                          width: 2.w,
+                          height: 2.w,
+                          decoration:
+                              BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                        ),
+                      )
+                  ],
+                ),
+              ),
+              flex: 1,
+            ),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 1.w),
+                child: FittedBox(
+                    child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: type == currentTab ? Theme.of(context).primaryColor : Color(0xff646464),
+                    fontSize: 10.sp,
+                    letterSpacing: -0.5,
                   ),
-                  if (type == BottomNavItem.PROFILE && MemoryApp.inboxCount > 0)
-                    Positioned(
-                      left: 8,
-                      top: 0,
-                      child: Container(
-                        width: 6,
-                        height: 6,
-                        decoration: BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
-                      ),
-                    )
-                ],
-              ),
-            ),flex: 1,),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: type == currentTab ? Theme.of(context).primaryColor : Color(0xff646464),
-                fontSize: 10.sp,
-                letterSpacing: -0.5,
-              ),
-            )
+                )))
           ],
         ),
       ),
@@ -111,20 +116,27 @@ class BottomNav extends StatelessWidget {
     );
   }
 
-  Widget bottomNavBar(context){
+  Widget bottomNavBar(context) {
     return Row(
       children: <Widget>[
         Expanded(
-            flex: 1, child: item('images/tab/profile_menu_icon.svg',BottomNavItem.PROFILE, 'پروفایل', context)),
-        Expanded(
-            flex: 1, child: item('images/tab/contact_menu_icon.svg',BottomNavItem.SUPPORT, 'پشتیبان', context)),
-       Expanded(
             flex: 1,
-            child: item('images/tab/food_menu_icon.svg',BottomNavItem.DIET, 'رژیم', context)),
+            child: item(
+                'assets/images/tab/profile_menu_icon.svg', BottomNavItem.PROFILE, 'پروفایل', context)),
         Expanded(
-            flex: 1, child: item('images/tab/tools_menu_icon.svg',BottomNavItem.VITRINE, 'ویترین', context)),
+            flex: 1,
+            child: item(
+                'assets/images/tab/contact_menu_icon.svg', BottomNavItem.SUPPORT, 'پشتیبان', context)),
         Expanded(
-            flex: 1, child: item('images/tab/status_menu_icon.svg',BottomNavItem.STATUS, 'وضعیت', context)),
+            flex: 1,
+            child: item('assets/images/tab/food_menu_icon.svg', BottomNavItem.DIET, 'رژیم', context)),
+        Expanded(
+            flex: 1,
+            child:
+                item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.VITRINE, 'ویترین', context)),
+        Expanded(
+            flex: 1,
+            child: item('assets/images/tab/status_menu_icon.svg', BottomNavItem.STATUS, 'وضعیت', context)),
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
+import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -13,6 +14,10 @@ import '../data/entity/auth/user-info.dart';
 import '../data/entity/auth/verify.dart';
 import '../data/entity/auth/sign-in.dart';
 
+enum FoodDietPdf{
+  TERM,
+  WEEK
+}
 
 abstract class Repository {
   static Repository? _instance;
@@ -36,6 +41,9 @@ abstract class Repository {
 
   NetworkResult<RegisterOutput> register(Register register);
 
+  NetworkResult<UserInformation> getUser();
+  NetworkResult<Media> getPdfUrl(FoodDietPdf foodDietPdf);
+
 }
 
 class _RepositoryImpl extends Repository {
@@ -54,8 +62,8 @@ class _RepositoryImpl extends Repository {
       connectTimeout: connectTimeout,
       sendTimeout: sendTimeout,
     );
-    _dio.interceptors.add(CustomInterceptors());
     _dio.interceptors.add(GlobalInterceptor());
+    _dio.interceptors.add(CustomInterceptors());
      _dio.interceptors.add(ErrorHandlerInterceptor());
     _apiClient = RestClient(_dio,baseUrl: FlavorConfig.instance.variables['baseUrl']);
     // _cache = MemoryDataSource();
@@ -74,8 +82,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<ResetOutput> reset(Reset password) async{
-    var response = await _apiClient.resetPassword(password);
+  NetworkResult<ResetOutput> reset(Reset password) {
+    var response = _apiClient.resetPassword(password);
     return response;
   }
 
@@ -94,6 +102,27 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<VerifyOutput> verify(String mobile, String code) async{
     var response = await _apiClient.verifyUser(mobile, code);
+    return response;
+  }
+
+  @override
+  NetworkResult<UserInformation> getUser() {
+    var response =  _apiClient.getProfile();
+    return response;
+  }
+
+  @override
+  NetworkResult<Media> getPdfUrl(FoodDietPdf foodDietPdf) {
+    var response;
+    switch(foodDietPdf) {
+      case FoodDietPdf.TERM:
+        response =  _apiClient.getPdfTermUrl();
+        break;
+      case FoodDietPdf.WEEK:
+        response =  _apiClient.getPdfWeekUrl();
+        break;
+    }
+
     return response;
   }
 

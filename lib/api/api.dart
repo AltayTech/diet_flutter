@@ -1,3 +1,4 @@
+import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -41,7 +42,16 @@ abstract class RestClient {
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);
 
   @POST("/register")
-  NetworkResult<RegisterOutput> register(@Body() Register reg);
+  NetworkResult<RegisterOutput> registerWithPhoneNumber(@Body() Register mobile);
+
+  @GET("/profile")
+  NetworkResult<UserInformation> getProfile();
+
+  @GET("/user/menu/all/pdf")
+  NetworkResult<UserInformation> getPdfTermUrl();
+
+  @GET("/user/menu/pdf")
+  NetworkResult<UserInformation> getPdfWeekUrl();
 }
 
 class CustomInterceptors extends InterceptorsWrapper {
@@ -49,6 +59,8 @@ class CustomInterceptors extends InterceptorsWrapper {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     print(
         "REQUEST[${options.data}] => PATH: ${FlavorConfig.instance.variables["baseUrl"]}${options.path}");
+    print('HEADERS:');
+    options.headers.forEach((key, v) => print(' - $key ==> $v'));
     super.onRequest(options, handler);
   }
 
