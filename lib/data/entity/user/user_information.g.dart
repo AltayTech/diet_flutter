@@ -59,7 +59,7 @@ Address _$AddressFromJson(Map<String, dynamic> json) => Address()
   ..address = json['address'] as String?
   ..provinceId = json['province_id'] as int?
   ..cityId = json['city_id'] as int?
-  ..zipCode = json['zip_code'] as int?;
+  ..zipCode = json['zip_code'] as String?;
 
 Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'address': instance.address,

@@ -19,8 +19,10 @@ class AppColors {
   static late Color surface;
   static late Color onSurface;
   static late Color scaffold;
-
+  static late Color arcColor;
+  static late Color btnColor;
   static late Color onScaffold;
+  static late Color lableColor;
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {
@@ -36,6 +38,9 @@ class AppColors {
         scaffold = Color(0xFFF5F8FE);
         onScaffold = onSurface;
         shadowColor=Color.fromARGB(255, 246, 246, 246);
+        arcColor = Color(0xFAEDECEC);
+        btnColor = Color(0xfffd5d5f);
+        lableColor = Color(0xf48e8e8e);
         break;
       case ThemeAppColor.BLUE:
         primary = Color(0xFF0D83DD);
@@ -49,6 +54,9 @@ class AppColors {
         scaffold = Color(0xFFF5F8FE);
         onScaffold = onSurface;
         shadowColor=Color.fromARGB(255, 246, 246, 246);
+        arcColor = Color(0xFAEDECEC);
+        btnColor = Color(0xfffd5d5f);
+        lableColor = Color(0xf48e8e8e);
         break;
       case ThemeAppColor.DARK:
         primary = Color(0xFF0D83DD);
@@ -60,6 +68,9 @@ class AppColors {
         scaffold = Color(0xFFF5F8FE);
         onScaffold = onSurface;
         shadowColor=Color.fromARGB(255, 246, 246, 246);
+        arcColor = Color(0xFAEDECEC);
+        btnColor = Color(0xfffd5d5f);
+        lableColor = Color(0xf48e8e8e);
         break;
       case ThemeAppColor.PURPLE:
         primary = Color(0xFF0D83DD);
@@ -71,6 +82,9 @@ class AppColors {
         scaffold = Color(0xFFF5F8FE);
         onScaffold = onSurface;
         shadowColor=Color.fromARGB(255, 246, 246, 246);
+        arcColor = Color(0xFAEDECEC);
+        btnColor = Color(0xfffd5d5f);
+        lableColor = Color(0xf48e8e8e);
         break;
     }
   }

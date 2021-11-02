@@ -77,4 +77,10 @@ class ProfileBloc {
       _userInformationStream.close();
       //  _isPlay.close();
     }
+
+/*  String findCountryName(int countryId) {
+
+    var name = countries.firstWhere((element) => element.id == countryId, orElse: () => null);
+    return name != null ? name.name : 'null';
+  }*/
   }

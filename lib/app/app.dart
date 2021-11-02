@@ -5,9 +5,10 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/home/home.dart';
+
 import 'package:behandam/screens/lgn_reg/register.dart';
 import 'package:behandam/screens/lgn_reg/verify.dart';
+import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
@@ -127,7 +128,8 @@ class _AppState extends State<App> {
 }
 
 final navigator = VxNavigator(routes: {
-  '/': (_, __) => MaterialPage(child: ProfileScreen()),
+  '/': (_, __) => MaterialPage(child: EditProfileScreen()),
+  Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
   Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
   Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(),arguments: param),
   Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(),arguments: param),

@@ -47,6 +47,9 @@ class UserInformation {
   Media? media;
 
   String get fullName => firstName == null ? '' : '$firstName $lastName';
+  String get whatsAppNumber =>whatsApp= socialMedia == null ? '' : socialMedia![0].pivot!.link!;
+  String get telegramAccount => telegram = socialMedia == null ? '' : socialMedia![1].pivot!.link!;
+  String get skypeAccount => skype = socialMedia == null ? '' : socialMedia![2].pivot!.link!;
 
   UserInformation();
 
@@ -66,7 +69,7 @@ class Address {
   int? cityId;
 
   @JsonKey(name: "zip_code")
-  int? zipCode;
+  String? zipCode;
 
   Address();
 

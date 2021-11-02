@@ -77,7 +77,7 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult<RegisterOutput> register(Register register) async{
-    var response = await _apiClient.register(register);
+    var response = await _apiClient.registerWithPhoneNumber(register);
     return response;
   }
 

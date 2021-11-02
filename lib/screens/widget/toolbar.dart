@@ -10,7 +10,7 @@ class Toolbar extends AppBar{
       titleBar,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 5.w,
+        fontSize: 15.sp,
       ),
     );
   }

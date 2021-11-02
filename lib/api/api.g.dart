@@ -130,11 +130,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<RegisterOutput>> register(reg) async {
+  Future<NetworkResponse<RegisterOutput>> registerWithPhoneNumber(
+      mobile) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(reg.toJson());
+    _data.addAll(mobile.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<RegisterOutput>>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)

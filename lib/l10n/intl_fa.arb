@@ -27,5 +27,13 @@
   "mySportProgram": "برنامه ورزشی من",
   "contactMe": "تماس با ما",
   "aboutMe": "درباره ما",
+  "name": "نام",
+  "lastName": "نام خانوادگی",
+  "email": "ایمیل",
+  "address": "آدرس",
+  "callNumber": "شماره تماس",
+  "whatsApp": "شماره واتساپ",
+  "skype": "شناسه اسکایپ",
+  "zipCode": "کدپستی",
   "arabic": "العربية"
 }

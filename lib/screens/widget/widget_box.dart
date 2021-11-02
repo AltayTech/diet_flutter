@@ -1,7 +1,59 @@
+import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+void fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+  currentFocus.unfocus();
+  FocusScope.of(context).requestFocus(nextFocus);
+}
+
+const inputDecoration = InputDecoration(
+  filled: true,
+  fillColor: Color.fromARGB(255, 245, 245, 245),
+  enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    borderSide: BorderSide(
+      color: Color.fromARGB(255, 164, 164, 164),
+      width: 1.0,
+    ),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    borderSide: BorderSide(
+      color: Color.fromARGB(255, 164, 164, 164),
+      width: 1.0,
+    ),
+  ),
+  labelText: 'شماره موبایلت رو وارد کن',
+  labelStyle: TextStyle(
+    color: Color.fromARGB(255, 195, 194, 194),
+    fontSize: 18.0,
+    letterSpacing: -0.5,
+  ),
+  // contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+  errorStyle: TextStyle(
+    color: Color.fromARGB(255, 255, 87, 87),
+    fontSize: 12.0,
+    fontWeight: FontWeight.bold,
+  ),
+  errorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    borderSide: BorderSide(
+      color: Color.fromARGB(255, 255, 87, 87),
+      width: 1.0,
+    ),
+  ),
+  focusedErrorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    borderSide: BorderSide(
+      color: Color.fromARGB(255, 255, 87, 87),
+      width: 1.0,
+    ),
+  ),
+);
 
 Widget attachCard(String imageAdrs, String text) {
   return Column(
@@ -249,6 +301,44 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor, Color 
           ),
         ),
       ],
+    ),
+  );
+}
+
+Widget textInput(
+    {required double height,
+    TextInputType? textInputType,
+    required Function validation,
+    required Function onChanged,
+    String? value,
+    String? label,
+    required bool maxLine,
+    required BuildContext ctx,
+    TextInputAction? action,
+    required TextDirection textDirection,
+    FilteringTextInputFormatter? formatter}) {
+  return Container(
+    height: height,
+    child: Directionality(
+      textDirection: textDirection,
+      child: TextFormField(
+        inputFormatters: formatter != null
+            ? [
+                formatter,
+              ]
+            : null,
+        textInputAction: action,
+        maxLines: maxLine ? 4 : 1,
+        initialValue: value ?? null,
+        decoration: inputDecoration.copyWith(
+          labelText: label,
+          labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.lableColor),
+        ),
+        keyboardType: textInputType,
+        onChanged: (val) => onChanged(val),
+        style: Theme.of(ctx).textTheme.subtitle2,
+        validator: (val) => validation(val),
+      ),
     ),
   );
 }

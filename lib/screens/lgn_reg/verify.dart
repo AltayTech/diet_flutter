@@ -79,7 +79,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-            backgroundColor: AppColors.ArcColor,
+            backgroundColor: AppColors.arcColor,
             elevation: 0.0,
             leading: IconButton( icon: Icon(Icons.arrow_back_ios),
                 color: Color(0xffb4babb),
@@ -122,7 +122,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.all(15.0),
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0),
-                            color: AppColors.ArcColor),
+                            color: AppColors.arcColor),
                         child: Center(child: Text("+ ${args['mobile']}",textDirection: TextDirection.ltr))),
                     SizedBox(height: 20.0),
                     Text('کد پیامک شده رو اینجا وارد کن',style: TextStyle(fontSize: 18.0)),

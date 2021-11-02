@@ -22,7 +22,7 @@ class MyPainter extends CustomPainter {
   MyPainter(this.ctx);
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = AppColors.ArcColor;
+    Paint paint = Paint()..color = AppColors.arcColor;
     canvas.drawArc(
       Rect.fromCenter(
         center: Offset(size.height / 2, size.width),
