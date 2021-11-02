@@ -118,8 +118,8 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
           ),
         ),
         Positioned(
-            top: 7.5.h,
-            left: 8.h,
+            top: 5.h,
+            left: 4.h,
             child: GestureDetector(
                 onTap: () {
                   //Navigator.of(context).pushNamed(InboxList.routeName);

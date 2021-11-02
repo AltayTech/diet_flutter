@@ -92,7 +92,7 @@ class WidgetIconTextProgressState extends ResourcefulState<WidgetIconTextProgres
                       )
                           : IconButton(
                         icon: Icon(
-                          context.textDirectionOfLocale == TextDirection.rtl ? Icons.arrow_forward_ios : Icons.arrow_back_ios,
+                          Icons.arrow_forward_ios,
                           textDirection: context.textDirectionOfLocale,
                           color: Color.fromARGB(255, 171, 170, 170),
                         ),

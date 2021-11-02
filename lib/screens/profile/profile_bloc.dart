@@ -69,6 +69,7 @@ class ProfileBloc {
       _showProgressItem.value = false;
     });
   }
+
     void dispose() {
       _showServerError.close();
       _progressNetwork.close();
