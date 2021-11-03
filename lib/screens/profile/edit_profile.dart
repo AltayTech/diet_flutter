@@ -60,9 +60,9 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
               child: Container(
                   child: StreamBuilder(
                       stream: profileBloc.progressNetwork,
-                      builder: (context, snapshot) {
-                        if (snapshot.data != null && snapshot.data == true ||
-                            profileBloc.isProgressNetwork == null) {
+                      builder: (context, AsyncSnapshot<bool> snapshot) {
+                        debugPrint("snapshot => ${snapshot.data}");
+                        if (snapshot.data == null || snapshot.data == true) {
                           return Center(
                             child: SpinKitCircle(
                               size: 5.h,
@@ -74,7 +74,7 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
                           return StreamBuilder(
                             stream: profileBloc.userInformationStream,
                             builder: (context, snapshot) {
-                              if (snapshot.hasData) {
+                              if (snapshot.hasData && snapshot.data!=null) {
                                 return content();
                               } else {
                                 return Center(
@@ -228,6 +228,7 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
                       action: TextInputAction.next,
                       formatter: null,
                       textDirection: context.textDirectionOfLocale),
+                  SizedBox(height: 3.h),
                   textInput(
                       height: 8.h,
                       textInputType: TextInputType.multiline,

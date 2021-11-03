@@ -61,7 +61,7 @@ class _MyDropdownState extends ResourcefulState<MyDropdown> {
           size: widget.widthSpace * 0.07,
         ),
         isExpanded: true,
-        value: widget.value ?? null,
+        value: widget.value,
         hint: Text(
           widget.hint,
           style: TextStyle(

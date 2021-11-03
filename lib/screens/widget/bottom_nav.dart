@@ -43,7 +43,6 @@ class BottomNav extends StatelessWidget {
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 1.w),
-
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

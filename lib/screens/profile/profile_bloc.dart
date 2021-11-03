@@ -44,6 +44,7 @@ class ProfileBloc {
   bool? get isProgressNetwork => _progressNetwork.value;
 
   void fetchUserInformation() async {
+    print('fetchUserInformation');
     _progressNetwork.value = true;
     _repository.getUser().then((value) {
       print('value ==> ${value.data!.firstName}');
