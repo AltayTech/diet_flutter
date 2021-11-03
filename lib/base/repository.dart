@@ -1,5 +1,6 @@
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
+import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -39,6 +40,8 @@ abstract class Repository {
   NetworkResult<UserInformation> getUser();
 
   NetworkResult<Media> getPdfUrl(FoodDietPdf foodDietPdf);
+
+  NetworkResult<CityProvinceModel> getProvinces();
 }
 
 class _RepositoryImpl extends Repository {
@@ -106,8 +109,8 @@ class _RepositoryImpl extends Repository {
     print("_repository");
     var response;
     try {
-       response = _apiClient.getProfile();
-    }catch(e){
+      response = _apiClient.getProfile();
+    } catch (e) {
       print("_repository e => $e");
     }
     return response;
@@ -131,6 +134,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<SignIn> signIn(String mobile, String pass) async {
     var response = await _apiClient.signInWithPhoneNumber(mobile, pass);
+    return response;
+  }
+
+  @override
+  NetworkResult<CityProvinceModel> getProvinces() {
+    var response = _apiClient.getProvinces();
     return response;
   }
 }

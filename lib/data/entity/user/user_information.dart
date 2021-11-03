@@ -47,9 +47,20 @@ class UserInformation {
   Media? media;
 
   String get fullName => firstName == null ? '' : '$firstName $lastName';
-  String get whatsAppNumber =>whatsApp= socialMedia == null ? '' : socialMedia![0].pivot!.link!;
-  String get telegramAccount => telegram = socialMedia == null ? '' : socialMedia![1].pivot!.link!;
-  String get skypeAccount => skype = socialMedia == null ? '' : socialMedia![2].pivot!.link!;
+
+  String get whatsAppNumber =>
+      whatsApp = (socialMedia == null || socialMedia![0].pivot!.link == null)
+          ? ''
+          : socialMedia![0].pivot!.link!;
+
+  String get telegramAccount =>
+      telegram = (socialMedia == null || socialMedia![1].pivot!.link == null)
+          ? ''
+          : socialMedia![1].pivot!.link!;
+
+  String get skypeAccount => skype = (socialMedia == null || socialMedia![2].pivot!.link == null)
+      ? ''
+      : socialMedia![2].pivot!.link!;
 
   UserInformation();
 

@@ -1,17 +1,17 @@
+import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-import '../base/network_response.dart';
+import 'package:retrofit/retrofit.dart';
 
+import '../base/network_response.dart';
 import '../data/entity/auth/country-code.dart';
 import '../data/entity/auth/register.dart';
 import '../data/entity/auth/reset.dart';
-import '../data/entity/auth/status.dart';
-import '../data/entity/auth/user-info.dart';
-import '../data/entity/auth/verify.dart';
 import '../data/entity/auth/sign-in.dart';
+import '../data/entity/auth/status.dart';
+import '../data/entity/auth/verify.dart';
+
 part 'api.g.dart';
 
 typedef NetworkResult<T> = Future<NetworkResponse<T>>;
@@ -20,8 +20,8 @@ typedef ImperativeNetworkResult = NetworkResult<dynamic>;
 @RestApi()
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
-  // factory RestClient(Dio dio) = _RestClient;
 
+  // factory RestClient(Dio dio) = _RestClient;
 
   @GET("/country")
   NetworkResult<List<CountryCode>> getCountries();
@@ -30,13 +30,15 @@ abstract class RestClient {
   NetworkResult<CheckStatus> checkUserStatus(@Path('mobile') String? mobile);
 
   @POST("/login?mobile={mobile}&password={pass}")
-  NetworkResult<SignIn> signInWithPhoneNumber(@Path('mobile') String? mobile, @Path('pass') String? pass);
+  NetworkResult<SignIn> signInWithPhoneNumber(
+      @Path('mobile') String? mobile, @Path('pass') String? pass);
 
   @POST("/send-verification-code?mobile={mobile}")
   NetworkResult<VerificationCode> sendVerificationCode(@Path('mobile') String? mobile);
 
   @GET("/verify?mobile={mobile}&verification_code={code}")
-  NetworkResult<VerifyOutput> verifyUser(@Path('mobile') String? mobile, @Path('code') String? code);
+  NetworkResult<VerifyOutput> verifyUser(
+      @Path('mobile') String? mobile, @Path('code') String? code);
 
   @PATCH("/reset-password")
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);
@@ -52,6 +54,9 @@ abstract class RestClient {
 
   @GET("/user/menu/pdf")
   NetworkResult<UserInformation> getPdfWeekUrl();
+
+  @GET("/province")
+  NetworkResult<CityProvinceModel> getProvinces();
 }
 
 class CustomInterceptors extends InterceptorsWrapper {
@@ -69,7 +74,7 @@ class CustomInterceptors extends InterceptorsWrapper {
     print(
         "RESPONSE[${response.statusCode}] => PATH: ${FlavorConfig.instance.variables["baseUrl"]}${response.requestOptions.path}");
     print(
-        "RESPONSE[${response.data}] => PATH: ${    FlavorConfig.instance.variables["baseUrl"]}${response.requestOptions.path}");
+        "RESPONSE[${response.data}] => PATH: ${FlavorConfig.instance.variables["baseUrl"]}${response.requestOptions.path}");
     super.onResponse(response, handler);
   }
 
@@ -81,4 +86,3 @@ class CustomInterceptors extends InterceptorsWrapper {
     super.onError(err, handler);
   }
 }
-
