@@ -115,16 +115,16 @@ class BottomNav extends StatelessWidget {
     return Row(
       children: <Widget>[
         Expanded(
-            flex: 1, child: item('images/tab/profile_menu_icon.svg',BottomNavItem.PROFILE, 'پروفایل', context)),
+            flex: 1, child: item('assets/images/tab/profile_menu_icon.svg',BottomNavItem.PROFILE, 'پروفایل', context)),
         Expanded(
-            flex: 1, child: item('images/tab/contact_menu_icon.svg',BottomNavItem.SUPPORT, 'پشتیبان', context)),
+            flex: 1, child: item('assets/images/tab/contact_menu_icon.svg',BottomNavItem.SUPPORT, 'پشتیبان', context)),
        Expanded(
             flex: 1,
-            child: item('images/tab/food_menu_icon.svg',BottomNavItem.DIET, 'رژیم', context)),
+            child: item('assets/images/tab/food_menu_icon.svg',BottomNavItem.DIET, 'رژیم', context)),
         Expanded(
-            flex: 1, child: item('images/tab/tools_menu_icon.svg',BottomNavItem.VITRINE, 'ویترین', context)),
+            flex: 1, child: item('assets/images/tab/tools_menu_icon.svg',BottomNavItem.VITRINE, 'ویترین', context)),
         Expanded(
-            flex: 1, child: item('images/tab/status_menu_icon.svg',BottomNavItem.STATUS, 'وضعیت', context)),
+            flex: 1, child: item('assets/images/tab/status_menu_icon.svg',BottomNavItem.STATUS, 'وضعیت', context)),
       ],
     );
   }

@@ -4,13 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import '../base/network_response.dart';
 
-import '../data/entity/auth/country-code.dart';
+import '../data/entity/auth/country_code.dart';
 import '../data/entity/auth/register.dart';
 import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
-import '../data/entity/auth/user-info.dart';
+import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/auth/sign-in.dart';
+import '../data/entity/auth/sign_in.dart';
 part 'api.g.dart';
 
 typedef NetworkResult<T> = Future<NetworkResponse<T>>;
@@ -28,14 +28,18 @@ abstract class RestClient {
   @GET("/check-user-status?mobile={mobile}")
   NetworkResult<CheckStatus> checkUserStatus(@Path('mobile') String? mobile);
 
-  @POST("/login?mobile={mobile}&password={pass}")
-  NetworkResult<SignIn> signInWithPhoneNumber(@Path('mobile') String? mobile, @Path('pass') String? pass);
+  // @POST("/login?mobile={mobile}&password={pass}")
+  // NetworkResult<SignIn> signInWithPhoneNumber(@Path('mobile') String? mobile, @Path('pass') String? pass);
+  @POST("/login")
+  NetworkResult<SignIn> signInWithPhoneNumber(@Body() User user);
 
   @POST("/send-verification-code?mobile={mobile}")
   NetworkResult<VerificationCode> sendVerificationCode(@Path('mobile') String? mobile);
 
-  @GET("/verify?mobile={mobile}&verification_code={code}")
-  NetworkResult<VerifyOutput> verifyUser(@Path('mobile') String? mobile, @Path('code') String? code);
+  // @GET("/verify?mobile={mobile}&verification_code={code}")
+  // NetworkResult<VerifyOutput> verifyUser(@Path('mobile') String? mobile, @Path('code') String? code);
+  @GET("/verify")
+  NetworkResult<VerifyOutput> verifyUser(@Queries() VerificationCode verificationCode);
 
   @PATCH("/reset-password")
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);
