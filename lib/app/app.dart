@@ -5,6 +5,7 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/main.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/home/home.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
@@ -125,5 +126,5 @@ final navigator= VxNavigator(routes: {
   '/': (_, __) => MaterialPage(child: HomeScreen()),
   Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
   Routes.pass: (_, __) => MaterialPage(child: PasswordScreen()),
-  // Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
+  Routes.foodList: (_, __) => MaterialPage(child: FoodListPage()),
 });

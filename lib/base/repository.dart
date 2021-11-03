@@ -1,4 +1,5 @@
 import 'package:behandam/api/interceptor/error_handler.dart';
+import 'package:behandam/data/entity/food_list/food_list.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -31,6 +32,8 @@ abstract class Repository {
   NetworkResult<ResetOutput> reset(Reset password);
 
   NetworkResult<RegisterOutput> register(Register mobile);
+
+  NetworkResult<FoodListData> foodList(String date);
 
 }
 
@@ -91,6 +94,13 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<VerifyOutput> verify(VerificationCode code) async{
     var response = await _apiClient.verifyUser(code);
+    return response;
+  }
+
+  @override
+  NetworkResult<FoodListData> foodList(String date) async{
+    var response = await _apiClient.foodList(date);
+    debugPrint('repository ${response.data}');
     return response;
   }
 

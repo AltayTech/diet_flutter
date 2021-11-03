@@ -10,6 +10,7 @@ abstract class Routes {
   static const pass = '/pass';
   static const entrance = '/entrance';
   static const verify = '/verify';
+  static const foodList = '/list/view';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

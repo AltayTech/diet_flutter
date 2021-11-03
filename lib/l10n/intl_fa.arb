@@ -1,5 +1,5 @@
 {
-  "appName": "کارسو",
+  "appName": "به اندام",
   "login": "ورود",
   "register": "ثبت نام",
   "mobileOrEmail": "شماره موبایل / ایمیل",
@@ -17,5 +17,21 @@
       }
     }
   },
-  "arabic": "العربية"
+  "arabic": "العربية",
+  "foodList": "لیست غذایی",
+  "noResultFound": "نتیجه ای یافت نشد",
+  "foodNotFoundMessage": "خوراکی مورد نظر شما در لیست یافت نشد",
+  "manipulateFood": "جایگزین غذا",
+  "recipe": "طرز تهیه",
+  "iFastToday": "امروز روزه میگیرم",
+  "selectDailyMenu": "انتخاب روزمنو",
+  "todayAdvicesForYou": "برات کلی توصیه کاربردی داریم. حتما بخونشون!",
+  "viewingMenu": "در حال مشاهده لیست غذایی روز {date} هستی",
+  "@viewingMenu": {
+      "placeholders": {
+        "date": {
+          "type": "String"
+        }
+      }
+  }
 }
