@@ -15,6 +15,7 @@ NetworkResponse<T> _$NetworkResponseFromJson<T>(
           ? null
           : ErrorResponse.fromJson(json['error'] as Map<String, dynamic>)
       ..message = json['message'] as String?
+      ..next = json['next'] as String?
       ..data = _$nullableGenericFromJson(json['data'], fromJsonT);
 
 T? _$nullableGenericFromJson<T>(

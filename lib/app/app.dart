@@ -5,6 +5,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/food_list/food_list.dart';
 
 import 'package:behandam/screens/lgn_reg/register.dart';
 import 'package:behandam/screens/lgn_reg/verify.dart';
@@ -134,4 +135,5 @@ final navigator = VxNavigator(routes: {
   Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(),arguments: param),
   Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(),arguments: param),
   Routes.register: (_, param) => MaterialPage(child: RegisterScreen(),arguments: param),
+  Routes.foodList: (_, __) => MaterialPage(child: FoodListPage()),
 });

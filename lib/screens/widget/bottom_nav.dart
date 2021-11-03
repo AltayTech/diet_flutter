@@ -1,5 +1,7 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,7 +26,8 @@ class BottomNav extends StatelessWidget {
             // Navigator.pushNamedAndRemoveUntil(context, TicketTab.routeName, (route) => false);
             break;
           case BottomNavItem.DIET:
-            /*  if (token == null) {
+            if(currentTab != BottomNavItem.DIET) navigator.routeManager.clearAndPush(Uri.parse(Routes.foodList));
+          /*  if (token == null) {
               Navigator.pushNamedAndRemoveUntil(context, LaunchRoute.routeName, (route) => false);
             } else if (title != currentTab && token != null) {
               // getLastPage(context);
