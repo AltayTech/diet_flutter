@@ -110,7 +110,6 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<FoodListData> foodList(String date) async {
     var response = await _apiClient.foodList(date);
-    debugPrint('repository ${response.data}');
     return response;
   }
 

@@ -1,3 +1,4 @@
+import 'package:behandam/data/entity/food_list/food_list.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
