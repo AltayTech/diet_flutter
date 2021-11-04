@@ -209,7 +209,7 @@ class _CodeResetScreenState extends ResourcefulState<CodeResetScreen> {
               }))
               : Text( intl.sendAgain + '$_start', style: TextStyle(fontSize: 14.0))),
           SizedBox(height: 10.h),
-          button(AppColors.btnColor,intl.confirmNewPassword,
+          button(AppColors.btnColor,intl.confirmNewPassword,Size(100.w,8.h),
                   () {
                 VerificationCode verify = VerificationCode();
                 verify.mobile = args;

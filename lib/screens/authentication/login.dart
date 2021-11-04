@@ -229,9 +229,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
         ),
        Padding(
          padding: const EdgeInsets.all(20.0),
-         child: button(
-             AppColors.btnColor,
-             intl.registerOrLogin,
+         child: button(AppColors.btnColor, intl.registerOrLogin,Size(100.w,8.h),
              () {
                while (phoneNumber.startsWith('0')) {
                  phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');

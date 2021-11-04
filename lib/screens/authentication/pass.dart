@@ -185,7 +185,7 @@ class _PasswordScreenState extends ResourcefulState<PasswordScreen> {
             ),
           ),
           SizedBox(height: 10.h),
-          button(AppColors.btnColor,intl.login,
+          button(AppColors.btnColor,intl.login,Size(100.w,8.h),
               (){
                 User user = User();
                 user.mobile = args;

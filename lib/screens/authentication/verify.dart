@@ -206,9 +206,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
               }))
               : Text(intl.sendAgain + '$_start', style: TextStyle(fontSize: 14.0))),
           SizedBox(height: 10.h),
-          button(
-              AppColors.btnColor,
-              intl.register,
+          button(AppColors.btnColor, intl.register,Size(100.w,8.h),
                 (){
                 VerificationCode verification = VerificationCode();
                 verification.mobile = args['mobile'];

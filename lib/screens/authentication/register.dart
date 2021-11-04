@@ -270,7 +270,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   animate: true, // with just animate set to true, default curve = Curves.easeIn
                   curve: Curves.bounceInOut, // animate must be set to true when using custom curve
                   onToggle: (index) {
-                    index == 1
+                    index == gender.man.index
                         ?_switchValue = true
                         : _switchValue = false;
                   },
@@ -282,7 +282,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             ),
           ),
           SizedBox(height: 20.0),
-          button(AppColors.btnColor, intl.register,
+          button(AppColors.btnColor, intl.register,Size(100.w,8.h),
                   () {
                     setState(() {
                       _text.text.isEmpty ? _validate = true : _validate = false;
