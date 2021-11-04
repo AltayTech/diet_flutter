@@ -14,6 +14,8 @@ import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/typography.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
@@ -47,7 +49,11 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) {
-        return app();
+        return  DevicePreview(
+         // enabled: !kReleaseMode,
+          enabled: false,
+          builder: (context) => app(), // Wrap your app
+        );
       },
     );
   }
@@ -60,7 +66,7 @@ class _AppState extends State<App> {
         builder: (context, AsyncSnapshot<Locale> snapshot) {
           final locale = snapshot.data ?? appInitialLocale;
           return MaterialApp.router(
-
+              useInheritedMediaQuery: true,
               // generate title from localization instead of `MaterialApp.title` property
               onGenerateTitle: (BuildContext context) => context.intl.appName,
               debugShowCheckedModeBanner: false,

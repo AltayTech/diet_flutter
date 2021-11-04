@@ -8,6 +8,7 @@ class Toolbar extends AppBar{
   Toolbar({required this.titleBar}){
     item= Text(
       titleBar,
+      textAlign: TextAlign.center,
       style: TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 15.sp,

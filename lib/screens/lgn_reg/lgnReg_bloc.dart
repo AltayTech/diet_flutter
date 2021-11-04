@@ -1,42 +1,39 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:behandam/base/network_response.dart';
+
 import 'package:behandam/data/entity/auth/country-code.dart';
 import 'package:behandam/data/entity/auth/register.dart';
-import 'package:behandam/data/entity/auth/status.dart';
-import 'package:behandam/data/entity/auth/user-info.dart';
-import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:velocity_x/velocity_x.dart';
-import 'package:dio/dio.dart';
 
-import '../../api/api.dart';
-import '../../routes.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
-
-class LoginRegisterBloc{
-  LoginRegisterBloc(){
+class LoginRegisterBloc {
+  LoginRegisterBloc() {
     fetchCountries();
   }
 
   final _repository = Repository.getInstance();
 
   late CountryCode _subject;
+  late List<CountryCode> countries;
   final _subjectList = BehaviorSubject<List<CountryCode>>();
   final _navigateToVerify = LiveEvent();
   final _showServerError = LiveEvent();
+
   CountryCode get subject => _subject;
+
   Stream<List<CountryCode>> get subjectList => _subjectList.stream;
+
   Stream get navigateToVerify => _navigateToVerify.stream;
+
   Stream get showServerError => _showServerError.stream;
 
   void fetchCountries() async {
     _repository.country().then((value) {
       _subjectList.value = value.data!;
-      value.data!.forEach((element){
-        if(element.code == "98") {
+      countries = value.data!;
+      value.data!.forEach((element) {
+        if (element.code == "98") {
           _subject = element;
         }
       });
@@ -45,7 +42,7 @@ class LoginRegisterBloc{
 
   void loginMethod(String phoneNumber) async {
     _repository.status(phoneNumber).then((value) {
-     _navigateToVerify.fire( value.data!.isExist!);
+      _navigateToVerify.fire(value.data!.isExist!);
       print('value: ${value.data!.isExist}');
     });
   }
@@ -75,6 +72,7 @@ class LoginRegisterBloc{
   void dispose() {
     _showServerError.close();
     _navigateToVerify.close();
+
     //  _isPlay.close();
   }
 }

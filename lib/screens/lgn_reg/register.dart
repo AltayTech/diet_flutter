@@ -1,6 +1,6 @@
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/register.dart';
-import 'package:behandam/helper/Arc.dart';
+import 'package:behandam/helper/arc.dart';
 import 'package:behandam/screens/lgn_reg/lgnReg_bloc.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/cupertino.dart';
