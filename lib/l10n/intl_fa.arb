@@ -54,5 +54,8 @@
   "country": "کشور",
   "province": "استان",
   "city": "شهر",
+  "pickImage": "بازکردن عکس از:",
+  "selectGallery": "گالری",
+  "selectCamera": "دوربین",
   "arabic": "العربية"
 }

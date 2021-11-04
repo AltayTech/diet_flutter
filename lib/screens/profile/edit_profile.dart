@@ -39,7 +39,7 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
         child: SafeArea(
           child: Scaffold(
             resizeToAvoidBottomInset: false,
-            appBar: Toolbar(titleBar: intl.profile),
+            appBar: Toolbar(titleBar: intl.editProfile),
             body: body(),
           ),
         ));

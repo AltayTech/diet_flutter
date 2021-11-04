@@ -10,6 +10,7 @@ abstract class Routes {
   static const register = '/register';
   static const verify = '/verify';
   static const profile = '/profile';
+  static const editProfile = '/profile/edit';
   static const foodList = '/list/view';
 
   /// All available routes to Navigator

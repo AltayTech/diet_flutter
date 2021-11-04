@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
-import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
+import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -45,6 +47,8 @@ abstract class Repository {
   NetworkResult<Media> getPdfUrl(FoodDietPdf foodDietPdf);
 
   NetworkResult<CityProvinceModel> getProvinces();
+
+  NetworkResult<Media> sendMedia(String info, File media);
 }
 
 class _RepositoryImpl extends Repository {
@@ -143,6 +147,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<CityProvinceModel> getProvinces() {
     var response = _apiClient.getProvinces();
+    return response;
+  }
+
+  @override
+  NetworkResult<Media> sendMedia(String info, File media) {
+    var response = _apiClient.sendMedia(media, info);
     return response;
   }
 }

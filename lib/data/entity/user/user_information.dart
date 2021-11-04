@@ -16,6 +16,12 @@ class UserInformation {
   String? email;
   @JsonKey(name: "country_id")
   int? countryId;
+  @JsonKey(name: "city_id")
+  int? cityId;
+
+  @JsonKey(name: "province_id")
+  int? provinceId;
+
   @JsonKey(name: "call_number")
   String? callNumber;
   @JsonKey(name: "first_name")
@@ -24,12 +30,7 @@ class UserInformation {
   String? lastName;
   @JsonKey(name: "birth_date")
   String? birthDate;
-  @JsonKey(name: "whatsApp")
-  String? whatsApp;
-  @JsonKey(name: "telegram")
-  String? telegram;
-  @JsonKey(name: "skype")
-  String? skype;
+
   @JsonKey(name: "is_behandam3_user")
   bool? isBehandam3;
   @JsonKey(name: "has_call")
@@ -48,17 +49,17 @@ class UserInformation {
 
   String get fullName => firstName == null ? '' : '$firstName $lastName';
 
-  String get whatsAppNumber =>
-      whatsApp = (socialMedia == null || socialMedia![0].pivot!.link == null)
+  String get whatsApp =>
+       (socialMedia == null || socialMedia![0].pivot!.link == null)
           ? ''
           : socialMedia![0].pivot!.link!;
 
-  String get telegramAccount =>
-      telegram = (socialMedia == null || socialMedia![1].pivot!.link == null)
+  String get telegram =>
+      (socialMedia == null || socialMedia![1].pivot!.link == null)
           ? ''
           : socialMedia![1].pivot!.link!;
 
-  String get skypeAccount => skype = (socialMedia == null || socialMedia![2].pivot!.link == null)
+  String get skype =>  (socialMedia == null || socialMedia![2].pivot!.link == null)
       ? ''
       : socialMedia![2].pivot!.link!;
 

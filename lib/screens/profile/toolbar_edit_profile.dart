@@ -1,12 +1,16 @@
-import 'package:badges/badges.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
-import 'package:behandam/screens/widget/CustomCurve.dart';
+import 'package:behandam/screens/widget/custom_curve.dart';
+import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ToolbarEditProfile extends StatefulWidget {
@@ -25,7 +29,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
     super.build(context);
     profileBloc = ProfileProvider.of(context);
     return Container(
-        height: 22.h,
+        height: 18.h,
         child: Stack(
           children: [
             Positioned(
@@ -33,7 +37,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
               right: 0,
               left: 0,
               child: Container(
-                height: 18.h,
+                height: 13.h,
                 color: Colors.transparent,
                 child: ClipPath(
                   clipper: CustomCurve(),
@@ -50,11 +54,11 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
               child: GestureDetector(
                 onTap: () => FocusScope.of(context).unfocus(),
                 child: Container(
-                  height: 22.h,
+                  height: 16.h,
                   child: Stack(
                     children: <Widget>[
                       Positioned(
-                        bottom: 4.h,
+                        bottom: 2.h,
                         right: 0,
                         left: 0,
                         child: Center(
@@ -80,7 +84,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                         ),
                       ),
                       Positioned(
-                        bottom: 1.h,
+                        bottom:1.h,
                         right: 10.w,
                         left: 10.w,
                         child: Center(
@@ -107,7 +111,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                           ),
                         ),
                       ),
-                      Positioned(
+                     /* Positioned(
                         top: 0.0,
                         bottom: 0.0,
                         right: 0.0,
@@ -118,7 +122,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                             color: AppColors.primary,
                           ),
                         ),
-                      ),
+                      ),*/
                       Positioned(
                         bottom: 2.h,
                         right: 0,
@@ -132,40 +136,105 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                                 borderRadius: BorderRadius.circular(20.0),
                                 border: profileBloc.userInfo.media != null
                                     ? Border.all(
-                                  color: Colors.white,
-                                  width: 0.1.w,
-                                )
+                                        color: Colors.white,
+                                        width: 0.1.w,
+                                      )
                                     : null,
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
-                                child: profileBloc.userInfo.media!.url != null
-                                    ? Image.network(
-                                  '${FlavorConfig.instance.variables['baseUrlFile']}${profileBloc.userInfo.media!.url}',
-                                  fit: BoxFit.cover,
-                                  width: 20.w,
-                                  height: 20.w,
-                                )
-                                    : SvgPicture.asset(
-                                  profileBloc.userInfo.gender == 0
-                                      ? 'assets/images/profile/female_avatar.svg'
-                                      : 'assets/images/profile/male_avatar.svg',
-                                  alignment: Alignment.center,
-                                  semanticsLabel: 'item icon',
-                                  height: 20.w,
-                                  width: 20.w,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: StreamBuilder(builder: (context, snapshot) {
+                                  if(snapshot.data==true){
+                                    return SpinKitCircle(
+                                      color: AppColors.primary,
+                                      size: 4.w,
+                                    );
+                                  }else{
+                                  return  profileBloc.userInfo.media!.url != null
+                                        ? ImageUtils.fromNetwork(
+                                      '${FlavorConfig.instance.variables['baseUrlFile']}${profileBloc.userInfo.media!.url}',
+                                      placeholder: 'assets/images/profile/female_avatar.svg',
+                                      showPlaceholder: true,
+                                      fit: BoxFit.cover,
+                                      width: 20.w,
+                                      height: 20.w,
+                                    )
+                                        : ImageUtils.fromLocal(
+                                      profileBloc.userInfo.gender == 0
+                                          ? 'assets/images/profile/female_avatar.svg'
+                                          : 'assets/images/profile/male_avatar.svg',
+                                      height: 20.w,
+                                      width: 20.w,
+                                      fit: BoxFit.cover,
+                                    );
+                                  }
+                                },stream: profileBloc.showProgressUploadImage,),
+
+
                               )),
                         ),
                       ),
                       Positioned(
-                        bottom: 1,
+                        bottom: 0,
                         right: 0,
                         left: 0,
                         child: Center(
                           child: GestureDetector(
-                            // onTap: _showSelectionDialog,
+                            onTap: () {
+                              DialogUtils.showBottomSheetPage(
+                                  context: context,
+                                  child: Container(
+                                    width: 100.w,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          topRight: Radius.circular(12)),
+                                      color: AppColors.surface,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Space(
+                                          height: 2.h,
+                                        ),
+                                        Text(
+                                          intl.pickImage,
+                                          style: Theme.of(context).textTheme.bodyText2,
+                                        ),
+                                        Space(
+                                          height: 2.h,
+                                        ),
+                                        MaterialButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            profileBloc.selectGallery();
+                                          },
+                                          minWidth: 80.w,
+                                          height: 7.h,
+                                          child: Text(
+                                            intl.selectGallery,
+                                            style: Theme.of(context).textTheme.caption,
+                                          ),
+                                        ),
+                                        Line(
+                                          width: 80.w,
+                                          height: 0.1.h,
+                                          color: AppColors.lableColor,
+                                        ),
+                                        MaterialButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              profileBloc.selectCamera();
+                                            },
+                                            minWidth: 80.w,
+                                            height: 7.h,
+                                            child: Text(
+                                              intl.selectCamera,
+                                              style: Theme.of(context).textTheme.caption,
+                                            )),
+                                      ],
+                                    ),
+                                  ));
+                            },
                             // onTap: _showSelectionDialog,
                             child: Container(
                               padding: EdgeInsets.all(1.5.w),
@@ -173,42 +242,11 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
-                              child: SvgPicture.asset(
+                              child: ImageUtils.fromLocal(
                                 'assets/images/profile/change_pic.svg',
-                                alignment: Alignment.center,
-                                semanticsLabel: 'item icon',
                                 // height: SizeConfig.blockSizeHorizontal * 3,
-                                width: 7.5.w,
+                                width: 5.5.w,
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 7.h,
-                        right: context.isRtl ? 5.w : null,
-                        left: context.isRtl ? null : 5.w,
-                        child: Container(
-                          padding: EdgeInsets.all(0.0),
-                          decoration: BoxDecoration(
-                            color: AppColors.accentColor,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          width: 10.w,
-                          height: 10.w,
-                          alignment: Alignment.center,
-                          child: IconButton(
-                            onPressed: () {
-                              print('onPressed back');
-                             // VxNavigator.of(context).pop();
-                              VxNavigator.of(context).pop();
-                            },
-                            alignment: Alignment.center,
-                            iconSize: 6.w,
-                            icon: Icon(
-                              Icons.arrow_back_ios_rounded,
-                              textDirection: context.textDirectionOfLocale,
-                              color: Colors.white,
                             ),
                           ),
                         ),

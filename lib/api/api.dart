@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:behandam/data/entity/food_list/food_list.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
@@ -61,11 +63,15 @@ abstract class RestClient {
 
   @GET("/province")
   NetworkResult<CityProvinceModel> getProvinces();
+
+  @POST("/media")
+  NetworkResult<Media> sendMedia(
+      @Part(name: "media") File media, @Part(name: "info") String info);
 }
 
 class CustomInterceptors extends InterceptorsWrapper {
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async{
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     /*   final languageCode = (await AppLocale.currentLocale).languageCode;
 
   options.headers['Accept'] = 'application/json';

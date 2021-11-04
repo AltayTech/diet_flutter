@@ -2,7 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
-import 'package:behandam/screens/widget/CustomCurve.dart';
+import 'package:behandam/screens/widget/custom_curve.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';

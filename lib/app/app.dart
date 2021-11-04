@@ -135,8 +135,8 @@ class _AppState extends State<App> {
 }
 
 final navigator = VxNavigator(routes: {
-  '/': (_, __) => MaterialPage(child: EditProfileScreen()),
-  Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
+  '/': (_, __) => MaterialPage(child: ProfileScreen()),
+  Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
   Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
   Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(),arguments: param),
   Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(),arguments: param),

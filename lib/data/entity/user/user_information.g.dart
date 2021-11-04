@@ -13,13 +13,12 @@ UserInformation _$UserInformationFromJson(Map<String, dynamic> json) =>
       ..mobile = json['mobile'] as String?
       ..email = json['email'] as String?
       ..countryId = json['country_id'] as int?
+      ..cityId = json['city_id'] as int?
+      ..provinceId = json['province_id'] as int?
       ..callNumber = json['call_number'] as String?
       ..firstName = json['first_name'] as String?
       ..lastName = json['last_name'] as String?
       ..birthDate = json['birth_date'] as String?
-      ..whatsApp = json['whatsApp'] as String?
-      ..telegram = json['telegram'] as String?
-      ..skype = json['skype'] as String?
       ..isBehandam3 = json['is_behandam3_user'] as bool?
       ..hasCall = json['has_call'] as bool?
       ..hasFitaminService = json['has_fitamin_service'] as bool?
@@ -40,13 +39,12 @@ Map<String, dynamic> _$UserInformationToJson(UserInformation instance) =>
       'mobile': instance.mobile,
       'email': instance.email,
       'country_id': instance.countryId,
+      'city_id': instance.cityId,
+      'province_id': instance.provinceId,
       'call_number': instance.callNumber,
       'first_name': instance.firstName,
       'last_name': instance.lastName,
       'birth_date': instance.birthDate,
-      'whatsApp': instance.whatsApp,
-      'telegram': instance.telegram,
-      'skype': instance.skype,
       'is_behandam3_user': instance.isBehandam3,
       'has_call': instance.hasCall,
       'has_fitamin_service': instance.hasFitaminService,
