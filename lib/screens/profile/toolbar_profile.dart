@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/widget/custom_curve.dart';
@@ -127,10 +128,14 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
                 child: Badge(
                   badgeColor: Colors.white,
                   shape: BadgeShape.circle,
-                  badgeContent: Text(
-                    //inboxCount > 99 ? '+99' : inboxCount.toString(),
-                    "0",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  badgeContent: StreamBuilder(
+                    builder: (context, snapshot) {
+                      return Text(
+                        '${MemoryApp.inboxCount}',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      );
+                    },
+                    stream: profileBloc.inboxCount,
                   ),
                   position: BadgePosition.bottomEnd(),
                   child: Container(

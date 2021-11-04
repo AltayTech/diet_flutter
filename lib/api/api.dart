@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:behandam/data/entity/food_list/food_list.dart';
+import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
@@ -67,6 +68,13 @@ abstract class RestClient {
   @POST("/media")
   NetworkResult<Media> sendMedia(
       @Part(name: "media") File media, @Part(name: "info") String info);
+
+  @PATCH("/profile")
+  NetworkResult<UserInformation> updateProfile(@Body() UserInformation userInformation);
+
+  @GET("/inbox/unseen/count")
+  NetworkResult<Inbox> getUnreadInbox();
+
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

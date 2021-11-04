@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
+import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
@@ -49,6 +50,9 @@ abstract class Repository {
   NetworkResult<CityProvinceModel> getProvinces();
 
   NetworkResult<Media> sendMedia(String info, File media);
+
+  NetworkResult<UserInformation> changeProfile(UserInformation userInformation);
+  NetworkResult<Inbox> getUnreadInbox();
 }
 
 class _RepositoryImpl extends Repository {
@@ -153,6 +157,18 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Media> sendMedia(String info, File media) {
     var response = _apiClient.sendMedia(media, info);
+    return response;
+  }
+
+  @override
+  NetworkResult<UserInformation> changeProfile(UserInformation userInformation) {
+    var response = _apiClient.updateProfile(userInformation);
+    return response;
+  }
+
+  @override
+  NetworkResult<Inbox> getUnreadInbox() {
+    var response = _apiClient.getUnreadInbox();
     return response;
   }
 }

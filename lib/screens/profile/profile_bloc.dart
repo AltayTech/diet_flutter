@@ -7,7 +7,9 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/lgn_reg/lgnReg_bloc.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -37,6 +39,7 @@ class ProfileBloc {
   final _progressNetwork = BehaviorSubject<bool>();
   final _showProgressItem = BehaviorSubject<bool>();
   final _showProgressUploadImage = BehaviorSubject<bool>();
+  final _inboxCount = BehaviorSubject<int>();
   final _userInformationStream = BehaviorSubject<UserInformation>();
   final _cityProvinceModelStream = BehaviorSubject<CityProvinceModel>();
 
@@ -45,6 +48,8 @@ class ProfileBloc {
   Stream get showServerError => _showServerError.stream;
 
   Stream<bool> get progressNetwork => _progressNetwork.stream;
+
+  Stream<int> get inboxCount => _inboxCount.stream;
 
   Stream<bool> get showProgressUploadImage => _showProgressUploadImage.stream;
 
@@ -59,7 +64,6 @@ class ProfileBloc {
   void fetchUserInformation() async {
     _progressNetwork.value = true;
     if (MemoryApp.userInformation == null) {
-
       _repository.getUser().then((value) {
         print('value ==> ${value.data!.firstName}');
         _userInformation = value.data!;
@@ -72,7 +76,6 @@ class ProfileBloc {
         _progressNetwork.value = false;
       });
     } else {
-
       loginRegisterBloc!.subjectList.listen((event) {
         _userInformation = MemoryApp.userInformation!;
         _userInformationStream.value = _userInformation;
@@ -81,6 +84,14 @@ class ProfileBloc {
         _progressNetwork.value = false;
       });
     }
+    getUnreadInbox();
+  }
+
+  void getUnreadInbox() {
+    _repository.getUnreadInbox().then((value) {
+      _inboxCount.value = value.data!.count ?? 0;
+      MemoryApp.inboxCount = value.data!.count ?? 0;
+    });
   }
 
   void getPdfMeal(FoodDietPdf type) {
@@ -103,6 +114,7 @@ class ProfileBloc {
     loginRegisterBloc!.dispose();
     _cityProvinceModelStream.close();
     _showProgressUploadImage.close();
+    _inboxCount.close();
     //  _isPlay.close();
   }
 
@@ -221,5 +233,14 @@ class ProfileBloc {
     }
   }
 
-
+  void edit(BuildContext context) async {
+    if (userInfo.address != null && userInfo.address!.cityId != null)
+      userInfo.cityId = userInfo.address!.cityId;
+    if (userInfo.address != null && userInfo.address!.provinceId != null)
+      userInfo.provinceId = userInfo.address!.provinceId;
+    DialogUtils.showDialogProgress(context: context);
+    _repository.changeProfile(userInfo).whenComplete(() {
+      Navigator.of(context).pop();
+    });
+  }
 }
