@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
-import 'package:behandam/helper/Arc.dart';
+import 'package:behandam/helper/arc.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/pin_code_input.dart';
