@@ -14,7 +14,6 @@ import '../api/api.dart';
 import '../data/entity/auth/country_code.dart';
 import '../data/entity/auth/register.dart';
 import '../data/entity/auth/reset.dart';
-import '../data/entity/auth/sign-in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
@@ -89,7 +88,7 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult<RegisterOutput> register(Register register) async {
-    var response = await _apiClient.registerWithPhoneNumber(register);
+    var response = await _apiClient.register(register);
     return response;
   }
 
@@ -145,8 +144,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<SignIn> signIn(String mobile, String pass) async {
-    var response = await _apiClient.signInWithPhoneNumber(mobile, pass);
+  NetworkResult<SignIn> signIn(User user) async {
+    var response = await _apiClient.signInWithPhoneNumber(user);
     return response;
   }
 

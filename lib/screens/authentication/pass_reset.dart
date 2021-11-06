@@ -67,7 +67,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
                   headerSliverBuilder:  (BuildContext context, bool innerBoxIsScrolled) {
                     return <Widget>[
                       SliverAppBar(
-                        backgroundColor: AppColors.ArcColor,
+                        backgroundColor: AppColors.arcColor,
                         elevation: 0.0,
                         leading: IconButton( icon: Icon(Icons.arrow_back_ios),
                             color: Color(0xffb4babb),
@@ -221,5 +221,20 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
   }
 }

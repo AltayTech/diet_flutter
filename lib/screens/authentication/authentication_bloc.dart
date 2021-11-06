@@ -32,6 +32,8 @@ class AuthenticationBloc{
   final _subjectList = BehaviorSubject<List<CountryCode>>();
   final _navigateToVerify = LiveEvent();
   final _showServerError = LiveEvent();
+  late List<CountryCode> countries;
+
   CountryCode get subject => _subject;
   Stream<List<CountryCode>> get subjectList => _subjectList.stream;
   Stream<bool> get waiting => _waiting.stream;
@@ -44,6 +46,7 @@ class AuthenticationBloc{
     _repository.country().then((value) {
       MemoryApp.countryCode = value.data!;
       _subjectList.value = value.data!;
+      countries = value.data!;
       value.data!.forEach((element){
         if(element.code == "98") {
           _subject = element;

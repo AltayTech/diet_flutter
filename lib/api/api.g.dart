@@ -58,22 +58,13 @@ class _RestClient implements RestClient {
   Future<NetworkResponse<SignIn>> signInWithPhoneNumber(user) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-<<<<<<< HEAD
-=======
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
->>>>>>> develop
     final _data = <String, dynamic>{};
     _data.addAll(user.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<SignIn>>(
-<<<<<<< HEAD
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/login',
-=======
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/login?mobile=$mobile&password=$pass',
->>>>>>> develop
+                .compose(_dio.options, '/login',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<SignIn>.fromJson(
@@ -107,27 +98,15 @@ class _RestClient implements RestClient {
   Future<NetworkResponse<VerifyOutput>> verifyUser(verificationCode) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-<<<<<<< HEAD
     queryParameters.addAll(verificationCode.toJson());
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<VerifyOutput>>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/verify',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-=======
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<VerifyOutput>>(Options(
-                method: 'GET', headers: _headers, extra: _extra)
-            .compose(
-                _dio.options, '/verify?mobile=$mobile&verification_code=$code',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
->>>>>>> develop
+        _setStreamType<NetworkResponse<VerifyOutput>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/verify',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<VerifyOutput>.fromJson(
       _result.data!,
       (json) => VerifyOutput.fromJson(json as Map<String, dynamic>),
@@ -156,13 +135,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<RegisterOutput>> registerWithPhoneNumber(
-      mobile) async {
+  Future<NetworkResponse<RegisterOutput>> register(reg) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(mobile.toJson());
+    _data.addAll(reg.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<RegisterOutput>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
@@ -177,21 +155,44 @@ class _RestClient implements RestClient {
   }
 
   @override
-<<<<<<< HEAD
   Future<NetworkResponse<RegimeType>> getDietType() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<RegimeType>>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/diet-type',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<RegimeType>.fromJson(
       _result.data!,
       (json) => RegimeType.fromJson(json as Map<String, dynamic>),
-=======
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<Help>> helpDietType() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<Help>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/page/1',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<Help>.fromJson(
+      _result.data!,
+      (json) => Help.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<FoodListData>> foodList(date) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -206,27 +207,11 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<FoodListData>.fromJson(
       _result.data!,
       (json) => FoodListData.fromJson(json as Map<String, dynamic>),
->>>>>>> develop
     );
     return value;
   }
 
   @override
-<<<<<<< HEAD
-  Future<NetworkResponse<Help>> helpDietType() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<Help>>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/page/1',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<Help>.fromJson(
-      _result.data!,
-      (json) => Help.fromJson(json as Map<String, dynamic>),
-=======
   Future<NetworkResponse<UserInformation>> getProfile() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -298,7 +283,6 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<CityProvinceModel>.fromJson(
       _result.data!,
       (json) => CityProvinceModel.fromJson(json as Map<String, dynamic>),
->>>>>>> develop
     );
     return value;
   }

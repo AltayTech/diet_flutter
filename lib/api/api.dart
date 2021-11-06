@@ -1,3 +1,5 @@
+import 'package:behandam/data/entity/auth/country_code.dart';
+import 'package:behandam/data/entity/auth/sign_in.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
@@ -9,10 +11,10 @@ import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../base/network_response.dart';
-import '../data/entity/auth/country-code.dart';
+
 import '../data/entity/auth/register.dart';
 import '../data/entity/auth/reset.dart';
-import '../data/entity/auth/sign-in.dart';
+
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';

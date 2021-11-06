@@ -104,7 +104,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                                       width: 80.w,
                                       height: 9.h,
                                       child: Card(
-                                        color: AppColors.ArcColor,
+                                        color: AppColors.arcColor,
                                         semanticContainer: true,
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0),topLeft: Radius.circular(30.0))),
@@ -218,5 +218,20 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
       disableClick = true;
     else
       disableClick = false;
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
   }
 }

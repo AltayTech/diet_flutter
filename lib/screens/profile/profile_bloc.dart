@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:behandam/data/entity/auth/country-code.dart';
+import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/lgn_reg/lgnReg_bloc.dart';
+import 'package:behandam/screens/authentication/authentication_bloc.dart';
+
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -12,11 +13,11 @@ import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
 class ProfileBloc {
-  LoginRegisterBloc? loginRegisterBloc;
+  AuthenticationBloc? loginRegisterBloc;
 
   ProfileBloc() {
     if (loginRegisterBloc == null) {
-      loginRegisterBloc = LoginRegisterBloc();
+      loginRegisterBloc = AuthenticationBloc();
     }
     fetchUserInformation();
   }

@@ -92,7 +92,7 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
                                   width: 80.w,
                                   height: 22.h,
                                   child: Card(
-                                    color: AppColors.ArcColor,
+                                    color: AppColors.arcColor,
                                     semanticContainer: true,
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0),topLeft: Radius.circular(15.0))),
@@ -124,5 +124,20 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
   }
 }

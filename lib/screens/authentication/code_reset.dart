@@ -98,7 +98,7 @@ class _CodeResetScreenState extends ResourcefulState<CodeResetScreen> {
                       headerSliverBuilder:  (BuildContext context, bool innerBoxIsScrolled) {
                         return <Widget>[
                           SliverAppBar(
-                            backgroundColor: AppColors.ArcColor,
+                            backgroundColor: AppColors.arcColor,
                             elevation: 0.0,
                             leading: IconButton( icon: Icon(Icons.arrow_back_ios),
                                 color: Color(0xffb4babb),
@@ -172,7 +172,7 @@ class _CodeResetScreenState extends ResourcefulState<CodeResetScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.ArcColor),
+                  color: AppColors.arcColor),
               child: Text("+ $args",textDirection: TextDirection.ltr,
                 style: TextStyle(color: AppColors.penColor),)),
           SizedBox(height: 5.h),
@@ -221,5 +221,20 @@ class _CodeResetScreenState extends ResourcefulState<CodeResetScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
   }
 }

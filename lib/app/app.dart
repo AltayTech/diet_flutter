@@ -1,5 +1,7 @@
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/app/provider.dart';
+import 'package:behandam/screens/authentication/register.dart';
+import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -7,14 +9,10 @@ import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 
-import 'package:behandam/screens/lgn_reg/register.dart';
-import 'package:behandam/screens/lgn_reg/verify.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/authentication/code_reset.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
-import 'package:behandam/screens/authentication/register.dart';
-import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';

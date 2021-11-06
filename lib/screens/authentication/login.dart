@@ -189,7 +189,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               Flexible(
                 child: Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0),
-                      color: AppColors.ArcColor),
+                      color: AppColors.arcColor),
                   child: TextField(
                     controller: _text,
                     decoration: InputDecoration(
@@ -242,4 +242,19 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       ],
     );
    }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
 }
