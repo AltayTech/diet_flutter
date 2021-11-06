@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:behandam/data/entity/auth/country-code.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
+import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/lgn_reg/lgnReg_bloc.dart';
@@ -20,10 +21,6 @@ class ProfileBloc {
   LoginRegisterBloc? loginRegisterBloc;
 
   ProfileBloc() {
-    if (loginRegisterBloc == null) {
-      loginRegisterBloc = LoginRegisterBloc();
-    }
-    fetchUserInformation();
   }
 
   final _repository = Repository.getInstance();
@@ -41,6 +38,7 @@ class ProfileBloc {
   final _showProgressUploadImage = BehaviorSubject<bool>();
   final _inboxCount = BehaviorSubject<int>();
   final _userInformationStream = BehaviorSubject<UserInformation>();
+  final _inboxStream = BehaviorSubject<List<InboxItem>>();
   final _cityProvinceModelStream = BehaviorSubject<CityProvinceModel>();
 
   UserInformation get userInfo => _userInformation;
@@ -56,10 +54,18 @@ class ProfileBloc {
   Stream<bool> get isShowProgressItem => _showProgressItem.stream;
 
   Stream<UserInformation> get userInformationStream => _userInformationStream.stream;
+  Stream<List<InboxItem>> get inboxStream => _inboxStream.stream;
 
   Stream<CityProvinceModel> get cityProvinceModelStream => _cityProvinceModelStream.stream;
 
   bool? get isProgressNetwork => _progressNetwork.value;
+
+  void getInformation(){
+    if (loginRegisterBloc == null) {
+      loginRegisterBloc = LoginRegisterBloc();
+    }
+    fetchUserInformation();
+  }
 
   void fetchUserInformation() async {
     _progressNetwork.value = true;
@@ -92,6 +98,15 @@ class ProfileBloc {
       _inboxCount.value = value.data!.count ?? 0;
       MemoryApp.inboxCount = value.data!.count ?? 0;
     });
+  }
+
+  void getInbox(){
+    _repository.getInbox().then((value) {
+      print('data => ${value.data!.toJson()}');
+      _inboxStream.value=value.data!.items;
+    }).onError((error, stackTrace) {
+      print('data => ${error.toString()}');
+    } );
   }
 
   void getPdfMeal(FoodDietPdf type) {

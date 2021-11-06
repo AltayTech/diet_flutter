@@ -25,7 +25,7 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
     // TODO: implement initState
     super.initState();
     profileBloc = ProfileBloc();
-
+    profileBloc.getInformation();
     /* profileBloc.showServerError.listen((event) {
 
     });*/

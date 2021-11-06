@@ -12,6 +12,11 @@ abstract class Routes {
   static const profile = '/profile';
   static const editProfile = '/profile/edit';
   static const foodList = '/list/view';
+  static const inbox = '/profile/inbox';
+  static const showInbox = '/profile/inbox/item';
+  static const ticket = '/ticket';
+  static const ticketCall = '/ticket/call';
+  static const ticketMessage = '/ticket/message';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

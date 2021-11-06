@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
-import 'package:behandam/data/entity/user/inbox.dart';
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
+import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -52,7 +53,12 @@ abstract class Repository {
   NetworkResult<Media> sendMedia(String info, File media);
 
   NetworkResult<UserInformation> changeProfile(UserInformation userInformation);
+
   NetworkResult<Inbox> getUnreadInbox();
+
+  NetworkResult<Inbox> getInbox();
+
+  NetworkResult<TicketModel> getTickets();
 }
 
 class _RepositoryImpl extends Repository {
@@ -169,6 +175,18 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Inbox> getUnreadInbox() {
     var response = _apiClient.getUnreadInbox();
+    return response;
+  }
+
+  @override
+  NetworkResult<Inbox> getInbox() {
+    var response = _apiClient.getInbox();
+    return response;
+  }
+
+  @override
+  NetworkResult<TicketModel> getTickets() {
+    var response = _apiClient.getTicketMessage();
     return response;
   }
 }

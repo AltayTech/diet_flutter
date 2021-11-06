@@ -23,6 +23,7 @@ class AppColors {
   static late Color btnColor;
   static late Color onScaffold;
   static late Color lableColor;
+  static late Color lableTab;
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {
@@ -41,6 +42,7 @@ class AppColors {
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
         lableColor = Color(0xf48e8e8e);
+        lableTab = Color(0xffffffff);
         break;
       case ThemeAppColor.BLUE:
         primary = Color(0xFF0D83DD);
@@ -57,6 +59,7 @@ class AppColors {
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
         lableColor = Color(0xf48e8e8e);
+        lableTab = Color(0xffffffff);
         break;
       case ThemeAppColor.DARK:
         primary = Color(0xFF0D83DD);
@@ -71,6 +74,7 @@ class AppColors {
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
         lableColor = Color(0xf48e8e8e);
+        lableTab = Color(0xffffffff);
         break;
       case ThemeAppColor.PURPLE:
         primary = Color(0xFF0D83DD);
@@ -85,6 +89,7 @@ class AppColors {
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
         lableColor = Color(0xf48e8e8e);
+        lableTab = Color(0xffffffff);
         break;
     }
   }

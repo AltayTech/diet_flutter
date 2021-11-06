@@ -1,4 +1,3 @@
-
 import 'package:shamsi_date/shamsi_date.dart';
 
 abstract class DateTimeUtils {
@@ -29,7 +28,31 @@ abstract class DateTimeUtils {
     }
     return false;
   }
+
+  static String gregorianToJalali(String date) {
+    List<String> data = date.split('/');
+    Gregorian g = Gregorian(int.parse(data[0]), int.parse(data[1]), int.parse(data[2]));
+    final f = g.toJalali().formatter;
+    return '${f.yyyy}/${f.mm}/${f.dd}';
+  }
+
+  static String getTime(String date) {
+    var dateSplit = DateTime.parse(date);
+    if (dateSplit.isUtc) {
+      dateSplit = dateSplit.toLocal();
+    }
+    return "${numberZero(dateSplit.hour)}:${numberZero(dateSplit.minute)}";
+  }
+  static String numberZero(int value) {
+    if (value < 10) {
+      return "0$value";
+    } else {
+      return "$value";
+    }
+  }
 }
+
+
 
 enum Meal {
   breakfast,
