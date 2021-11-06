@@ -128,8 +128,8 @@ class _AppState extends State<App> {
 }
 final navigator= VxNavigator(routes: {
   // '/': (_, __) => MaterialPage(child: HomeScreen()),
-  // '/': (_, __) => MaterialPage(child: LoginScreen()),
-  '/': (_, __) => MaterialPage(child: RegimeTypeScreen()),
+  '/': (_, __) => MaterialPage(child: LoginScreen()),
+  // '/': (_, __) => MaterialPage(child: RegimeTypeScreen()),
   Routes.home: (_, __) => MaterialPage(child: HomeScreen()),
   Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(),arguments: param),
   Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(),arguments: param),
