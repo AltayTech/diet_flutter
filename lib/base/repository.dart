@@ -1,5 +1,7 @@
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
+import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -35,6 +37,10 @@ abstract class Repository {
   NetworkResult<ResetOutput> reset(Reset password);
 
   NetworkResult<RegisterOutput> register(Register register);
+
+  NetworkResult<RegimeType> regimeType();
+
+  NetworkResult<Help> helpDietType();
 
 }
 
@@ -100,6 +106,18 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<SignIn> signIn(String mobile, String pass) async{
     var response = await _apiClient.signInWithPhoneNumber(mobile, pass);
+    return response;
+  }
+
+  @override
+  NetworkResult<RegimeType> regimeType() async{
+    var response = await _apiClient.getDietType();
+    return response;
+  }
+
+  @override
+  NetworkResult<Help> helpDietType() async{
+    var response = await _apiClient.helpDietType();
     return response;
   }
 

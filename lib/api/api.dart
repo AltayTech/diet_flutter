@@ -1,3 +1,5 @@
+import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -12,6 +14,11 @@ import '../data/entity/auth/user-info.dart';
 import '../data/entity/auth/verify.dart';
 import '../data/entity/auth/sign-in.dart';
 part 'api.g.dart';
+
+enum help{
+@JsonValue(1)
+dietType
+}
 
 typedef NetworkResult<T> = Future<NetworkResponse<T>>;
 typedef ImperativeNetworkResult = NetworkResult<dynamic>;
@@ -34,14 +41,20 @@ abstract class RestClient {
   @POST("/send-verification-code?mobile={mobile}")
   NetworkResult<VerificationCode> sendVerificationCode(@Path('mobile') String? mobile);
 
-  @GET("/verify?mobile={mobile}&verification_code={code}")
-  NetworkResult<VerifyOutput> verifyUser(@Path('mobile') String? mobile, @Path('code') String? code);
+  @GET("/verify")
+  NetworkResult<VerifyOutput> verifyUser(@Queries() VerificationCode verificationCode);
 
   @PATCH("/reset-password")
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);
 
   @POST("/register")
   NetworkResult<RegisterOutput> register(@Body() Register reg);
+
+  @GET("/diet-type")
+  NetworkResult<RegimeType> getDietType();
+
+  @GET("/page/1")
+  NetworkResult<Help> helpDietType();
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

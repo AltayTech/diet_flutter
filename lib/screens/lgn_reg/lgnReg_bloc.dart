@@ -7,11 +7,7 @@ import 'package:behandam/data/entity/auth/status.dart';
 import 'package:behandam/data/entity/auth/user-info.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:velocity_x/velocity_x.dart';
-import 'package:dio/dio.dart';
 
-import '../../api/api.dart';
-import '../../routes.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 

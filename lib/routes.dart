@@ -9,6 +9,10 @@ abstract class Routes {
   static const pass = '/pass';
   static const register = '/register';
   static const verify = '/verify';
+  static const resetCode = '/resetCode';
+  static const resetPass = '/resetPass';
+  static const regimeType = '/regimeType';
+  static const helpType = '/help';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

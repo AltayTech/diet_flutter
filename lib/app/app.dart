@@ -1,14 +1,15 @@
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/app/provider.dart';
-import 'package:behandam/data/entity/auth/register.dart';
+import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/main.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/home/home.dart';
-import 'package:behandam/screens/lgn_reg/register.dart';
-import 'package:behandam/screens/lgn_reg/verify.dart';
+import 'package:behandam/screens/authentication/register.dart';
+import 'package:behandam/screens/authentication/verify.dart';
+import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/typography.dart';
@@ -125,9 +126,12 @@ class _AppState extends State<App> {
   }
 }
 final navigator= VxNavigator(routes: {
-  '/': (_, __) => MaterialPage(child: HomeScreen()),
-  Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
+  // '/': (_, __) => MaterialPage(child: HomeScreen()),
+  '/': (_, __) => MaterialPage(child: LoginScreen()),
+  Routes.home: (_, __) => MaterialPage(child: HomeScreen()),
   Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(),arguments: param),
   Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(),arguments: param),
   Routes.register: (_, param) => MaterialPage(child: RegisterScreen(),arguments: param),
+  Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(),arguments: param),
+  Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(),arguments: param),
 });

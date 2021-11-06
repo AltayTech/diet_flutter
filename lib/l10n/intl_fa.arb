@@ -17,5 +17,32 @@
       }
     }
   },
-  "arabic": "العربية"
+  "behandam":"به اندام دکتر کرمانی",
+  "arabic": "العربية",
+  "changePassword": "تغییر رمز عبور",
+  "textChangePass1": " برای تغییر رمز یک کد تایید به شماره ",
+  "textChangePass2": " ارسال میشه. بعدش میتونی رمزتو عوض کنی ",
+  "yes": "بله",
+  "no": "خیر",
+  "enterYourMobileNumber": "شماره موبایلت رو وارد کن",
+  "registerOrLogin": "ثبت نام و ورود",
+  "login": "ورود",
+  "woman": "خانم هستم",
+  "man": "آقا هستم",
+  "name": "نام",
+  "lastName": "نام خانوادگی",
+  "changePassword": "تغییر رمز عبور",
+  "enterNewPassword": "رمز عبور جدیدتو وارد کن",
+  "repeatNewPassword": "رمز عبور جدیدتو تکرار کن",
+  "setNewPassword": "ثبت رمز عبور جدید",
+  "smsCode": "کد پیامک شده رو اینجا وارد کن",
+  "notSend": "کد ارسال نشد، دوباره ارسال کن",
+  "sendAgain": " امکان ارسال مجدد بعد از : ",
+  "confirmNewPassword": "رمز عبور جدیدتو تعیین کن",
+  "notEqualPassword": "تکرار رمز عبور یکسان نیست",
+  "fillAllField": "پر کردن تمامی فیلدها الزامی است",
+  "minimumPasswordLength": "رمز عبور چهار رقمی وارد کنید",
+  "regimeReceive": "دریافت رژیم",
+  "selectYourRegime": "رژیم مورد نظرتو انتخاب کن",
+  "whichRegime": "کدام رژیم مناسب من است؟"
 }
