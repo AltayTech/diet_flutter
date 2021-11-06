@@ -1,5 +1,7 @@
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
+import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,10 @@ abstract class Repository {
 
   NetworkResult<RegisterOutput> register(Register register);
 
+  NetworkResult<RegimeType> regimeType();
+
+  NetworkResult<Help> helpDietType();
+
 }
 
 class _RepositoryImpl extends Repository {
@@ -57,7 +63,7 @@ class _RepositoryImpl extends Repository {
     );
     _dio.interceptors.add(CustomInterceptors());
     _dio.interceptors.add(GlobalInterceptor());
-     _dio.interceptors.add(ErrorHandlerInterceptor());
+    _dio.interceptors.add(ErrorHandlerInterceptor());
     _apiClient = RestClient(_dio,baseUrl: FlavorConfig.instance.variables['baseUrl']);
     // _cache = MemoryDataSource();
   }
@@ -101,6 +107,18 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<SignIn> signIn(User user) async{
     var response = await _apiClient.signInWithPhoneNumber(user);
+    return response;
+  }
+
+  @override
+  NetworkResult<RegimeType> regimeType() async{
+    var response = await _apiClient.getDietType();
+    return response;
+  }
+
+  @override
+  NetworkResult<Help> helpDietType() async{
+    var response = await _apiClient.helpDietType();
     return response;
   }
 

@@ -11,6 +11,18 @@ abstract class AppColors {
   static const ArcColor = Color(0xffF5F5F5);
   static const btnColor = Color(0xfffd5d5f);
   static const penColor = Color(0xff8A8A8A);
+  static const redBar = Color(0xffFF5757);
+  static const looseType = Color(0xffF6DED5);
+  static const gainType = Color(0xffE6CEEF);
+  static const stableType = Color(0xffD5E9E3);
+  static const diabetType = Color(0xffF7EBC7);
+  static const pregnantType = Color(0xffF3D1D9);
+  static const ketoType = Color(0xffE6F2EE);
+  static const sportType = Color(0xffE6F2EE);
+  static const notricaType = Color(0xffB8BEE9);
+  static const help = Color(0xffFFE7E7);
+  static const strongPen = Color(0xffC0C0C0);
+//#C0C0C0
 }
 
 abstract class AppMaterialColors {

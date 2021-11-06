@@ -41,5 +41,8 @@
   "confirmNewPassword": "رمز عبور جدیدتو تعیین کن",
   "notEqualPassword": "تکرار رمز عبور یکسان نیست",
   "fillAllField": "پر کردن تمامی فیلدها الزامی است",
-  "minimumPasswordLength": "رمز عبور چهار رقمی وارد کنید"
+  "minimumPasswordLength": "رمز عبور چهار رقمی وارد کنید",
+  "regimeReceive": "دریافت رژیم",
+  "selectYourRegime": "رژیم مورد نظرتو انتخاب کن",
+  "whichRegime": "کدام رژیم مناسب من است؟"
 }

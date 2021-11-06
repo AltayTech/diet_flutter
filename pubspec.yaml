@@ -63,6 +63,8 @@ flutter:
     - assets/
     - assets/images/tab/
     - assets/images/registry/
+    - assets/images/physical_report/
+    - assets/images/diet/
   fonts:
     - family: Iransans
       fonts:
