@@ -3,7 +3,6 @@ import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/toolbar_edit_profile.dart';
 import 'package:behandam/screens/profile/user_box.dart';
-import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
     // TODO: implement initState
     super.initState();
     profileBloc = ProfileBloc();
-
+    profileBloc.getInformation();
     /* profileBloc.showServerError.listen((event) {
 
     });*/
@@ -39,7 +38,7 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
         child: SafeArea(
           child: Scaffold(
             resizeToAvoidBottomInset: false,
-            appBar: Toolbar(titleBar: intl.profile),
+            appBar: Toolbar(titleBar: intl.editProfile),
             body: body(),
           ),
         ));
@@ -81,6 +80,12 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
           children: [
             ToolbarEditProfile(),
             UserBox(),
+            MaterialButton(
+              onPressed: () {
+                profileBloc.edit(context);
+              },
+              child: Text('ثبت تغییرات'),
+            )
           ],
         ),
         scrollDirection: Axis.vertical,

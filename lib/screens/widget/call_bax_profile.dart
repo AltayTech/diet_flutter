@@ -1,12 +1,12 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class CallBoxProfile extends StatefulWidget {
-
-
   CallBoxProfile();
 
   @override
@@ -56,33 +56,36 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                 ),
                 Container(
                   width: double.maxFinite,
-                  margin: EdgeInsets.only(top: 8,bottom: 8),
+                  margin: EdgeInsets.only(top: 8, bottom: 8),
                   height: 0.5.h,
                   color: Color.fromARGB(255, 237, 237, 237),
                 ),
                 Expanded(
                   flex: 1,
-                  child: _callCard('شماره تماس دوم: ', profileBloc.userInfo.callNumber ?? 'ثبت نشده'),
+                  child:
+                      _callCard('شماره تماس دوم: ', profileBloc.userInfo.callNumber ?? 'ثبت نشده'),
                 ),
                 Container(
                   width: double.maxFinite,
-                  margin: EdgeInsets.only(top: 8,bottom: 8),
+                  margin: EdgeInsets.only(top: 8, bottom: 8),
                   height: 0.5.h,
                   color: Color.fromARGB(255, 237, 237, 237),
                 ),
                 Expanded(
                   flex: 1,
-                  child: _callCard('شماره واتساپ : ', profileBloc.userInfo.whatsApp ?? 'ثبت نشده'),
+                  child: _callCard('شماره واتساپ : ',
+                      profileBloc.userInfo.socialMedia![0].pivot!.link ?? 'ثبت نشده'),
                 ),
                 Container(
                   width: double.maxFinite,
                   height: 0.5.h,
-                  margin: EdgeInsets.only(top: 8,bottom: 8),
+                  margin: EdgeInsets.only(top: 8, bottom: 8),
                   color: Color.fromARGB(255, 237, 237, 237),
                 ),
                 Expanded(
                   flex: 1,
-                  child: _callCard('شماره اسکایپ : ', profileBloc.userInfo.skype ?? 'ثبت نشده'),
+                  child: _callCard('شماره اسکایپ : ',
+                      profileBloc.userInfo.socialMedia![2].pivot!.link ?? 'ثبت نشده'),
                 ),
               ],
             ),
@@ -106,8 +109,8 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                     borderRadius: BorderRadius.circular(50.0),
                     color: Color.fromARGB(255, 243, 243, 243),
                   ),
-                  width:  9.w,
-                  height:9.w,
+                  width: 9.w,
+                  height: 9.w,
                   child: Center(
                     child: Icon(
                       Icons.call,
@@ -123,33 +126,35 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
           bottom: 16.0,
           left: 16,
           child: Center(
-            child: InkWell(child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50.0),
-                color: Colors.white,
-              ),
-              child: Center(
-                child: Container(
-                  padding: EdgeInsets.only(left: 16,right: 16,top: 8,bottom: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Color.fromARGB(255, 243, 243, 243),
-                  ),
-                  child: Text(
-                    'ویرایش',
-                    textAlign: TextAlign.right,
-                    textDirection: TextDirection.rtl,
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize:  12.sp,
+            child: InkWell(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50.0),
+                  color: Colors.white,
+                ),
+                child: Center(
+                  child: Container(
+                    padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: Color.fromARGB(255, 243, 243, 243),
+                    ),
+                    child: Text(
+                      'ویرایش',
+                      textAlign: TextAlign.right,
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12.sp,
+                      ),
                     ),
                   ),
                 ),
               ),
+              onTap: () {
+                VxNavigator.of(context).push(Uri.parse(Routes.editProfile));
+              },
             ),
-              onTap: (){
-                //Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => EditProfile()));
-              },),
           ),
         ),
       ],
@@ -165,7 +170,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
         Text(
           title,
           textAlign: TextAlign.right,
-          textDirection:context.textDirectionOfLocale,
+          textDirection: context.textDirectionOfLocale,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(width: 1.5.w),
@@ -174,11 +179,10 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
           textAlign: TextAlign.right,
           textDirection: context.textDirectionOfLocale,
           style: TextStyle(
-            color: (text!='ثبت نشده') ? Color.fromARGB(255, 148, 148, 148) : Colors.redAccent,
-            fontSize: (text!='ثبت نشده') ?  14.sp : 12.sp,
+            color: (text != 'ثبت نشده') ? Color.fromARGB(255, 148, 148, 148) : Colors.redAccent,
+            fontSize: (text != 'ثبت نشده') ? 14.sp : 12.sp,
           ),
         ),
-
       ],
     );
   }
@@ -187,7 +191,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
   Widget build(BuildContext context) {
     super.build(context);
 
-    profileBloc=ProfileProvider.of(context);
+    profileBloc = ProfileProvider.of(context);
     return _callBox();
   }
 

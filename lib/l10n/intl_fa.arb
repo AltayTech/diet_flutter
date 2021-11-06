@@ -78,5 +78,9 @@
   "regimeReceive": "دریافت رژیم",
   "selectYourRegime": "رژیم مورد نظرتو انتخاب کن",
   "whichRegime": "کدام رژیم مناسب من است؟",
+  "pickImage": "بازکردن عکس از:",
+  "selectGallery": "گالری",
+  "selectCamera": "دوربین",
+  "newTicket": "سوال جدید",
   "arabic": "العربية"
 }

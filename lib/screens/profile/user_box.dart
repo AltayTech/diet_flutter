@@ -4,7 +4,7 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
-import 'package:behandam/screens/widget/CustomCurve.dart';
+import 'package:behandam/screens/widget/custom_curve.dart';
 import 'package:behandam/screens/widget/my_drop_down.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
@@ -107,10 +107,10 @@ class UserBoxState extends ResourcefulState<UserBox> {
               textInputType: TextInputType.text,
               validation: (val) {},
               onChanged: (val) => setState(() {
-                userInfo!.whatsApp = val;
+               // userInfo!.whatsApp = val;
                 userInfo!.socialMedia![0].pivot!.link = val;
               }),
-              value: userInfo!.whatsAppNumber,
+              value: userInfo!.whatsApp,
               label: intl.whatsApp,
               maxLine: false,
               ctx: context,
@@ -123,10 +123,9 @@ class UserBoxState extends ResourcefulState<UserBox> {
               textInputType: TextInputType.text,
               validation: (val) {},
               onChanged: (val) => setState(() {
-                userInfo!.skype = val;
                 userInfo!.socialMedia![2].pivot!.link = val;
               }),
-              value: userInfo!.skypeAccount,
+              value: userInfo!.skype,
               label: intl.skype,
               maxLine: false,
               ctx: context,

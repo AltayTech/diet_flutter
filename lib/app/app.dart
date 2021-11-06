@@ -10,10 +10,13 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 
 import 'package:behandam/screens/profile/edit_profile.dart';
+import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/authentication/code_reset.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
+import 'package:behandam/screens/profile/show_item_inbox.dart';
+import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/typography.dart';
@@ -52,8 +55,8 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) {
-        return  DevicePreview(
-         // enabled: !kReleaseMode,
+        return DevicePreview(
+          // enabled: !kReleaseMode,
           enabled: false,
           builder: (context) => app(), // Wrap your app
         );
@@ -76,7 +79,7 @@ class _AppState extends State<App> {
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocale.supportedLocales,
               theme: ThemeData(
-                primaryColor: AppColors.primary,
+                  primaryColor: AppColors.primary,
                   primaryColorDark: AppColors.primaryColorDark,
                   scaffoldBackgroundColor: AppColors.scaffold,
                   textTheme: buildTextTheme(locale),
@@ -137,16 +140,34 @@ class _AppState extends State<App> {
   }
 }
 
-final navigator = VxNavigator(routes: {
-  '/': (_, __) => MaterialPage(child: EditProfileScreen()),
-  Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
-  Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
-  Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(),arguments: param),
-  Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(),arguments: param),
-  Routes.register: (_, param) => MaterialPage(child: RegisterScreen(),arguments: param),
-  Routes.foodList: (_, __) => MaterialPage(child: FoodListPage()),
+final navigator = VxNavigator(
+  routes: {
+    '/': (_, __) => MaterialPage(child: ProfileScreen()),
+    Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
+    Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
+    Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
+    Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(), arguments: param),
+    Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(), arguments: param),
+    Routes.register: (_, param) => MaterialPage(child: RegisterScreen(), arguments: param),
+    Routes.foodList: (_, __) => MaterialPage(child: FoodListPage()),
+    Routes.inbox: (_, __) => MaterialPage(child: InboxList()),
+    Routes.showInbox: (_, param) => MaterialPage(child: ShowInboxItem(), arguments: param),
+    Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
+    Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
   Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(),arguments: param),
   Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(),arguments: param),
-  // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
   Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
-});
+  // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
+  },
+  notFoundPage: (uri, params) => MaterialPage(
+    key: ValueKey('not-found-page'),
+    child: Builder(
+      builder: (context) => Scaffold(
+        body: Center(
+          child: Text('Page ${uri.path} not found'),
+        ),
+      ),
+    ),
+  ),
+);
+  

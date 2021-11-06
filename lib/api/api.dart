@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -71,11 +75,28 @@ abstract class RestClient {
   NetworkResult<UserInformation> getPdfWeekUrl();
   @GET("/province")
   NetworkResult<CityProvinceModel> getProvinces();
+
+  @POST("/media")
+  NetworkResult<Media> sendMedia(
+      @Part(name: "media") File media, @Part(name: "info") String info);
+
+  @PATCH("/profile")
+  NetworkResult<UserInformation> updateProfile(@Body() UserInformation userInformation);
+
+  @GET("/inbox/unseen/count")
+  NetworkResult<Inbox> getUnreadInbox();
+
+  @GET("/inbox")
+  NetworkResult<Inbox> getInbox();
+
+  @GET("/ticket")
+  NetworkResult<TicketModel> getTicketMessage();
+
 }
 
 class CustomInterceptors extends InterceptorsWrapper {
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async{
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     /*   final languageCode = (await AppLocale.currentLocale).languageCode;
 
   options.headers['Accept'] = 'application/json';

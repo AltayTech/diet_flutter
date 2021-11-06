@@ -1,9 +1,12 @@
+import 'package:behandam/app/app.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 void fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
   currentFocus.unfocus();
@@ -181,7 +184,7 @@ Widget optionUi(IconData icon, String text, int action) {
   return GestureDetector(
     onTap: () {
       if (action == 2) {
-        // Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => EditProfile()));
+        navigator.routeManager.push(Uri.parse(Routes.editProfile));
       } else if (action == 0) {
         // user.getUser['info'].mobile
         // Navigator.of(context).pushNamed(ProfileChangePass.routeName, arguments: user.mobile);

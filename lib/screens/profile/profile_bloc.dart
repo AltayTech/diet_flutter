@@ -1,12 +1,18 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
+import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
@@ -16,14 +22,11 @@ class ProfileBloc {
   AuthenticationBloc? loginRegisterBloc;
 
   ProfileBloc() {
-    if (loginRegisterBloc == null) {
-      loginRegisterBloc = AuthenticationBloc();
-    }
-    fetchUserInformation();
   }
 
   final _repository = Repository.getInstance();
-
+  ImagePicker? _picker;
+  XFile? image;
   bool showRefund = false;
   bool showPdf = false;
   late CityProvinceModel cityProvinceModel;
@@ -33,7 +36,10 @@ class ProfileBloc {
   final _showServerError = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
   final _showProgressItem = BehaviorSubject<bool>();
+  final _showProgressUploadImage = BehaviorSubject<bool>();
+  final _inboxCount = BehaviorSubject<int>();
   final _userInformationStream = BehaviorSubject<UserInformation>();
+  final _inboxStream = BehaviorSubject<List<InboxItem>>();
   final _cityProvinceModelStream = BehaviorSubject<CityProvinceModel>();
 
   UserInformation get userInfo => _userInformation;
@@ -42,34 +48,66 @@ class ProfileBloc {
 
   Stream<bool> get progressNetwork => _progressNetwork.stream;
 
+  Stream<int> get inboxCount => _inboxCount.stream;
+
+  Stream<bool> get showProgressUploadImage => _showProgressUploadImage.stream;
+
   Stream<bool> get isShowProgressItem => _showProgressItem.stream;
 
   Stream<UserInformation> get userInformationStream => _userInformationStream.stream;
+  Stream<List<InboxItem>> get inboxStream => _inboxStream.stream;
 
   Stream<CityProvinceModel> get cityProvinceModelStream => _cityProvinceModelStream.stream;
 
   bool? get isProgressNetwork => _progressNetwork.value;
 
+  void getInformation(){
+    if (loginRegisterBloc == null) {
+      loginRegisterBloc = LoginRegisterBloc();
+    }
+    fetchUserInformation();
+  }
+
   void fetchUserInformation() async {
-   if( MemoryApp.userInformation==null) {
-     _progressNetwork.value = true;
-     _repository.getUser().then((value) {
-       print('value ==> ${value.data!.firstName}');
-       _userInformation = value.data!;
-       MemoryApp.userInformation=_userInformation;
-       getProvinces();
-       _userInformationStream.value = value.data!;
-     }).catchError((onError) {
-       print('onError ==> ${onError.toString()}');
-     }).whenComplete(() {
-       _progressNetwork.value = false;
-     });
-   }else{
-     _userInformation=MemoryApp.userInformation!;
-     _userInformationStream.value = _userInformation;
-     cityProvinceModel = MemoryApp.cityProvinceModel!;
-     _cityProvinceModelStream.value = cityProvinceModel;
-   }
+    _progressNetwork.value = true;
+    if (MemoryApp.userInformation == null) {
+      _repository.getUser().then((value) {
+        print('value ==> ${value.data!.firstName}');
+        _userInformation = value.data!;
+        MemoryApp.userInformation = _userInformation;
+        getProvinces();
+        _userInformationStream.value = value.data!;
+      }).catchError((onError) {
+        print('onError ==> ${onError.toString()}');
+      }).whenComplete(() {
+        _progressNetwork.value = false;
+      });
+    } else {
+      loginRegisterBloc!.subjectList.listen((event) {
+        _userInformation = MemoryApp.userInformation!;
+        _userInformationStream.value = _userInformation;
+        cityProvinceModel = MemoryApp.cityProvinceModel!;
+        _cityProvinceModelStream.value = cityProvinceModel;
+        _progressNetwork.value = false;
+      });
+    }
+    getUnreadInbox();
+  }
+
+  void getUnreadInbox() {
+    _repository.getUnreadInbox().then((value) {
+      _inboxCount.value = value.data!.count ?? 0;
+      MemoryApp.inboxCount = value.data!.count ?? 0;
+    });
+  }
+
+  void getInbox(){
+    _repository.getInbox().then((value) {
+      print('data => ${value.data!.toJson()}');
+      _inboxStream.value=value.data!.items;
+    }).onError((error, stackTrace) {
+      print('data => ${error.toString()}');
+    } );
   }
 
   void getPdfMeal(FoodDietPdf type) {
@@ -91,6 +129,8 @@ class ProfileBloc {
     _userInformationStream.close();
     loginRegisterBloc!.dispose();
     _cityProvinceModelStream.close();
+    _showProgressUploadImage.close();
+    _inboxCount.close();
     //  _isPlay.close();
   }
 
@@ -98,7 +138,7 @@ class ProfileBloc {
     _repository.getProvinces().then((value) {
       cityProvinceModel = value.data!;
       _cityProvinceModelStream.value = value.data!;
-      MemoryApp.cityProvinceModel=cityProvinceModel;
+      MemoryApp.cityProvinceModel = cityProvinceModel;
     }).onError((error, stackTrace) {
       print('err=> $error');
     });
@@ -159,5 +199,64 @@ class ProfileBloc {
     } else {
       return null;
     }
+  }
+
+  void selectGallery() async {
+    if (_picker == null) _picker = ImagePicker();
+    // Pick an image
+    image = await _picker!.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      _showProgressUploadImage.value = true;
+      _repository
+          .sendMedia(
+              jsonEncode({
+                "collectionName": "avatar",
+                "entityType": "App\\Profile",
+                "entityId": userInfo.userId,
+                "width": 300,
+              }),
+              File(image!.path))
+          .then((value) {
+        if (userInfo.media == null) userInfo.media = Media();
+        userInfo.media!.url = value.data!.url;
+      }).whenComplete(() {
+        _showProgressUploadImage.value = false;
+      });
+    }
+  }
+
+  void selectCamera() async {
+    if (_picker == null) _picker = ImagePicker();
+    // Pick an image
+    image = await _picker!.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      _showProgressUploadImage.value = true;
+      _repository
+          .sendMedia(
+              jsonEncode({
+                "collectionName": "avatar",
+                "entityType": "App\\Profile",
+                "entityId": userInfo.userId,
+                "width": 300,
+              }),
+              File(image!.path))
+          .then((value) {
+        if (userInfo.media == null) userInfo.media = Media();
+        userInfo.media!.url = value.data!.url;
+      }).whenComplete(() {
+        _showProgressUploadImage.value = false;
+      });
+    }
+  }
+
+  void edit(BuildContext context) async {
+    if (userInfo.address != null && userInfo.address!.cityId != null)
+      userInfo.cityId = userInfo.address!.cityId;
+    if (userInfo.address != null && userInfo.address!.provinceId != null)
+      userInfo.provinceId = userInfo.address!.provinceId;
+    DialogUtils.showDialogProgress(context: context);
+    _repository.changeProfile(userInfo).whenComplete(() {
+      Navigator.of(context).pop();
+    });
   }
 }

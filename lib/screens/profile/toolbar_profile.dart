@@ -1,12 +1,15 @@
 import 'package:badges/badges.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
-import 'package:behandam/screens/widget/CustomCurve.dart';
+import 'package:behandam/screens/widget/custom_curve.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class ToolbarProfile extends StatefulWidget {
   ToolbarProfile();
@@ -122,15 +125,19 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
             left: 4.h,
             child: GestureDetector(
                 onTap: () {
-                  //Navigator.of(context).pushNamed(InboxList.routeName);
+                  VxNavigator.of(context).push(Uri.parse(Routes.inbox));
                 },
                 child: Badge(
                   badgeColor: Colors.white,
                   shape: BadgeShape.circle,
-                  badgeContent: Text(
-                    //inboxCount > 99 ? '+99' : inboxCount.toString(),
-                    "0",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  badgeContent: StreamBuilder(
+                    builder: (context, snapshot) {
+                      return Text(
+                        '${MemoryApp.inboxCount}',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      );
+                    },
+                    stream: profileBloc.inboxCount,
                   ),
                   position: BadgePosition.bottomEnd(),
                   child: Container(
