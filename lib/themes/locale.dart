@@ -2,6 +2,7 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:flutter/material.dart';
 
 Locale appInitialLocale = AppLocale.defaultLocaleForPreview;
+
 /// Application supported languages
 abstract class AppLocale {
   static const ar = Locale('ar');

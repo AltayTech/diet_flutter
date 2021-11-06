@@ -10,7 +10,6 @@ import 'package:behandam/routes.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 /// Global error handler for dio requests
 class ErrorHandlerInterceptor extends Interceptor {
@@ -88,7 +87,7 @@ class ErrorHandlerInterceptor extends Interceptor {
     //Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
     //Utils.getSnackbarMessage(_context!, message);
     navigatorMessengerKey.currentState!.showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text('$message'),
     ));
   }
 

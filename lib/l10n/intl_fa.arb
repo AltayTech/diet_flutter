@@ -1,5 +1,5 @@
 {
-  "appName": "کارسو",
+  "appName": "به اندام",
   "login": "ورود",
   "register": "ثبت نام",
   "mobileOrEmail": "شماره موبایل / ایمیل",
@@ -17,9 +17,43 @@
       }
     }
   },
-  "behandam":"به اندام دکتر کرمانی",
-  "arabic": "العربية",
+  "profile": "پروفایل",
+  "editProfile": "ویرایش پروفایل",
   "changePassword": "تغییر رمز عبور",
+  "exit": "خروج",
+  "requestBackPayment": "درخواست بازگشت وجه",
+  "getPdfTerm": "دریافت نسخه pdf دوره جاری",
+  "help": "راهنما",
+  "mySportProgram": "برنامه ورزشی من",
+  "contactMe": "تماس با ما",
+  "aboutMe": "درباره ما",
+  "name": "نام",
+  "lastName": "نام خانوادگی",
+  "email": "ایمیل",
+  "address": "آدرس",
+  "callNumber": "شماره تماس",
+  "whatsApp": "شماره واتساپ",
+  "skype": "شناسه اسکایپ",
+  "zipCode": "کدپستی",
+  "foodList": "لیست غذایی",
+  "noResultFound": "نتیجه ای یافت نشد",
+  "foodNotFoundMessage": "خوراکی مورد نظر شما در لیست یافت نشد",
+  "manipulateFood": "جایگزین غذا",
+  "recipe": "طرز تهیه",
+  "iFastToday": "امروز روزه میگیرم",
+  "selectDailyMenu": "انتخاب روزمنو",
+  "todayAdvicesForYou": "برات کلی توصیه کاربردی داریم. حتما بخونشون!",
+  "viewingMenu": "در حال مشاهده لیست غذایی روز {date} هستی",
+  "@viewingMenu": {
+      "placeholders": {
+        "date": {
+          "type": "String"
+        }
+      }
+  },
+  "country": "کشور",
+  "province": "استان",
+  "city": "شهر",
   "textChangePass1": " برای تغییر رمز یک کد تایید به شماره ",
   "textChangePass2": " ارسال میشه. بعدش میتونی رمزتو عوض کنی ",
   "yes": "بله",
@@ -28,10 +62,9 @@
   "registerOrLogin": "ثبت نام و ورود",
   "login": "ورود",
   "woman": "خانم هستم",
-  "man": "آقا هستم",
   "name": "نام",
+  "man": "آقا هستم",
   "lastName": "نام خانوادگی",
-  "changePassword": "تغییر رمز عبور",
   "enterNewPassword": "رمز عبور جدیدتو وارد کن",
   "repeatNewPassword": "رمز عبور جدیدتو تکرار کن",
   "setNewPassword": "ثبت رمز عبور جدید",
@@ -44,5 +77,6 @@
   "minimumPasswordLength": "رمز عبور چهار رقمی وارد کنید",
   "regimeReceive": "دریافت رژیم",
   "selectYourRegime": "رژیم مورد نظرتو انتخاب کن",
-  "whichRegime": "کدام رژیم مناسب من است؟"
+  "whichRegime": "کدام رژیم مناسب من است؟",
+  "arabic": "العربية"
 }

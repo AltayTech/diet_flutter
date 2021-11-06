@@ -58,6 +58,8 @@ abstract class AppDecorations {
     shape: BoxShape.circle,
   );
 
+  static late BoxDecoration boxNoRadius = BoxDecoration();
+
   /// 1 percent of width
   static late BoxDecoration boxVerySmall = BoxDecoration(
     borderRadius: AppBorderRadius.borderRadiusVerySmall,

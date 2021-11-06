@@ -8,7 +8,7 @@ Future<void> main() async {
     name: 'Preview',
     variables: {
       'baseUrl': 'https://debug.behaminplus.ir/behandam-diet/api',
-      "baseUrlFile": "https://behandam.kermany.com/helia-service",
+      "baseUrlFile": "https://debug.behaminplus.ir/helia-service",
       'isProduction': false
     },
   );

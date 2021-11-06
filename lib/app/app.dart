@@ -5,18 +5,25 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/food_list/food_list.dart';
+
+import 'package:behandam/screens/lgn_reg/register.dart';
+import 'package:behandam/screens/lgn_reg/verify.dart';
+import 'package:behandam/screens/profile/edit_profile.dart';
+import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/authentication/code_reset.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
-import 'package:behandam/screens/home/home.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/typography.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../screens/authentication/login.dart';
@@ -36,6 +43,7 @@ class _AppState extends State<App> {
     super.initState();
     bloc = AppBloc();
     getToken();
+    AppColors(themeAppColor: ThemeAppColor.DEFAULT);
   }
 
   getToken() async {
@@ -46,7 +54,11 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) {
-        return app();
+        return  DevicePreview(
+         // enabled: !kReleaseMode,
+          enabled: false,
+          builder: (context) => app(), // Wrap your app
+        );
       },
     );
   }
@@ -59,20 +71,22 @@ class _AppState extends State<App> {
         builder: (context, AsyncSnapshot<Locale> snapshot) {
           final locale = snapshot.data ?? appInitialLocale;
           return MaterialApp.router(
-
-            // generate title from localization instead of `MaterialApp.title` property
+              useInheritedMediaQuery: true,
+              // generate title from localization instead of `MaterialApp.title` property
               onGenerateTitle: (BuildContext context) => context.intl.appName,
-
               debugShowCheckedModeBanner: false,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocale.supportedLocales,
               theme: ThemeData(
+                primaryColor: AppColors.primary,
+                  primaryColorDark: AppColors.primaryColorDark,
                   scaffoldBackgroundColor: AppColors.scaffold,
                   textTheme: buildTextTheme(locale),
                   appBarTheme: AppBarTheme(
                     backgroundColor: AppColors.primary,
                   ),
-                  colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary).copyWith(secondary: AppColors.primary)),
+                  colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
+                      .copyWith(secondary: AppColors.primary)),
               locale: locale,
               localeResolutionCallback: resolveLocale,
               scaffoldMessengerKey: navigatorMessengerKey,
@@ -81,7 +95,7 @@ class _AppState extends State<App> {
               // routes: Routes.all,
               routeInformationParser: VxInformationParser(),
               backButtonDispatcher: RootBackButtonDispatcher(),
-              routerDelegate:navigator);
+              routerDelegate: navigator);
         },
       ),
     );
@@ -109,10 +123,8 @@ class _AppState extends State<App> {
   /// resolve locale when device locale is changed
   Locale resolveLocale(Locale? locale, Iterable<Locale> supportedLocales) {
     for (var supportedLocale in supportedLocales) {
-      final isLanguageEqual =
-          supportedLocale.languageCode == locale?.languageCode;
-      final isCountryCodeEqual =
-          supportedLocale.countryCode == locale?.countryCode;
+      final isLanguageEqual = supportedLocale.languageCode == locale?.languageCode;
+      final isCountryCodeEqual = supportedLocale.countryCode == locale?.countryCode;
       if (isLanguageEqual && isCountryCodeEqual) {
         return supportedLocale;
       }
@@ -126,14 +138,15 @@ class _AppState extends State<App> {
     bloc.dispose();
   }
 }
-final navigator= VxNavigator(routes: {
-  // '/': (_, __) => MaterialPage(child: HomeScreen()),
-  '/': (_, __) => MaterialPage(child: LoginScreen()),
-  // '/': (_, __) => MaterialPage(child: RegimeTypeScreen()),
-  Routes.home: (_, __) => MaterialPage(child: HomeScreen()),
+
+final navigator = VxNavigator(routes: {
+  '/': (_, __) => MaterialPage(child: EditProfileScreen()),
+  Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
+  Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
   Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(),arguments: param),
   Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(),arguments: param),
   Routes.register: (_, param) => MaterialPage(child: RegisterScreen(),arguments: param),
+  Routes.foodList: (_, __) => MaterialPage(child: FoodListPage()),
   Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(),arguments: param),
   Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(),arguments: param),
   // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
