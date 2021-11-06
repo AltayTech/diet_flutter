@@ -61,8 +61,8 @@ class BottomNav extends StatelessWidget {
                       imageAddress,
                       width: 3.h,
                       height: 3.h,
-                      color: BottomNavItem.PROFILE == type
-                          ? Theme.of(context).primaryColor
+                      color: currentTab == type
+                          ? AppColors.primary
                           : AppColors.iconsColor,
                       fit: BoxFit.fitWidth,
                     ),),
@@ -89,7 +89,7 @@ class BottomNav extends StatelessWidget {
                   title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: type == currentTab ? Theme.of(context).primaryColor : Color(0xff646464),
+                    color: type == currentTab ? AppColors.primary : AppColors.iconsColor,
                     fontSize: 10.sp,
                     letterSpacing: -0.5,
                   ),
