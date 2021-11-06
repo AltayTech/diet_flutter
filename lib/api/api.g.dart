@@ -371,20 +371,20 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> getTicketMessage() async {
+  Future<NetworkResponse<TicketModel>> getTicketMessage() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<dynamic>>(
+        _setStreamType<NetworkResponse<TicketModel>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/ticket',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<dynamic>.fromJson(
+    final value = NetworkResponse<TicketModel>.fromJson(
       _result.data!,
-      (json) => json as dynamic,
+      (json) => TicketModel.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
