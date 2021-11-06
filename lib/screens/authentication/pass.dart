@@ -1,7 +1,8 @@
+import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/user-info.dart';
-import 'package:behandam/screens/lgn_reg/lgnReg_bloc.dart';
-import 'package:behandam/screens/lgn_reg/login.dart';
+import 'package:behandam/screens/authentication/lgnReg_bloc.dart';
+
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -14,7 +15,7 @@ class PasswordScreen extends StatefulWidget {
   _PasswordScreenState createState() => _PasswordScreenState();
 }
 
-class _PasswordScreenState extends State<PasswordScreen> {
+class _PasswordScreenState extends ResourcefulState<PasswordScreen> {
   final _text = TextEditingController();
   var args;
   bool _validate = false;
