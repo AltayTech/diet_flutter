@@ -63,7 +63,7 @@ class ProfileBloc {
 
   void getInformation(){
     if (loginRegisterBloc == null) {
-      loginRegisterBloc = LoginRegisterBloc();
+      loginRegisterBloc = AuthenticationBloc();
     }
     fetchUserInformation();
   }
