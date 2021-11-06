@@ -53,15 +53,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<SignIn>> signInWithPhoneNumber(mobile, pass) async {
+  Future<NetworkResponse<SignIn>> signInWithPhoneNumber(user) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
+    _data.addAll(user.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<SignIn>>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/login?mobile=$mobile&password=$pass',
+                .compose(_dio.options, '/login',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<SignIn>.fromJson(
@@ -91,18 +91,17 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<VerifyOutput>> verifyUser(mobile, code) async {
+  Future<NetworkResponse<VerifyOutput>> verifyUser(verificationCode) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
+    queryParameters.addAll(verificationCode.toJson());
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<VerifyOutput>>(Options(
-                method: 'GET', headers: <String, dynamic>{}, extra: _extra)
-            .compose(
-                _dio.options, '/verify?mobile=$mobile&verification_code=$code',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<NetworkResponse<VerifyOutput>>(
+            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/verify',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<VerifyOutput>.fromJson(
       _result.data!,
       (json) => VerifyOutput.fromJson(json as Map<String, dynamic>),

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'country-code.g.dart';
+part 'country_code.g.dart';
 
 @JsonSerializable()
 class CountryCode {
