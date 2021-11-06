@@ -59,7 +59,7 @@ class _AppState extends State<App> {
           final locale = snapshot.data ?? appInitialLocale;
           return MaterialApp.router(
 
-              // generate title from localization instead of `MaterialApp.title` property
+            // generate title from localization instead of `MaterialApp.title` property
               onGenerateTitle: (BuildContext context) => context.intl.appName,
 
               debugShowCheckedModeBanner: false,
@@ -127,11 +127,14 @@ class _AppState extends State<App> {
 }
 final navigator= VxNavigator(routes: {
   // '/': (_, __) => MaterialPage(child: HomeScreen()),
-  '/': (_, __) => MaterialPage(child: LoginScreen()),
+  // '/': (_, __) => MaterialPage(child: LoginScreen()),
+  '/': (_, __) => MaterialPage(child: RegimeTypeScreen()),
   Routes.home: (_, __) => MaterialPage(child: HomeScreen()),
   Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(),arguments: param),
   Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(),arguments: param),
   Routes.register: (_, param) => MaterialPage(child: RegisterScreen(),arguments: param),
   Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(),arguments: param),
   Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(),arguments: param),
+  // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
+  Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
 });

@@ -62,7 +62,7 @@ class _RepositoryImpl extends Repository {
     );
     _dio.interceptors.add(CustomInterceptors());
     _dio.interceptors.add(GlobalInterceptor());
-     _dio.interceptors.add(ErrorHandlerInterceptor());
+    _dio.interceptors.add(ErrorHandlerInterceptor());
     _apiClient = RestClient(_dio,baseUrl: FlavorConfig.instance.variables['baseUrl']);
     // _cache = MemoryDataSource();
   }
