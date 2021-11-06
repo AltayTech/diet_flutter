@@ -4,8 +4,9 @@ import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
-import 'package:behandam/main.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/authentication/code_reset.dart';
+import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/home/home.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
@@ -18,8 +19,8 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../screens/lgn_reg/login.dart';
-import '../screens/lgn_reg/pass.dart';
+import '../screens/authentication/login.dart';
+import '../screens/authentication/pass.dart';
 
 class App extends StatefulWidget {
   @override

@@ -4,16 +4,17 @@ import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import '../base/network_response.dart';
 import '../api/api.dart';
-import '../data/entity/auth/country-code.dart';
+import '../data/entity/auth/country_code.dart';
 import '../data/entity/auth/register.dart';
 import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
-import '../data/entity/auth/user-info.dart';
+import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/auth/sign-in.dart';
+import '../data/entity/auth/sign_in.dart';
 
 
 abstract class Repository {
@@ -28,11 +29,11 @@ abstract class Repository {
 
   NetworkResult<CheckStatus> status(String mobile);
 
-  NetworkResult<SignIn> signIn(String mobile, String pass);
+  NetworkResult<SignIn> signIn(User user);
 
   NetworkResult<VerificationCode> verificationCode(String mobile);
 
-  NetworkResult<VerifyOutput> verify(String mobile, String code);
+  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode);
 
   NetworkResult<ResetOutput> reset(Reset password);
 
@@ -98,14 +99,14 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<VerifyOutput> verify(String mobile, String code) async{
-    var response = await _apiClient.verifyUser(mobile, code);
+  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode) async{
+    var response = await _apiClient.verifyUser(verificationCode);
     return response;
   }
 
   @override
-  NetworkResult<SignIn> signIn(String mobile, String pass) async{
-    var response = await _apiClient.signInWithPhoneNumber(mobile, pass);
+  NetworkResult<SignIn> signIn(User user) async{
+    var response = await _apiClient.signInWithPhoneNumber(user);
     return response;
   }
 
