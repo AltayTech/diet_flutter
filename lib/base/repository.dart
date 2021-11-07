@@ -68,6 +68,7 @@ abstract class Repository {
   NetworkResult<Inbox> getInbox();
 
   NetworkResult<TicketModel> getTickets();
+  NetworkResult<SupportModel> getDepartmentItems();
 }
 
 class _RepositoryImpl extends Repository {
@@ -208,6 +209,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<TicketModel> getTickets() {
     var response = _apiClient.getTicketMessage();
+    return response;
+  }
+
+  @override
+  NetworkResult<SupportModel> getDepartmentItems() {
+    var response = _apiClient.getDepartmentItems();
     return response;
   }
 }

@@ -56,7 +56,7 @@ class TicketTabState extends ResourcefulState<TicketTab> with SingleTickerProvid
     super.build(context);
     return SafeArea(
         child: Scaffold(
-            appBar: Toolbar(titleBar: intl.profile),
+            appBar: Toolbar(titleBar: intl.ticket),
             body: Container(
               /*color: CustomColors.background,*/
               child: Column(

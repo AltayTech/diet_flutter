@@ -30,7 +30,7 @@ abstract class DateTimeUtils {
   }
 
   static String gregorianToJalali(String date) {
-    List<String> data = date.split('/');
+    List<String> data = date.replaceAll('-', '/').substring(0, 10).split('/');
     Gregorian g = Gregorian(int.parse(data[0]), int.parse(data[1]), int.parse(data[2]));
     final f = g.toJalali().formatter;
     return '${f.yyyy}/${f.mm}/${f.dd}';
@@ -43,6 +43,7 @@ abstract class DateTimeUtils {
     }
     return "${numberZero(dateSplit.hour)}:${numberZero(dateSplit.minute)}";
   }
+
   static String numberZero(int value) {
     if (value < 10) {
       return "0$value";
@@ -51,8 +52,6 @@ abstract class DateTimeUtils {
     }
   }
 }
-
-
 
 enum Meal {
   breakfast,

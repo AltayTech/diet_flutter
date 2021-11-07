@@ -81,6 +81,7 @@ flutter:
     - assets/images/physical_report/
     - assets/images/ticket/
     - assets/images/foodlist/
+    - assets/images/bill/
   fonts:
     - family: Iransans
       fonts:

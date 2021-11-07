@@ -92,6 +92,8 @@ abstract class RestClient {
   @GET("/ticket")
   NetworkResult<TicketModel> getTicketMessage();
 
+  @GET("/department")
+  NetworkResult<SupportModel> getDepartmentItems();
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

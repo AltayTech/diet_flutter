@@ -1,4 +1,5 @@
 import 'package:behandam/app/app.dart';
+import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/routes.dart';
@@ -9,24 +10,28 @@ import 'package:sizer/sizer.dart';
 
 enum BottomNavItem { PROFILE, SUPPORT, DIET, VITRINE, STATUS }
 
-class BottomNav extends StatelessWidget {
+class BottomNav extends StatefulWidget {
   final BottomNavItem currentTab;
 
   BottomNav({required this.currentTab});
 
+  @override
+  State<BottomNav> createState() => _BottomNavState();
+}
+
+class _BottomNavState extends ResourcefulState<BottomNav> {
   Widget item(String imageAddress, BottomNavItem type, String title, BuildContext context) {
     return GestureDetector(
       onTap: () {
         switch (type) {
           case BottomNavItem.PROFILE:
-            /*if (title != currentTab)
-              Navigator.pushNamedAndRemoveUntil(context, UserProfile.routeName, (route) => false);*/
+            if(widget.currentTab != BottomNavItem.PROFILE) navigator.routeManager.clearAndPush(Uri.parse(Routes.profile));
             break;
           case BottomNavItem.SUPPORT:
             navigator.routeManager.clearAndPush(Uri.parse(Routes.ticketMessage));
             break;
           case BottomNavItem.DIET:
-            if(currentTab != BottomNavItem.DIET) navigator.routeManager.clearAndPush(Uri.parse(Routes.foodList));
+            if(widget.currentTab != BottomNavItem.DIET) navigator.routeManager.clearAndPush(Uri.parse(Routes.foodList));
           /*  if (token == null) {
               Navigator.pushNamedAndRemoveUntil(context, LaunchRoute.routeName, (route) => false);
             } else if (title != currentTab && token != null) {
@@ -61,7 +66,7 @@ class BottomNav extends StatelessWidget {
                       imageAddress,
                       width: 3.h,
                       height: 3.h,
-                      color: currentTab == type
+                      color: widget.currentTab == type
                           ? AppColors.primary
                           : AppColors.iconsColor,
                       fit: BoxFit.fitWidth,
@@ -89,7 +94,7 @@ class BottomNav extends StatelessWidget {
                   title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: type == currentTab ? AppColors.primary : AppColors.iconsColor,
+                    color: type == widget.currentTab ? AppColors.primary : AppColors.iconsColor,
                     fontSize: 10.sp,
                     letterSpacing: -0.5,
                   ),
@@ -102,6 +107,7 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       width: 100.w,
       alignment: Alignment.center,
@@ -124,22 +130,37 @@ class BottomNav extends StatelessWidget {
         Expanded(
             flex: 1,
             child: item(
-                'assets/images/tab/profile_menu_icon.svg', BottomNavItem.PROFILE, 'پروفایل', context)),
+                'assets/images/tab/profile_menu_icon.svg', BottomNavItem.PROFILE,intl.profile, context)),
         Expanded(
             flex: 1,
             child: item(
-                'assets/images/tab/contact_menu_icon.svg', BottomNavItem.SUPPORT, 'پشتیبان', context)),
+                'assets/images/tab/contact_menu_icon.svg', BottomNavItem.SUPPORT, intl.ticket, context)),
         Expanded(
             flex: 1,
-            child: item('assets/images/tab/food_menu_icon.svg', BottomNavItem.DIET, 'رژیم', context)),
+            child: item('assets/images/tab/food_menu_icon.svg', BottomNavItem.DIET, intl.diet, context)),
         Expanded(
             flex: 1,
             child:
-                item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.VITRINE, 'ویترین', context)),
+                item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.VITRINE, intl.vitrin, context)),
         Expanded(
             flex: 1,
-            child: item('assets/images/tab/status_menu_icon.svg', BottomNavItem.STATUS, 'وضعیت', context)),
+            child: item('assets/images/tab/status_menu_icon.svg', BottomNavItem.STATUS, intl.status, context)),
       ],
     );
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
   }
 }

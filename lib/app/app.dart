@@ -16,6 +16,7 @@ import 'package:behandam/screens/authentication/code_reset.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
+import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
@@ -157,6 +158,7 @@ final navigator = VxNavigator(
   Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(),arguments: param),
   Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(),arguments: param),
   Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
+  Routes.newTicketMessage: (_, __) => MaterialPage(child: NewTicket()),
   // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
