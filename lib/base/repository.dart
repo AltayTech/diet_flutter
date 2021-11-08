@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
-import 'package:behandam/data/entity/ticket/ticket_item.dart';
+// import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
@@ -67,7 +67,7 @@ abstract class Repository {
 
   NetworkResult<Inbox> getInbox();
 
-  NetworkResult<TicketModel> getTickets();
+  // NetworkResult<TicketModel> getTickets();
 }
 
 class _RepositoryImpl extends Repository {
@@ -205,9 +205,9 @@ class _RepositoryImpl extends Repository {
     return response;
   }
 
-  @override
-  NetworkResult<TicketModel> getTickets() {
-    var response = _apiClient.getTicketMessage();
-    return response;
-  }
+  // @override
+  // NetworkResult<TicketModel> getTickets() {
+  //   var response = _apiClient.getTicketMessage();
+  //   return response;
+  // }
 }

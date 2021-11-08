@@ -16,7 +16,9 @@ import 'package:behandam/screens/authentication/code_reset.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
-import 'package:behandam/screens/ticket/ticketTabs.dart';
+import 'package:behandam/screens/regime/state_of_body.dart';
+import 'package:behandam/screens/utility/CustomRuler.dart';
+// import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/typography.dart';
@@ -142,7 +144,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: ProfileScreen()),
+    '/': (_, __) => MaterialPage(child: BodyStateScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -152,12 +154,13 @@ final navigator = VxNavigator(
     Routes.foodList: (_, __) => MaterialPage(child: FoodListPage()),
     Routes.inbox: (_, __) => MaterialPage(child: InboxList()),
     Routes.showInbox: (_, param) => MaterialPage(child: ShowInboxItem(), arguments: param),
-    Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
-    Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
+    // Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
+    // Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
   Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(),arguments: param),
   Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(),arguments: param),
   Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
-  // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
+  Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
+  Routes.bodyState: (_, __) => MaterialPage(child: BodyStateScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

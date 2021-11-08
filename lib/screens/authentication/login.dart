@@ -12,7 +12,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../helper/Arc.dart';
+import 'package:behandam/screens/utility/arc.dart';
 
 import 'authentication_bloc.dart';
 

@@ -79,5 +79,15 @@
   "selectGallery": "گالری",
   "selectCamera": "دوربین",
   "newTicket": "سوال جدید",
-  "arabic": "العربية"
+  "arabic": "العربية",
+  "stateOfBody": "وضعیت جسمانی",
+  "enterYourState": "اطلاعات جسمانیت رو وارد کن",
+  "weight": "وزن",
+  "height": "قد",
+  "wrist": "دور مچ",
+  "birthday": "تاریخ تولد",
+  "confirmContinue": "تایید و ادامه",
+  "centimeter": "سانتی متر",
+  "kilo": "کیلو",
+  "gr": "گرم"
 }

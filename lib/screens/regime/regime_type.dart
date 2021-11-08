@@ -33,18 +33,6 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
   }
 
   void listenBloc() {
-    regimeBloc.navigateToVerify.listen((event) {
-      // try {
-      // if ((event as bool)) {
-      //   check = true;
-      //   VxNavigator.of(context).push(Uri.parse(Routes.pass));
-      // } else {
-      //   navigator.routeManager.push(Uri.parse(Routes.verify));
-      // }
-      // }catch(e){
-      //   print('e ==> ${e.toString()}');
-      // }
-    });
     regimeBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
     });
@@ -70,73 +58,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                   padding: const EdgeInsets.only(top: 30.0,bottom: 20.0),
                   child: Text(intl.selectYourRegime,textAlign: TextAlign.center,),
                 ),
-                StreamBuilder(
-                    stream: regimeBloc.itemList,
-                    builder: (context, AsyncSnapshot<List<RegimeType>> snapshot){
-                      if (snapshot.hasData) {
-                        // print('here:${regimeBloc.type.length}');
-                        return ListView.builder(
-                              physics: ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:snapshot.data!.length,
-                              itemBuilder: (BuildContext context, int index) => UnconstrainedBox(
-                                child: Stack(
-                                  children: [
-                                    // click(snapshot.data![index].isActive!),
-                                    Transform.translate(
-                                      offset: Offset(8.0,4.0),
-                                      child: Container(
-                                       decoration: BoxDecoration(
-                                         borderRadius: BorderRadius.only(bottomRight: Radius.circular(30.0),topRight: Radius.circular(30.0)),
-                                         color: colorType),
-                                          width: 5.w,
-                                          height: 8.h),
-                                    ),
-                                    InkWell(
-                                      onTap: activeCard[index]
-                                          ? () => VxNavigator.of(context).push(Uri.parse(Routes.helpType))
-                                      : () =>{
-                                        print('active1: ${snapshot.data!.length}'),
-                                        Utils.getSnackbarMessage(context, 'به زودی'),
-                                      },
-
-                                      child: Container(
-                                      width: 80.w,
-                                      height: 9.h,
-                                      child: Card(
-                                        color: AppColors.arcColor,
-                                        semanticContainer: true,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0),topLeft: Radius.circular(30.0))),
-                                        // margin: EdgeInsets.only(right: 25.0),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children:[
-                                               Text(snapshot.data![index].title!,
-                                               style: TextStyle(color: snapshot.data![index].isActive! == '0' ? AppColors.strongPen : AppColors.penColor)),
-                                                setContent(snapshot.data![index].alias!, snapshot.data![index].isActive!, index),
-                                              ]
-                                          ),
-                                        ),
-                                      ),
-                                  ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          }
-                      else{
-                        check = false;
-                        return Center(
-                            child: Container(
-                                width:15.w,
-                                height: 15.w,
-                                child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 1.0)));
-                      }
-                    }),
+                ListOfTypes(),
                 SizedBox(height: 5.h),
                 Text(intl.whichRegime,textAlign: TextAlign.center,),
                 InkWell(
@@ -151,6 +73,76 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
         ),
       ),
     );
+  }
+
+  Widget ListOfTypes(){
+    return StreamBuilder(
+        stream: regimeBloc.itemList,
+        builder: (context, AsyncSnapshot<List<RegimeType>> snapshot){
+          if (snapshot.hasData) {
+            // print('here:${regimeBloc.type.length}');
+            return ListView.builder(
+              physics: ClampingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount:snapshot.data!.length,
+              itemBuilder: (BuildContext context, int index) => UnconstrainedBox(
+                child: Stack(
+                  children: [
+                    // click(snapshot.data![index].isActive!),
+                    Transform.translate(
+                      offset: Offset(8.0,4.0),
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(30.0),topRight: Radius.circular(30.0)),
+                              color: colorType),
+                          width: 5.w,
+                          height: 8.h),
+                    ),
+                    InkWell(
+                      onTap: activeCard[index]
+                          ? () => VxNavigator.of(context).push(Uri.parse(Routes.helpType))
+                          : () =>{
+                        print('active1: ${snapshot.data!.length}'),
+                        Utils.getSnackbarMessage(context, 'به زودی'),
+                      },
+
+                      child: Container(
+                        width: 80.w,
+                        height: 9.h,
+                        child: Card(
+                          color: AppColors.arcColor,
+                          semanticContainer: true,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0),topLeft: Radius.circular(30.0))),
+                          // margin: EdgeInsets.only(right: 25.0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children:[
+                                  Text(snapshot.data![index].title!,
+                                      style: TextStyle(color: snapshot.data![index].isActive! == '0' ? AppColors.strongPen : AppColors.penColor)),
+                                  setContent(snapshot.data![index].alias!, snapshot.data![index].isActive!, index),
+                                ]
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          }
+          else{
+            check = false;
+            return Center(
+                child: Container(
+                    width:15.w,
+                    height: 15.w,
+                    child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 1.0)));
+          }
+        });
   }
 
   Widget setContent(String type, String active, int index){

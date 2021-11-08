@@ -36,6 +36,10 @@ class AppColors {
   static const sportType = Color(0xffE6F2EE);
   static const help = Color(0xffFFE7E7);
   static const strongPen = Color(0xffC0C0C0);
+  static const grey = Color(0xffF5F5F5);
+  static const purpleRuler = Color(0xff927DFC);
+  static const pinkRuler = Color(0xffEC4CA2);
+  static const blueRuler = Color(0xff65A8E0);
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {

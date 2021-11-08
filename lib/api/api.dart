@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
-import 'package:behandam/data/entity/ticket/ticket_item.dart';
+// import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
@@ -89,8 +89,8 @@ abstract class RestClient {
   @GET("/inbox")
   NetworkResult<Inbox> getInbox();
 
-  @GET("/ticket")
-  NetworkResult<TicketModel> getTicketMessage();
+  // @GET("/ticket")
+  // NetworkResult<TicketModel> getTicketMessage();
 
 }
 
