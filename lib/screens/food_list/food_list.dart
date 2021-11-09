@@ -1,14 +1,17 @@
 import 'package:behandam/screens/food_list/bloc.dart';
+import 'package:behandam/screens/food_list/change_menu.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
 import 'package:behandam/screens/food_list/food_meals.dart';
 import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/food_list/week_day.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class FoodListPage extends StatefulWidget {
   const FoodListPage({Key? key}) : super(key: key);
@@ -57,13 +60,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                         ],
                       ),
                       Space(height: 2.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          item(intl.selectDailyMenu),
-                          item(intl.iFastToday),
-                        ],
-                      ),
+                      ChangeMenu(),
                       Space(height: 2.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 3.w),
@@ -105,9 +102,14 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                         softWrap: true,
                       ),
                     ),
-                    Container(
-                      width: 60,
-                      height: 20,
+                    SubmitButton(
+                      label: isToday(snapshot.requireData!)
+                          ? intl.showAdvices
+                          : intl.goToToday,
+                      onTap: isToday(snapshot.requireData!)
+                          ? () => VxNavigator.of(context).push(Uri())
+                          : () => bloc.changeDateWithString(
+                              DateTime.now().toString().substring(0, 10)),
                     ),
                   ],
                 );
@@ -122,41 +124,21 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
   String appbarStackBoxText(WeekDay weekday) {
     String text = '';
-    if (weekday.gregorianDate.toString().substring(0, 10) ==
-        DateTime.now().toString().substring(0, 10)) {
+    if (isToday(weekday)) {
       debugPrint('format ${weekday.jalaliDate.formatter.dd}');
       text = intl.todayAdvicesForYou;
     } else {
-      text = intl.viewingMenu('${weekday.jalaliDate.formatter.wN} ${weekday.jalaliDate.formatter.d} ${weekday.jalaliDate.formatter.mN}');
+      text = intl.viewingMenu(
+          '${weekday.jalaliDate.formatter.wN} ${weekday.jalaliDate.formatter.d} ${weekday.jalaliDate.formatter.mN}');
     }
     return text;
   }
 
-  Widget item(String text) {
-    return Card(
-      shape: AppShapes.rectangleMedium,
-      elevation: 1,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.menu,
-              size: 6.w,
-            ),
-            Space(width: 2.w),
-            Text(
-              text,
-              style: typography.caption,
-              softWrap: true,
-            ),
-          ],
-        ),
-      ),
-    );
+  bool isToday(WeekDay weekDay) {
+    return weekDay.gregorianDate.toString().substring(0, 10) ==
+        DateTime.now().toString().substring(0, 10);
   }
+
 
   @override
   void onRetryAfterMaintenance() {

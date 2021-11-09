@@ -55,13 +55,6 @@ Food _$FoodFromJson(Map<String, dynamic> json) => Food(
       json['title'] as String?,
       json['code'] as int?,
       json['description'] as String?,
-      (json['ratios'] as List<dynamic>)
-          .map((e) => Ratio.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      Pivot.fromJson(json['pivot'] as Map<String, dynamic>),
-      (json['food_items'] as List<dynamic>)
-          .map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
     )..fullTitle = json['fullTitle'] as String;
 
 Ratio _$RatioFromJson(Map<String, dynamic> json) => Ratio(

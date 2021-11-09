@@ -1,9 +1,8 @@
-import 'package:behandam/data/entity/food_list/food_list.dart';
-import 'package:behandam/data/sharedpreferences.dart';
-import 'package:behandam/extensions/string.dart';
-import 'package:behandam/themes/locale.dart';
+import 'package:behandam/data/entity/fast/fast.dart';
+import 'package:behandam/data/entity/filter/filter.dart';
+import 'package:behandam/data/entity/list_food/list_food.dart';
+import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -59,6 +58,15 @@ abstract class RestClient {
 
   @GET("/user/menu/pdf")
   NetworkResult<UserInformation> getPdfWeekUrl();
+
+  @GET("/fasting-pattern")
+  NetworkResult<List<FastPatternData>> fastPattern();
+
+  @POST("/user-fasting-log")
+  NetworkResult<FastMenuRequestData> changeToFast(@Body() FastMenuRequestData requestData);
+
+  @GET("/food?filter={filter}")
+  NetworkResult<ListFoodData> listFood(@Path('filter') String filter);
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

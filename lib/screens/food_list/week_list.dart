@@ -1,10 +1,7 @@
 import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
-import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
-import 'package:behandam/screens/widget/food_list_curve.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -13,116 +10,31 @@ import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:behandam/extensions/iterable.dart';
 
+import 'provider.dart';
 import 'week_day.dart';
-import 'week_list.dart';
 
-class FoodListAppbar extends StatefulWidget {
-  const FoodListAppbar({Key? key}) : super(key: key);
+class WeekList extends StatefulWidget {
+  const WeekList({Key? key, required this.isClickable}) : super(key: key);
+
+  final bool isClickable;
 
   @override
-  _FoodListAppbarState createState() => _FoodListAppbarState();
+  _WeekListState createState() => _WeekListState();
 }
 
-class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
+class _WeekListState extends ResourcefulState<WeekList> {
   late FoodListBloc bloc;
-  // int? _selectedDayIndex;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    bloc = FoodListProvider.of(context);
     super.build(context);
+    bloc = FoodListProvider.of(context);
 
-    return appbar();
-  }
-
-  Widget appbar() {
-    return Container(
-      height: 37.h,
-      color: Colors.transparent,
-      child: ClipPath(
-        clipper: FoodListCurve(),
-        child: Container(
-          color: AppColors.primary,
-          padding: EdgeInsets.symmetric(vertical: 2.h),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.dark_mode,
-                      size: 6.w,
-                      color: AppColors.surface,
-                    ),
-                    Expanded(
-                      child: StreamBuilder(
-                        stream: bloc.foodList,
-                        builder: (_, AsyncSnapshot<FoodListData?> snapshot) =>
-                            Text(
-                          '${intl.foodList} | ${snapshot.data?.menu?.title ?? ''}',
-                          textAlign: TextAlign.center,
-                          style: typography.caption?.apply(
-                            color: AppColors.surface,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Icon(
-                      Icons.dark_mode,
-                      size: 6.w,
-                      color: AppColors.surface,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: Divider(
-                  thickness: 0.3,
-                  color: AppColors.surface,
-                  height: 3.h,
-                ),
-              ),
-              calendar(),
-              Space(height: 2.h),
-              WeekList(isClickable: true),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget calendar() {
-    return Container(
-      decoration: AppDecorations.boxLarge.copyWith(
-        color: AppColors.surface.withOpacity(0.3),
-      ),
-      width: 40.w,
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.dark_mode,
-            size: 6.w,
-            color: AppColors.surface,
-          ),
-          Space(width: 3.w),
-          Text(
-            'تقویم',
-            textAlign: TextAlign.center,
-            style: typography.caption?.apply(
-              color: AppColors.surface,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget weekList() {
     return StreamBuilder(
       stream: bloc.weekDays,
       builder: (_, AsyncSnapshot<List<WeekDay?>?> snapshot) {
@@ -162,7 +74,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
         if(snapshot.hasData) {
           return GestureDetector(
             onTap: () {
-              bloc.changeDateWithString(
+              if(widget.isClickable) bloc.changeDateWithString(
                   weekDays[index]!.gregorianDate.toString().substring(0, 10));
             },
             child: Container(

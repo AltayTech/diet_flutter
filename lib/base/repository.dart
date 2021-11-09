@@ -1,7 +1,11 @@
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
-import 'package:behandam/data/entity/food_list/food_list.dart';
+import 'package:behandam/data/entity/fast/fast.dart';
+import 'package:behandam/data/entity/filter/filter.dart';
+import 'package:behandam/data/entity/list_food/list_food.dart';
+import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -13,6 +17,7 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/sign-in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/verify.dart';
+import 'network_response.dart';
 
 enum FoodDietPdf { TERM, WEEK }
 
@@ -38,18 +43,26 @@ abstract class Repository {
 
   NetworkResult<RegisterOutput> register(Register register);
 
-  NetworkResult<FoodListData> foodList(String date);
+  NetworkResult<FoodListData> foodList(String date, {bool invalidate = false});
 
   NetworkResult<UserInformation> getUser();
 
   NetworkResult<Media> getPdfUrl(FoodDietPdf foodDietPdf);
+
+  NetworkResult<List<FastPatternData>> fastPattern({bool invalidate = false});
+
+  NetworkResult<FastMenuRequestData> changeToFast(
+      FastMenuRequestData requestData,
+      {bool invalidate = false});
+
+  NetworkResult<ListFoodData> listFood(
+      String filter, {bool invalidate = false});
 }
 
 class _RepositoryImpl extends Repository {
   late Dio _dio;
   late RestClient _apiClient;
-
-  // late MemoryDataSource _cache;
+  late MemoryApp _cache;
 
   static const receiveTimeout = 5 * 60 * 1000;
   static const connectTimeout = 60 * 1000;
@@ -62,11 +75,12 @@ class _RepositoryImpl extends Repository {
       connectTimeout: connectTimeout,
       sendTimeout: sendTimeout,
     );
-    _dio.interceptors.add(CustomInterceptors());
+    // _dio.interceptors.add(CustomInterceptors());
     _dio.interceptors.add(ErrorHandlerInterceptor());
     _dio.interceptors.add(GlobalInterceptor());
-    _apiClient = RestClient(_dio, baseUrl: FlavorConfig.instance.variables['baseUrl']);
-    // _cache = MemoryDataSource();
+    _apiClient =
+        RestClient(_dio, baseUrl: FlavorConfig.instance.variables['baseUrl']);
+    _cache = MemoryApp();
   }
 
   @override
@@ -106,15 +120,30 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<FoodListData> foodList(String date) async {
-    var response = await _apiClient.foodList(date);
-    debugPrint('repository ${response.data}');
+  NetworkResult<FoodListData> foodList(String date,
+      {bool invalidate = false}) async {
+    _cache.saveDate(date);
+    NetworkResponse<FoodListData> response;
+    debugPrint(
+        'repository1 ${_cache.date} / ${_cache.foodList} / $invalidate}');
+    if (_cache.date == null || _cache.foodList == null || invalidate) {
+      response = await _apiClient.foodList(date);
+      debugPrint('repository2 ${response.data}');
+      _cache.saveFoodList(response.requireData, date);
+      debugPrint('repository ${response.data}');
+    } else {
+      response = NetworkResponse.withData(_cache.foodList);
+    }
     return response;
   }
 
   @override
-  NetworkResult<UserInformation> getUser() {
-    var response = _apiClient.getProfile();
+  NetworkResult<UserInformation> getUser({bool invalidate = false}) async {
+    NetworkResponse<UserInformation> response;
+    if (_cache.profile == null || invalidate)
+      response = await _apiClient.getProfile();
+    else
+      response = NetworkResponse.withData(_cache.profile);
     return response;
   }
 
@@ -136,6 +165,43 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<SignIn> signIn(String mobile, String pass) async {
     var response = await _apiClient.signInWithPhoneNumber(mobile, pass);
+    return response;
+  }
+
+  @override
+  NetworkResult<List<FastPatternData>> fastPattern(
+      {bool invalidate = false}) async {
+    NetworkResponse<List<FastPatternData>> response;
+    if (_cache.patterns == null || invalidate) {
+      response = await _apiClient.fastPattern();
+      _cache.savePatterns(response.requireData);
+      debugPrint('pattern ${response.data?.length}');
+    } else {
+      response = NetworkResponse.withData(_cache.patterns);
+    }
+    return response;
+  }
+
+  @override
+  NetworkResult<FastMenuRequestData> changeToFast(
+      FastMenuRequestData requestData,
+      {bool invalidate = false}) async {
+    requestData.date = _cache.date;
+    // requestData.userId = _cache.profile?.userId;
+    //ToDo fill it from cache
+    requestData.userId = 63;
+    if (requestData.patternId == null) requestData.patternId = 0;
+    debugPrint('pattern request ${requestData.toJson()}');
+    var response =
+        await _apiClient.changeToFast(requestData);
+    return response;
+  }
+
+  @override
+  NetworkResult<ListFoodData> listFood(String filter, {bool invalidate = false}) async{
+    // '{"page":{"offset":0,"limit":30},"sort":[{"field":"title","dir":"asc"}],"filters":[[{"field":"title","op":"like","value":""}],[{"field":"meal_id","op":"=","value":1}]]}'
+    var response =
+        await _apiClient.listFood(filter);
     return response;
   }
 }

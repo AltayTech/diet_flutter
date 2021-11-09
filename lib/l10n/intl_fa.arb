@@ -39,7 +39,14 @@
   "noResultFound": "نتیجه ای یافت نشد",
   "foodNotFoundMessage": "خوراکی مورد نظر شما در لیست یافت نشد",
   "manipulateFood": "جایگزین غذا",
-  "recipe": "طرز تهیه",
+  "recipe": "طرز تهیه {food}",
+  "@recipe": {
+        "placeholders": {
+          "food": {
+            "type": "String"
+          }
+        }
+  },
   "iFastToday": "امروز روزه میگیرم",
   "selectDailyMenu": "انتخاب روزمنو",
   "todayAdvicesForYou": "برات کلی توصیه کاربردی داریم. حتما بخونشون!",
@@ -51,5 +58,49 @@
         }
       }
   },
+  "showAdvices": "نمایش توصیه ها",
+  "goToToday": "برو به امروز",
+  "selectAllFoodYourself": "میخواهی همه ی غذاهای این روز رو خودت انتخاب کنی؟",
+  "yesGoToSelectFoodPage": "بله برو به صفحه انتخاب غذا",
+  "cancel": "انصراف",
+  "fastingModel": "الگوی روزه داری",
+  "convertToFast": "با این انتخاب وعده های تو به وعده های روزه داری تغییر میکنه",
+  "iFast": "روزه میگیرم",
+  "iRegret": "پشیمان شدم",
+  "alternating": "جایگزینی {meal}",
+  "@alternating": {
+    "placeholders": {
+        "meal": {
+            "type": "String"
+        }
+    }
+  },
+  "alternatingFoodLater": "بعدا جایگزین میکنم",
+  "selectDailyMenuFoods": "انتخاب غذاهای روزمنو",
+  "selectFood": "انتخاب خوراکی های {date}",
+  "@selectFood": {
+     "placeholders": {
+          "date": {
+              "type": "String"
+          }
+     }
+  },
+  "notShowingPastMeals": "وعده هایی که زمان آنها گذشته است نمایش داده نمی شوند!",
+  "addFood": "افزودن غذا...",
+  "fastPatterns": "الگوهای روزه داری",
+  "selectFastPattern": "الگوی روزه داری موردنظرتو انتخاب کن",
+  "fast": "روزه داری",
+  "youSeeFastingPatterns": "الان در حال مشاهده وعده های روزه داری هستی",
+  "changePattern": "تغییر الگو",
+  "iDoNotFast": "روزه نمیگیرم",
+  "selectFoodIn": "انتخاب خوراکی در وعده {meal}",
+  "@selectFoodIn": {
+    "placeholders": {
+        "meal": {
+            "type": "String"
+        }
+    }
+  },
+  "whatFoodAreYouLookingFor": "دنبال چه خوراکی ای میگردی؟",
   "arabic": "العربية"
 }
