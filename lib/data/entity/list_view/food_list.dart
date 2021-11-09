@@ -147,10 +147,11 @@ class Food{
       this.title,
       this.code,
       this.description,
-      this.ratios,
+      // this.ratios,
       // this.freeFoods,
-      this.pivot,
-      this.foodItems,
+      // this.free_foods_items,
+      // this.pivot,
+      // this.foodItems,
       );
 
   @JsonKey(name: 'id')
@@ -165,17 +166,20 @@ class Food{
   @JsonKey(name: 'description')
   final String? description;
 
-  @JsonKey(name: 'ratios')
-  final List<Ratio> ratios;
+  // @JsonKey(name: 'ratios')
+  // final List<Ratio> ratios;
 
   // @JsonKey(name: 'free_foods')
   // final List<> freeFoods;
 
-  @JsonKey(name: 'pivot')
-  final Pivot pivot;
+  // @JsonKey(name: 'free_foods_items')
+  // final List<> freeFoodsItems;
 
-  @JsonKey(name: 'food_items')
-  final List<FoodItem> foodItems;
+  // @JsonKey(name: 'pivot')
+  // final Pivot pivot;
+
+  // @JsonKey(name: 'food_items')
+  // final List<FoodItem> foodItems;
 
   String fullTitle = '';
 
@@ -385,7 +389,7 @@ class FoodItemPivot {
 
   @JsonKey(name: 'min_calories')
   final int minCalorie;
-  //
+
   @JsonKey(name: 'max_calories')
   final int maxCalorie;
 

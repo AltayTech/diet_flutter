@@ -1,16 +1,16 @@
 import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/food_list/food_list.dart';
+import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/dialog.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
-import 'package:behandam/extensions/object.dart';
-import 'package:behandam/extensions/list.dart';
 import 'package:behandam/extensions/string.dart';
 
 import 'bloc.dart';
@@ -69,61 +69,38 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                StreamBuilder(
-                  stream: bloc.date,
-                  builder: (_, AsyncSnapshot<String> snapshot) {
-                    return Row(
-                      children: <Widget>[
-                        Container(
-                          width: 15.w,
-                          height: 15.w,
-                          decoration: AppDecorations.circle.copyWith(
-                            color: AppColors.primary,
+                Row(
+                  children: <Widget>[
+                    Container(
+                      width: 15.w,
+                      height: 15.w,
+                      decoration: AppDecorations.circle.copyWith(
+                        color: AppColors.primary,
+                      ),
+                      // child: ImageUtils(),
+                    ),
+                    Space(width: 2.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            meal.title,
+                            style: typography.bodyText2,
+                            softWrap: true,
                           ),
-                          // child: ImageUtils(),
-                        ),
-                        Space(width: 2.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                meal.title,
-                                style: typography.bodyText2,
-                                softWrap: true,
-                              ),
-                              if (meal.description.isNotNullAndEmpty)
-                                Text(
-                                  meal.description!,
-                                  style: typography.caption,
-                                  softWrap: true,
-                                ),
-                            ],
-                          ),
-                        ),
-                        Space(width: 2.w),
-                        // if(DateTime.now().toString().substring(0, 10) == )
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 3.w, vertical: 1.h),
-                            decoration: AppDecorations.boxLarge.copyWith(
-                              border: Border.all(
-                                color: AppColors.onSurface,
-                                width: 0.4,
-                              ),
-                            ),
-                            child: Text(
-                              intl.manipulateFood,
-                              textAlign: TextAlign.center,
+                          if (meal.description.isNotNullAndEmpty)
+                            Text(
+                              meal.description!,
                               style: typography.caption,
+                              softWrap: true,
                             ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                        ],
+                      ),
+                    ),
+                    Space(width: 2.w),
+                    alternateFood(meal),
+                  ],
                 ),
                 Container(
                   child: Wrap(
@@ -139,7 +116,123 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
               ],
             ),
           ),
-          Container(
+          if (meal.food?.description != null) recipeBox(meal),
+          // Space(height: 1.h),
+        ],
+      ),
+    );
+  }
+
+  Widget alternateFood(Meals meal) {
+    return StreamBuilder(
+      stream: bloc.selectedWeekDay,
+      builder: (_, AsyncSnapshot<WeekDay> snapshot) {
+        if (snapshot.hasData && isToday(snapshot.requireData))
+          return GestureDetector(
+            onTap: () => manipulateFoodDialog(meal),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+              decoration: AppDecorations.boxLarge.copyWith(
+                border: Border.all(
+                  color: AppColors.onSurface,
+                  width: 0.4,
+                ),
+              ),
+              child: Text(
+                intl.manipulateFood,
+                textAlign: TextAlign.center,
+                style: typography.caption,
+              ),
+            ),
+          );
+        return EmptyBox();
+      },
+    );
+  }
+
+  bool isToday(WeekDay weekDay) {
+    return DateTime.now().toString().substring(0, 10) ==
+        weekDay.gregorianDate.toString().substring(0, 10);
+  }
+
+  void manipulateFoodDialog(Meals meal) {
+    DialogUtils.showDialogPage(
+      context: context,
+      isDismissible: true,
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          width: double.maxFinite,
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.onPrimary,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              close(),
+              Text(
+                intl.alternating(meal.title),
+                style: typography.bodyText2,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 2.h),
+              Text(
+                intl.convertToFast,
+                style: typography.caption,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 1.h),
+              Container(
+                alignment: Alignment.center,
+                child: SubmitButton(
+                  onTap: () {},
+                  label: intl.manipulateFood,
+                ),
+              ),
+              Space(height: 1.h),
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Text(
+                  intl.alternatingFoodLater,
+                  style: typography.caption,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget close() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topLeft,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget recipeBox(Meals meal) {
+    return StreamBuilder(
+      stream: bloc.selectedWeekDay,
+      builder: (_, AsyncSnapshot<WeekDay> snapshot) {
+        if (snapshot.hasData && isToday(snapshot.requireData))
+          return Container(
             decoration: BoxDecoration(
               color: Colors.grey[100],
               borderRadius: BorderRadius.only(
@@ -148,26 +241,65 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
               ),
             ),
             padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ImageUtils.fromLocal(
-                  'assets/images/diet/guide_icon.svg',
-                  width: 6.w,
-                  height: 6.w,
-                  color: AppColors.primary,
-                ),
-                Space(width: 2.w),
-                Text(
-                  intl.recipe,
-                  textAlign: TextAlign.end,
-                  style: typography.caption,
-                ),
-              ],
+            child: GestureDetector(
+              onTap: () => recipeDialog(meal),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ImageUtils.fromLocal(
+                    'assets/images/diet/guide_icon.svg',
+                    width: 6.w,
+                    height: 6.w,
+                    color: AppColors.primary,
+                  ),
+                  Space(width: 2.w),
+                  Text(
+                    intl.recipe(''),
+                    textAlign: TextAlign.end,
+                    style: typography.caption,
+                  ),
+                ],
+              ),
             ),
+          );
+        return EmptyBox();
+      },
+    );
+  }
+
+  void recipeDialog(Meals meal) {
+    DialogUtils.showDialogPage(
+      context: context,
+      isDismissible: true,
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          width: double.maxFinite,
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.onPrimary,
           ),
-          // Space(height: 1.h),
-        ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              close(),
+              Text(
+                intl.recipe(meal.food?.title ?? ''),
+                style: typography.bodyText2,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 2.h),
+              Text(
+                meal.food?.description ?? '',
+                style: typography.caption,
+                textAlign: TextAlign.start,
+                softWrap: true,
+              ),
+              Space(height: 2.h),
+            ],
+          ),
+        ),
       ),
     );
   }

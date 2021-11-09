@@ -77,6 +77,7 @@ flutter:
     - assets/images/tab/
     - assets/images/profile/
     - assets/images/diet/
+    - assets/images/foodlist/fasting/
     - assets/images/registry/
     - assets/images/physical_report/
     - assets/images/ticket/

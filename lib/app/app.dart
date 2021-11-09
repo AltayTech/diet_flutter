@@ -7,6 +7,9 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/daily_menu/daily_menu.dart';
+import 'package:behandam/screens/daily_menu/list_food.dart';
+import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 
 import 'package:behandam/screens/profile/edit_profile.dart';
@@ -19,6 +22,7 @@ import 'package:behandam/screens/profile/show_item_inbox.dart';
 // import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/typography.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
@@ -79,15 +83,26 @@ class _AppState extends State<App> {
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocale.supportedLocales,
               theme: ThemeData(
-                  primaryColor: AppColors.primary,
-                  primaryColorDark: AppColors.primaryColorDark,
-                  scaffoldBackgroundColor: AppColors.scaffold,
-                  textTheme: buildTextTheme(locale),
-                  appBarTheme: AppBarTheme(
-                    backgroundColor: AppColors.primary,
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.primary,
+                    onPrimary: AppColors.onPrimary,
+                    onSurface: AppColors.onSurface,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: AppBorderRadius.borderRadiusMedium),
                   ),
-                  colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
-                      .copyWith(secondary: AppColors.primary)),
+                ),
+                primaryColor: AppColors.primary,
+                primaryColorDark: AppColors.primaryColorDark,
+                scaffoldBackgroundColor: AppColors.scaffold,
+                textTheme: buildTextTheme(locale),
+                appBarTheme: AppBarTheme(
+                  backgroundColor: AppColors.primary,
+                ),
+                colorScheme: ColorScheme.fromSwatch(
+                        primarySwatch: AppMaterialColors.primary)
+                    .copyWith(secondary: AppColors.primary),
+              ),
               locale: locale,
               localeResolutionCallback: resolveLocale,
               scaffoldMessengerKey: navigatorMessengerKey,
@@ -124,8 +139,10 @@ class _AppState extends State<App> {
   /// resolve locale when device locale is changed
   Locale resolveLocale(Locale? locale, Iterable<Locale> supportedLocales) {
     for (var supportedLocale in supportedLocales) {
-      final isLanguageEqual = supportedLocale.languageCode == locale?.languageCode;
-      final isCountryCodeEqual = supportedLocale.countryCode == locale?.countryCode;
+      final isLanguageEqual =
+          supportedLocale.languageCode == locale?.languageCode;
+      final isCountryCodeEqual =
+          supportedLocale.countryCode == locale?.countryCode;
       if (isLanguageEqual && isCountryCodeEqual) {
         return supportedLocale;
       }
@@ -146,18 +163,28 @@ final navigator = VxNavigator(
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
-    Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(), arguments: param),
-    Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(), arguments: param),
-    Routes.register: (_, param) => MaterialPage(child: RegisterScreen(), arguments: param),
-    Routes.foodList: (_, __) => MaterialPage(child: FoodListPage()),
+    Routes.pass: (_, param) =>
+        MaterialPage(child: PasswordScreen(), arguments: param),
+    Routes.verify: (_, param) =>
+        MaterialPage(child: VerifyScreen(), arguments: param),
+    Routes.register: (_, param) =>
+        MaterialPage(child: RegisterScreen(), arguments: param),
+    Routes.listView: (_, __) => MaterialPage(child: FoodListPage()),
+    Routes.dailyMenu: (_, __) => MaterialPage(child: DailyMenuPage()),
+    Routes.fastPatterns: (_, __) => MaterialPage(child: FastPatternPage()),
+    Routes.listFood: (_, param) =>
+        MaterialPage(child: ListFoodPage(), arguments: param),
     Routes.inbox: (_, __) => MaterialPage(child: InboxList()),
-    Routes.showInbox: (_, param) => MaterialPage(child: ShowInboxItem(), arguments: param),
+    Routes.showInbox: (_, param) =>
+        MaterialPage(child: ShowInboxItem(), arguments: param),
     // Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
     // Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
-  Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(),arguments: param),
-  Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(),arguments: param),
-  Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
-  // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
+    Routes.resetCode: (_, param) =>
+        MaterialPage(child: CodeResetScreen(), arguments: param),
+    Routes.resetPass: (_, param) =>
+        MaterialPage(child: PasswordResetScreen(), arguments: param),
+    Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
+    // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),
@@ -170,4 +197,3 @@ final navigator = VxNavigator(
     ),
   ),
 );
-  

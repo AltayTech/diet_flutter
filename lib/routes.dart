@@ -14,6 +14,10 @@ abstract class Routes {
   static const regimeType = '/regimeType';
   static const helpType = '/help';
   static const profile = '/profile';
+  static const listView = '/list/view';
+  static const dailyMenu = '/list/daily';
+  static const listFood = '/list/food';
+  static const fastPatterns = '/list/pattern';
   static const editProfile = '/profile/edit';
   static const foodList = '/list/view';
   static const inbox = '/profile/inbox';
