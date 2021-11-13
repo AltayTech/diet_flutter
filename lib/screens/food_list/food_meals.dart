@@ -9,6 +9,7 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/dialog.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:behandam/extensions/string.dart';
@@ -26,7 +27,6 @@ class FoodMeals extends StatefulWidget {
 
 class _FoodMealsState extends ResourcefulState<FoodMeals> {
   late FoodListBloc bloc;
-  late int _selectedDayIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +49,19 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           return Column(
             children: [
               ...snapshot.requireData!.meals
-                  .map((meal) => mealItem(snapshot.requireData!, meal))
+                  .map((meal) => mealItem(meal))
                   .toList(),
             ],
           );
         });
   }
 
-  Widget mealItem(FoodListData foodListData, Meals meal) {
+  Widget mealItem(Meals meal) {
+    List<int> items = meal.food == null
+        ? []
+        : List.generate((meal.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
+    int index = 0;
+    // debugPrint('meal item ${meal.food?.title} / ${meal.food?.ratios?.length}');
     return Card(
       margin: EdgeInsets.only(bottom: 2.h),
       shape: AppShapes.rectangleMild,
@@ -72,8 +77,8 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                 Row(
                   children: <Widget>[
                     Container(
-                      width: 15.w,
-                      height: 15.w,
+                      width: 12.w,
+                      height: 12.w,
                       decoration: AppDecorations.circle.copyWith(
                         color: AppColors.primary,
                       ),
@@ -91,7 +96,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                           ),
                           if (meal.description.isNotNullAndEmpty)
                             Text(
-                              meal.description!,
+                              meal.description ?? '',
                               style: typography.caption,
                               softWrap: true,
                             ),
@@ -102,6 +107,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                     alternateFood(meal),
                   ],
                 ),
+                Space(height: 1.h),
                 Container(
                   child: Wrap(
                     alignment: WrapAlignment.start,
@@ -109,7 +115,59 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                     direction: Axis.horizontal,
                     textDirection: TextDirection.rtl,
                     children: [
-                      // ...meal.food.ratios[0].ratioFoodItems.map((foodItem) => null).toList(),
+                      ...items.map(
+                            (i) {
+                          final widget;
+                          if (i % 2 == 0)
+                            widget = Chip(
+                              backgroundColor: Colors.grey[200],
+                              label: FittedBox(
+                                child: Text(
+                                  '${meal.food!.ratios![0].ratioFoodItems![index].unitTitle.replaceAll('*', intl.and)} ${meal.food!.ratios![0].ratioFoodItems![index].title}',
+                                  style: typography.caption,
+                                  textAlign: TextAlign.center,
+                                  // softWrap: true,
+                                  overflow: TextOverflow.visible,
+                                ),
+                              ),
+                            );
+                          else {
+                            widget = Icon(
+                              Icons.add,
+                              size: 6.w,
+                            );
+                            index++;
+                          }
+                          return widget;
+                        },
+                      ).toList(),
+                      // ...meal.food!.ratios![0].ratioFoodItems!.map((foodItem) {
+                      //   int index = meal.food!.ratios![0].ratioFoodItems!
+                      //       .indexWhere((element) => element.id == foodItem.id);
+                      //   return Row(
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: [
+                      //       Chip(
+                      //         backgroundColor: Colors.grey[200],
+                      //         label: FittedBox(
+                      //           child: Text(
+                      //             '${foodItem.unitTitle.replaceAll('*', intl.and)} ${foodItem.title}',
+                      //             style: typography.caption,
+                      //             textAlign: TextAlign.center,
+                      //             softWrap: true,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       if (index !=
+                      //           meal.food!.ratios![0].ratioFoodItems!.length -
+                      //               1)
+                      //         Icon(
+                      //           Icons.add,
+                      //           size: 6.w,
+                      //         ),
+                      //     ],
+                      //   );
+                      // }).toList(),
                     ],
                   ),
                 ),
@@ -117,7 +175,6 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
             ),
           ),
           if (meal.food?.description != null) recipeBox(meal),
-          // Space(height: 1.h),
         ],
       ),
     );

@@ -13,16 +13,27 @@ ListFoodData _$ListFoodDataFromJson(Map<String, dynamic> json) => ListFoodData(
     );
 
 Items _$ItemsFromJson(Map<String, dynamic> json) => Items(
-      (json['foods'] as List<dynamic>)
-          .map((e) => Food.fromJson(e as Map<String, dynamic>))
+      (json['foods'] as List<dynamic>?)
+          ?.map((e) => Food.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['tags'] as List<dynamic>)
           .map((e) => Tag.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
+Map<String, dynamic> _$ItemsToJson(Items instance) => <String, dynamic>{
+      'foods': instance.foods,
+      'tags': instance.tags,
+    };
+
 Tag _$TagFromJson(Map<String, dynamic> json) => Tag(
       json['id'] as int,
       json['title'] as String,
       json['description'] as String?,
     );
+
+Map<String, dynamic> _$TagToJson(Tag instance) => <String, dynamic>{
+      'description': instance.description,
+      'id': instance.id,
+      'title': instance.title,
+    };

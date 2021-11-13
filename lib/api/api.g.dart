@@ -430,6 +430,26 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
+  Future<NetworkResponse<bool>> dailyMenu(date) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(date.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<bool>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/menu',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<bool>.fromJson(
+      _result.data!,
+      (json) => json as bool,
+    );
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

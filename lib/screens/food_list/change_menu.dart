@@ -154,9 +154,13 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
               Container(
                 alignment: Alignment.center,
                 child: SubmitButton(
-                  onTap: () {
+                  onTap: () async {
                     Navigator.of(context).pop();
-                    VxNavigator.of(context).push(Uri(path: Routes.dailyMenu));
+                    var result = await VxNavigator.of(context).push(Uri(path: Routes.dailyMenu)).then((value) {
+                      debugPrint('call back }');
+                      // if(value != null && value == true) bloc.onRefresh(invalidate: true);
+                    });
+                    debugPrint('call back 2 ${result}');
                   },
                   label: intl.yesGoToSelectFoodPage,
                 ),

@@ -130,5 +130,9 @@
   "selectGallery": "گالری",
   "selectCamera": "دوربین",
   "newTicket": "سوال جدید",
+  "addToList": "افزودن به لیست",
+  "saveDailyMenu": "ذخیره غذاهای روزمنو",
+  "and": "و",
+  "selectFoodForAllMeals": "برای تمام وعده ها غذا انتخاب کن",
   "arabic": "العربية"
 }

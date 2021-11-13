@@ -36,6 +36,7 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Device-Id'] = await DeviceUtils.deviceId;
     options.headers['Is-Emulator'] = await DeviceUtils.isEmulator;
     options.headers['Time-Zone'] = DateTimeUtils.timezoneOffset;
+    options.headers['x-route'] = MemoryApp.routeName?.substring(1, MemoryApp.routeName?.length);
     super.onRequest(options, handler);
   }
 }
