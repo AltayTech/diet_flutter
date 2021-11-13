@@ -52,6 +52,7 @@ class TicketItem {
 
   Map<String, dynamic> toJson() => _$TicketItemToJson(this);
 }
+
 @JsonSerializable()
 class SupportModel {
   @JsonKey(name: "count")
@@ -66,6 +67,7 @@ class SupportModel {
 
   Map<String, dynamic> toJson() => _$SupportModelToJson(this);
 }
+
 @JsonSerializable()
 class SupportItem {
   @JsonKey(name: "id")
@@ -79,6 +81,10 @@ class SupportItem {
 
   @JsonKey(name: "ticket_name")
   String? ticketName;
+
+  bool? selected;
+
+  bool get isSelected => selected ?? false;
 
   SupportItem();
 

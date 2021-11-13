@@ -31,6 +31,8 @@ class AppColors {
   static late Color statusTicketOnHold;
   static late Color statusTicketGlobalIssue;
   static late Color background;
+  static late Color colorTextDepartmentTicket;
+  static late Color colorselectDepartmentTicket;
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {
@@ -57,6 +59,8 @@ class AppColors {
         statusTicketOnHold =  primaryVariantLight;
         statusTicketGlobalIssue = Color(0xFFF3543C);
         background = Color.fromARGB(255, 245, 245, 245);
+        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
+        colorselectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
         break;
       case ThemeAppColor.BLUE:
         primary = Color(0xFF0D83DD);

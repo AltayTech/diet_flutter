@@ -315,6 +315,7 @@ Widget textInput(
     required Function onChanged,
     String? value,
     String? label,
+      required  bool enable,
     required bool maxLine,
     required BuildContext ctx,
     TextInputAction? action,
@@ -333,6 +334,7 @@ Widget textInput(
         textInputAction: action,
         maxLines: maxLine ? 4 : 1,
         initialValue: value ?? null,
+        enabled: enable,
         decoration: inputDecoration.copyWith(
           labelText: label,
           labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.lableColor),

@@ -8,6 +8,7 @@ import 'package:behandam/screens/ticket/ticket_provider.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -118,17 +119,24 @@ class _TicketState extends ResourcefulState<Ticket> {
                   ),
                   StreamBuilder(
                     builder: (context, snapshot) {
-                      return Container(
-                        child: Column(
-                          children: [
-                            ...ticketBloc.listTickets
-                                .map((message) => TicketItemWidget(
-                                      ticketItem: message,
-                                    ))
-                                .toList()
-                          ],
-                        ),
-                      );
+                      if(snapshot.data!=null && snapshot.data==false){
+                        return Container(
+                          child: Column(
+                            children: [
+                              ...ticketBloc.listTickets
+                                  .map((message) => TicketItemWidget(
+                                ticketItem: message,
+                              ))
+                                  .toList()
+                            ],
+                          ),
+                        );
+                      }else {
+                        return Center(child: SpinKitCircle(
+                          size: 5.h,
+                          color: AppColors.primary,
+                        ),);
+                      }
                     },
                     stream: ticketBloc.progressNetwork,
                   )
