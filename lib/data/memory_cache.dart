@@ -18,6 +18,7 @@ class MemoryApp {
   static CityProvinceModel? cityProvinceModel;
   static List<CountryCode>? countryCode;
   static String? selectedDate;
+  static String? routeName;
 
   Map<String, FoodListData> _foodList = {};
   Map<String, int> _selectedFastPatten = {};

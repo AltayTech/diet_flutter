@@ -60,7 +60,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                         stream: bloc.foodList,
                         builder: (_, AsyncSnapshot<FoodListData?> snapshot) =>
                             Text(
-                          '${intl.foodList} | ${snapshot.data?.menu?.title ?? ''}',
+                          '${intl.foodList} | ${snapshot.data?.menu.title ?? ''}',
                           textAlign: TextAlign.center,
                           style: typography.caption?.apply(
                             color: AppColors.surface,

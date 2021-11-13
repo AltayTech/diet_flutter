@@ -9,4 +9,5 @@ abstract class AppSizes {
   static late double iconLarge = 4.5.h;
   static late double iconExtraLarge = 5.75.h;
   static late double iconDoubleExtraLarge = 9.h;
+  static late double verticalPaginationExtent = 80.h;
 }

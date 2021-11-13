@@ -1,3 +1,4 @@
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/change_menu.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
@@ -13,6 +14,8 @@ import 'package:sizer/sizer.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../routes.dart';
+
 class FoodListPage extends StatefulWidget {
   const FoodListPage({Key? key}) : super(key: key);
 
@@ -26,7 +29,8 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   @override
   void initState() {
     super.initState();
-    bloc = FoodListBloc();
+    MemoryApp.routeName = Routes.listView;
+    bloc = FoodListBloc(true);
   }
 
   @override
