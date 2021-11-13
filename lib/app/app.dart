@@ -21,7 +21,6 @@ import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/typography.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -56,11 +55,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) {
-        return DevicePreview(
-          // enabled: !kReleaseMode,
-          enabled: false,
-          builder: (context) => app(), // Wrap your app
-        );
+        return app();
       },
     );
   }

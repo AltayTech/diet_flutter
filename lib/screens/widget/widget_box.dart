@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 void fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
   currentFocus.unfocus();
@@ -315,7 +314,7 @@ Widget textInput(
     required Function onChanged,
     String? value,
     String? label,
-      required  bool enable,
+    required bool enable,
     required bool maxLine,
     required BuildContext ctx,
     TextInputAction? action,
@@ -333,7 +332,7 @@ Widget textInput(
             : null,
         textInputAction: action,
         maxLines: maxLine ? 4 : 1,
-        initialValue: value ?? null,
+        controller: TextEditingController(text: value),
         enabled: enable,
         decoration: inputDecoration.copyWith(
           labelText: label,

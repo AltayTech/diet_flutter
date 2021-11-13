@@ -6,6 +6,7 @@ import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:flutter_sound_lite/public/flutter_sound_recorder.dart';
@@ -19,11 +20,13 @@ enum TypeTicket { MESSAGE, RECORD, IMAGE }
 class TicketBloc {
   TicketBloc() {
     changeType(TypeTicket.MESSAGE);
+    sendTicketMessage = new SendTicket();
   }
 
   final _repository = Repository.getInstance();
   final _showServerError = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
+  late SendTicket sendTicketMessage;
   final _isRecording = BehaviorSubject<bool>();
   final _isShowFile = BehaviorSubject<bool>();
   final _showTime = BehaviorSubject<String>();
@@ -31,7 +34,9 @@ class TicketBloc {
   final _typeTicket = BehaviorSubject<TypeTicket>();
   final _SupportItems = BehaviorSubject<List<SupportItem>>();
   final _showProgressItem = BehaviorSubject<bool>();
+
   List<TicketItem> _listTickets = [];
+  List<TicketModel> _listTicketDetails = [];
 
   Stream get showServerError => _showServerError.stream;
 
@@ -56,6 +61,9 @@ class TicketBloc {
   String? get showTimeRecord => _showTime.valueOrNull ?? '';
 
   List<TicketItem> get listTickets => _listTickets;
+  List<TicketModel> get listTicketDetails => _listTicketDetails;
+
+  bool get isFile => _isShowFile.stream.valueOrNull ?? false;
 
   void getTickets() {
     _progressNetwork.value = true;
@@ -109,7 +117,7 @@ class TicketBloc {
     _typeTicket.value = typeTicket;
     _isShowRecorder.value = false;
 
-    if (_isRecording.valueOrNull!=null && _isRecording.value == true) {
+    if (_isRecording.valueOrNull != null && _isRecording.value == true) {
       _isRecording.value = false;
       if (_myRecorder!.isRecording) stopRecorder(false);
       stopAndStart();
@@ -229,6 +237,43 @@ class TicketBloc {
     minute = 0;
     start = 0;
     _showTime.value = "${NumberFormat('00').format(minute)}:${NumberFormat('00').format(start)}";
+  }
+
+  void sendTicketText() {
+    _showProgressItem.value = true;
+    _repository.sendTicketMessage(sendTicketMessage).then((value) {
+      getTickets();
+      _showServerError.fireMessage(value.message!);
+    }).catchError((onError) {
+      // _showServerError.fireMessage(onError);
+    }).whenComplete(() {
+      _showProgressItem.value = false;
+    });
+  }
+
+  void sendTicketFile() {
+    _showProgressItem.value = true;
+    _repository.sendTicketFile(sendTicketMessage, File(outputFile!.path)).then((value) {
+      getTickets();
+      _showServerError.fireMessage(value.message!);
+    }).whenComplete(() {
+      _showProgressItem.value = false;
+    });
+  }
+
+  void downloadFile(String? name, String? url, TempMedia item) async {
+    Dio dio = Dio();
+
+    try {
+      var data = await dio.download('$url', '${tempDir!.path}/$name');
+      if (data.statusCode == 200) item.mediumUrls!.url = "${tempDir!.path}/$name}";
+
+    } catch (e) {
+
+    }
+    // String tempPath = tempDir.path;
+    // File file = new File('$tempPath/$name');
+    // await file.writeAsBytes(url.bodyBytes);
   }
 
   void dispose() {

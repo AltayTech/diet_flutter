@@ -49,17 +49,15 @@ class UserInformation {
 
   String get fullName => firstName == null ? '' : '$firstName $lastName';
 
-  String get whatsApp =>
-       (socialMedia == null || socialMedia![0].pivot!.link == null)
-          ? ''
-          : socialMedia![0].pivot!.link!;
+  String get whatsApp => (socialMedia == null || socialMedia![0].pivot!.link == null)
+      ? ''
+      : socialMedia![0].pivot!.link!;
 
-  String get telegram =>
-      (socialMedia == null || socialMedia![1].pivot!.link == null)
-          ? ''
-          : socialMedia![1].pivot!.link!;
+  String get telegram => (socialMedia == null || socialMedia![1].pivot!.link == null)
+      ? ''
+      : socialMedia![1].pivot!.link!;
 
-  String get skype =>  (socialMedia == null || socialMedia![2].pivot!.link == null)
+  String get skype => (socialMedia == null || socialMedia![2].pivot!.link == null)
       ? ''
       : socialMedia![2].pivot!.link!;
 
@@ -94,6 +92,36 @@ class Address {
 class Media {
   @JsonKey(name: "url")
   String? url;
+
+  @JsonKey(name: "id")
+  int? id;
+
+  @JsonKey(name: "model_id")
+  int? modelId;
+
+  @JsonKey(name: "file_name")
+  String? fileName;
+
+  @JsonKey(name: "name")
+  String? name;
+
+  @JsonKey(name: "image_thumb_url")
+  String? thumbUrl;
+
+  @JsonKey(name: "image_url")
+  String? imageUrl;
+
+  @JsonKey(name: "tutorial_url")
+  String? tutorialUrl;
+
+  @JsonKey(name: "avatar_url")
+  String? avatarUrl;
+
+  @JsonKey(name: "collection_name")
+  String? collectionName;
+
+  @JsonKey(name: "mime_type")
+  String? mimeType;
 
   Media();
 

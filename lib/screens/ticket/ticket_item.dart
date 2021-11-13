@@ -50,6 +50,7 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
                   color: Colors.white,
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -122,6 +123,7 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
           color: AppColors.onPrimary,
         ),
         padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
+        margin:  EdgeInsets.symmetric(vertical: 1.h),
         child: Column(
           textDirection: context.textDirectionOfLocale,
           crossAxisAlignment: CrossAxisAlignment.stretch,

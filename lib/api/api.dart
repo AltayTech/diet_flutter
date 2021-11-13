@@ -94,6 +94,11 @@ abstract class RestClient {
 
   @GET("/department")
   NetworkResult<SupportModel> getDepartmentItems();
+
+  @POST("/ticket")
+  ImperativeNetworkResult sendTicketMessage(@Body() SendTicket sendTicket);
+  @POST("/ticket")
+  ImperativeNetworkResult sendTicketFile(@Part(name: "media") File media, @Part(name: "is_voice") int is_voice, @Part(name: "has_attachment") int has_attachment, @Part(name: "department_id") String department_id, @Part(name: "title") String title);
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

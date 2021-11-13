@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/screens/ticket/ticket_bloc.dart';
 import 'package:behandam/screens/ticket/ticket_provider.dart';
@@ -8,10 +9,9 @@ import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/bottom_triangle.dart';
-import 'package:behandam/widget/custom_player.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class NewTicket extends StatefulWidget {
   @override
@@ -26,6 +26,14 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
     super.initState();
     bloc = TicketBloc();
     bloc.getSupportList();
+    listen();
+  }
+
+  void listen() {
+    bloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
+      VxNavigator.of(context).pop();
+    });
   }
 
   @override
@@ -91,6 +99,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                                   for (SupportItem s in bloc.SupportItems)
                                                     s.selected = false;
                                                   item.selected = true;
+                                                  bloc.sendTicketMessage.departmentId = item.id;
                                                 });
                                               }),
                                       selectSupport: () => () {
@@ -98,6 +107,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                               for (SupportItem s in bloc.SupportItems)
                                                 s.selected = false;
                                               item.selected = true;
+                                              bloc.sendTicketMessage.departmentId = item.id;
                                             });
                                           },
                                       support: item)).toList()
@@ -118,8 +128,11 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                         textInput(
                             height: 8.h,
                             label: intl.subject,
+                            value: bloc.sendTicketMessage.title ?? '',
                             validation: (validation) {},
-                            onChanged: (onChanged) {},
+                            onChanged: (onChanged) {
+                              bloc.sendTicketMessage.title = onChanged;
+                            },
                             maxLine: true,
                             enable: true,
                             ctx: context,
@@ -134,8 +147,11 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                 return textInput(
                                     height: 6.h,
                                     label: intl.lableTextMessage,
+                                    value: bloc.sendTicketMessage.body,
                                     validation: (validation) {},
-                                    onChanged: (onChanged) {},
+                                    onChanged: (onChanged) {
+                                      bloc.sendTicketMessage.body = onChanged;
+                                    },
                                     enable: !(snapshot.data ?? false),
                                     maxLine: true,
                                     ctx: context,
@@ -147,15 +163,43 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                         ),
                         TicketTypeButton(),
                         SizedBox(height: 2.h),
-                        Padding(
-                            padding: EdgeInsets.only(left: 12, right: 12),
-                            child: MaterialButton(
-                              onPressed: () {},
-                              child: Text(
-                                'ارسال پیام',
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                            ))
+                        StreamBuilder(
+                            stream: bloc.isShowProgressItem,
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null || snapshot.data == false)
+                                return Padding(
+                                    padding: EdgeInsets.only(left: 12, right: 12),
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        print('onChanged = > ${bloc.isFile}');
+                                        if (bloc.isFile == true) {
+                                          bloc.sendTicketFile();
+                                        } else if (bloc.sendTicketMessage.title != null &&
+                                            bloc.sendTicketMessage.title!.length > 0 &&
+                                            bloc.sendTicketMessage.body != null &&
+                                            bloc.sendTicketMessage.body!.length > 0) {
+                                          if (bloc.sendTicketMessage.departmentId != null) {
+                                            bloc.sendTicketText();
+                                          } else {
+                                            Utils.getSnackbarMessage(context, intl.errorDepartment);
+                                          }
+                                        } else
+                                          Utils.getSnackbarMessage(context, intl.errorFillItem);
+                                      },
+                                      child: Text(
+                                        'ارسال پیام',
+                                        style: Theme.of(context).textTheme.caption,
+                                      ),
+                                    ));
+                              else {
+                                return Center(
+                                  child: SpinKitCircle(
+                                    size: 5.h,
+                                    color: AppColors.primary,
+                                  ),
+                                );
+                              }
+                            })
                       ],
                     ),
                   )
@@ -260,7 +304,8 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Container(
-                color: support.isSelected ? AppColors.colorselectDepartmentTicket : Colors.grey[100],
+                color:
+                    support.isSelected ? AppColors.colorselectDepartmentTicket : Colors.grey[100],
                 width: double.infinity,
                 height: double.infinity,
                 child: ClipPath(

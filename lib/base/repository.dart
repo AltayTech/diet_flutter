@@ -3,25 +3,23 @@ import 'dart:io';
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
+import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
-import 'package:behandam/data/entity/regime/help.dart';
-import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
 import '../api/api.dart';
 import '../data/entity/auth/country_code.dart';
 import '../data/entity/auth/register.dart';
 import '../data/entity/auth/reset.dart';
+import '../data/entity/auth/sign_in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/auth/sign_in.dart';
 
 enum FoodDietPdf { TERM, WEEK }
 
@@ -68,7 +66,12 @@ abstract class Repository {
   NetworkResult<Inbox> getInbox();
 
   NetworkResult<TicketModel> getTickets();
+
   NetworkResult<SupportModel> getDepartmentItems();
+
+  ImperativeNetworkResult sendTicketMessage(SendTicket sendTicket);
+
+  ImperativeNetworkResult sendTicketFile(SendTicket sendTicket, File file);
 }
 
 class _RepositoryImpl extends Repository {
@@ -126,7 +129,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode) async{
+  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode) async {
     var response = await _apiClient.verifyUser(verificationCode);
     return response;
   }
@@ -165,13 +168,13 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<RegimeType> regimeType() async{
+  NetworkResult<RegimeType> regimeType() async {
     var response = await _apiClient.getDietType();
     return response;
   }
 
   @override
-  NetworkResult<Help> helpDietType() async{
+  NetworkResult<Help> helpDietType() async {
     var response = await _apiClient.helpDietType();
     return response;
   }
@@ -215,6 +218,23 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<SupportModel> getDepartmentItems() {
     var response = _apiClient.getDepartmentItems();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendTicketMessage(SendTicket sendTicket) {
+    sendTicket.hasAttachment = false;
+    sendTicket.isVoice = false;
+    var response = _apiClient.sendTicketMessage(sendTicket);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendTicketFile(SendTicket sendTicket, File file) {
+    sendTicket.hasAttachment = true;
+    sendTicket.isVoice = true;
+    var response = _apiClient.sendTicketFile(file, sendTicket.isVoice ? 1 : 0,
+        sendTicket.hasAttachment ? 1 : 0, sendTicket.departmentId.toString(), sendTicket.title!);
     return response;
   }
 }

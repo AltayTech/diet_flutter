@@ -76,6 +76,7 @@ class TicketTabState extends ResourcefulState<TicketTab> with SingleTickerProvid
                       height: 1000,
                       child: TabBarView(
                         controller: _controller,
+                        physics: NeverScrollableScrollPhysics(),
                         children: _listTabView,
                       ),
                     ),

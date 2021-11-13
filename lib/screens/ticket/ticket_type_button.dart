@@ -51,6 +51,7 @@ class TicketTypeButtonState extends ResourcefulState<TicketTypeButton> {
                       child: Center(
                         child: GestureDetector(
                           onTap: () {
+                            bloc.sendTicketMessage.body=null;
                             bloc.changeType(TypeTicket.RECORD);
                             bloc.createRecord();
                           },
@@ -88,6 +89,7 @@ class TicketTypeButtonState extends ResourcefulState<TicketTypeButton> {
                 child: Row(children: [
                   GestureDetector(
                     onTap: () async {
+                      bloc.sendTicketMessage.body=null;
                       bloc.changeType(TypeTicket.MESSAGE);
                     },
                     child: Padding(

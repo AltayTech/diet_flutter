@@ -10,12 +10,16 @@ TicketModel _$TicketModelFromJson(Map<String, dynamic> json) => TicketModel()
   ..count = json['count'] as int?
   ..items = (json['items'] as List<dynamic>)
       .map((e) => TicketItem.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..messages = (json['messages'] as List<dynamic>?)
+      ?.map((e) => MessageTicket.fromJson(e as Map<String, dynamic>))
       .toList();
 
 Map<String, dynamic> _$TicketModelToJson(TicketModel instance) =>
     <String, dynamic>{
       'count': instance.count,
       'items': instance.items,
+      'messages': instance.messages,
     };
 
 TicketItem _$TicketItemFromJson(Map<String, dynamic> json) => TicketItem()
@@ -57,7 +61,8 @@ SupportItem _$SupportItemFromJson(Map<String, dynamic> json) => SupportItem()
   ..id = json['id'] as int?
   ..name = json['name'] as String?
   ..displayName = json['display_name'] as String?
-  ..ticketName = json['ticket_name'] as String?;
+  ..ticketName = json['ticket_name'] as String?
+  ..selected = json['selected'] as bool?;
 
 Map<String, dynamic> _$SupportItemToJson(SupportItem instance) =>
     <String, dynamic>{
@@ -65,4 +70,108 @@ Map<String, dynamic> _$SupportItemToJson(SupportItem instance) =>
       'name': instance.name,
       'display_name': instance.displayName,
       'ticket_name': instance.ticketName,
+      'selected': instance.selected,
     };
+
+SendTicket _$SendTicketFromJson(Map<String, dynamic> json) => SendTicket()
+  ..departmentId = json['department_id'] as int?
+  ..body = json['body'] as String?
+  ..title = json['title'] as String?
+  ..hasAttachment = json['has_attachment'] as bool? ?? false
+  ..isVoice = json['is_voice'] as bool? ?? false;
+
+Map<String, dynamic> _$SendTicketToJson(SendTicket instance) =>
+    <String, dynamic>{
+      'department_id': instance.departmentId,
+      'body': instance.body,
+      'title': instance.title,
+      'has_attachment': instance.hasAttachment,
+      'is_voice': instance.isVoice,
+    };
+
+MessageTicket _$MessageTicketFromJson(Map<String, dynamic> json) =>
+    MessageTicket()
+      ..id = json['id'] as int?
+      ..ticketId = json['ticket_id'] as int?
+      ..body = json['body'] as String?
+      ..type = $enumDecodeNullable(_$TypeTicketEnumMap, json['type'])
+      ..isAdmin = json['is_admin'] as int?
+      ..file = json['file'] == null
+          ? null
+          : Media.fromJson(json['file'] as Map<String, dynamic>)
+      ..temp = json['template'] == null
+          ? null
+          : TempTicket.fromJson(json['template'] as Map<String, dynamic>)
+      ..createdAt = json['created_at'] as String?;
+
+Map<String, dynamic> _$MessageTicketToJson(MessageTicket instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'ticket_id': instance.ticketId,
+      'body': instance.body,
+      'type': _$TypeTicketEnumMap[instance.type],
+      'is_admin': instance.isAdmin,
+      'file': instance.file,
+      'template': instance.temp,
+      'created_at': instance.createdAt,
+    };
+
+const _$TypeTicketEnumMap = {
+  TypeTicket.MESSAGE: 'MESSAGE',
+  TypeTicket.RECORD: 'RECORD',
+  TypeTicket.IMAGE: 'IMAGE',
+};
+
+TempItem _$TempItemFromJson(Map<String, dynamic> json) => TempItem()
+  ..id = json['id'] as int?
+  ..alterText = json['alter_text'] as String?
+  ..media = (json['media'] as List<dynamic>?)
+      ?.map((e) => TempMedia.fromJson(e as Map<String, dynamic>))
+      .toList();
+
+Map<String, dynamic> _$TempItemToJson(TempItem instance) => <String, dynamic>{
+      'id': instance.id,
+      'alter_text': instance.alterText,
+      'media': instance.media,
+    };
+
+TempTicket _$TempTicketFromJson(Map<String, dynamic> json) => TempTicket()
+  ..id = json['id'] as int?
+  ..title = json['title'] as String?
+  ..data = (json['data'] as List<dynamic>?)
+      ?.map((e) => TempItem.fromJson(e as Map<String, dynamic>))
+      .toList();
+
+Map<String, dynamic> _$TempTicketToJson(TempTicket instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'data': instance.data,
+    };
+
+TempMedia _$TempMediaFromJson(Map<String, dynamic> json) => TempMedia()
+  ..id = json['id'] as int?
+  ..name = json['name'] as String?
+  ..fileName = json['file_name'] as String?
+  ..mediumType = $enumDecodeNullable(_$MediumTypeEnumMap, json['medium_type'])
+  ..mediumUrls = json['medium_urls'] == null
+      ? null
+      : Media.fromJson(json['medium_urls'] as Map<String, dynamic>)
+  ..progress = json['progress'] as bool?;
+
+Map<String, dynamic> _$TempMediaToJson(TempMedia instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'file_name': instance.fileName,
+      'medium_type': _$MediumTypeEnumMap[instance.mediumType],
+      'medium_urls': instance.mediumUrls,
+      'progress': instance.progress,
+    };
+
+const _$MediumTypeEnumMap = {
+  MediumType.IMAGE: 0,
+  MediumType.VIDEO: 1,
+  MediumType.NONE: 2,
+  MediumType.AUDIO: 3,
+  MediumType.file: 4,
+};

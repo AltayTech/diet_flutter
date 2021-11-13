@@ -48,7 +48,6 @@ dependencies:
   toggle_switch: ^1.2.0
   country_code_picker: ^2.0.2
   country_currency_pickers: ^2.0.0
-  device_preview: ^0.8.0
   cached_network_image: ^3.1.0
   dio: ^4.0.1
   persian_number_utility: ^1.1.0
@@ -59,7 +58,9 @@ dependencies:
   flutter_sound_lite: ^8.3.9
   permission_handler: ^8.2.6
   app_settings: 4.1.1
-  path_provider: ^2.0.6
+  path_provider: ^2.0.2
+  open_file: ^3.2.1
+  flutter_html: ^2.1.0
 
 dev_dependencies:
   json_serializable: ^6.0.1
