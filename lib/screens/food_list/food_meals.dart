@@ -57,11 +57,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
   }
 
   Widget mealItem(Meals meal) {
-    List<int> items = meal.food == null
-        ? []
-        : List.generate((meal.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
-    int index = 0;
-    // debugPrint('meal item ${meal.food?.title} / ${meal.food?.ratios?.length}');
+    final isCurrentMeal = checkCurrentMeal(meal);
     return Card(
       margin: EdgeInsets.only(bottom: 2.h),
       shape: AppShapes.rectangleMild,
@@ -69,8 +65,17 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
+          Container(
             padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            decoration: BoxDecoration(
+              color: isCurrentMeal ? AppColors.primary.withOpacity(0.4) : AppColors.onPrimary,
+              borderRadius: BorderRadius.only(
+                topLeft: AppRadius.radiusSmall,
+                topRight: AppRadius.radiusSmall,
+                bottomRight: meal.food!.description.isNullOrEmpty ? AppRadius.radiusSmall : Radius.zero,
+                bottomLeft: meal.food!.description.isNullOrEmpty? AppRadius.radiusSmall : Radius.zero,
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
@@ -86,98 +91,51 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                     ),
                     Space(width: 2.w),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            meal.title,
-                            style: typography.bodyText2,
-                            softWrap: true,
-                          ),
-                          if (meal.description.isNotNullAndEmpty)
-                            Text(
-                              meal.description ?? '',
-                              style: typography.caption,
-                              softWrap: true,
-                            ),
-                        ],
+                      child: Text(
+                        meal.title,
+                        style: typography.bodyText2,
+                        softWrap: true,
                       ),
                     ),
                     Space(width: 2.w),
                     alternateFood(meal),
                   ],
                 ),
-                Space(height: 1.h),
-                Container(
-                  child: Wrap(
-                    alignment: WrapAlignment.start,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    direction: Axis.horizontal,
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      ...items.map(
-                            (i) {
-                          final widget;
-                          if (i % 2 == 0)
-                            widget = Chip(
-                              backgroundColor: Colors.grey[200],
-                              label: FittedBox(
-                                child: Text(
-                                  '${meal.food!.ratios![0].ratioFoodItems![index].unitTitle.replaceAll('*', intl.and)} ${meal.food!.ratios![0].ratioFoodItems![index].title}',
-                                  style: typography.caption,
-                                  textAlign: TextAlign.center,
-                                  // softWrap: true,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                            );
-                          else {
-                            widget = Icon(
-                              Icons.add,
-                              size: 6.w,
-                            );
-                            index++;
-                          }
-                          return widget;
-                        },
-                      ).toList(),
-                      // ...meal.food!.ratios![0].ratioFoodItems!.map((foodItem) {
-                      //   int index = meal.food!.ratios![0].ratioFoodItems!
-                      //       .indexWhere((element) => element.id == foodItem.id);
-                      //   return Row(
-                      //     mainAxisSize: MainAxisSize.min,
-                      //     children: [
-                      //       Chip(
-                      //         backgroundColor: Colors.grey[200],
-                      //         label: FittedBox(
-                      //           child: Text(
-                      //             '${foodItem.unitTitle.replaceAll('*', intl.and)} ${foodItem.title}',
-                      //             style: typography.caption,
-                      //             textAlign: TextAlign.center,
-                      //             softWrap: true,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       if (index !=
-                      //           meal.food!.ratios![0].ratioFoodItems!.length -
-                      //               1)
-                      //         Icon(
-                      //           Icons.add,
-                      //           size: 6.w,
-                      //         ),
-                      //     ],
-                      //   );
-                      // }).toList(),
-                    ],
+                Space(height: 0.5.h),
+                if (meal.startAt.isNotNullAndEmpty &&
+                    meal.startAt.isNotNullAndEmpty)
+                  Text(
+                    intl.timeOfTheMeal(meal.startAt!.substring(0, 5),
+                        meal.endAt!.substring(0, 5)),
+                    style: typography.caption,
+                    softWrap: true,
                   ),
-                ),
+                Space(height: 1.h),
+                foodItems(meal, isCurrentMeal),
               ],
             ),
           ),
-          if (meal.food?.description != null) recipeBox(meal),
+          if (meal.food?.description != null) recipeBox(meal, isCurrentMeal),
         ],
       ),
     );
+  }
+
+  bool checkCurrentMeal(Meals meal) {
+    return meal.startAt.isNotNullAndEmpty &&
+        meal.endAt.isNotNullAndEmpty &&
+        convertTimeOfDayToHour(TimeOfDay.now()) >=
+            convertTimeOfDayToHour(TimeOfDay(
+                hour: int.parse(meal.startAt!.substring(0, 2)),
+                minute: int.parse(meal.startAt!.substring(3, 5)))) &&
+        convertTimeOfDayToHour(TimeOfDay.now()) <=
+            convertTimeOfDayToHour(TimeOfDay(
+                hour: int.parse(meal.endAt!.substring(0, 2)),
+                minute: int.parse(meal.endAt!.substring(3, 5))));
+  }
+
+  int convertTimeOfDayToHour(TimeOfDay timeOfDay) {
+    return (timeOfDay.hour * 60) + timeOfDay.minute;
   }
 
   Widget alternateFood(Meals meal) {
@@ -194,6 +152,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                   color: AppColors.onSurface,
                   width: 0.4,
                 ),
+                color: AppColors.onPrimary,
               ),
               child: Text(
                 intl.manipulateFood,
@@ -284,17 +243,61 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     );
   }
 
-  Widget recipeBox(Meals meal) {
+  Widget foodItems(Meals meal, bool isCurrentMeal){
+    List<int> items = meal.food == null
+        ? []
+        : List.generate(
+        (meal.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
+    int index = 0;
+    return Container(
+      child: Wrap(
+        alignment: WrapAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        direction: Axis.horizontal,
+        textDirection: TextDirection.rtl,
+        children: [
+          ...items.map(
+                (i) {
+              final widget;
+              if (i % 2 == 0)
+                widget = Chip(
+                  backgroundColor: isCurrentMeal ? AppColors.primary.withOpacity(0.2) : AppColors.lableColor.withOpacity(0.2),
+                  label: FittedBox(
+                    child: Text(
+                      '${meal.food!.ratios![0].ratioFoodItems![index].unitTitle.replaceAll('*', intl.and)} ${meal.food!.ratios![0].ratioFoodItems![index].title}',
+                      style: typography.caption,
+                      textAlign: TextAlign.center,
+                      // softWrap: true,
+                      overflow: TextOverflow.visible,
+                    ),
+                  ),
+                );
+              else {
+                widget = Icon(
+                  Icons.add,
+                  size: 6.w,
+                );
+                index++;
+              }
+              return widget;
+            },
+          ).toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget recipeBox(Meals meal, bool isCurrentMeal) {
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
       builder: (_, AsyncSnapshot<WeekDay> snapshot) {
         if (snapshot.hasData && isToday(snapshot.requireData))
           return Container(
             decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: isCurrentMeal ? AppColors.primary.withOpacity(0.2) : AppColors.lableColor.withOpacity(0.1),
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(2.5.w),
-                bottomRight: Radius.circular(2.5.w),
+                bottomLeft: AppRadius.radiusSmall,
+                bottomRight: AppRadius.radiusSmall,
               ),
             ),
             padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
