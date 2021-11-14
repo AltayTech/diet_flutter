@@ -16,7 +16,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
-
+import 'package:behandam/extensions/string.dart';
 import '../../routes.dart';
 
 class DailyMenuPage extends StatefulWidget {
@@ -160,7 +160,8 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
         : List.generate(
             (meal.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
     int index = 0;
-    return Card(
+    debugPrint('is past ${isPastMeal(meal)} / ${meal.title}');
+    return isPastMeal(meal) ? Container() : Card(
       margin: EdgeInsets.only(bottom: 2.h),
       shape: AppShapes.rectangleMild,
       elevation: 2,
@@ -266,6 +267,19 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
         ),
       ),
     );
+  }
+
+  bool isPastMeal(Meals meal) {
+    return meal.startAt.isNotNullAndEmpty &&
+            meal.endAt.isNotNullAndEmpty &&
+            convertTimeOfDayToHour(TimeOfDay.now()) >=
+                convertTimeOfDayToHour(TimeOfDay(
+                    hour: int.parse(meal.endAt!.substring(0, 2)),
+                    minute: int.parse(meal.endAt!.substring(3, 5))));
+  }
+
+  int convertTimeOfDayToHour(TimeOfDay timeOfDay) {
+    return (timeOfDay.hour * 60) + timeOfDay.minute;
   }
 
   Widget floatingActionButton() {

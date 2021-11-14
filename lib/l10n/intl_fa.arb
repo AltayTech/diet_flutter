@@ -134,5 +134,16 @@
   "saveDailyMenu": "ذخیره غذاهای روزمنو",
   "and": "و",
   "selectFoodForAllMeals": "برای تمام وعده ها غذا انتخاب کن",
+  "timeOfTheMeal": "زمان مناسب این وعده از ساعت {start} تا {end} میباشد.",
+  "@timeOfTheMeal": {
+      "placeholders": {
+          "start": {
+              "type": "String"
+          },
+          "end": {
+                        "type": "String"
+                    }
+      }
+    },
   "arabic": "العربية"
 }
