@@ -1,8 +1,8 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/themes/colors.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,13 +25,15 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
       onTap: () {
         switch (type) {
           case BottomNavItem.PROFILE:
-            if(widget.currentTab != BottomNavItem.PROFILE) navigator.routeManager.clearAndPush(Uri.parse(Routes.profile));
+            if (widget.currentTab != BottomNavItem.PROFILE)
+              navigator.routeManager.clearAndPush(Uri.parse(Routes.profile));
             break;
           case BottomNavItem.SUPPORT:
             navigator.routeManager.clearAndPush(Uri.parse(Routes.ticketMessage));
             break;
           case BottomNavItem.DIET:
-            if(currentTab != BottomNavItem.DIET) navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
+            if (widget.currentTab != BottomNavItem.DIET)
+              navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
             break;
           case BottomNavItem.VITRINE:
           /* if (title != currentTab)
@@ -56,15 +58,15 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Container(child: SvgPicture.asset(
-                      imageAddress,
-                      width: 3.h,
-                      height: 3.h,
-                      color: widget.currentTab == type
-                          ? AppColors.primary
-                          : AppColors.iconsColor,
-                      fit: BoxFit.fitWidth,
-                    ),),
+                    Container(
+                      child: SvgPicture.asset(
+                        imageAddress,
+                        width: 3.h,
+                        height: 3.h,
+                        color: widget.currentTab == type ? AppColors.primary : AppColors.iconsColor,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
                     if (type == BottomNavItem.PROFILE && MemoryApp.inboxCount >= 0)
                       Positioned(
                         left: 0,
@@ -123,22 +125,24 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
       children: <Widget>[
         Expanded(
             flex: 1,
-            child: item(
-                'assets/images/tab/profile_menu_icon.svg', BottomNavItem.PROFILE,intl.profile, context)),
+            child: item('assets/images/tab/profile_menu_icon.svg', BottomNavItem.PROFILE,
+                intl.profile, context)),
+        Expanded(
+            flex: 1,
+            child: item('assets/images/tab/contact_menu_icon.svg', BottomNavItem.SUPPORT,
+                intl.ticket, context)),
         Expanded(
             flex: 1,
             child: item(
-                'assets/images/tab/contact_menu_icon.svg', BottomNavItem.SUPPORT, intl.ticket, context)),
+                'assets/images/tab/food_menu_icon.svg', BottomNavItem.DIET, intl.diet, context)),
         Expanded(
             flex: 1,
-            child: item('assets/images/tab/food_menu_icon.svg', BottomNavItem.DIET, intl.diet, context)),
+            child: item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.VITRINE, intl.vitrin,
+                context)),
         Expanded(
             flex: 1,
-            child:
-                item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.VITRINE, intl.vitrin, context)),
-        Expanded(
-            flex: 1,
-            child: item('assets/images/tab/status_menu_icon.svg', BottomNavItem.STATUS, intl.status, context)),
+            child: item('assets/images/tab/status_menu_icon.svg', BottomNavItem.STATUS, intl.status,
+                context)),
       ],
     );
   }

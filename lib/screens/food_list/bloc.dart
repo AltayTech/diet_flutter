@@ -1,24 +1,16 @@
 import 'dart:async';
 
-import 'package:behandam/app/app.dart';
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/extensions/object.dart';
-import 'package:behandam/screens/fast/bloc.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shamsi_date/shamsi_date.dart';
-import 'package:behandam/extensions/bool.dart';
-import 'package:behandam/extensions/object.dart';
-import 'package:behandam/extensions/string.dart';
 
 import 'week_day.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class FoodListBloc {
   FoodListBloc(bool fillFood) {
@@ -29,6 +21,7 @@ class FoodListBloc {
     debugPrint('bloc foodlist ${_date.value}');
     _loadContent(invalidate: true, fillFood: fillFood);
   }
+
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _foodList = BehaviorSubject<FoodListData?>();
@@ -56,28 +49,30 @@ class FoodListBloc {
       _foodList.value = value.data!;
       _foodList.value?.meals.sort((a, b) => a.order.compareTo(b.order));
       setTheme();
-      if(fillFood) foodForMeal();
+      if (fillFood) foodForMeal();
       fillWeekDays();
     }).whenComplete(() => _loadingContent.value = false);
   }
 
-  void foodForMeal(){
+  void foodForMeal() {
     for (int i = 0; i < _foodList.value!.menu.foods.length; i++) {
       _foodList.value?.meals[i].food = _foodList.value?.menu.foods[i];
       _foodList.value?.meals[i].food?.ratios?[0].ratioFoodItems
           ?.sort((a, b) => a.order.compareTo(b.order));
       debugPrint('fill food ${_foodList.value!.meals[i].food!.ratios?[0].ratioFoodItems?.length}');
-      _foodList.value?.meals[i].food?.ratios?[0].ratioFoodItems
-          ?.forEach((ratioFoodItem) {
+      _foodList.value?.meals[i].food?.ratios?[0].ratioFoodItems?.forEach((ratioFoodItem) {
         ratioFoodItem.unitTitle = '';
         debugPrint('ratio food ${ratioFoodItem.toJson()}');
         if (checkDefaultUnit(ratioFoodItem)) {
-          ratioFoodItem.unitTitle += '${ratioFoodItem.amount?.defaultUnit?.representational} ${ratioFoodItem.amount?.defaultUnit?.title}';
+          ratioFoodItem.unitTitle +=
+              '${ratioFoodItem.amount?.defaultUnit?.representational} ${ratioFoodItem.amount?.defaultUnit?.title}';
           if (checkSecondUnit(ratioFoodItem)) {
-            ratioFoodItem.unitTitle += ' * ${ratioFoodItem.amount?.secondUnit?.representational} ${ratioFoodItem.amount?.secondUnit?.title}';
+            ratioFoodItem.unitTitle +=
+                ' * ${ratioFoodItem.amount?.secondUnit?.representational} ${ratioFoodItem.amount?.secondUnit?.title}';
           }
-        }else if (checkSecondUnit(ratioFoodItem)) {
-          ratioFoodItem.unitTitle += '${ratioFoodItem.amount?.secondUnit?.representational} ${ratioFoodItem.amount?.secondUnit?.title}';
+        } else if (checkSecondUnit(ratioFoodItem)) {
+          ratioFoodItem.unitTitle +=
+              '${ratioFoodItem.amount?.secondUnit?.representational} ${ratioFoodItem.amount?.secondUnit?.title}';
         }
       });
     }
@@ -103,8 +98,7 @@ class FoodListBloc {
   }
 
   void fillWeekDays() {
-    DateTime gregorianDate =
-        DateTime.parse(_foodList.value!.menu.startedAt).toUtc().toLocal();
+    DateTime gregorianDate = DateTime.parse(_foodList.value!.menu.startedAt).toUtc().toLocal();
     Jalali jalaliDate = Jalali.fromDateTime(gregorianDate);
     List<WeekDay> data = [];
     debugPrint(
@@ -115,20 +109,16 @@ class FoodListBloc {
         isSelected: gregorianDate.toString().substring(0, 10) == _date.value));
     debugPrint('date2 $gregorianDate / $jalaliDate');
     for (int i = 1; i < 7; i++) {
-      debugPrint(
-          'week day ${gregorianDate.add(Duration(days: i))} / ${jalaliDate.add(days: i)}');
+      debugPrint('week day ${gregorianDate.add(Duration(days: i))} / ${jalaliDate.add(days: i)}');
       data.add(WeekDay(
           gregorianDate: gregorianDate.add(Duration(days: i)),
           jalaliDate: jalaliDate.add(days: i),
-          isSelected: gregorianDate
-                  .add(Duration(days: i))
-                  .toString()
-                  .substring(0, 10) ==
-              _date.value));
+          isSelected:
+              gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
     }
     _weekDays.value = data;
-    _selectedWeekDay.value = _weekDays.value!.firstWhere((element) =>
-        element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
+    _selectedWeekDay.value = _weekDays.value!.firstWhere(
+        (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
     _previousWeekDay = _selectedWeekDay.value;
   }
 
@@ -143,8 +133,7 @@ class FoodListBloc {
         if (element!.gregorianDate.toString().substring(0, 10) == newDate) {
           element.isSelected = true;
           _selectedWeekDay.value = element;
-          debugPrint(
-              'change date 2 ${_selectedWeekDay.value.isSelected} / ${element.isSelected}');
+          debugPrint('change date 2 ${_selectedWeekDay.value.isSelected} / ${element.isSelected}');
         } else
           element.isSelected = false;
       });
@@ -167,50 +156,53 @@ class FoodListBloc {
     }).whenComplete(() => _loadingContent.value = false);
   }
 
-  void onMealFood(Food newFood, int mealId){
+  void onMealFood(Food newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
     final index = _foodList.valueOrNull?.meals.indexWhere((element) => element.id == mealId);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals[index!].newFood = newFood;
-    debugPrint('newfood ${_foodList.valueOrNull?.meals[index!].title} / ${_foodList.valueOrNull?.meals[index!].newFood?.toJson()}');
+    debugPrint(
+        'newfood ${_foodList.valueOrNull?.meals[index!].title} / ${_foodList.valueOrNull?.meals[index!].newFood?.toJson()}');
   }
 
-  onDailyMenu(){
+  onDailyMenu() {
     _loadingContent.value = true;
     List<DailyFood> foods = [];
-    int day = _weekDays.value!.indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
+    int day = _weekDays.value!
+        .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
     debugPrint('newfood3 ${_foodList.valueOrNull?.meals[0].newFood?.id}');
     _foodList.valueOrNull?.meals.forEach((meal) {
       debugPrint('daily menu newfood ${meal.id} / ${meal.title} / ${meal.newFood?.toJson()}');
       //ToDo calculate the free food id
-      if(meal.newFood?.id != null) foods.add(DailyFood(meal.newFood!.id!, meal.id, day + 1, null));
+      if (meal.newFood?.id != null) foods.add(DailyFood(meal.newFood!.id!, meal.id, day + 1, null));
       debugPrint('daily menu change ${foods.last.toJson()}');
     });
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
     _repository.dailyMenu(requestData).then((value) {
-      if(value.data != null && value.requireData) {
+      if (value.data != null && value.requireData) {
         onRefresh(invalidate: true);
       }
     }).whenComplete(() => _loadingContent.value = false);
   }
 
-  void onReplacingFood(int mealId){
+  void onReplacingFood(int mealId) {
     _loadingContent.value = true;
     List<DailyFood> foods = [];
-    int day = _weekDays.value!.indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
+    int day = _weekDays.value!
+        .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
     final meal = _foodList.value?.meals.firstWhere((element) => element.id == mealId);
     foods.add(DailyFood(meal!.newFood!.id!, meal.id, day + 1, null));
     debugPrint('replace Food ${foods.last.toJson()}');
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
     _repository.dailyMenu(requestData).then((value) {
-      if(value.data != null && value.requireData) {
+      if (value.data != null && value.requireData) {
         onRefresh(invalidate: true);
       }
     }).whenComplete(() => _loadingContent.value = false);
     makingFoodEmpty(mealId);
   }
 
-  void makingFoodEmpty(int mealId){
+  void makingFoodEmpty(int mealId) {
     _foodList.valueOrNull?.meals.firstWhere((element) => element.id == mealId).newFood = null;
   }
 
