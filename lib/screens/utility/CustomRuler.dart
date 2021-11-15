@@ -10,266 +10,190 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 
-
-import 'arc.dart';
-
 enum RulerType { Weight, Normal }
 
 class CustomRuler extends StatefulWidget {
-  int? value;
+  final Color color;
+  double? value;
   final int max;
   final int min;
-  final String heading;
+  Function? onClick;
   final String unit;
-  final Color color;
-  final String iconPath;
-  Function helpClick;
+  final bool smallSlider;
   final RulerType rulerType;
-  int? secondValue = 100;
-  Function? callback;
-  final gramList = List<int>.generate(10, (index) => (index) * 100);
-
-//  final double itemExtent;
+  final String heading;
+  Function helpClick;
+  final String iconPath;
+  int secondValue = 0;
 
   CustomRuler({
+    required this.color,
     required this.value,
     required this.max,
     required this.min,
-    required this.heading,
     required this.unit,
-    required this.color,
+    required this.smallSlider,
+    required this.rulerType,
+    required this.heading,
     required this.helpClick,
     required this.iconPath,
-    required this.rulerType,
-    this.callback,
-    this.secondValue,
+    this.onClick,
   });
 
   @override
   _CustomRulerState createState() => _CustomRulerState();
 }
 
-class _CustomRulerState extends ResourcefulState<CustomRuler> {
+class _CustomRulerState extends State<CustomRuler> {
   bool showRuler = false;
-
-/*  _CustomRulerState(){
-    if(widget.rulerType==RulerType.Weight && widget.secondValue == null)
-      widget.secondValue = widget.gramList[0];
-  }*/
 
   void callBack(val) {
     setState(() {
+      // print(val);
       if (val != widget.value) {
         widget.value = val;
         if (widget.rulerType == RulerType.Weight) {
-          widget.callback!(val + (widget.secondValue! / 1000));
+          widget.onClick!(val + (widget.secondValue / 1000));
         } else
-          widget.callback!(val);
+          widget.onClick!(val);
       }
     });
   }
 
-  void callBack2(secondVal) {
+  void callBackGr(secondVal) {
     setState(() {
-
+print(secondVal);
       widget.secondValue = secondVal;
 
-      widget.callback!(widget.value! + (secondVal / 1000));
+      widget.onClick! (widget.value! + (secondVal / 1000));
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 12.0, left: 12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-           Row(children: [
-             SvgPicture.asset(widget.iconPath, width: 5.w, height: 5.h),
-             Padding(
-               padding: const EdgeInsets.only(right: 12.0),
-               child: Text(widget.heading),
-             ),
-           ]),
-            InkWell(
-              child: SvgPicture.asset('assets/images/physical_report/guide.svg',
-                  width: 5.w, height: 5.h),
-              onTap: () => widget.helpClick.call(),
-            ),
-          ]),
-        ),
-        Row(
-          children: [
-            Flexible(
-              child: Container(
-                child: RulerBackground(
-                  unit: widget.unit,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      return constraints.isTight
-                          ? Container()
-                          : Directionality(
-                        textDirection: TextDirection.ltr,
-                            child: Slider(
-                              color: widget.color,
-                        minValue: widget.min,
-                        maxValue: widget.max,
-                        value: widget.value!,
-                        width: constraints.maxWidth,
-                        onClick: (val) {
-                            callBack(val);
-                        },
-                        rulerType: widget.rulerType,
-//                  itemExtent: itemExtent,
-                      ),
-                          );
-                    },
-                  ),
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.only(right: 12.0, left: 12.0),
+        child: Column(
+          children: <Widget>[
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Row(children: [
+                SvgPicture.asset(widget.iconPath, width: 5.w, height: 5.h),
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: Text(widget.heading),
                 ),
+              ]),
+              InkWell(
+                child: SvgPicture.asset(
+                    'assets/images/physical_report/guide.svg',
+                    width: 5.w,
+                    height: 5.h),
+                onTap: () => widget.helpClick.call(),
               ),
-            ),
-            if (widget.rulerType == RulerType.Weight)
-              // SizedBox(width: AppSizes.iconDefault),
-            if (widget.rulerType == RulerType.Weight)
-              Flexible(
-                child: Container(
-                  child: RulerBackground(
-                    unit: intl.gr,
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return constraints.isTight
-                            ? Container()
-                            : Directionality(
-                          textDirection: TextDirection.ltr,
-                              child: Slider(
-                                color: widget.color,
-                          minValue: widget.min,
-                          maxValue: widget.max,
-                          value: widget.value!,
-                          width: constraints.maxWidth,
-                          onClick: (val) {
-                            callBack2(val);
-                          },
-                          rulerType: widget.rulerType,
-//                  itemExtent: itemExtent,
-                        ),
-                            );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              // Container(
-              //   decoration: BoxDecoration(
-              //     color: AppColors.grey.withOpacity(0.6),//
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              //   height: AppSizes.iconDefault * 12.5,
-              //   padding: EdgeInsets.symmetric(
-              //       horizontal: AppSizes.iconDefault * 3),
-              //   child: Column(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     crossAxisAlignment: CrossAxisAlignment.center,
-              //     children: [
-              //       FittedBox(
-              //         child: Text(
-              //           'gr',//
-              //           textAlign: TextAlign.center,
-              //           // style: Utils.styleTextTreadmillRulerTitle.copyWith(
-              //           //     color: AppColors.grey),//
-              //         ),
-              //       ),
-              //       // SizedBox(height: SizeConfig.blockSizeVertical * 1),
-              //       Directionality(
-              //         textDirection: TextDirection.rtl,
-              //         child: DropdownButton(
-              //           items: widget.gramList
-              //               .map((value) => DropdownMenuItem(
-              //             child: Text(
-              //               value.toString(),
-              //               textAlign: TextAlign.start,
-              //             ),
-              //             value: value,
-              //           ))
-              //               .toList(),
-              //           onChanged: (dynamic val) {
-              //             setState(() {
-              //               callBack2(val);
-              //             });
-              //           },
-              //           value: widget.secondValue,
-              //           // style: Utils.styleTextTreadmillRulerTitle,
-              //           underline: Container(color: Colors.transparent),
-              //           dropdownColor: Colors.white,
-              //         ),
-              //       )
-              //     ],
-              //   ),
-              // ),
+            ]),
+            SizedBox(height: 2.h),
+            Row(children: [
+              meter(widget.unit, false),
+              if (widget.rulerType == RulerType.Weight)
+                SizedBox(width: AppSizes.iconDefault),
+              if (widget.rulerType == RulerType.Weight) meter('گرم', true),
+            ]),
           ],
         ),
-      ],
+      ),
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+  Widget meter(String unit, bool grType) {
+    return Flexible(
+      child: Container(
+        child: Column(
+          children: [
+            RulerBackground(
+              color: widget.color,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return constraints.isTight
+                      ? Container()
+                      : Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Slider(
+                            color: widget.color,
+                            minValue: grType ? 0 : widget.min,
+                            maxValue:  grType ? 50 : widget.max,
+                            value: widget.value!,
+                            onChanged: (val) {
+                              print('value: $val');
+                              grType
+                              ? callBackGr(double.parse(val.toString()))
+                              : callBack(double.parse(val.toString()));
+                            },
+                            width: constraints.maxWidth,
+                            isGram: grType,
+//                  itemExtent: itemExtent,
+                          ),
+                        );
+                },
+              ),
+            ),
+            Container(
+              width: (200 / 100) * 30,
+              height: (200 / 100) * 10,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 245, 245, 245),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(70.0),
+                      bottomRight: Radius.circular(70.0)),
+                ),
+                child: Text(
+                  unit,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 169, 169, 169),
+                    fontSize: (200 / 100) * 5,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
 class Slider extends StatelessWidget {
-  final Color color;
   final int minValue;
   final int maxValue;
-  int value;
+  final double value;
+  final ValueChanged<int> onChanged;
   final double width;
   final ScrollController scrollController;
-  final Function? onClick;
-  final RulerType rulerType;
-  late BuildContext ctx;
+  final Color color;
+  final bool isGram;
+  double get itemExtent => width / 9;
+  List gramList = List<int>.generate(10, (index) => index * 100);
+
+  int _indexToValue(int index) => minValue + (index - 4);
+      // - (isGram ? 0 : 4)); //first
 
   Slider({
-    Key? key,
-    required this.color,
     required this.minValue,
     required this.maxValue,
     required this.value,
+    required this.onChanged,
     required this.width,
-    required this.rulerType,
-    this.onClick,
-//        @required this.itemExtent
-  })  : scrollController = new ScrollController(
-    initialScrollOffset: (value - minValue) *
-        width /
-        (rulerType == RulerType.Weight ? 7 : 9),
-  ),
-        super(key: key);
-
-  double get itemExtent => width / (rulerType == RulerType.Weight ? 3 : 9); //space between number
-
-  int _indexToValue(int index) =>
-      minValue + (index - (rulerType == RulerType.Weight ? 7 : 4));
+    required this.color,
+    required this.isGram,
+  }) : scrollController = new ScrollController(
+            initialScrollOffset: (value - minValue) * width / 9);
 
   @override
   build(BuildContext context) {
-    ctx = context;
-    int itemCount =
-        (maxValue - minValue) + (rulerType == RulerType.Weight ? 7 : 9);
+    int itemCount = (maxValue - minValue) + 9;
+        // (isGram ? 0 : 9); //last
     return NotificationListener(
       onNotification: _onNotification,
       child: ClipRRect(
@@ -277,20 +201,21 @@ class Slider extends StatelessWidget {
         child: new ListView.builder(
           controller: scrollController,
           scrollDirection: Axis.horizontal,
-          itemExtent: itemExtent,
+          itemExtent: isGram ? 9.w : itemExtent,
           itemCount: itemCount,
           physics: BouncingScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            int itemValue = _indexToValue(index);
-            // Fimber.d('value ${widget.value} / $itemValue}');
+            int itemValue;
+            isGram
+            ?  itemValue = _indexToValue(index-12)
+            :  itemValue = _indexToValue(index);
+            // if(isGram){
+            //   print("index:$index");
+            //   print("item:$itemValue");
+            // }
             bool isExtra;
-            if (rulerType == RulerType.Weight)
-              isExtra = index == 0 ||
-                  index == 1 ||
-                  index == 2 ||
-                  index == itemCount - 1 ||
-                  index == itemCount - 2 ||
-                  index == itemCount - 3;
+            if (isGram)
+              isExtra =  index == 0;
             else
               isExtra = index == 0 ||
                   index == 1 ||
@@ -300,56 +225,57 @@ class Slider extends StatelessWidget {
                   index == itemCount - 1 ||
                   index == itemCount - 2 ||
                   index == itemCount - 3;
-
             return isExtra
                 ? new Container() //empty first and last element
                 : GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => _animateTo(itemValue, durationMillis: 50),
-              child: Column(
-                children: <Widget>[
-                  Row(children: [
-                    if (rulerType != RulerType.Weight)
-                      Row(children: [
-                        intent(Offset(9,0)),
-                        intent(Offset(16,0)),
-                        intent(Offset(24,0)),
-                        intent(Offset(30,0)),
-                      ]),
-                    Container(
-                      color: itemValue == value
-                          ? color
-                          : AppColors.penColor
-                          .withOpacity(0.6),
-                      width: itemValue == value ? 2 : 1,
-                      height: itemValue == value
-                          ? AppSizes.iconDefault
-                          : AppSizes.iconSmall,
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () => _animateTo(itemValue, durationMillis: 50),
+                    child: Column(
+                      children: <Widget>[
+                        itemValue == value
+                       ? Container(
+                           width:1.w,
+                           height: 1.h,
+                           color: color)
+                        : Container(),
+                        Container(
+                          color: isGram
+                              ? Color.fromARGB(255, 174, 174, 174)
+                              : itemValue % 5 == 0
+                                  ? Color.fromARGB(255, 174, 174, 174)
+                                  : Color.fromARGB(255, 213, 213, 213),
+                          width: 0.5.w,
+                          height: isGram
+                              ? 2.h
+                              : itemValue % 5 == 0
+                                  ? 2.h
+                                  : 1.h,
+                        ),
+                        SizedBox(height: 1.w),
+                        if (isGram)
+                          FittedBox(
+                            child: Text(
+                              (itemValue*100).toString(),
+                             // index< 10 ? gramList[index].toString() : '',
+                              style:
+                                  _getTextStyle(context, itemValue, color),
+                            ),
+                          )
+                        else
+                          itemValue % 5 == 0
+                              ? FittedBox(
+                                  child: Text(
+                                    itemValue.toString(),
+                                    style: _getTextStyle(
+                                        context, itemValue, color),
+                                  ),
+                                )
+                              : Container(),
+                      ],
                     ),
-                  ]),
-                  SizedBox(height: AppSizes.iconDefault * 1),
-                  Text(
-                    itemValue.toString(),
-                    // style: _getTextStyle(itemValue, value),
-                    style: _getDefaultTextStyle(),
-                  ),
-                ],
-              ),
-            );
+                  );
           },
         ),
-      ),
-    );
-  }
-
-  Widget intent(Offset offset){
-    return  Transform.translate(
-      offset: offset,
-      child: Container(
-        color: AppColors.penColor
-            .withOpacity(0.3),
-        width: 1,
-        height: AppSizes.iconSmall * 0.5,
       ),
     );
   }
@@ -357,23 +283,22 @@ class Slider extends StatelessWidget {
   TextStyle _getDefaultTextStyle() {
     return new TextStyle(
       color: Color.fromRGBO(196, 196, 196, 1.0),
-      fontSize: 14,
+      fontSize: 12.sp,
     );
   }
 
-  TextStyle _getHighlightTextStyle(BuildContext context) {
+  TextStyle _getHighlightTextStyle(BuildContext context, Color color) {
     return new TextStyle(
-      color: AppColors.grey,//
-      fontSize: 14,
+      color: color,
+      fontSize: 14.sp,
     );
   }
 
-  // TextStyle _getTextStyle(int itemValue, int value) {
-  //   // Fimber.d('style $itemValue/ $value');
-  //   return itemValue == value
-  //       ? Utils.styleTextTreadmillRulerActiveNumber
-  //       : Utils.styleTextTreadmillRulerInactiveNumber;
-  // }
+  TextStyle _getTextStyle(BuildContext context, int itemValue, Color color) {
+    return itemValue == value
+        ? _getHighlightTextStyle(context, color)
+        : _getDefaultTextStyle();
+  }
 
   bool _userStoppedScrolling(Notification notification) {
     return notification is UserScrollNotification &&
@@ -388,7 +313,6 @@ class Slider extends StatelessWidget {
       duration: new Duration(milliseconds: durationMillis),
       curve: Curves.decelerate,
     );
-    // widget.onChanged(valueToSelect);
   }
 
   int _offsetToMiddleIndex(double offset) => (offset + width / 2) ~/ itemExtent;
@@ -409,16 +333,10 @@ class Slider extends StatelessWidget {
       }
 
       if (middleValue != value) {
-        value = middleValue;
-        onClick!(middleValue);
-        // onClick(middleValue, widget.type);
-        (ctx as Element).markNeedsBuild();
-        //Fimber.d('new ill $value');
-        // widget.onChanged(middleValue);
-        // setState(() {
-        //   widget.value = middleValue;
-        // });
-        // Fimber.d('new value $value / $middleValue');
+        // isGram
+        // ? onChanged(gramList[index])
+        // :
+        onChanged(middleValue); //update selection
       }
     }
     return true;
@@ -427,40 +345,25 @@ class Slider extends StatelessWidget {
 
 class RulerBackground extends StatelessWidget {
   final Widget? child;
-  final String? unit;
+  final Color? color;
 
-  const RulerBackground({this.unit, this.child});
+  const RulerBackground({this.child, this.color});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Stack(
-        overflow: Overflow.visible,
-        alignment: Alignment.topCenter,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(0.0),
-            height: AppSizes.iconDefault * 5,
-            decoration: BoxDecoration(
-              color: AppColors.grey.withOpacity(0.6), //
-              borderRadius: new BorderRadius.circular(10.0),
-            ),
-            child: child,
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(0.0),
+          height: (240 / 100) * 25,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(244, 244, 244, 1.0),
+            borderRadius: new BorderRadius.circular(20.0),
           ),
-          Positioned(
-              top: 5.h,
-              child: Container(
-              width: 20.w,
-              height: 15.h,
-              decoration: BoxDecoration(
-              color: AppColors.grey.withOpacity(0.6), // border color
-              shape: BoxShape.circle),
-              child: Transform.translate(
-                offset: Offset(0,8.h),
-                  child: Text(unit!,textAlign: TextAlign.center,style: TextStyle(fontSize: 12.sp)))))
-        ],
-      ),
+          child: child,
+        ),
+      ],
     );
   }
 }

@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:behandam/app/app.dart';
+import 'package:behandam/base/network_response.dart';
+import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,32 +18,21 @@ class RegimeBloc{
 
   final _repository = Repository.getInstance();
 
-  // late RegimeType _type;
+  late String _path;
+  late String _name;
   final _waiting = BehaviorSubject<bool>();
   final _itemsList = BehaviorSubject<List<RegimeType>>();
   final _helpers = BehaviorSubject<List<Help>>();
   final _navigateToVerify = LiveEvent();
   final _showServerError = LiveEvent();
-  // RegimeType get type => _type;
+
+  String get path => _path;
+  String get name => _name;
   Stream<List<RegimeType>> get itemList => _itemsList.stream;
   Stream<List<Help>> get helpers => _helpers.stream;
   Stream<bool> get waiting => _waiting.stream;
   Stream get navigateToVerify => _navigateToVerify.stream;
   Stream get showServerError => _showServerError.stream;
-
-
-  // void fetchCountries() async {
-  //  if(MemoryApp.countryCode == null)
-  //   _repository.country().then((value) {
-  //     MemoryApp.countryCode = value.data!;
-  //     _subjectList.value = value.data!;
-  //     value.data!.forEach((element){
-  //       if(element.code == "98") {
-  //         _subject = element;
-  //       }
-  //     });
-  //   });
-  // }
 
   void regimeTypeMethod() async {
     _waiting.value = true;
@@ -49,11 +41,33 @@ class RegimeBloc{
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void helpMethod() async {
+  void helpMethod(int id) async {
     _waiting.value = true;
-    _repository.helpDietType().then((value) {
+    _repository.helpDietType(id).then((value) {
       _helpers.value = value.data!.helpers!;
     }).whenComplete(() => _waiting.value = false);
+  }
+
+  void helpBodyState(int id) async {
+    _waiting.value = true;
+    _repository.helpBodyState(id).then((value) {
+      _name = value.data!.name!;
+      _helpers.value = value.data!.helpers!;
+    }).whenComplete(() => _waiting.value = false);
+  }
+
+  void pathMethod(RegimeType dietId) async {
+    _waiting.value = true;
+    _repository.getPath(dietId).then((value) {
+      _path = value.next!;
+      navigator.routeManager.push(Uri.parse('/' + _path));
+    }).whenComplete(() => _waiting.value = false);
+  }
+
+  void sendInfo(BodyState info) async {
+    _repository.sendInfo(info).then((value) {
+      _navigateToVerify.fire(true);
+    });
   }
 
   void dispose() {

@@ -96,6 +96,7 @@ class _AppState extends State<App> {
               // navigatorObservers: [routeObserver],
               // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
               // routes: Routes.all,
+
               routeInformationParser: VxInformationParser(),
               backButtonDispatcher: RootBackButtonDispatcher(),
               routerDelegate: navigator);

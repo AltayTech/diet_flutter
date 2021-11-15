@@ -19,6 +19,8 @@ class RegimeType {
   int? mealsCount;
   @JsonKey(name: "title")
   String? title;
+  @JsonKey(name: "diet_type_id")
+  int? dietId;
 
   RegimeType();
 

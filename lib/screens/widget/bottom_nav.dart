@@ -26,7 +26,7 @@ class BottomNav extends StatelessWidget {
             navigator.routeManager.clearAndPush(Uri.parse(Routes.ticketMessage));
             break;
           case BottomNavItem.DIET:
-            if(currentTab != BottomNavItem.DIET) navigator.routeManager.clearAndPush(Uri.parse(Routes.foodList));
+            if(currentTab != BottomNavItem.DIET) navigator.routeManager.clearAndPush(Uri.parse(Routes.regimeType));
           /*  if (token == null) {
               Navigator.pushNamedAndRemoveUntil(context, LaunchRoute.routeName, (route) => false);
             } else if (title != currentTab && token != null) {

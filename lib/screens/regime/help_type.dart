@@ -19,7 +19,6 @@ class HelpTypeScreen extends StatefulWidget {
 
 class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   late RegimeBloc regimeBloc;
-  bool check = false;
 
   @override
   void initState() {
@@ -30,18 +29,6 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   }
 
   void listenBloc() {
-    regimeBloc.navigateToVerify.listen((event) {
-      // try {
-      // if ((event as bool)) {
-      //   check = true;
-      //   VxNavigator.of(context).push(Uri.parse(Routes.pass));
-      // } else {
-      //   navigator.routeManager.push(Uri.parse(Routes.verify));
-      // }
-      // }catch(e){
-      //   print('e ==> ${e.toString()}');
-      // }
-    });
     regimeBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
     });
@@ -49,7 +36,7 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    regimeBloc.helpMethod();
+    regimeBloc.helpMethod(1);
     super.build(context);
     return Scaffold(
       appBar: AppBar(
@@ -109,7 +96,6 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
                         );
                       }
                       else{
-                        check = false;
                         return Center(
                             child: Container(
                                 width:15.w,

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
+import 'package:behandam/api/interceptor/logger.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
+import 'package:behandam/data/entity/regime/body_state.dart';
 // import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
@@ -13,6 +15,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:logger/logger.dart';
 
 import '../api/api.dart';
 import '../data/entity/auth/country_code.dart';
@@ -49,7 +52,9 @@ abstract class Repository {
 
   NetworkResult<RegimeType> regimeType();
 
-  NetworkResult<Help> helpDietType();
+  NetworkResult<Help> helpDietType(int id);
+
+  NetworkResult<Help> helpBodyState(int id);
 
   NetworkResult<FoodListData> foodList(String date);
 
@@ -66,6 +71,10 @@ abstract class Repository {
   NetworkResult<Inbox> getUnreadInbox();
 
   NetworkResult<Inbox> getInbox();
+
+  NetworkResult getPath(RegimeType dietId);
+
+  NetworkResult<BodyState> sendInfo(BodyState info);
 
   // NetworkResult<TicketModel> getTickets();
 }
@@ -87,9 +96,10 @@ class _RepositoryImpl extends Repository {
       connectTimeout: connectTimeout,
       sendTimeout: sendTimeout,
     );
-    _dio.interceptors.add(CustomInterceptors());
+
     _dio.interceptors.add(ErrorHandlerInterceptor());
     _dio.interceptors.add(GlobalInterceptor());
+    _dio.interceptors.add(LoggingInterceptor());
     _apiClient = RestClient(_dio, baseUrl: FlavorConfig.instance.variables['baseUrl']);
     // _cache = MemoryDataSource();
   }
@@ -170,8 +180,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<Help> helpDietType() async{
-    var response = await _apiClient.helpDietType();
+  NetworkResult<Help> helpDietType(int id) async{
+    var response = await _apiClient.helpDietType(id);
     return response;
   }
 
@@ -202,6 +212,24 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Inbox> getInbox() {
     var response = _apiClient.getInbox();
+    return response;
+  }
+
+  @override
+  NetworkResult getPath(RegimeType dietId) {
+    var response = _apiClient.getPath(dietId);
+    return response;
+  }
+
+  @override
+  NetworkResult<BodyState> sendInfo(BodyState info) {
+    var response = _apiClient.sendInfo(info);
+    return response;
+  }
+
+  @override
+  NetworkResult<Help> helpBodyState(int id) {
+    var response = _apiClient.helpBodyState(id);
     return response;
   }
 

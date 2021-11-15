@@ -174,7 +174,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<Help>> helpDietType() async {
+  Future<NetworkResponse<Help>> helpDietType(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -182,12 +182,71 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Help>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/page/1',
+                .compose(_dio.options, '/page/$id',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<Help>.fromJson(
       _result.data!,
       (json) => Help.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<Help>> helpBodyState(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<Help>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/field/$id',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<Help>.fromJson(
+      _result.data!,
+      (json) => Help.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<dynamic>> getPath(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(id.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<dynamic>>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/condition',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<BodyState>> sendInfo(info) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(info.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<BodyState>>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/physical-info',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<BodyState>.fromJson(
+      _result.data!,
+      (json) => BodyState.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
@@ -366,25 +425,6 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<Inbox>.fromJson(
       _result.data!,
       (json) => Inbox.fromJson(json as Map<String, dynamic>),
-    );
-    return value;
-  }
-
-  @override
-  Future<NetworkResponse<dynamic>> getTicketMessage() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<dynamic>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/ticket',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<dynamic>.fromJson(
-      _result.data!,
-      (json) => json as dynamic,
     );
     return value;
   }

@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/themes/locale.dart';
@@ -5,6 +6,7 @@ import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/device.dart';
 import 'package:dio/dio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter/material.dart';
 
 class GlobalInterceptor extends Interceptor {
   @override
@@ -35,6 +37,8 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Device-Id'] = await DeviceUtils.deviceId;
     options.headers['Is-Emulator'] = await DeviceUtils.isEmulator;
     options.headers['Time-Zone'] = DateTimeUtils.timezoneOffset;
+    options.headers['x-route'] = navigator.currentConfiguration?.path.substring(1);
+    print("route: ${navigator.currentConfiguration?.path}");
     super.onRequest(options, handler);
   }
 }

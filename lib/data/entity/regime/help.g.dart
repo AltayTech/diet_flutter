@@ -8,23 +8,31 @@ part of 'help.dart';
 
 Help _$HelpFromJson(Map<String, dynamic> json) => Help()
   ..id = json['id'] as int?
+  ..name = json['name'] as String?
   ..helpers = (json['helpers'] as List<dynamic>?)
       ?.map((e) => Help.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..body = json['body'] as String?
+  ..media = (json['media'] as List<dynamic>?)
+      ?.map((e) => Help.fromJson(e as Map<String, dynamic>))
+      .toList()
   ..createdAt = json['created_at'] as String?
+  ..updatedAt = json['updated_at'] as String?
   ..modelId = json['model_id'] as int?
   ..modelType = json['model_type'] as String?
   ..order = json['order'] as int?
-  ..updatedAt = json['updated_at'] as String?;
+  ..body = json['body'] as String?
+  ..url = json['url'] as String?;
 
 Map<String, dynamic> _$HelpToJson(Help instance) => <String, dynamic>{
       'id': instance.id,
+      'name': instance.name,
       'helpers': instance.helpers,
-      'body': instance.body,
+      'media': instance.media,
       'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'model_id': instance.modelId,
       'model_type': instance.modelType,
       'order': instance.order,
-      'updated_at': instance.updatedAt,
+      'body': instance.body,
+      'url': instance.url,
     };

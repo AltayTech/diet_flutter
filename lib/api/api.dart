@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
+import 'package:behandam/data/entity/regime/body_state.dart';
 // import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -63,8 +64,19 @@ abstract class RestClient {
   @GET("/diet-type")
   NetworkResult<RegimeType> getDietType();
 
-  @GET("/page/1")
-  NetworkResult<Help> helpDietType();
+  @GET("/page/{id}")
+  NetworkResult<Help> helpDietType(@Path('id') int id);
+
+  @GET("/field/{id}")
+  NetworkResult<Help> helpBodyState(@Path('id') int id);
+
+  @PATCH("/condition")
+  NetworkResult getPath(@Body() RegimeType id);
+
+  @PATCH("/physical-info")
+  NetworkResult<BodyState> sendInfo(@Body() BodyState info);
+
+
   @GET("/user/menu?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);
   @GET("/profile")
