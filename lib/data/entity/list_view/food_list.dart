@@ -18,7 +18,7 @@ class FoodListData {
 
   @JsonKey(name: 'menu')
   final Menu menu;
-
+  //
   @JsonKey(name: 'visit')
   final Visit visit;
 
@@ -44,6 +44,8 @@ class Meals {
       this.startAt,
       this.endAt,
       this.description,
+      // this.patternIndex,
+      // this.dietTypeId,
       );
 
   @JsonKey(name: 'id')
@@ -73,7 +75,14 @@ class Meals {
   @JsonKey(name: 'description')
   final String? description;
 
+  // @JsonKey(name: 'pattern_index')
+  // final int patternIndex;
+  //
+  // @JsonKey(name: 'diet_type_id')
+  // final int dietTypeId;
+
   Food? food;
+  Food? newFood;
 
   factory Meals.fromJson(Map<String, dynamic> json) =>
       _$MealsFromJson(json);
@@ -428,6 +437,7 @@ class Visit {
       this.isActive,
       this.deletedAt,
       this.calorieValue,
+      this.visitDays,
       );
 
   @JsonKey(name: 'id')
@@ -479,6 +489,9 @@ class Visit {
   @JsonKey(name: 'calory_value')
   final int calorieValue;
 
+  @JsonKey(name: 'visit_days')
+  final int visitDays;
+
   factory Visit.fromJson(Map<String, dynamic> json) =>
       _$VisitFromJson(json);
 }
@@ -489,10 +502,10 @@ class DietType{
       this.id,
       this.alias,
       this.title,
-      this.isActive,
-      this.createdAt,
-      this.updatedAt,
-      this.deletedAt,
+      // this.isActive,
+      // this.createdAt,
+      // this.updatedAt,
+      // this.deletedAt,
       );
 
   @JsonKey(name: 'id')
@@ -504,17 +517,17 @@ class DietType{
   @JsonKey(name: 'title')
   final String title;
 
-  @JsonKey(name: 'is_active')
-  final boolean isActive;
-
-  @JsonKey(name: 'created_at')
-  final String? createdAt;
-
-  @JsonKey(name: 'updated_at')
-  final String? updatedAt;
-
-  @JsonKey(name: 'deleted_at')
-  final String? deletedAt;
+  // @JsonKey(name: 'is_active')
+  // final boolean isActive;
+  //
+  // @JsonKey(name: 'created_at')
+  // final String? createdAt;
+  //
+  // @JsonKey(name: 'updated_at')
+  // final String? updatedAt;
+  //
+  // @JsonKey(name: 'deleted_at')
+  // final String? deletedAt;
 
   factory DietType.fromJson(Map<String, dynamic> json) =>
       _$DietTypeFromJson(json);

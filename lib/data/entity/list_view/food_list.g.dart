@@ -31,9 +31,13 @@ Meals _$MealsFromJson(Map<String, dynamic> json) => Meals(
       json['start_at'] as String?,
       json['end_at'] as String?,
       json['description'] as String?,
-    )..food = json['food'] == null
-        ? null
-        : Food.fromJson(json['food'] as Map<String, dynamic>);
+    )
+      ..food = json['food'] == null
+          ? null
+          : Food.fromJson(json['food'] as Map<String, dynamic>)
+      ..newFood = json['newFood'] == null
+          ? null
+          : Food.fromJson(json['newFood'] as Map<String, dynamic>);
 
 Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['id'] as int,
@@ -229,14 +233,11 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       $enumDecode(_$booleanEnumMap, json['is_active']),
       json['deleted_at'] as String?,
       json['calory_value'] as int,
+      json['visit_days'] as int,
     );
 
 DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType(
       json['id'] as int,
       json['alias'] as String,
       json['title'] as String,
-      $enumDecode(_$booleanEnumMap, json['is_active']),
-      json['created_at'] as String?,
-      json['updated_at'] as String?,
-      json['deleted_at'] as String?,
     );

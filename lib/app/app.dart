@@ -2,6 +2,7 @@ import 'package:behandam/app/bloc.dart';
 import 'package:behandam/app/provider.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
+import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -170,7 +171,7 @@ final navigator = VxNavigator(
     Routes.register: (_, param) =>
         MaterialPage(child: RegisterScreen(), arguments: param),
     Routes.listView: (_, __) => MaterialPage(child: FoodListPage()),
-    Routes.dailyMenu: (_, __) => MaterialPage(child: DailyMenuPage()),
+    Routes.dailyMenu: (_, param) => MaterialPage(child: DailyMenuPage(), arguments: param),
     Routes.fastPatterns: (_, __) => MaterialPage(child: FastPatternPage()),
     Routes.listFood: (_, param) =>
         MaterialPage(child: ListFoodPage(), arguments: param),
@@ -184,6 +185,7 @@ final navigator = VxNavigator(
     Routes.resetPass: (_, param) =>
         MaterialPage(child: PasswordResetScreen(), arguments: param),
     Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
+    Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
     // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(

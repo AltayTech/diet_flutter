@@ -156,7 +156,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                 child: SubmitButton(
                   onTap: () async {
                     Navigator.of(context).pop();
-                    var result = await VxNavigator.of(context).push(Uri(path: Routes.dailyMenu)).then((value) {
+                    var result = await VxNavigator.of(context).push(Uri(path: Routes.dailyMenu), params: bloc).then((value) {
                       debugPrint('call back }');
                       // if(value != null && value == true) bloc.onRefresh(invalidate: true);
                     });
