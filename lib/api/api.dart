@@ -3,31 +3,29 @@ import 'dart:io';
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
 import 'package:behandam/data/entity/food_list/food_list.dart';
-import 'package:behandam/data/entity/ticket/ticket_item.dart';
-import 'package:behandam/data/entity/user/inbox.dart';
-import 'package:behandam/data/entity/user/city_provice_model.dart';
-import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/data/entity/user/city_provice_model.dart';
+import 'package:behandam/data/entity/user/inbox.dart';
+import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../base/network_response.dart';
-
 import '../data/entity/auth/register.dart';
 import '../data/entity/auth/reset.dart';
-
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
 
 part 'api.g.dart';
 
-enum help{
-@JsonValue(1)
-dietType
+enum help {
+  @JsonValue(1)
+  dietType
 }
 
 typedef NetworkResult<T> = Future<NetworkResponse<T>>;
@@ -65,20 +63,24 @@ abstract class RestClient {
 
   @GET("/page/1")
   NetworkResult<Help> helpDietType();
+
   @GET("/user/menu?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);
+
   @GET("/profile")
   NetworkResult<UserInformation> getProfile();
+
   @GET("/user/menu/all/pdf")
   NetworkResult<UserInformation> getPdfTermUrl();
+
   @GET("/user/menu/pdf")
   NetworkResult<UserInformation> getPdfWeekUrl();
+
   @GET("/province")
   NetworkResult<CityProvinceModel> getProvinces();
 
   @POST("/media")
-  NetworkResult<Media> sendMedia(
-      @Part(name: "media") File media, @Part(name: "info") String info);
+  NetworkResult<Media> sendMedia(@Part(name: "media") File media, @Part(name: "info") String info);
 
   @PATCH("/profile")
   NetworkResult<UserInformation> updateProfile(@Body() UserInformation userInformation);
@@ -97,8 +99,28 @@ abstract class RestClient {
 
   @POST("/ticket")
   ImperativeNetworkResult sendTicketMessage(@Body() SendTicket sendTicket);
+
+  @POST("/message")
+  ImperativeNetworkResult sendTicketMessageDetail(@Body() SendTicket sendTicket);
+
   @POST("/ticket")
-  ImperativeNetworkResult sendTicketFile(@Part(name: "media") File media, @Part(name: "is_voice") int is_voice, @Part(name: "has_attachment") int has_attachment, @Part(name: "department_id") String department_id, @Part(name: "title") String title);
+  ImperativeNetworkResult sendTicketFile(
+      @Part(name: "media") File media,
+      @Part(name: "is_voice") int is_voice,
+      @Part(name: "has_attachment") int has_attachment,
+      @Part(name: "department_id") String department_id,
+      @Part(name: "title") String title);
+
+  @POST("/message")
+  ImperativeNetworkResult sendTicketFileDetail(
+      {@Part(name: "media") File? media,
+      @Part(name: "is_voice") int? is_voice,
+      @Part(name: "ticket_id") int? ticket_id,
+      @Part(name: "body") String? body,
+      @Part(name: "has_attachment") int? has_attachment});
+
+  @GET("/ticket/{id}")
+  NetworkResult<TicketModel> getTicketDetails(@Path('id') int id);
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

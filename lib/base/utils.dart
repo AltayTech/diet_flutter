@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:flutter/material.dart';
 
 class Utils {

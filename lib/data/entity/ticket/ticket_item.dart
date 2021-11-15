@@ -1,5 +1,4 @@
 import 'package:behandam/data/entity/user/user_information.dart';
-import 'package:behandam/screens/ticket/ticket_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'ticket_item.g.dart';
@@ -58,10 +57,10 @@ class TicketModel {
   int? count;
 
   @JsonKey(name: "items")
-  late List<TicketItem> items;
+  List<TicketItem>? items;
 
-  @JsonKey(name: "messages")
-  List<MessageTicket>? messages;
+  @JsonKey(name: "ticket")
+  TicketItem? ticket;
 
   @JsonKey(name: "files")
   List<Media>? files;
@@ -89,6 +88,12 @@ class TicketItem {
 
   @JsonKey(name: "status")
   TicketStatus? status;
+
+  @JsonKey(name: "messages")
+  List<MessageTicket>? messages;
+
+  @JsonKey(name: "files")
+  List<Media>? files;
 
   TicketItem();
 
@@ -153,6 +158,9 @@ class SendTicket {
 
   @JsonKey(name: "is_voice", defaultValue: false)
   late bool isVoice;
+
+  @JsonKey(name: "ticket_id")
+  int? ticketId;
 
   SendTicket();
 

@@ -72,6 +72,12 @@ abstract class Repository {
   ImperativeNetworkResult sendTicketMessage(SendTicket sendTicket);
 
   ImperativeNetworkResult sendTicketFile(SendTicket sendTicket, File file);
+
+  NetworkResult<TicketModel> getTicketDetails(int id);
+
+  ImperativeNetworkResult sendTicketMessageDetail(SendTicket sendTicket);
+
+  ImperativeNetworkResult sendTicketFileDetail(SendTicket sendTicket, File file);
 }
 
 class _RepositoryImpl extends Repository {
@@ -235,6 +241,32 @@ class _RepositoryImpl extends Repository {
     sendTicket.isVoice = true;
     var response = _apiClient.sendTicketFile(file, sendTicket.isVoice ? 1 : 0,
         sendTicket.hasAttachment ? 1 : 0, sendTicket.departmentId.toString(), sendTicket.title!);
+    return response;
+  }
+
+  @override
+  NetworkResult<TicketModel> getTicketDetails(int id) {
+    var response = _apiClient.getTicketDetails(id);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendTicketFileDetail(SendTicket sendTicket, File file) {
+    var response = _apiClient.sendTicketFileDetail(
+      media: file,
+      is_voice: sendTicket.isVoice ? 1 : 0,
+      has_attachment: sendTicket.hasAttachment ? 1 : 0,
+      body: sendTicket.body,
+      ticket_id: sendTicket.ticketId!,
+    );
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendTicketMessageDetail(SendTicket sendTicket) {
+    sendTicket.hasAttachment = false;
+    sendTicket.isVoice = false;
+    var response = _apiClient.sendTicketMessageDetail(sendTicket);
     return response;
   }
 }

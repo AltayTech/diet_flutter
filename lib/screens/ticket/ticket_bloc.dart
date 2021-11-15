@@ -5,11 +5,15 @@ import 'package:app_settings/app_settings.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:flutter_sound_lite/public/flutter_sound_recorder.dart';
+import 'package:image/image.dart' as Img;
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,12 +27,15 @@ class TicketBloc {
     sendTicketMessage = new SendTicket();
   }
 
+  ImagePicker? _picker;
   final _repository = Repository.getInstance();
   final _showServerError = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
   late SendTicket sendTicketMessage;
   final _isRecording = BehaviorSubject<bool>();
   final _isShowFile = BehaviorSubject<bool>();
+  final _isShowSendButton = BehaviorSubject<bool>();
+  final _isShowImage = BehaviorSubject<bool>();
   final _showTime = BehaviorSubject<String>();
   final _isShowRecorder = BehaviorSubject<bool>();
   final _typeTicket = BehaviorSubject<TypeTicket>();
@@ -36,7 +43,7 @@ class TicketBloc {
   final _showProgressItem = BehaviorSubject<bool>();
 
   List<TicketItem> _listTickets = [];
-  List<TicketModel> _listTicketDetails = [];
+  TicketModel? _ticketDetails;
 
   Stream get showServerError => _showServerError.stream;
 
@@ -46,7 +53,11 @@ class TicketBloc {
 
   Stream<bool> get isShowFile => _isShowFile.stream;
 
+  Stream<bool> get isShowImage => _isShowImage.stream;
+
   Stream<bool> get isShowRecorder => _isShowRecorder.stream;
+
+  Stream<bool> get isShowSendButton => _isShowSendButton.stream;
 
   Stream<String> get showTime => _showTime.stream;
 
@@ -61,7 +72,8 @@ class TicketBloc {
   String? get showTimeRecord => _showTime.valueOrNull ?? '';
 
   List<TicketItem> get listTickets => _listTickets;
-  List<TicketModel> get listTicketDetails => _listTicketDetails;
+
+  TicketModel? get ticketDetails => _ticketDetails;
 
   bool get isFile => _isShowFile.stream.valueOrNull ?? false;
 
@@ -69,8 +81,8 @@ class TicketBloc {
     _progressNetwork.value = true;
 
     _repository.getTickets().then((value) {
-      print('value ==> ${value.data!.toJson()}');
-      _listTickets = value.data!.items;
+      print('value ==> ${value.data?.items?.reversed.toList()[0].toJson()}');
+      _listTickets = value.data!.items!;
     }).catchError((onError) {
       print('onError ==> ${onError.toString()}');
     }).whenComplete(() {
@@ -122,6 +134,10 @@ class TicketBloc {
       if (_myRecorder!.isRecording) stopRecorder(false);
       stopAndStart();
     }
+  }
+
+  void showShowSendButton(bool show) {
+    _isShowSendButton.value = show;
   }
 
   void recording() {
@@ -233,6 +249,7 @@ class TicketBloc {
     _timer?.cancel();
     if (outputFile != null && await outputFile!.exists()) await outputFile!.delete();
     _isShowFile.value = false;
+    _isShowImage.value = false;
     _isRecording.value = false;
     minute = 0;
     start = 0;
@@ -261,19 +278,168 @@ class TicketBloc {
     });
   }
 
+  void sendTicketTextDetail() async {
+    _showProgressItem.value = true;
+    if (_isShowImage.valueOrNull == null || _isShowImage.value == false) {
+      _repository.sendTicketMessageDetail(sendTicketMessage).then((value) {
+        getDetailTicket(sendTicketMessage.ticketId!);
+        _showServerError.fireMessage(value.message!);
+      }).catchError((onError) {
+        // _showServerError.fireMessage(onError);
+      }).whenComplete(() {
+        _showProgressItem.value = false;
+      });
+    } else {
+      sendTicketMessage.hasAttachment = true;
+      sendTicketMessage.isVoice = false;
+      print('sendTicketMessage = > ${sendTicketMessage.toJson()}');
+      try {
+        _repository.sendTicketFileDetail(sendTicketMessage, File(imageFile!.path)).then((value) {
+          getDetailTicket(sendTicketMessage.ticketId!);
+          _showServerError.fireMessage(value.message!);
+        }).catchError((onError) {
+          // _showServerError.fireMessage(onError);
+        }).whenComplete(() {
+          _showProgressItem.value = false;
+        });
+      } catch (e) {
+        print('eeee => $e');
+        _showProgressItem.value = false;
+      }
+    }
+  }
+
+  void sendTicketFileDetail() {
+    _showProgressItem.value = true;
+    sendTicketMessage.hasAttachment = true;
+    sendTicketMessage.isVoice = true;
+    _repository.sendTicketFileDetail(sendTicketMessage, outputFile!).then((value) {
+      getDetailTicket(sendTicketMessage.ticketId!);
+      _showServerError.fireMessage(value.message!);
+    }).whenComplete(() {
+      _showProgressItem.value = false;
+    });
+  }
+
   void downloadFile(String? name, String? url, TempMedia item) async {
     Dio dio = Dio();
 
     try {
       var data = await dio.download('$url', '${tempDir!.path}/$name');
       if (data.statusCode == 200) item.mediumUrls!.url = "${tempDir!.path}/$name}";
-
-    } catch (e) {
-
-    }
+    } catch (e) {}
     // String tempPath = tempDir.path;
     // File file = new File('$tempPath/$name');
     // await file.writeAsBytes(url.bodyBytes);
+  }
+
+  void getDetailTicket(int id) {
+    sendTicketMessage = new SendTicket();
+    sendTicketMessage.body = "";
+    _isShowSendButton.value = false;
+    _isShowImage.value = false;
+    _isShowFile.value = false;
+    _isShowRecorder.value = false;
+    _isRecording.value = false;
+
+    _progressNetwork.value = true;
+    _repository.getTicketDetails(id).then((value) {
+      _ticketDetails = value.data;
+      sendTicketMessage.ticketId = _ticketDetails!.ticket!.id;
+      List<TicketItem> list = [];
+      _ticketDetails!.ticket!.messages!.forEach((ticket) {
+        ticket.type = TypeTicketMessage.TEXT;
+        TicketItem? exists;
+        if (_ticketDetails!.files != null)
+          for (Media file in _ticketDetails!.files!) {
+            //print('file = > ${file.toJson()}');
+            if (file.modelId == ticket.id) {
+              ticket.file = file;
+              if (file.collectionName == 'voice') {
+                ticket.type = TypeTicketMessage.VOICE;
+              } else {
+                ticket.type = TypeTicketMessage.TEXT_AND_ATTACHMENT;
+              }
+              break;
+            }
+          }
+        if (ticket.temp != null) {
+          ticket.type = TypeTicketMessage.TEMP;
+        }
+        if (list
+            .where((element) => element.createdAt!.contains(ticket.createdAt!.substring(0, 10)))
+            .isNotEmpty)
+          exists = list.singleWhere(
+              (element) => element.createdAt!.contains(ticket.createdAt!.substring(0, 10)));
+        if (exists == null) {
+          TicketItem ticketListDate = new TicketItem();
+          ticketListDate.createdAt = ticket.createdAt!.substring(0, 10);
+          ticketListDate.messages = [];
+          ticketListDate.messages!.add(ticket);
+          list.add(ticketListDate);
+        } else {
+          exists.messages!.add(ticket);
+        }
+      });
+      _ticketDetails!.items = list;
+    }).catchError((onError) {
+      print('error = > $onError');
+    }).whenComplete(() {
+      _progressNetwork.value = false;
+    });
+  }
+
+  XFile? image;
+  File? imageFile;
+
+  void selectGallery() async {
+    if (_picker == null) _picker = ImagePicker();
+    // Pick an image
+    image = await _picker!.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      imageFile = await File(image!.path);
+      if (tempDir == null) tempDir = await getTemporaryDirectory();
+      var imageDecode = Img.decodeImage(imageFile!.readAsBytesSync())!;
+      imageFile = await FlutterImageCompress.compressAndGetFile(imageFile!.absolute.path,
+          '${tempDir!.path}/img${DateTime.now().millisecondsSinceEpoch}.jpg',
+          format: CompressFormat.jpeg,
+          quality: 70,
+          minWidth: (imageDecode.width * 0.5).toInt(),
+          minHeight: (imageDecode.height * 0.5).toInt(),
+          inSampleSize: 2);
+      _isShowImage.value = true;
+      showShowSendButton(true);
+    }
+  }
+
+  void selectCamera() async {
+    if (_picker == null) _picker = ImagePicker();
+    // Pick an image
+    image = await _picker!.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      imageFile = await File(image!.path);
+      if (tempDir == null) tempDir = await getTemporaryDirectory();
+      var imageDecode = Img.decodeImage(imageFile!.readAsBytesSync())!;
+      imageFile = await FlutterImageCompress.compressAndGetFile(imageFile!.absolute.path,
+          '${tempDir!.path}/img${DateTime.now().millisecondsSinceEpoch}.jpg',
+          format: CompressFormat.jpeg,
+          quality: 70,
+          minWidth: (imageDecode.width * 0.5).toInt(),
+          minHeight: (imageDecode.height * 0.5).toInt(),
+          inSampleSize: 2);
+      _isShowImage.value = true;
+      showShowSendButton(true);
+    }
+  }
+
+  void deleteImage() async {
+    try {
+      if (imageFile != null && await imageFile!.exists()) await imageFile!.delete();
+      _isShowImage.value = false;
+    } catch (e) {
+      _isShowImage.value = false;
+    }
   }
 
   void dispose() {
@@ -285,6 +451,7 @@ class TicketBloc {
     _isShowRecorder.close();
     _typeTicket.close();
     _SupportItems.close();
+    _isShowSendButton.close();
     _showTime.close();
     if (_timer != null) _timer!.cancel();
     //  _isPlay.close();

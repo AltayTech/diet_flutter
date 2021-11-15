@@ -429,6 +429,26 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<dynamic>> sendTicketMessageDetail(sendTicket) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(sendTicket.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<dynamic>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/message',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<dynamic>> sendTicketFile(
       media, is_voice, has_attachment, department_id, title) async {
     const _extra = <String, dynamic>{};
@@ -452,6 +472,64 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<dynamic>.fromJson(
       _result.data!,
       (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<dynamic>> sendTicketFileDetail(
+      {media, is_voice, ticket_id, body, has_attachment}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    if (media != null) {
+      _data.files.add(MapEntry(
+          'media',
+          MultipartFile.fromFileSync(media.path,
+              filename: media.path.split(Platform.pathSeparator).last)));
+    }
+    if (is_voice != null) {
+      _data.fields.add(MapEntry('is_voice', is_voice.toString()));
+    }
+    if (ticket_id != null) {
+      _data.fields.add(MapEntry('ticket_id', ticket_id.toString()));
+    }
+    if (body != null) {
+      _data.fields.add(MapEntry('body', body));
+    }
+    if (has_attachment != null) {
+      _data.fields.add(MapEntry('has_attachment', has_attachment.toString()));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<dynamic>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/message',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<TicketModel>> getTicketDetails(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<TicketModel>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/ticket/$id',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<TicketModel>.fromJson(
+      _result.data!,
+      (json) => TicketModel.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:video_player/video_player.dart';
 
@@ -140,6 +138,7 @@ istener(() {
       if (chewieController != null && chewieController!.videoPlayerController.value.isInitialized) {
         setState(() {
           _initializeVideoPlayerFuture = true;
+          //chewieController!.togglePause();
         });
       }
 /*      if(chewieController != null && chewieController!.videoPlayerController.value.isInitialized)
@@ -164,82 +163,15 @@ istener(() {
       return Stack(
         children: [
           Center(
-            child: chewieController!.isPlaying
-                ? Container(
-                    alignment: Alignment.center,
-                    color: Colors.white,
-                    child: ClipRRect(
-                        // transform: Matrix4.translationValues(0.0, -35.0, 0.0),
-                        borderRadius: BorderRadius.circular(10),
-                        child: Chewie(
-                          key: new PageStorageKey(url!),
-                          controller: chewieController!,
-                        )))
-                : Stack(
-                    children: [
-                      (image != null)
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: ImageUtils.fromNetwork(
-                                image!,
-                              ),
-                              // child: Image.network(
-                              //   image!,
-                              //   // height: SizeConfig.blockSizeVertical * 25,
-                              //   width: double.infinity,
-                              //   fit: BoxFit.fitWidth,
-                              // ),
-                            )
-                          : Container(
-                              color: Colors.white,
-                            ),
-                      Positioned(
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.primary,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () => setState(() {
-                                  if (widget.callBackListener != null)
-                                    widget.callBackListener!(chewieController!);
-                                  chewieController!.play();
-                                }),
-                                child: Container(
-                                  width: 13.w,
-                                  height: 13.w,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                  padding: EdgeInsets.all(4.w),
-                                  child: SvgPicture.asset(
-                                    'assets/images/gym/play_btn.svg',
-                                    width: 7.w,
-                                    height: 7.w,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 2.h),
-                              title != null
-                                  ? Text(
-                                      title!,
-                                      textAlign: TextAlign.center,
-                                    )
-                                  : Container(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+            child: Container(
+                alignment: Alignment.center,
+                child: ClipRRect(
+                    // transform: Matrix4.translationValues(0.0, -35.0, 0.0),
+                    borderRadius: BorderRadius.circular(10),
+                    child: Chewie(
+                      key: new PageStorageKey(url!),
+                      controller: chewieController!,
+                    ))),
           ),
         ],
       );

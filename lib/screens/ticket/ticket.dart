@@ -68,7 +68,8 @@ class _TicketState extends ResourcefulState<Ticket> {
                       children: <Widget>[
                         SizedBox(height: 3.h),
                         GestureDetector(
-                           onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.newTicketMessage)),
+                          onTap: () =>
+                              VxNavigator.of(context).push(Uri.parse(Routes.newTicketMessage)),
                           child: Container(
                             decoration: BoxDecoration(
                               color: AppColors.primary,
@@ -119,23 +120,25 @@ class _TicketState extends ResourcefulState<Ticket> {
                   ),
                   StreamBuilder(
                     builder: (context, snapshot) {
-                      if(snapshot.data!=null && snapshot.data==false){
+                      if (snapshot.data != null && snapshot.data == false) {
                         return Container(
                           child: Column(
                             children: [
                               ...ticketBloc.listTickets
                                   .map((message) => TicketItemWidget(
-                                ticketItem: message,
-                              ))
+                                        ticketItem: message,
+                                      ))
                                   .toList()
                             ],
                           ),
                         );
-                      }else {
-                        return Center(child: SpinKitCircle(
-                          size: 5.h,
-                          color: AppColors.primary,
-                        ),);
+                      } else {
+                        return Center(
+                          child: SpinKitCircle(
+                            size: 5.h,
+                            color: AppColors.primary,
+                          ),
+                        );
                       }
                     },
                     stream: ticketBloc.progressNetwork,

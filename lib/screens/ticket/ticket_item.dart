@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/ticket/ticket_bloc.dart';
 import 'package:behandam/screens/ticket/ticket_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -50,7 +51,6 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
                   color: Colors.white,
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
-
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -107,14 +107,24 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
               },
             );*/
         } else {
-          /*  print('after dialog');
-          Navigator.of(context).pushNamed(
-            TicketDetails.routeName,
-            arguments: {
-              'ticketId': int.parse(message['id'].toString()),
-              'ticketTitle': message['title'],
-            },
-          );*/
+        //  print('after dialog');
+/*
+queryParameters:{
+              'ticketId': widget.ticketItem.id,
+              'ticketTitle': widget.ticketItem.title,
+            } */
+
+          try {
+            Uri uri = Uri(path: '${Routes.detailsTicketMessage}', queryParameters: {
+              'ticketId': widget.ticketItem.id.toString(),
+            });
+            context.vxNav.push(uri);
+          }catch (e){
+            print('uri = > ${e.toString()} ');
+          }
+          //uri.replace();
+
+
         }
       },
       child: Container(
@@ -123,7 +133,7 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
           color: AppColors.onPrimary,
         ),
         padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
-        margin:  EdgeInsets.symmetric(vertical: 1.h),
+        margin: EdgeInsets.symmetric(vertical: 1.h),
         child: Column(
           textDirection: context.textDirectionOfLocale,
           crossAxisAlignment: CrossAxisAlignment.stretch,

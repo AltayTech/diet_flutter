@@ -1,23 +1,22 @@
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/app/provider.dart';
-import 'package:behandam/screens/authentication/register.dart';
-import 'package:behandam/screens/authentication/verify.dart';
-import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/authentication/code_reset.dart';
+import 'package:behandam/screens/authentication/pass_reset.dart';
+import 'package:behandam/screens/authentication/register.dart';
+import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
-
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
-import 'package:behandam/screens/authentication/code_reset.dart';
-import 'package:behandam/screens/authentication/pass_reset.dart';
-import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
+import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
+import 'package:behandam/screens/ticket/ticket_details.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/typography.dart';
@@ -45,6 +44,9 @@ class _AppState extends State<App> {
     bloc = AppBloc();
     getToken();
     AppColors(themeAppColor: ThemeAppColor.DEFAULT);
+    navigator.addListener(() {
+      print('routeName is => ${navigator.currentConfiguration!.path}');
+    });
   }
 
   getToken() async {
@@ -150,11 +152,13 @@ final navigator = VxNavigator(
     Routes.showInbox: (_, param) => MaterialPage(child: ShowInboxItem(), arguments: param),
     Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
     Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
-  Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(),arguments: param),
-  Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(),arguments: param),
-  Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
-  Routes.newTicketMessage: (_, __) => MaterialPage(child: NewTicket()),
-  // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
+    Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(), arguments: param),
+    Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(), arguments: param),
+    Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
+    Routes.newTicketMessage: (_, __) => MaterialPage(child: NewTicket()),
+    RegExp(r"\/ticket\/details"): (uri, __) =>
+        MaterialPage(child: TicketDetails(), arguments: int.parse(uri.queryParameters['ticketId'].toString())),
+    // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),
@@ -167,4 +171,3 @@ final navigator = VxNavigator(
     ),
   ),
 );
-  
