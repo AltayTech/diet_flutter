@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:behandam/app/app.dart';
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
@@ -167,26 +168,50 @@ class FoodListBloc {
   }
 
   void onMealFood(Food newFood, int mealId){
+    debugPrint('newfood1 ${newFood.toJson()}');
     final index = _foodList.valueOrNull?.meals.indexWhere((element) => element.id == mealId);
-    _foodList.valueOrNull?.meals[index!].food = newFood;
+    // _foodList.valueOrNull?.meals[index!].food = newFood;
+    _foodList.valueOrNull?.meals[index!].newFood = newFood;
+    debugPrint('newfood ${_foodList.valueOrNull?.meals[index!].title} / ${_foodList.valueOrNull?.meals[index!].newFood?.toJson()}');
   }
 
-  onDailyMenu(BuildContext context){
+  onDailyMenu(){
     _loadingContent.value = true;
     List<DailyFood> foods = [];
     int day = _weekDays.value!.indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
-    _foodList.value?.meals.forEach((meal) {
+    debugPrint('newfood3 ${_foodList.valueOrNull?.meals[0].newFood?.id}');
+    _foodList.valueOrNull?.meals.forEach((meal) {
+      debugPrint('daily menu newfood ${meal.id} / ${meal.title} / ${meal.newFood?.toJson()}');
       //ToDo calculate the free food id
-      foods.add(DailyFood(meal.food!.id!, meal.id, day + 1, null));
+      if(meal.newFood?.id != null) foods.add(DailyFood(meal.newFood!.id!, meal.id, day + 1, null));
       debugPrint('daily menu change ${foods.last.toJson()}');
     });
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
     _repository.dailyMenu(requestData).then((value) {
-      if(value.data != null && value.requireData)
-        Navigator.of(context).pop(true);
-        // VxNavigator.of(context).returnAndPush(true);
-        // onRefresh(invalidate: true);
+      if(value.data != null && value.requireData) {
+        onRefresh(invalidate: true);
+      }
     }).whenComplete(() => _loadingContent.value = false);
+  }
+
+  void onReplacingFood(int mealId){
+    _loadingContent.value = true;
+    List<DailyFood> foods = [];
+    int day = _weekDays.value!.indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
+    final meal = _foodList.value?.meals.firstWhere((element) => element.id == mealId);
+    foods.add(DailyFood(meal!.newFood!.id!, meal.id, day + 1, null));
+    debugPrint('replace Food ${foods.last.toJson()}');
+    DailyMenuRequestData requestData = DailyMenuRequestData(foods);
+    _repository.dailyMenu(requestData).then((value) {
+      if(value.data != null && value.requireData) {
+        onRefresh(invalidate: true);
+      }
+    }).whenComplete(() => _loadingContent.value = false);
+    makingFoodEmpty(mealId);
+  }
+
+  void makingFoodEmpty(int mealId){
+    _foodList.valueOrNull?.meals.firstWhere((element) => element.id == mealId).newFood = null;
   }
 
   void dispose() {

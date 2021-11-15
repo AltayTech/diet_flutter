@@ -144,6 +144,32 @@
                         "type": "String"
                     }
       }
+  },
+  "tryToAlternateOneMealDaily": "سعی کنید روزانه فقط یک وعده را جایگزین کنید",
+  "currentMeal": "وعده {meal} فعلی",
+  "@currentMeal": {
+        "placeholders": {
+            "meal": {
+                "type": "String"
+            }
+        }
+  },
+  "replacedMeal": "وعده {meal} جایگزین",
+  "@replacedMeal": {
+        "placeholders": {
+            "meal": {
+                "type": "String"
+            }
+        }
+  },
+  "replaceMeal": "وعده {meal} رو جایگزین کن",
+  "@replaceMeal": {
+          "placeholders": {
+              "meal": {
+                  "type": "String"
+              }
+          }
     },
+  "replaceFood": "جایگزین کن",
   "arabic": "العربية"
 }

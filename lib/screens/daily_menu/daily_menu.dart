@@ -37,7 +37,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   @override
   void initState() {
     super.initState();
-    bloc = FoodListBloc(false);
+    // bloc = FoodListBloc(false);
     _animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this, value: 1);
     _animation =
@@ -49,6 +49,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    bloc = ModalRoute.of(context)?.settings.arguments as FoodListBloc;
   }
 
   @override
@@ -155,10 +156,10 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   }
 
   Widget mealItem(Meals meal) {
-    List<int> items = meal.food == null
+    List<int> items = meal.newFood == null
         ? []
         : List.generate(
-            (meal.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
+            (meal.newFood!.foodItems!.length * 2) - 1, (i) => i);
     int index = 0;
     debugPrint('is past ${isPastMeal(meal)} / ${meal.title}');
     return isPastMeal(meal) ? Container() : Card(
@@ -212,7 +213,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
                         scale: _animation,
                         alignment: Alignment.center,
                         child: Icon(
-                          meal.food == null ? Icons.add : Icons.edit,
+                          meal.newFood == null ? Icons.add : Icons.edit,
                           size: 6.w,
                           color: Colors.grey[600],
                         ),
@@ -220,7 +221,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
                     ),
                     Space(width: 2.w),
                     Expanded(
-                      child: meal.food == null
+                      child: meal.newFood == null
                           ? Text(
                               intl.addFood,
                               style: typography.caption,
@@ -236,10 +237,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
                                         backgroundColor: AppColors.onPrimary,
                                         label: Text(
                                           meal
-                                                  .food
-                                                  ?.ratios?[0]
-                                                  .ratioFoodItems?[index]
-                                                  .title ??
+                                                  .newFood?.foodItems?[index].title ??
                                               '',
                                           style: typography.caption,
                                           textAlign: TextAlign.center,
@@ -297,9 +295,10 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
                 return;
               }
             });
-            if (isValid)
-              bloc.onDailyMenu(context);
-            else {
+            if (isValid) {
+              bloc.onDailyMenu();
+              VxNavigator.of(context).pop();
+            }else {
               navigatorMessengerKey.currentState?.removeCurrentSnackBar();
               navigatorMessengerKey.currentState!.showSnackBar(SnackBar(
                 content: Text(intl.selectFoodForAllMeals),

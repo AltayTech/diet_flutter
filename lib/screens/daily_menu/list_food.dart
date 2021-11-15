@@ -327,6 +327,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     return StreamBuilder(
       stream: bloc.selectedFood,
       builder: (_, AsyncSnapshot<Food?> snapshot) {
+        debugPrint('add to list ${snapshot.data?.toJson()}');
         if (snapshot.hasData)
           return FloatingActionButton.extended(
             onPressed: () {
