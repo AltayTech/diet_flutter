@@ -36,6 +36,15 @@ class AppColors {
   static const sportType = Color(0xffE6F2EE);
   static const help = Color(0xffFFE7E7);
   static const strongPen = Color(0xffC0C0C0);
+  static late Color statusTicketClose;
+  static late Color statusTicketResolved;
+  static late Color statusTicketPendingAdminResponse;
+  static late Color statusTicketPendingUserResponse;
+  static late Color statusTicketOnHold;
+  static late Color statusTicketGlobalIssue;
+  static late Color background;
+  static late Color colorTextDepartmentTicket;
+  static late Color colorselectDepartmentTicket;
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {
@@ -55,6 +64,15 @@ class AppColors {
         btnColor = Color(0xfffd5d5f);
         lableColor = Color(0xf48e8e8e);
         lableTab = Color(0xffffffff);
+        statusTicketClose =Colors.grey[700]!;
+        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
+        statusTicketPendingAdminResponse = Colors.lightBlue;
+        statusTicketPendingUserResponse = Colors.pinkAccent;
+        statusTicketOnHold =  primaryVariantLight;
+        statusTicketGlobalIssue = Color(0xFFF3543C);
+        background = Color.fromARGB(255, 245, 245, 245);
+        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
+        colorselectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
         break;
       case ThemeAppColor.BLUE:
         primary = Color(0xFF0D83DD);
@@ -72,6 +90,12 @@ class AppColors {
         btnColor = Color(0xfffd5d5f);
         lableColor = Color(0xf48e8e8e);
         lableTab = Color(0xffffffff);
+        statusTicketClose = primaryVariantLight;
+        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
+        statusTicketPendingAdminResponse = Colors.lightBlue;
+        statusTicketPendingUserResponse = Colors.pinkAccent;
+        statusTicketOnHold = Colors.grey[700]!;
+        statusTicketGlobalIssue = Color(0xFFF3543C);
         break;
       case ThemeAppColor.DARK:
         primary = Color(0xFF0D83DD);
@@ -87,6 +111,12 @@ class AppColors {
         btnColor = Color(0xfffd5d5f);
         lableColor = Color(0xf48e8e8e);
         lableTab = Color(0xffffffff);
+        statusTicketClose = primaryVariantLight;
+        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
+        statusTicketPendingAdminResponse = Colors.lightBlue;
+        statusTicketPendingUserResponse = Colors.pinkAccent;
+        statusTicketOnHold = Colors.grey[700]!;
+        statusTicketGlobalIssue = Color(0xFFF3543C);
         break;
       case ThemeAppColor.PURPLE:
         primary = Color(0xFF0D83DD);
@@ -102,6 +132,12 @@ class AppColors {
         btnColor = Color(0xfffd5d5f);
         lableColor = Color(0xf48e8e8e);
         lableTab = Color(0xffffffff);
+        statusTicketClose = primaryVariantLight;
+        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
+        statusTicketPendingAdminResponse = Colors.lightBlue;
+        statusTicketPendingUserResponse = Colors.pinkAccent;
+        statusTicketOnHold = Colors.grey[700]!;
+        statusTicketGlobalIssue = Color(0xFFF3543C);
         break;
     }
   }

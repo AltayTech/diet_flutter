@@ -66,11 +66,31 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'zip_code': instance.zipCode,
     };
 
-Media _$MediaFromJson(Map<String, dynamic> json) =>
-    Media()..url = json['url'] as String?;
+Media _$MediaFromJson(Map<String, dynamic> json) => Media()
+  ..url = json['url'] as String?
+  ..id = json['id'] as int?
+  ..modelId = json['model_id'] as int?
+  ..fileName = json['file_name'] as String?
+  ..name = json['name'] as String?
+  ..thumbUrl = json['image_thumb_url'] as String?
+  ..imageUrl = json['image_url'] as String?
+  ..tutorialUrl = json['tutorial_url'] as String?
+  ..avatarUrl = json['avatar_url'] as String?
+  ..collectionName = json['collection_name'] as String?
+  ..mimeType = json['mime_type'] as String?;
 
 Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
       'url': instance.url,
+      'id': instance.id,
+      'model_id': instance.modelId,
+      'file_name': instance.fileName,
+      'name': instance.name,
+      'image_thumb_url': instance.thumbUrl,
+      'image_url': instance.imageUrl,
+      'tutorial_url': instance.tutorialUrl,
+      'avatar_url': instance.avatarUrl,
+      'collection_name': instance.collectionName,
+      'mime_type': instance.mimeType,
     };
 
 SocialMedia _$SocialMediaFromJson(Map<String, dynamic> json) => SocialMedia()

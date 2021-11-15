@@ -42,17 +42,21 @@ class AuthenticationBloc{
 
 
   void fetchCountries() async {
-   if(MemoryApp.countryCode == null)
-    _repository.country().then((value) {
-      MemoryApp.countryCode = value.data!;
-      _subjectList.value = value.data!;
-      countries = value.data!;
-      value.data!.forEach((element){
-        if(element.code == "98") {
-          _subject = element;
-        }
-      });
-    });
+   if(MemoryApp.countryCode == null) {
+     _repository.country().then((value) {
+       MemoryApp.countryCode = value.data!;
+       _subjectList.value = value.data!;
+       countries = value.data!;
+       value.data!.forEach((element) {
+         if (element.code == "98") {
+           _subject = element;
+         }
+       });
+     });
+   }else {
+     _subjectList.value = MemoryApp.countryCode!;
+     countries = MemoryApp.countryCode!;
+   }
   }
 
   void loginMethod(String phoneNumber) async {

@@ -1,9 +1,6 @@
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/app/provider.dart';
-import 'package:behandam/screens/authentication/register.dart';
-import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
-import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
@@ -11,21 +8,23 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/daily_menu/daily_menu.dart';
 import 'package:behandam/screens/daily_menu/list_food.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
+import 'package:behandam/screens/authentication/code_reset.dart';
+import 'package:behandam/screens/authentication/pass_reset.dart';
+import 'package:behandam/screens/authentication/register.dart';
+import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
-
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
-import 'package:behandam/screens/authentication/code_reset.dart';
-import 'package:behandam/screens/authentication/pass_reset.dart';
-import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
-// import 'package:behandam/screens/ticket/ticketTabs.dart';
+import 'package:behandam/screens/regime/help_type.dart';
+import 'package:behandam/screens/ticket/new_ticket.dart';
+import 'package:behandam/screens/ticket/ticketTabs.dart';
+import 'package:behandam/screens/ticket/ticket_details.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/typography.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -50,6 +49,9 @@ class _AppState extends State<App> {
     bloc = AppBloc();
     getToken();
     AppColors(themeAppColor: ThemeAppColor.DEFAULT);
+    navigator.addListener(() {
+      print('routeName is => ${navigator.currentConfiguration!.path}');
+    });
   }
 
   getToken() async {
@@ -60,11 +62,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) {
-        return DevicePreview(
-          // enabled: !kReleaseMode,
-          enabled: false,
-          builder: (context) => app(), // Wrap your app
-        );
+        return app();
       },
     );
   }
@@ -176,17 +174,17 @@ final navigator = VxNavigator(
     Routes.listFood: (_, param) =>
         MaterialPage(child: ListFoodPage(), arguments: param),
     Routes.inbox: (_, __) => MaterialPage(child: InboxList()),
-    Routes.showInbox: (_, param) =>
-        MaterialPage(child: ShowInboxItem(), arguments: param),
-    // Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
-    // Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
-    Routes.resetCode: (_, param) =>
-        MaterialPage(child: CodeResetScreen(), arguments: param),
-    Routes.resetPass: (_, param) =>
-        MaterialPage(child: PasswordResetScreen(), arguments: param),
+    Routes.showInbox: (_, param) => MaterialPage(child: ShowInboxItem(), arguments: param),
+    Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
+    Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
+    Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(), arguments: param),
+    Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(), arguments: param),
     Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
-    Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
+    Routes.newTicketMessage: (_, __) => MaterialPage(child: NewTicket()),
+    RegExp(r"\/ticket\/details"): (uri, __) =>
+        MaterialPage(child: TicketDetails(), arguments: int.parse(uri.queryParameters['ticketId'].toString())),
     // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
+    Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

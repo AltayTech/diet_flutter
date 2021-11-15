@@ -171,5 +171,20 @@
           }
     },
   "replaceFood": "جایگزین کن",
+  "ticket": "پشتیبانی",
+  "status": "وضعیت",
+  "vitrin": "ویترین",
+  "diet": "رژیم",
+  "titleQuestionTicket": "سوالت مربوط به چه بخشیه؟",
+  "ok": "باشه",
+  "subject": "عنوان پیام",
+  "endRecord": "پایان ضبط",
+  "startRecord": "شروع ضبط",
+  "soundMessage": "پیام صوتی",
+  "lableTextMessage": "متن خود را اینجا وارد کنید",
+  "errorDepartment": "لطفا دپارتمان مورد نظر خود را انتخاب کنید",
+  "errorFillItem": "تمامی اطلاعات خواسته شده را وارد کنید",
+  "cancel": "لغو",
+  "closedTicket": "این تیکت بسته شده است. در صورت پاسخ به آن مجددا باز خواهد شد.",
   "arabic": "العربية"
 }

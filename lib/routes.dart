@@ -26,6 +26,8 @@ abstract class Routes {
   static const ticketCall = '/ticket/call';
   static const ticketMessage = '/ticket/message';
   static const replaceFood = '/list/food/replace';
+  static const newTicketMessage = '/ticket/message/new';
+  static const detailsTicketMessage = '/ticket/details';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
