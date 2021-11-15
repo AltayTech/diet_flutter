@@ -24,7 +24,7 @@ class CustomRuler extends StatefulWidget {
   final String heading;
   Function helpClick;
   final String iconPath;
-  int secondValue = 0;
+  double secondValue = 0;
 
   CustomRuler({
     required this.color,
@@ -209,10 +209,10 @@ class Slider extends StatelessWidget {
             isGram
             ?  itemValue = _indexToValue(index-12)
             :  itemValue = _indexToValue(index);
-            // if(isGram){
-            //   print("index:$index");
-            //   print("item:$itemValue");
-            // }
+            if(isGram){
+              print("index:$index");
+              print("item:$itemValue");
+            }
             bool isExtra;
             if (isGram)
               isExtra =  index == 0;
