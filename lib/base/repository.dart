@@ -6,8 +6,6 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-// import 'package:behandam/data/entity/ticket/ticket_item.dart';
-import 'package:behandam/data/entity/food_list/food_list.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
@@ -15,9 +13,8 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/data/entity/regime/help.dart';
-import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
 import '../api/api.dart';
@@ -29,7 +26,6 @@ import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
 import 'network_response.dart';
-import '../data/entity/auth/sign_in.dart';
 
 enum FoodDietPdf { TERM, WEEK }
 
@@ -67,12 +63,10 @@ abstract class Repository {
 
   NetworkResult<List<FastPatternData>> fastPattern({bool invalidate = false});
 
-  NetworkResult<FastMenuRequestData> changeToFast(
-      FastMenuRequestData requestData,
+  NetworkResult<FastMenuRequestData> changeToFast(FastMenuRequestData requestData,
       {bool invalidate = false});
 
-  NetworkResult<ListFoodData> listFood(
-      String filter, {bool invalidate = false});
+  NetworkResult<ListFoodData> listFood(String filter, {bool invalidate = false});
 
   NetworkResult<CityProvinceModel> getProvinces();
 
@@ -97,7 +91,6 @@ abstract class Repository {
   ImperativeNetworkResult sendTicketMessageDetail(SendTicket sendTicket);
 
   ImperativeNetworkResult sendTicketFileDetail(SendTicket sendTicket, File file);
-  // NetworkResult<TicketModel> getTickets();
 
   NetworkResult<bool> dailyMenu(DailyMenuRequestData requestData);
 }
@@ -121,8 +114,7 @@ class _RepositoryImpl extends Repository {
     _dio.interceptors.add(CustomInterceptors());
     _dio.interceptors.add(ErrorHandlerInterceptor());
     _dio.interceptors.add(GlobalInterceptor());
-    _apiClient =
-        RestClient(_dio, baseUrl: FlavorConfig.instance.variables['baseUrl']);
+    _apiClient = RestClient(_dio, baseUrl: FlavorConfig.instance.variables['baseUrl']);
     _cache = MemoryApp();
   }
 
@@ -163,12 +155,10 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<FoodListData> foodList(String date,
-      {bool invalidate = false}) async {
+  NetworkResult<FoodListData> foodList(String date, {bool invalidate = false}) async {
     _cache.saveDate(date);
     NetworkResponse<FoodListData> response;
-    debugPrint(
-        'repository1 ${_cache.date} / ${_cache.foodList} / $invalidate}');
+    debugPrint('repository1 ${_cache.date} / ${_cache.foodList} / $invalidate}');
     if (_cache.date == null || _cache.foodList == null || invalidate) {
       response = await _apiClient.foodList(date);
       debugPrint('repository2 ${response.data}');
@@ -212,8 +202,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<List<FastPatternData>> fastPattern(
-      {bool invalidate = false}) async {
+  NetworkResult<List<FastPatternData>> fastPattern({bool invalidate = false}) async {
     NetworkResponse<List<FastPatternData>> response;
     if (_cache.patterns == null || invalidate) {
       response = await _apiClient.fastPattern();
@@ -226,8 +215,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<FastMenuRequestData> changeToFast(
-      FastMenuRequestData requestData,
+  NetworkResult<FastMenuRequestData> changeToFast(FastMenuRequestData requestData,
       {bool invalidate = false}) async {
     requestData.date = _cache.date;
     // requestData.userId = _cache.profile?.userId;
@@ -235,20 +223,18 @@ class _RepositoryImpl extends Repository {
     requestData.userId = 63;
     if (requestData.patternId == null) requestData.patternId = 0;
     debugPrint('pattern request ${requestData.toJson()}');
-    var response =
-        await _apiClient.changeToFast(requestData);
+    var response = await _apiClient.changeToFast(requestData);
     return response;
   }
 
   @override
-  NetworkResult<ListFoodData> listFood(String filter, {bool invalidate = false}) async{
-    var response =
-        await _apiClient.listFood(filter);
+  NetworkResult<ListFoodData> listFood(String filter, {bool invalidate = false}) async {
+    var response = await _apiClient.listFood(filter);
     return response;
   }
 
   @override
-  NetworkResult<RegimeType> regimeType() async{
+  NetworkResult<RegimeType> regimeType() async {
     var response = await _apiClient.getDietType();
     return response;
   }
@@ -290,7 +276,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<bool> dailyMenu(DailyMenuRequestData requestData) async{
+  NetworkResult<bool> dailyMenu(DailyMenuRequestData requestData) async {
     var response = await _apiClient.dailyMenu(requestData);
     return response;
   }
@@ -341,6 +327,12 @@ class _RepositoryImpl extends Repository {
     sendTicket.hasAttachment = false;
     sendTicket.isVoice = false;
     var response = _apiClient.sendTicketMessageDetail(sendTicket);
+    return response;
+  }
+
+  @override
+  NetworkResult<TicketModel> getTickets() {
+    var response = _apiClient.getTicketMessage();
     return response;
   }
 }

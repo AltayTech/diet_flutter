@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
-import 'package:behandam/data/entity/food_list/food_list.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
@@ -101,8 +100,8 @@ abstract class RestClient {
   @GET("/inbox")
   NetworkResult<Inbox> getInbox();
 
-  // @GET("/ticket")
-  // NetworkResult<TicketModel> getTicketMessage();
+  @GET("/ticket")
+  NetworkResult<TicketModel> getTicketMessage();
   
   @GET("/fasting-pattern")
   NetworkResult<List<FastPatternData>> fastPattern();

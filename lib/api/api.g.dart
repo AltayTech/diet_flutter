@@ -371,26 +371,36 @@ class _RestClient implements RestClient {
   }
 
   @override
-<<<<<<< HEAD
-  Future<NetworkResponse<List<FastPatternData>>> fastPattern() async {
-=======
   Future<NetworkResponse<TicketModel>> getTicketMessage() async {
->>>>>>> ticket
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-<<<<<<< HEAD
-        _setStreamType<NetworkResponse<List<FastPatternData>>>(
-=======
         _setStreamType<NetworkResponse<TicketModel>>(
->>>>>>> ticket
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/ticket',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<TicketModel>.fromJson(
+      _result.data!,
+      (json) => TicketModel.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<List<FastPatternData>>> fastPattern() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<List<FastPatternData>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/fasting-pattern',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-<<<<<<< HEAD
     final value = NetworkResponse<List<FastPatternData>>.fromJson(
         _result.data!,
         (json) => (json as List<dynamic>)
@@ -416,27 +426,17 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<FastMenuRequestData>.fromJson(
       _result.data!,
       (json) => FastMenuRequestData.fromJson(json as Map<String, dynamic>),
-=======
-    final value = NetworkResponse<TicketModel>.fromJson(
-      _result.data!,
-      (json) => TicketModel.fromJson(json as Map<String, dynamic>),
->>>>>>> ticket
     );
     return value;
   }
 
   @override
-<<<<<<< HEAD
   Future<NetworkResponse<ListFoodData>> listFood(filter) async {
-=======
-  Future<NetworkResponse<SupportModel>> getDepartmentItems() async {
->>>>>>> ticket
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-<<<<<<< HEAD
         _setStreamType<NetworkResponse<ListFoodData>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/food?filter=$filter',
@@ -445,31 +445,16 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<ListFoodData>.fromJson(
       _result.data!,
       (json) => ListFoodData.fromJson(json as Map<String, dynamic>),
-=======
-        _setStreamType<NetworkResponse<SupportModel>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/department',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<SupportModel>.fromJson(
-      _result.data!,
-      (json) => SupportModel.fromJson(json as Map<String, dynamic>),
->>>>>>> ticket
     );
     return value;
   }
 
   @override
-<<<<<<< HEAD
   Future<NetworkResponse<bool>> dailyMenu(date) async {
-=======
-  Future<NetworkResponse<dynamic>> sendTicketMessage(sendTicket) async {
->>>>>>> ticket
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-<<<<<<< HEAD
     _data.addAll(date.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<bool>>(
@@ -478,7 +463,37 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<bool>.fromJson(
-=======
+      _result.data!,
+      (json) => json as bool,
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<SupportModel>> getDepartmentItems() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<SupportModel>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/department',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<SupportModel>.fromJson(
+      _result.data!,
+      (json) => SupportModel.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<dynamic>> sendTicketMessage(sendTicket) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
     _data.addAll(sendTicket.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
@@ -487,9 +502,8 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<dynamic>.fromJson(
->>>>>>> ticket
       _result.data!,
-      (json) => json as bool,
+      (json) => json as dynamic,
     );
     return value;
   }
