@@ -186,5 +186,16 @@
   "errorFillItem": "تمامی اطلاعات خواسته شده را وارد کنید",
   "cancel": "لغو",
   "closedTicket": "این تیکت بسته شده است. در صورت پاسخ به آن مجددا باز خواهد شد.",
-  "arabic": "العربية"
+  "arabic": "العربية",
+  "stateOfBody": "وضعیت جسمانی",
+  "enterYourState": "اطلاعات جسمانیت رو وارد کن",
+  "weight": "وزن",
+  "height": "قد",
+  "wrist": "دور مچ",
+  "birthday": "تاریخ تولد",
+  "confirmContinue": "تایید و ادامه",
+  "centimeter": "سانتی متر",
+  "kilo": "کیلو",
+  "gr": "گرم",
+  "understand": "متوجه شدم"
 }

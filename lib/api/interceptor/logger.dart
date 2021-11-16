@@ -14,8 +14,8 @@ class LoggingInterceptor extends Interceptor {
 
     printKV('URI', options.uri);
     printKV('METHOD', options.method);
-    logPrint('HEADERS:');
-    options.headers.forEach((key, v) => printKV(' - $key', v));
+    print('HEADERS:');
+    options.headers.values.forEach((element) {print('element = > $element'); });
     logPrint('BODY:');
     printAll(options.data ?? "");
 

@@ -8,7 +8,7 @@ import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
-// import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
@@ -16,12 +16,8 @@ import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:behandam/data/entity/regime/help.dart';
-import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:retrofit/retrofit.dart';
 
 import '../base/network_response.dart';
 import '../data/entity/auth/register.dart';
@@ -44,7 +40,6 @@ typedef ImperativeNetworkResult = NetworkResult<dynamic>;
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
-  // factory RestClient(Dio dio) = _RestClient;
 
   @GET("/country")
   NetworkResult<List<CountryCode>> getCountries();
@@ -70,8 +65,18 @@ abstract class RestClient {
   @GET("/diet-type")
   NetworkResult<RegimeType> getDietType();
 
-  @GET("/page/1")
-  NetworkResult<Help> helpDietType();
+  @GET("/page/{id}")
+  NetworkResult<Help> helpDietType(@Path('id') int id);
+
+  @GET("/field/{id}")
+  NetworkResult<Help> helpBodyState(@Path('id') int id);
+
+  @PATCH("/condition")
+  NetworkResult getPath(@Body() RegimeType id);
+
+  @PATCH("/physical-info")
+  NetworkResult<BodyState> sendInfo(@Body() BodyState info);
+
 
   @GET("/user/menu?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);

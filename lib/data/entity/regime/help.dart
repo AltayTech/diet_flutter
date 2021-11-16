@@ -5,20 +5,26 @@ part 'help.g.dart';
 class Help {
   @JsonKey(name: "id")
   int? id;
+  @JsonKey(name: "name")
+  String? name;
   @JsonKey(name: "helpers")
   List<Help>? helpers;
-  @JsonKey(name: "body")
-  String? body;
+  @JsonKey(name: "media")
+  List<Help>? media;
   @JsonKey(name: "created_at")
   String? createdAt;
+  @JsonKey(name: "updated_at")
+  String? updatedAt;
   @JsonKey(name: "model_id")
   int? modelId;
   @JsonKey(name: "model_type")
   String? modelType;
   @JsonKey(name: "order")
   int? order;
-  @JsonKey(name: "updated_at")
-  String? updatedAt;
+  @JsonKey(name: "body")
+  String? body;
+  @JsonKey(name: "url")
+  String? url;
 
   Help();
 

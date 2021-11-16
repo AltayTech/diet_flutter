@@ -45,6 +45,10 @@ class AppColors {
   static late Color background;
   static late Color colorTextDepartmentTicket;
   static late Color colorselectDepartmentTicket;
+  static const grey = Color(0xffF5F5F5);
+  static const purpleRuler = Color(0xff927DFC);
+  static const pinkRuler = Color(0xffEC4CA2);
+  static const blueRuler = Color(0xff65A8E0);
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {

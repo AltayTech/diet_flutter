@@ -11,7 +11,7 @@ abstract class Routes {
   static const verify = '/verify';
   static const resetCode = '/resetCode';
   static const resetPass = '/resetPass';
-  static const regimeType = '/regimeType';
+  static const regimeType = '/reg/diet/type';
   static const helpType = '/help';
   static const profile = '/profile';
   static const listView = '/list/view';
@@ -28,6 +28,7 @@ abstract class Routes {
   static const replaceFood = '/list/food/replace';
   static const newTicketMessage = '/ticket/message/new';
   static const detailsTicketMessage = '/ticket/details';
+  static const bodyState = '/reg/size';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

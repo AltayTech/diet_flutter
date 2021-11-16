@@ -14,7 +14,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../helper/Arc.dart';
+import 'package:behandam/screens/utility/arc.dart';
 import '../../routes.dart';
 
 class CodeResetScreen extends StatefulWidget {
