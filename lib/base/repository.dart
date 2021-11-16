@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
+import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
@@ -84,6 +85,8 @@ abstract class Repository {
   // NetworkResult<TicketModel> getTickets();
 
   NetworkResult<bool> dailyMenu(DailyMenuRequestData requestData);
+
+  NetworkResult<CalendarData> calendar(String start, String end);
 }
 
 class _RepositoryImpl extends Repository {
@@ -276,6 +279,13 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<bool> dailyMenu(DailyMenuRequestData requestData) async{
     var response = await _apiClient.dailyMenu(requestData);
+    return response;
+  }
+
+  @override
+  NetworkResult<CalendarData> calendar(String start, String end) async{
+    var response = await _apiClient.calendar(start, end);
+    debugPrint('calendar');
     return response;
   }
 

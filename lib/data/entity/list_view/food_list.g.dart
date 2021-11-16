@@ -11,7 +11,6 @@ FoodListData _$FoodListDataFromJson(Map<String, dynamic> json) => FoodListData(
           .map((e) => Meals.fromJson(e as Map<String, dynamic>))
           .toList(),
       Menu.fromJson(json['menu'] as Map<String, dynamic>),
-      Visit.fromJson(json['visit'] as Map<String, dynamic>),
       DietType.fromJson(json['diet_type'] as Map<String, dynamic>),
       $enumDecode(_$booleanEnumMap, json['is_fasting']),
     );

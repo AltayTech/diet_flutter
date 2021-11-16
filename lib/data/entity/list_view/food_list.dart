@@ -8,7 +8,7 @@ class FoodListData {
   FoodListData(
       this.meals,
       this.menu,
-      this.visit,
+      // this.visit,
       this.dietType,
       this.isFasting,
       );
@@ -19,8 +19,8 @@ class FoodListData {
   @JsonKey(name: 'menu')
   final Menu menu;
   //
-  @JsonKey(name: 'visit')
-  final Visit visit;
+  // @JsonKey(name: 'visit')
+  // final Visit visit;
 
   @JsonKey(name: 'diet_type')
   final DietType dietType;

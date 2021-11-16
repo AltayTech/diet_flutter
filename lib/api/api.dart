@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
+import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 // import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
@@ -112,6 +113,9 @@ abstract class RestClient {
 
   @POST("/user/menu")
   NetworkResult<bool> dailyMenu(@Body() DailyMenuRequestData date);
+
+  @GET("/calendar?start_date={start}&end_date={end}")
+  NetworkResult<CalendarData> calendar(@Path() String start, @Path() String end);
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

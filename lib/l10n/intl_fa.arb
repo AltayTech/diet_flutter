@@ -171,5 +171,13 @@
           }
     },
   "replaceFood": "جایگزین کن",
+  "calendar": "تقویم",
+  "saturday": "شنبه",
+  "sunday": "۱شنبه",
+  "monday": "۲شنبه",
+  "tuesday": "۳شنبه",
+  "wednesday": "۴شنبه",
+  "thursday": "۵شنبه",
+  "friday": "جمعه",
   "arabic": "العربية"
 }
