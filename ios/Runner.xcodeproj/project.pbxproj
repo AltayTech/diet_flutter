@@ -339,7 +339,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -358,9 +358,88 @@
 				DEVELOPMENT_TEAM = XY4GZW2M8G;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lstdc++",
+					"-ObjC",
+					"-l\"sqlite3\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"AVKit\"",
+					"-framework",
+					"\"DKImagePickerController\"",
+					"-framework",
+					"\"DKPhotoGallery\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"Mantle\"",
+					"-framework",
+					"\"MediaPlayer\"",
+					"-framework",
+					"\"Photos\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SDWebImage\"",
+					"-framework",
+					"\"SDWebImageWebPCoder\"",
+					"-framework",
+					"\"SwiftyGif\"",
+					"-framework",
+					"\"Toast\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"app_settings\"",
+					"-framework",
+					"\"device_info\"",
+					"-framework",
+					"\"device_info_plus\"",
+					"-framework",
+					"\"file_picker\"",
+					"-framework",
+					"\"flutter_image_compress\"",
+					"-framework",
+					"\"flutter_sound_core\"",
+					"-framework",
+					"\"flutter_sound_lite\"",
+					"-framework",
+					"\"fluttertoast\"",
+					"-framework",
+					"\"image_picker\"",
+					"-framework",
+					"\"libwebp\"",
+					"-framework",
+					"\"open_file\"",
+					"-framework",
+					"\"package_info_plus\"",
+					"-framework",
+					"\"path_provider_ios\"",
+					"-framework",
+					"\"permission_handler\"",
+					"-framework",
+					"\"shared_preferences\"",
+					"-framework",
+					"\"sqflite\"",
+					"-framework",
+					"\"url_launcher\"",
+					"-framework",
+					"\"video_player\"",
+					"-framework",
+					"\"wakelock\"",
+					"-framework",
+					"\"webview_flutter_wkwebview\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.behandam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -417,7 +496,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -466,7 +545,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -487,9 +566,88 @@
 				DEVELOPMENT_TEAM = XY4GZW2M8G;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lstdc++",
+					"-ObjC",
+					"-l\"sqlite3\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"AVKit\"",
+					"-framework",
+					"\"DKImagePickerController\"",
+					"-framework",
+					"\"DKPhotoGallery\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"Mantle\"",
+					"-framework",
+					"\"MediaPlayer\"",
+					"-framework",
+					"\"Photos\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SDWebImage\"",
+					"-framework",
+					"\"SDWebImageWebPCoder\"",
+					"-framework",
+					"\"SwiftyGif\"",
+					"-framework",
+					"\"Toast\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"app_settings\"",
+					"-framework",
+					"\"device_info\"",
+					"-framework",
+					"\"device_info_plus\"",
+					"-framework",
+					"\"file_picker\"",
+					"-framework",
+					"\"flutter_image_compress\"",
+					"-framework",
+					"\"flutter_sound_core\"",
+					"-framework",
+					"\"flutter_sound_lite\"",
+					"-framework",
+					"\"fluttertoast\"",
+					"-framework",
+					"\"image_picker\"",
+					"-framework",
+					"\"libwebp\"",
+					"-framework",
+					"\"open_file\"",
+					"-framework",
+					"\"package_info_plus\"",
+					"-framework",
+					"\"path_provider_ios\"",
+					"-framework",
+					"\"permission_handler\"",
+					"-framework",
+					"\"shared_preferences\"",
+					"-framework",
+					"\"sqflite\"",
+					"-framework",
+					"\"url_launcher\"",
+					"-framework",
+					"\"video_player\"",
+					"-framework",
+					"\"wakelock\"",
+					"-framework",
+					"\"webview_flutter_wkwebview\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.behandam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -510,9 +668,88 @@
 				DEVELOPMENT_TEAM = XY4GZW2M8G;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lstdc++",
+					"-ObjC",
+					"-l\"sqlite3\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"AVKit\"",
+					"-framework",
+					"\"DKImagePickerController\"",
+					"-framework",
+					"\"DKPhotoGallery\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"Mantle\"",
+					"-framework",
+					"\"MediaPlayer\"",
+					"-framework",
+					"\"Photos\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SDWebImage\"",
+					"-framework",
+					"\"SDWebImageWebPCoder\"",
+					"-framework",
+					"\"SwiftyGif\"",
+					"-framework",
+					"\"Toast\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"app_settings\"",
+					"-framework",
+					"\"device_info\"",
+					"-framework",
+					"\"device_info_plus\"",
+					"-framework",
+					"\"file_picker\"",
+					"-framework",
+					"\"flutter_image_compress\"",
+					"-framework",
+					"\"flutter_sound_core\"",
+					"-framework",
+					"\"flutter_sound_lite\"",
+					"-framework",
+					"\"fluttertoast\"",
+					"-framework",
+					"\"image_picker\"",
+					"-framework",
+					"\"libwebp\"",
+					"-framework",
+					"\"open_file\"",
+					"-framework",
+					"\"package_info_plus\"",
+					"-framework",
+					"\"path_provider_ios\"",
+					"-framework",
+					"\"permission_handler\"",
+					"-framework",
+					"\"shared_preferences\"",
+					"-framework",
+					"\"sqflite\"",
+					"-framework",
+					"\"url_launcher\"",
+					"-framework",
+					"\"video_player\"",
+					"-framework",
+					"\"wakelock\"",
+					"-framework",
+					"\"webview_flutter_wkwebview\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.behandam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
