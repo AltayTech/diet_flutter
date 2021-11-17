@@ -242,6 +242,7 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<ListFoodData> listFood(String filter, {bool invalidate = false}) async {
     var response = await _apiClient.listFood(filter);
+    debugPrint('list food');
     return response;
   }
 

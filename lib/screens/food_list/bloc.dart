@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
+import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
@@ -49,33 +50,8 @@ class FoodListBloc {
       _foodList.value = value.data!;
       _foodList.value?.meals.sort((a, b) => a.order.compareTo(b.order));
       setTheme();
-      if (fillFood) foodForMeal();
       fillWeekDays();
     }).whenComplete(() => _loadingContent.value = false);
-  }
-
-  void foodForMeal() {
-    for (int i = 0; i < _foodList.value!.menu.foods.length; i++) {
-      _foodList.value?.meals[i].food = _foodList.value?.menu.foods[i];
-      _foodList.value?.meals[i].food?.ratios?[0].ratioFoodItems
-          ?.sort((a, b) => a.order.compareTo(b.order));
-      debugPrint('fill food ${_foodList.value!.meals[i].food!.ratios?[0].ratioFoodItems?.length}');
-      _foodList.value?.meals[i].food?.ratios?[0].ratioFoodItems?.forEach((ratioFoodItem) {
-        ratioFoodItem.unitTitle = '';
-        debugPrint('ratio food ${ratioFoodItem.toJson()}');
-        if (checkDefaultUnit(ratioFoodItem)) {
-          ratioFoodItem.unitTitle +=
-              '${ratioFoodItem.amount?.defaultUnit?.representational} ${ratioFoodItem.amount?.defaultUnit?.title}';
-          if (checkSecondUnit(ratioFoodItem)) {
-            ratioFoodItem.unitTitle +=
-                ' * ${ratioFoodItem.amount?.secondUnit?.representational} ${ratioFoodItem.amount?.secondUnit?.title}';
-          }
-        } else if (checkSecondUnit(ratioFoodItem)) {
-          ratioFoodItem.unitTitle +=
-              '${ratioFoodItem.amount?.secondUnit?.representational} ${ratioFoodItem.amount?.secondUnit?.title}';
-        }
-      });
-    }
   }
 
   bool checkDefaultUnit(RatioFoodItem ratioFoodItem) {
@@ -151,12 +127,11 @@ class FoodListBloc {
       debugPrint('food list ${value.data}');
       _foodList.value = value.data!;
       _foodList.value?.meals.sort((a, b) => a.order.compareTo(b.order));
-      foodForMeal();
       setTheme();
     }).whenComplete(() => _loadingContent.value = false);
   }
 
-  void onMealFood(Food newFood, int mealId) {
+  void onMealFood(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
     final index = _foodList.valueOrNull?.meals.indexWhere((element) => element.id == mealId);
     // _foodList.valueOrNull?.meals[index!].food = newFood;

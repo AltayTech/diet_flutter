@@ -158,8 +158,8 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
   Widget weekItem(int index, List<WeekDay?> weekDays) {
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
-      builder: (_, AsyncSnapshot<WeekDay> snapshot){
-        if(snapshot.hasData) {
+      builder: (_, AsyncSnapshot<WeekDay> snapshot) {
+        if (snapshot.hasData) {
           return GestureDetector(
             onTap: () {
               bloc.changeDateWithString(
@@ -193,11 +193,11 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                             border: isAfterToday(weekDays[index]!)
                                 ? null
                                 : Border.all(
-                              color: AppColors.surface,
-                              width: 0.4,
-                            ),
+                                    color: AppColors.surface,
+                                    width: 0.4,
+                                  ),
                             color: isEqualToSelectedDay(
-                                weekDays, index, snapshot.requireData)
+                                    weekDays, index, snapshot.requireData)
                                 ? AppColors.surface
                                 : null,
                           ),
@@ -208,7 +208,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                               textAlign: TextAlign.center,
                               style: typography.caption?.apply(
                                 color: isEqualToSelectedDay(
-                                    weekDays, index, snapshot.requireData)
+                                        weekDays, index, snapshot.requireData)
                                     ? AppColors.primary
                                     : AppColors.surface,
                               ),
@@ -224,7 +224,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                           child: Container(
                             decoration: AppDecorations.circle.copyWith(
                               color: isEqualToSelectedDay(
-                                  weekDays, index, snapshot.requireData)
+                                      weekDays, index, snapshot.requireData)
                                   ? AppColors.surface
                                   : AppColors.primary,
                             ),
@@ -233,7 +233,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                               Icons.check,
                               size: 5.w,
                               color: isEqualToSelectedDay(
-                                  weekDays, index, snapshot.requireData)
+                                      weekDays, index, snapshot.requireData)
                                   ? AppColors.primary
                                   : AppColors.surface,
                             ),
@@ -251,17 +251,18 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
     );
   }
 
-  bool isAfterToday(WeekDay day){
-    return day.gregorianDate.isAfter(DateTime.parse(
-        DateTime.now().toString().substring(0, 10)));
+  bool isAfterToday(WeekDay day) {
+    return day.gregorianDate
+        .isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));
   }
 
-  bool isBeforeToday(WeekDay day){
-    return day.gregorianDate.isBefore(
-        DateTime.parse(DateTime.now().toString().substring(0, 10)));
+  bool isBeforeToday(WeekDay day) {
+    return day.gregorianDate
+        .isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10)));
   }
 
-  bool isEqualToSelectedDay(List<WeekDay?> weekDays, int index, WeekDay weekday){
+  bool isEqualToSelectedDay(
+      List<WeekDay?> weekDays, int index, WeekDay weekday) {
     return weekDays[index]!.gregorianDate ==
         weekDays.firstWhere((element) => element == weekday)!.gregorianDate;
   }

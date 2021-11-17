@@ -195,7 +195,10 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
               onTap: () {
                 VxNavigator.of(context)
                     .waitAndPush(Uri(path: Routes.listFood), params: meal)
-                    .then((value) => bloc.onMealFood(value, meal.id));
+                    .then((value) {
+                      debugPrint('returen ${value}');
+                  bloc.onMealFood(value, meal.id);
+                });
               },
               child: Container(
                 decoration: AppDecorations.boxMedium.copyWith(
@@ -288,9 +291,8 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
           onPressed: () {
             bool isValid = true;
             snapshot.requireData?.meals.forEach((meal) {
-              if (meal.food == null ||
-                  meal.food!.foodItems == null ||
-                  meal.food!.foodItems!.length == 0) {
+              if (!isPastMeal(meal) && (meal.newFood == null || meal.newFood?.foodItems == null ||
+                  meal.newFood!.foodItems!.length == 0)) {
                 isValid = false;
                 return;
               }

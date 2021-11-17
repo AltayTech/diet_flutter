@@ -60,72 +60,77 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
 
   Widget mealItem(Meals meal) {
     final isCurrentMeal = checkCurrentMeal(meal);
-    return Card(
-      margin: EdgeInsets.only(bottom: 2.h),
-      shape: AppShapes.rectangleMild,
-      elevation: 2,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-            decoration: BoxDecoration(
-              color: isCurrentMeal
-                  ? AppColors.primary.withOpacity(0.4)
-                  : AppColors.onPrimary,
-              borderRadius: BorderRadius.only(
-                topLeft: AppRadius.radiusSmall,
-                topRight: AppRadius.radiusSmall,
-                bottomRight: meal.food!.description.isNullOrEmpty
-                    ? AppRadius.radiusSmall
-                    : Radius.zero,
-                bottomLeft: meal.food!.description.isNullOrEmpty
-                    ? AppRadius.radiusSmall
-                    : Radius.zero,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Row(
+    return StreamBuilder(
+      stream: bloc.selectedWeekDay,
+        builder: (_, AsyncSnapshot<WeekDay> snapshot){
+        return Card(
+          margin: EdgeInsets.only(bottom: 2.h),
+          shape: AppShapes.rectangleMild,
+          elevation: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                decoration: BoxDecoration(
+                  color: isCurrentMeal && isToday(snapshot.data)
+                      ? AppColors.primary.withOpacity(0.4)
+                      : AppColors.onPrimary,
+                  borderRadius: BorderRadius.only(
+                    topLeft: AppRadius.radiusSmall,
+                    topRight: AppRadius.radiusSmall,
+                    bottomRight: meal.food.description.isNullOrEmpty
+                        ? AppRadius.radiusSmall
+                        : Radius.zero,
+                    bottomLeft: meal.food.description.isNullOrEmpty
+                        ? AppRadius.radiusSmall
+                        : Radius.zero,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Container(
-                      width: 12.w,
-                      height: 12.w,
-                      decoration: AppDecorations.circle.copyWith(
-                        color: isCurrentMeal ? AppColors.onPrimary : AppColors.primary,
-                      ),
-                      // child: ImageUtils(),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          width: 12.w,
+                          height: 12.w,
+                          decoration: AppDecorations.circle.copyWith(
+                            color: isCurrentMeal && isToday(snapshot.data) ? AppColors.onPrimary : AppColors.primary,
+                          ),
+                          // child: ImageUtils(),
+                        ),
+                        Space(width: 2.w),
+                        Expanded(
+                          child: Text(
+                            meal.title,
+                            style: typography.bodyText2,
+                            softWrap: true,
+                          ),
+                        ),
+                        Space(width: 2.w),
+                        alternateFood(meal),
+                      ],
                     ),
-                    Space(width: 2.w),
-                    Expanded(
-                      child: Text(
-                        meal.title,
-                        style: typography.bodyText2,
+                    Space(height: 0.5.h),
+                    if (meal.startAt.isNotNullAndEmpty &&
+                        meal.startAt.isNotNullAndEmpty)
+                      Text(
+                        intl.timeOfTheMeal(meal.startAt!.substring(0, 5),
+                            meal.endAt!.substring(0, 5)),
+                        style: typography.caption,
                         softWrap: true,
                       ),
-                    ),
-                    Space(width: 2.w),
-                    alternateFood(meal),
+                    Space(height: 1.h),
+                    if (meal.food.foodItems != null && meal.food.foodItems!.isNotEmpty) foodItems(meal, isCurrentMeal && isToday(snapshot.data)),
                   ],
                 ),
-                Space(height: 0.5.h),
-                if (meal.startAt.isNotNullAndEmpty &&
-                    meal.startAt.isNotNullAndEmpty)
-                  Text(
-                    intl.timeOfTheMeal(meal.startAt!.substring(0, 5),
-                        meal.endAt!.substring(0, 5)),
-                    style: typography.caption,
-                    softWrap: true,
-                  ),
-                Space(height: 1.h),
-                if (meal.food?.ratios != null) foodItems(meal, isCurrentMeal),
-              ],
-            ),
+              ),
+              if (meal.food.description != null) recipeBox(meal, isCurrentMeal && isToday(snapshot.data)),
+            ],
           ),
-          if (meal.food?.description != null) recipeBox(meal, isCurrentMeal),
-        ],
-      ),
+        );
+        },
     );
   }
 
@@ -174,8 +179,8 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     );
   }
 
-  bool isToday(WeekDay weekDay) {
-    return DateTime.now().toString().substring(0, 10) ==
+  bool isToday(WeekDay? weekDay) {
+    return weekDay != null && DateTime.now().toString().substring(0, 10) ==
         weekDay.gregorianDate.toString().substring(0, 10);
   }
 
@@ -290,10 +295,10 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
   }
 
   Widget foodItems(Meals meal, bool isCurrentMeal) {
-    List<int> items = meal.food == null && meal.food?.ratios == null
+    List<int> items = meal.food.foodItems == null
         ? []
         : List.generate(
-            (meal.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
+            (meal.food.foodItems!.length * 2) - 1, (i) => i);
     int index = 0;
     return Container(
       child: Wrap(
@@ -312,7 +317,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                       : AppColors.lableColor.withOpacity(0.2),
                   label: FittedBox(
                     child: Text(
-                      '${meal.food!.ratios![0].ratioFoodItems![index].unitTitle.replaceAll('*', intl.and)} ${meal.food!.ratios![0].ratioFoodItems![index].title}',
+                      '${meal.food.foodItems![index].amount} ${meal.food.foodItems![index].title}',
                       style: typography.caption,
                       textAlign: TextAlign.center,
                       // softWrap: true,
@@ -395,13 +400,13 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
             children: [
               close(),
               Text(
-                intl.recipe(meal.food?.title ?? ''),
+                intl.recipe(meal.food.title ?? ''),
                 style: typography.bodyText2,
                 textAlign: TextAlign.center,
               ),
               Space(height: 2.h),
               Text(
-                meal.food?.description ?? '',
+                meal.food.description ?? '',
                 style: typography.caption,
                 textAlign: TextAlign.start,
                 softWrap: true,
