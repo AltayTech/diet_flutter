@@ -2,6 +2,7 @@ import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+// import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/screens/daily_menu/bloc.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
@@ -193,7 +194,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   Widget foods(){
     return StreamBuilder(
       stream: bloc.foods,
-      builder: (_, AsyncSnapshot<List<Food>?> snapshot) {
+      builder: (_, AsyncSnapshot<List<ListFood>?> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.error is NoResultFoundError) {
             return SearchNoResult(intl.foodNotFoundMessage);
@@ -231,10 +232,10 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     );
   }
 
-  Widget foodItem(Food food) {
+  Widget foodItem(ListFood food) {
     return StreamBuilder(
       stream: bloc.selectedFood,
-      builder: (_, AsyncSnapshot<Food?> snapshot) {
+      builder: (_, AsyncSnapshot<ListFood?> snapshot) {
         return GestureDetector(
           onTap: () => bloc.onFoodChanged(food),
           child: Card(
@@ -297,7 +298,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     );
   }
 
-  List<Widget> makingFoodItems(Food food){
+  List<Widget> makingFoodItems(ListFood food){
     List<int> items = List.generate((food.foodItems!.length * 2) - 1, (i) => i);
     List<Widget> widgets = [];
     int index = 0;
@@ -326,7 +327,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   Widget floatingActionButton(){
     return StreamBuilder(
       stream: bloc.selectedFood,
-      builder: (_, AsyncSnapshot<Food?> snapshot) {
+      builder: (_, AsyncSnapshot<ListFood?> snapshot) {
         debugPrint('add to list ${snapshot.data?.toJson()}');
         if (snapshot.hasData)
           return FloatingActionButton.extended(

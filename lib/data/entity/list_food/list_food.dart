@@ -1,5 +1,4 @@
-// import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/entity/list_view/food_list.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 part 'list_food.g.dart';
 
@@ -32,7 +31,7 @@ class Items {
       );
 
   @JsonKey(name: 'foods')
-  List<Food>? foods;
+  List<ListFood>? foods;
 
   @JsonKey(name: 'tags')
   final List<Tag> tags;
@@ -66,26 +65,77 @@ class Tag {
   Map<String, dynamic> toJson() => _$TagToJson(this);
 }
 
-// @JsonSerializable(createToJson: true)
-// class Food {
-//   Food(
-//       this.id,
-//       this.title,
-//       this.description,
-//       );
-//
-//   @JsonKey(name: 'description')
-//   final String? description;
-//
-//   @JsonKey(name: 'id')
-//   final int id;
-//
-//   @JsonKey(name: 'title')
-//   final String title;
-//
-//   factory Food.fromJson(Map<String, dynamic> json) =>
-//       _$FoodFromJson(json);
-//
-//   Map<String, dynamic> toJson() => _$FoodToJson(this);
-// }
+@JsonSerializable()
+class ListFood{
+  ListFood(
+      this.id,
+      this.title,
+      this.description,
+      // this.freeFoods,
+      this.freeFoodsItems,
+      this.foodItems,
+      );
+
+  @JsonKey(name: 'id')
+  int? id;
+
+  @JsonKey(name: 'title')
+  String? title;
+
+  @JsonKey(name: 'description')
+  final String? description;
+
+  // @JsonKey(name: 'free_foods')
+  // final String? freeFoods;
+
+  @JsonKey(name: 'free_foods_items')
+  final List? freeFoodsItems;
+
+  @JsonKey(name: 'food_items')
+  final List<ListFoodItem>? foodItems;
+
+  factory ListFood.fromJson(Map<String, dynamic> json) =>
+      _$ListFoodFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ListFoodToJson(this);
+}
+
+@JsonSerializable()
+class ListFoodItem{
+  ListFoodItem(
+      // this.id,
+      this.title,
+      // this.order,
+      // this.amount,
+      // this.fats,
+      // this.proteins,
+      // this.pivot,
+      );
+
+  // @JsonKey(name: 'id')
+  // final int id;
+
+  @JsonKey(name: 'title')
+  final String title;
+
+  // @JsonKey(name: 'order')
+  // final int order;
+
+  // @JsonKey(name: 'amount')
+  // final String amount;
+
+  // @JsonKey(name: 'fats')
+  // final double? fats;
+  //
+  // @JsonKey(name: 'proteins')
+  // final double? proteins;
+  //
+  // @JsonKey(name: 'pivot')
+  // final FoodItemPivot? pivot;
+
+  factory ListFoodItem.fromJson(Map<String, dynamic> json) =>
+      _$ListFoodItemFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ListFoodItemToJson(this);
+}
 

@@ -2,16 +2,9 @@ import 'dart:async';
 
 import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/repository.dart';
-import 'package:behandam/data/entity/fast/fast.dart';
-import 'package:behandam/data/entity/filter/filter.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
-import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shamsi_date/shamsi_date.dart';
 import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/extensions/object.dart';
 import 'package:behandam/extensions/string.dart';
@@ -22,15 +15,15 @@ class ListFoodBloc {
   final _loadingContent = BehaviorSubject<bool>();
   final _listFood = BehaviorSubject<ListFoodData?>();
   final _tags = BehaviorSubject<List<Tag>?>();
-  final _foods = BehaviorSubject<List<Food>?>();
+  final _foods = BehaviorSubject<List<ListFood>?>();
   final _loadingMoreFoods = BehaviorSubject<bool>();
   final _selectedTagIds = BehaviorSubject<List<int>?>();
   final _mealId = BehaviorSubject<int>();
-  final _selectedFood = BehaviorSubject<Food?>();
+  final _selectedFood = BehaviorSubject<ListFood?>();
   int _totalRow = 0;
   int _offset = 0;
   String? _search;
-  Food? _previousFood;
+  ListFood? _previousFood;
 
   String get filter {
     final text;
@@ -52,7 +45,7 @@ class ListFoodBloc {
 
   Stream<ListFoodData?> get listFood => _listFood.stream;
 
-  Stream<List<Food>?> get foods => _foods.stream;
+  Stream<List<ListFood>?> get foods => _foods.stream;
 
   Stream<List<Tag>?> get tags => _tags.stream;
 
@@ -68,7 +61,7 @@ class ListFoodBloc {
 
   Stream<int> get mealId => _mealId.stream;
 
-  Stream<Food?> get selectedFood => _selectedFood.stream;
+  Stream<ListFood?> get selectedFood => _selectedFood.stream;
 
   void _loadContent() {
     _loadingContent.value = true;
@@ -76,7 +69,6 @@ class ListFoodBloc {
     _repository.listFood(filter).then((value) {
       _listFood.value = value.requireData;
       if (_tags.valueOrNull == null) _tags.value = value.data?.items.tags;
-      // _previousSearch = search;
       _totalRow = value.data?.count ?? 0;
       if (value.requireData.items.foods != null &&
           value.requireData.items.foods!.length > 0) {
@@ -89,7 +81,7 @@ class ListFoodBloc {
     });
   }
 
-  void _updateFoods(List<Food> newList) {
+  void _updateFoods(List<ListFood> newList) {
     if (_offset == 0 && newList.isEmpty) {
       _foods.addError(NoResultFoundError());
       return;
@@ -133,7 +125,8 @@ class ListFoodBloc {
     _loadContent();
   }
 
-  void onFoodChanged(Food newFood) {
+  void onFoodChanged(ListFood newFood) {
+    debugPrint('new list food ${newFood.toJson()}');
     if (_previousFood == null || _previousFood != newFood) {
       _selectedFood.value = newFood;
       _previousFood = newFood;

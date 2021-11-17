@@ -181,7 +181,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
     List<int> items = meal?.food == null
         ? []
         : List.generate(
-            (meal!.food!.foodItems!.length * 2) - 1, (i) => i);
+            (meal!.food.foodItems!.length * 2) - 1, (i) => i);
             // (meal!.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
     int index = 0;
     return Container(

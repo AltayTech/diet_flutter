@@ -1,26 +1,21 @@
-
-
+import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'food_list.g.dart';
 
 @JsonSerializable(createToJson: false)
 class FoodListData {
   FoodListData(
-      this.meals,
-      this.menu,
-      this.visit,
-      this.dietType,
-      this.isFasting,
-      );
+    this.meals,
+    this.menu,
+    this.dietType,
+    this.isFasting,
+  );
 
   @JsonKey(name: 'meals')
   final List<Meals> meals;
 
   @JsonKey(name: 'menu')
   final Menu menu;
-  //
-  @JsonKey(name: 'visit')
-  final Visit visit;
 
   @JsonKey(name: 'diet_type')
   final DietType dietType;
@@ -35,18 +30,17 @@ class FoodListData {
 @JsonSerializable(createToJson: false)
 class Meals {
   Meals(
-      this.id,
-      this.title,
-      this.mealTypeId,
-      this.icon,
-      this.isForFasting,
-      this.order,
-      this.startAt,
-      this.endAt,
-      this.description,
-      // this.patternIndex,
-      // this.dietTypeId,
-      );
+    this.id,
+    this.title,
+    this.mealTypeId,
+    this.icon,
+    this.isForFasting,
+    this.order,
+    this.startAt,
+    this.endAt,
+    this.description,
+    this.food,
+  );
 
   @JsonKey(name: 'id')
   final int id;
@@ -75,39 +69,33 @@ class Meals {
   @JsonKey(name: 'description')
   final String? description;
 
-  // @JsonKey(name: 'pattern_index')
-  // final int patternIndex;
-  //
-  // @JsonKey(name: 'diet_type_id')
-  // final int dietTypeId;
+  @JsonKey(name: 'food')
+  Food food;
 
-  Food? food;
-  Food? newFood;
+  ListFood? newFood;
 
-  factory Meals.fromJson(Map<String, dynamic> json) =>
-      _$MealsFromJson(json);
+  factory Meals.fromJson(Map<String, dynamic> json) => _$MealsFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
-class Menu{
+class Menu {
   Menu(
-      this.id,
-      this.title,
-      this.description,
-      this.dietTypeId,
-      this.menuTypeId,
-      this.menuTermId,
-      this.isCalorieBased,
-      this.isPrepared,
-      this.order,
-      this.menuDays,
-      this.foods,
-      this.startedAt,
-      this.expiredAt,
-      );
+    // this.id,
+    this.title,
+    this.description,
+    // this.dietTypeId,
+    // this.menuTypeId,
+    // this.menuTermId,
+    // this.isCalorieBased,
+    // this.isPrepared,
+    // this.order,
+    // this.menuDays,
+    this.startedAt,
+    this.expiredAt,
+  );
 
-  @JsonKey(name: 'id')
-  final int id;
+  // @JsonKey(name: 'id')
+  // final int id;
 
   @JsonKey(name: 'title')
   final String title;
@@ -115,29 +103,26 @@ class Menu{
   @JsonKey(name: 'description')
   final String? description;
 
-  @JsonKey(name: 'diet_type_id')
-  final int dietTypeId;
+  // @JsonKey(name: 'diet_type_id')
+  // final int dietTypeId;
 
-  @JsonKey(name: 'menu_type_id')
-  final int menuTypeId;
+  // @JsonKey(name: 'menu_type_id')
+  // final int menuTypeId;
+  //
+  // @JsonKey(name: 'menu_term_id')
+  // final int menuTermId;
 
-  @JsonKey(name: 'menu_term_id')
-  final int menuTermId;
-
-  @JsonKey(name: 'is_calory_based')
-  final boolean isCalorieBased;
-
-  @JsonKey(name: 'is_prepared')
-  final boolean isPrepared;
-
-  @JsonKey(name: 'order')
-  final int order;
-
-  @JsonKey(name: 'menu_days')
-  final int menuDays;
-
-  @JsonKey(name: 'foods')
-  final List<Food> foods;
+  // @JsonKey(name: 'is_calory_based')
+  // final boolean isCalorieBased;
+  //
+  // @JsonKey(name: 'is_prepared')
+  // final boolean isPrepared;
+  //
+  // @JsonKey(name: 'order')
+  // final int order;
+  //
+  // @JsonKey(name: 'menu_days')
+  // final int menuDays;
 
   @JsonKey(name: 'started_at')
   final String startedAt;
@@ -145,23 +130,19 @@ class Menu{
   @JsonKey(name: 'expired_at')
   final String expiredAt;
 
-  factory Menu.fromJson(Map<String, dynamic> json) =>
-      _$MenuFromJson(json);
+  factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }
 
 @JsonSerializable()
-class Food{
+class Food {
   Food(
-      this.id,
-      this.title,
-      this.code,
-      this.description,
-      this.ratios,
-      this.freeFoods,
-      this.freeFoodsItems,
-      this.pivot,
-      this.foodItems,
-      );
+    this.id,
+    this.title,
+    this.description,
+    this.freeFoods,
+    this.freeFoodsItems,
+    this.foodItems,
+  );
 
   @JsonKey(name: 'id')
   int? id;
@@ -169,31 +150,19 @@ class Food{
   @JsonKey(name: 'title')
   String? title;
 
-  @JsonKey(name: 'code')
-  final int? code;
-
   @JsonKey(name: 'description')
   final String? description;
 
-  @JsonKey(name: 'ratios')
-  final List<Ratio>? ratios;
-
   @JsonKey(name: 'free_foods')
-  final List? freeFoods;
+  final String? freeFoods;
 
   @JsonKey(name: 'free_foods_items')
   final List? freeFoodsItems;
 
-  @JsonKey(name: 'pivot')
-  final Pivot? pivot;
-
   @JsonKey(name: 'food_items')
   final List<FoodItem>? foodItems;
 
-  // String? fullTitle;
-
-  factory Food.fromJson(Map<String, dynamic> json) =>
-      _$FoodFromJson(json);
+  factory Food.fromJson(Map<String, dynamic> json) => _$FoodFromJson(json);
 
   Map<String, dynamic> toJson() => _$FoodToJson(this);
 }
@@ -201,10 +170,10 @@ class Food{
 @JsonSerializable()
 class Ratio {
   Ratio(
-      this.subCalorieId,
-      this.subCalorieValue,
-      this.ratioFoodItems,
-      );
+    this.subCalorieId,
+    this.subCalorieValue,
+    this.ratioFoodItems,
+  );
 
   @JsonKey(name: 'sub_calory_id')
   final int? subCalorieId;
@@ -215,8 +184,7 @@ class Ratio {
   @JsonKey(name: 'food_items')
   final List<RatioFoodItem>? ratioFoodItems;
 
-  factory Ratio.fromJson(Map<String, dynamic> json) =>
-      _$RatioFromJson(json);
+  factory Ratio.fromJson(Map<String, dynamic> json) => _$RatioFromJson(json);
 
   Map<String, dynamic> toJson() => _$RatioToJson(this);
 }
@@ -224,12 +192,12 @@ class Ratio {
 @JsonSerializable()
 class RatioFoodItem {
   RatioFoodItem(
-      this.id,
-      this.title,
-      this.order,
-      this.amount,
-      this.unitTitle,
-      );
+    this.id,
+    this.title,
+    this.order,
+    this.amount,
+    this.unitTitle,
+  );
 
   @JsonKey(name: 'id')
   final int id;
@@ -271,12 +239,12 @@ class RatioAmount {
 @JsonSerializable()
 class DefaultUnit {
   DefaultUnit(
-      this.id,
-      this.title,
-      this.quantityInGram,
-      this.amount,
-      this.representational,
-      );
+    this.id,
+    this.title,
+    this.quantityInGram,
+    this.amount,
+    this.representational,
+  );
 
   @JsonKey(name: 'id')
   final int? id;
@@ -304,14 +272,14 @@ class DefaultUnit {
 @JsonSerializable()
 class Pivot {
   Pivot(
-      this.menuId,
-      this.foodId,
-      this.userId,
-      this.mealId,
-      this.freeFoodItemId,
-      this.menuTermId,
-      this.day,
-      );
+    this.menuId,
+    this.foodId,
+    this.userId,
+    this.mealId,
+    this.freeFoodItemId,
+    this.menuTermId,
+    this.day,
+  );
 
   @JsonKey(name: 'menu_id')
   final int menuId;
@@ -334,44 +302,43 @@ class Pivot {
   @JsonKey(name: 'day')
   final int day;
 
-  factory Pivot.fromJson(Map<String, dynamic> json) =>
-      _$PivotFromJson(json);
+  factory Pivot.fromJson(Map<String, dynamic> json) => _$PivotFromJson(json);
 
   Map<String, dynamic> toJson() => _$PivotToJson(this);
 }
 
 @JsonSerializable()
-class FoodItem{
+class FoodItem {
   FoodItem(
-      this.id,
-      this.title,
-      this.calories,
-      this.carbohydrates,
-      this.fats,
-      this.proteins,
-      this.pivot,
-      );
+    // this.id,
+    this.title,
+    this.order,
+    this.amount,
+    // this.fats,
+    // this.proteins,
+    // this.pivot,
+  );
 
-  @JsonKey(name: 'id')
-  final int id;
+  // @JsonKey(name: 'id')
+  // final int id;
 
   @JsonKey(name: 'title')
   final String title;
 
-  @JsonKey(name: 'calories')
-  final double calories;
+  @JsonKey(name: 'order')
+  final int order;
 
-  @JsonKey(name: 'carbohydrates')
-  final double? carbohydrates;
+  @JsonKey(name: 'amount')
+  final String amount;
 
-  @JsonKey(name: 'fats')
-  final double? fats;
-
-  @JsonKey(name: 'proteins')
-  final double? proteins;
-
-  @JsonKey(name: 'pivot')
-  final FoodItemPivot? pivot;
+  // @JsonKey(name: 'fats')
+  // final double? fats;
+  //
+  // @JsonKey(name: 'proteins')
+  // final double? proteins;
+  //
+  // @JsonKey(name: 'pivot')
+  // final FoodItemPivot? pivot;
 
   factory FoodItem.fromJson(Map<String, dynamic> json) =>
       _$FoodItemFromJson(json);
@@ -382,14 +349,14 @@ class FoodItem{
 @JsonSerializable()
 class FoodItemPivot {
   FoodItemPivot(
-      this.foodId,
-      this.foodItemId,
-      this.order,
-      this.dietTypeId,
-      this.ratio,
-      this.minCalorie,
-      this.maxCalorie,
-      );
+    this.foodId,
+    this.foodItemId,
+    this.order,
+    this.dietTypeId,
+    this.ratio,
+    this.minCalorie,
+    this.maxCalorie,
+  );
 
   @JsonKey(name: 'food_id')
   final int foodId;
@@ -421,24 +388,24 @@ class FoodItemPivot {
 @JsonSerializable(createToJson: false)
 class Visit {
   Visit(
-      this.id,
-      this.termId,
-      this.messageId,
-      this.weight,
-      this.targetWeight,
-      this.height,
-      this.wrist,
-      this.pregnancyWeekNumber,
-      this.commitment,
-      this.visitedAt,
-      this.expiredAt,
-      this.activityLevelId,
-      this.calorieId,
-      this.isActive,
-      this.deletedAt,
-      this.calorieValue,
-      this.visitDays,
-      );
+    this.id,
+    this.termId,
+    this.messageId,
+    this.weight,
+    this.targetWeight,
+    this.height,
+    this.wrist,
+    this.pregnancyWeekNumber,
+    this.commitment,
+    this.visitedAt,
+    this.expiredAt,
+    this.activityLevelId,
+    this.calorieId,
+    this.isActive,
+    this.deletedAt,
+    this.calorieValue,
+    this.visitDays,
+  );
 
   @JsonKey(name: 'id')
   final int id;
@@ -492,21 +459,16 @@ class Visit {
   @JsonKey(name: 'visit_days')
   final int visitDays;
 
-  factory Visit.fromJson(Map<String, dynamic> json) =>
-      _$VisitFromJson(json);
+  factory Visit.fromJson(Map<String, dynamic> json) => _$VisitFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
-class DietType{
+class DietType {
   DietType(
-      this.id,
-      this.alias,
-      this.title,
-      // this.isActive,
-      // this.createdAt,
-      // this.updatedAt,
-      // this.deletedAt,
-      );
+    this.id,
+    this.alias,
+    this.title,
+  );
 
   @JsonKey(name: 'id')
   final int id;
@@ -517,27 +479,13 @@ class DietType{
   @JsonKey(name: 'title')
   final String title;
 
-  // @JsonKey(name: 'is_active')
-  // final boolean isActive;
-  //
-  // @JsonKey(name: 'created_at')
-  // final String? createdAt;
-  //
-  // @JsonKey(name: 'updated_at')
-  // final String? updatedAt;
-  //
-  // @JsonKey(name: 'deleted_at')
-  // final String? deletedAt;
-
   factory DietType.fromJson(Map<String, dynamic> json) =>
       _$DietTypeFromJson(json);
 }
 
 enum boolean {
-@JsonValue(0)
-False,
-@JsonValue(1)
-True,
+  @JsonValue(0)
+  False,
+  @JsonValue(1)
+  True,
 }
-
-
