@@ -11,6 +11,7 @@ import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 
@@ -112,6 +113,8 @@ abstract class Repository {
 
   ImperativeNetworkResult deleteRequestCall(int Id);
   NetworkResult<BodyStatus> getStatus(BodyStatus body);
+
+  NetworkResult<UserSickness> getSickness();
 }
 
 class _RepositoryImpl extends Repository {
@@ -396,6 +399,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<BodyStatus> getStatus(BodyStatus body) {
     var response = _apiClient.getStatus(body);
+    return response;
+  }
+
+  @override
+  NetworkResult<UserSickness> getSickness() {
+    var response = _apiClient.getUserSickness();
     return response;
   }
 

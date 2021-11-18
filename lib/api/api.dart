@@ -10,6 +10,7 @@ import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -158,5 +159,9 @@ abstract class RestClient {
 
   @DELETE("/calls/{id}")
   ImperativeNetworkResult deleteCall(@Path('id') int id);
+
+  @GET("/user-sickness")
+  NetworkResult<UserSickness> getUserSickness();
+
 }
 
