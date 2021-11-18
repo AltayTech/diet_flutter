@@ -49,6 +49,9 @@ class AppColors {
   static const purpleRuler = Color(0xff927DFC);
   static const pinkRuler = Color(0xffEC4CA2);
   static const blueRuler = Color(0xff65A8E0);
+  static const greenRuler = Color(0xff59CBB1);
+  static const box = Color.fromARGB(255, 245, 245, 245);
+  static const pregnantPink = Color(0xffFFD6DC);
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {

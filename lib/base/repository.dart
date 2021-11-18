@@ -8,6 +8,7 @@ import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/body_state.dart';
+import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
@@ -110,6 +111,7 @@ abstract class Repository {
   ImperativeNetworkResult sendRequestCall();
 
   ImperativeNetworkResult deleteRequestCall(int Id);
+  NetworkResult<BodyStatus> getStatus(BodyStatus body);
 }
 
 class _RepositoryImpl extends Repository {
@@ -391,9 +393,10 @@ class _RepositoryImpl extends Repository {
     return response;
   }
 
-// @override
-// NetworkResult<TicketModel> getTickets() {
-//   var response = _apiClient.getTicketMessage();
-//   return response;
-// }
+  @override
+  NetworkResult<BodyStatus> getStatus(BodyStatus body) {
+    var response = _apiClient.getStatus(body);
+    return response;
+  }
+
 }

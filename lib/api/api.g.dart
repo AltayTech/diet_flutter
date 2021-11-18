@@ -252,6 +252,26 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<BodyStatus>> getStatus(body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<BodyStatus>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/body-status',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<BodyStatus>.fromJson(
+      _result.data!,
+      (json) => BodyStatus.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<FoodListData>> foodList(date) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

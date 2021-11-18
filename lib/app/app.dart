@@ -17,6 +17,7 @@ import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
+import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
 import 'package:behandam/screens/regime/help_type.dart';
@@ -186,10 +187,10 @@ final navigator = VxNavigator(
     Routes.newTicketMessage: (_, __) => MaterialPage(child: NewTicket()),
     RegExp(r"\/ticket\/details"): (uri, __) =>
         MaterialPage(child: TicketDetails(), arguments: int.parse(uri.queryParameters['ticketId'].toString())),
-    // Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
     Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
-  Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
-  Routes.bodyState: (_, __) => MaterialPage(child: BodyStateScreen()),
+    Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
+    Routes.bodyState: (_, param) => MaterialPage(child: BodyStateScreen(), arguments: param),
+    Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

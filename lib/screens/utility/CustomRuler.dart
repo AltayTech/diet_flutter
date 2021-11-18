@@ -4,13 +4,15 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
+import 'package:behandam/widget/button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-enum RulerType { Weight, Normal }
+enum RulerType { Weight, Normal, Pregnancy , Twin }
 
 class CustomRuler extends StatefulWidget {
   final Color color;
@@ -19,12 +21,12 @@ class CustomRuler extends StatefulWidget {
   final int min;
   Function? onClick;
   final String unit;
-  final bool smallSlider;
   final RulerType rulerType;
   final String heading;
   Function helpClick;
   final String iconPath;
   double secondValue = 0;
+  Function? hideBtn;
 
   CustomRuler({
     required this.color,
@@ -32,12 +34,12 @@ class CustomRuler extends StatefulWidget {
     required this.max,
     required this.min,
     required this.unit,
-    required this.smallSlider,
     required this.rulerType,
     required this.heading,
     required this.helpClick,
     required this.iconPath,
     this.onClick,
+    this.hideBtn,
   });
 
   @override
@@ -46,10 +48,17 @@ class CustomRuler extends StatefulWidget {
 
 class _CustomRulerState extends State<CustomRuler> {
   bool showRuler = false;
+  double _value = 40.0;
 
   void callBack(val) {
+    if(widget.rulerType == RulerType.Twin && val >= 2
+    || widget.rulerType == RulerType.Pregnancy && val >= 35)
+      setState(() {
+       widget.hideBtn!(true);
+      });
+    else
     setState(() {
-      // print(val);
+      widget.hideBtn!(false);
       if (val != widget.value) {
         widget.value = val;
         if (widget.rulerType == RulerType.Weight) {
@@ -78,34 +87,57 @@ print(secondVal);
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Row(children: [
-                SvgPicture.asset(widget.iconPath, width: 5.w, height: 5.h),
+                widget.rulerType != RulerType.Twin
+                ? SvgPicture.asset(widget.iconPath, width: 5.w, height: 5.h)
+                : Container(),
                 Padding(
                   padding: const EdgeInsets.only(right: 12.0),
-                  child: Text(widget.heading),
+                  child: Text(widget.heading,style: TextStyle(fontSize: 12.sp)),
                 ),
               ]),
-              InkWell(
+              widget.rulerType != RulerType.Twin
+              ? InkWell(
                 child: SvgPicture.asset(
                     'assets/images/physical_report/guide.svg',
                     width: 5.w,
                     height: 5.h),
-                onTap: () => widget.helpClick.call(),
-              ),
+                onTap: () => widget.helpClick.call())
+                  : Container(height: 5.h)
             ]),
             SizedBox(height: 2.h),
             Row(children: [
-              meter(widget.unit, false),
+              if(widget.rulerType == RulerType.Twin)
+              meter(widget.unit, false, true)
+              else
+                meter(widget.unit, false, false),
               if (widget.rulerType == RulerType.Weight)
                 SizedBox(width: AppSizes.iconDefault),
-              if (widget.rulerType == RulerType.Weight) meter('گرم', true),
+              if (widget.rulerType == RulerType.Weight)
+                SfSlider(
+                  stepSize: 10,
+                  stepDuration: SliderStepDuration(days: 20),
+                  min: 0.0,
+                  max: 100.0,
+                  value: _value,
+                  interval: 20,
+                  showTicks: true,
+                  showLabels: true,
+                  // showTooltip: true,
+                  minorTicksPerInterval: 1,
+                  onChanged: (dynamic value){
+                    setState(() {
+                      _value = value;
+                    });
+                  },
+                )
+                // meter('گرم', true, false),
             ]),
           ],
         ),
       ),
     );
   }
-
-  Widget meter(String unit, bool grType) {
+  Widget meter(String unit, bool grType, bool twinType) {
     return Flexible(
       child: Container(
         child: Column(
@@ -121,7 +153,7 @@ print(secondVal);
                           child: Slider(
                             color: widget.color,
                             minValue: grType ? 0 : widget.min,
-                            maxValue:  grType ? 50 : widget.max,
+                            maxValue:  grType ? 1000 : widget.max,
                             value: widget.value!,
                             onChanged: (val) {
                               print('value: $val');
@@ -131,6 +163,7 @@ print(secondVal);
                             },
                             width: constraints.maxWidth,
                             isGram: grType,
+                            twin : twinType
 //                  itemExtent: itemExtent,
                           ),
                         );
@@ -142,7 +175,7 @@ print(secondVal);
               height: (200 / 100) * 10,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 245, 245, 245),
+                  color: AppColors.box,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(70.0),
                       bottomRight: Radius.circular(70.0)),
@@ -173,10 +206,11 @@ class Slider extends StatelessWidget {
   final ScrollController scrollController;
   final Color color;
   final bool isGram;
-  double get itemExtent => width / 9;
+  final bool twin;
+  double get itemExtent => width / (isGram ?19 :9);
   List gramList = List<int>.generate(10, (index) => index * 100);
 
-  int _indexToValue(int index) => minValue + (index - 4);
+  int _indexToValue(int index) => minValue + (index -  (isGram ?9 :4));
       // - (isGram ? 0 : 4)); //first
 
   Slider({
@@ -187,12 +221,13 @@ class Slider extends StatelessWidget {
     required this.width,
     required this.color,
     required this.isGram,
+    required this.twin
   }) : scrollController = new ScrollController(
-            initialScrollOffset: (value - minValue) * width / 9);
+            initialScrollOffset: (value - minValue) * width /  (isGram ? 19 :9));
 
   @override
   build(BuildContext context) {
-    int itemCount = (maxValue - minValue) + 9;
+    int itemCount = (maxValue - minValue) + 3; //4
         // (isGram ? 0 : 9); //last
     return NotificationListener(
       onNotification: _onNotification,
@@ -201,21 +236,36 @@ class Slider extends StatelessWidget {
         child: new ListView.builder(
           controller: scrollController,
           scrollDirection: Axis.horizontal,
-          itemExtent: isGram ? 9.w : itemExtent,
+          itemExtent: isGram || twin ? 3.w : itemExtent,
           itemCount: itemCount,
           physics: BouncingScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
             int itemValue;
-            isGram
-            ?  itemValue = _indexToValue(index-12)
-            :  itemValue = _indexToValue(index);
-            if(isGram){
-              print("index:$index");
-              print("item:$itemValue");
-            }
+            // isGram
+            // ?  itemValue = _indexToValue(index-12)
+            // :
+            itemValue = _indexToValue(index);
+            // if(isGram){
+            //   print("index:$index");
+            //   print("item:$itemValue");
+            // }
             bool isExtra;
             if (isGram)
-              isExtra =  index == 0;
+              isExtra =  isExtra = index == 0 ||
+                  index == 1 ||
+                  index == 2 ||
+                  index == 3 ||
+                  index == 4 ||
+                  index == 5 ||
+                  index == 6 ||
+                  index == 7 ||
+                  index == itemCount - 1 ||
+                  index == itemCount - 2 ||
+                  index == itemCount - 3 ||
+                  index == itemCount - 4 ||
+                  index == itemCount - 5 ||
+                  index == itemCount - 6 ||
+                  index == itemCount - 7;
             else
               isExtra = index == 0 ||
                   index == 1 ||
@@ -239,30 +289,38 @@ class Slider extends StatelessWidget {
                            color: color)
                         : Container(),
                         Container(
-                          color: isGram
+                          color: isGram || twin
                               ? Color.fromARGB(255, 174, 174, 174)
                               : itemValue % 5 == 0
                                   ? Color.fromARGB(255, 174, 174, 174)
                                   : Color.fromARGB(255, 213, 213, 213),
                           width: 0.5.w,
-                          height: isGram
-                              ? 2.h
+                          height: isGram || twin
+                              ? 1.5.h
                               : itemValue % 5 == 0
                                   ? 2.h
                                   : 1.h,
                         ),
                         SizedBox(height: 1.w),
-                        if (isGram)
+                        // if (isGram)
+                        //   FittedBox(
+                        //     child: Text(
+                        //       (itemValue*100).toString(),
+                        //      // index< 10 ? gramList[index].toString() : '',
+                        //       style:
+                        //           _getTextStyle(context, itemValue, color),
+                        //     ),
+                        //   )
+                          if(twin)
                           FittedBox(
                             child: Text(
-                              (itemValue*100).toString(),
-                             // index< 10 ? gramList[index].toString() : '',
-                              style:
-                                  _getTextStyle(context, itemValue, color),
+                            itemValue.toString(),
+                            style: _getTextStyle(
+                                context, itemValue, color)
                             ),
-                          )
+                            )
                         else
-                          itemValue % 5 == 0
+                          itemValue % 5 == 0 || itemValue == 1 || itemValue == value
                               ? FittedBox(
                                   child: Text(
                                     itemValue.toString(),
@@ -283,14 +341,14 @@ class Slider extends StatelessWidget {
   TextStyle _getDefaultTextStyle() {
     return new TextStyle(
       color: Color.fromRGBO(196, 196, 196, 1.0),
-      fontSize: 12.sp,
+      fontSize: 10.sp,
     );
   }
 
   TextStyle _getHighlightTextStyle(BuildContext context, Color color) {
     return new TextStyle(
       color: color,
-      fontSize: 14.sp,
+      fontSize: 12.sp,
     );
   }
 
