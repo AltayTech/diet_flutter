@@ -1,3 +1,5 @@
+import 'package:behandam/base/utils.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'regime_type.g.dart';
@@ -26,6 +28,10 @@ class RegimeType {
   RegimeType();
 
   bool get isActiveItem => isActive == '1';
+
+  Color get color => Utils.getColor(alias);
+  String get icon => Utils.getIcon(alias);
+
 
   factory RegimeType.fromJson(Map<String, dynamic> json) => _$RegimeTypeFromJson(json);
 
