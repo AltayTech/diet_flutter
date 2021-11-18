@@ -120,13 +120,11 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                               InkWell(
                                 onTap: snapshot.data![index].isActiveItem
                                     ? () => {
-                                           print('act:${snapshot.data![index].isActiveItem}'),
                                           snapshot.data![index].dietId =
                                               int.parse(snapshot.data![index].id!),
                                           regimeBloc.pathMethod(snapshot.data![index]),
                                         }
                                     : () => {
-                                  print('act:${snapshot.data![index].isActiveItem}'),
                                           Utils.getSnackbarMessage(context, 'به زودی'),
                                         },
                                 child: Padding(
@@ -137,7 +135,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                                       child: Text(snapshot.data![index].title!,
                                           style: TextStyle(
                                               fontSize: 14.sp,
-                                              color: snapshot.data![index].isActive! == '0'
+                                              color: snapshot.data![index].isActiveItem
                                                   ? AppColors.strongPen
                                                   : AppColors.penColor)),
                                     ),

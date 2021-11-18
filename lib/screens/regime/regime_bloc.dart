@@ -63,8 +63,7 @@ class RegimeBloc{
     _waiting.value = true;
     _repository.getPath(dietId).then((value) {
       _path = value.next!;
-      print("path: $_path");
-      // navigator.routeManager.push(Uri.parse('/' + _path),params: dietId);
+      navigator.routeManager.push(Uri.parse('/' + _path),params: dietId);
     }).whenComplete(() => _waiting.value = false);
   }
 
