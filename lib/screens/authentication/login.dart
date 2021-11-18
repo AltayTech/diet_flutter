@@ -4,6 +4,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -146,7 +147,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
            right: 0.0,
            left: 0.0,
            child: Center(
-               child: SvgPicture.asset('assets/images/registry/app_logo.svg',
+               child: ImageUtils.fromLocal('assets/images/registry/app_logo.svg',
                  width: 50.0,
                  height: 50.0,)
            ),
@@ -169,7 +170,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
            right: 0.0,
            left: 0.0,
            child: Center(
-             child: SvgPicture.asset('assets/images/registry/profile_logo.svg',
+             child: ImageUtils.fromLocal('assets/images/registry/profile_logo.svg',
                width: 120.0,
                height: 120.0,),
            ),

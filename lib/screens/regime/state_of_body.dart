@@ -7,7 +7,9 @@ import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/utility/CustomRuler.dart';
 import 'package:behandam/screens/utility/alert.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -81,12 +83,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
     arg = ModalRoute.of(context)!.settings.arguments;
     print(arg);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.redBar,
-        title: Center(child: Text(intl.stateOfBody)),
-        leading: IconButton( icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => VxNavigator.of(context).pop()),
-      ),
+      appBar:Toolbar(titleBar: intl.stateOfBody),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -192,7 +189,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                         children: [
                           Row(
                             children: [
-                              SvgPicture.asset('assets/images/diet/birth_icon.svg',
+                              ImageUtils.fromLocal('assets/images/diet/birth_icon.svg',
                                   width: 6.w,
                                   height: 6.h),
                               Padding(
@@ -279,7 +276,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                             Text(regimeBloc.name),
                             SizedBox(height: 2.h),
                             id == 2
-                            ? SvgPicture.asset('assets/images/diet/body-scale-happy.svg',width: 20.w,height: 20.h,)
+                            ? ImageUtils.fromLocal('assets/images/diet/body-scale-happy.svg',width: 20.w,height: 20.h,)
                             : Container(),
                             SizedBox(height: 2.h),
                             Text(snapshot.data![0].body!,style: TextStyle(fontSize: 16.0)),

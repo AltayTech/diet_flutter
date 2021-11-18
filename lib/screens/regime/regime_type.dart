@@ -4,10 +4,12 @@ import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -37,16 +39,18 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
     regimeBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
     });
+
+    regimeBloc.navigateToVerify.listen((event) {
+      Navigator.of(context).pop();
+      context.vxNav.push(Uri.parse('/' + regimeBloc.path), params: event);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.redBar,
-        title: Center(child: Text(intl.regimeReceive)),
-      ),
+      appBar: Toolbar(titleBar: intl.regimeReceive),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -69,7 +73,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                   textAlign: TextAlign.center,
                 ),
                 InkWell(
-                  child: SvgPicture.asset('assets/images/physical_report/guide.svg',
+                  child: ImageUtils.fromLocal('assets/images/physical_report/guide.svg',
                       width: 5.w, height: 5.h),
                   onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.helpType)),
                 ),
@@ -119,14 +123,15 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                                       color: snapshot.data![index].color)),
                               InkWell(
                                 onTap: snapshot.data![index].isActiveItem
-                                    ? () => {
-                                          snapshot.data![index].dietId =
-                                              int.parse(snapshot.data![index].id!),
-                                          regimeBloc.pathMethod(snapshot.data![index]),
-                                        }
-                                    : () => {
-                                          Utils.getSnackbarMessage(context, intl.comingSoon),
-                                        },
+                                    ? () {
+                                        snapshot.data![index].dietId =
+                                            int.parse(snapshot.data![index].id!);
+                                        DialogUtils.showDialogProgress(context: context);
+                                        regimeBloc.pathMethod(snapshot.data![index]);
+                                      }
+                                    : () {
+                                        Utils.getSnackbarMessage(context, intl.comingSoon);
+                                      },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(children: [
@@ -154,10 +159,10 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
           } else {
             check = false;
             return Center(
-                child: Container(
-                    width: 15.w,
-                    height: 15.w,
-                    child: CircularProgressIndicator(color: Colors.grey, strokeWidth: 1.0)));
+                child: SpinKitCircle(
+              size: 5.w,
+              color: AppColors.primary,
+            ));
           }
         });
   }

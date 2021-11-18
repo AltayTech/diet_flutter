@@ -49,7 +49,7 @@ class _HelpState extends ResourcefulState<Help> {
                           Text(regimeBloc.name),
                           SizedBox(height: 2.h),
                           // id == 2
-                          //     ? SvgPicture.asset('assets/images/diet/body-scale-happy.svg',width: 20.w,height: 20.h,)
+                          //     ? ImageUtils.fromLocal('assets/images/diet/body-scale-happy.svg',width: 20.w,height: 20.h,)
                           //     : Container(),
                           // SizedBox(height: 2.h),
                           // Text(snapshot.data![0].body!,style: TextStyle(fontSize: 16.0)),

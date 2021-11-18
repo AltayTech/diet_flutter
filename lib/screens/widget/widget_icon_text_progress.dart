@@ -3,6 +3,7 @@ import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,7 +59,7 @@ class WidgetIconTextProgressState extends ResourcefulState<WidgetIconTextProgres
         textDirection: context.textDirectionOfLocale,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SvgPicture.asset(
+          ImageUtils.fromLocal(
             widget.listIcon,
             width: 9.w,
             height: 9.w,

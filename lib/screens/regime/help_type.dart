@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -39,10 +40,7 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
     regimeBloc.helpMethod(1);
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.redBar,
-        title: Text(intl.whichRegime),
-      ),
+      appBar:Toolbar(titleBar: intl.whichRegime),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),

@@ -101,10 +101,8 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                                 ),
                               ],
                             ),
-                            child: SvgPicture.asset(
+                            child: ImageUtils.fromLocal(
                               'assets/images/profile/change_pic.svg',
-                              alignment: Alignment.center,
-                              semanticsLabel: 'add picture',
 //                              height: SizeConfig.blockSizeHorizontal * 3,
                               width: 6.w,
                             ),

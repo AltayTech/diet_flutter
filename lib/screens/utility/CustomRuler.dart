@@ -4,6 +4,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,7 @@ print(secondVal);
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Row(children: [
                 widget.rulerType != RulerType.Twin
-                ? SvgPicture.asset(widget.iconPath, width: 5.w, height: 5.h)
+                ? ImageUtils.fromLocal(widget.iconPath, width: 5.w, height: 5.h)
                 : Container(),
                 Padding(
                   padding: const EdgeInsets.only(right: 12.0),
@@ -97,7 +98,7 @@ print(secondVal);
               ]),
               widget.rulerType != RulerType.Twin
               ? InkWell(
-                child: SvgPicture.asset(
+                child: ImageUtils.fromLocal(
                     'assets/images/physical_report/guide.svg',
                     width: 5.w,
                     height: 5.h),

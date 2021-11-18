@@ -5,6 +5,7 @@ import 'package:behandam/data/entity/auth/reset.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +120,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
           right: 0.0,
           left: 0.0,
           child: Center(
-            child: SvgPicture.asset('assets/images/registry/pass_logo.svg',
+            child: ImageUtils.fromLocal('assets/images/registry/pass_logo.svg',
               width: 120.0,
               height: 120.0,),
           ),
