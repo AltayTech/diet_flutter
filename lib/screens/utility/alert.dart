@@ -1,3 +1,4 @@
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
@@ -17,7 +18,7 @@ Widget alert(String txt){
             ),
             child: Padding(
               padding: const EdgeInsets.only(top: 4.0),
-              child: SvgPicture.asset('assets/images/diet/exclamation.svg'),
+              child: ImageUtils.fromLocal('assets/images/diet/exclamation.svg'),
             )
         ),
       ),

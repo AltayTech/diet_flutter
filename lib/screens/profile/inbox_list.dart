@@ -5,6 +5,7 @@ import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -162,7 +163,7 @@ class _InboxList extends ResourcefulState<InboxList> {
                                                       : Color(0xffA7A9B4).withOpacity(0.7)),
                                             ),
                                           ),
-                                          SvgPicture.asset(
+                                          ImageUtils.fromLocal(
                                             "assets/images/ticket/date_time.svg",
                                             color: snapshot.data![index].seenAt == null
                                                 ? Color(0xffA7A9B4)

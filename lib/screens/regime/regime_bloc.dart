@@ -1,6 +1,6 @@
 import 'dart:async';
+
 import 'package:behandam/app/app.dart';
-import 'package:behandam/base/network_response.dart';
 import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -10,9 +10,8 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
-
-class RegimeBloc{
-  RegimeBloc(){
+class RegimeBloc {
+  RegimeBloc() {
     _waiting.value = false;
     regimeTypeMethod();
   }
@@ -29,12 +28,19 @@ class RegimeBloc{
   final _showServerError = LiveEvent();
 
   String get path => _path;
+
   String get name => _name;
+
   Stream<BodyStatus> get status => _status.stream;
+
   Stream<List<RegimeType>> get itemList => _itemsList.stream;
+
   Stream<List<Help>> get helpers => _helpers.stream;
+
   Stream<bool> get waiting => _waiting.stream;
+
   Stream get navigateToVerify => _navigateToVerify.stream;
+
   Stream get showServerError => _showServerError.stream;
 
   void regimeTypeMethod() async {
@@ -60,10 +66,9 @@ class RegimeBloc{
   }
 
   void pathMethod(RegimeType dietId) async {
-    _waiting.value = true;
     _repository.getPath(dietId).then((value) {
       _path = value.next!;
-      navigator.routeManager.push(Uri.parse('/' + _path),params: dietId);
+      _navigateToVerify.fire(dietId);
     }).whenComplete(() => _waiting.value = false);
   }
 

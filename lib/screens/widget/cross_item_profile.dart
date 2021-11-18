@@ -1,3 +1,4 @@
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
@@ -27,7 +28,7 @@ class CrossItemProfile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             space ? SizedBox(height: 1.5.h) : Container(),
-            SvgPicture.asset(
+            ImageUtils.fromLocal(
               imageAddress,
               width: 8.w,
               height: 8.w,

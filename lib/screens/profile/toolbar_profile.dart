@@ -6,6 +6,7 @@ import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/widget/custom_curve.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -106,12 +107,10 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
                         width: 20.w,
                         height: 20.h,
                       )
-                    : SvgPicture.asset(
+                    : ImageUtils.fromLocal(
                         profileBloc.userInfo.gender == 0
                             ? 'assets/images/profile/female_avatar.svg'
                             : 'assets/images/profile/male_avatar.svg',
-                        alignment: Alignment.center,
-                        semanticsLabel: 'item icon',
                         height: 20.h,
                         width: 20.h,
                         fit: BoxFit.cover,
@@ -143,7 +142,7 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
                   child: Container(
                     width: 10.w,
                     height: 8.w,
-                    child: SvgPicture.asset(
+                    child: ImageUtils.fromLocal(
                       'assets/images/profile/inbox_app.svg',
                       color: AppColors.primary,
                       fit: BoxFit.contain,

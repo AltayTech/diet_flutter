@@ -4,7 +4,9 @@ import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,13 +44,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.redBar,
-          title: Text(intl.statusReport),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () => VxNavigator.of(context).pop()),
-        ),
+
+        appBar:Toolbar(titleBar: intl.statusReport),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -75,10 +72,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                         secondContainer(
                             snapshot.data!.bmi, snapshot.data!.bmiStatus),
                         snapshot.data!.isPregnancy == 1
-                            ? SvgPicture.asset(
+                            ? ImageUtils.fromLocal(
                                 'assets/images/physical_report/banner_pregnant.svg',
                                 height: 15.h)
-                            : SvgPicture.asset(
+                            : ImageUtils.fromLocal(
                                 'assets/images/physical_report/banner.svg',
                                 height: 15.h),
                         button(AppColors.btnColor, intl.confirmContinue,
@@ -111,17 +108,17 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
             Row(
               children: [
                 pregnancy == 1
-                    ? SvgPicture.asset( 'assets/images/physical_report/element1.svg')
+                    ? ImageUtils.fromLocal( 'assets/images/physical_report/element1.svg')
                     : Container(),
                 pregnancy == 1
-                    ? SvgPicture.asset( 'assets/images/physical_report/element2.svg')
+                    ? ImageUtils.fromLocal( 'assets/images/physical_report/element2.svg')
                     : Container(),
                 Text(intl.firstStatusReport, textAlign: TextAlign.center),
                 pregnancy == 1
-                    ? SvgPicture.asset( 'assets/images/physical_report/element3.svg')
+                    ? ImageUtils.fromLocal( 'assets/images/physical_report/element3.svg')
                     : Container(),
                 pregnancy == 1
-                    ? SvgPicture.asset( 'assets/images/physical_report/element4.svg')
+                    ? ImageUtils.fromLocal( 'assets/images/physical_report/element4.svg')
                     : Container(),
               ],
             ),
@@ -207,7 +204,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                             padding: const EdgeInsets.all(6.0),
                             child: InkWell(
                               onTap: () => DialogUtils.showBottomSheetPage(context: context, child: help(5)),
-                              child: SvgPicture.asset(
+                              child: ImageUtils.fromLocal(
                                 'assets/images/diet/help_icon.svg',
                                 color: AppColors.strongPen,
                               ),
@@ -325,7 +322,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                           onTap: () => DialogUtils.showBottomSheetPage(context: context, child: help(1)),
                           child: Row(
                             children: [
-                              SvgPicture.asset(
+                              ImageUtils.fromLocal(
                                   'assets/images/physical_report/bmi.svg',
                                   width: 2.w,
                                   height: 2.h),
@@ -337,7 +334,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                               Text(intl.what,
                                   style: TextStyle(
                                       fontSize: 14.sp, color: AppColors.redBar)),
-                              SvgPicture.asset(
+                              ImageUtils.fromLocal(
                                   'assets/images/physical_report/guide.svg',
                                   width: 3.w,
                                   height: 3.h),
@@ -361,40 +358,40 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   Widget bmiPic(int? status) {
     switch (status) {
       case 0:
-        return SvgPicture.asset('assets/images/physical_report/thin.svg',
+        return ImageUtils.fromLocal('assets/images/physical_report/thin.svg',
             width: 40.w, height: 30.h);
       case 1:
-        return SvgPicture.asset(
+        return ImageUtils.fromLocal(
           'assets/images/physical_report/normal.svg',
           width: 40.w,
           height: 30.h,
         );
       case 2:
-        return SvgPicture.asset(
+        return ImageUtils.fromLocal(
           'assets/images/physical_report/fat.svg',
           width: 40.w,
           height: 30.h,
         );
       case 3:
-        return SvgPicture.asset(
+        return ImageUtils.fromLocal(
           'assets/images/physical_report/obesity.svg',
           width: 40.w,
           height: 30.h,
         );
       case 4:
-        return SvgPicture.asset(
+        return ImageUtils.fromLocal(
           'assets/images/physical_report/extreme_obesity.svg',
           width: 40.w,
           height: 30.h,
         );
       case 5:
-        return SvgPicture.asset(
+        return ImageUtils.fromLocal(
           'assets/images/physical_report/extreme_obesity.svg',
           width: 40.w,
           height: 30.h,
         );
       default:
-        return SvgPicture.asset(
+        return ImageUtils.fromLocal(
           'assets/images/physical_report/extreme_obesity.svg',
           width: 40.w,
           height: 30.h,
@@ -422,7 +419,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       Text(regimeBloc.name),
                       SizedBox(height: 2.h),
                       id == 2
-                          ? SvgPicture.asset('assets/images/diet/body-scale-happy.svg',width: 20.w,height: 20.h,)
+                          ? ImageUtils.fromLocal('assets/images/diet/body-scale-happy.svg',width: 20.w,height: 20.h,)
                           : Container(),
                       SizedBox(height: 2.h),
                       Text(snapshot.data![0].body!,style: TextStyle(fontSize: 16.0)),

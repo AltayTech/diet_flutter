@@ -31,9 +31,9 @@ class AppColors {
   static const gainType = Color(0xffE6CEEF);
   static const diabetType = Color(0xffF7EBC7);
   static const pregnantType = Color(0xffF3D1D9);
-  static const ketoType = Color(0xffE6F2EE);
-  static const notricaType = Color(0xffB8BEE9);
-  static const sportType = Color(0xffE6F2EE);
+  static const ketoType = Color.fromARGB(255, 246, 222, 213);
+  static const notricaType = Color.fromARGB(255, 213, 233, 227);
+  static const sportType = Color.fromARGB(255, 230, 206, 239);
   static const help = Color(0xffFFE7E7);
   static const strongPen = Color(0xffC0C0C0);
   static late Color statusTicketClose;

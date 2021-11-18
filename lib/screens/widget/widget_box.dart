@@ -1,6 +1,7 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -61,7 +62,7 @@ Widget attachCard(String imageAdrs, String text) {
   return Column(
     children: <Widget>[
       Flexible(
-        child: SvgPicture.asset(
+        child: ImageUtils.fromLocal(
           imageAdrs,
           width: 8.w,
           height: 8.w,
@@ -163,7 +164,7 @@ Widget attachBox() {
                 width: 9.w,
                 height: 9.w,
                 child: Center(
-                  child: SvgPicture.asset(
+                  child: ImageUtils.fromLocal(
                     'assets/images/profile/attach.svg',
                     width: 4.5.w,
                     height: 4.5.w,
@@ -293,7 +294,7 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor, Color 
                 SizedBox(
                   width: 3.w,
                 ),
-                SvgPicture.asset(
+                ImageUtils.fromLocal(
                   iconAdrs,
                   width: 12.w,
                   height: 12.w,

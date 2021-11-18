@@ -502,7 +502,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
   //         ));
   //         counter++;
   //       } else {
-  //         widgets.add(SvgPicture.asset(
+  //         widgets.add(ImageUtils.fromLocal(
   //           'assets/images/foodlist/plus.svg',
   //           width: width * 4,
   //           height: width * 4,
