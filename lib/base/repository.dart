@@ -6,6 +6,7 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
@@ -99,10 +100,12 @@ abstract class Repository {
   ImperativeNetworkResult sendTicketFileDetail(SendTicket sendTicket, File file);
 
   NetworkResult<bool> dailyMenu(DailyMenuRequestData requestData);
+
   NetworkResult getPath(RegimeType dietId);
 
   NetworkResult<BodyState> sendInfo(BodyState info);
 
+  NetworkResult<BodyStatus> getStatus(BodyStatus body);
   // NetworkResult<TicketModel> getTickets();
 }
 
@@ -363,6 +366,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Help> helpBodyState(int id) {
     var response = _apiClient.helpBodyState(id);
+    return response;
+  }
+
+  @override
+  NetworkResult<BodyStatus> getStatus(BodyStatus body) {
+    var response = _apiClient.getStatus(body);
     return response;
   }
 

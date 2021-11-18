@@ -58,7 +58,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
         title: Center(child: Text(intl.regimeReceive)),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Container(
             color: Colors.white,
@@ -86,7 +86,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                   onTap: () =>
                       VxNavigator.of(context).push(Uri.parse(Routes.helpType)),
                 ),
-                SizedBox(height: 5.h),
+                SizedBox(height: 2.h),
               ],
             ),
           ),
@@ -115,7 +115,11 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                           width: 80.w,
                           height: 9.h,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  topRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(30.0),
+                                  topLeft: Radius.circular(30.0)),
                             color: AppColors.arcColor
                           ),
                           child: Row(
@@ -133,7 +137,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                               InkWell(
                                 onTap: activeCard[index]
                                     ? () => {
-                                  // print('act:${activeCard[index]}'),
+                                  print('act:${activeCard[index]}'),
                                   snapshot.data![index].dietId = int.parse(snapshot.data![index].id!),
                                           regimeBloc.pathMethod(snapshot.data![index]),
                                         }

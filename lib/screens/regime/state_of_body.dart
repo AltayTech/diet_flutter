@@ -5,6 +5,7 @@ import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/utility/CustomRuler.dart';
+import 'package:behandam/screens/utility/alert.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
@@ -28,6 +29,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
   int?  height;
   String label = '';
   String? date;
+  var arg;
+  bool disable = false;
 
   @override
   void initState() {
@@ -64,16 +67,25 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
     setState(() {
       date = picked!.toGregorian().toDateTime().toString().substring(0,11);
       label = picked.formatCompactDate();
+      int dis = int.parse(date!.substring(0,4)) - Jalali.now().toGregorian().year;
+      if(dis < 10)
+       setState(() {
+         disable = true;
+       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    arg = ModalRoute.of(context)!.settings.arguments;
+    print(arg);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.redBar,
         title: Center(child: Text(intl.stateOfBody)),
+        leading: IconButton( icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => VxNavigator.of(context).pop()),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -99,7 +111,6 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                 iconPath: 'assets/images/diet/weight_icon.svg',
                 onClick: (val) =>
                     setState(() => body!.weight = val),
-                smallSlider: false,
               ),
               SizedBox(height: 5.h),
               CustomRuler(
@@ -114,7 +125,6 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                 iconPath: 'assets/images/diet/height_icon.svg',
                 onClick: (val) =>
                     setState(() => body!.height = val),
-                smallSlider: false,
               ),
               SizedBox(height: 5.h),
               CustomRuler(
@@ -129,9 +139,50 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                 iconPath: 'assets/images/diet/wrist_icon.svg',
                 onClick: (val) =>
                     setState(() => body!.wrist = val),
-                smallSlider: false,
               ),
                 SizedBox(height: 5.h),
+                // arg == 5 //pregnancy type
+                // ?
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: CustomRuler(
+                        rulerType: RulerType.Pregnancy,
+                        value: body!.pregnancyWeek != null ? body!.pregnancyWeek : 15,
+                        max: 42,
+                        min: 1,
+                        heading: intl.pregnancyWeek,
+                        unit: intl.week,
+                        color: AppColors.greenRuler,
+                        helpClick: () => DialogUtils.showBottomSheetPage(context: context, child: help(6)),
+                        iconPath: 'assets/images/diet/pregnancy_icon.svg',
+                        onClick: (val) =>
+                            setState(() => body!.pregnancyWeek = val),
+                        hideBtn: (val) => setState(() => disable = val),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: CustomRuler(
+                        rulerType: RulerType.Twin,
+                        value: body!.multiBirth != null ? body!.multiBirth : 1,
+                        max: 16,
+                        min: 1,
+                        heading: intl.multiBirth,
+                        unit: intl.multi,
+                        color: AppColors.greenRuler,
+                        helpClick: () => {},
+                        iconPath: '',
+                        onClick: (val) =>
+                            setState(() => body!.multiBirth = val),
+                        hideBtn: (val) => setState(() => disable = val),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 5.h),
+                // : Container(),
                 Padding(
                   padding: const EdgeInsets.only(right: 12.0, left: 12.0),
                   child: Column(
@@ -187,7 +238,10 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                   ),
                 ),
                 SizedBox(height: 5.h),
-                button(AppColors.btnColor, intl.confirmContinue,Size(100.w,8.h),
+                if(disable)
+                 alert(intl.itIsNotPossible)
+                else
+                 button(AppColors.btnColor, intl.confirmContinue,Size(100.w,8.h),
                         (){
                           BodyState info = BodyState();
                           info.height = body!.height;

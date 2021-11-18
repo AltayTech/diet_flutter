@@ -29,6 +29,7 @@ abstract class Routes {
   static const newTicketMessage = '/ticket/message/new';
   static const detailsTicketMessage = '/ticket/details';
   static const bodyState = '/reg/size';
+  static const bodyStatus = '/bodyStatus';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
