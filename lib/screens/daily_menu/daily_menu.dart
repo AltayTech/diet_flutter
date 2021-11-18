@@ -144,7 +144,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
             if (snapshot.hasData)
               return Column(
                 children: [
-                  ...snapshot.requireData!.meals
+                  ...snapshot.requireData!.meals!
                       .map((meal) => mealItem(meal))
                       .toList(),
                   Space(height: 10.h),
@@ -290,7 +290,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
         return FloatingActionButton.extended(
           onPressed: () {
             bool isValid = true;
-            snapshot.requireData?.meals.forEach((meal) {
+            snapshot.requireData?.meals?.forEach((meal) {
               if (!isPastMeal(meal) && (meal.newFood == null || meal.newFood?.foodItems == null ||
                   meal.newFood!.foodItems!.length == 0)) {
                 isValid = false;
