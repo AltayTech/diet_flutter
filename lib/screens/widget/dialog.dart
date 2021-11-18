@@ -40,7 +40,12 @@ abstract class DialogUtils {
         return WillPopScope(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: child,
+            child: Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: child,
+            ),
           ),
           onWillPop: () async => isDismissible,
         );

@@ -56,6 +56,11 @@ class AuthenticationBloc{
    }else {
      _subjectList.value = MemoryApp.countryCode!;
      countries = MemoryApp.countryCode!;
+     _subjectList.value.forEach((element) {
+       if (element.code == "98") {
+         _subject = element;
+       }
+     });
    }
   }
 

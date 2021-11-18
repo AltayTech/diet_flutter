@@ -8,7 +8,6 @@ import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
-
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,8 +20,7 @@ import '../../base/repository.dart';
 class ProfileBloc {
   AuthenticationBloc? loginRegisterBloc;
 
-  ProfileBloc() {
-  }
+  ProfileBloc() {}
 
   final _repository = Repository.getInstance();
   ImagePicker? _picker;
@@ -55,13 +53,14 @@ class ProfileBloc {
   Stream<bool> get isShowProgressItem => _showProgressItem.stream;
 
   Stream<UserInformation> get userInformationStream => _userInformationStream.stream;
+
   Stream<List<InboxItem>> get inboxStream => _inboxStream.stream;
 
   Stream<CityProvinceModel> get cityProvinceModelStream => _cityProvinceModelStream.stream;
 
   bool? get isProgressNetwork => _progressNetwork.value;
 
-  void getInformation(){
+  void getInformation() {
     if (loginRegisterBloc == null) {
       loginRegisterBloc = AuthenticationBloc();
     }
@@ -101,13 +100,13 @@ class ProfileBloc {
     });
   }
 
-  void getInbox(){
+  void getInbox() {
     _repository.getInbox().then((value) {
       print('data => ${value.data!.toJson()}');
-      _inboxStream.value=value.data!.items;
+      _inboxStream.value = value.data!.items;
     }).onError((error, stackTrace) {
       print('data => ${error.toString()}');
-    } );
+    });
   }
 
   void getPdfMeal(FoodDietPdf type) {
@@ -254,6 +253,12 @@ class ProfileBloc {
       userInfo.cityId = userInfo.address!.cityId;
     if (userInfo.address != null && userInfo.address!.provinceId != null)
       userInfo.provinceId = userInfo.address!.provinceId;
+
+    if (userInfo.socialMedia != null)
+      userInfo.socialMedia!.forEach((element) {
+        element.link = element.pivot?.link;
+        print('element ${element.toJson()}');
+      });
     DialogUtils.showDialogProgress(context: context);
     _repository.changeProfile(userInfo).whenComplete(() {
       Navigator.of(context).pop();

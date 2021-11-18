@@ -1,5 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/ToolsBox.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen();
@@ -230,8 +233,8 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   Widget exitButton(){
     return GestureDetector(
       onTap: () async {
-        // user.clearUser();
-        // user = null;
+    AppSharedPreferences.logout();
+    VxNavigator.of(context).clearAndPush(Uri.parse(Routes.login));
         // _emptySharedPreferences();
 //                                               Navigator.pushNamedAndRemoveUntil(
 //                                                   context, LaunchRoute.routeName, (route) => false);

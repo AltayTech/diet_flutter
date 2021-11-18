@@ -135,6 +135,12 @@ class SocialMedia {
   @JsonKey(name: "pivot")
   PivotMedia? pivot;
 
+  @JsonKey(name: "link")
+  String? link;
+
+  @JsonKey(name: "id")
+  int? id;
+
   SocialMedia();
 
   factory SocialMedia.fromJson(Map<String, dynamic> json) => _$SocialMediaFromJson(json);
