@@ -30,8 +30,8 @@ class RegimeType {
   bool get isActiveItem => isActive == '1';
 
   Color get color => Utils.getColor(alias);
-  String get icon => Utils.getIcon(alias);
 
+  String get icon => Utils.getIcon(alias);
 
   factory RegimeType.fromJson(Map<String, dynamic> json) => _$RegimeTypeFromJson(json);
 
