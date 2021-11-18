@@ -1,11 +1,10 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/screens/ticket/call_ticket.dart';
 import 'package:behandam/screens/ticket/ticket.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/custom_tabbar.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 class TicketTab extends StatefulWidget {
   @override
@@ -23,12 +22,16 @@ class TicketTabState extends ResourcefulState<TicketTab> with SingleTickerProvid
     super.initState();
     _listTabView.clear();
     _listTabView.add(Ticket());
-    _listTabView.add(Ticket());
+    _listTabView.add(CallTicket());
 
     _list.clear();
     _list.add(ItemTab(title: "پیام"));
     _list.add(ItemTab(title: "تماس"));
-    _controller = TabController(vsync: this, length: 2, initialIndex: 0,);
+    _controller = TabController(
+      vsync: this,
+      length: 2,
+      initialIndex: 0,
+    );
     // getData();
   }
 
@@ -38,7 +41,6 @@ class TicketTabState extends ResourcefulState<TicketTab> with SingleTickerProvid
 
   @override
   void didChangeDependencies() {
-
     super.didChangeDependencies();
   }
 

@@ -96,11 +96,15 @@ Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
 SocialMedia _$SocialMediaFromJson(Map<String, dynamic> json) => SocialMedia()
   ..pivot = json['pivot'] == null
       ? null
-      : PivotMedia.fromJson(json['pivot'] as Map<String, dynamic>);
+      : PivotMedia.fromJson(json['pivot'] as Map<String, dynamic>)
+  ..link = json['link'] as String?
+  ..id = json['id'] as int?;
 
 Map<String, dynamic> _$SocialMediaToJson(SocialMedia instance) =>
     <String, dynamic>{
       'pivot': instance.pivot,
+      'link': instance.link,
+      'id': instance.id,
     };
 
 PivotMedia _$PivotMediaFromJson(Map<String, dynamic> json) =>

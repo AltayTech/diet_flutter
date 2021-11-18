@@ -2,15 +2,17 @@ import 'dart:io';
 
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
+import 'package:behandam/api/interceptor/logger.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
-import 'package:behandam/api/interceptor/logger.dart';
-import 'package:behandam/data/entity/regime/body_state.dart';
+
 // import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
@@ -19,7 +21,6 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:logger/logger.dart';
 
 import '../api/api.dart';
 import '../data/entity/auth/country_code.dart';
@@ -99,11 +100,16 @@ abstract class Repository {
   ImperativeNetworkResult sendTicketFileDetail(SendTicket sendTicket, File file);
 
   NetworkResult<bool> dailyMenu(DailyMenuRequestData requestData);
+
   NetworkResult getPath(RegimeType dietId);
 
   NetworkResult<BodyState> sendInfo(BodyState info);
 
-  // NetworkResult<TicketModel> getTickets();
+  NetworkResult<Call> getCalls();
+
+  ImperativeNetworkResult sendRequestCall();
+
+  ImperativeNetworkResult deleteRequestCall(int Id);
 }
 
 class _RepositoryImpl extends Repository {
@@ -252,7 +258,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<Help> helpDietType(int id) async{
+  NetworkResult<Help> helpDietType(int id) async {
     var response = await _apiClient.helpDietType(id);
     return response;
   }
@@ -347,13 +353,13 @@ class _RepositoryImpl extends Repository {
     var response = _apiClient.getTicketMessage();
     return response;
   }
-  
-@override
+
+  @override
   NetworkResult getPath(RegimeType dietId) {
     var response = _apiClient.getPath(dietId);
     return response;
   }
-  
+
   @override
   NetworkResult<BodyState> sendInfo(BodyState info) {
     var response = _apiClient.sendInfo(info);
@@ -366,9 +372,27 @@ class _RepositoryImpl extends Repository {
     return response;
   }
 
-  // @override
-  // NetworkResult<TicketModel> getTickets() {
-  //   var response = _apiClient.getTicketMessage();
-  //   return response;
-  // }
+  @override
+  NetworkResult<Call> getCalls() {
+    var response = _apiClient.getCallItems();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendRequestCall() {
+    var response = _apiClient.sendCall();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult deleteRequestCall(int Id) {
+    var response = _apiClient.deleteCall(Id);
+    return response;
+  }
+
+// @override
+// NetworkResult<TicketModel> getTickets() {
+//   var response = _apiClient.getTicketMessage();
+//   return response;
+// }
 }

@@ -1,23 +1,23 @@
-
 import 'dart:io';
 
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
-import 'package:behandam/data/entity/regime/help.dart';
-import 'package:behandam/data/entity/regime/regime_type.dart';
-import 'package:behandam/data/entity/ticket/ticket_item.dart';
-import 'package:behandam/data/entity/user/city_provice_model.dart';
-import 'package:behandam/data/entity/list_food/daily_menu.dart';
-import 'package:behandam/data/entity/regime/body_state.dart';
-import 'package:behandam/data/entity/user/inbox.dart';
-import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
+import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:retrofit/retrofit.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:behandam/data/entity/regime/body_state.dart';
+import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/ticket/call_item.dart';
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/data/entity/user/city_provice_model.dart';
+import 'package:behandam/data/entity/user/inbox.dart';
+import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:retrofit/retrofit.dart';
 
 import '../base/network_response.dart';
 import '../data/entity/auth/register.dart';
@@ -39,7 +39,6 @@ typedef ImperativeNetworkResult = NetworkResult<dynamic>;
 @RestApi()
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
-
 
   @GET("/country")
   NetworkResult<List<CountryCode>> getCountries();
@@ -77,7 +76,6 @@ abstract class RestClient {
   @PATCH("/physical-info")
   NetworkResult<BodyState> sendInfo(@Body() BodyState info);
 
-
   @GET("/user/menu?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);
 
@@ -107,7 +105,7 @@ abstract class RestClient {
 
   @GET("/ticket")
   NetworkResult<TicketModel> getTicketMessage();
-  
+
   @GET("/fasting-pattern")
   NetworkResult<List<FastPatternData>> fastPattern();
 
@@ -119,6 +117,7 @@ abstract class RestClient {
 
   @POST("/user/menu")
   NetworkResult<bool> dailyMenu(@Body() DailyMenuRequestData date);
+
   @GET("/department")
   NetworkResult<SupportModel> getDepartmentItems();
 
@@ -146,39 +145,14 @@ abstract class RestClient {
 
   @GET("/ticket/{id}")
   NetworkResult<TicketModel> getTicketDetails(@Path('id') int id);
-}
 
-class CustomInterceptors extends InterceptorsWrapper {
-  @override
-  void onRequest(RequestOptions options,
-      RequestInterceptorHandler handler) async {
-    print(
-        "REQUEST[${options.data}] => PATH: ${FlavorConfig.instance
-            .variables["baseUrl"]}${options.path}");
-    print('HEADERS:');
-    options.headers.forEach((key, v) => print(' - $key ==> $v'));
-    super.onRequest(options, handler);
-  }
+  @GET("/calls")
+  NetworkResult<Call> getCallItems();
 
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print(
-        "RESPONSE[${response.statusCode}] => PATH: ${FlavorConfig.instance
-            .variables["baseUrl"]}${response.requestOptions.path}");
-    print(
-        "RESPONSE[${response.data}] => PATH: ${FlavorConfig.instance
-            .variables["baseUrl"]}${response.requestOptions.path}");
-    super.onResponse(response, handler);
-  }
+  @POST("/calls")
+  ImperativeNetworkResult sendCall();
 
-  @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
-    print("ERROR[$err] => PATH:");
-    print("ERROR[${err.response?.statusCode}] => PATH:");
-    print(
-        "ERROR[${err.response?.statusCode}] => PATH: ${err.response
-            ?.statusMessage} => DATA: PATH: ${err.response?.data}");
-    super.onError(err, handler);
-  }
+  @DELETE("/calls/{id}")
+  ImperativeNetworkResult deleteCall(@Path('id') int id);
 }
 
