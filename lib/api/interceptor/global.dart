@@ -1,17 +1,17 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/device.dart';
 import 'package:dio/dio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:flutter/material.dart';
 
 class GlobalInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-     final authToken = await AppSharedPreferences.authToken;
+    final authToken = await AppSharedPreferences.authToken;
     final packageInfo = await PackageInfo.fromPlatform();
     final languageCode = (await AppLocale.currentLocale).languageCode;
     // final fcmToken = await AppSharedPreferences.fcmToken;
@@ -37,7 +37,11 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Device-Id'] = await DeviceUtils.deviceId;
     options.headers['Is-Emulator'] = await DeviceUtils.isEmulator;
     options.headers['Time-Zone'] = DateTimeUtils.timezoneOffset;
-    options.headers['x-route'] = navigator.currentConfiguration?.path.substring(1);
+    if (navigator.currentConfiguration?.path.substring(1).isEmpty == true) {
+      options.headers['x-route'] = Routes.listView.substring(1);
+    } else {
+      options.headers['x-route'] = navigator.currentConfiguration?.path.substring(1);
+    }
     super.onRequest(options, handler);
   }
 }

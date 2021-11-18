@@ -19,7 +19,6 @@ abstract class Routes {
   static const listFood = '/list/food';
   static const fastPatterns = '/list/pattern';
   static const editProfile = '/profile/edit';
-  static const foodList = '/list/view';
   static const inbox = '/profile/inbox';
   static const showInbox = '/profile/inbox/item';
   static const ticket = '/ticket';
