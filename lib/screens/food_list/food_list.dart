@@ -1,4 +1,4 @@
-import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/change_menu.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
@@ -11,10 +11,7 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
-import 'package:behandam/base/resourceful_state.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import '../../routes.dart';
 
 class FoodListPage extends StatefulWidget {
   const FoodListPage({Key? key}) : super(key: key);
@@ -29,8 +26,14 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   @override
   void initState() {
     super.initState();
-    MemoryApp.routeName = Routes.listView;
     bloc = FoodListBloc(true);
+    initListener();
+  }
+
+  void initListener() {
+    bloc.showServerError.listen((event) {
+      context.vxNav.replace(Uri.parse(event));
+    });
   }
 
   @override
@@ -107,13 +110,11 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                       ),
                     ),
                     SubmitButton(
-                      label: isToday(snapshot.requireData!)
-                          ? intl.showAdvices
-                          : intl.goToToday,
+                      label: isToday(snapshot.requireData!) ? intl.showAdvices : intl.goToToday,
                       onTap: isToday(snapshot.requireData!)
                           ? () => VxNavigator.of(context).push(Uri())
-                          : () => bloc.changeDateWithString(
-                              DateTime.now().toString().substring(0, 10)),
+                          : () =>
+                              bloc.changeDateWithString(DateTime.now().toString().substring(0, 10)),
                     ),
                   ],
                 );
@@ -142,7 +143,6 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
     return weekDay.gregorianDate.toString().substring(0, 10) ==
         DateTime.now().toString().substring(0, 10);
   }
-
 
   @override
   void onRetryAfterMaintenance() {

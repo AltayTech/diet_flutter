@@ -4,24 +4,19 @@ part 'food_list.g.dart';
 
 @JsonSerializable(createToJson: false)
 class FoodListData {
-  FoodListData(
-    this.meals,
-    this.menu,
-    this.dietType,
-    this.isFasting,
-  );
+  FoodListData();
 
   @JsonKey(name: 'meals')
-  final List<Meals> meals;
+  List<Meals>? meals;
 
   @JsonKey(name: 'menu')
-  final Menu menu;
+  Menu? menu;
 
   @JsonKey(name: 'diet_type')
-  final DietType dietType;
+  DietType? dietType;
 
   @JsonKey(name: 'is_fasting')
-  final boolean isFasting;
+  boolean? isFasting;
 
   factory FoodListData.fromJson(Map<String, dynamic> json) =>
       _$FoodListDataFromJson(json);

@@ -50,8 +50,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           }
           return Column(
             children: [
-              ...snapshot.requireData!.meals
-                  .map((meal) => mealItem(meal))
+              ...snapshot.requireData!.meals!.map((meal) => mealItem(meal))
                   .toList(),
             ],
           );

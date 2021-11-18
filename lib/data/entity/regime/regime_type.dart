@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'regime_type.g.dart';
 
 @JsonSerializable()
@@ -24,6 +25,9 @@ class RegimeType {
 
   RegimeType();
 
+  bool get isActiveItem => isActive == '1';
+
   factory RegimeType.fromJson(Map<String, dynamic> json) => _$RegimeTypeFromJson(json);
+
   Map<String, dynamic> toJson() => _$RegimeTypeToJson(this);
 }

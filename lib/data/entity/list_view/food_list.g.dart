@@ -6,14 +6,17 @@ part of 'food_list.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FoodListData _$FoodListDataFromJson(Map<String, dynamic> json) => FoodListData(
-      (json['meals'] as List<dynamic>)
-          .map((e) => Meals.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      Menu.fromJson(json['menu'] as Map<String, dynamic>),
-      DietType.fromJson(json['diet_type'] as Map<String, dynamic>),
-      $enumDecode(_$booleanEnumMap, json['is_fasting']),
-    );
+FoodListData _$FoodListDataFromJson(Map<String, dynamic> json) => FoodListData()
+  ..meals = (json['meals'] as List<dynamic>?)
+      ?.map((e) => Meals.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..menu = json['menu'] == null
+      ? null
+      : Menu.fromJson(json['menu'] as Map<String, dynamic>)
+  ..dietType = json['diet_type'] == null
+      ? null
+      : DietType.fromJson(json['diet_type'] as Map<String, dynamic>)
+  ..isFasting = $enumDecodeNullable(_$booleanEnumMap, json['is_fasting']);
 
 const _$booleanEnumMap = {
   boolean.False: 0,

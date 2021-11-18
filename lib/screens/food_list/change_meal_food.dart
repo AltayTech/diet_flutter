@@ -92,7 +92,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                 stream: bloc.foodList,
                 builder: (_, AsyncSnapshot<FoodListData?> snapshot) {
                   if(snapshot.hasData) {
-                    return replaceBox(snapshot.requireData!.meals.firstWhere((
+                    return replaceBox(snapshot.requireData!.meals?.firstWhere((
                         element) => element.id == meal!.id));
                   }
                   return CircularProgressIndicator();

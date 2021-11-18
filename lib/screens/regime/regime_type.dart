@@ -1,4 +1,3 @@
-
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
@@ -24,16 +23,6 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
   Key? key;
   Color? colorType;
   bool disableClick = false;
-  List<bool> activeCard = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
 
   @override
   void initState() {
@@ -79,12 +68,9 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                   textAlign: TextAlign.center,
                 ),
                 InkWell(
-                  child: SvgPicture.asset(
-                      'assets/images/physical_report/guide.svg',
-                      width: 5.w,
-                      height: 5.h),
-                  onTap: () =>
-                      VxNavigator.of(context).push(Uri.parse(Routes.helpType)),
+                  child: SvgPicture.asset('assets/images/physical_report/guide.svg',
+                      width: 5.w, height: 5.h),
+                  onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.helpType)),
                 ),
                 SizedBox(height: 5.h),
               ],
@@ -107,63 +93,54 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                 physics: ClampingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: snapshot.data!.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    UnconstrainedBox(
+                itemBuilder: (BuildContext context, int index) => UnconstrainedBox(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           width: 80.w,
                           height: 9.h,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                            color: AppColors.arcColor
-                          ),
+                              borderRadius: BorderRadius.circular(30.0), color: AppColors.arcColor),
                           child: Row(
                             children: [
                               Container(
-                              width: 5.w,
-                              height: 9.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(30.0),
-                                      topRight: Radius.circular(30.0)),
-                                  color: colorType != null
-                                      ? colorType
-                                      : AppColors.looseType)),
+                                  width: 5.w,
+                                  height: 9.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(30.0),
+                                          topRight: Radius.circular(30.0)),
+                                      color: colorType != null ? colorType : AppColors.looseType)),
                               InkWell(
-                                onTap: activeCard[index]
+                                onTap: snapshot.data![index].isActiveItem
                                     ? () => {
-                                  // print('act:${activeCard[index]}'),
-                                  snapshot.data![index].dietId = int.parse(snapshot.data![index].id!),
+                                           print('act:${snapshot.data![index].isActiveItem}'),
+                                          snapshot.data![index].dietId =
+                                              int.parse(snapshot.data![index].id!),
                                           regimeBloc.pathMethod(snapshot.data![index]),
                                         }
                                     : () => {
-                                          Utils.getSnackbarMessage(
-                                              context, 'به زودی'),
+                                  print('act:${snapshot.data![index].isActiveItem}'),
+                                          Utils.getSnackbarMessage(context, 'به زودی'),
                                         },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                      children: [
-                                        Container(
-                                          width: 30.w,
-                                          child: Text(snapshot.data![index].title!,
-                                              style: TextStyle(
-                                                fontSize: 14.sp,
-                                                  color: snapshot.data![index]
-                                                              .isActive! ==
-                                                          '0'
-                                                      ? AppColors.strongPen
-                                                      : AppColors.penColor)),
-                                        ),
-                                        Container(
-                                          width: 30.w,
-                                          child: setContent(
-                                              snapshot.data![index].alias!,
-                                              snapshot.data![index].isActive!,
-                                              index),
-                                        ),
-                                      ]),
+                                  child: Row(children: [
+                                    Container(
+                                      width: 30.w,
+                                      child: Text(snapshot.data![index].title!,
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: snapshot.data![index].isActive! == '0'
+                                                  ? AppColors.strongPen
+                                                  : AppColors.penColor)),
+                                    ),
+                                    Container(
+                                      width: 30.w,
+                                      child: setContent(snapshot.data![index].alias!,
+                                          snapshot.data![index].isActiveItem, index),
+                                    ),
+                                  ]),
                                 ),
                               ),
                             ],
@@ -177,66 +154,56 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                 child: Container(
                     width: 15.w,
                     height: 15.w,
-                    child: CircularProgressIndicator(
-                        color: Colors.grey, strokeWidth: 1.0)));
+                    child: CircularProgressIndicator(color: Colors.grey, strokeWidth: 1.0)));
           }
         });
   }
 
-  Widget setContent(String type, String active, int index) {
+  Widget setContent(String type, bool active, int index) {
     switch (type) {
       case "WEIGHT_LOSS":
         {
           colorType = AppColors.looseType;
-          if (active == '1') activeCard[index] = true;
           return SvgPicture.asset('assets/images/diet/loose_weight.svg');
         }
       case "WEIGHT_GAIN":
         {
           colorType = AppColors.gainType;
-          if (active == '1') activeCard[index] = true;
           return SvgPicture.asset('assets/images/diet/gain_weight.svg');
         }
       case "STABILIZATION":
         {
           colorType = AppColors.stableType;
-          if (active == '1') activeCard[index] = true;
           return SvgPicture.asset('assets/images/diet/fix_weight.svg');
         }
       case "DIABETES":
         {
           colorType = AppColors.diabetType;
-          if (active == '1') activeCard[index] = true;
           return SvgPicture.asset('assets/images/diet/diabetes_diet.svg');
         }
       case "PREGNANCY":
         {
           colorType = AppColors.pregnantType;
-          if (active == '1') activeCard[index] = true;
           return SvgPicture.asset('assets/images/diet/pregnant_diet.svg');
         }
       case "KETOGENIC":
         {
           colorType = AppColors.ketoType;
-          if (active == '1') activeCard[index] = true;
           return SvgPicture.asset('assets/images/diet/fix_weight.svg');
         }
       case "SPORTS":
         {
           colorType = AppColors.sportType;
-          if (active == '1') activeCard[index] = true;
           return SvgPicture.asset('assets/images/diet/fix_weight.svg');
         }
       case "NOTRICA":
         {
           colorType = AppColors.notricaType;
-          if (active == '1') activeCard[index] = true;
           return SvgPicture.asset('assets/images/diet/gain_weight.svg');
         }
       default:
         {
           colorType = AppColors.gainType;
-          if (active == '1') activeCard[index] = true;
           return SvgPicture.asset('assets/images/diet/gain_weight.svg');
         }
     }

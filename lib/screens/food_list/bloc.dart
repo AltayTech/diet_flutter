@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:behandam/app/bloc.dart';
+import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
@@ -23,6 +24,7 @@ class FoodListBloc {
     _loadContent(invalidate: true, fillFood: fillFood);
   }
 
+  final _showServerError = LiveEvent();
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _foodList = BehaviorSubject<FoodListData?>();
@@ -32,6 +34,8 @@ class FoodListBloc {
   final AppBloc _appBloc = AppBloc();
 
   Stream<bool> get loadingContent => _loadingContent.stream;
+
+  Stream get showServerError => _showServerError.stream;
 
   Stream<FoodListData?> get foodList => _foodList.stream;
 
@@ -46,11 +50,17 @@ class FoodListBloc {
   void _loadContent({bool invalidate = false, bool fillFood = true}) {
     _loadingContent.value = true;
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
-      debugPrint('food list ${value.data} / $fillFood');
-      _foodList.value = value.data!;
-      _foodList.value?.meals.sort((a, b) => a.order.compareTo(b.order));
-      setTheme();
-      fillWeekDays();
+      //debugPrint('food list ${value.data} / $fillFood');
+      if (value.data?.menu != null) {
+        _foodList.value = value.data!;
+        _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
+        setTheme();
+        fillWeekDays();
+      } else {
+        _showServerError.fire('/${value.next}');
+      }
+    }).catchError((onError) {
+      debugPrint('food err $onError');
     }).whenComplete(() => _loadingContent.value = false);
   }
 
@@ -74,7 +84,7 @@ class FoodListBloc {
   }
 
   void fillWeekDays() {
-    DateTime gregorianDate = DateTime.parse(_foodList.value!.menu.startedAt).toUtc().toLocal();
+    DateTime gregorianDate = DateTime.parse(_foodList.value!.menu!.startedAt).toUtc().toLocal();
     Jalali jalaliDate = Jalali.fromDateTime(gregorianDate);
     List<WeekDay> data = [];
     debugPrint(
@@ -126,18 +136,18 @@ class FoodListBloc {
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
       debugPrint('food list ${value.data}');
       _foodList.value = value.data!;
-      _foodList.value?.meals.sort((a, b) => a.order.compareTo(b.order));
+      _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
       setTheme();
     }).whenComplete(() => _loadingContent.value = false);
   }
 
   void onMealFood(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
-    final index = _foodList.valueOrNull?.meals.indexWhere((element) => element.id == mealId);
+    final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
-    _foodList.valueOrNull?.meals[index!].newFood = newFood;
+    _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     debugPrint(
-        'newfood ${_foodList.valueOrNull?.meals[index!].title} / ${_foodList.valueOrNull?.meals[index!].newFood?.toJson()}');
+        'newfood ${_foodList.valueOrNull?.meals?[index!].title} / ${_foodList.valueOrNull?.meals?[index!].newFood?.toJson()}');
   }
 
   onDailyMenu() {
@@ -145,8 +155,8 @@ class FoodListBloc {
     List<DailyFood> foods = [];
     int day = _weekDays.value!
         .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
-    debugPrint('newfood3 ${_foodList.valueOrNull?.meals[0].newFood?.id}');
-    _foodList.valueOrNull?.meals.forEach((meal) {
+    debugPrint('newfood3 ${_foodList.valueOrNull?.meals?[0].newFood?.id}');
+    _foodList.valueOrNull?.meals?.forEach((meal) {
       debugPrint('daily menu newfood ${meal.id} / ${meal.title} / ${meal.newFood?.toJson()}');
       //ToDo calculate the free food id
       if (meal.newFood?.id != null) foods.add(DailyFood(meal.newFood!.id!, meal.id, day + 1, null));
@@ -165,7 +175,7 @@ class FoodListBloc {
     List<DailyFood> foods = [];
     int day = _weekDays.value!
         .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
-    final meal = _foodList.value?.meals.firstWhere((element) => element.id == mealId);
+    final meal = _foodList.value?.meals?.firstWhere((element) => element.id == mealId);
     foods.add(DailyFood(meal!.newFood!.id!, meal.id, day + 1, null));
     debugPrint('replace Food ${foods.last.toJson()}');
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
@@ -178,7 +188,7 @@ class FoodListBloc {
   }
 
   void makingFoodEmpty(int mealId) {
-    _foodList.valueOrNull?.meals.firstWhere((element) => element.id == mealId).newFood = null;
+    _foodList.valueOrNull?.meals?.firstWhere((element) => element.id == mealId).newFood = null;
   }
 
   void dispose() {
