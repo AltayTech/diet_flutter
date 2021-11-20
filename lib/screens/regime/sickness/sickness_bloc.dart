@@ -48,12 +48,12 @@ class SicknessBloc {
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
   final _helpers = BehaviorSubject<List<Help>>();
   final _status = BehaviorSubject<BodyStatus>();
-  final _navigateToVerify = LiveEvent();
+  final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
 
   String get path => _path;
 
-  UserSickness get userSickness => _userSickness;
+  UserSickness? get userSickness => _userSickness;
 
   Stream<BodyStatus> get status => _status.stream;
 
@@ -63,7 +63,7 @@ class SicknessBloc {
 
   Stream<bool> get waiting => _waiting.stream;
 
-  Stream get navigateToVerify => _navigateToVerify.stream;
+  Stream get navigateTo => _navigateTo.stream;
 
   Stream get showServerError => _showServerError.stream;
 
@@ -72,17 +72,47 @@ class SicknessBloc {
     _repository.getSickness().then((value) {
       _userSickness = value.data!;
       int index = 0;
-      _userSickness.sickness_categories?.forEach((element) {
-        element.barColor = _illColor[index]['barColor'];
-        element.bgColor = _illColor[index]['bgColor'];
-        element.tick = _illColor[index]['tick'];
-        element.shadow = _illColor[index]['shadow'];
+      if (value.data != null) {
+        _userSickness.sickness_categories?.forEach((element) {
+          element.barColor = _illColor[index]['barColor'];
+          element.bgColor = _illColor[index]['bgColor'];
+          element.tick = _illColor[index]['tick'];
+          element.shadow = _illColor[index]['shadow'];
+          element.sicknesses!.sort((a, b) {
+            return a.order!.compareTo(b.order!);
+          });
+          element.sicknesses?.forEach((sickness) {
+            // print('Start sicknesses sick ${sickness.toJson()}');
+            _userSickness.userSicknesses?.forEach((user) {
+              //print('user sicknesses sick ${sickness.toJson()}');
+              if (user.id == sickness.id) {
+                sickness.isSelected = true;
+              }
+            });
+            sickness.children?.forEach((child) {
+              _userSickness.userSicknesses?.forEach((user) {
+                if (user.id == child.id) {
+                  sickness.isSelected = true;
+                  child.isSelected = true;
+                }
+              });
+            });
+          });
 
-        element.isSelected =
-            (_userSickness.userSicknesses?.singleWhere((userItem) => userItem.id == element.id) !=
-                null);
-      });
+          if (index == _illColor.length - 1)
+            index = 0;
+          else
+            index += 1;
+        });
+      }
     }).whenComplete(() => _waiting.value = false);
+  }
+
+  void sendSickness() {
+    _repository.sendSickness(userSickness!).then((value) {
+      _navigateTo.fireMessage('/${value.next}');
+    }).whenComplete(() {
+    });
   }
 
   void helpMethod(int id) async {
@@ -94,7 +124,7 @@ class SicknessBloc {
 
   void dispose() {
     _showServerError.close();
-    _navigateToVerify.close();
+    _navigateTo.close();
     _waiting.close();
   }
 }

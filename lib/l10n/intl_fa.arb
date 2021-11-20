@@ -250,5 +250,7 @@
   "untilBeingMom": "تا مادر شدن فاصله داری",
   "getWeight": "باید وزن اضافه کنی",
   "comingSoon": "به زودی",
+  "sicknessLabelUser": "دچار چه عارضه یا بیماری هستی؟",
+  "sicknessDescriptionUser": "توضیحات بیشتر",
   "understand": "متوجه شدم"
 }

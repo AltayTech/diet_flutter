@@ -14,6 +14,9 @@ class UserSickness {
   @JsonKey(name: "sickness_categories")
   List<CategorySickness>? sickness_categories;
 
+  @JsonKey(name: "sicknesses")
+  List<int>? sicknesses;
+
   UserSickness();
 
   factory UserSickness.fromJson(Map<String, dynamic> json) => _$UserSicknessFromJson(json);
@@ -28,6 +31,9 @@ class Sickness {
 
   @JsonKey(name: "title")
   String? title;
+
+  @JsonKey(name: "selected", defaultValue: false)
+  bool? isSelected;
 
   Sickness();
 
@@ -63,6 +69,8 @@ class CategorySickness {
   var shadow;
   @JsonKey(name: "tick")
   var tick;
+  @JsonKey(name: "order")
+  int? order;
 
   CategorySickness();
 

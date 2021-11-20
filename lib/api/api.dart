@@ -163,5 +163,8 @@ abstract class RestClient {
   @GET("/user-sickness")
   NetworkResult<UserSickness> getUserSickness();
 
+  @PATCH("/user-sickness")
+  ImperativeNetworkResult setUserSickness(@Body() UserSickness userSickness);
+
 }
 
