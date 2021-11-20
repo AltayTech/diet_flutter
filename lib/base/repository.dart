@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/api/interceptor/logger.dart';
+import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
@@ -22,6 +23,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:logging/logging.dart';
 
 import '../api/api.dart';
 import '../data/entity/auth/country_code.dart';
@@ -101,6 +103,8 @@ abstract class Repository {
   ImperativeNetworkResult sendTicketFileDetail(SendTicket sendTicket, File file);
 
   NetworkResult<bool> dailyMenu(DailyMenuRequestData requestData);
+
+  NetworkResult<CalendarData> calendar(String start, String end);
 
   NetworkResult getPath(RegimeType dietId);
 
@@ -302,6 +306,24 @@ class _RepositoryImpl extends Repository {
     return response;
   }
 
+  @override
+  NetworkResult<CalendarData> calendar(String start, String end) async{
+    var response;
+    try{
+      response = await _apiClient.calendar(start, end);
+      debugPrint('calendar ${response.requireData.terms[0].visits?.length} / ${response.requireData.terms[0].menus?.length}');
+      return response;
+    }catch(e) {
+      debugPrint('error $e');
+    }
+    return response;
+  }
+
+  // @override
+  // NetworkResult<TicketModel> getTickets() {
+  //   var response = _apiClient.getTicketMessage();
+  //   return response;
+  // }
   @override
   NetworkResult<SupportModel> getDepartmentItems() {
     var response = _apiClient.getDepartmentItems();

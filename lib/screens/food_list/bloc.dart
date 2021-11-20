@@ -95,12 +95,12 @@ class FoodListBloc {
         isSelected: gregorianDate.toString().substring(0, 10) == _date.value));
     debugPrint('date2 $gregorianDate / $jalaliDate');
     for (int i = 1; i < 7; i++) {
-      debugPrint('week day ${gregorianDate.add(Duration(days: i))} / ${jalaliDate.add(days: i)}');
       data.add(WeekDay(
           gregorianDate: gregorianDate.add(Duration(days: i)),
-          jalaliDate: jalaliDate.add(days: i),
+          jalaliDate: gregorianDate.add(Duration(days: i)).toJalali(),
           isSelected:
               gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
+      debugPrint('week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
     }
     _weekDays.value = data;
     _selectedWeekDay.value = _weekDays.value!.firstWhere(

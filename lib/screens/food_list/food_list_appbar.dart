@@ -12,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:behandam/extensions/iterable.dart';
+import 'package:velocity_x/velocity_x.dart';
 
+import '../../routes.dart';
 import 'week_day.dart';
 import 'week_list.dart';
 
@@ -95,29 +97,32 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
   }
 
   Widget calendar() {
-    return Container(
-      decoration: AppDecorations.boxLarge.copyWith(
-        color: AppColors.surface.withOpacity(0.3),
-      ),
-      width: 40.w,
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.dark_mode,
-            size: 6.w,
-            color: AppColors.surface,
-          ),
-          Space(width: 3.w),
-          Text(
-            'تقویم',
-            textAlign: TextAlign.center,
-            style: typography.caption?.apply(
+    return GestureDetector(
+      onTap: () => VxNavigator.of(context).push(Uri(path: Routes.calendar)),
+      child: Container(
+        decoration: AppDecorations.boxLarge.copyWith(
+          color: AppColors.surface.withOpacity(0.3),
+        ),
+        width: 40.w,
+        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.dark_mode,
+              size: 6.w,
               color: AppColors.surface,
             ),
-          ),
-        ],
+            Space(width: 3.w),
+            Text(
+              'تقویم',
+              textAlign: TextAlign.center,
+              style: typography.caption?.apply(
+                color: AppColors.surface,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

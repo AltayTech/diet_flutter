@@ -1,5 +1,8 @@
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/app/provider.dart';
+import 'package:behandam/screens/authentication/register.dart';
+import 'package:behandam/screens/authentication/verify.dart';
+import 'package:behandam/screens/calendar/calendar.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -188,6 +191,7 @@ final navigator = VxNavigator(
     RegExp(r"\/ticket\/details"): (uri, __) =>
         MaterialPage(child: TicketDetails(), arguments: int.parse(uri.queryParameters['ticketId'].toString())),
     Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
+    Routes.calendar: (_, __) => MaterialPage(child: CalendarPage()),
     Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
     Routes.bodyState: (_, param) => MaterialPage(child: BodyStateScreen(), arguments: param),
     Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),

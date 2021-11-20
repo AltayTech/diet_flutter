@@ -9,7 +9,8 @@ class LoggingInterceptor extends Interceptor {
   LoggingInterceptor();
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     logPrint('*** API Request - Start ***');
 
     printKV('URI', options.uri);
@@ -58,7 +59,7 @@ class LoggingInterceptor extends Interceptor {
   }
 
   void printKV(String key, Object v) {
-    logPrint('$key: $v');
+    debugPrint('$key: $v');
   }
 
   void printAll(msg) {

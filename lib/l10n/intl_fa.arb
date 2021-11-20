@@ -171,6 +171,63 @@
           }
     },
   "replaceFood": "جایگزین کن",
+  "calendar": "تقویم",
+  "saturday": "شنبه",
+  "sunday": "۱شنبه",
+  "monday": "۲شنبه",
+  "tuesday": "۳شنبه",
+  "wednesday": "۴شنبه",
+  "thursday": "۵شنبه",
+  "friday": "جمعه",
+  "termStart": "شروع دوره",
+  "termEnd": "پایان دوره",
+  "newTerm": "تمدید دوره",
+  "newList": "لیست جدید",
+  "visit": "اعلام وزن",
+  "visitDelay": "تاخیر در اعلام وزن",
+  "menuDelay": "تاخیر در انتخاب لیست",
+  "newMenu": "دریافت لیست جدید",
+  "termShouldBeRenewed": "{user} عزیز \n در زمان مشخص شده باید رژیمت رو تمدید کنی",
+  "@termShouldBeRenewed": {
+    "placeholders": {
+        "user": {
+            "type": "String"
+        }
+    }
+  },
+  "listShouldBeRenewed": "{user} عزیز \n هنوز به زمان دریافت لیست جدید غذایی نرسیدی. ما روز دریافت لیست باخبرت میکنیم",
+   "@listShouldBeRenewed": {
+      "placeholders": {
+          "user": {
+              "type": "String"
+          }
+      }
+   },
+  "visitShouldBeRenewed": "{user} عزیز \n هنوز به زمان اعلام وزن نرسیدی. ما روز اعلام وزن باخبرت میکنیم",
+   "@visitShouldBeRenewed": {
+      "placeholders": {
+          "user": {
+              "type": "String"
+          }
+      }
+   },
+   "youDidNotGetNewMenu": "{user} عزیز \n در زمان مشخص شده لیست غذایی انتخاب نکردی!",
+      "@youDidNotGetNewMenu": {
+         "placeholders": {
+             "user": {
+                 "type": "String"
+             }
+         }
+      },
+  "youDidNotSubmitWeight": "{user} عزیز \n در زمان مشخص شده لیست غذایی انتخاب نکردی!",
+    "@youDidNotSubmitWeight": {
+       "placeholders": {
+           "user": {
+               "type": "String"
+           }
+    }
+  },
+  "gotIt": "متوجه شدم",
   "ticket": "پشتیبانی",
   "status": "وضعیت",
   "vitrin": "ویترین",
@@ -250,5 +307,6 @@
   "untilBeingMom": "تا مادر شدن فاصله داری",
   "getWeight": "باید وزن اضافه کنی",
   "comingSoon": "به زودی",
-  "understand": "متوجه شدم"
+  "understand": "متوجه شدم",
+  "arabic": "العربية"
 }

@@ -25,6 +25,7 @@ abstract class Routes {
   static const ticketCall = '/ticket/call';
   static const ticketMessage = '/ticket/message';
   static const replaceFood = '/list/food/replace';
+  static const calendar = '/list/archive';
   static const newTicketMessage = '/ticket/message/new';
   static const detailsTicketMessage = '/ticket/details';
   static const bodyState = '/reg/size';
