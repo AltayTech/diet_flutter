@@ -4,7 +4,7 @@ import 'package:shamsi_date/shamsi_date.dart';
 class DayItem {
   final Jalali jalali;
   final Gregorian gregorian;
-  List<DayType> types;
+  List<DayType?> types;
 
   DayItem({
     required this.jalali,
@@ -22,4 +22,8 @@ enum DayType {
   menuEnd,
   newList,
   visit,
+  newTerm,
+  menu,
+  menuAlert,
+  visitAlert,
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
+import 'package:behandam/api/interceptor/logger.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
@@ -18,6 +19,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:logging/logging.dart';
 
 import '../api/api.dart';
 import '../data/entity/auth/country_code.dart';
@@ -105,7 +107,7 @@ class _RepositoryImpl extends Repository {
       connectTimeout: connectTimeout,
       sendTimeout: sendTimeout,
     );
-    _dio.interceptors.add(CustomInterceptors());
+    _dio.interceptors.add(LoggingInterceptor());
     _dio.interceptors.add(ErrorHandlerInterceptor());
     _dio.interceptors.add(GlobalInterceptor());
     _apiClient =
@@ -284,8 +286,14 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult<CalendarData> calendar(String start, String end) async{
-    var response = await _apiClient.calendar(start, end);
-    debugPrint('calendar');
+    var response;
+    try{
+      response = await _apiClient.calendar(start, end);
+      debugPrint('calendar ${response.requireData.terms[0].visits?.length} / ${response.requireData.terms[0].menus?.length}');
+      return response;
+    }catch(e) {
+      debugPrint('error $e');
+    }
     return response;
   }
 

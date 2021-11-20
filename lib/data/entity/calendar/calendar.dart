@@ -1,4 +1,3 @@
-// import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'calendar.g.dart';
 
@@ -11,8 +10,6 @@ class CalendarData {
 
   factory CalendarData.fromJson(Map<String, dynamic> json) =>
       _$CalendarDataFromJson(json);
-
-  // Map<String, dynamic> toJson() => _$CalendarDataToJson(this);
 }
 
 @JsonSerializable(createToJson: false)
@@ -40,7 +37,7 @@ class Term {
     this.deletedAt,
     this.isCallEnabled,
     this.visits,
-    // this.menus,
+    this.menus,
   );
 
   @JsonKey(name: 'id')
@@ -109,91 +106,62 @@ class Term {
   @JsonKey(name: 'visits')
   List<Visit>? visits;
 
-  // @JsonKey(name: 'menus')
-  // final List<Menu>? menus;
+  @JsonKey(name: 'menus')
+  List<Menu>? menus;
 
   factory Term.fromJson(Map<String, dynamic> json) => _$TermFromJson(json);
-
-  // Map<String, dynamic> toJson() => _$TermToJson(this);
 }
 
 @JsonSerializable(createToJson: false)
 class Visit {
   Visit(
-    // this.id,
-    // this.termId,
-    // this.messageId,
-    // this.weight,
-    // this.targetWeight,
-    // this.height,
-    // this.wrist,
-    // this.pregnancyWeekNumber,
-    // this.commitment,
+    this.id,
+    this.termId,
+    this.weight,
+    this.targetWeight,
+    this.wrist,
+    this.height,
+    this.pregnancyWeekNumber,
     this.visitedAt,
-    // this.expiredAt,
-    // this.activityLevelId,
-    // this.calorieId,
-    // this.isActive,
-    // this.deletedAt,
-    // this.calorieValue,
-    // this.visitDays,
+    this.expiredAt,
+    this.isActive,
+    this.visitDays,
   );
 
-  // @JsonKey(name: 'id')
-  // final int id;
+  @JsonKey(name: 'id')
+  final int id;
 
-  // @JsonKey(name: 'term_id')
-  // final int termId;
-  //
-  // @JsonKey(name: 'message_id')
-  // final int? messageId;
-  //
-  // @JsonKey(name: 'weight')
-  // final int weight;
-  //
-  // @JsonKey(name: 'target_weight')
-  // final int targetWeight;
-  //
-  // @JsonKey(name: 'height')
-  // final int height;
-  //
-  // @JsonKey(name: 'wrist')
-  // final int wrist;
-  //
-  // @JsonKey(name: 'pregnancy_week_number')
-  // final int? pregnancyWeekNumber;
-  //
-  // @JsonKey(name: 'commitment')
-  // //ToDo get the type of it
-  // final dynamic commitment;
-  //
+  @JsonKey(name: 'term_id')
+  final int termId;
+
+  @JsonKey(name: 'weight')
+  final int weight;
+
+  @JsonKey(name: 'target_weight')
+  final int targetWeight;
+
+  @JsonKey(name: 'height')
+  final int height;
+
+  @JsonKey(name: 'wrist')
+  final int wrist;
+
+  @JsonKey(name: 'pregnancy_week_number')
+  final int? pregnancyWeekNumber;
+
   @JsonKey(name: 'visited_at')
   final String visitedAt;
-  //
-  // @JsonKey(name: 'expired_at')
-  // final String expiredAt;
-  //
-  // @JsonKey(name: 'activity_level_id')
-  // final int activityLevelId;
-  //
-  // @JsonKey(name: 'calory_id')
-  // final int calorieId;
-  //
-  // @JsonKey(name: 'is_active')
-  // final int isActive;
-  //
-  // @JsonKey(name: 'deleted_at')
-  // final String? deletedAt;
-  //
-  // @JsonKey(name: 'calory_value')
-  // final int calorieValue;
-  //
-  // @JsonKey(name: 'visit_days')
-  // final int visitDays;
+
+  @JsonKey(name: 'expired_at')
+  final String expiredAt;
+
+  @JsonKey(name: 'is_active')
+  final int isActive;
+
+  @JsonKey(name: 'visit_days')
+  final int visitDays;
 
   factory Visit.fromJson(Map<String, dynamic> json) => _$VisitFromJson(json);
-
-  // Map<String, dynamic> toJson() => _$VisitToJson(this);
 }
 
 @JsonSerializable(createToJson: false)
@@ -201,7 +169,6 @@ class Menu {
   Menu(
     this.id,
     this.menuId,
-    this.isPreparedMenu,
     this.termId,
     this.fromDay,
     this.toDay,
@@ -216,9 +183,6 @@ class Menu {
 
   @JsonKey(name: 'menu_id')
   final int menuId;
-
-  @JsonKey(name: 'is_prepared_menu')
-  final int isPreparedMenu;
 
   @JsonKey(name: 'term_id')
   final int termId;
@@ -242,6 +206,4 @@ class Menu {
   final String menuTitle;
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
-
-  // Map<String, dynamic> toJson() => _$MenuToJson(this);
 }

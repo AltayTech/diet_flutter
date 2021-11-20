@@ -71,7 +71,7 @@ abstract class DeviceUtils {
       var systemName = iosInfo.systemName;
       var iosVersion = iosInfo.systemVersion;
       var name = iosInfo.name;
-      userAgent = 'Behandam/$appVersion $systemName/$iosVersion (Apple/${iosInfo.utsname.machine})';
+      userAgent = 'Behandam/$appVersion{${packageInfo.buildNumber}} $systemName/$iosVersion (Apple/${iosInfo.utsname.machine})';
       print('user agent $userAgent');
     } else if (Platform.isAndroid) {
       var androidInfo = await deviceInfo.androidInfo;

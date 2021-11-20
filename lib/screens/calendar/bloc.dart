@@ -15,8 +15,8 @@ import 'package:behandam/extensions/string.dart';
 
 class CalendarBloc {
   CalendarBloc() {
-    if(_startDate.valueOrNull == null) _startDate.value = DateTime.now().subtract(Duration(days: 90)).toString().substring(0, 10);
-    if(_endDate.valueOrNull == null) _endDate.value = DateTime.now().add(Duration(days: 90)).toString().substring(0, 10);
+    if(_startDate.valueOrNull == null) _startDate.value = DateTime.now().subtract(Duration(days: 100)).toString().substring(0, 10);
+    if(_endDate.valueOrNull == null) _endDate.value = DateTime.now().add(Duration(days: 100)).toString().substring(0, 10);
     _loadContent();
   }
   final _repository = Repository.getInstance();
@@ -37,8 +37,9 @@ class CalendarBloc {
   void _loadContent() {
     _loadingContent.value = true;
     _repository.calendar(_startDate.value, _endDate.value).then((value) {
-      _calendar.value = value.data;
-    }).whenComplete(() => _loadingContent.value = false);
+      _calendar.value = value.requireData;
+      // debugPrint('calendar2 ${_calendar.value?.terms[0].menus?.length}');
+    }).catchError((onError) => debugPrint('repository error $onError')).whenComplete(() => _loadingContent.value = false);
   }
 
   void dispose() {

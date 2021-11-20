@@ -37,16 +37,28 @@ Term _$TermFromJson(Map<String, dynamic> json) => Term(
       (json['visits'] as List<dynamic>?)
           ?.map((e) => Visit.fromJson(e as Map<String, dynamic>))
           .toList(),
+      (json['menus'] as List<dynamic>?)
+          ?.map((e) => Menu.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
+      json['id'] as int,
+      json['term_id'] as int,
+      json['weight'] as int,
+      json['target_weight'] as int,
+      json['wrist'] as int,
+      json['height'] as int,
+      json['pregnancy_week_number'] as int?,
       json['visited_at'] as String,
+      json['expired_at'] as String,
+      json['is_active'] as int,
+      json['visit_days'] as int,
     );
 
 Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['id'] as int,
       json['menu_id'] as int,
-      json['is_prepared_menu'] as int,
       json['term_id'] as int,
       json['from_day'] as int,
       json['to_day'] as int,

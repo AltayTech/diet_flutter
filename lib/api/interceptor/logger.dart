@@ -9,13 +9,16 @@ class LoggingInterceptor extends Interceptor {
   LoggingInterceptor();
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     logPrint('*** API Request - Start ***');
 
     printKV('URI', options.uri);
     printKV('METHOD', options.method);
     logPrint('HEADERS:');
-    options.headers.forEach((key, v) => printKV(' - $key', v));
+    options.headers.values.forEach((v) {
+      print('logger header $v');
+    });
     logPrint('BODY:');
     printAll(options.data ?? "");
 
@@ -58,7 +61,7 @@ class LoggingInterceptor extends Interceptor {
   }
 
   void printKV(String key, Object v) {
-    logPrint('$key: $v');
+    debugPrint('$key: $v');
   }
 
   void printAll(msg) {

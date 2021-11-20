@@ -29,7 +29,7 @@ class GlobalInterceptor extends Interceptor {
     // options.headers['Fcm-Token'] = fcmToken;
     options.headers['App'] = '0';
     options.headers['Application-Version-Code'] = packageInfo.buildNumber;
-    options.headers['version'] = packageInfo.buildNumber;
+    options.headers['version'] = packageInfo.version.replaceAll('.', '');
     options.headers['Application-Version-Name'] = packageInfo.version;
     options.headers['Platform'] = DeviceUtils.platform;
     options.headers['Platform-Version'] = await DeviceUtils.platformVersion;
