@@ -12,6 +12,7 @@ import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 
@@ -115,7 +116,12 @@ abstract class Repository {
   ImperativeNetworkResult sendRequestCall();
 
   ImperativeNetworkResult deleteRequestCall(int Id);
+
   NetworkResult<BodyStatus> getStatus(BodyStatus body);
+
+  NetworkResult<UserSickness> getSickness();
+
+  ImperativeNetworkResult sendSickness(UserSickness sickness);
 }
 
 class _RepositoryImpl extends Repository {
@@ -421,4 +427,30 @@ class _RepositoryImpl extends Repository {
     return response;
   }
 
+  @override
+  NetworkResult<UserSickness> getSickness() {
+    var response = _apiClient.getUserSickness();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendSickness(UserSickness sickness) {
+    List<int> selectedItems = [];
+    UserSickness userSickness = new UserSickness();
+    sickness.sickness_categories!.forEach((element) {
+      element.sicknesses!.forEach((sicknessItem) {
+        if (sicknessItem.isSelected!) {
+          if (sicknessItem.children!.length > 0) {
+            selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!).id!);
+          } else {
+            selectedItems.add(sicknessItem.id!);
+          }
+        }
+      });
+    });
+    userSickness.sicknesses = selectedItems;
+    userSickness.sicknessNote = sickness.sicknessNote;
+    var response = _apiClient.setUserSickness(userSickness);
+    return response;
+  }
 }

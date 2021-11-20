@@ -3,6 +3,7 @@ import 'package:behandam/app/provider.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/calendar/calendar.dart';
+import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -22,6 +23,7 @@ import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
+import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
 import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
@@ -165,7 +167,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: FoodListPage()),
+    '/': (_, __) => MaterialPage(child: SicknessScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -195,6 +197,7 @@ final navigator = VxNavigator(
     Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
     Routes.bodyState: (_, param) => MaterialPage(child: BodyStateScreen(), arguments: param),
     Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
+    Routes.sickness: (_, __) => MaterialPage(child: SicknessScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

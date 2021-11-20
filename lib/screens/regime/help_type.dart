@@ -26,6 +26,7 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
     // TODO: implement initState
     super.initState();
     regimeBloc = RegimeBloc();
+    regimeBloc.helpMethod(1);
     listenBloc();
   }
 
@@ -37,7 +38,7 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    regimeBloc.helpMethod(1);
+
     super.build(context);
     return Scaffold(
       appBar:Toolbar(titleBar: intl.whichRegime),
