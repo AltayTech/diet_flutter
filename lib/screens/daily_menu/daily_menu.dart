@@ -102,12 +102,16 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
                       softWrap: true,
                       textAlign: TextAlign.center,
                     ),
-                    Text(
-                      snapshot.hasData ? intl.notShowingPastMeals : '',
-                      style: typography.caption,
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                    ),
+                    if (snapshot.data?.gregorianDate
+                            .toString()
+                            .substring(0, 10) ==
+                        DateTime.now().toString().substring(0, 10))
+                      Text(
+                        snapshot.hasData ? intl.notShowingPastMeals : '',
+                        style: typography.caption,
+                        softWrap: true,
+                        textAlign: TextAlign.center,
+                      ),
                   ],
                 );
               },
@@ -158,125 +162,151 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   Widget mealItem(Meals meal) {
     List<int> items = meal.newFood == null
         ? []
-        : List.generate(
-            (meal.newFood!.foodItems!.length * 2) - 1, (i) => i);
+        : List.generate((meal.newFood!.foodItems!.length * 2) - 1, (i) => i);
     int index = 0;
     debugPrint('is past ${isPastMeal(meal)} / ${meal.title}');
-    return isPastMeal(meal) ? Container() : Card(
-      margin: EdgeInsets.only(bottom: 2.h),
-      shape: AppShapes.rectangleMild,
-      elevation: 2,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-        child: Column(
-          children: [
-            Row(
-              children: <Widget>[
-                Container(
-                  width: 12.w,
-                  height: 12.w,
-                  decoration: AppDecorations.circle.copyWith(
-                    color: AppColors.primary,
-                  ),
-                  // child: ImageUtils(),
-                ),
-                Space(width: 2.w),
-                Expanded(
-                  child: Text(
-                    meal.title,
-                    style: typography.bodyText2,
-                    softWrap: true,
-                  ),
-                ),
-              ],
-            ),
-            Space(height: 1.h),
-            GestureDetector(
-              onTap: () {
-                VxNavigator.of(context)
-                    .waitAndPush(Uri(path: Routes.listFood), params: meal)
-                    .then((value) {
-                      debugPrint('returen ${value}');
-                  bloc.onMealFood(value, meal.id);
-                });
-              },
-              child: Container(
-                decoration: AppDecorations.boxMedium.copyWith(
-                  color: Colors.grey[100],
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: AppDecorations.boxMild.copyWith(
-                        color: AppColors.onPrimary,
-                      ),
-                      padding: EdgeInsets.all(3.w),
-                      child: ScaleTransition(
-                        scale: _animation,
-                        alignment: Alignment.center,
-                        child: Icon(
-                          meal.newFood == null ? Icons.add : Icons.edit,
-                          size: 6.w,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    Space(width: 2.w),
-                    Expanded(
-                      child: meal.newFood == null
-                          ? Text(
-                              intl.addFood,
-                              style: typography.caption,
-                            )
-                          : Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                ...items.map(
-                                  (i) {
-                                    final widget;
-                                    if (i % 2 == 0)
-                                      widget = Chip(
-                                        backgroundColor: AppColors.onPrimary,
-                                        label: Text(
-                                          meal
-                                                  .newFood?.foodItems?[index].title ??
-                                              '',
-                                          style: typography.caption,
-                                          textAlign: TextAlign.center,
-                                          softWrap: true,
+    return StreamBuilder(
+            stream: bloc.selectedWeekDay,
+            builder: (_, AsyncSnapshot<WeekDay> snapshot) {
+              if (snapshot.hasData)
+                return snapshot.data?.gregorianDate
+                                .toString()
+                                .substring(0, 10) ==
+                            DateTime.now().toString().substring(0, 10) &&
+                        isPastMeal(meal)
+                    ? EmptyBox()
+                    : Card(
+                        margin: EdgeInsets.only(bottom: 2.h),
+                        shape: AppShapes.rectangleMild,
+                        elevation: 2,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.w, vertical: 1.h),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    width: 12.w,
+                                    height: 12.w,
+                                    decoration: AppDecorations.circle.copyWith(
+                                      color: AppColors.primary,
+                                    ),
+                                    // child: ImageUtils(),
+                                  ),
+                                  Space(width: 2.w),
+                                  Expanded(
+                                    child: Text(
+                                      meal.title,
+                                      style: typography.bodyText2,
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Space(height: 1.h),
+                              GestureDetector(
+                                onTap: () {
+                                  VxNavigator.of(context)
+                                      .waitAndPush(Uri(path: Routes.listFood),
+                                          params: meal)
+                                      .then((value) {
+                                    debugPrint('returen ${value}');
+                                    bloc.onMealFood(value, meal.id);
+                                  });
+                                },
+                                child: Container(
+                                  decoration: AppDecorations.boxMedium.copyWith(
+                                    color: Colors.grey[100],
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 3.w, vertical: 1.h),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        decoration:
+                                            AppDecorations.boxMild.copyWith(
+                                          color: AppColors.onPrimary,
                                         ),
-                                      );
-                                    else {
-                                      widget = Icon(
-                                        Icons.add,
-                                        size: 6.w,
-                                      );
-                                      index++;
-                                    }
-                                    return widget;
-                                  },
-                                ).toList(),
-                              ],
-                            ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                                        padding: EdgeInsets.all(3.w),
+                                        child: ScaleTransition(
+                                          scale: _animation,
+                                          alignment: Alignment.center,
+                                          child: Icon(
+                                            meal.newFood == null
+                                                ? Icons.add
+                                                : Icons.edit,
+                                            size: 6.w,
+                                            color: Colors.grey[600],
+                                          ),
+                                        ),
+                                      ),
+                                      Space(width: 2.w),
+                                      Expanded(
+                                        child: meal.newFood == null
+                                            ? Text(
+                                                intl.addFood,
+                                                style: typography.caption,
+                                              )
+                                            : Wrap(
+                                                crossAxisAlignment:
+                                                    WrapCrossAlignment.center,
+                                                children: [
+                                                  ...items.map(
+                                                    (i) {
+                                                      final widget;
+                                                      if (i % 2 == 0)
+                                                        widget = Chip(
+                                                          backgroundColor:
+                                                              AppColors
+                                                                  .onPrimary,
+                                                          label: Text(
+                                                            meal
+                                                                    .newFood
+                                                                    ?.foodItems?[
+                                                                        index]
+                                                                    .title ??
+                                                                '',
+                                                            style: typography
+                                                                .caption,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            softWrap: true,
+                                                          ),
+                                                        );
+                                                      else {
+                                                        widget = Icon(
+                                                          Icons.add,
+                                                          size: 6.w,
+                                                        );
+                                                        index++;
+                                                      }
+                                                      return widget;
+                                                    },
+                                                  ).toList(),
+                                                ],
+                                              ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+              return EmptyBox();
+            },
+          );
   }
 
   bool isPastMeal(Meals meal) {
     return meal.startAt.isNotNullAndEmpty &&
-            meal.endAt.isNotNullAndEmpty &&
-            convertTimeOfDayToHour(TimeOfDay.now()) >=
-                convertTimeOfDayToHour(TimeOfDay(
-                    hour: int.parse(meal.endAt!.substring(0, 2)),
-                    minute: int.parse(meal.endAt!.substring(3, 5))));
+        meal.endAt.isNotNullAndEmpty &&
+        convertTimeOfDayToHour(TimeOfDay.now()) >=
+            convertTimeOfDayToHour(TimeOfDay(
+                hour: int.parse(meal.endAt!.substring(0, 2)),
+                minute: int.parse(meal.endAt!.substring(3, 5))));
   }
 
   int convertTimeOfDayToHour(TimeOfDay timeOfDay) {
@@ -291,8 +321,10 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
           onPressed: () {
             bool isValid = true;
             snapshot.requireData?.meals?.forEach((meal) {
-              if (!isPastMeal(meal) && (meal.newFood == null || meal.newFood?.foodItems == null ||
-                  meal.newFood!.foodItems!.length == 0)) {
+              if (!isPastMeal(meal) &&
+                  (meal.newFood == null ||
+                      meal.newFood?.foodItems == null ||
+                      meal.newFood!.foodItems!.length == 0)) {
                 isValid = false;
                 return;
               }
@@ -300,7 +332,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
             if (isValid) {
               bloc.onDailyMenu();
               VxNavigator.of(context).pop();
-            }else {
+            } else {
               navigatorMessengerKey.currentState?.removeCurrentSnackBar();
               navigatorMessengerKey.currentState!.showSnackBar(SnackBar(
                 content: Text(intl.selectFoodForAllMeals),
