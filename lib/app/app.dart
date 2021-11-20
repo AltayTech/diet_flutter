@@ -17,6 +17,8 @@ import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
+import 'package:behandam/screens/psy/calender.dart';
+import 'package:behandam/screens/psy/intro.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
@@ -162,7 +164,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: FoodListPage()),
+    '/': (_, __) => MaterialPage(child: PSYIntroScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -191,6 +193,8 @@ final navigator = VxNavigator(
     Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
     Routes.bodyState: (_, param) => MaterialPage(child: BodyStateScreen(), arguments: param),
     Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
+    Routes.PSYIntro: (_, __) => MaterialPage(child: PSYIntroScreen()),
+    Routes.PSYCalender: (_, __) => MaterialPage(child: PSYCalenderScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

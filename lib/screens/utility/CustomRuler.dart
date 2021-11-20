@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 enum RulerType { Weight, Normal, Pregnancy , Twin }
 
@@ -113,24 +112,7 @@ print(secondVal);
               if (widget.rulerType == RulerType.Weight)
                 SizedBox(width: AppSizes.iconDefault),
               if (widget.rulerType == RulerType.Weight)
-                SfSlider(
-                  stepSize: 10,
-                  stepDuration: SliderStepDuration(days: 20),
-                  min: 0.0,
-                  max: 100.0,
-                  value: _value,
-                  interval: 20,
-                  showTicks: true,
-                  showLabels: true,
-                  // showTooltip: true,
-                  minorTicksPerInterval: 1,
-                  onChanged: (dynamic value){
-                    setState(() {
-                      _value = value;
-                    });
-                  },
-                )
-                // meter('گرم', true, false),
+                meter('گرم', true, false),
             ]),
           ],
         ),

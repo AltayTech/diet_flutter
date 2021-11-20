@@ -27,7 +27,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^0.23.0+1
+  flutter_svg: ^0.22.0
   intl: ^0.17.0
   rxdart: ^0.27.2
   shared_preferences: ^2.0.8
@@ -64,7 +64,8 @@ dependencies:
   flutter_image_compress: ^1.1.0
   image: ^3.0.2
   persian_datetime_picker: ^2.3.0
-  syncfusion_flutter_sliders: ^19.3.54
+  chewie: ^1.2.0
+  video_player: ^2.1.12
 
 dev_dependencies:
   json_serializable: ^6.0.1
@@ -93,6 +94,7 @@ flutter:
     - assets/images/foodlist/
     - assets/images/bill/
     - assets/images/foodlist/share/
+    - assets/images/psychology/
   fonts:
     - family: Iransans
       fonts:

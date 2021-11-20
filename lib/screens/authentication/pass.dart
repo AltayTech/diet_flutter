@@ -1,7 +1,7 @@
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
-import 'package:behandam/modal/modal.dart';
+import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/authentication/login.dart';
 import 'package:behandam/themes/colors.dart';

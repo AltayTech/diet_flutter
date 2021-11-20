@@ -249,5 +249,16 @@
   "appropriateWeightPregnancy": "وزن مناسب برای وضع حمل",
   "untilBeingMom": "تا مادر شدن فاصله داری",
   "getWeight": "باید وزن اضافه کنی",
+  "psy": "مشاوره به اندام",
+  "whoNeedPsySession": "جلسات روانشناسی مناسب کیست؟",
+  "stepsOfPsy": "مراحل دریافت مشاوره به چه شکل است؟",
+  "sessionReserve": "رزرو جلسه روانشناسی",
+  "determineTime": "تعیین زمان مشاوره",
+  "reserve": "رزرو شده",
+  "previousDays": "روزهای قبل",
+  "laterDays": "روزهای بعد",
+  "seeTime": "برای مشاهده زمان های قابل رزرو، یک تاریخ از تقویم بالا انتخاب کنید",
+  "sessionReserve": "رزرو جلسه روانشناسی",
+
   "understand": "متوجه شدم"
 }
