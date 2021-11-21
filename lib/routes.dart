@@ -32,6 +32,7 @@ abstract class Routes {
   static const bodyStatus = '/bodyStatus';
   static const sickness = '/reg/sick/select';
   static const special_sickness = '/reg/special';
+  static const package = '/reg/package';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

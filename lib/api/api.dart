@@ -10,6 +10,7 @@ import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
@@ -175,6 +176,9 @@ abstract class RestClient {
 
   @PATCH("/user-special")
   ImperativeNetworkResult setUserSicknessSpecial(@Body() UserSickness userSickness);
+
+  @GET("/package")
+  NetworkResult<PackageItem> getPackages();
 
 }
 

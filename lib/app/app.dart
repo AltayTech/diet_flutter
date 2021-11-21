@@ -20,6 +20,7 @@ import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/help_type.dart';
+import 'package:behandam/screens/regime/package/package_list.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
@@ -161,7 +162,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: SicknessSpecialScreen()),
+    '/': (_, __) => MaterialPage(child: PackageListScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -189,6 +190,7 @@ final navigator = VxNavigator(
     Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
     Routes.sickness: (_, __) => MaterialPage(child: SicknessScreen()),
     Routes.special_sickness: (_, __) => MaterialPage(child: SicknessSpecialScreen()),
+    Routes.package: (_, __) => MaterialPage(child: PackageListScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),
