@@ -1,9 +1,11 @@
+import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/const_&_model/selected_time.dart';
 import 'package:behandam/data/entity/psy/calender.dart';
 import 'package:behandam/data/entity/psy/plan.dart';
 import 'package:behandam/screens/psy/calender.dart';
 import 'package:behandam/screens/psy/calender_bloc.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:sizer/sizer.dart';
@@ -15,7 +17,7 @@ class CalenderDetails extends StatefulWidget {
   _CalenderDetailsState createState() => _CalenderDetailsState();
 }
 
-class _CalenderDetailsState extends State<CalenderDetails> {
+class _CalenderDetailsState extends ResourcefulState<CalenderDetails> {
   List<String> nDay = [
     'شنبه',
     'یکشنبه',
@@ -108,165 +110,198 @@ class _CalenderDetailsState extends State<CalenderDetails> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final theme = Theme.of(context);
     return SafeArea(
       child: Column(
         children: [
-          SizedBox(
-              height: 40.0,
-              child: Text(
-                  daysLater.formatter.mN == daysLater.addDays(-10).formatter.mN ? daysLater.formatter.mN : daysAgo.formatter.mN + '/' + daysLater.formatter.mN,
-                  style: TextStyle(color: Color(0xff693BD8)))),
-          FutureBuilder(
-              future: calender,
-              // stream: datesBloc.datesStream,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) print(snapshot.error);
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Container(
+            padding: EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                color: Colors.white70),
+            child: Column(
+              children: [
+                SizedBox(
+                    height: 40.0,
+                    child: Text(
+                        daysLater.formatter.mN == daysLater.addDays(-10).formatter.mN
+                            ? daysLater.formatter.mN + ' ' + daysLater.year.toString()
+                            : daysAgo.formatter.mN + ' ' + '/'  + ' ' + daysLater.formatter.mN + ' ' + daysLater.year.toString(),
+                    style: TextStyle(fontSize: 12.sp),)),
+                FutureBuilder(
+                    future: calender,
+                    // stream: datesBloc.datesStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) print(snapshot.error);
 
-                if (disabledClick) return CircularProgressIndicator();
+                      if (disabledClick) return CircularProgressIndicator();
 
-                // if (snapshot.hasData)
-                return SizedBox(
-                  height: 200,
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: GridView.count(
-                        primary: false,
-                        padding: const EdgeInsets.all(20),
-                        crossAxisSpacing: 2,
-                        mainAxisSpacing: 2,
-                        crossAxisCount: 7,
-                        children: [
-                          ...nDay
-                              .map((weekDay) => Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Center(
-                                child: Text(weekDay,
-                                    style: TextStyle(fontSize: 10))),
-                          ))
-                              .toList(),
-                          ...dates!
-                              .map(
-                                (date) => InkWell(
-                              onTap: () => setState(() {
-                                if (date.expertPlanning!.isNotEmpty) {
-                                  giveInfo(date.jDate!);
-                                } else if (date.expertPlanning == null ||
-                                    date.expertPlanning!.isEmpty) {
-                                  flag1 = false;
-                                  flag2 = true;
-                                }
-                              }),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(10),
-                                      // color: item['planning'] != null ? Colors.white : null
-                                    ),
-                                    padding: const EdgeInsets.all(8),
-                                    child: Center(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                              date == null ||
-                                                  date.jDate == null
-                                                  ? ''
-                                                  : date.jDate
-                                                  .toString()
-                                                  .substring(8, 10),
-                                              style: TextStyle(
-                                                  color: Colors.black)),
-                                          SizedBox(height: 4.0),
-                                          // Icon(
-                                          //     Icons.circle,
-                                          //     size: item['date'].length>1 && item['planning'] == null ? 8.0 : 0.0,
-                                          //     color: Color(0xff693BD8))
-                                          // break;
-                                        ],
-                                      ),
+                      // if (snapshot.hasData)
+                      return SizedBox(
+                        height: 200,
+                        child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: GridView.count(
+                              primary: false,
+                              padding: const EdgeInsets.all(20),
+                              crossAxisSpacing: 2,
+                              mainAxisSpacing: 2,
+                              crossAxisCount: 7,
+                              children: [
+                                ...nDay
+                                    .map((weekDay) => Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Center(
+                                      child: Text(weekDay,
+                                          style: TextStyle(fontSize: 10))),
+                                ))
+                                    .toList(),
+                                ...dates!
+                                    .map(
+                                      (date) => InkWell(
+                                    onTap: () => setState(() {
+                                      if (date.expertPlanning!.isNotEmpty) {
+                                        giveInfo(date.jDate!);
+                                      } else if (date.expertPlanning == null ||
+                                          date.expertPlanning!.isEmpty) {
+                                        flag1 = false;
+                                        flag2 = true;
+                                      }
+                                    }),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius.circular(10),
+                                            // color: item['planning'] != null ? Colors.white : null
+                                          ),
+                                          padding: const EdgeInsets.all(8),
+                                          child: Center(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                    date == null ||
+                                                        date.jDate == null
+                                                        ? ''
+                                                        : date.jDate
+                                                        .toString()
+                                                        .substring(8, 10),
+                                                    style: TextStyle(
+                                                        color: Colors.black)),
+                                                SizedBox(height: 4.0),
+                                                // Icon(
+                                                //     Icons.circle,
+                                                //     size: item['date'].length>1 && item['planning'] == null ? 8.0 : 0.0,
+                                                //     color: Color(0xff693BD8))
+                                                // break;
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          )
-                              .toList(),
-                        ]),
-                  ),
-                );
-              }),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextButton.icon(
-                  onPressed: disabledClick
-                      ? null
-                      : () {
-                    // eventSink.add(dateType.later);
-                    getCalender(daysLater);
-                  },
-                  icon: Icon(Icons.navigate_before,color: Colors.white),
-                  label: Text(' روز آینده 10 ',
-                      style: TextStyle(color: Color(0xff693BD8)))),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: TextButton.icon(
-                    onPressed: disabledClickPre
-                        ? null
-                        : () {
-                      // eventSink.add(dateType.previous);
-                      getCalender(daysAgo);
-                    },
-                    icon: Icon(Icons.navigate_before,color: Colors.white),
-                    label: Text(' روز گذشته 10',
-                        style: TextStyle(color: Color(0xff693BD8)))),
-              ),
-            ],
+                                )
+                                    .toList(),
+                              ]),
+                        ),
+                      );
+                    }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      color: AppColors.help,
+                      child: Center(
+                        child: TextButton.icon(
+                            onPressed: disabledClickPre
+                                ? null
+                                : () {
+                              // eventSink.add(dateType.previous);
+                              getCalender(daysAgo);
+                            },
+                            icon: Icon(Icons.arrow_back,color: AppColors.accentColor),
+                            label: Text(intl.previousDays,
+                                style: TextStyle(color: AppColors.accentColor))),
+                      ),
+                    ),
+                    Container(
+                      color: AppColors.help,
+                      child: Center(
+                        child: Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: TextButton.icon(
+                              onPressed: disabledClick
+                                  ? null
+                                  : () {
+                                // eventSink.add(dateType.later);
+                                getCalender(daysLater);
+                              },
+                              icon: Icon(Icons.arrow_back,color: AppColors.accentColor),
+                              label: Text(intl.laterDays,
+                                  style: TextStyle(color: AppColors.accentColor))),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            ],),
           ),
+        ),
           Expanded(
-            child: Container(
-              width: MediaQuery.of(context).size.width - 20,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                  color: Colors.white70),
-              child: Column(
-                children: [
-                  FractionallySizedBox(
-                      widthFactor: 0.25,
-                      child: Container(
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 12.0,
+            child: Column(
+              children: [
+                if (!flag1)
+                  Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: flag2
+                        ? Container(
+                          child: Column(
+                            children: [
+                              Icon(Icons.calendar_today_outlined,color: AppColors.arcColor),
+                              Text(intl.thereIsNotTime)
+                            ],
                           ),
-                          child: Container(
-                              height: 5.0,
-                              decoration: BoxDecoration(
-                                color: theme.dividerColor,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(2.5)),
-                              )))),
-                  if (!flag1)
-                    Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: flag2
-                              ? Text(
-                              "زمانی برای نمایش موجود نیست تاریخ دیگری انتخاب کنید")
-                              : Text(
-                            'برای مشاهده زمان های قابل رزرو یک تاریخ از تقویم بالا انتخاب کنید',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 18.0),
+                        )
+                        : Container(
+                          child: Column(
+                          children: [
+                            Text(intl.seeTime,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+
+                          ],
                           ),
-                        )),
-                  if (flag1) calenderScreen.ADShow(context, advisersPerDay),
-                ],
-              ),
+                          )
+                      )),
+                if (flag1) calenderScreen.ADShow(context, advisersPerDay),
+              ],
             ),
           )
         ],
       ),
     );
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
   }
 }
