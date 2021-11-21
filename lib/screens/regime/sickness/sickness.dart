@@ -47,7 +47,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     super.build(context);
     return SicknessProvider(sicknessBloc,
         child: Scaffold(
-          appBar: Toolbar(titleBar: intl.whichRegime),
+          appBar: Toolbar(titleBar: intl.sickness),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20.0),

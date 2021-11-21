@@ -310,5 +310,7 @@
   "sicknessLabelUser": "دچار چه عارضه یا بیماری هستی؟",
   "sicknessDescriptionUser": "توضیحات بیشتر",
   "sicknessSpecialLabelUser": "آیا دارای شرایط خاصی هستی؟",
+  "sicknessSpecial": "شرایط خاص",
+  "sickness": "عارضه یا بیماری",
   "understand": "متوجه شدم"
 }
