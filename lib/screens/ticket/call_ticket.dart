@@ -107,7 +107,7 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
             );
           } else
             return SpinKitCircle(
-              size: 5.w,
+               size: 7.w,
               color: AppColors.primary,
             );
         },
@@ -150,7 +150,11 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
               ])),
     );
   }
-
+  @override
+  void dispose() {
+    callBloc.dispose();
+    super.dispose();
+  }
   @override
   void onRetryAfterMaintenance() {
     // TODO: implement onRetryAfterMaintenance

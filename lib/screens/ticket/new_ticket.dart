@@ -38,6 +38,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
 
   @override
   void dispose() {
+    bloc.dispose();
     super.dispose();
   }
 

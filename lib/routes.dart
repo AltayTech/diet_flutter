@@ -31,6 +31,7 @@ abstract class Routes {
   static const bodyState = '/reg/size';
   static const bodyStatus = '/bodyStatus';
   static const sickness = '/reg/sick/select';
+  static const special_sickness = '/reg/special';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

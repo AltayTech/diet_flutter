@@ -64,10 +64,6 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
     }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   void didChangeDependencies() {
@@ -75,6 +71,11 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
     args = ModalRoute.of(context)!.settings.arguments;
     bloc.getDetailTicket(args);
     //print('args = > $args');
+  }
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
   }
 
   @override

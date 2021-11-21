@@ -15,7 +15,9 @@ UserSickness _$UserSicknessFromJson(Map<String, dynamic> json) => UserSickness()
       ?.map((e) => CategorySickness.fromJson(e as Map<String, dynamic>))
       .toList()
   ..sicknesses =
-      (json['sicknesses'] as List<dynamic>?)?.map((e) => e as int).toList();
+      (json['sicknesses'] as List<dynamic>?)?.map((e) => e as int).toList()
+  ..specials =
+      (json['specials'] as List<dynamic>?)?.map((e) => e as int).toList();
 
 Map<String, dynamic> _$UserSicknessToJson(UserSickness instance) =>
     <String, dynamic>{
@@ -23,6 +25,7 @@ Map<String, dynamic> _$UserSicknessToJson(UserSickness instance) =>
       'user_sicknesses': instance.userSicknesses,
       'sickness_categories': instance.sickness_categories,
       'sicknesses': instance.sicknesses,
+      'specials': instance.specials,
     };
 
 Sickness _$SicknessFromJson(Map<String, dynamic> json) => Sickness()
@@ -69,4 +72,49 @@ Map<String, dynamic> _$CategorySicknessToJson(CategorySickness instance) =>
       'shadow': instance.shadow,
       'tick': instance.tick,
       'order': instance.order,
+    };
+
+UserSicknessSpecial _$UserSicknessSpecialFromJson(Map<String, dynamic> json) =>
+    UserSicknessSpecial()
+      ..userSpecials = (json['user_specials'] as List<dynamic>?)
+          ?.map((e) => SicknessSpecial.fromJson(e as Map<String, dynamic>))
+          .toList()
+      ..specials = (json['specials'] as List<dynamic>?)
+          ?.map((e) => SicknessSpecial.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+Map<String, dynamic> _$UserSicknessSpecialToJson(
+        UserSicknessSpecial instance) =>
+    <String, dynamic>{
+      'user_specials': instance.userSpecials,
+      'specials': instance.specials,
+    };
+
+SicknessSpecial _$SicknessSpecialFromJson(Map<String, dynamic> json) =>
+    SicknessSpecial()
+      ..id = json['id'] as int?
+      ..title = json['title'] as String?
+      ..parentId = json['parent_id'] as int?
+      ..order = json['order'] as int?
+      ..children = (json['children'] as List<dynamic>?)
+          ?.map((e) => SicknessSpecial.fromJson(e as Map<String, dynamic>))
+          .toList()
+      ..isSelected = json['selected'] as bool? ?? false
+      ..barColor = json['bar_color']
+      ..bgColor = json['bg_color']
+      ..shadow = json['shadow']
+      ..tick = json['tick'];
+
+Map<String, dynamic> _$SicknessSpecialToJson(SicknessSpecial instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'parent_id': instance.parentId,
+      'order': instance.order,
+      'children': instance.children,
+      'selected': instance.isSelected,
+      'bar_color': instance.barColor,
+      'bg_color': instance.bgColor,
+      'shadow': instance.shadow,
+      'tick': instance.tick,
     };

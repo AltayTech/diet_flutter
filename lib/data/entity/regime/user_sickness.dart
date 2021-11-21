@@ -17,6 +17,9 @@ class UserSickness {
   @JsonKey(name: "sicknesses")
   List<int>? sicknesses;
 
+  @JsonKey(name: "specials")
+  List<int>? specials;
+
   UserSickness();
 
   factory UserSickness.fromJson(Map<String, dynamic> json) => _$UserSicknessFromJson(json);
@@ -77,4 +80,56 @@ class CategorySickness {
   factory CategorySickness.fromJson(Map<String, dynamic> json) => _$CategorySicknessFromJson(json);
 
   Map<String, dynamic> toJson() => _$CategorySicknessToJson(this);
+}
+
+@JsonSerializable()
+class UserSicknessSpecial {
+  @JsonKey(name: "user_specials")
+  List<SicknessSpecial>? userSpecials;
+
+  @JsonKey(name: "specials")
+  List<SicknessSpecial>? specials;
+
+  UserSicknessSpecial();
+
+  factory UserSicknessSpecial.fromJson(Map<String, dynamic> json) =>
+      _$UserSicknessSpecialFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserSicknessSpecialToJson(this);
+}
+
+@JsonSerializable()
+class SicknessSpecial {
+  @JsonKey(name: "id")
+  int? id;
+
+  @JsonKey(name: "title")
+  String? title;
+
+  @JsonKey(name: "parent_id")
+  int? parentId;
+
+  @JsonKey(name: "order")
+  int? order;
+
+  @JsonKey(name: "children")
+  List<SicknessSpecial>? children;
+
+  @JsonKey(name: "selected", defaultValue: false)
+  bool? isSelected;
+
+  @JsonKey(name: "bar_color")
+  var barColor;
+  @JsonKey(name: "bg_color")
+  var bgColor;
+  @JsonKey(name: "shadow")
+  var shadow;
+  @JsonKey(name: "tick")
+  var tick;
+
+  SicknessSpecial();
+
+  factory SicknessSpecial.fromJson(Map<String, dynamic> json) => _$SicknessSpecialFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SicknessSpecialToJson(this);
 }

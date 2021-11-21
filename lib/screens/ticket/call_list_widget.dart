@@ -117,7 +117,7 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
                             builder: (context, snapshot) {
                               if (snapshot.data == true) {
                                 return SpinKitCircle(
-                                  size: 5.w,
+                                   size: 7.w,
                                   color: AppColors.primary,
                                 );
                               } else

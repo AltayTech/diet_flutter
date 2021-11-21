@@ -179,7 +179,7 @@ istener(() {
       return Center(
         child: SpinKitCircle(
           color: AppColors.primary,
-          size: 5.w,
+           size: 7.w,
         ),
       );
   }

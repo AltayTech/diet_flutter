@@ -220,7 +220,7 @@ Widget optionUi(IconData icon, String text, int action) {
           Icon(
             icon,
             color: Color.fromARGB(255, 255, 151, 156),
-            size: 5.w,
+             size: 7.w,
           ),
         ],
       ),
