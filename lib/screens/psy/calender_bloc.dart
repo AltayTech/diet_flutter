@@ -12,7 +12,7 @@ import '../../base/repository.dart';
 class RegimeBloc{
   RegimeBloc(){
     _waiting.value = false;
-    regimeTypeMethod();
+    calenderMethod();
   }
 
   final _repository = Repository.getInstance();
@@ -35,49 +35,13 @@ class RegimeBloc{
   Stream get navigateToVerify => _navigateToVerify.stream;
   Stream get showServerError => _showServerError.stream;
 
-  void regimeTypeMethod() async {
+  void calenderMethod() async {
     _waiting.value = true;
     _repository.regimeType().then((value) {
       _itemsList.value = value.data!.items!;
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void helpMethod(int id) async {
-    _waiting.value = true;
-    _repository.helpDietType(id).then((value) {
-      _helpers.value = value.data!.helpers!;
-    }).whenComplete(() => _waiting.value = false);
-  }
-
-  void helpBodyState(int id) async {
-    _waiting.value = true;
-    _repository.helpBodyState(id).then((value) {
-      _name = value.data!.name!;
-      _helpers.value = value.data!.helpers!;
-    }).whenComplete(() => _waiting.value = false);
-  }
-
-  void pathMethod(RegimeType dietId) async {
-    _waiting.value = true;
-    _repository.getPath(dietId).then((value) {
-      _path = value.next!;
-      print("path: $_path");
-      // navigator.routeManager.push(Uri.parse('/' + _path),params: dietId);
-    }).whenComplete(() => _waiting.value = false);
-  }
-
-  void sendInfo(BodyState info) async {
-    _repository.sendInfo(info).then((value) {
-      _navigateToVerify.fire(true);
-    });
-  }
-
-  void getStatus(BodyStatus body) async {
-    _waiting.value = true;
-    _repository.getStatus(body).then((value) {
-      _status.value = value.data!;
-    }).whenComplete(() => _waiting.value = false);
-  }
 
   void dispose() {
     _showServerError.close();
