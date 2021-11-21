@@ -1,9 +1,11 @@
 import 'package:behandam/const_&_model/selected_time.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/psy/calender_details.dart';
+import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class PSYCalenderScreen extends StatelessWidget {
   const PSYCalenderScreen({Key? key}) : super(key: key);
@@ -26,7 +28,7 @@ class PSYCalenderScreen extends StatelessWidget {
                   children: [
                     ListTile(
                       leading: info[index].adviserImage == null
-                          ? Icon(AppIcons.dropDown)
+                          ? Icon(Icons.person)
                           : Image.network(
                           'https://debug.behaminplus.ir//helia-service${info[index].adviserImage}'),
                       title: Text(info[index].adviserName!),
@@ -52,7 +54,7 @@ class PSYCalenderScreen extends StatelessWidget {
                         children: [
                           ...info[index].times!.map((item) {
                             return FlatButton(
-                              textColor: AppColors.baseColor,
+                              textColor: Colors.black,
                               onPressed: () {
                                 showModal(context,info[index], item.id);
                               },
@@ -85,7 +87,7 @@ class PSYCalenderScreen extends StatelessWidget {
                 children: [
                   ListTile(
                     leading: info.adviserImage == null
-                        ? Icon(AppIcons.dropDown)
+                        ? Icon(Icons.person)
                         : Image.network(
                         'https://debug.behaminplus.ir//helia-service${info.adviserImage}'),
                     title: Text(info.adviserName!),
@@ -110,7 +112,7 @@ class PSYCalenderScreen extends StatelessWidget {
                     alignment: MainAxisAlignment.start,
                     children: [
                       FlatButton(
-                          textColor: AppColors.baseColor,
+                          textColor: Colors.black,
                           onPressed: () {
                             // Param p = new Param();
                             // p.sessionId = sessionId;
@@ -119,13 +121,14 @@ class PSYCalenderScreen extends StatelessWidget {
                             // p.price = info.price;
                             // p.date = info.date;
                             // ctx.vxNav.push(Uri.parse(Routes.rules), params: p);
-                            ctx.vxNav.push(Uri.parse(Routes.rules),params: {
-                              'sessionId': sessionId,
-                              'packageId': info.packageId,
-                              'name': info.adviserName,
-                              'price': info.price,
-                              'date': info.date,
-                            });
+
+                            // ctx.vxNav.push(Uri.parse(Routes.rules),params: {
+                            //   'sessionId': sessionId,
+                            //   'packageId': info.packageId,
+                            //   'name': info.adviserName,
+                            //   'price': info.price,
+                            //   'date': info.date,
+                            // });
                           },
                           child: Text('همین ساعت را رزرو کن')),
                     ],
@@ -142,15 +145,12 @@ class PSYCalenderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Color(0xffE3EBEF),
-          elevation: 0.0,
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              color: Color(0xff191C32),
-              onPressed: () => Navigator.of(context)
-                ..pop()
-                ..pushNamed("/home"))),
+      appBar:AppBar(
+      backgroundColor: AppColors.redBar,
+      title: Text('تعیین زمان مشاوره'),
+      leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => VxNavigator.of(context).pop())),
       backgroundColor: Color(0xffE3EBEF),
       body: CalenderDetails(),
     );

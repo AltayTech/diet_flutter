@@ -1,4 +1,8 @@
 import 'dart:async';
+import 'package:behandam/data/entity/psy/admin.dart';
+import 'package:behandam/data/entity/psy/calender.dart';
+import 'package:behandam/data/entity/psy/package.dart';
+import 'package:behandam/data/entity/psy/plan.dart';
 import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -9,36 +13,38 @@ import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
 
-class RegimeBloc{
-  RegimeBloc(){
+class CalenderBloc{
+  CalenderBloc(){
     _waiting.value = false;
-    calenderMethod();
   }
 
   final _repository = Repository.getInstance();
 
-  late String _path;
-  late String _name;
+  List<Plan>? _calenderDates;
+  List<Admin>? _calenderAdmins;
+  List<Package>? _calenderPackages;
   final _waiting = BehaviorSubject<bool>();
-  final _itemsList = BehaviorSubject<List<RegimeType>>();
-  final _helpers = BehaviorSubject<List<Help>>();
-  final _status = BehaviorSubject<BodyStatus>();
+  final _calenderData = BehaviorSubject<CalenderOutput>();
   final _navigateToVerify = LiveEvent();
   final _showServerError = LiveEvent();
 
-  String get path => _path;
-  String get name => _name;
-  Stream<BodyStatus> get status => _status.stream;
-  Stream<List<RegimeType>> get itemList => _itemsList.stream;
-  Stream<List<Help>> get helpers => _helpers.stream;
+  List<Plan>? get calenderDates => _calenderDates;
+  List<Admin>? get calenderAdmins => _calenderAdmins;
+  List<Package>? get calenderPackages => _calenderPackages;
+  Stream<CalenderOutput> get calenderData => _calenderData.stream;
   Stream<bool> get waiting => _waiting.stream;
   Stream get navigateToVerify => _navigateToVerify.stream;
   Stream get showServerError => _showServerError.stream;
 
-  void calenderMethod() async {
+  void calenderMethod(String startDate ,String endDate) async {
     _waiting.value = true;
-    _repository.regimeType().then((value) {
-      _itemsList.value = value.data!.items!;
+    _repository.getCalendar(startDate, endDate).then((value) {
+      _calenderData.value = value.data!;
+      print("data: ${_calenderData.value}");
+      _calenderAdmins = value.data!.admins!;
+      _calenderPackages = value.data!.packages!;
+      _calenderDates = value.data!.dates!;
+      print("dates: $_calenderDates");
     }).whenComplete(() => _waiting.value = false);
   }
 
@@ -46,7 +52,6 @@ class RegimeBloc{
   void dispose() {
     _showServerError.close();
     _navigateToVerify.close();
-    _itemsList.close();
     _waiting.close();
   }
 }

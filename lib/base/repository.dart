@@ -115,7 +115,7 @@ abstract class Repository {
 
   NetworkResult<BodyStatus> getStatus(BodyStatus body);
 
-  NetworkResult<CalenderOutput> getDate(BodyStatus body);
+  NetworkResult<CalenderOutput> getCalendar(String? startDate, String? endDate);
 }
 
 class _RepositoryImpl extends Repository {
@@ -400,6 +400,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<BodyStatus> getStatus(BodyStatus body) {
     var response = _apiClient.getStatus(body);
+    return response;
+  }
+
+  @override
+  NetworkResult<CalenderOutput> getCalendar(String? startDate, String? endDate) {
+    var response = _apiClient.getCalendar(startDate, endDate);
     return response;
   }
 

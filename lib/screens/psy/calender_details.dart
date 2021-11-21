@@ -1,9 +1,12 @@
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/const_&_model/selected_time.dart';
 import 'package:behandam/data/entity/psy/calender.dart';
 import 'package:behandam/data/entity/psy/plan.dart';
 import 'package:behandam/screens/psy/calender.dart';
+import 'package:behandam/screens/psy/calender_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:shamsi_date/shamsi_date.dart';
+import 'package:sizer/sizer.dart';
 
 class CalenderDetails extends StatefulWidget {
   const CalenderDetails({Key? key}) : super(key: key);
@@ -32,24 +35,22 @@ class _CalenderDetailsState extends State<CalenderDetails> {
   String? end;
   List<Plan>? dates = [];
   late Future<List<Plan>?> calender;
-  late CalenderOutput calendarData;
   List<SelectedTime>? advisersPerDay = [];
   PSYCalenderScreen calenderScreen = PSYCalenderScreen();
-  // final datesBloc = DatesBloc();
-  // final _eventStreamController = StreamController<dateType>();
-  // StreamSink<dateType> get eventSink => _eventStreamController.sink;
-  // Stream<dateType> get eventStream => _eventStreamController.stream;
+  late CalenderBloc calenderBloc;
 
   @override
   void initState() {
     super.initState();
-    // eventStream.listen((event) {
-    //   if(event == dateType.previous)
-    //    getCalender(daysAgo);
-    //   if(event == dateType.later)
-    //    getCalender(daysLater);
-    // });
+    calenderBloc = CalenderBloc();
     calender = getCalender(Jalali.now());
+    listenBloc();
+  }
+
+  void listenBloc() {
+    calenderBloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
+    });
   }
 
   Future<List<Plan>?> getCalender(Jalali jour) async {
@@ -67,19 +68,15 @@ class _CalenderDetailsState extends State<CalenderDetails> {
     for (int i = 0; i < weekDay - 1; i++) {
       dates?.add(Plan());
     }
-    RestApiClient().client?.getCalendar(start, end).then((value) {
-      calendarData = value;
-      calendarData.admins = calendarData.data!.admins;
-      calendarData.packages = calendarData.data!.packages;
-      calendarData.dates = calendarData.data!.dates;
-      dates?.addAll(calendarData.dates!);
-      setState(() {
-        disabledClick = false;
-        if (jour != Jalali.now()) disabledClickPre = false;
-      });
-      return dates;
-    }).catchError((error) {});
+    calenderBloc.calenderMethod(start!, end!);
+    dates?.addAll(calenderBloc.calenderDates!);
+    // print(dates);
+    setState(() {
+      disabledClick = false;
+      if (jour != Jalali.now()) disabledClickPre = false;
+    });
     return dates;
+
   }
 
   giveInfo(String date) {
@@ -92,9 +89,9 @@ class _CalenderDetailsState extends State<CalenderDetails> {
       flag1 = false;
     }
     for (var plan in expertPlannings) {
-      var admin = calendarData.admins!
+      var admin = calenderBloc.calenderAdmins!
           .firstWhere((admin) => admin.adminId == plan.adminId);
-      var package = calendarData.packages!
+      var package = calenderBloc.calenderPackages!
           .firstWhere((package) => admin.packageId == package.id);
       advisersPerDay!.add(SelectedTime(
         adviserId: plan.id,
@@ -111,7 +108,6 @@ class _CalenderDetailsState extends State<CalenderDetails> {
 
   @override
   Widget build(BuildContext context) {
-    // final dateClock = BlocProvider.of<DatesBloc>(context);
     final theme = Theme.of(context);
     return SafeArea(
       child: Column(
