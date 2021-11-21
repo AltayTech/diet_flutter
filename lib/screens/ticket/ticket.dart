@@ -9,6 +9,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -36,7 +37,11 @@ class _TicketState extends ResourcefulState<Ticket> {
     ticketBloc = TicketBloc();
     ticketBloc.getTickets();
   }
-
+  @override
+  void dispose() {
+    ticketBloc.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -66,7 +71,7 @@ class _TicketState extends ResourcefulState<Ticket> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        SizedBox(height: 3.h),
+                        Space(height: 3.h),
                         GestureDetector(
                           onTap: () =>
                               VxNavigator.of(context).push(Uri.parse(Routes.newTicketMessage)),

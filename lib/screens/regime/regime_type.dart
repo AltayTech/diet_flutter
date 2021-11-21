@@ -160,13 +160,18 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
             check = false;
             return Center(
                 child: SpinKitCircle(
-              size: 5.w,
+               size: 7.w,
               color: AppColors.primary,
             ));
           }
         });
   }
 
+  @override
+  void dispose() {
+    regimeBloc.dispose();
+    super.dispose();
+  }
   @override
   void onRetryAfterMaintenance() {
     // TODO: implement onRetryAfterMaintenance

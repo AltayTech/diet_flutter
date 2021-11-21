@@ -1,31 +1,29 @@
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/app/provider.dart';
-import 'package:behandam/screens/authentication/register.dart';
-import 'package:behandam/screens/authentication/verify.dart';
-import 'package:behandam/screens/calendar/calendar.dart';
-import 'package:behandam/data/entity/regime/user_sickness.dart';
-import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/daily_menu/daily_menu.dart';
-import 'package:behandam/screens/daily_menu/list_food.dart';
-import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/authentication/code_reset.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
+import 'package:behandam/screens/calendar/calendar.dart';
+import 'package:behandam/screens/daily_menu/daily_menu.dart';
+import 'package:behandam/screens/daily_menu/list_food.dart';
+import 'package:behandam/screens/fast/fast_pattern.dart';
+import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
 import 'package:behandam/screens/regime/body-status.dart';
+import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
+import 'package:behandam/screens/regime/sickness/sickness_special.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
-import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/screens/ticket/ticket_details.dart';
@@ -95,8 +93,7 @@ class _AppState extends State<App> {
                     primary: AppColors.primary,
                     onPrimary: AppColors.onPrimary,
                     onSurface: AppColors.onSurface,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: AppBorderRadius.borderRadiusMedium),
+                    shape: RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
                   ),
                 ),
                 primaryColor: AppColors.primary,
@@ -106,8 +103,7 @@ class _AppState extends State<App> {
                 appBarTheme: AppBarTheme(
                   backgroundColor: AppColors.primary,
                 ),
-                colorScheme: ColorScheme.fromSwatch(
-                        primarySwatch: AppMaterialColors.primary)
+                colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
                     .copyWith(secondary: AppColors.primary),
               ),
               locale: locale,
@@ -147,10 +143,8 @@ class _AppState extends State<App> {
   /// resolve locale when device locale is changed
   Locale resolveLocale(Locale? locale, Iterable<Locale> supportedLocales) {
     for (var supportedLocale in supportedLocales) {
-      final isLanguageEqual =
-          supportedLocale.languageCode == locale?.languageCode;
-      final isCountryCodeEqual =
-          supportedLocale.countryCode == locale?.countryCode;
+      final isLanguageEqual = supportedLocale.languageCode == locale?.languageCode;
+      final isCountryCodeEqual = supportedLocale.countryCode == locale?.countryCode;
       if (isLanguageEqual && isCountryCodeEqual) {
         return supportedLocale;
       }
@@ -167,21 +161,17 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: SicknessScreen()),
+    '/': (_, __) => MaterialPage(child: SicknessSpecialScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
-    Routes.pass: (_, param) =>
-        MaterialPage(child: PasswordScreen(), arguments: param),
-    Routes.verify: (_, param) =>
-        MaterialPage(child: VerifyScreen(), arguments: param),
-    Routes.register: (_, param) =>
-        MaterialPage(child: RegisterScreen(), arguments: param),
+    Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(), arguments: param),
+    Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(), arguments: param),
+    Routes.register: (_, param) => MaterialPage(child: RegisterScreen(), arguments: param),
     Routes.listView: (_, __) => MaterialPage(child: FoodListPage()),
     Routes.dailyMenu: (_, param) => MaterialPage(child: DailyMenuPage(), arguments: param),
     Routes.fastPatterns: (_, __) => MaterialPage(child: FastPatternPage()),
-    Routes.listFood: (_, param) =>
-        MaterialPage(child: ListFoodPage(), arguments: param),
+    Routes.listFood: (_, param) => MaterialPage(child: ListFoodPage(), arguments: param),
     Routes.inbox: (_, __) => MaterialPage(child: InboxList()),
     Routes.showInbox: (_, param) => MaterialPage(child: ShowInboxItem(), arguments: param),
     Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
@@ -190,14 +180,15 @@ final navigator = VxNavigator(
     Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(), arguments: param),
     Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
     Routes.newTicketMessage: (_, __) => MaterialPage(child: NewTicket()),
-    RegExp(r"\/ticket\/details"): (uri, __) =>
-        MaterialPage(child: TicketDetails(), arguments: int.parse(uri.queryParameters['ticketId'].toString())),
+    RegExp(r"\/ticket\/details"): (uri, __) => MaterialPage(
+        child: TicketDetails(), arguments: int.parse(uri.queryParameters['ticketId'].toString())),
     Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
     Routes.calendar: (_, __) => MaterialPage(child: CalendarPage()),
     Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
     Routes.bodyState: (_, param) => MaterialPage(child: BodyStateScreen(), arguments: param),
     Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
     Routes.sickness: (_, __) => MaterialPage(child: SicknessScreen()),
+    Routes.special_sickness: (_, __) => MaterialPage(child: SicknessSpecialScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

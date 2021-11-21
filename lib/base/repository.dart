@@ -24,7 +24,6 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:logging/logging.dart';
 
 import '../api/api.dart';
 import '../data/entity/auth/country_code.dart';
@@ -122,6 +121,10 @@ abstract class Repository {
   NetworkResult<UserSickness> getSickness();
 
   ImperativeNetworkResult sendSickness(UserSickness sickness);
+
+  NetworkResult<UserSicknessSpecial> getSicknessSpecial();
+
+  ImperativeNetworkResult sendSicknessSpecial(UserSicknessSpecial sickness);
 }
 
 class _RepositoryImpl extends Repository {
@@ -313,13 +316,14 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<CalendarData> calendar(String start, String end) async{
+  NetworkResult<CalendarData> calendar(String start, String end) async {
     var response;
-    try{
+    try {
       response = await _apiClient.calendar(start, end);
-      debugPrint('calendar ${response.requireData.terms[0].visits?.length} / ${response.requireData.terms[0].menus?.length}');
+      debugPrint(
+          'calendar ${response.requireData.terms[0].visits?.length} / ${response.requireData.terms[0].menus?.length}');
       return response;
-    }catch(e) {
+    } catch (e) {
       debugPrint('error $e');
     }
     return response;
@@ -451,6 +455,31 @@ class _RepositoryImpl extends Repository {
     userSickness.sicknesses = selectedItems;
     userSickness.sicknessNote = sickness.sicknessNote;
     var response = _apiClient.setUserSickness(userSickness);
+    return response;
+  }
+
+  @override
+  NetworkResult<UserSicknessSpecial> getSicknessSpecial() {
+    var response = _apiClient.getUserSicknessSpecial();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendSicknessSpecial(UserSicknessSpecial sickness) {
+    List<int> selectedItems = [];
+    UserSickness userSickness = new UserSickness();
+    sickness.specials!.forEach((sicknessItem) {
+      if (sicknessItem.isSelected!) {
+        if (sicknessItem.children!.length > 0) {
+          selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!).id!);
+        } else {
+          selectedItems.add(sicknessItem.id!);
+        }
+      }
+    });
+
+    userSickness.specials = selectedItems;
+    var response = _apiClient.setUserSicknessSpecial(userSickness);
     return response;
   }
 }

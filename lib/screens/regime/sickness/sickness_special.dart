@@ -4,7 +4,6 @@ import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
 import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
-import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/bottom_triangle.dart';
@@ -16,14 +15,15 @@ import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class SicknessScreen extends StatefulWidget {
-  const SicknessScreen({Key? key}) : super(key: key);
+class SicknessSpecialScreen extends StatefulWidget {
+  const SicknessSpecialScreen({Key? key}) : super(key: key);
 
   @override
-  _SicknessScreenState createState() => _SicknessScreenState();
+  _SicknessSpecialScreenState createState() => _SicknessSpecialScreenState();
 }
 
-class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements ItemClick {
+class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen>
+    implements ItemClick {
   late SicknessBloc sicknessBloc;
 
   @override
@@ -31,7 +31,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     // TODO: implement initState
     super.initState();
     sicknessBloc = SicknessBloc();
-    sicknessBloc.getSickness();
+    sicknessBloc.getSicknessSpecial();
     listenBloc();
   }
 
@@ -62,34 +62,26 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                             SizedBox(height: 4.h),
                             Center(
                               child: Text(
-                                intl.sicknessLabelUser,
+                                intl.sicknessSpecialLabelUser,
                                 textDirection: TextDirection.rtl,
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ),
                             Space(height: 2.h),
-                            if (sicknessBloc.userSickness != null)
-                              ...sicknessBloc.userSickness!.sickness_categories!.map((element) {
-                                return _sicknessPartBox(element);
+                            if (sicknessBloc.userSicknessSpecial != null)
+                              ...sicknessBloc.userSicknessSpecial!.specials!.map((element) {
+                                return Container(
+                                    height: 9.h,
+                                    child: _itemWithTick(
+                                      child: illItem(element),
+                                      sickness: element,
+                                    ));
                               }),
-                            Space(height: 2.h),
-                            textInput(
-                                height: 20.h,
-                                validation: () {},
-                                label: intl.sicknessDescriptionUser,
-                                value: sicknessBloc.userSickness!.sicknessNote,
-                                onChanged: (value) {
-                                  sicknessBloc.userSickness!.sicknessNote = value;
-                                },
-                                enable: true,
-                                maxLine: true,
-                                ctx: context,
-                                textDirection: context.textDirectionOfLocale),
                             Space(height: 2.h),
                             MaterialButton(
                               onPressed: () {
                                 DialogUtils.showDialogProgress(context: context);
-                                sicknessBloc.sendSickness();
+                                sicknessBloc.sendSicknessSpecial();
                               },
                               child: Text(intl.confirmContinue),
                             )
@@ -97,7 +89,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                         );
                       else {
                         return SpinKitCircle(
-                           size: 7.w,
+                          size: 7.w,
                           color: AppColors.primary,
                         );
                       }
@@ -108,101 +100,36 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
         ));
   }
 
-  Widget _sicknessPartBox(CategorySickness sickness) {
-    var index = sicknessBloc.userSickness!.sickness_categories
-        ?.indexWhere((element) => element == sickness);
-    return sickness.sicknesses != null && sickness.sicknesses!.length > 0
-        ? Column(
-            children: [
-              _illBox(
-                sickness,
-                Color.fromRGBO(230, 244, 254, 1),
-              ),
-              if (index != sicknessBloc.userSickness!.sickness_categories!.length - 1)
-                SizedBox(height: 0.5.h),
-              if (index != sicknessBloc.userSickness!.sickness_categories!.length - 1)
-                Divider(height: 1.h),
-              if (index != sicknessBloc.userSickness!.sickness_categories!.length - 1)
-                SizedBox(height: 1.h),
-            ],
-          )
-        : Container();
-  }
-
-  Widget _illBox(CategorySickness categorySickness, Color iconBg) {
-    return Column(
-      textDirection: context.textDirectionOfLocale,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _titleBox(categorySickness.title!, iconBg),
-        Space(height: 1.h),
-        if (categorySickness.sicknesses != null && categorySickness.sicknesses!.length > 0)
-          Container(
-            height: 9.h,
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (_, index) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      if (index == 0) Space(width: 5.w),
-                      _itemWithTick(
-                        child: illItem(categorySickness.sicknesses![index], categorySickness),
-                        sickness: categorySickness.sicknesses![index],
-                        current: categorySickness,
-                        index: index,
-                      ),
-                      if (index == categorySickness.sicknesses!.length - 1) Space(width: 5.w),
-                    ],
-                  );
-                },
-                itemCount: categorySickness.sicknesses!.length,
-                separatorBuilder: (ctx, index) => Space(
-                  width: 0.02.w,
-                ),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget illItem(CategorySickness current, CategorySickness categorySickness) {
+  Widget illItem(SicknessSpecial sicknessSpecial) {
     String? title;
-    if (current.isSelected! && current.children!.length > 0) {
-      current.children?.forEach((element) {
-        if (element.isSelected!) title = current.title! + " > " + element.title!;
+    if (sicknessSpecial.isSelected! && sicknessSpecial.children!.length > 0) {
+      sicknessSpecial.children?.forEach((element) {
+        if (element.isSelected!) title = sicknessSpecial.title! + " > " + element.title!;
       });
     } else
-      title = current.title!;
+      title = sicknessSpecial.title!;
     return InkWell(
       onTap: () {
-        print('InkWell');
-        if (current.isSelected!) {
+        if (sicknessSpecial.isSelected!) {
           setState(() {
-            current.children?.forEach((element) {
+            sicknessSpecial.children?.forEach((element) {
               element.isSelected = false;
             });
-            current.isSelected = false;
+            sicknessSpecial.isSelected = false;
           });
         } else {
-          if (current.children?.length == 0) {
-            print('children');
+          if (sicknessSpecial.children?.length == 0) {
             setState(() {
-              current.isSelected = true;
+              sicknessSpecial.isSelected = true;
             });
           } else {
-            print('dialog');
             DialogUtils.showDialogPage(
                 context: context,
                 child: SicknessDialog(
-                  items: current,
+                  items: null,
                   itemClick: this,
-                  sicknessType: SicknessType.NORMAL,
+                  sicknessType: SicknessType.SPECIAL,
+                  sicknessSpecial: sicknessSpecial,
                 ));
           }
         }
@@ -212,16 +139,16 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
           ClipRRect(
             borderRadius: BorderRadius.circular(25),
             child: Container(
-              color:
-                  current.isSelected! ? categorySickness.bgColor : Color.fromRGBO(246, 246, 246, 1),
-              // width: double.infinity,
-              // height: SizeConfig.blockSizeVertical * 5,
+              color: sicknessSpecial.isSelected!
+                  ? sicknessSpecial.bgColor
+                  : Color.fromRGBO(246, 246, 246, 1),
               child: ClipPath(
                 clipper: BottomTriangle(),
                 child: Container(
                   // width: double.infinity,
                   // height: double.infinity,
-                  color: current.isSelected! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
+                  color:
+                      sicknessSpecial.isSelected! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
                   padding: EdgeInsets.symmetric(
                     horizontal: 1.w,
                     vertical: 3.h,
@@ -263,22 +190,10 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     );
   }
 
-  Widget _titleBox(String title, Color iconBg) {
-    return Padding(
-      padding: EdgeInsets.only(left: 5.w, right: 5.w),
-      child: Text(
-        title,
-        textDirection: context.textDirectionOfLocale,
-        style: Theme.of(context).textTheme.headline6,
-      ),
-    );
-  }
-
-  Widget _itemWithTick(
-      {required Widget child,
-      required CategorySickness current,
-      dynamic sickness,
-      required int index}) {
+  Widget _itemWithTick({
+    required Widget child,
+    dynamic sickness,
+  }) {
     return Container(
       constraints: BoxConstraints(minWidth: 30.w),
       child: Stack(
@@ -295,7 +210,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                   boxShadow: sickness.isSelected!
                       ? [
                           BoxShadow(
-                            color: current.shadow,
+                            color: sickness.shadow,
                             // color: current['shadow'],
                             blurRadius: 3.0,
                             spreadRadius: 2.0,
@@ -316,7 +231,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                         width: 3.w,
                         height: 3.w,
                         color: sickness.isSelected!
-                            ? current.tick
+                            ? sickness.tick
                             : Color.fromARGB(255, 217, 217, 217),
                       ),
                     ),
@@ -335,7 +250,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                 boxShadow: sickness.isSelected!
                     ? [
                         BoxShadow(
-                          color: current.shadow,
+                          color: sickness.shadow,
                           // color: current['shadow'],
                           blurRadius: 3.0,
                           spreadRadius: 2.0,
@@ -347,7 +262,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             ),
           ),
           Positioned(
-            bottom: 4,
+            bottom: 0,
             right: 0,
             left: 0,
             child: Center(
@@ -365,9 +280,9 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                       DialogUtils.showDialogPage(
                           context: context,
                           child: SicknessDialog(
-                            items: current,
+                            sicknessSpecial: sickness,
                             itemClick: this,
-                            sicknessType: SicknessType.NORMAL,
+                            sicknessType: SicknessType.SPECIAL,
                           ));
                     }
                   }
@@ -385,7 +300,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                         width: 3.w,
                         height: 3.w,
                         color: sickness.isSelected!
-                            ? current.tick
+                            ? sickness.tick
                             : Color.fromARGB(255, 217, 217, 217),
                       ),
                     ),

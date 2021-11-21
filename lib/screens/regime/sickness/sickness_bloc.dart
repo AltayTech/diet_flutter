@@ -43,6 +43,7 @@ class SicknessBloc {
 
   late String _path;
   late UserSickness _userSickness;
+  late UserSicknessSpecial _userSicknessSpecial;
   final _waiting = BehaviorSubject<bool>();
 
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
@@ -55,9 +56,9 @@ class SicknessBloc {
 
   UserSickness? get userSickness => _userSickness;
 
-  Stream<BodyStatus> get status => _status.stream;
+  UserSicknessSpecial? get userSicknessSpecial => _userSicknessSpecial;
 
-  // Stream<UserSickness> get userSickness => _userSickness.stream;
+  Stream<BodyStatus> get status => _status.stream;
 
   Stream<List<Help>> get helpers => _helpers.stream;
 
@@ -108,18 +109,51 @@ class SicknessBloc {
     }).whenComplete(() => _waiting.value = false);
   }
 
+  void getSicknessSpecial() async {
+    _waiting.value = true;
+    _repository.getSicknessSpecial().then((value) {
+      _userSicknessSpecial = value.data!;
+      int index = 0;
+      if (value.data != null) {
+        _userSicknessSpecial.specials?.forEach((sickness) {
+          sickness.barColor = _illColor[index]['barColor'];
+          sickness.bgColor = _illColor[index]['bgColor'];
+          sickness.tick = _illColor[index]['tick'];
+          sickness.shadow = _illColor[index]['shadow'];
+          // print('Start sicknesses sick ${sickness.toJson()}');
+          _userSicknessSpecial.userSpecials?.forEach((user) {
+            //print('user sicknesses sick ${sickness.toJson()}');
+            if (user.id == sickness.id) {
+              sickness.isSelected = true;
+            }
+          });
+          sickness.children?.forEach((child) {
+            _userSicknessSpecial.userSpecials?.forEach((user) {
+              if (user.id == child.id) {
+                sickness.isSelected = true;
+                child.isSelected = true;
+              }
+            });
+          });
+        });
+        if (index == _illColor.length - 1)
+          index = 0;
+        else
+          index += 1;
+      }
+    }).whenComplete(() => _waiting.value = false);
+  }
+
   void sendSickness() {
     _repository.sendSickness(userSickness!).then((value) {
       _navigateTo.fireMessage('/${value.next}');
-    }).whenComplete(() {
-    });
+    }).whenComplete(() {});
   }
 
-  void helpMethod(int id) async {
-    _waiting.value = true;
-    _repository.helpDietType(id).then((value) {
-      _helpers.value = value.data!.helpers!;
-    }).whenComplete(() => _waiting.value = false);
+  void sendSicknessSpecial() {
+    _repository.sendSicknessSpecial(userSicknessSpecial!).then((value) {
+      _navigateTo.fireMessage('/${value.next}');
+    }).whenComplete(() {});
   }
 
   void dispose() {
