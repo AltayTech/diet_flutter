@@ -77,7 +77,7 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
                     Divider(
                       height: 2.h,
                       thickness: 0.5,
-                      color: AppColors.lableColor,
+                      color: AppColors.labelColor,
                     ),
                     Space(height: 2.h),
                     calendar(),
@@ -211,7 +211,7 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
               .map((day) => Text(
                     day,
                     style: typography.caption?.apply(
-                      color: AppColors.lableColor,
+                      color: AppColors.labelColor,
                     ),
                     textAlign: TextAlign.center,
                   ))
@@ -785,7 +785,7 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
                         ? intl.newList
                         : intl.newTerm,
                 style: typography.caption?.apply(
-                  color: AppColors.lableColor,
+                  color: AppColors.labelColor,
                 ),
                 textAlign: TextAlign.center,
               ),

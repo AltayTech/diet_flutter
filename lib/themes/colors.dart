@@ -22,16 +22,17 @@ class AppColors {
   static late Color arcColor;
   static late Color btnColor;
   static late Color onScaffold;
-  static late Color lableColor;
-  static late Color lableTab;
+  static late Color labelColor;
+  static late Color labelTab;
+  static late Color warning = Colors.orange.shade100;
   static const penColor = Color(0xff8A8A8A);
   static const redBar = Color(0xffFF5757);
   static const looseType = Color(0xffF6DED5);
   static const stableType = Color(0xffD5E9E3);
   static const gainType = Color(0xffE6CEEF);
-  static const diabetType = Color(0xffF7EBC7);
+  static const diabeticType = Color(0xffF7EBC7);
   static const pregnantType = Color(0xffF3D1D9);
-  static const ketoType = Color.fromARGB(255, 246, 222, 213);
+  static const ketogenicType = Color.fromARGB(255, 246, 222, 213);
   static const notricaType = Color.fromARGB(255, 213, 233, 227);
   static const sportType = Color.fromARGB(255, 230, 206, 239);
   static const help = Color(0xffFFE7E7);
@@ -44,7 +45,7 @@ class AppColors {
   static late Color statusTicketGlobalIssue;
   static late Color background;
   static late Color colorTextDepartmentTicket;
-  static late Color colorselectDepartmentTicket;
+  static late Color colorSelectDepartmentTicket;
   static const grey = Color(0xffF5F5F5);
   static const purpleRuler = Color(0xff927DFC);
   static const pinkRuler = Color(0xffEC4CA2);
@@ -69,8 +70,8 @@ class AppColors {
         shadowColor=Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
-        lableColor = Color(0xf48e8e8e);
-        lableTab = Color(0xffffffff);
+        labelColor = Color(0xf48e8e8e);
+        labelTab = Color(0xffffffff);
         statusTicketClose =Colors.grey[700]!;
         statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
         statusTicketPendingAdminResponse = Colors.lightBlue;
@@ -79,7 +80,7 @@ class AppColors {
         statusTicketGlobalIssue = Color(0xFFF3543C);
         background = Color.fromARGB(255, 245, 245, 245);
         colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
-        colorselectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
+        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
         break;
       case ThemeAppColor.BLUE:
         primary = Color(0xFF0D83DD);
@@ -95,8 +96,8 @@ class AppColors {
         shadowColor=Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
-        lableColor = Color(0xf48e8e8e);
-        lableTab = Color(0xffffffff);
+        labelColor = Color(0xf48e8e8e);
+        labelTab = Color(0xffffffff);
         statusTicketClose = primaryVariantLight;
         statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
         statusTicketPendingAdminResponse = Colors.lightBlue;
@@ -116,8 +117,8 @@ class AppColors {
         shadowColor=Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
-        lableColor = Color(0xf48e8e8e);
-        lableTab = Color(0xffffffff);
+        labelColor = Color(0xf48e8e8e);
+        labelTab = Color(0xffffffff);
         statusTicketClose = primaryVariantLight;
         statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
         statusTicketPendingAdminResponse = Colors.lightBlue;
@@ -137,8 +138,8 @@ class AppColors {
         shadowColor=Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
-        lableColor = Color(0xf48e8e8e);
-        lableTab = Color(0xffffffff);
+        labelColor = Color(0xf48e8e8e);
+        labelTab = Color(0xffffffff);
         statusTicketClose = primaryVariantLight;
         statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
         statusTicketPendingAdminResponse = Colors.lightBlue;

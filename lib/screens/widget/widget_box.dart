@@ -337,7 +337,7 @@ Widget textInput(
         enabled: enable,
         decoration: inputDecoration.copyWith(
           labelText: label,
-          labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.lableColor),
+          labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.labelColor),
         ),
         keyboardType: textInputType,
         onChanged: (val) => onChanged(val),

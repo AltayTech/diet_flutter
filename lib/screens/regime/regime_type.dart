@@ -40,9 +40,9 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
       Utils.getSnackbarMessage(context, event);
     });
 
-    regimeBloc.navigateToVerify.listen((event) {
+    regimeBloc.navigateToVerify.listen((regime) {
       Navigator.of(context).pop();
-      context.vxNav.push(Uri.parse('/' + regimeBloc.path), params: event);
+      context.vxNav.push(Uri.parse('/' + regimeBloc.path), params: regime);
     });
   }
 

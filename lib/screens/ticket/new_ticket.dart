@@ -231,7 +231,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.colorselectDepartmentTicket,
+                    color: AppColors.colorSelectDepartmentTicket,
                     blurRadius: 3.0,
                     spreadRadius: 2.0,
                   ),
@@ -280,7 +280,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                       height: 4.w,
                       color: support.isSelected
                           ? AppColors.primaryVariantLight
-                          : AppColors.colorselectDepartmentTicket,
+                          : AppColors.colorSelectDepartmentTicket,
                     ),
                   ),
                 ),
@@ -306,7 +306,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
               borderRadius: BorderRadius.circular(30),
               child: Container(
                 color:
-                    support.isSelected ? AppColors.colorselectDepartmentTicket : Colors.grey[100],
+                    support.isSelected ? AppColors.colorSelectDepartmentTicket : Colors.grey[100],
                 width: double.infinity,
                 height: double.infinity,
                 child: ClipPath(

@@ -11,7 +11,7 @@ RegimeType _$RegimeTypeFromJson(Map<String, dynamic> json) => RegimeType()
   ..items = (json['items'] as List<dynamic>?)
       ?.map((e) => RegimeType.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..alias = json['alias'] as String?
+  ..alias = $enumDecodeNullable(_$RegimeAliasEnumMap, json['alias'])
   ..caloriesCount = json['calories_count'] as int?
   ..isActive = json['is_active'] as String?
   ..id = json['id'] as String?
@@ -23,7 +23,7 @@ Map<String, dynamic> _$RegimeTypeToJson(RegimeType instance) =>
     <String, dynamic>{
       'count': instance.count,
       'items': instance.items,
-      'alias': instance.alias,
+      'alias': _$RegimeAliasEnumMap[instance.alias],
       'calories_count': instance.caloriesCount,
       'is_active': instance.isActive,
       'id': instance.id,
@@ -31,3 +31,14 @@ Map<String, dynamic> _$RegimeTypeToJson(RegimeType instance) =>
       'title': instance.title,
       'diet_type_id': instance.dietId,
     };
+
+const _$RegimeAliasEnumMap = {
+  RegimeAlias.Pregnansy: 'PREGNANCY',
+  RegimeAlias.WeightLoss: 'WEIGHT_LOSS',
+  RegimeAlias.WeightGain: 'WEIGHT_GAIN',
+  RegimeAlias.Stabilization: 'STABILIZATION',
+  RegimeAlias.Diabeties: 'DIABETES',
+  RegimeAlias.Ketogenic: 'KETOGENIC',
+  RegimeAlias.Sport: 'SPORTS',
+  RegimeAlias.Notrica: 'NOTRICA',
+};

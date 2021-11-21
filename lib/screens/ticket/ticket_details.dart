@@ -233,7 +233,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                               .textTheme
                                                               .overline!
                                                               .copyWith(
-                                                                  color: AppColors.lableColor),
+                                                                  color: AppColors.labelColor),
                                                           textAlign: TextAlign.end,
                                                         ),
                                                       ),
@@ -363,7 +363,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                                 .textTheme
                                                                 .overline!
                                                                 .copyWith(
-                                                                    color: AppColors.lableColor),
+                                                                    color: AppColors.labelColor),
                                                             textAlign: TextAlign.start,
                                                           ),
                                                         ),
@@ -483,7 +483,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                                 .textTheme
                                                                 .overline!
                                                                 .copyWith(
-                                                                    color: AppColors.lableColor),
+                                                                    color: AppColors.labelColor),
                                                             textAlign: TextAlign.end,
                                                           ),
                                                         ),
@@ -550,7 +550,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                               .textTheme
                                                               .overline!
                                                               .copyWith(
-                                                                  color: AppColors.lableColor),
+                                                                  color: AppColors.labelColor),
                                                           textAlign: TextAlign.end,
                                                         ),
                                                       ),
@@ -596,7 +596,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                               .textTheme
                                                               .overline!
                                                               .copyWith(
-                                                                  color: AppColors.lableColor),
+                                                                  color: AppColors.labelColor),
                                                           textAlign: TextAlign.start,
                                                         ),
                                                       ),
@@ -671,7 +671,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                               .textTheme
                                                               .overline!
                                                               .copyWith(
-                                                                  color: AppColors.lableColor),
+                                                                  color: AppColors.labelColor),
                                                           textAlign: TextAlign.left,
                                                         ),
                                                       ),
@@ -852,7 +852,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                 hintStyle: Theme.of(context)
                                                     .textTheme
                                                     .caption!
-                                                    .copyWith(color: AppColors.lableColor)),
+                                                    .copyWith(color: AppColors.labelColor)),
                                           ),
                                           padding: EdgeInsets.only(right: 2.w, left: 2.w),
                                         ),
@@ -899,7 +899,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                     Line(
                                                       width: 80.w,
                                                       height: 0.1.h,
-                                                      color: AppColors.lableColor,
+                                                      color: AppColors.labelColor,
                                                     ),
                                                     MaterialButton(
                                                         onPressed: () {
@@ -923,7 +923,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                             'assets/images/ticket/attach.svg',
                                             width: 6.w,
                                             height: 6.w,
-                                            color: AppColors.lableColor,
+                                            color: AppColors.labelColor,
                                           ),
                                         ),
                                       ),
@@ -1133,7 +1133,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.colorselectDepartmentTicket,
+                    color: AppColors.colorSelectDepartmentTicket,
                     blurRadius: 3.0,
                     spreadRadius: 2.0,
                   ),
@@ -1182,7 +1182,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                       height: 4.w,
                       color: support.isSelected
                           ? AppColors.primaryVariantLight
-                          : AppColors.colorselectDepartmentTicket,
+                          : AppColors.colorSelectDepartmentTicket,
                     ),
                   ),
                 ),
@@ -1208,7 +1208,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
               borderRadius: BorderRadius.circular(30),
               child: Container(
                 color:
-                    support.isSelected ? AppColors.colorselectDepartmentTicket : Colors.grey[100],
+                    support.isSelected ? AppColors.colorSelectDepartmentTicket : Colors.grey[100],
                 width: double.infinity,
                 height: double.infinity,
                 child: ClipPath(

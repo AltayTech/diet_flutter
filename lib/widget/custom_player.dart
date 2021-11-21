@@ -159,7 +159,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
                       ? _duration?.toString().split('.').first ??
                       widget.timeRecord!
                       : "",
-                  style: Theme.of(context).textTheme.caption!.copyWith(color: AppColors.lableColor),
+                  style: Theme.of(context).textTheme.caption!.copyWith(color: AppColors.labelColor),
                 ),
               ),
               Container(
@@ -184,7 +184,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
                 left: 15,
                 child: Text(
                   _position?.toString().split('.').first ?? '00:00',
-                  style: Theme.of(context).textTheme.caption!.copyWith(color: AppColors.lableColor),
+                  style: Theme.of(context).textTheme.caption!.copyWith(color: AppColors.labelColor),
                 ),
               ),
 

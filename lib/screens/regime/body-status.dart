@@ -27,9 +27,9 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     regimeBloc = RegimeBloc();
+    // regimeBloc.regimeTypeMethod();
     listenBloc();
   }
 

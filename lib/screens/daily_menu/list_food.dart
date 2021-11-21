@@ -97,7 +97,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                   hintText: intl.whatFoodAreYouLookingFor,
                   contentPadding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 5.w),
                   hintStyle: typography.caption?.apply(
-                    color: AppColors.lableColor,
+                    color: AppColors.labelColor,
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.onPrimary),

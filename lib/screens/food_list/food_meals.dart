@@ -312,7 +312,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                 widget = Chip(
                   backgroundColor: isCurrentMeal
                       ? AppColors.primary.withOpacity(0.2)
-                      : AppColors.lableColor.withOpacity(0.2),
+                      : AppColors.labelColor.withOpacity(0.2),
                   label: FittedBox(
                     child: Text(
                       '${meal.food.foodItems![index].amount} ${meal.food.foodItems![index].title}',
@@ -347,7 +347,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
             decoration: BoxDecoration(
               color: isCurrentMeal
                   ? AppColors.primary.withOpacity(0.2)
-                  : AppColors.lableColor.withOpacity(0.1),
+                  : AppColors.labelColor.withOpacity(0.1),
               borderRadius: BorderRadius.only(
                 bottomLeft: AppRadius.radiusSmall,
                 bottomRight: AppRadius.radiusSmall,

@@ -216,7 +216,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                                         Line(
                                           width: 80.w,
                                           height: 0.1.h,
-                                          color: AppColors.lableColor,
+                                          color: AppColors.labelColor,
                                         ),
                                         MaterialButton(
                                             onPressed: () {

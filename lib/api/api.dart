@@ -7,7 +7,7 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/entity/regime/body_state.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
@@ -74,10 +74,10 @@ abstract class RestClient {
   NetworkResult<Help> helpBodyState(@Path('id') int id);
 
   @PATCH("/condition")
-  NetworkResult getPath(@Body() RegimeType id);
+  NetworkResult getPath(@Body() int id);
 
   @PATCH("/physical-info")
-  NetworkResult<BodyState> sendInfo(@Body() BodyState info);
+  NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
 
   @GET("/body-status")
   NetworkResult<BodyStatus> getStatus(@Body() BodyStatus body);
@@ -163,6 +163,9 @@ abstract class RestClient {
 
   @DELETE("/calls/{id}")
   ImperativeNetworkResult deleteCall(@Path('id') int id);
+
+  @GET("/physical-info")
+  NetworkResult<PhysicalInfoData> physicalInfo();
 
   @GET("/user-sickness")
   NetworkResult<UserSickness> getUserSickness();

@@ -25,7 +25,7 @@ class CustomTabBar extends StatelessWidget {
         length: listItem.length,
         child: TabBar(
           unselectedLabelColor: Colors.black87,
-          labelColor: AppColors.lableTab,
+          labelColor: AppColors.labelColor,
           /*unselectedLabelStyle: Utils.styleTextTabBar,
           labelStyle: Utils.styleTextSelectTabBar,*/
           indicatorColor: AppColors.accentColor,

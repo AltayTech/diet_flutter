@@ -11,7 +11,7 @@ class RegimeType {
   @JsonKey(name: "items")
   List<RegimeType>? items;
   @JsonKey(name: "alias")
-  String? alias;
+  RegimeAlias? alias;
   @JsonKey(name: "calories_count")
   int? caloriesCount;
   @JsonKey(name: "is_active")
@@ -33,7 +33,27 @@ class RegimeType {
 
   String get icon => Utils.getIcon(alias);
 
-  factory RegimeType.fromJson(Map<String, dynamic> json) => _$RegimeTypeFromJson(json);
+  factory RegimeType.fromJson(Map<String, dynamic> json) =>
+      _$RegimeTypeFromJson(json);
 
   Map<String, dynamic> toJson() => _$RegimeTypeToJson(this);
+}
+
+enum RegimeAlias {
+  @JsonValue("PREGNANCY")
+  Pregnansy,
+  @JsonValue("WEIGHT_LOSS")
+  WeightLoss,
+  @JsonValue("WEIGHT_GAIN")
+  WeightGain,
+  @JsonValue("STABILIZATION")
+  Stabilization,
+  @JsonValue("DIABETES")
+  Diabeties,
+  @JsonValue("KETOGENIC")
+  Ketogenic,
+  @JsonValue("SPORTS")
+  Sport,
+  @JsonValue("NOTRICA")
+  Notrica,
 }

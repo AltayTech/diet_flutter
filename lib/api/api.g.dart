@@ -216,8 +216,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(id.toJson());
+    final _data = id;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
@@ -232,21 +231,21 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<BodyState>> sendInfo(info) async {
+  Future<NetworkResponse<PhysicalInfoData>> sendInfo(info) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(info.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<BodyState>>(
+        _setStreamType<NetworkResponse<PhysicalInfoData>>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/physical-info',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<BodyState>.fromJson(
+    final value = NetworkResponse<PhysicalInfoData>.fromJson(
       _result.data!,
-      (json) => BodyState.fromJson(json as Map<String, dynamic>),
+      (json) => PhysicalInfoData.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
@@ -766,6 +765,25 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<dynamic>.fromJson(
       _result.data!,
       (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<PhysicalInfoData>> physicalInfo() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<PhysicalInfoData>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/physical-info',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<PhysicalInfoData>.fromJson(
+      _result.data!,
+      (json) => PhysicalInfoData.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

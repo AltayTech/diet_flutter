@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:behandam/app/app.dart';
-import 'package:behandam/data/entity/regime/body_state.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
@@ -12,7 +12,6 @@ import '../../base/repository.dart';
 
 class RegimeBloc {
   RegimeBloc() {
-    _waiting.value = false;
     regimeTypeMethod();
   }
 
@@ -24,6 +23,7 @@ class RegimeBloc {
   final _itemsList = BehaviorSubject<List<RegimeType>>();
   final _helpers = BehaviorSubject<List<Help>>();
   final _status = BehaviorSubject<BodyStatus>();
+  final _physicalInfo = BehaviorSubject<PhysicalInfoData>();
   final _navigateToVerify = LiveEvent();
   final _showServerError = LiveEvent();
 
@@ -39,6 +39,8 @@ class RegimeBloc {
 
   Stream<bool> get waiting => _waiting.stream;
 
+  Stream<PhysicalInfoData> get physicalInfo => _physicalInfo.stream;
+
   Stream get navigateToVerify => _navigateToVerify.stream;
 
   Stream get showServerError => _showServerError.stream;
@@ -47,6 +49,13 @@ class RegimeBloc {
     _waiting.value = true;
     _repository.regimeType().then((value) {
       _itemsList.value = value.data!.items!;
+    }).whenComplete(() => _waiting.value = false);
+  }
+
+  void physicalInfoData() async {
+    _waiting.value = true;
+    _repository.physicalInfo().then((value) {
+      _physicalInfo.value = value.data!;
     }).whenComplete(() => _waiting.value = false);
   }
 
@@ -65,14 +74,14 @@ class RegimeBloc {
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void pathMethod(RegimeType dietId) async {
-    _repository.getPath(dietId).then((value) {
+  void pathMethod(RegimeType regime) async {
+    _repository.getPath(int.parse(regime.id!)).then((value) {
       _path = value.next!;
-      _navigateToVerify.fire(dietId);
+      _navigateToVerify.fire(regime);
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void sendInfo(BodyState info) async {
+  void sendInfo(PhysicalInfoData info) async {
     _repository.sendInfo(info).then((value) {
       _navigateToVerify.fire(true);
     });
@@ -90,5 +99,6 @@ class RegimeBloc {
     _navigateToVerify.close();
     _itemsList.close();
     _waiting.close();
+    _physicalInfo.close();
   }
 }

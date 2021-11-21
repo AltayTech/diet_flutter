@@ -242,7 +242,6 @@
   "errorDepartment": "لطفا دپارتمان مورد نظر خود را انتخاب کنید",
   "errorFillItem": "تمامی اطلاعات خواسته شده را وارد کنید",
   "closedTicket": "این تیکت بسته شده است. در صورت پاسخ به آن مجددا باز خواهد شد.",
-  "arabic": "العربية",
   "stateOfBody": "وضعیت جسمانی",
   "enterYourState": "اطلاعات جسمانیت رو وارد کن",
   "weight": "وزن",
@@ -312,5 +311,7 @@
   "sicknessSpecialLabelUser": "آیا دارای شرایط خاصی هستی؟",
   "sicknessSpecial": "شرایط خاص",
   "sickness": "عارضه یا بیماری",
-  "understand": "متوجه شدم"
+  "understand": "متوجه شدم",
+  "birthdateIsAMust": "تاریخ تولد الزامی است",
+  "arabic": "العربية"
 }

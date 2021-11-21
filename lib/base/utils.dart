@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
@@ -32,29 +33,28 @@ class Utils {
     }
   }
 
-
-  static Color getColor(String? alias) {
+  static Color getColor(RegimeAlias? alias) {
     switch (alias) {
-      case "WEIGHT_LOSS":
+      case RegimeAlias.WeightLoss:
         return AppColors.looseType;
-      case "WEIGHT_GAIN":
+      case RegimeAlias.WeightGain:
         return AppColors.gainType;
 
-      case "STABILIZATION":
+      case RegimeAlias.Stabilization:
         return AppColors.stableType;
-      case "DIABETES":
-        return AppColors.diabetType;
+      case RegimeAlias.Diabeties:
+        return AppColors.diabeticType;
 
-      case "PREGNANCY":
+      case RegimeAlias.Pregnansy:
         return AppColors.pregnantType;
 
-      case "KETOGENIC":
-        return AppColors.ketoType;
+      case RegimeAlias.Ketogenic:
+        return AppColors.ketogenicType;
 
-      case "SPORTS":
+      case RegimeAlias.Sport:
         return AppColors.sportType;
 
-      case "NOTRICA":
+      case RegimeAlias.Notrica:
         return AppColors.notricaType;
 
       default:
@@ -62,28 +62,28 @@ class Utils {
     }
   }
 
-  static String getIcon(String? alias) {
+  static String getIcon(RegimeAlias? alias) {
     switch (alias) {
-      case "WEIGHT_LOSS":
+      case RegimeAlias.WeightLoss:
         return 'assets/images/diet/loose_weight.svg';
-      case "WEIGHT_GAIN":
+      case RegimeAlias.WeightGain:
         return 'assets/images/diet/gain_weight.svg';
 
-      case "STABILIZATION":
+      case RegimeAlias.Stabilization:
         return 'assets/images/diet/fix_weight.svg';
-      case "DIABETES":
+      case RegimeAlias.Diabeties:
         return 'assets/images/diet/diabetes_diet.svg';
 
-      case "PREGNANCY":
+      case RegimeAlias.Pregnansy:
         return 'assets/images/diet/pregnant_diet.svg';
 
-      case "KETOGENIC":
+      case RegimeAlias.Ketogenic:
         return 'assets/images/diet/loose_weight.svg';
 
-      case "SPORTS":
+      case RegimeAlias.Sport:
         return 'assets/images/diet/gain_weight.svg';
 
-      case "NOTRICA":
+      case RegimeAlias.Notrica:
         return 'assets/images/diet/notrica.svg';
 
       default:
