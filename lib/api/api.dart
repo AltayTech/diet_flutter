@@ -160,7 +160,7 @@ abstract class RestClient {
   @DELETE("/calls/{id}")
   ImperativeNetworkResult deleteCall(@Path('id') int id);
 
-  @GET("/psychology/user/date/list?start_date={startDate}&end_date={endDate}")
+  @GET("/psychology/v2/dates/list?start_date={startDate}&end_date={endDate}")
   NetworkResult<CalenderOutput> getCalendar(@Path() String? startDate, @Path() String? endDate);
 }
 
