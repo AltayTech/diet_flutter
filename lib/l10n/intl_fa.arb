@@ -313,5 +313,11 @@
   "sickness": "عارضه یا بیماری",
   "understand": "متوجه شدم",
   "birthdateIsAMust": "تاریخ تولد الزامی است",
+  "advices": "توصیه ها",
+  "beAdvisedTo": "توصیه میشه:",
+  "adminAdvice": "توصیه های کارشناس",
+  "dietAdvice": "توصیه های کلی",
+  "sicknessAdvice": "توصیه های بیماری",
+  "specialAdvice": "توصیه های خاص",
   "arabic": "العربية"
 }

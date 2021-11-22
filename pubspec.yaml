@@ -93,6 +93,7 @@ flutter:
     - assets/images/foodlist/
     - assets/images/bill/
     - assets/images/foodlist/share/
+    - assets/images/foodlist/advice/
   fonts:
     - family: Iransans
       fonts:

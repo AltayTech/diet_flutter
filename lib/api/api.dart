@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
@@ -178,6 +179,9 @@ abstract class RestClient {
 
   @PATCH("/user-special")
   ImperativeNetworkResult setUserSicknessSpecial(@Body() UserSickness userSickness);
+
+  @GET("/user-recommend")
+  NetworkResult<AdviceData> advice();
 
 }
 
