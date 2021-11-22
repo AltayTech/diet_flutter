@@ -38,12 +38,14 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T> with 
   void dispose() {
     _printEvent('dispose()');
     routeObserver.unsubscribe(this);
+    dioErrorObserver.unsubscribe(this);
     super.dispose();
   }
 
   @override
   void initState() {
     _printEvent('initState()');
+    dioErrorObserver.subscribe(this);
     super.initState();
   }
 
@@ -53,7 +55,6 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T> with 
     final route = ModalRoute.of(context);
     if (route is PageRoute) {
       routeObserver.subscribe(this, route);
-      dioErrorObserver.unsubscribe(this);
     }
     super.didChangeDependencies();
   }

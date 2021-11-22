@@ -239,4 +239,8 @@ class TicketTypeButtonState extends ResourcefulState<TicketTypeButton> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

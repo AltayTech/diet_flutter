@@ -503,4 +503,9 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

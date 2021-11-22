@@ -413,7 +413,10 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
-
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
   @override
   click() {
     setState(() {});

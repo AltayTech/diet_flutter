@@ -132,6 +132,10 @@ abstract class Repository {
   NetworkResult<PackageItem> getPackagesList();
 
   ImperativeNetworkResult setCondition(PackageItem packageItem);
+
+  NetworkResult<PackageItem> getPackagePayment();
+
+  NetworkResult<Price?> checkCoupon(Price price);
 }
 
 class _RepositoryImpl extends Repository {
@@ -506,6 +510,18 @@ class _RepositoryImpl extends Repository {
   ImperativeNetworkResult setCondition(PackageItem packageItem) {
     packageItem.package_id = packageItem.id;
     var response = _apiClient.condition(packageItem);
+    return response;
+  }
+
+  @override
+  NetworkResult<PackageItem> getPackagePayment() {
+    var response = _apiClient.getPackageUser();
+    return response;
+  }
+
+  @override
+  NetworkResult<Price?> checkCoupon(Price price) {
+    var response = _apiClient.checkCoupon(price);
     return response;
   }
 }

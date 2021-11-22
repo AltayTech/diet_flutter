@@ -278,4 +278,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

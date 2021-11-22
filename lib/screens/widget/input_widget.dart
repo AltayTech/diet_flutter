@@ -57,5 +57,9 @@ class InputWidgetState extends ResourcefulState<InputWidget>{
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
-  
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

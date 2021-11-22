@@ -147,4 +147,8 @@ class _FastPatternPageState extends ResourcefulState<FastPatternPage> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }
