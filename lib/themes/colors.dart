@@ -22,8 +22,9 @@ class AppColors {
   static late Color arcColor;
   static late Color btnColor;
   static late Color onScaffold;
-  static late Color labelColor;
-  static late Color labelTab;
+  static late Color lableColor;
+  static late Color lableTextColor;
+  static late Color lableTab;
   static late Color warning = Colors.orange.shade100;
   static const penColor = Color(0xff8A8A8A);
   static const redBar = Color(0xffFF5757);
@@ -53,7 +54,16 @@ class AppColors {
   static const greenRuler = Color(0xff59CBB1);
   static const box = Color.fromARGB(255, 245, 245, 245);
   static const pregnantPink = Color(0xffFFD6DC);
-
+  static var colorPackages = [
+  {
+  'barColor': Color.fromARGB(255, 249, 203, 202),
+  'priceColor': primary,
+  },
+  {
+  'barColor': Color.fromRGBO(200, 224, 221, 1),
+  'priceColor': Color.fromRGBO(86, 195, 180, 1),
+  },
+  ];
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {
       case ThemeAppColor.DEFAULT:
@@ -80,7 +90,8 @@ class AppColors {
         statusTicketGlobalIssue = Color(0xFFF3543C);
         background = Color.fromARGB(255, 245, 245, 245);
         colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
-        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
+        colorselectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
+        lableTextColor = Color(0xff7f7f7f);
         break;
       case ThemeAppColor.BLUE:
         primary = Color(0xFF0D83DD);

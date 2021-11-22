@@ -11,6 +11,7 @@ import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
@@ -127,6 +128,10 @@ abstract class Repository {
   NetworkResult<UserSicknessSpecial> getSicknessSpecial();
 
   ImperativeNetworkResult sendSicknessSpecial(UserSicknessSpecial sickness);
+
+  NetworkResult<PackageItem> getPackagesList();
+
+  ImperativeNetworkResult setCondition(PackageItem packageItem);
 }
 
 class _RepositoryImpl extends Repository {
@@ -488,6 +493,19 @@ class _RepositoryImpl extends Repository {
 
     userSickness.specials = selectedItems;
     var response = _apiClient.setUserSicknessSpecial(userSickness);
+    return response;
+  }
+
+  @override
+  NetworkResult<PackageItem> getPackagesList() {
+    var response = _apiClient.getPackages();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult setCondition(PackageItem packageItem) {
+    packageItem.package_id = packageItem.id;
+    var response = _apiClient.condition(packageItem);
     return response;
   }
 }

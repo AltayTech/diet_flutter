@@ -41,22 +41,22 @@
   "manipulateFood": "جایگزین غذا",
   "recipe": "طرز تهیه {food}",
   "@recipe": {
-        "placeholders": {
-          "food": {
-            "type": "String"
-          }
-        }
+    "placeholders": {
+      "food": {
+        "type": "String"
+      }
+    }
   },
   "iFastToday": "امروز روزه میگیرم",
   "selectDailyMenu": "انتخاب روزمنو",
   "todayAdvicesForYou": "برات کلی توصیه کاربردی داریم. حتما بخونشون!",
   "viewingMenu": "در حال مشاهده لیست غذایی روز {date} هستی",
   "@viewingMenu": {
-      "placeholders": {
-        "date": {
-          "type": "String"
-        }
+    "placeholders": {
+      "date": {
+        "type": "String"
       }
+    }
   },
   "showAdvices": "نمایش توصیه ها",
   "goToToday": "برو به امروز",
@@ -70,20 +70,20 @@
   "alternating": "جایگزینی {meal}",
   "@alternating": {
     "placeholders": {
-        "meal": {
-            "type": "String"
-        }
+      "meal": {
+        "type": "String"
+      }
     }
   },
   "alternatingFoodLater": "بعدا جایگزین میکنم",
   "selectDailyMenuFoods": "انتخاب غذاهای روزمنو",
   "selectFood": "انتخاب خوراکی های {date}",
   "@selectFood": {
-     "placeholders": {
-          "date": {
-              "type": "String"
-          }
-     }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   },
   "notShowingPastMeals": "وعده هایی که زمان آنها گذشته است نمایش داده نمی شوند!",
   "addFood": "افزودن غذا...",
@@ -96,9 +96,9 @@
   "selectFoodIn": "انتخاب خوراکی در وعده {meal}",
   "@selectFoodIn": {
     "placeholders": {
-        "meal": {
-            "type": "String"
-        }
+      "meal": {
+        "type": "String"
+      }
     }
   },
   "whatFoodAreYouLookingFor": "دنبال چه خوراکی ای میگردی؟",
@@ -136,40 +136,40 @@
   "selectFoodForAllMeals": "برای تمام وعده ها غذا انتخاب کن",
   "timeOfTheMeal": "زمان مناسب این وعده از ساعت {start} تا {end} میباشد.",
   "@timeOfTheMeal": {
-      "placeholders": {
-          "start": {
-              "type": "String"
-          },
-          "end": {
-                        "type": "String"
-                    }
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
       }
+    }
   },
   "tryToAlternateOneMealDaily": "سعی کنید روزانه فقط یک وعده را جایگزین کنید",
   "currentMeal": "وعده {meal} فعلی",
   "@currentMeal": {
-        "placeholders": {
-            "meal": {
-                "type": "String"
-            }
-        }
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
   },
   "replacedMeal": "وعده {meal} جایگزین",
   "@replacedMeal": {
-        "placeholders": {
-            "meal": {
-                "type": "String"
-            }
-        }
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
   },
   "replaceMeal": "وعده {meal} رو جایگزین کن",
   "@replaceMeal": {
-          "placeholders": {
-              "meal": {
-                  "type": "String"
-              }
-          }
-    },
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
   "replaceFood": "جایگزین کن",
   "calendar": "تقویم",
   "saturday": "شنبه",
@@ -190,41 +190,41 @@
   "termShouldBeRenewed": "{user} عزیز \n در زمان مشخص شده باید رژیمت رو تمدید کنی",
   "@termShouldBeRenewed": {
     "placeholders": {
-        "user": {
-            "type": "String"
-        }
+      "user": {
+        "type": "String"
+      }
     }
   },
   "listShouldBeRenewed": "{user} عزیز \n هنوز به زمان دریافت لیست جدید غذایی نرسیدی. ما روز دریافت لیست باخبرت میکنیم",
-   "@listShouldBeRenewed": {
-      "placeholders": {
-          "user": {
-              "type": "String"
-          }
+  "@listShouldBeRenewed": {
+    "placeholders": {
+      "user": {
+        "type": "String"
       }
-   },
+    }
+  },
   "visitShouldBeRenewed": "{user} عزیز \n هنوز به زمان اعلام وزن نرسیدی. ما روز اعلام وزن باخبرت میکنیم",
-   "@visitShouldBeRenewed": {
-      "placeholders": {
-          "user": {
-              "type": "String"
-          }
+  "@visitShouldBeRenewed": {
+    "placeholders": {
+      "user": {
+        "type": "String"
       }
-   },
-   "youDidNotGetNewMenu": "{user} عزیز \n در زمان مشخص شده لیست غذایی انتخاب نکردی!",
-      "@youDidNotGetNewMenu": {
-         "placeholders": {
-             "user": {
-                 "type": "String"
-             }
-         }
-      },
+    }
+  },
+  "youDidNotGetNewMenu": "{user} عزیز \n در زمان مشخص شده لیست غذایی انتخاب نکردی!",
+  "@youDidNotGetNewMenu": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
   "youDidNotSubmitWeight": "{user} عزیز \n در زمان مشخص شده لیست غذایی انتخاب نکردی!",
-    "@youDidNotSubmitWeight": {
-       "placeholders": {
-           "user": {
-               "type": "String"
-           }
+  "@youDidNotSubmitWeight": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
     }
   },
   "gotIt": "متوجه شدم",
@@ -294,7 +294,7 @@
   "firstStatusReport": "گزارش اولیه وضعیت جسمانی",
   "day": "روز",
   "appropriateWeight": "به وزن مناسب",
-  "untilReach" : "تا رسیدن ",
+  "untilReach": "تا رسیدن ",
   "extraWeight": "اضافه وزن",
   "lakeWeight": "کمبود وزن",
   "yourAppropriateWeight": "وزن مناسب شما",
@@ -313,5 +313,10 @@
   "sickness": "عارضه یا بیماری",
   "understand": "متوجه شدم",
   "birthdateIsAMust": "تاریخ تولد الزامی است",
-  "arabic": "العربية"
+  "selectPackage": "یک پکیج رو انتخاب کن",
+  "selectPackageToolbar": "انتخاب بسته",
+  "toman": "تومان",
+  "free": "رایگان",
+  "differentPackages": "پکیج ها چه تفاوتی با هم دارن؟",
+  "understand": "متوجه شدم"
 }

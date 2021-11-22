@@ -90,4 +90,12 @@ class Utils {
         return 'assets/images/diet/gain_weight.svg';
     }
   }
+
+  static Color getColorPackage(int index) {
+    return AppColors.colorPackages[index % 2]['barColor']!;
+  }
+
+  static Color getColorPackagePrice(int index) {
+    return AppColors.colorPackages[index % 2]['priceColor']!;
+  }
 }
