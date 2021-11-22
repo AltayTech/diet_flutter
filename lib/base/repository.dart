@@ -129,6 +129,7 @@ abstract class Repository {
 
   NetworkResult<PackageItem> getPackagesList();
 
+  ImperativeNetworkResult setCondition(PackageItem packageItem);
 }
 
 class _RepositoryImpl extends Repository {
@@ -490,6 +491,13 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<PackageItem> getPackagesList() {
     var response = _apiClient.getPackages();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult setCondition(PackageItem packageItem) {
+    packageItem.package_id = packageItem.id;
+    var response = _apiClient.condition(packageItem);
     return response;
   }
 }

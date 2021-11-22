@@ -180,5 +180,7 @@ abstract class RestClient {
   @GET("/package")
   NetworkResult<PackageItem> getPackages();
 
+  @PATCH("/condition")
+  NetworkResult<PackageItem> condition(PackageItem packageItem);
 }
 

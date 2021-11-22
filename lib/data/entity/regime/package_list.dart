@@ -19,8 +19,13 @@ class PackageItem {
   String? name;
   @JsonKey(name: "services")
   List<ServicePackage>? services;
+
   @JsonKey(name: "products")
   List<ServicePackage>? products;
+
+  @JsonKey(name: "package_id")
+  int? package_id;
+
   int? index;
 
   PackageItem();

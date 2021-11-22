@@ -1,5 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/screens/regime/package/package_bloc.dart';
+import 'package:behandam/screens/regime/package/package_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,8 @@ class CardPackage extends StatefulWidget {
 }
 
 class _CardPackageState extends ResourcefulState<CardPackage> {
+  late PackageBloc bloc;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -26,6 +30,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    bloc = PackageProvider.of(context);
     return _card(widget.packageItem);
   }
 
@@ -36,8 +41,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
         borderRadius: BorderRadius.circular(20.0),
         child: InkWell(
           onTap: () {
-            //pack.packageId = pack.id;
-            DialogUtils.showBottomSheetPage(context: context, child: bottomSheet(pack));
+            bloc.selectPackage(pack);
+            DialogUtils.showBottomSheetPage(context: context, child: bottomSheet());
           },
           child: Container(
             padding: EdgeInsets.only(right: 3.w),
@@ -120,6 +125,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            textDirection: context.textDirectionOfLocaleInversed,
                             children: [
                               if (pack.price?.finalPrice != null &&
                                   pack.price?.finalPrice != pack.price?.price)
@@ -140,7 +146,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                               if (pack.price!.finalPrice != null) SizedBox(width: 3.w),
                               if (pack.price?.price != null)
                                 Directionality(
-                                  textDirection: TextDirection.rtl,
+                                  textDirection: context.textDirectionOfLocale,
                                   child: Text(
                                     pack.price?.price != null
                                         ? pack.price?.finalPrice != pack.price?.price
@@ -197,59 +203,62 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
     );
   }
 
-  Widget bottomSheet(PackageItem package) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 100.w,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 1.h),
-              Text(
-                package.name ?? 'package name',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+  Widget bottomSheet() {
+    return Container(
+      width: 100.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.0),
+        color: Colors.white,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 1.h),
+            Text(
+              bloc.package.name ?? 'package name',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Space(height: 1.h),
+            Text(
+              bloc.package != null &&
+                      bloc.package.price != null &&
+                      bloc.package.price!.finalPrice != 0
+                  ? '${bloc.package.price!.finalPrice.toString().seRagham()} ${intl.toman}'
+                  : intl.free,
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,
+              style: TextStyle(
+                color: Color.fromRGBO(74, 202, 150, 1),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 2.h),
+            Container(
+              width: 90.w,
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+              child: MaterialButton(
+                height: 7.h,
+                onPressed: () {
+                  Navigator.pop(context);
+                  DialogUtils.showDialogProgress(context: context);
+                  bloc.sendPackage();
+                },
+                shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0),
+                ),
+                color: Color.fromRGBO(74, 202, 150, 1),
+                child: Text(
+                  intl.confirmContinue,
+                  style: Theme.of(context).textTheme.button,
                 ),
               ),
-              Space(height: 1.h),
-              Text(
-                package != null && package.price != null && package.price!.finalPrice != 0
-                    ? '${package.price!.finalPrice.toString().seRagham()} ${intl.toman}'
-                    : intl.free,
-                textAlign: TextAlign.center,
-                textDirection: TextDirection.rtl,
-                style: TextStyle(
-                  color: Color.fromRGBO(74, 202, 150, 1),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 2.h),
-              Container(
-                width: 90.w,
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                child: MaterialButton(
-                  height: 7.h,
-                  onPressed: () {},
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
-                  color: Color.fromRGBO(74, 202, 150, 1),
-                  child: Text(
-                    intl.confirmContinue,
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

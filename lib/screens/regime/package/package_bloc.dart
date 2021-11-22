@@ -14,6 +14,7 @@ class PackageBloc {
 
   late String _path;
   List<PackageItem>? _list;
+  late PackageItem _packageSelected;
 
   final _waiting = BehaviorSubject<bool>();
   final _navigateTo = LiveEvent();
@@ -22,6 +23,8 @@ class PackageBloc {
   String get path => _path;
 
   List<PackageItem>? get list => _list;
+
+  PackageItem get package => _packageSelected;
 
   Stream<bool> get waiting => _waiting.stream;
 
@@ -39,6 +42,16 @@ class PackageBloc {
       }
     }).whenComplete(() {
       _waiting.value = false;
+    });
+  }
+
+  void selectPackage(PackageItem packageItem) {
+    _packageSelected = packageItem;
+  }
+
+  void sendPackage() {
+    _repository.setCondition(_packageSelected).then((value) {
+      _navigateTo.fire(value.next);
     });
   }
 

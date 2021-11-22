@@ -32,7 +32,6 @@ class Utils {
     }
   }
 
-
   static Color getColor(String? alias) {
     switch (alias) {
       case "WEIGHT_LOSS":
@@ -92,9 +91,10 @@ class Utils {
   }
 
   static Color getColorPackage(int index) {
-   return AppColors.colorPackages[index]['barColor']!;
+    return AppColors.colorPackages[index % 2]['barColor']!;
   }
+
   static Color getColorPackagePrice(int index) {
-    return AppColors.colorPackages[index]['priceColor']!;
+    return AppColors.colorPackages[index % 2]['priceColor']!;
   }
 }
