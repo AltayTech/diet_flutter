@@ -82,7 +82,7 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
-                        .copyWith(fontWeight: FontWeight.bold, color: AppColors.lableTextColor),
+                        .copyWith(fontWeight: FontWeight.bold, color: AppColors.labelTextColor),
                   ),
                 ),
               ),

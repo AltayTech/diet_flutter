@@ -311,12 +311,12 @@
   "sicknessSpecialLabelUser": "آیا دارای شرایط خاصی هستی؟",
   "sicknessSpecial": "شرایط خاص",
   "sickness": "عارضه یا بیماری",
-  "understand": "متوجه شدم",
   "birthdateIsAMust": "تاریخ تولد الزامی است",
   "selectPackage": "یک پکیج رو انتخاب کن",
   "selectPackageToolbar": "انتخاب بسته",
   "toman": "تومان",
   "free": "رایگان",
   "differentPackages": "پکیج ها چه تفاوتی با هم دارن؟",
+  "arabic": "العرییه",
   "understand": "متوجه شدم"
 }
