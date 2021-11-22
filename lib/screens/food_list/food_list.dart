@@ -13,6 +13,8 @@ import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../routes.dart';
+
 class FoodListPage extends StatefulWidget {
   const FoodListPage({Key? key}) : super(key: key);
 
@@ -112,7 +114,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                     SubmitButton(
                       label: isToday(snapshot.requireData!) ? intl.showAdvices : intl.goToToday,
                       onTap: isToday(snapshot.requireData!)
-                          ? () => VxNavigator.of(context).push(Uri())
+                          ? () => VxNavigator.of(context).push(Uri(path: Routes.advice))
                           : () =>
                               bloc.changeDateWithString(DateTime.now().toString().substring(0, 10)),
                     ),

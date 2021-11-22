@@ -312,11 +312,17 @@
   "sicknessSpecial": "شرایط خاص",
   "sickness": "عارضه یا بیماری",
   "birthdateIsAMust": "تاریخ تولد الزامی است",
+  "advices": "توصیه ها",
+  "beAdvisedTo": "توصیه میشه:",
+  "adminAdvice": "توصیه های کارشناس",
+  "dietAdvice": "توصیه های کلی",
+  "sicknessAdvice": "توصیه های بیماری",
+  "specialAdvice": "توصیه های خاص",
   "selectPackage": "یک پکیج رو انتخاب کن",
   "selectPackageToolbar": "انتخاب بسته",
   "toman": "تومان",
   "free": "رایگان",
   "differentPackages": "پکیج ها چه تفاوتی با هم دارن؟",
-  "arabic": "العرییه",
-  "understand": "متوجه شدم"
+  "understand": "متوجه شدم",
+  "arabic": "العربية"
 }

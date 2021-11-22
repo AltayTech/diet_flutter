@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/api/interceptor/logger.dart';
+import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
@@ -128,6 +129,8 @@ abstract class Repository {
   NetworkResult<UserSicknessSpecial> getSicknessSpecial();
 
   ImperativeNetworkResult sendSicknessSpecial(UserSicknessSpecial sickness);
+
+  NetworkResult<AdviceData> advice();
 
   NetworkResult<PackageItem> getPackagesList();
 
@@ -493,6 +496,13 @@ class _RepositoryImpl extends Repository {
 
     userSickness.specials = selectedItems;
     var response = _apiClient.setUserSicknessSpecial(userSickness);
+    return response;
+  }
+
+  @override
+  NetworkResult<AdviceData> advice() async{
+    var response = await _apiClient.advice();
+    debugPrint('advice repo ${response.data?.dietTypeRecommends?.length}');
     return response;
   }
 

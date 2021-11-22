@@ -12,6 +12,7 @@ import 'package:behandam/screens/calendar/calendar.dart';
 import 'package:behandam/screens/daily_menu/daily_menu.dart';
 import 'package:behandam/screens/daily_menu/list_food.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
+import 'package:behandam/screens/advice/advice.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
@@ -162,7 +163,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: PackageListScreen()),
+    '/': (_, __) => MaterialPage(child: FoodListPage()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -190,6 +191,7 @@ final navigator = VxNavigator(
     Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
     Routes.sickness: (_, __) => MaterialPage(child: SicknessScreen()),
     Routes.special_sickness: (_, __) => MaterialPage(child: SicknessSpecialScreen()),
+    Routes.advice: (_, __) => MaterialPage(child: AdvicePage()),
     Routes.package: (_, __) => MaterialPage(child: PackageListScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
