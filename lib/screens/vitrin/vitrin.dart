@@ -35,27 +35,27 @@ class VitrinScreen extends StatelessWidget {
                 children: [
                   InkWell(
                       onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.bodyState)),
-                      child: ImageUtils.fromLocal('assets/images/vitrin/bmi_banner.jpg')),
+                      child: ImageUtils.fromLocal('assets/images/vitrin/bmi_banner.jpg',width: 100.w,height: 15.h)),
                   SizedBox(height: 2.h),
                   InkWell(
-                      onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.PSYCalender)),
-                      child: ImageUtils.fromLocal('assets/images/vitrin/psy_banner.png')),
+                      onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.PSYIntro)),
+                      child: ImageUtils.fromLocal('assets/images/vitrin/psy_banner.png',width: 100.w,height: 15.h)),
                   SizedBox(height: 2.h),
                   InkWell(
                       onTap: () => _launchURL('https://kermany.com'),
-                      child: ImageUtils.fromLocal('assets/images/vitrin/magazine_banner.jpg')),
+                      child: ImageUtils.fromLocal('assets/images/vitrin/magazine_banner.jpg',width: 100.w,height: 15.h)),
                   SizedBox(height: 2.h),
                   InkWell(
                       onTap: () => _launchURL('https://www.instagram.com/accounts/login/?next=/drkermany/'),
-                      child: ImageUtils.fromLocal('assets/images/vitrin/instagram_banner.jpg')),
+                      child: ImageUtils.fromLocal('assets/images/vitrin/instagram_banner.jpg',width: 100.w,height: 15.h)),
                   SizedBox(height: 2.h),
                   InkWell(
                       onTap: () => _launchURL('https://t.me/drkermany'),
-                      child: ImageUtils.fromLocal('assets/images/vitrin/telegram_banner.jpg')),
+                      child: ImageUtils.fromLocal('assets/images/vitrin/telegram_banner.jpg',width: 100.w,height: 15.h)),
                   SizedBox(height: 2.h),
                   InkWell(
                       onTap: () => _launchURL('https://app.fitamin.ir/register'),
-                      child: ImageUtils.fromLocal('assets/images/vitrin/fitamin_banner.png')),
+                      child: ImageUtils.fromLocal('assets/images/vitrin/fitamin_banner.png',width: 100.w,height: 15.h)),
                 ],
               ),
             ),

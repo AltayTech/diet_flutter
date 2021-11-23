@@ -4,6 +4,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/const_&_model/selected_time.dart';
 import 'package:behandam/data/entity/psy/calender.dart';
 import 'package:behandam/data/entity/psy/plan.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/psy/calender_bloc.dart';
 import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/screens/widget/line.dart';
@@ -63,9 +64,9 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                   children: [
                     ListTile(
                       leading: info[index].adviserImage == null
-                          ? Icon(Icons.person)
+                          ? ImageUtils.fromLocal('assets/images/profile/psychology.svg',width: 20.w,height: 7.h)
                           : Image.network(
-                          'https://debug.behaminplus.ir//helia-service${info[index].adviserImage}'),
+                          'https://debug.behaminplus.ir//helia-service${info[index].adviserImage}',width: 20.w,height: 10.h),
                       title: Text(info[index].adviserName!),
                       subtitle: Text(
                         info[index].role!,
@@ -261,7 +262,17 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
               ),
               SizedBox(height: 2.h),
               button(AppColors.btnColor, intl.reserveThisTime, Size(70.w,5.h),
-                      (){}),
+                      (){
+                        ctx.vxNav.push(Uri.parse(Routes.PSYTerms),
+                            params: {
+                            'sessionId': sessionId,
+                            'packageId': info.packageId,
+                            'name': info.adviserName,
+                            'price': info.price,
+                            'day': DateTimeUtils.dateToNamesOfDay(info.date!),
+                            'date': DateTimeUtils.dateToDetail(info.date!),
+                          });
+                      }),
               OutlinedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -344,11 +355,19 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                           return StreamBuilder(
                           stream: calenderBloc.daysLater,
                           builder: (context, AsyncSnapshot<Jalali> daysLater){
-                          return  Text(
-                          daysLater.data!.formatter.mN == daysLater.data!.addDays(-10).formatter.mN
-                          ? daysLater.data!.formatter.mN + ' ' + daysLater.data!.year.toString()
-                              : daysAgo.data!.formatter.mN + ' ' + '/'  + ' ' + daysLater.data!.formatter.mN + ' ' + daysLater.data!.year.toString(),
-                          style: TextStyle(fontSize: 12.sp));
+                            if(daysAgo.hasData && daysLater.hasData)
+                              return  Text(
+                              daysLater.data!.formatter.mN == daysLater.data!.addDays(-10).formatter.mN
+                              ? daysLater.data!.formatter.mN + ' ' + daysLater.data!.year.toString()
+                                  : daysAgo.data!.formatter.mN + ' ' + '/'  + ' ' + daysLater.data!.formatter.mN + ' ' + daysLater.data!.year.toString(),
+                              style: TextStyle(fontSize: 12.sp));
+                            else
+                              return Center(
+                                  child: Container(
+                                      width: 15.w,
+                                      height: 15.w,
+                                      child: CircularProgressIndicator(
+                                          color: Colors.grey, strokeWidth: 1.0)));
                           },
                           );})
                       ),
@@ -474,7 +493,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                           child: StreamBuilder(
                             stream: calenderBloc.disabledClick,
                             builder: (context,snapshot){
-                              print('statusLater: ${snapshot.data}');
+                              // print("day: ${DateTimeUtils.convertToJalali(calenderBloc.jour)}");
                               return StreamBuilder(
                                 stream: calenderBloc.daysLater,
                                   builder: (context, AsyncSnapshot<Jalali> later){
@@ -530,7 +549,8 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                                       )),
                                   SizedBox(height: 2.h),
                                   Text(intl.thereIsNotTime),
-                                  button(AppColors.btnColor, intl.showFirstFreeTime, Size(80.w,4.h), (){})
+                                  button(AppColors.btnColor, intl.showFirstFreeTime, Size(80.w,4.h),
+                                          () => calenderBloc.findFirstFreeTime())
                                 ],
                               ),
                             ),

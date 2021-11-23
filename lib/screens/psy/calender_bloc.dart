@@ -8,6 +8,7 @@ import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
@@ -25,11 +26,10 @@ class CalenderBloc{
 
   String? start;
   String? end;
-  // Jalali daysLater = Jalali.now();
-  // Jalali daysAgo = Jalali.now();
   List<SelectedTime>? advisersPerDay = [];
   bool flag1 = false;
   bool flag2 = false;
+  late Jalali _jour;
 
   final _disabledClick = BehaviorSubject<bool>();
   final _disabledClickPre = BehaviorSubject<bool>();
@@ -56,15 +56,23 @@ class CalenderBloc{
   Stream<bool> get disabledClickPre => _disabledClickPre.stream;
   Stream<Jalali> get daysLater => _daysLater.stream;
   Stream<Jalali> get daysAgo => _daysAgo.stream;
+  Jalali get jour => _jour;
 
   void getCalender(Jalali jour) async {
+    _jour = jour;
     _daysLater.value = jour.addDays(10);
     _daysAgo.value = jour.addDays(-10);
     DateTime today = jour.toGregorian().toDateTime();
     start = today.toString().substring(0, 10);
-    print(today);
     end = today.add(Duration(days: 9)).toString().substring(0, 10);
     calenderMethod(start!, end!, jour);
+  }
+
+  findFirstFreeTime(){
+    for(int i=0; i<10; i++) {
+      DateTime day = jour.toDateTime().add(Duration(days: i));
+      giveInfo( DateTimeUtils.convertToJalali(day));
+    }
   }
 
   void calenderMethod(String startDate ,String endDate, Jalali jour) async {

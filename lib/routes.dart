@@ -29,8 +29,11 @@ abstract class Routes {
   static const detailsTicketMessage = '/ticket/details';
   static const bodyState = '/reg/size';
   static const bodyStatus = '/bodyStatus';
+  static const vitrin = '/vitrin';
   static const PSYIntro = '/PSYIntro';
   static const PSYCalender = '/PSYCalender';
+  static const PSYTerms = '/PSYTerms';
+  static const PSYPaymentBill = '/PSYPaymentBill';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

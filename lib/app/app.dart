@@ -19,6 +19,8 @@ import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
 import 'package:behandam/screens/psy/calender.dart';
 import 'package:behandam/screens/psy/intro.dart';
+import 'package:behandam/screens/psy/payment_bill.dart';
+import 'package:behandam/screens/psy/terms.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
@@ -26,6 +28,7 @@ import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/screens/ticket/ticket_details.dart';
+import 'package:behandam/screens/vitrin/vitrin.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -164,7 +167,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: PSYIntroScreen()),
+    '/': (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -193,8 +196,11 @@ final navigator = VxNavigator(
     Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
     Routes.bodyState: (_, param) => MaterialPage(child: BodyStateScreen(), arguments: param),
     Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
+    Routes.vitrin: (_, __) => MaterialPage(child: VitrinScreen()),
     Routes.PSYIntro: (_, __) => MaterialPage(child: PSYIntroScreen()),
-    Routes.PSYCalender: (_, __) => MaterialPage(child: PSYCalenderScreen()),
+    Routes.PSYCalender: (_, params) => MaterialPage(child: PSYCalenderScreen(), arguments: params),
+    Routes.PSYTerms: (_, params) => MaterialPage(child: TermsScreen(), arguments: params),
+    Routes.PSYPaymentBill: (_, params) => MaterialPage(child: PaymentBillScreen(), arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

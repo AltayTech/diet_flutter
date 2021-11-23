@@ -52,6 +52,15 @@ abstract class DateTimeUtils {
     return '${f.d} ${f.mN} ${f.y}';
   }
 
+  static convertToJalali(DateTime date) {
+    List<String> data = date.toJalali().toString().substring(7,18).replaceAll(',', '/').split('/');
+    if(int.parse(data[1]) < 10)
+      data[1] = '0${data[1]}'.replaceAll(' ', '');
+    if(int.parse(data[2]) < 10)
+      data[2] = '0${data[2]}'.replaceAll(' ', '');
+    return '${data[0]}-${data[1]}-${data[2]}';
+  }
+
   static String getTime(String date) {
     var dateSplit = DateTime.parse(date);
     if (dateSplit.isUtc) {
