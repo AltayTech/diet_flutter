@@ -35,6 +35,7 @@ abstract class Routes {
   static const advice = '/list/notice';
   static const package = '/reg/package';
   static const paymentBill = '/reg/payment/bill';
+  static const paymentCardConfirm = '/reg/payment/card/confirm';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

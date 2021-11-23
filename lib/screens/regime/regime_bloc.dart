@@ -74,7 +74,7 @@ class RegimeBloc {
   }
 
   void pathMethod(RegimeType regime) async {
-    _repository.getPath(int.parse(regime.id!)).then((value) {
+    _repository.getPath(regime).then((value) {
       _path = value.next!;
       _navigateToVerify.fire(regime);
     }).whenComplete(() => _waiting.value = false);

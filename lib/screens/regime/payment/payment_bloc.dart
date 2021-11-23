@@ -96,7 +96,9 @@ class PaymentBloc {
     price.code = val;
     _repository.checkCoupon(price).then((value) {
       _discountInfo = value.data;
+      _packageItem!.price!.finalPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
+      _online.value = true;
     }).catchError((err) {
       _usedDiscount.value = false;
       _wrongDisCode.value = true;

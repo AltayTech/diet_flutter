@@ -9,11 +9,11 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/entity/regime/payment.dart';
-import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/entity/regime/payment.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
@@ -109,7 +109,7 @@ abstract class Repository {
 
   NetworkResult<CalendarData> calendar(String start, String end);
 
-  NetworkResult getPath(int dietId);
+  NetworkResult getPath(RegimeType regime);
 
   NetworkResult<PhysicalInfoData> sendInfo(PhysicalInfoData info);
 
@@ -409,8 +409,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult getPath(int dietId) {
-    var response = _apiClient.getPath(dietId);
+  NetworkResult getPath(RegimeType regimeType) {
+    var response = _apiClient.getPath(regimeType);
     return response;
   }
 
@@ -509,7 +509,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<AdviceData> advice() async{
+  NetworkResult<AdviceData> advice() async {
     var response = await _apiClient.advice();
     debugPrint('advice repo ${response.data?.dietTypeRecommends?.length}');
     return response;
