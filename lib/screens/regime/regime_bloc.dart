@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:behandam/app/app.dart';
-import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -83,15 +82,21 @@ class RegimeBloc {
 
   void sendInfo(PhysicalInfoData info) async {
     _repository.sendInfo(info).then((value) {
-      _navigateToVerify.fire(true);
+      _navigateToVerify.fire(value.next);
     });
   }
 
-  void getStatus(BodyStatus body) async {
+  void getStatus() async {
     _waiting.value = true;
-    _repository.getStatus(body).then((value) {
+    _repository.getStatus().then((value) {
       _status.value = value.data!;
     }).whenComplete(() => _waiting.value = false);
+  }
+
+  void nextStep() async {
+    _repository.nextStep().then((value) {
+      _navigateToVerify.fire(value.next);
+    });
   }
 
   void dispose() {

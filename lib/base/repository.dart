@@ -119,7 +119,7 @@ abstract class Repository {
 
   ImperativeNetworkResult deleteRequestCall(int Id);
 
-  NetworkResult<BodyStatus> getStatus(BodyStatus body);
+  NetworkResult<BodyStatus> getStatus();
 
   NetworkResult<PhysicalInfoData> physicalInfo();
 
@@ -140,7 +140,10 @@ abstract class Repository {
   NetworkResult<PackageItem> getPackagePayment();
 
   NetworkResult<Price?> checkCoupon(Price price);
+
   NetworkResult<Payment> setPaymentType(Payment payment);
+
+  ImperativeNetworkResult nextStep();
 }
 
 class _RepositoryImpl extends Repository {
@@ -442,8 +445,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<BodyStatus> getStatus(BodyStatus body) {
-    var response = _apiClient.getStatus(body);
+  NetworkResult<BodyStatus> getStatus() {
+    var response = _apiClient.getStatus();
     return response;
   }
 
@@ -540,6 +543,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Payment> setPaymentType(Payment payment) {
     var response = _apiClient.selectPayment(payment);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult nextStep() {
+    var response = _apiClient.nextStep();
     return response;
   }
 }

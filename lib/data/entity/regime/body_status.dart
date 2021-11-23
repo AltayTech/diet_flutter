@@ -4,23 +4,23 @@ part 'body_status.g.dart';
 @JsonSerializable()
 class BodyStatus {
   @JsonKey(name: "bmi")
-  var bmi;
+  double? bmi;
   @JsonKey(name: "bmi_status")
   int? bmiStatus;
   @JsonKey(name: "is_pregnancy")
   int? isPregnancy;
   @JsonKey(name: "pregnancy_ideal_weight")
-  var pregnancyWeight;
+  double? pregnancyWeight;
   @JsonKey(name: "pregnancy_weight_diff")
-  var pregnancyWeightDiff;
+  double? pregnancyWeightDiff;
   @JsonKey(name: "days_till_childbirth")
   int? daysTillChildbirth;
   @JsonKey(name: "allowed_weeks_num")
   int? allowedWeeksNum;
   @JsonKey(name: "normal_weight")
-  var normalWeight;
+  double? normalWeight;
   @JsonKey(name: "weight_difference")
-  var weightDifference;
+  double? weightDifference;
   @JsonKey(name: "diet_days")
   int? dietDays;
 

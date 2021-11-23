@@ -7,15 +7,15 @@ part of 'body_status.dart';
 // **************************************************************************
 
 BodyStatus _$BodyStatusFromJson(Map<String, dynamic> json) => BodyStatus()
-  ..bmi = json['bmi']
+  ..bmi = (json['bmi'] as num?)?.toDouble()
   ..bmiStatus = json['bmi_status'] as int?
   ..isPregnancy = json['is_pregnancy'] as int?
-  ..pregnancyWeight = json['pregnancy_ideal_weight']
-  ..pregnancyWeightDiff = json['pregnancy_weight_diff']
+  ..pregnancyWeight = (json['pregnancy_ideal_weight'] as num?)?.toDouble()
+  ..pregnancyWeightDiff = (json['pregnancy_weight_diff'] as num?)?.toDouble()
   ..daysTillChildbirth = json['days_till_childbirth'] as int?
   ..allowedWeeksNum = json['allowed_weeks_num'] as int?
-  ..normalWeight = json['normal_weight']
-  ..weightDifference = json['weight_difference']
+  ..normalWeight = (json['normal_weight'] as num?)?.toDouble()
+  ..weightDifference = (json['weight_difference'] as num?)?.toDouble()
   ..dietDays = json['diet_days'] as int?;
 
 Map<String, dynamic> _$BodyStatusToJson(BodyStatus instance) =>

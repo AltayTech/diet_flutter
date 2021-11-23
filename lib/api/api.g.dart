@@ -251,12 +251,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<BodyStatus>> getStatus(body) async {
+  Future<NetworkResponse<BodyStatus>> getStatus() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<BodyStatus>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
@@ -979,6 +978,25 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<Payment>.fromJson(
       _result.data!,
       (json) => Payment.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<dynamic>> nextStep() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<dynamic>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/next-step',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
     );
     return value;
   }

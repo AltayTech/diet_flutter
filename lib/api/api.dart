@@ -82,7 +82,7 @@ abstract class RestClient {
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
 
   @GET("/body-status")
-  NetworkResult<BodyStatus> getStatus(@Body() BodyStatus body);
+  NetworkResult<BodyStatus> getStatus();
 
   @GET("/user/menu?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);
@@ -198,4 +198,8 @@ abstract class RestClient {
 
   @POST("/payment")
   NetworkResult<Payment> selectPayment(@Body() Payment payment);
+
+  @GET("/next-step")
+  ImperativeNetworkResult nextStep();
+
 }

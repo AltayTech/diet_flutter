@@ -29,7 +29,7 @@ abstract class Routes {
   static const newTicketMessage = '/ticket/message/new';
   static const detailsTicketMessage = '/ticket/details';
   static const bodyState = '/reg/size';
-  static const bodyStatus = '/bodyStatus';
+  static const bodyStatus = '/reg/report';
   static const sickness = '/reg/sick/select';
   static const special_sickness = '/reg/special';
   static const advice = '/list/notice';

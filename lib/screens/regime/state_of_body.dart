@@ -57,11 +57,10 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   void listenBloc() {
     regimeBloc.navigateToVerify.listen((event) {
-      if ((event as bool)) {
-        VxNavigator.of(context).push(
-          Uri.parse(Routes.pass),
-        );
-      }
+      Navigator.of(context).pop();
+      VxNavigator.of(context).push(
+        Uri.parse('/${event}'),
+      );
     });
     regimeBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
@@ -115,7 +114,10 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                     AppColors.btnColor,
                     intl.confirmContinue,
                     Size(100.w, 8.h),
-                    () => regimeBloc.sendInfo(body!),
+                    () {
+                      DialogUtils.showDialogProgress(context: context);
+                      regimeBloc.sendInfo(body!);
+                    } ,
                   ),
                 Space(height: 2.h),
               ],
