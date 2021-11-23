@@ -13,7 +13,7 @@ Widget button(Color btnColor,String txt,Size size,Function press){
               RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   side: BorderSide(color: btnColor)))),
-      child: Text(txt,style: TextStyle(fontSize: 20.0),),
+      child: Text(txt,style: TextStyle(fontSize: 20.0)),
       onPressed: () => press.call()
   );
 }

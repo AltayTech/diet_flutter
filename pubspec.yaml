@@ -96,6 +96,7 @@ flutter:
     - assets/images/foodlist/share/
     - assets/images/psychology/
     - assets/images/vitrin/
+    - assets/images/foodlist/archive/
   fonts:
     - family: Iransans
       fonts:

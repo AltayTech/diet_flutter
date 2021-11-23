@@ -260,6 +260,16 @@
   "seeTime": "برای مشاهده زمان های قابل رزرو، یک تاریخ از تقویم بالا انتخاب کنید",
   "thereIsNotTime": "زمان های مشاوره این روز رزرو شده",
   "sessionReserve": "رزرو جلسه روانشناسی",
+  "min": "دقیقه",
+  "currency": "تومان",
+  "selectYourPhoneSession": "ساعت مشاوره تلفنی خود را انتخاب کنید:",
+  "sessionDuration": "مدت زمان مشاوره",
+  "time": "زمان",
+  "date": "تاریخ",
+  "price": "مبلغ",
+  "reserveThisTime": "همین ساعت رو رزرو کن",
+  "iDoNot": "نه نمیخوام",
+  "showFirstFreeTime": "اولین ساعت آزاد رو نشونم بده",
 
   "understand": "متوجه شدم"
 }

@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:shamsi_date/shamsi_date.dart';
 
 abstract class DateTimeUtils {
@@ -34,6 +36,20 @@ abstract class DateTimeUtils {
     Gregorian g = Gregorian(int.parse(data[0]), int.parse(data[1]), int.parse(data[2]));
     final f = g.toJalali().formatter;
     return '${f.yyyy}/${f.mm}/${f.dd}';
+  }
+
+  static String dateToNamesOfDay(String date) {
+    List<String> data = date.replaceAll('-', '/').substring(0, 10).split('/');
+    Gregorian g = Gregorian(int.parse(data[0]), int.parse(data[1]), int.parse(data[2]));
+    final f = g.toJalali().formatter;
+    return '${f.wN}';
+  }
+
+  static String dateToDetail(String date) {
+    List<String> data = date.replaceAll('-', ' ').substring(0, 10).split(' ');
+    Jalali g = Jalali(int.parse(data[0]), int.parse(data[1]), int.parse(data[2]));
+    final f = g.formatter;
+    return '${f.d} ${f.mN} ${f.y}';
   }
 
   static String getTime(String date) {

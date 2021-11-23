@@ -762,7 +762,7 @@ class _RestClient implements RestClient {
         NetworkResponse<CalenderOutput>>(Options(
             method: 'GET', headers: _headers, extra: _extra)
         .compose(_dio.options,
-            '/psychology/psychology/v2/dates/list?start_date=$startDate&end_date=$endDate',
+            '/psychology/v2/dates/list?start_date=$startDate&end_date=$endDate',
             queryParameters: queryParameters, data: _data)
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<CalenderOutput>.fromJson(

@@ -9,6 +9,7 @@ class SelectedTime {
   int? price;
   int? packageId;
   int? duration;
+  String? role;
 
   SelectedTime({
     required this.adviserName,
@@ -19,5 +20,6 @@ class SelectedTime {
     required this.price,
     required this.packageId,
     required this.duration,
+    required this.role,
   });
 }
