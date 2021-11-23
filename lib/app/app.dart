@@ -15,6 +15,7 @@ import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/advice/advice.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
+import 'package:behandam/screens/payment/debit_card.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
@@ -163,7 +164,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: FoodListPage()),
+    '/': (_, __) => MaterialPage(child: DebitCardPage()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -193,6 +194,7 @@ final navigator = VxNavigator(
     Routes.special_sickness: (_, __) => MaterialPage(child: SicknessSpecialScreen()),
     Routes.advice: (_, __) => MaterialPage(child: AdvicePage()),
     Routes.package: (_, __) => MaterialPage(child: PackageListScreen()),
+    Routes.cardToCard: (_, __) => MaterialPage(child: DebitCardPage()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

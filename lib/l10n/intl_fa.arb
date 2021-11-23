@@ -324,5 +324,48 @@
   "free": "رایگان",
   "differentPackages": "پکیج ها چه تفاوتی با هم دارن؟",
   "understand": "متوجه شدم",
+  "paymentCardToCard": "پرداخت کارت به کارت",
+  "depositTheAmount": "مبلغ {amount} تومان از طریق عابربانک یا اپ های بانکی به شماره کارت زیر واریز کنید.",
+  "@depositTheAmount": {
+      "placeholders": {
+        "amount": {
+          "type": "String"
+        }
+      }
+   },
+  "inNameOf": "به نام {name}",
+  "@inNameOf": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "share": "به اشتراک بگذار",
+  "copy": "کپی کن",
+  "debitCardInfo": "شماره کارت {cardNumber} \n به نام {ownerName} \n مبلغ {amount} تومان",
+  "@debitCardInfo": {
+      "placeholders": {
+        "cardNumber": {
+          "type": "String"
+        },
+        "ownerName": {
+          "type": "String"
+        },
+        "amount": {
+          "type": "String"
+        }
+      }
+  },
+  "copied": "کپی شد",
+  "clickFollowingButtonAfterPayment": "بعد از واریز دکمه زیر رو بزنید",
+  "deposited": "واریز کردم",
+  "nowFillFollowingInformation": "حالا با دقت اطلاعات زیر رو پر کن",
+  "accountOwnerName": "نام صاحب حساب",
+  "fourLastNumberOfCard": "۴ رقم آخر شماره کارت",
+  "nameOfWhoPayed": "نام صاحب کارتی که با آن پرداخت رو انجام دادی",
+  "fourLastCardNumberOfWhoPayed": "۴ رقم آخر کارتی که با آن پرداخت رو انجام دادی",
+  "submitOfflinePayment": "ثبت اطلاعات پرداخت",
+  "paymentDate": "تاریخ پرداخت",
   "arabic": "العربية"
 }

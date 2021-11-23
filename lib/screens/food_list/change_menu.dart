@@ -136,6 +136,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               close(),
