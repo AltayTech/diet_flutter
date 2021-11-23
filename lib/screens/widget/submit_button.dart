@@ -1,3 +1,5 @@
+import 'package:behandam/app/bloc.dart';
+import 'package:behandam/app/provider.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ class SubmitButton extends StatefulWidget {
   const SubmitButton({Key? key, required this.label, required this.onTap}) : super(key: key);
 
   final String label;
-  final Function onTap;
+  final void Function()? onTap;
   // final Icon icon,
 
   @override
@@ -15,13 +17,15 @@ class SubmitButton extends StatefulWidget {
 }
 
 class _SubmitButtonState extends ResourcefulState<SubmitButton> {
+  late AppBloc appBloc;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    appBloc = AppProvider.of(context);
 
     return ElevatedButton.icon(
-      onPressed: () => widget.onTap.call(),
+      onPressed: widget.onTap,
       icon: Icon(Icons.circle),
       label: Text(
         widget.label,

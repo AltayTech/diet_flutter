@@ -8,6 +8,7 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -189,5 +190,11 @@ abstract class RestClient {
 
   @PATCH("/condition")
   NetworkResult<PackageItem> condition(PackageItem packageItem);
+
+  @GET("/latest-invoice")
+  NetworkResult<LatestInvoiceData> latestInvoice();
+
+  @PATCH("/latest-invoice")
+  NetworkResult<LatestInvoiceData> newPayment(@Body() LatestInvoiceData requestData);
 }
 
