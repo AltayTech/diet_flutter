@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/screens/ticket/ticket_bloc.dart';
 import 'package:behandam/screens/ticket/ticket_provider.dart';
 import 'package:behandam/screens/ticket/ticket_type_button.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
@@ -170,9 +171,8 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                               if (snapshot.data == null || snapshot.data == false)
                                 return Padding(
                                     padding: EdgeInsets.only(left: 12, right: 12),
-                                    child: MaterialButton(
-                                      onPressed: () {
-                                        print('onChanged = > ${bloc.isFile}');
+                                    child: SubmitButton(
+                                      onTap: () {
                                         if (bloc.isFile == true) {
                                           bloc.sendTicketFile();
                                         } else if (bloc.sendTicketMessage.title != null &&
@@ -187,10 +187,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                         } else
                                           Utils.getSnackbarMessage(context, intl.errorFillItem);
                                       },
-                                      child: Text(
-                                        'ارسال پیام',
-                                        style: Theme.of(context).textTheme.caption,
-                                      ),
+                                      label: intl.sendMessage,
                                     ));
                               else {
                                 return Center(

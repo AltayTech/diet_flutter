@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
@@ -77,7 +78,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                 height: 15.h)
                             : ImageUtils.fromLocal('assets/images/physical_report/banner.svg',
                                 height: 15.h),
-                        button(AppColors.btnColor, intl.confirmContinue, Size(100.w, 8.h), () {
+                        SubmitButton(label:intl.confirmContinue,onTap: () {
                           DialogUtils.showDialogProgress(context: context);
                           regimeBloc.nextStep();
                         }),

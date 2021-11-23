@@ -3,6 +3,7 @@ import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
 import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
@@ -86,12 +87,12 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                 ctx: context,
                                 textDirection: context.textDirectionOfLocale),
                             Space(height: 2.h),
-                            MaterialButton(
-                              onPressed: () {
+                            SubmitButton(
+                              onTap: () {
                                 DialogUtils.showDialogProgress(context: context);
                                 sicknessBloc.sendSickness();
                               },
-                              child: Text(intl.confirmContinue),
+                              label: intl.confirmContinue,
                             )
                           ],
                         );

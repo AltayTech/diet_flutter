@@ -3,6 +3,7 @@ import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
 import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
@@ -78,12 +79,12 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
                                     ));
                               }),
                             Space(height: 2.h),
-                            MaterialButton(
-                              onPressed: () {
+                            SubmitButton(
+                              onTap: () {
                                 DialogUtils.showDialogProgress(context: context);
                                 sicknessBloc.sendSicknessSpecial();
                               },
-                              child: Text(intl.confirmContinue),
+                              label:intl.confirmContinue,
                             )
                           ],
                         );

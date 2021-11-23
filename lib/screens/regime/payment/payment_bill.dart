@@ -6,6 +6,7 @@ import 'package:behandam/screens/regime/payment/discount_widget.dart';
 import 'package:behandam/screens/regime/payment/payment_bloc.dart';
 import 'package:behandam/screens/regime/payment/payment_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -133,12 +134,12 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
               _paymentBox(),
               StreamBuilder(
                 builder: (context, snapshot) {
-                  return MaterialButton(
-                    onPressed: () {
+                  return SubmitButton(
+                    onTap: () {
                       DialogUtils.showDialogProgress(context: context);
                       bloc.selectUserPayment();
                     },
-                    child: Text(bloc.isOnline ? intl.onlinePayment : intl.cardToCardPayment),
+                    label: bloc.isOnline ? intl.onlinePayment : intl.cardToCardPayment,
                   );
                 },
                 stream: bloc.onlineStream,
