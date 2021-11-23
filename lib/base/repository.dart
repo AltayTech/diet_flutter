@@ -8,6 +8,7 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/regime/payment.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -136,6 +137,7 @@ abstract class Repository {
   NetworkResult<PackageItem> getPackagePayment();
 
   NetworkResult<Price?> checkCoupon(Price price);
+  NetworkResult<Payment> setPaymentType(Payment payment);
 }
 
 class _RepositoryImpl extends Repository {
@@ -522,6 +524,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Price?> checkCoupon(Price price) {
     var response = _apiClient.checkCoupon(price);
+    return response;
+  }
+
+  @override
+  NetworkResult<Payment> setPaymentType(Payment payment) {
+    var response = _apiClient.selectPayment(payment);
     return response;
   }
 }

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:behandam/base/live_event.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
@@ -29,6 +28,7 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/regime/payment.dart';
 
 part 'api.g.dart';
 
@@ -191,4 +191,7 @@ abstract class RestClient {
 
   @POST("/check-coupon")
   NetworkResult<Price?> checkCoupon(@Body() Price price);
+
+  @POST("/payment")
+  NetworkResult<Payment> selectPayment(@Body() Payment payment);
 }

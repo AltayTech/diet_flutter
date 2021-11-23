@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/entity/regime/payment.dart';
+import 'package:behandam/utils/device.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PaymentBloc {
@@ -14,6 +16,7 @@ class PaymentBloc {
   final _repository = Repository.getInstance();
 
   late String _path;
+  String? discountCode;
   PackageItem? _packageItem;
   Price? _discountInfo;
 
@@ -62,6 +65,20 @@ class PaymentBloc {
       _packageItem = value.data;
     }).whenComplete(() {
       _waiting.value = false;
+    });
+  }
+
+  void selectUserPayment() {
+    Payment payment = new Payment();
+    payment.originId = Device.get().isIos ? 2 : 3;
+    payment.coupon = discountCode;
+    payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
+        ? 2
+        : isOnline
+            ? 0
+            : 1;
+    _repository.setPaymentType(payment).then((value) {
+      _navigateTo.fire(value);
     });
   }
 

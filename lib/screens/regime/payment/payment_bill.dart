@@ -1,7 +1,11 @@
+import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/regime/payment.dart';
 import 'package:behandam/screens/regime/payment/discount_widget.dart';
 import 'package:behandam/screens/regime/payment/payment_bloc.dart';
 import 'package:behandam/screens/regime/payment/payment_provider.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -39,7 +43,14 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
   void listenBloc() {
     bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
-      context.vxNav.push(Uri.parse('/$event'));
+      Payment? result = (event as NetworkResponse<Payment>).data;
+      if ((event).next != null)
+        context.vxNav.push(Uri.parse('/${(event).next}'));
+      else if (bloc.isOnline) {
+        Utils.launchURL(result!.url!);
+      } else {
+        Utils.getSnackbarMessage(context, event.message!);
+      }
     });
   }
 
@@ -120,11 +131,18 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                 height: 1.h,
               ),
               _paymentBox(),
-
-             StreamBuilder(builder: (context, snapshot) {
-               return  MaterialButton(onPressed: (){},
-                 child: Text(bloc.isOnline ? intl.onlinePayment : intl.cardToCardPayment),);
-             },stream: bloc.onlineStream,),
+              StreamBuilder(
+                builder: (context, snapshot) {
+                  return MaterialButton(
+                    onPressed: () {
+                      DialogUtils.showDialogProgress(context: context);
+                      bloc.selectUserPayment();
+                    },
+                    child: Text(bloc.isOnline ? intl.onlinePayment : intl.cardToCardPayment),
+                  );
+                },
+                stream: bloc.onlineStream,
+              ),
               Space(
                 height: 2.h,
               ),
@@ -273,14 +291,12 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                     'assets/images/bill/online.svg',
                     intl.online,
                     intl.descriptionOnline,
-                        () {
+                    () {
                       bloc.setOnline();
                     },
-                  ),
-                  () {
-                    bloc.setOnline();
-                  },
-                  bloc.isOnline);
+                  ), () {
+                bloc.setOnline();
+              }, bloc.isOnline);
             },
             stream: bloc.onlineStream,
           ),
@@ -292,9 +308,9 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                   'assets/images/bill/credit.svg',
                   intl.cardToCard,
                   intl.descriptionCardToCard,
-                        () {
-                      bloc.setCardToCard();
-                    },
+                  () {
+                    bloc.setCardToCard();
+                  },
                 ),
                 () {
                   bloc.setCardToCard();
@@ -348,7 +364,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
 
   Widget paymentItem(String iconAdrs, String title, String subTitle, Function selectPaymentType) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         selectPaymentType();
       },
       child: Stack(
@@ -435,9 +451,9 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
 
   @override
   void onShowMessage(String value) {
-    print('onShowMessage = > ${value}');
-    setState(() {
-      messageError = value;
-    });
+    if (bloc.isWrongDisCode)
+      setState(() {
+        messageError = value;
+      });
   }
 }

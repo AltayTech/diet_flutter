@@ -17,7 +17,7 @@ class DiscountWidget extends StatefulWidget {
 
 class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
   late PaymentBloc bloc;
-  String? inputDiscountCode;
+
 
   @override
   void initState() {
@@ -110,9 +110,9 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
                               textDirection: context.textDirectionOfLocale,
                               child: TextFormField(
                                 decoration: textFieldDecoration(),
-                                initialValue: inputDiscountCode ?? null,
+                                initialValue: bloc.discountCode ?? null,
                                 onChanged: (value) {
-                                  inputDiscountCode = value;
+                                  bloc.discountCode = value;
                                   bloc.changeDiscountLoading(false);
                                   bloc.changeWrongDisCode(false);
                                 },
@@ -202,15 +202,15 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
 
   Widget submitDiscountBtn() {
     return GestureDetector(
-      onTap: (inputDiscountCode == null || inputDiscountCode!.isEmpty)
+      onTap: (bloc.discountCode == null || bloc.discountCode!.isEmpty)
           ? null
           : () {
-              bloc.checkCode(inputDiscountCode!);
+              bloc.checkCode(bloc.discountCode!);
             },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: inputDiscountCode == null || inputDiscountCode!.isEmpty
+          color: bloc.discountCode == null || bloc.discountCode!.isEmpty
               ? Colors.grey[400]
               : bloc.isWrongDisCode
                   ? Colors.white

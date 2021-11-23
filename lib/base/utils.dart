@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
   static void getSnackbarMessage(BuildContext context, String message) {
@@ -97,5 +98,22 @@ class Utils {
 
   static Color getColorPackagePrice(int index) {
     return AppColors.colorPackages[index % 2]['priceColor']!;
+  }
+
+  static void launchURL(String url) async {
+    // url = Uri.encodeFull(url).toString();
+    if (await canLaunch(url)) {
+      print('can launch');
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        enableJavaScript: true,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      // throw 'Could not launch $url';
+      print('url lanuch error');
+    }
   }
 }
