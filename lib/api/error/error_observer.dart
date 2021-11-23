@@ -9,6 +9,8 @@ abstract class DioErrorListener {
 
   /// When any dialog needed to retry loading page is closed
   void onRetryLoadingPage();
+
+  void onShowMessage(String value);
 }
 
 class DioErrorObserver {
@@ -35,6 +37,12 @@ class DioErrorObserver {
   void retryForInternetConnectivity() {
     _listeners.forEach((element) {
       element.onRetryAfterNoInternet();
+    });
+  }
+
+  void showMessage(String message) {
+    _listeners.forEach((element) {
+      element.onShowMessage(message);
     });
   }
 

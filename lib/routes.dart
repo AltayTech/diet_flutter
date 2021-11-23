@@ -34,6 +34,7 @@ abstract class Routes {
   static const special_sickness = '/reg/special';
   static const advice = '/list/notice';
   static const package = '/reg/package';
+  static const paymentBill = '/reg/payment/bill';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

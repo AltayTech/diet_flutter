@@ -47,8 +47,14 @@ class Price {
   String? currencyName;
   @JsonKey(name: "price")
   int? price;
+  @JsonKey(name: "discount")
+  int? discount;
+  @JsonKey(name: "code")
+  String? code;
   @JsonKey(name: "final_price")
   int? finalPrice;
+
+  int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
 
   Price();
 

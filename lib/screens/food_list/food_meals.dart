@@ -515,4 +515,8 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
   //   }
   //   return widgets;
   // }
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

@@ -8,10 +8,10 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
@@ -20,7 +20,6 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -30,6 +29,7 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/regime/payment.dart';
 
 part 'api.g.dart';
 
@@ -188,6 +188,14 @@ abstract class RestClient {
   NetworkResult<PackageItem> getPackages();
 
   @PATCH("/condition")
-  NetworkResult<PackageItem> condition(PackageItem packageItem);
-}
+  NetworkResult<PackageItem> condition(@Body() PackageItem packageItem);
 
+  @GET("/user/package")
+  NetworkResult<PackageItem> getPackageUser();
+
+  @POST("/check-coupon")
+  NetworkResult<Price?> checkCoupon(@Body() Price price);
+
+  @POST("/payment")
+  NetworkResult<Payment> selectPayment(@Body() Payment payment);
+}
