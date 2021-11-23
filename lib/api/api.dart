@@ -13,6 +13,7 @@ import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
@@ -21,7 +22,6 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -31,6 +31,7 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/regime/payment.dart';
 
 part 'api.g.dart';
 
@@ -83,7 +84,7 @@ abstract class RestClient {
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
 
   @GET("/body-status")
-  NetworkResult<BodyStatus> getStatus(@Body() BodyStatus body);
+  NetworkResult<BodyStatus> getStatus();
 
   @GET("/user/menu?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);
@@ -189,7 +190,19 @@ abstract class RestClient {
   NetworkResult<PackageItem> getPackages();
 
   @PATCH("/condition")
-  NetworkResult<PackageItem> condition(PackageItem packageItem);
+  NetworkResult<PackageItem> condition(@Body() PackageItem packageItem);
+
+  @GET("/user/package")
+  NetworkResult<PackageItem> getPackageUser();
+
+  @POST("/check-coupon")
+  NetworkResult<Price?> checkCoupon(@Body() Price price);
+
+  @POST("/payment")
+  NetworkResult<Payment> selectPayment(@Body() Payment payment);
+
+  @GET("/next-step")
+  ImperativeNetworkResult nextStep();
 
   @GET("/latest-invoice")
   NetworkResult<LatestInvoiceData> latestInvoice();
@@ -197,4 +210,3 @@ abstract class RestClient {
   @PATCH("/latest-invoice")
   NetworkResult<LatestInvoiceData> newPayment(@Body() LatestInvoiceData requestData);
 }
-

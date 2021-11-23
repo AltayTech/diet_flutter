@@ -9,6 +9,7 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/regime/payment.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
@@ -119,7 +120,7 @@ abstract class Repository {
 
   ImperativeNetworkResult deleteRequestCall(int Id);
 
-  NetworkResult<BodyStatus> getStatus(BodyStatus body);
+  NetworkResult<BodyStatus> getStatus();
 
   NetworkResult<PhysicalInfoData> physicalInfo();
 
@@ -136,6 +137,14 @@ abstract class Repository {
   NetworkResult<PackageItem> getPackagesList();
 
   ImperativeNetworkResult setCondition(PackageItem packageItem);
+
+  NetworkResult<PackageItem> getPackagePayment();
+
+  NetworkResult<Price?> checkCoupon(Price price);
+
+  NetworkResult<Payment> setPaymentType(Payment payment);
+
+  ImperativeNetworkResult nextStep();
 
   NetworkResult<LatestInvoiceData> latestInvoice();
 
@@ -441,8 +450,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<BodyStatus> getStatus(BodyStatus body) {
-    var response = _apiClient.getStatus(body);
+  NetworkResult<BodyStatus> getStatus() {
+    var response = _apiClient.getStatus();
     return response;
   }
 
@@ -521,6 +530,30 @@ class _RepositoryImpl extends Repository {
   ImperativeNetworkResult setCondition(PackageItem packageItem) {
     packageItem.package_id = packageItem.id;
     var response = _apiClient.condition(packageItem);
+    return response;
+  }
+
+  @override
+  NetworkResult<PackageItem> getPackagePayment() {
+    var response = _apiClient.getPackageUser();
+    return response;
+  }
+
+  @override
+  NetworkResult<Price?> checkCoupon(Price price) {
+    var response = _apiClient.checkCoupon(price);
+    return response;
+  }
+
+  @override
+  NetworkResult<Payment> setPaymentType(Payment payment) {
+    var response = _apiClient.selectPayment(payment);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult nextStep() {
+    var response = _apiClient.nextStep();
     return response;
   }
 

@@ -186,4 +186,8 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

@@ -205,4 +205,9 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

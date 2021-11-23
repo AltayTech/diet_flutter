@@ -418,4 +418,9 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

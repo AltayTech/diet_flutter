@@ -125,4 +125,8 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

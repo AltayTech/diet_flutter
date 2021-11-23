@@ -41,11 +41,15 @@ Map<String, dynamic> _$PackageItemToJson(PackageItem instance) =>
 Price _$PriceFromJson(Map<String, dynamic> json) => Price()
   ..currencyName = json['currency_name'] as String?
   ..price = json['price'] as int?
+  ..discount = json['discount'] as int?
+  ..code = json['code'] as String?
   ..finalPrice = json['final_price'] as int?;
 
 Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
       'currency_name': instance.currencyName,
       'price': instance.price,
+      'discount': instance.discount,
+      'code': instance.code,
       'final_price': instance.finalPrice,
     };
 

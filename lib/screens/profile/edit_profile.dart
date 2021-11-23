@@ -1,11 +1,9 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
-import 'package:behandam/screens/widget/custom_curve.dart';
-import 'package:behandam/screens/widget/bottom_nav.dart';
-import 'package:behandam/screens/widget/my_drop_down.dart';
 import 'package:behandam/screens/profile/toolbar_edit_profile.dart';
 import 'package:behandam/screens/profile/user_box.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
@@ -83,11 +81,11 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
           children: [
             ToolbarEditProfile(),
             UserBox(),
-            MaterialButton(
-              onPressed: () {
+            SubmitButton(
+              onTap: () {
                 profileBloc.edit(context);
               },
-              child: Text('ثبت تغییرات'),
+              label: intl.acceptEdit,
             )
           ],
         ),
@@ -109,5 +107,9 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
+  }
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
   }
 }
