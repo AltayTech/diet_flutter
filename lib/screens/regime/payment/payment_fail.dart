@@ -19,15 +19,15 @@ import 'package:sizer/sizer.dart';
 import 'package:persian_number_utility/src/extensions.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class PaymentConfirmScreen extends StatefulWidget {
-  const PaymentConfirmScreen({Key? key}) : super(key: key);
+class PaymentFailScreen extends StatefulWidget {
+  const PaymentFailScreen({Key? key}) : super(key: key);
 
   @override
-  _PaymentConfirmScreenState createState() => _PaymentConfirmScreenState();
+  _PaymentFailScreenState createState() => _PaymentFailScreenState();
 }
 
-class _PaymentConfirmScreenState
-    extends ResourcefulState<PaymentConfirmScreen> {
+class _PaymentFailScreenState
+    extends ResourcefulState<PaymentFailScreen> {
   late PaymentBloc bloc;
 
   @override
@@ -35,7 +35,7 @@ class _PaymentConfirmScreenState
     // TODO: implement initState
     super.initState();
     bloc = PaymentBloc();
-    bloc.getLastInvoice();
+    //bloc.getLastInvoice();
   }
 
   @override
@@ -166,14 +166,12 @@ class _PaymentConfirmScreenState
                           item(
                               intl.amount,
                               bloc.invoice!.amount != null &&
-                                      bloc.invoice!.amount.toString().length >
-                                          0 &&
-                                      bloc.invoice!.amount! > 0
+                                      bloc.invoice!.amount.toString().length > 0
                                   ? double.parse(
                                           bloc.invoice!.amount.toString())
                                       .toStringAsFixed(0)
                                       .seRagham()
-                                  : intl.free,
+                                  : '',
                               true),
                           item(intl.mobile,
                               MemoryApp.userInformation?.mobile ?? '', false),
@@ -215,7 +213,7 @@ class _PaymentConfirmScreenState
       children: [
         Expanded(
           child: Text(
-            show ? (value!.contains(intl.free) ? value :'$value ${intl.toman}') : value ?? '',
+            show ? '$value ${intl.toman}' : value ?? '',
             textDirection: context.textDirectionOfLocale,
             textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.caption!.copyWith(

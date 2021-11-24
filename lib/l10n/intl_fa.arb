@@ -341,5 +341,11 @@
   "acceptEdit": "ثبت تغییرات",
   "paymentSuccess": "پرداخت موفق",
   "paymentSuccessLabel": "پرداخت با موفقیت انجام شد",
+  "paymentInformation": "اطلاعات پرداخت",
+  "refId": "شماره پیگیری",
+  "paymentDate": "تاریخ پرداخت",
+  "amount": "مبلغ",
+  "mobile": "شماره موبایل",
+  "useFromList": "برای استفاده از برنامه غذایی، بقیه مراحل دریافت رژیم رو تکمیل کن",
   "understand": "متوجه شدم"
 }

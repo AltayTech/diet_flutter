@@ -202,4 +202,8 @@ abstract class RestClient {
   @GET("/next-step")
   ImperativeNetworkResult nextStep();
 
+  @GET("/latest-invoice")
+  NetworkResult<Invoice> getLastInvoice();
+
+
 }

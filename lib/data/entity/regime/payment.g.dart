@@ -24,3 +24,24 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'ref_id': instance.ref_id,
       'url': instance.url,
     };
+
+Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice()
+  ..id = json['id'] as int?
+  ..amount = json['amount'] as int?
+  ..refId = json['ref_id'] as String?
+  ..resolved = json['resolved'] as bool?
+  ..payedAt = json['payed_at'] as String?
+  ..success = json['success'] as bool?
+  ..cardNumber = json['card_no'] as String?
+  ..ownerName = json['owner_name'] as String?;
+
+Map<String, dynamic> _$InvoiceToJson(Invoice instance) => <String, dynamic>{
+      'id': instance.id,
+      'amount': instance.amount,
+      'ref_id': instance.refId,
+      'resolved': instance.resolved,
+      'payed_at': instance.payedAt,
+      'success': instance.success,
+      'card_no': instance.cardNumber,
+      'owner_name': instance.ownerName,
+    };

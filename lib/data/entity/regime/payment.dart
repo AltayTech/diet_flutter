@@ -29,3 +29,36 @@ class Payment {
 
   Map<String, dynamic> toJson() => _$PaymentToJson(this);
 }
+
+@JsonSerializable()
+class Invoice {
+  @JsonKey(name: "id")
+  int? id;
+
+  @JsonKey(name: "amount")
+  int? amount;
+
+  @JsonKey(name: "ref_id")
+  String? refId;
+
+  @JsonKey(name: "resolved")
+  bool? resolved;
+
+  @JsonKey(name: "payed_at")
+  String? payedAt;
+
+  @JsonKey(name: "success")
+  bool? success;
+
+  @JsonKey(name: "card_no")
+  String? cardNumber;
+
+  @JsonKey(name: "owner_name")
+  String? ownerName;
+
+  Invoice();
+
+  factory Invoice.fromJson(Map<String, dynamic> json) => _$InvoiceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$InvoiceToJson(this);
+}

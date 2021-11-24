@@ -144,6 +144,8 @@ abstract class Repository {
   NetworkResult<Payment> setPaymentType(Payment payment);
 
   ImperativeNetworkResult nextStep();
+
+  NetworkResult<Invoice> getLastInvoice();
 }
 
 class _RepositoryImpl extends Repository {
@@ -549,6 +551,12 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult nextStep() {
     var response = _apiClient.nextStep();
+    return response;
+  }
+
+  @override
+  NetworkResult<Invoice> getLastInvoice() {
+    var response = _apiClient.getLastInvoice();
     return response;
   }
 }

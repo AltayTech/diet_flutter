@@ -19,8 +19,10 @@ class PaymentBloc {
   String? discountCode;
   PackageItem? _packageItem;
   Price? _discountInfo;
+  Invoice? _invoice;
 
   final _waiting = BehaviorSubject<bool>();
+  final _showInformation = BehaviorSubject<bool>();
   final _online = BehaviorSubject<bool>();
   final _cardToCard = BehaviorSubject<bool>();
   final _wrongDisCode = BehaviorSubject<bool>();
@@ -31,11 +33,15 @@ class PaymentBloc {
 
   String get path => _path;
 
+  Invoice? get invoice => _invoice;
+
   PackageItem? get packageItem => _packageItem;
 
   Price? get discountInfo => _discountInfo;
 
   Stream<bool> get waiting => _waiting.stream;
+
+  Stream<bool> get showInformation => _showInformation.stream;
 
   Stream<bool> get onlineStream => _online.stream;
 
@@ -72,11 +78,12 @@ class PaymentBloc {
     Payment payment = new Payment();
     payment.originId = Device.get().isIos ? 2 : 3;
     payment.coupon = discountCode;
-    payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
-        ? 2
-        : isOnline
-            ? 0
-            : 1;
+    payment.paymentTypeId =
+        (discountInfo != null && discountInfo!.finalPrice == 0)
+            ? 2
+            : isOnline
+                ? 0
+                : 1;
     _repository.setPaymentType(payment).then((value) {
       _navigateTo.fire(value);
     });
@@ -119,6 +126,19 @@ class PaymentBloc {
     _cardToCard.value = true;
   }
 
+  void getLastInvoice() {
+    _waiting.value = true;
+    _repository.getLastInvoice().then((value) {
+      _invoice = value.data;
+      _path = value.next!;
+    }).whenComplete(() => _waiting.value = false);
+  }
+
+  void setShowInformation() {
+    _showInformation.value =
+        _showInformation.valueOrNull == null ? true : !_showInformation.value;
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
@@ -126,6 +146,7 @@ class PaymentBloc {
     _cardToCard.close();
     _online.close();
     _usedDiscount.close();
+    _showInformation.close();
     _wrongDisCode.close();
     _waiting.close();
   }
