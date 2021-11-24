@@ -47,6 +47,7 @@ class AppColors {
   static late Color background;
   static late Color colorTextDepartmentTicket;
   static late Color colorCardGray;
+  static late Color colorTextApp;
   static late Color colorSelectDepartmentTicket;
   static const grey = Color(0xffF5F5F5);
   static const purpleRuler = Color(0xff927DFC);
@@ -94,6 +95,7 @@ class AppColors {
         colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
         labelTextColor = Color(0xff7f7f7f);
         colorCardGray=Color.fromRGBO(245, 245, 245, 1);
+        colorTextApp=Color.fromRGBO(147, 147, 147, 1);
         break;
       case ThemeAppColor.BLUE:
         primary = Color(0xFF0D83DD);

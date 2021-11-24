@@ -44,6 +44,7 @@ abstract class Routes {
   static const PSYPaymentBill = '/PSYPaymentBill';
   // static const PSYPaymentCard = '/PSYPaymentCard';
   static const paymentCardConfirm = '/reg/payment/card/confirm';
+  static const paymentFail = '/reg/payment/online/fail';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/payment/payment_bloc.dart';
 import 'package:behandam/screens/regime/payment/payment_provider.dart';
+import 'package:behandam/screens/widget/pay_diamond.dart';
 
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -26,8 +27,7 @@ class PaymentFailScreen extends StatefulWidget {
   _PaymentFailScreenState createState() => _PaymentFailScreenState();
 }
 
-class _PaymentFailScreenState
-    extends ResourcefulState<PaymentFailScreen> {
+class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
   late PaymentBloc bloc;
 
   @override
@@ -35,7 +35,7 @@ class _PaymentFailScreenState
     // TODO: implement initState
     super.initState();
     bloc = PaymentBloc();
-    //bloc.getLastInvoice();
+    bloc.getLastInvoice();
   }
 
   @override
@@ -43,7 +43,7 @@ class _PaymentFailScreenState
     super.build(context);
     return PaymentProvider(bloc,
         child: Scaffold(
-          appBar: Toolbar(titleBar: intl.paymentSuccess),
+          appBar: Toolbar(titleBar: intl.paymentFail),
           body: StreamBuilder(
             stream: bloc.waiting,
             builder: (context, snapshot) {
@@ -80,7 +80,7 @@ class _PaymentFailScreenState
                 height: 2.h,
               ),
               ImageUtils.fromLocal(
-                'assets/images/bill/success_pay.svg',
+                'assets/images/bill/fail_pay.svg',
                 width: 40.w,
                 height: 50.w,
                 fit: BoxFit.fitHeight,
@@ -91,17 +91,17 @@ class _PaymentFailScreenState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    intl.paymentSuccessLabel,
+                    intl.paymentFailLabel,
                     textAlign: TextAlign.center,
                     softWrap: true,
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
-                        .copyWith(color: AppColors.primaryVariantLight),
+                        .copyWith(color: Color(0xffFE5757)),
                   ),
                   SizedBox(width: 3.w),
                   ImageUtils.fromLocal(
-                    'assets/images/bill/happy_face.svg',
+                    'assets/images/bill/sad_face.svg',
                     width: 7.w,
                     height: 7.w,
                     fit: BoxFit.fill,
@@ -111,8 +111,73 @@ class _PaymentFailScreenState
               Space(
                 height: 2.h,
               ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(245, 245, 245, 1),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 1.5.w,
+                  vertical: 2.h,
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      height: 10.h,
+                    ),
+                    Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      left: 0,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          color: Color.fromARGB(255, 255, 231, 231),
+                          child: Container(
+                            child: ClipPath(
+                              clipper: context.isRtl ? PayDiamond() : PayDiamondEn(),
+                              child: Container(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      bottom: 0,
+                      left: 3.w,
+                      right: 0.2.w,
+                      child: Center(
+                        child: Padding(padding: EdgeInsets.only(right: context.isRtl ? 8.w : 0,left: context.isRtl ? 0: 8.w),child: Text(
+                          bloc.invoice?.note ?? intl.failForAdmin,
+                          textAlign: TextAlign.center,softWrap: true,
+                          textDirection: context.textDirectionOfLocale,
+                          style: Theme.of(context).textTheme.caption!.copyWith(color: AppColors.colorTextApp),
+                        ),),
+                      ),
+                    ),
+                    Positioned(
+                      right: 10,
+                      top: 10,
+                      bottom: 10,
+                      child: Center(
+                        child: ImageUtils.fromLocal(
+                          'assets/images/bill/idea.svg',
+                          fit: BoxFit.cover,
+                          width: 0.08.w,
+                          height: 0.08.w,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Space(height: 3.h),
               Directionality(
-                textDirection: context.textDirectionOfLocaleInversed,
+                textDirection: context.textDirectionOfLocale,
                 child: FlatButton.icon(
                   padding: EdgeInsets.symmetric(
                     vertical: 3.h,
@@ -122,84 +187,42 @@ class _PaymentFailScreenState
                       borderRadius: BorderRadius.circular(50),
                       side: BorderSide(
                         color: Color.fromRGBO(178, 178, 178, 1),
-                        width: 0.2.w,
+                        width: 0.25.w,
                       )),
                   onPressed: () {
-                    bloc.setShowInformation();
+                    /* String nextRoute;
+                    switch(widget.routeName.substring(1, widget.routeName.length).split('/').first){
+                      case 'reg':
+                        nextRoute = RegPaymentBill.routeName;
+                        break;
+                      case 'renew':
+                        nextRoute = RenewPaymentBill.routeName;
+                        break;
+                      case 'revive':
+                        nextRoute = RevivePaymentBill.routeName;
+                        break;
+                    }
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        nextRoute,
+                            (route) => false);*/
+//                        showLoaderDialog(context, SizeConfig.blockSizeHorizontal);
+//                        future = setCreditInfo();
                   },
-                  icon: ImageUtils.fromLocal(
-                    'assets/images/bill/info.svg',
-                    width: 7.w,
-                    height: 7.w,
+                  icon: Icon(
+                    Icons.refresh,
+                    size: 7.w,
+                    color: Color.fromRGBO(178, 178, 178, 1),
                   ),
                   label: Text(
-                    intl.paymentInformation,
+                    'دوباره تلاش کنید',
                     textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.caption,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button!
+                        .copyWith(color: AppColors.labelTextColor),
                   ),
                 ),
               ),
-              Space(height: 2.h),
-              StreamBuilder(
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data == true) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(245, 245, 245, 1),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 1.5.w,
-                        vertical: 2.h,
-                      ),
-                      child: Column(
-                        children: [
-                          item(intl.refId, bloc.invoice!.refId ?? '', false),
-                          item(
-                              intl.paymentDate,
-                              bloc.invoice!.payedAt != null &&
-                                      bloc.invoice!.payedAt!.length > 0
-                                  ? DateTimeUtils.gregorianToJalaliYMD(
-                                      bloc.invoice!.payedAt!)
-                                  : '',
-                              false),
-                          item(
-                              intl.amount,
-                              bloc.invoice!.amount != null &&
-                                      bloc.invoice!.amount.toString().length > 0
-                                  ? double.parse(
-                                          bloc.invoice!.amount.toString())
-                                      .toStringAsFixed(0)
-                                      .seRagham()
-                                  : '',
-                              true),
-                          item(intl.mobile,
-                              MemoryApp.userInformation?.mobile ?? '', false),
-                        ],
-                      ),
-                    );
-                  } else
-                    return Container();
-                },
-                stream: bloc.showInformation,
-              ),
-              Space(height: 3.h),
-              Text(
-                intl.useFromList,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .caption!
-                    .copyWith(color: AppColors.labelTextColor),
-              ),
-              Space(height: 3.h),
-              SubmitButton(
-                  label: intl.confirmContinue,
-                  onTap: () {
-                    VxNavigator.of(context)
-                        .clearAndPush(Uri.parse('/${bloc.path}'));
-                  })
             ],
           ),
         ),
