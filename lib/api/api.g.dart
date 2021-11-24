@@ -212,11 +212,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> getPath(id) async {
+  Future<NetworkResponse<dynamic>> getPath(regimeType) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = id;
+    final _data = <String, dynamic>{};
+    _data.addAll(regimeType.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)

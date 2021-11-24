@@ -1,19 +1,18 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class PaymentBillScreen extends StatefulWidget {
-  const PaymentBillScreen({Key? key}) : super(key: key);
+class PaymentBillPsyScreen extends StatefulWidget {
+  const PaymentBillPsyScreen({Key? key}) : super(key: key);
 
   @override
-  _PaymentBillScreenState createState() => _PaymentBillScreenState();
+  _PaymentBillPsyScreenState createState() => _PaymentBillPsyScreenState();
 }
 
-class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
+class _PaymentBillPsyScreenState extends ResourcefulState<PaymentBillPsyScreen> {
   var args;
   @override
   Widget build(BuildContext context) {

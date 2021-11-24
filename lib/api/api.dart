@@ -80,7 +80,7 @@ abstract class RestClient {
   NetworkResult<Help> helpBodyState(@Path('id') int id);
 
   @PATCH("/condition")
-  NetworkResult getPath(@Body() int id);
+  NetworkResult getPath(@Body() RegimeType regimeType);
 
   @PATCH("/physical-info")
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);

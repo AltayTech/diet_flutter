@@ -136,7 +136,7 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 1.w),
+                  padding: EdgeInsets.symmetric(horizontal: 3.w),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: FittedBox(

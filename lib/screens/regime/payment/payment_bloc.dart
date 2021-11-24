@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
+import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/payment.dart';
 import 'package:behandam/utils/device.dart';
@@ -19,8 +20,10 @@ class PaymentBloc {
   String? discountCode;
   PackageItem? _packageItem;
   Price? _discountInfo;
+  LatestInvoiceData? _invoice;
 
   final _waiting = BehaviorSubject<bool>();
+  final _showInformation = BehaviorSubject<bool>();
   final _online = BehaviorSubject<bool>();
   final _cardToCard = BehaviorSubject<bool>();
   final _wrongDisCode = BehaviorSubject<bool>();
@@ -31,11 +34,15 @@ class PaymentBloc {
 
   String get path => _path;
 
+  LatestInvoiceData? get invoice => _invoice;
+
   PackageItem? get packageItem => _packageItem;
 
   Price? get discountInfo => _discountInfo;
 
   Stream<bool> get waiting => _waiting.stream;
+
+  Stream<bool> get showInformation => _showInformation.stream;
 
   Stream<bool> get onlineStream => _online.stream;
 
@@ -72,11 +79,12 @@ class PaymentBloc {
     Payment payment = new Payment();
     payment.originId = Device.get().isIos ? 2 : 3;
     payment.coupon = discountCode;
-    payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
-        ? 2
-        : isOnline
-            ? 0
-            : 1;
+    payment.paymentTypeId =
+        (discountInfo != null && discountInfo!.finalPrice == 0)
+            ? 2
+            : isOnline
+                ? 0
+                : 1;
     _repository.setPaymentType(payment).then((value) {
       _navigateTo.fire(value);
     });
@@ -96,7 +104,9 @@ class PaymentBloc {
     price.code = val;
     _repository.checkCoupon(price).then((value) {
       _discountInfo = value.data;
+      _packageItem!.price!.finalPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
+      _online.value = true;
     }).catchError((err) {
       _usedDiscount.value = false;
       _wrongDisCode.value = true;
@@ -117,6 +127,19 @@ class PaymentBloc {
     _cardToCard.value = true;
   }
 
+  void getLastInvoice() {
+    _waiting.value = true;
+    _repository.latestInvoice().then((value) {
+      _invoice = value.data;
+      _path = value.next!;
+    }).whenComplete(() => _waiting.value = false);
+  }
+
+  void setShowInformation() {
+    _showInformation.value =
+        _showInformation.valueOrNull == null ? true : !_showInformation.value;
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
@@ -124,6 +147,7 @@ class PaymentBloc {
     _cardToCard.close();
     _online.close();
     _usedDiscount.close();
+    _showInformation.close();
     _wrongDisCode.close();
     _waiting.close();
   }

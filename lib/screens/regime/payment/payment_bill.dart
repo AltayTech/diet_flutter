@@ -118,20 +118,36 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
               Space(
                 height: 3.h,
               ),
-              Center(
-                child: Text(
-                  intl.typePaymentLabel,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6!
-                      .copyWith(color: AppColors.labelTextColor),
-                ),
+              StreamBuilder(
+                builder: (context, snapshot) {
+                  if (bloc.packageItem!.price!.finalPrice! > 0)
+                    return Center(
+                      child: Text(
+                        intl.typePaymentLabel,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: AppColors.labelTextColor),
+                      ),
+                    );
+                  else
+                    return Container();
+                },
+                stream: bloc.onlineStream,
               ),
               Space(
                 height: 1.h,
               ),
-              _paymentBox(),
+              StreamBuilder(
+                builder: (context, snapshot) {
+                  if (bloc.packageItem!.price!.finalPrice! > 0)
+                    return _paymentBox();
+                  else
+                    return Container();
+                },
+                stream: bloc.onlineStream,
+              ),
               StreamBuilder(
                 builder: (context, snapshot) {
                   return SubmitButton(
@@ -139,7 +155,11 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                       DialogUtils.showDialogProgress(context: context);
                       bloc.selectUserPayment();
                     },
-                    label: bloc.isOnline ? intl.onlinePayment : intl.cardToCardPayment,
+                    label: bloc.packageItem!.price!.finalPrice == 0
+                        ? intl.confirmContinue
+                        : bloc.isOnline
+                            ? intl.onlinePayment
+                            : intl.cardToCardPayment,
                   );
                 },
                 stream: bloc.onlineStream,
@@ -225,18 +245,23 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
-                Directionality(
-                  textDirection: context.textDirectionOfLocale,
-                  child: Text(
-                    bloc.packageItem!.price!.price == 0
-                        ? intl.free
-                        : '${bloc.packageItem!.price!.price.toString().seRagham()} ${intl.toman}',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1!
-                        .copyWith(color: AppColors.primary, fontWeight: FontWeight.bold),
-                  ),
+                StreamBuilder(
+                  builder: (context, snapshot) {
+                    return Directionality(
+                      textDirection: context.textDirectionOfLocale,
+                      child: Text(
+                        bloc.packageItem!.price!.finalPrice == 0
+                            ? intl.free
+                            : '${bloc.packageItem!.price!.finalPrice.toString().seRagham()} ${intl.toman}',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(color: AppColors.primary, fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  },
+                  stream: bloc.discountLoading,
                 ),
               ],
             ),

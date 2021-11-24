@@ -4,6 +4,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/advice/advice.dart';
 import 'package:behandam/screens/authentication/code_reset.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/authentication/register.dart';
@@ -12,7 +13,6 @@ import 'package:behandam/screens/calendar/calendar.dart';
 import 'package:behandam/screens/daily_menu/daily_menu.dart';
 import 'package:behandam/screens/daily_menu/list_food.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
-import 'package:behandam/screens/advice/advice.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/payment/debit_card.dart';
@@ -23,12 +23,13 @@ import 'package:behandam/screens/profile/show_item_inbox.dart';
 import 'package:behandam/screens/psy/calender.dart';
 import 'package:behandam/screens/psy/intro.dart';
 import 'package:behandam/screens/psy/payment_bill.dart';
-import 'package:behandam/screens/psy/payment_card.dart';
+
 import 'package:behandam/screens/psy/terms.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/regime/package/package_list.dart';
 import 'package:behandam/screens/regime/payment/payment_bill.dart';
+import 'package:behandam/screens/regime/payment/payment_confirm.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
@@ -171,7 +172,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: PSYCalenderScreen()),
+    '/': (_, __) => MaterialPage(child: PaymentConfirmScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -201,12 +202,14 @@ final navigator = VxNavigator(
     Routes.special_sickness: (_, __) => MaterialPage(child: SicknessSpecialScreen()),
     Routes.advice: (_, __) => MaterialPage(child: AdvicePage()),
     Routes.package: (_, __) => MaterialPage(child: PackageListScreen()),
+    Routes.paymentBill: (_, __) => MaterialPage(child: PaymentBillScreen()),
+    Routes.paymentCardConfirm: (_, __) => MaterialPage(child: PaymentConfirmScreen()),
     Routes.cardToCard: (_, __) => MaterialPage(child: DebitCardPage()),
     Routes.vitrin: (_, __) => MaterialPage(child: VitrinScreen()),
     Routes.PSYIntro: (_, __) => MaterialPage(child: PSYIntroScreen()),
     Routes.PSYCalender: (_, params) => MaterialPage(child: PSYCalenderScreen(), arguments: params),
     Routes.PSYTerms: (_, params) => MaterialPage(child: TermsScreen(), arguments: params),
-    // Routes.PSYPaymentBill: (_, params) => MaterialPage(child: PaymentBillScreen(), arguments: params),
+    Routes.PSYPaymentBill: (_, params) => MaterialPage(child: PaymentBillPsyScreen(), arguments: params),
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(

@@ -338,7 +338,6 @@
   "descriptionOnline": "کلیه بانک های متصل به شتاب",
   "sendMessage": "ارسال پیام",
   "acceptEdit": "ثبت تغییرات",
-  "understand": "متوجه شدم",
   "paymentCardToCard": "پرداخت کارت به کارت",
   "depositTheAmount": "مبلغ {amount} تومان از طریق عابربانک یا اپ های بانکی به شماره کارت زیر واریز کنید.",
   "@depositTheAmount": {
@@ -392,7 +391,6 @@
   "laterDays": "روزهای بعد",
   "seeTime": "برای مشاهده زمان های قابل رزرو، یک تاریخ از تقویم بالا انتخاب کنید",
   "thereIsNotTime": "زمان های مشاوره این روز رزرو شده",
-  "sessionReserve": "رزرو جلسه روانشناسی",
   "min": "دقیقه",
   "currency": "تومان",
   "selectYourPhoneSession": "ساعت مشاوره تلفنی خود را انتخاب کنید:",
@@ -418,6 +416,12 @@
   "cartPay": "پرداخت کارت به کارت",
   "adviserName": "نام مشاور",
   "off": "تخفیف",
-
+  "paymentSuccess": "پرداخت موفق",
+  "paymentSuccessLabel": "پرداخت با موفقیت انجام شد",
+  "paymentInformation": "اطلاعات پرداخت",
+  "refId": "شماره پیگیری",
+  "amount": "مبلغ",
+  "mobile": "شماره موبایل",
+  "useFromList": "برای استفاده از برنامه غذایی، بقیه مراحل دریافت رژیم رو تکمیل کن",
   "understand": "متوجه شدم"
 }
