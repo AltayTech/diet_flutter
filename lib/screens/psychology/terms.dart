@@ -84,7 +84,7 @@ class _TermsScreenState extends ResourcefulState<TermsScreen> {
                   ),
                   SizedBox(height: 2.h),
                   button(AppColors.primaryVariantLight, intl.readRules, Size(70.w,5.h),
-                          ()=> VxNavigator.of(context).push(Uri.parse(Routes.PSYPaymentBill), params: args)),
+                          ()=> VxNavigator.of(context).push(Uri.parse(Routes.psychologyPaymentBill), params: args)),
                 ],
               ),
             ),

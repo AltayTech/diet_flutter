@@ -1,4 +1,4 @@
-import 'package:behandam/data/entity/psy/plan.dart';
+import 'package:behandam/data/entity/psychology/plan.dart';
 
 class SelectedTime {
   String? adviserName;

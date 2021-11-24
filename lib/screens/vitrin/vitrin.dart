@@ -38,7 +38,7 @@ class VitrinScreen extends StatelessWidget {
                       child: ImageUtils.fromLocal('assets/images/vitrin/bmi_banner.jpg',width: 100.w,height: 15.h)),
                   SizedBox(height: 2.h),
                   InkWell(
-                      onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.PSYIntro)),
+                      onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.psychologyIntro)),
                       child: ImageUtils.fromLocal('assets/images/vitrin/psy_banner.png',width: 100.w,height: 15.h)),
                   SizedBox(height: 2.h),
                   InkWell(

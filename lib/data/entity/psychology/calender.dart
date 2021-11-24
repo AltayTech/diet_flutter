@@ -1,6 +1,6 @@
-import 'package:behandam/data/entity/psy/admin.dart';
-import 'package:behandam/data/entity/psy/package.dart';
-import 'package:behandam/data/entity/psy/plan.dart';
+import 'package:behandam/data/entity/psychology/admin.dart';
+import 'package:behandam/data/entity/psychology/package.dart';
+import 'package:behandam/data/entity/psychology/plan.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'calender.g.dart';
 

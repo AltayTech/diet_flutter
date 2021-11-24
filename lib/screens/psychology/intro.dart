@@ -217,7 +217,7 @@ class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
           onPressed: () {
             if(chewieController!.isPlaying)
               chewieController!.pause();
-            VxNavigator.of(context).push(Uri.parse(Routes.PSYCalender));
+            VxNavigator.of(context).push(Uri.parse(Routes.psychologyCalender));
           },
           label: Container(
               width:50.w,

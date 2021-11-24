@@ -8,9 +8,10 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/entity/psy/calender.dart';
+import 'package:behandam/data/entity/psychology/calender.dart';
 // import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
+import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -214,4 +215,7 @@ abstract class RestClient {
 
   @PATCH("/latest-invoice")
   NetworkResult<LatestInvoiceData> newPayment(@Body() LatestInvoiceData requestData);
+
+  @GET("/psychology/v2/booking-histories")
+  NetworkResult<HistoryOutput> getHistory();
 }

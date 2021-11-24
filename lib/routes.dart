@@ -38,11 +38,12 @@ abstract class Routes {
   static const cardToCard = '/reg/payment/card';
   // static const bodyStatus = '/bodyStatus';
   static const vitrin = '/vitrin';
-  static const PSYIntro = '/PSYIntro';
-  static const PSYCalender = '/PSYCalender';
-  static const PSYTerms = '/PSYTerms';
-  static const PSYPaymentBill = '/PSYPaymentBill';
-  // static const PSYPaymentCard = '/PSYPaymentCard';
+  static const psychologyIntro = '/psychologyIntro';
+  static const psychologyCalender = '/psychologyCalender';
+  static const psychologyTerms = '/psychologyTerms';
+  static const psychologyPaymentBill = '/psychologyPaymentBill';
+  // static const psychologyPaymentCard = '/psychologyPaymentCard';
+  static const psychologyReservedMeeting = '/psychologyReservedMeeting';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

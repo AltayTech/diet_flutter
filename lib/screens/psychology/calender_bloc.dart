@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:behandam/const_&_model/selected_time.dart';
-import 'package:behandam/data/entity/psy/admin.dart';
-import 'package:behandam/data/entity/psy/calender.dart';
-import 'package:behandam/data/entity/psy/package.dart';
-import 'package:behandam/data/entity/psy/plan.dart';
+import 'package:behandam/data/entity/psychology/admin.dart';
+import 'package:behandam/data/entity/psychology/calender.dart';
+import 'package:behandam/data/entity/psychology/package.dart';
+import 'package:behandam/data/entity/psychology/plan.dart';
+import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shamsi_date/shamsi_date.dart';
@@ -23,9 +25,10 @@ class CalenderBloc{
   String? start;
   String? end;
   List<SelectedTime>? advisersPerDay = [];
+  List<SelectedTime>? advisersFree = [];
   bool flag1 = false;
   bool flag2 = false;
-  late Jalali _jour;
+  bool? check;
 
   final _disabledClick = BehaviorSubject<bool>();
   final _disabledClickPre = BehaviorSubject<bool>();
@@ -37,6 +40,7 @@ class CalenderBloc{
   List<Package>? _packages;
   final _waiting = BehaviorSubject<bool>();
   final _data = BehaviorSubject<CalenderOutput>();
+  final _meetingDate = BehaviorSubject<List<HistoryOutput>>();
   final _navigateToVerify = LiveEvent();
   final _showServerError = LiveEvent();
 
@@ -52,10 +56,10 @@ class CalenderBloc{
   Stream<bool> get disabledClickPre => _disabledClickPre.stream;
   Stream<Jalali> get daysLater => _daysLater.stream;
   Stream<Jalali> get daysAgo => _daysAgo.stream;
-  Jalali get jour => _jour;
+  Stream<List<HistoryOutput>>? get meetingDate => _meetingDate.stream;
+
 
   void getCalender(Jalali jour) async {
-    _jour = jour;
     _daysLater.value = jour.addDays(10);
     _daysAgo.value = jour.addDays(-10);
     DateTime today = jour.toGregorian().toDateTime();
@@ -65,10 +69,28 @@ class CalenderBloc{
   }
 
   findFirstFreeTime(){
-    for(int i=0; i<10; i++) {
-      DateTime day = jour.toDateTime().add(Duration(days: i));
-      giveInfo( DateTimeUtils.convertToJalali(day));
-    }
+    check = true;
+    var data = _dates?.firstWhere((element) => element.expertPlanning != null && element.expertPlanning!.length > 0);
+    advisersFree!.clear();
+    var expertPlannings =
+        _dates!.firstWhere((element) => element.jDate == data!.jDate).expertPlanning;
+      var admin = _admins!
+          .firstWhere((admin) => admin.adminId == expertPlannings![0].adminId);
+      var package = _packages!
+          .firstWhere((package) => admin.packageId == package.id);
+      advisersFree!.add(SelectedTime(
+        adviserId: expertPlannings![0].id,
+        adviserName: admin.name,
+        adviserImage: admin.image,
+        packageId: admin.packageId,
+        date: data!.jDate,
+        price: package.price!.price,
+        finalPrice: package.price!.finalPrice,
+        duration: package.time,
+        times: expertPlannings[0].dateTimes,
+        role: admin.role,
+      ));
+    return advisersFree;
   }
 
   void calenderMethod(String startDate ,String endDate, Jalali jour) async {
@@ -89,6 +111,7 @@ class CalenderBloc{
 
     });
   }
+
 
   giveInfo(String date) {
     advisersPerDay!.clear();
@@ -117,6 +140,13 @@ class CalenderBloc{
         role: admin.role,
       ));
     }
+
+  }
+
+  void getHistory(){
+    _repository.getHistory().then((value) {
+      _meetingDate.value = value.data!.dates!;
+    });
   }
 
   void dispose() {
