@@ -8,6 +8,8 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/psy/calender.dart';
+// import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
@@ -167,6 +169,9 @@ abstract class RestClient {
 
   @DELETE("/calls/{id}")
   ImperativeNetworkResult deleteCall(@Path('id') int id);
+
+  @GET("/psychology/v2/dates/list?start_date={startDate}&end_date={endDate}")
+  NetworkResult<CalenderOutput> getCalendar(@Path() String? startDate, @Path() String? endDate);
 
   @GET("/physical-info")
   NetworkResult<PhysicalInfoData> physicalInfo();

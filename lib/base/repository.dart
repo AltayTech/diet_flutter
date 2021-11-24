@@ -9,6 +9,8 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/psy/calender.dart';
+// import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/regime/payment.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
@@ -119,6 +121,10 @@ abstract class Repository {
   ImperativeNetworkResult sendRequestCall();
 
   ImperativeNetworkResult deleteRequestCall(int Id);
+
+  // NetworkResult<BodyStatus> getStatus(BodyStatus body);
+
+  NetworkResult<CalenderOutput> getCalendar(String? startDate, String? endDate);
 
   NetworkResult<BodyStatus> getStatus();
 
@@ -452,6 +458,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<BodyStatus> getStatus() {
     var response = _apiClient.getStatus();
+    return response;
+  }
+
+  @override
+  NetworkResult<CalenderOutput> getCalendar(String? startDate, String? endDate) {
+    var response = _apiClient.getCalendar(startDate, endDate);
     return response;
   }
 

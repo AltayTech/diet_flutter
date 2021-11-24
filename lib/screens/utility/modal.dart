@@ -1,5 +1,7 @@
+import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class Popover extends StatelessWidget {
   const Popover({
@@ -33,18 +35,18 @@ class Popover extends StatelessWidget {
   Widget _buildHandle(BuildContext context) {
     final theme = Theme.of(context);
     return FractionallySizedBox(
-      widthFactor: 0.25,
+      // widthFactor: 0.25,
       child: Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 12.0,
-        ),
-        child: Container(
-          height: 5.0,
-          decoration: BoxDecoration(
-            color: theme.dividerColor,
-            borderRadius: const BorderRadius.all(Radius.circular(2.5)),
-          ),
-        ),
+        // margin: const EdgeInsets.symmetric(
+        //   vertical: 16.0,
+        // ),
+        // child: Container(
+        //   height: 5.0,
+        //   decoration: BoxDecoration(
+        //     color: theme.dividerColor,
+        //     borderRadius: const BorderRadius.all(Radius.circular(2.5)),
+        //   ),
+        // ),
       ),
     );
   }

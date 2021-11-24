@@ -769,6 +769,28 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<CalenderOutput>> getCalendar(
+      startDate, endDate) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
+        NetworkResponse<CalenderOutput>>(Options(
+            method: 'GET', headers: _headers, extra: _extra)
+        .compose(_dio.options,
+            '/psychology/v2/dates/list?start_date=$startDate&end_date=$endDate',
+            queryParameters: queryParameters, data: _data)
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<CalenderOutput>.fromJson(
+      _result.data!,
+      (json) => CalenderOutput.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<PhysicalInfoData>> physicalInfo() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

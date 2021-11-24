@@ -37,9 +37,9 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
               navigator.routeManager.clearAndPush(Uri.parse(Routes.regimeType));
             break;
           case BottomNavItem.VITRINE:
-          /* if (title != currentTab)
-              Navigator.pushNamedAndRemoveUntil(context, HealthTools.routeName, (route) => false);
-            break;*/
+           if (widget.currentTab != BottomNavItem.VITRINE)
+             navigator.routeManager.clearAndPush(Uri.parse(Routes.vitrin));
+            break;
           case BottomNavItem.STATUS:
             /*  if (title != currentTab)
               Navigator.pushNamedAndRemoveUntil(context, Status.routeName, (route) => false);*/

@@ -11,8 +11,8 @@ extension LocaleExtensions on Locale {
         return intl.farsi;
       case 'en':
         return intl.english;
-      case 'ar':
-        return intl.arabic;
+      // case 'ar':
+      //   return intl.arabic;
     }
     throw 'Locale with languageCode: ${this.languageCode} not defined';
   }
