@@ -115,6 +115,7 @@ class CalenderBloc{
         packageId: admin.packageId,
         date: date,
         price: package.price!.price,
+        finalPrice: package.price!.finalPrice,
         duration: package.time,
         times: plan.dateTimes,
         role: admin.role,

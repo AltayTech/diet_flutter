@@ -20,6 +20,7 @@ import 'package:behandam/screens/profile/show_item_inbox.dart';
 import 'package:behandam/screens/psy/calender.dart';
 import 'package:behandam/screens/psy/intro.dart';
 import 'package:behandam/screens/psy/payment_bill.dart';
+import 'package:behandam/screens/psy/payment_card.dart';
 import 'package:behandam/screens/psy/terms.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
@@ -167,7 +168,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: ProfileScreen()),
+    '/': (_, __) => MaterialPage(child: PSYCalenderScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -201,6 +202,7 @@ final navigator = VxNavigator(
     Routes.PSYCalender: (_, params) => MaterialPage(child: PSYCalenderScreen(), arguments: params),
     Routes.PSYTerms: (_, params) => MaterialPage(child: TermsScreen(), arguments: params),
     Routes.PSYPaymentBill: (_, params) => MaterialPage(child: PaymentBillScreen(), arguments: params),
+    // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

@@ -34,6 +34,7 @@ abstract class Routes {
   static const PSYCalender = '/PSYCalender';
   static const PSYTerms = '/PSYTerms';
   static const PSYPaymentBill = '/PSYPaymentBill';
+  // static const PSYPaymentCard = '/PSYPaymentCard';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

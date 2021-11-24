@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
@@ -15,6 +16,7 @@ class TermsScreen extends StatefulWidget {
 class _TermsScreenState extends ResourcefulState<TermsScreen> {
   @override
   Widget build(BuildContext context) {
+    var args = ModalRoute.of(context)!.settings.arguments;
     super.build(context);
     return SafeArea(child: Scaffold(
       appBar: AppBar(
@@ -81,7 +83,8 @@ class _TermsScreenState extends ResourcefulState<TermsScreen> {
                     ],
                   ),
                   SizedBox(height: 2.h),
-                  button(AppColors.primaryVariantLight, intl.readRules, Size(70.w,5.h), (){}),
+                  button(AppColors.primaryVariantLight, intl.readRules, Size(70.w,5.h),
+                          ()=> VxNavigator.of(context).push(Uri.parse(Routes.PSYPaymentBill), params: args)),
                 ],
               ),
             ),

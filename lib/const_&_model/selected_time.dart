@@ -7,6 +7,7 @@ class SelectedTime {
   List<Planning>? times;
   String? date;
   int? price;
+  int? finalPrice;
   int? packageId;
   int? duration;
   String? role;
@@ -18,6 +19,7 @@ class SelectedTime {
     required this.times,
     required this.date,
     required this.price,
+    required this.finalPrice,
     required this.packageId,
     required this.duration,
     required this.role,

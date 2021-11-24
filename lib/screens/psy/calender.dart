@@ -101,7 +101,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                               color: AppColors.stableType,
                             ),
                             child: Center(
-                              child: Text("${info[index].price.toString() + intl.currency} ",
+                              child: Text("${info[index].finalPrice.toString() + intl.currency} ",
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       color: AppColors.greenRuler)),
@@ -252,7 +252,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(intl.price, style: TextStyle(fontSize: 12.sp)),
-                    Text("${info.price.toString() + intl.currency} ",
+                    Text("${info.finalPrice.toString() + intl.currency} ",
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w600,
@@ -265,12 +265,14 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                       (){
                         ctx.vxNav.push(Uri.parse(Routes.PSYTerms),
                             params: {
-                            'sessionId': sessionId,
-                            'packageId': info.packageId,
-                            'name': info.adviserName,
-                            'price': info.price,
-                            'day': DateTimeUtils.dateToNamesOfDay(info.date!),
-                            'date': DateTimeUtils.dateToDetail(info.date!),
+                              'sessionId': sessionId,
+                              'packageId': info.packageId,
+                              'name': info.adviserName,
+                              'price': info.price,
+                              'finalPrice': info.finalPrice,
+                              'day': DateTimeUtils.dateToNamesOfDay(info.date!),
+                              'date': DateTimeUtils.dateToDetail(info.date!),
+                              'time': item.startTime.toString().substring(0, 5),
                           });
                       }),
               OutlinedButton(
@@ -453,6 +455,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                             WidgetSpan(
                               child: Icon(Icons.circle, size: 10,color: AppColors.redBar,),
                             ),
+                            TextSpan(text: ' '),
                             TextSpan(text: "${intl.reserve}"),
                           ],
                         ),

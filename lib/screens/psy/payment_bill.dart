@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
@@ -13,8 +14,10 @@ class PaymentBillScreen extends StatefulWidget {
 }
 
 class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
+  var args;
   @override
   Widget build(BuildContext context) {
+    args = ModalRoute.of(context)!.settings.arguments;
     super.build(context);
     return SafeArea(child: Scaffold(
       appBar: AppBar(
@@ -26,7 +29,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(16.0),
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
@@ -36,7 +39,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
               padding: const EdgeInsets.all(12.0),
               child: Column(
                 children: [
-                 Text(intl.attention,style: TextStyle(fontSize: 12.sp)),
+                 Text(intl.factor,style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w600,color: AppColors.penColor)),
                   SizedBox(height: 2.h),
                   Container(
                     decoration: BoxDecoration(
@@ -47,51 +50,77 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                       padding: const EdgeInsets.all(12.0),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Text(''),
-                              Text(''),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12,8,12,0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(intl.adviserName, style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w400,color: AppColors.penColor)),
+                                Text(args!['name'], style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w600,color: AppColors.redBar)),
+                              ],
+                            ),
                           ),
                           line(),
-                          Row(
-                            children: [
-                              Text(''),
-                              Text(''),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12,8,12,0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(intl.day, style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w400,color: AppColors.penColor)),
+                                Text(args!['day'], style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w600,color: AppColors.redBar)),
+                              ],
+                            ),
                           ),
                           line(),
-                          Row(
-                            children: [
-                              Text(''),
-                              Text(''),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12,8,12,0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(intl.time, style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w400,color: AppColors.penColor)),
+                                Text(args!['time'], style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w600,color: AppColors.redBar)),
+                              ],
+                            ),
                           ),
                           line(),
-                          Row(
-                            children: [
-                              Text(''),
-                              Text(''),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12,8,12,0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(intl.date, style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w400,color: AppColors.penColor)),
+                                Text(args!['date'], style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w600,color: AppColors.redBar)),
+                              ],
+                            ),
                           ),
                           line(),
-                          Row(
-                            children: [
-                              Text(''),
-                              Text(''),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12,8,12,0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(intl.off, style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w400,color: AppColors.penColor)),
+                                Text((args!['price'] - args!['finalPrice']).toString(), style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w600,color: AppColors.redBar)),
+                              ],
+                            ),
                           ),
-                          line(),
+                          SizedBox(height: 2.h),
                           Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15.0),
                                 color: Colors.white
                             ),
-                            child: Column(
-                              children: [
-                                Text(''),
-                                Text(''),
-                              ],
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 12.0,bottom: 12.0),
+                                child: Column(
+                                  children: [
+                                    Text(intl.sum,style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w600,color: AppColors.penColor)),
+                                    SizedBox(height: 1.h),
+                                    Text(args!['price'].toString(), style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w600,color: AppColors.redBar)),
+                                  ],
+                                ),
+                              ),
                             ),
                           )
                         ],
@@ -99,7 +128,10 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                     ),
                   ),
                   SizedBox(height: 2.h),
-                  button(AppColors.primaryVariantLight, intl.readRules, Size(70.w,5.h), (){}),
+                  button(AppColors.primaryVariantLight, intl.cartPay, Size(80.w,5.h),
+                      () {}),
+                          // VxNavigator.of(context).push(Uri.parse(Routes.PSYPaymentCard))),
+                  SizedBox(height: 10.h),
                 ],
               ),
             ),
