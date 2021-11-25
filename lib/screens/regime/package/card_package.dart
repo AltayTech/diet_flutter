@@ -100,9 +100,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                               ),
                               if (pack.services != null && pack.services!.length > 0)
                                 ...pack.services!.map((product) =>
-                                    int.parse(product.isActive.toString()) == 1
-                                        ? _itemOption(product.name ?? '', pack.barColor)
-                                        : Container()),
+                                    _itemOption(product.name ?? '', pack.barColor)),
                             ],
                           )),
                     ],

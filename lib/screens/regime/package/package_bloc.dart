@@ -38,7 +38,6 @@ class PackageBloc {
       _list = value.data!.items;
       for (int i = 0; i < _list!.length; i++) {
         _list![i].index = i;
-        _list![i].services!.addAll(_list![i].products!);
       }
     }).whenComplete(() {
       _waiting.value = false;

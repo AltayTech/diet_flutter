@@ -76,18 +76,21 @@ class PaymentBloc {
   }
 
   void selectUserPayment() {
-    Payment payment = new Payment();
-    payment.originId = Device.get().isIos ? 2 : 3;
-    payment.coupon = discountCode;
-    payment.paymentTypeId =
-        (discountInfo != null && discountInfo!.finalPrice == 0)
-            ? 2
-            : isOnline
-                ? 0
-                : 1;
-    _repository.setPaymentType(payment).then((value) {
-      _navigateTo.fire(value);
-    });
+    if (!isUsedDiscount && (discountCode != null && discountCode!.trim().isNotEmpty)) {
+      _showServerError.fireMessage('error');
+    } else {
+      Payment payment = new Payment();
+      payment.originId = Device.get().isIos ? 2 : 3;
+      payment.coupon = discountCode;
+      payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
+          ? 2
+          : isOnline
+              ? 0
+              : 1;
+      _repository.setPaymentType(payment).then((value) {
+        _navigateTo.fire(value);
+      });
+    }
   }
 
   void changeDiscountLoading(bool val) {
@@ -136,8 +139,7 @@ class PaymentBloc {
   }
 
   void setShowInformation() {
-    _showInformation.value =
-        _showInformation.valueOrNull == null ? true : !_showInformation.value;
+    _showInformation.value = _showInformation.valueOrNull == null ? true : !_showInformation.value;
   }
 
   void dispose() {

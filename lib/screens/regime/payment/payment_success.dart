@@ -19,15 +19,15 @@ import 'package:sizer/sizer.dart';
 import 'package:persian_number_utility/src/extensions.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class PaymentConfirmScreen extends StatefulWidget {
-  const PaymentConfirmScreen({Key? key}) : super(key: key);
+class PaymentSuccessScreen extends StatefulWidget {
+  const PaymentSuccessScreen({Key? key}) : super(key: key);
 
   @override
-  _PaymentConfirmScreenState createState() => _PaymentConfirmScreenState();
+  _PaymentSuccessScreenState createState() => _PaymentSuccessScreenState();
 }
 
-class _PaymentConfirmScreenState
-    extends ResourcefulState<PaymentConfirmScreen> {
+class _PaymentSuccessScreenState
+    extends ResourcefulState<PaymentSuccessScreen> {
   late PaymentBloc bloc;
 
   @override

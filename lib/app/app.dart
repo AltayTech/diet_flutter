@@ -29,7 +29,7 @@ import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/regime/package/package_list.dart';
 import 'package:behandam/screens/regime/payment/payment_bill.dart';
-import 'package:behandam/screens/regime/payment/payment_confirm.dart';
+import 'package:behandam/screens/regime/payment/payment_success.dart';
 import 'package:behandam/screens/regime/payment/payment_fail.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
@@ -173,7 +173,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: PaymentFailScreen()),
+    '/': (_, __) => MaterialPage(child: FoodListPage()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -204,7 +204,7 @@ final navigator = VxNavigator(
     Routes.advice: (_, __) => MaterialPage(child: AdvicePage()),
     Routes.package: (_, __) => MaterialPage(child: PackageListScreen()),
     Routes.paymentBill: (_, __) => MaterialPage(child: PaymentBillScreen()),
-    Routes.paymentCardConfirm: (_, __) => MaterialPage(child: PaymentConfirmScreen()),
+    Routes.paymentCardConfirm: (_, __) => MaterialPage(child: PaymentSuccessScreen()),
     Routes.cardToCard: (_, __) => MaterialPage(child: DebitCardPage()),
     Routes.vitrin: (_, __) => MaterialPage(child: VitrinScreen()),
     Routes.PSYIntro: (_, __) => MaterialPage(child: PSYIntroScreen()),
