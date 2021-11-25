@@ -25,6 +25,7 @@ import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 
@@ -165,6 +166,7 @@ abstract class Repository {
   NetworkResult<DietHistoryData> dietHistory();
 
   NetworkResult<DietGoalData> dietGoals();
+  NetworkResult<VisitItem> getVisits();
 }
 
 class _RepositoryImpl extends Repository {
@@ -609,6 +611,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<DietGoalData> dietGoals() {
     var response = _apiClient.dietGoals();
+    return response;
+  }
+
+  @override
+  NetworkResult<VisitItem> getVisits() {
+    var response = _apiClient.visits();
     return response;
   }
 }

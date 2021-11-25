@@ -20,6 +20,7 @@ PhysicalInfoData _$PhysicalInfoDataFromJson(Map<String, dynamic> json) =>
       ..gender = $enumDecodeNullable(_$GenderTypeEnumMap, json['gender'])
       ..multiBirth = json['multi_birth_num'] as int? ?? 1
       ..pregnancyWeek = json['pregnancy_week_number'] as int? ?? 15
+      ..targetWeight = (json['target_weight'] as num?)?.toDouble()
       ..kilo = json['kilo'] as int?
       ..gram = json['gram'] as int?;
 
@@ -37,6 +38,7 @@ Map<String, dynamic> _$PhysicalInfoDataToJson(PhysicalInfoData instance) =>
       'gender': _$GenderTypeEnumMap[instance.gender],
       'multi_birth_num': instance.multiBirth,
       'pregnancy_week_number': instance.pregnancyWeek,
+      'target_weight': instance.targetWeight,
       'kilo': instance.kilo,
       'gram': instance.gram,
     };

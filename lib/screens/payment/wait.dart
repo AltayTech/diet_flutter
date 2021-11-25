@@ -83,7 +83,7 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
             textDirection: context.textDirectionOfLocale,
             children: [
               Space(
-                height: 2.h,
+                height: 1.h,
               ),
               ImageUtils.fromLocal(
                 'assets/images/bill/success_pay.svg',
@@ -186,6 +186,35 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                     return Container();
                 },
                 stream: bloc.showInformation,
+              ),
+              Space(height: 2.h),
+              Container(
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(245, 245, 245, 1),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 1.5.w,
+                  vertical: 2.h,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      intl.paymentStatusForLastTime,
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      style: Theme.of(context).textTheme.caption!.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 1.h),
+                    Text(
+                      intl.waitingForSuccessPayment,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ],
+                ),
               ),
               Space(height: 3.h),
               Directionality(

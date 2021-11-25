@@ -438,5 +438,8 @@
   "paymentWaitLabel": "پرداخت شما با موفقیت ثبت شد",
   "checkPayment": "بررسی مجدد پرداخت",
   "retryPayment": "پرداخت مجدد",
+  "waitingForSuccessPayment": "منتظر تایید پرداخت باشید",
+  "paymentStatusForLastTime": "پرداخت شما بعد از 1 الی 2 ساعت آینده فعال خواهد شد",
+  "statusBodyTermUser": "وضعیت جسمانی در دوره جاری",
   "understand": "متوجه شدم"
 }

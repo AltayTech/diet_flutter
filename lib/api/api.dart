@@ -22,6 +22,7 @@ import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -224,4 +225,7 @@ abstract class RestClient {
 
   @GET("/diet-goal")
   NetworkResult<DietGoalData> dietGoals();
+
+  @GET("/user/visits")
+  NetworkResult<VisitItem> visits();
 }

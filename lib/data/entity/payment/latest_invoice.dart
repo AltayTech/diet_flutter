@@ -29,6 +29,12 @@ class LatestInvoiceData {
   @JsonKey(name: 'success')
   bool? success;
 
+  @JsonKey(name: 'card_owner')
+  String? cardOwner;
+
+  @JsonKey(name: 'card_number')
+  String? cardNum;
+
   factory LatestInvoiceData.fromJson(Map<String, dynamic> json) =>
       _$LatestInvoiceDataFromJson(json);
 
