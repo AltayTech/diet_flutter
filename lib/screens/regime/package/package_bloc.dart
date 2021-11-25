@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
+import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -50,7 +51,9 @@ class PackageBloc {
   }
 
   void sendPackage() {
-    _repository.setCondition(_packageSelected).then((value) {
+    ConditionRequestData requestData = ConditionRequestData();
+    requestData.packageId = _packageSelected.id;
+    _repository.setCondition(requestData).then((value) {
       _navigateTo.fire(value.next);
     });
   }

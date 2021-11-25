@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
@@ -73,7 +74,9 @@ class RegimeBloc {
   }
 
   void pathMethod(RegimeType regime) async {
-    _repository.getPath(regime).then((value) {
+    ConditionRequestData requestData = ConditionRequestData();
+    requestData.dietTypeId = int.parse(regime.id.toString());
+    _repository.setCondition(requestData).then((value) {
       _path = value.next!;
       _navigateToVerify.fire(regime);
     }).whenComplete(() => _waiting.value = false);

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/api/interceptor/logger.dart';
+import 'package:behandam/data/entity/activity/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
@@ -11,13 +12,14 @@ import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/psy/calender.dart';
 // import 'package:behandam/data/entity/regime/body_state.dart';
-import 'package:behandam/data/entity/regime/payment.dart';
+import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
+import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
-import 'package:behandam/data/entity/regime/payment.dart';
+import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
@@ -29,6 +31,7 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/screens/activity/activity_level.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -114,8 +117,6 @@ abstract class Repository {
 
   NetworkResult<CalendarData> calendar(String start, String end);
 
-  NetworkResult getPath(RegimeType regime);
-
   NetworkResult<PhysicalInfoData> sendInfo(PhysicalInfoData info);
 
   NetworkResult<Call> getCalls();
@@ -144,7 +145,7 @@ abstract class Repository {
 
   NetworkResult<PackageItem> getPackagesList();
 
-  ImperativeNetworkResult setCondition(PackageItem packageItem);
+  NetworkResult setCondition(ConditionRequestData requestData);
 
   NetworkResult<PackageItem> getPackagePayment();
 
@@ -157,6 +158,8 @@ abstract class Repository {
   NetworkResult<LatestInvoiceData> latestInvoice();
 
   NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData);
+
+  NetworkResult<ActivityLevelData> activityLevel();
 }
 
 class _RepositoryImpl extends Repository {
@@ -422,12 +425,6 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult getPath(RegimeType regimeType) {
-    var response = _apiClient.getPath(regimeType);
-    return response;
-  }
-
-  @override
   NetworkResult<PhysicalInfoData> sendInfo(PhysicalInfoData info) {
     var response = _apiClient.sendInfo(info);
     return response;
@@ -541,9 +538,9 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  ImperativeNetworkResult setCondition(PackageItem packageItem) {
-    packageItem.package_id = packageItem.id;
-    var response = _apiClient.condition(packageItem);
+  NetworkResult setCondition(ConditionRequestData requestData) {
+    var response = _apiClient.condition(requestData);
+    debugPrint('condition ${response.toString()}');
     return response;
   }
 
@@ -581,6 +578,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData) {
     var response = _apiClient.newPayment(requestData);
+    return response;
+  }
+
+  @override
+  NetworkResult<ActivityLevelData> activityLevel() {
+    var response = _apiClient.activityLevel();
     return response;
   }
 }

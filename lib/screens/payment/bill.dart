@@ -1,10 +1,8 @@
 import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/regime/payment.dart';
-import 'package:behandam/screens/regime/payment/discount_widget.dart';
-import 'package:behandam/screens/regime/payment/payment_bloc.dart';
-import 'package:behandam/screens/regime/payment/payment_provider.dart';
+import 'package:behandam/data/entity/payment/payment.dart';
+import 'package:behandam/screens/payment/discount_widget.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -18,6 +16,9 @@ import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/src/extensions.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
+
+import 'bloc.dart';
+import 'provider.dart';
 
 class PaymentBillScreen extends StatefulWidget {
   const PaymentBillScreen({Key? key}) : super(key: key);

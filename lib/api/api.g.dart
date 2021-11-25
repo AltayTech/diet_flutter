@@ -212,12 +212,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> getPath(regimeType) async {
+  Future<NetworkResponse<dynamic>> condition(requestData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(regimeType.toJson());
+    _data.addAll(requestData.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
@@ -927,26 +927,6 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<PackageItem>> condition(packageItem) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(packageItem.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<PackageItem>>(
-            Options(method: 'PATCH', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/condition',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<PackageItem>.fromJson(
-      _result.data!,
-      (json) => PackageItem.fromJson(json as Map<String, dynamic>),
-    );
-    return value;
-  }
-
-  @override
   Future<NetworkResponse<PackageItem>> getPackageUser() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1059,6 +1039,25 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<LatestInvoiceData>.fromJson(
       _result.data!,
       (json) => LatestInvoiceData.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<ActivityLevelData>> activityLevel() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<ActivityLevelData>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/activity-level',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<ActivityLevelData>.fromJson(
+      _result.data!,
+      (json) => ActivityLevelData.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

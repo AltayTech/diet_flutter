@@ -27,7 +27,6 @@ class DebitCardPage extends StatefulWidget {
 class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   late PaymentBloc bloc;
   bool showUserInfo = false;
-  // String? username, fourLastNumberOfCard, paymentDate;
   late LatestInvoiceData invoice;
 
   @override
@@ -37,6 +36,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
     bloc = PaymentBloc();
     bloc.latestInvoiceLoad();
     invoice.ownerName = MemoryApp.userInformation?.fullName;
+    invoice.payedAt = DateTime.now().toString().substring(0, 10);
   }
 
   @override

@@ -1,5 +1,7 @@
-import 'package:behandam/screens/regime/payment/payment_bloc.dart';
+
 import 'package:flutter/material.dart';
+
+import 'bloc.dart';
 
 class PaymentProvider extends InheritedWidget {
   final PaymentBloc bloc;
