@@ -15,6 +15,9 @@ class ConditionRequestData {
   @JsonKey(name: "diet_history_id")
   int? dietHistoryId;
 
+  @JsonKey(name: "diet_goal_id")
+  int? dietGoalId;
+
   ConditionRequestData();
 
   Map<String, dynamic> toJson() => _$ConditionRequestDataToJson(this);

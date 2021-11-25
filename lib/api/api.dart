@@ -13,6 +13,7 @@ import 'package:behandam/data/entity/psy/calender.dart';
 // import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
+import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
@@ -220,4 +221,7 @@ abstract class RestClient {
 
   @GET("/diet-history")
   NetworkResult<DietHistoryData> dietHistory();
+
+  @GET("/diet-goal")
+  NetworkResult<DietGoalData> dietGoals();
 }
