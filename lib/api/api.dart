@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:behandam/data/entity/activity/activity_level.dart';
+import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
@@ -13,6 +13,7 @@ import 'package:behandam/data/entity/psy/calender.dart';
 // import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
+import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -82,7 +83,7 @@ abstract class RestClient {
   NetworkResult<Help> helpBodyState(@Path('id') int id);
 
   @PATCH("/condition")
-  NetworkResult condition(@Body() ConditionRequestData requestData);
+  NetworkResult condition(@Body() Map<String, dynamic> requestData);
 
   @PATCH("/physical-info")
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
@@ -216,4 +217,7 @@ abstract class RestClient {
 
   @GET("/activity-level")
   NetworkResult<ActivityLevelData> activityLevel();
+
+  @GET("/diet-history")
+  NetworkResult<DietHistoryData> dietHistory();
 }

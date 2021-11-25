@@ -12,4 +12,5 @@ Map<String, dynamic> _$ConditionRequestDataToJson(
       'activity_level_id': instance.activityLevelId,
       'diet_type_id': instance.dietTypeId,
       'package_id': instance.packageId,
+      'diet_history_id': instance.dietHistoryId,
     };
