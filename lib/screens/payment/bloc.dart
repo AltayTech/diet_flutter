@@ -2,20 +2,11 @@ import 'dart:async';
 
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
-import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
-import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/food_list/bloc.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/utils/device.dart';
-import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shamsi_date/shamsi_date.dart';
-import 'package:behandam/extensions/bool.dart';
-import 'package:behandam/extensions/object.dart';
-import 'package:behandam/extensions/string.dart';
-
 
 class PaymentBloc {
   PackageBloc() {
@@ -75,8 +66,7 @@ class PaymentBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-
-  void newPayment(LatestInvoiceData newInvoice){
+  void newPayment(LatestInvoiceData newInvoice) {
     _waiting.value = true;
     _repository.newPayment(newInvoice).then((value) {
       _navigateTo.fire(value.next);
@@ -102,8 +92,8 @@ class PaymentBloc {
       payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
           ? 2
           : isOnline
-          ? 0
-          : 1;
+              ? 0
+              : 1;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       });
@@ -152,6 +142,22 @@ class PaymentBloc {
     _repository.latestInvoice().then((value) {
       _invoice = value.data;
       _path = value.next!;
+    }).whenComplete(() => _waiting.value = false);
+  }
+
+  void checkLastInvoice() {
+    _waiting.value = true;
+    _repository.latestInvoice().then((value) {
+      if (value.data?.refId != null &&
+          value.data?.success != null &&
+          value.data?.resolved == true &&
+          value.data?.payedAt != null &&
+          value.next != null)
+        _navigateTo.fire(value.next);
+      else if (value.data?.note != null) {
+        _showServerError.fireMessage(value.data!.note!);
+      }
+      _invoice = value.data;
     }).whenComplete(() => _waiting.value = false);
   }
 
