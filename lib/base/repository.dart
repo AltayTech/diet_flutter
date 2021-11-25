@@ -15,6 +15,7 @@ import 'package:behandam/data/entity/psy/calender.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
+import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
@@ -162,6 +163,8 @@ abstract class Repository {
   NetworkResult<ActivityLevelData> activityLevel();
 
   NetworkResult<DietHistoryData> dietHistory();
+
+  NetworkResult<DietGoalData> dietGoals();
 }
 
 class _RepositoryImpl extends Repository {
@@ -546,6 +549,7 @@ class _RepositoryImpl extends Repository {
       if(requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
       if(requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
       if(requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
+      if(requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
     };
     debugPrint('bloc condition2 $body');
     var response = _apiClient.condition(body);
@@ -599,6 +603,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<DietHistoryData> dietHistory() {
     var response = _apiClient.dietHistory();
+    return response;
+  }
+
+  @override
+  NetworkResult<DietGoalData> dietGoals() {
+    var response = _apiClient.dietGoals();
     return response;
   }
 }
