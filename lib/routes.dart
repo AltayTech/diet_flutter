@@ -46,6 +46,7 @@ abstract class Routes {
   static const activity = '/reg/activity';
   static const paymentCardConfirm = '/reg/payment/card/confirm';
   static const paymentFail = '/reg/payment/online/fail';
+  static const paymentWaiting = '/reg/payment/card/wait';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

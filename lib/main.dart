@@ -7,8 +7,8 @@ Future<void> main() async {
     color: Colors.green,
     name: 'Preview',
     variables: {
-      'baseUrl': 'https://develop.behaminplus.ir/behandam-diet/api',
-      "baseUrlFile": "https://develop.behaminplus.ir/helia-service",
+      'baseUrl': 'https://debug.behaminplus.ir/behandam-diet/api',
+      "baseUrlFile": "https://debug.behaminplus.ir/helia-service",
       'isProduction': false
     },
   );
