@@ -341,12 +341,12 @@
   "paymentCardToCard": "پرداخت کارت به کارت",
   "depositTheAmount": "مبلغ {amount} تومان از طریق عابربانک یا اپ های بانکی به شماره کارت زیر واریز کنید.",
   "@depositTheAmount": {
-      "placeholders": {
-        "amount": {
-          "type": "String"
-        }
+    "placeholders": {
+      "amount": {
+        "type": "String"
       }
-   },
+    }
+  },
   "inNameOf": "به نام {name}",
   "@inNameOf": {
     "placeholders": {
@@ -359,17 +359,17 @@
   "copy": "کپی کن",
   "debitCardInfo": "شماره کارت {cardNumber} \n به نام {ownerName} \n مبلغ {amount} تومان",
   "@debitCardInfo": {
-      "placeholders": {
-        "cardNumber": {
-          "type": "String"
-        },
-        "ownerName": {
-          "type": "String"
-        },
-        "amount": {
-          "type": "String"
-        }
+    "placeholders": {
+      "cardNumber": {
+        "type": "String"
+      },
+      "ownerName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
       }
+    }
   },
   "copied": "کپی شد",
   "clickFollowingButtonAfterPayment": "بعد از واریز دکمه زیر رو بزنید",
@@ -406,8 +406,8 @@
   "term3": "در صورت بروز مشکل و عدم پاسخگویی حتما حداقل یک تا دو روز قبل از مشاوره از طریق واحد پشتیبانی اطلاع داده شود.",
   "term4": "تنها یک بار امکان جا به جایی جلسات وجود دارد. پس درخواست مجدد برای تغییر جلسه امکان پذیر نخواهد بود. ",
   "term5": "ساعات پاسخگویی به سوالات درخواست های شما عزیزان از طریق پشتیبانی شنبه تا پنج شنبه از ساعت ۱۰ تا ۱۶ می باشد.",
-  "attention": " کاربر گرامی قبل از تایید نهایی وقت مشاوره و پرداخت متن را با دقت خوانده و توجه فرمایید" ,
-  "condition": "شرایط و قوانین" ,
+  "attention": " کاربر گرامی قبل از تایید نهایی وقت مشاوره و پرداخت متن را با دقت خوانده و توجه فرمایید",
+  "condition": "شرایط و قوانین",
   "rulesConfirm": "تایید این قوانین به معنای موافقت با قوانین و سلب مسئولیت از تیم روانشناسی می باشد.",
   "readRules": "قوانین را خوانده و موافقم",
   "thanks": "با تشکر تیم روانشناسی مجموعه به اندام",
@@ -433,5 +433,7 @@
   "offError": "ابتدا کد تخفیف خود را ثبت کنید",
   "paymentWait": "بررسی پرداخت کارت به کارت",
   "paymentWaitLabel": "پرداخت شما با موفقیت ثبت شد",
+  "checkPayment": "بررسی مجدد پرداخت",
+  "retryPayment": "پرداخت مجدد",
   "understand": "متوجه شدم"
 }

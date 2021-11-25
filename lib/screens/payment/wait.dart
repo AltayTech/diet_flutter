@@ -210,7 +210,7 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                     color: Color.fromRGBO(178, 178, 178, 1),
                   ),
                   label: Text(
-                    'دوباره تلاش کنید',
+                    intl.checkPayment,
                     textAlign: TextAlign.start,
                     style: Theme.of(context)
                         .textTheme

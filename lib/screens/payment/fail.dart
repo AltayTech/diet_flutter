@@ -225,7 +225,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
                     color: Color.fromRGBO(178, 178, 178, 1),
                   ),
                   label: Text(
-                    'دوباره تلاش کنید',
+                      intl.retryPayment,
                     textAlign: TextAlign.start,
                     style: Theme.of(context)
                         .textTheme
