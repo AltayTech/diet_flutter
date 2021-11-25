@@ -1,7 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/regime/payment/payment_bloc.dart';
-import 'package:behandam/screens/regime/payment/payment_provider.dart';
 
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -19,6 +17,9 @@ import 'package:sizer/sizer.dart';
 import 'package:persian_number_utility/src/extensions.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import 'bloc.dart';
+import 'provider.dart';
+
 class PaymentConfirmScreen extends StatefulWidget {
   const PaymentConfirmScreen({Key? key}) : super(key: key);
 
@@ -35,7 +36,7 @@ class _PaymentConfirmScreenState
     // TODO: implement initState
     super.initState();
     bloc = PaymentBloc();
-    bloc.getLastInvoice();
+    bloc.latestInvoiceLoad();
   }
 
   @override

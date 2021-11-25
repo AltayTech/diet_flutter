@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:behandam/data/entity/activity/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
@@ -11,6 +12,7 @@ import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/psy/calender.dart';
 // import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
+import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -33,7 +35,7 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/regime/payment.dart';
+import '../data/entity/payment/payment.dart';
 
 part 'api.g.dart';
 
@@ -80,7 +82,7 @@ abstract class RestClient {
   NetworkResult<Help> helpBodyState(@Path('id') int id);
 
   @PATCH("/condition")
-  NetworkResult getPath(@Body() RegimeType regimeType);
+  NetworkResult condition(@Body() ConditionRequestData requestData);
 
   @PATCH("/physical-info")
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
@@ -194,9 +196,6 @@ abstract class RestClient {
   @GET("/package")
   NetworkResult<PackageItem> getPackages();
 
-  @PATCH("/condition")
-  NetworkResult<PackageItem> condition(@Body() PackageItem packageItem);
-
   @GET("/user/package")
   NetworkResult<PackageItem> getPackageUser();
 
@@ -214,4 +213,7 @@ abstract class RestClient {
 
   @PATCH("/latest-invoice")
   NetworkResult<LatestInvoiceData> newPayment(@Body() LatestInvoiceData requestData);
+
+  @GET("/activity-level")
+  NetworkResult<ActivityLevelData> activityLevel();
 }

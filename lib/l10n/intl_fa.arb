@@ -416,6 +416,7 @@
   "cartPay": "پرداخت کارت به کارت",
   "adviserName": "نام مشاور",
   "off": "تخفیف",
+  "activityLevel": "فعالیت روزانه",
   "paymentSuccess": "پرداخت موفق",
   "paymentSuccessLabel": "پرداخت با موفقیت انجام شد",
   "paymentInformation": "اطلاعات پرداخت",
@@ -423,5 +424,8 @@
   "amount": "مبلغ",
   "mobile": "شماره موبایل",
   "useFromList": "برای استفاده از برنامه غذایی، بقیه مراحل دریافت رژیم رو تکمیل کن",
+  "howMuchIsYourDailyActivity": "میزان فعالیت روزانه ات چقدره؟",
+  "nextStage": "مرحله بعدی",
+  "selectSomething": "یکی از موارد بالا رو انتخاب کن",
   "understand": "متوجه شدم"
 }
