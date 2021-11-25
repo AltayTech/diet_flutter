@@ -10,7 +10,6 @@ PackageItem _$PackageItemFromJson(Map<String, dynamic> json) => PackageItem()
   ..items = (json['items'] as List<dynamic>?)
       ?.map((e) => PackageItem.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..isActive = json['is_active'] as int?
   ..id = json['id'] as int?
   ..price = json['price'] == null
       ? null
@@ -19,21 +18,16 @@ PackageItem _$PackageItemFromJson(Map<String, dynamic> json) => PackageItem()
   ..services = (json['services'] as List<dynamic>?)
       ?.map((e) => ServicePackage.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..products = (json['products'] as List<dynamic>?)
-      ?.map((e) => ServicePackage.fromJson(e as Map<String, dynamic>))
-      .toList()
   ..package_id = json['package_id'] as int?
   ..index = json['index'] as int?;
 
 Map<String, dynamic> _$PackageItemToJson(PackageItem instance) =>
     <String, dynamic>{
       'items': instance.items,
-      'is_active': instance.isActive,
       'id': instance.id,
       'price': instance.price,
       'name': instance.name,
       'services': instance.services,
-      'products': instance.products,
       'package_id': instance.package_id,
       'index': instance.index,
     };
@@ -56,12 +50,10 @@ Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
 ServicePackage _$ServicePackageFromJson(Map<String, dynamic> json) =>
     ServicePackage()
       ..name = json['name'] as String?
-      ..description = json['description'] as String?
-      ..isActive = json['is_active'] as int?;
+      ..description = json['description'] as String?;
 
 Map<String, dynamic> _$ServicePackageToJson(ServicePackage instance) =>
     <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
-      'is_active': instance.isActive,
     };

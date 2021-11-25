@@ -17,6 +17,7 @@ import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/payment/debit_card.dart';
+import 'package:behandam/screens/payment/fail.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
@@ -173,7 +174,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: ActivityLevelPage()),
+    '/': (_, __) => MaterialPage(child: FoodListPage()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -204,13 +205,14 @@ final navigator = VxNavigator(
     Routes.advice: (_, __) => MaterialPage(child: AdvicePage()),
     Routes.package: (_, __) => MaterialPage(child: PackageListScreen()),
     Routes.paymentBill: (_, __) => MaterialPage(child: PaymentBillScreen()),
-    Routes.paymentCardConfirm: (_, __) => MaterialPage(child: PaymentConfirmScreen()),
+    Routes.paymentCardConfirm: (_, __) => MaterialPage(child: PaymentSuccessScreen()),
     Routes.cardToCard: (_, __) => MaterialPage(child: DebitCardPage()),
     Routes.vitrin: (_, __) => MaterialPage(child: VitrinScreen()),
     Routes.PSYIntro: (_, __) => MaterialPage(child: PSYIntroScreen()),
     Routes.PSYCalender: (_, params) => MaterialPage(child: PSYCalenderScreen(), arguments: params),
     Routes.PSYTerms: (_, params) => MaterialPage(child: TermsScreen(), arguments: params),
     Routes.PSYPaymentBill: (_, params) => MaterialPage(child: PaymentBillPsyScreen(), arguments: params),
+    Routes.paymentFail: (_, params) => MaterialPage(child: PaymentFailScreen(), arguments: params),
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
     Routes.activity: (_, __) => MaterialPage(child: ActivityLevelPage()),
   },

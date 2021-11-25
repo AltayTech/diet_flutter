@@ -43,6 +43,11 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
   }
 
   void listenBloc() {
+    bloc.showServerError.listen((event) {
+      Navigator.of(context).pop();
+      Utils.getSnackbarMessage(context, intl.offError);
+    });
+
     bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
       Payment? result = (event as NetworkResponse<Payment>).data;

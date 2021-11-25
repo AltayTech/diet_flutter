@@ -9,8 +9,6 @@ class PackageItem {
   @JsonKey(name: "items")
   List<PackageItem>? items;
 
-  @JsonKey(name: "is_active")
-  int? isActive;
   @JsonKey(name: "id")
   int? id;
   @JsonKey(name: "price")
@@ -20,17 +18,12 @@ class PackageItem {
   @JsonKey(name: "services")
   List<ServicePackage>? services;
 
-  @JsonKey(name: "products")
-  List<ServicePackage>? products;
-
   @JsonKey(name: "package_id")
   int? package_id;
 
   int? index;
 
   PackageItem();
-
-  bool get isActiveItem => isActive == 1;
 
   Color get barColor => Utils.getColorPackage(index!);
 
@@ -69,12 +62,8 @@ class ServicePackage {
   String? name;
   @JsonKey(name: "description")
   String? description;
-  @JsonKey(name: "is_active")
-  int? isActive;
 
   ServicePackage();
-
-  bool get isActiveItem => isActive == 1;
 
   factory ServicePackage.fromJson(Map<String, dynamic> json) => _$ServicePackageFromJson(json);
 

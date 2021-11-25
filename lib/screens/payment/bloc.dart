@@ -18,10 +18,12 @@ import 'package:behandam/extensions/string.dart';
 
 
 class PaymentBloc {
-  PaymentBloc(){
+  PackageBloc() {
     _waiting.value = false;
     _discountLoading.value = false;
   }
+
+  final _repository = Repository.getInstance();
 
   late String _path;
   String? discountCode;
@@ -29,10 +31,8 @@ class PaymentBloc {
   Price? _discountInfo;
   LatestInvoiceData? _invoice;
 
-  final _repository = Repository.getInstance();
-  final _loadingContent = BehaviorSubject<bool>();
-  final _latestInvoice = BehaviorSubject<LatestInvoiceData>();
   final _waiting = BehaviorSubject<bool>();
+  final _showInformation = BehaviorSubject<bool>();
   final _online = BehaviorSubject<bool>();
   final _cardToCard = BehaviorSubject<bool>();
   final _wrongDisCode = BehaviorSubject<bool>();
@@ -40,11 +40,6 @@ class PaymentBloc {
   final _usedDiscount = BehaviorSubject<bool>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
-  final _showInformation = BehaviorSubject<bool>();
-
-  Stream<bool> get loadingContent => _loadingContent.stream;
-
-  Stream<LatestInvoiceData> get latestInvoice => _latestInvoice.stream;
 
   String get path => _path;
 
@@ -52,11 +47,11 @@ class PaymentBloc {
 
   PackageItem? get packageItem => _packageItem;
 
-  Stream<bool> get showInformation => _showInformation.stream;
-
   Price? get discountInfo => _discountInfo;
 
   Stream<bool> get waiting => _waiting.stream;
+
+  Stream<bool> get showInformation => _showInformation.stream;
 
   Stream<bool> get onlineStream => _online.stream;
 
@@ -80,20 +75,12 @@ class PaymentBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void latestInvoiceLoad() {
-    _loadingContent.value = true;
-    _repository.latestInvoice().then((value) {
-      _latestInvoice.value = value.data!;
-      debugPrint('latest invoice bloc ${_latestInvoice.value.amount}');
-    }).whenComplete(() => _loadingContent.value = false);
-  }
 
   void newPayment(LatestInvoiceData newInvoice){
-    _loadingContent.value = true;
+    _waiting.value = true;
     _repository.newPayment(newInvoice).then((value) {
-      _latestInvoice.value = value.data!;
-      debugPrint('new invoice bloc ${_latestInvoice.value.amount}');
-    }).whenComplete(() => _loadingContent.value = false);
+      _navigateTo.fire(value.next);
+    }).whenComplete(() => _waiting.value = false);
   }
 
   void getPackagePayment() {
@@ -105,39 +92,30 @@ class PaymentBloc {
     });
   }
 
+  void selectUserPayment() {
+    if (!isUsedDiscount && (discountCode != null && discountCode!.trim().isNotEmpty)) {
+      _showServerError.fireMessage('error');
+    } else {
+      Payment payment = new Payment();
+      payment.originId = Device.get().isIos ? 2 : 3;
+      payment.coupon = discountCode;
+      payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
+          ? 2
+          : isOnline
+          ? 0
+          : 1;
+      _repository.setPaymentType(payment).then((value) {
+        _navigateTo.fire(value);
+      });
+    }
+  }
+
   void changeDiscountLoading(bool val) {
     _discountLoading.value = val;
   }
 
   void changeWrongDisCode(bool val) {
     _wrongDisCode.value = val;
-  }
-
-  void setOnline() {
-    print('setOnline');
-    _online.value = true;
-    _cardToCard.value = false;
-  }
-
-  void setCardToCard() {
-    print('setCardToCard');
-    _online.value = false;
-    _cardToCard.value = true;
-  }
-
-  void selectUserPayment() {
-    Payment payment = new Payment();
-    payment.originId = Device.get().isIos ? 2 : 3;
-    payment.coupon = discountCode;
-    payment.paymentTypeId =
-    (discountInfo != null && discountInfo!.finalPrice == 0)
-        ? 2
-        : isOnline
-        ? 0
-        : 1;
-    _repository.setPaymentType(payment).then((value) {
-      _navigateTo.fire(value);
-    });
   }
 
   void checkCode(String val) {
@@ -157,6 +135,18 @@ class PaymentBloc {
     });
   }
 
+  void setOnline() {
+    print('setOnline');
+    _online.value = true;
+    _cardToCard.value = false;
+  }
+
+  void setCardToCard() {
+    print('setCardToCard');
+    _online.value = false;
+    _cardToCard.value = true;
+  }
+
   void getLastInvoice() {
     _waiting.value = true;
     _repository.latestInvoice().then((value) {
@@ -166,21 +156,18 @@ class PaymentBloc {
   }
 
   void setShowInformation() {
-    _showInformation.value =
-    _showInformation.valueOrNull == null ? true : !_showInformation.value;
+    _showInformation.value = _showInformation.valueOrNull == null ? true : !_showInformation.value;
   }
 
   void dispose() {
-    _loadingContent.close();
-    _latestInvoice.close();
     _showServerError.close();
     _navigateTo.close();
     _discountLoading.close();
     _cardToCard.close();
     _online.close();
     _usedDiscount.close();
+    _showInformation.close();
     _wrongDisCode.close();
     _waiting.close();
-    _showInformation.close();
   }
 }

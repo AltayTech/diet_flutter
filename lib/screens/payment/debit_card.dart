@@ -34,7 +34,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
     super.initState();
     invoice = LatestInvoiceData();
     bloc = PaymentBloc();
-    bloc.latestInvoiceLoad();
+    bloc.getLastInvoice();
     invoice.ownerName = MemoryApp.userInformation?.fullName;
     invoice.payedAt = DateTime.now().toString().substring(0, 10);
   }
@@ -65,14 +65,14 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
         child: StreamBuilder(
-          stream: bloc.latestInvoice,
-          builder: (_, AsyncSnapshot<LatestInvoiceData> snapshot) {
+          stream: bloc.waiting,
+          builder: (_, AsyncSnapshot<bool> snapshot) {
             if (snapshot.hasData) {
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  amountDescription(snapshot.requireData),
+                  amountDescription(bloc.invoice!),
                   Space(height: 2.h),
                   Container(
                     decoration: AppDecorations.boxMild.copyWith(
@@ -82,10 +82,10 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                         EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Column(
                       children: [
-                        cardNumber(snapshot.requireData.cardNumber!),
+                        cardNumber(bloc.invoice!.cardNumber!),
                         Space(height: 2.h),
                         Text(
-                          intl.inNameOf(snapshot.requireData.ownerName!),
+                          intl.inNameOf(bloc.invoice!.ownerName!),
                           style: typography.subtitle2?.apply(
                             color: AppColors.primary,
                             fontWeightDelta: 3,
@@ -94,7 +94,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                           softWrap: true,
                         ),
                         Space(height: 2.h),
-                        copyShareBox(snapshot.requireData),
+                        copyShareBox(bloc.invoice!),
                       ],
                     ),
                   ),

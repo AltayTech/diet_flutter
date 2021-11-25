@@ -20,15 +20,15 @@ import 'package:velocity_x/velocity_x.dart';
 import 'bloc.dart';
 import 'provider.dart';
 
-class PaymentConfirmScreen extends StatefulWidget {
-  const PaymentConfirmScreen({Key? key}) : super(key: key);
+class PaymentSuccessScreen extends StatefulWidget {
+  const PaymentSuccessScreen({Key? key}) : super(key: key);
 
   @override
-  _PaymentConfirmScreenState createState() => _PaymentConfirmScreenState();
+  _PaymentSuccessScreenState createState() => _PaymentSuccessScreenState();
 }
 
-class _PaymentConfirmScreenState
-    extends ResourcefulState<PaymentConfirmScreen> {
+class _PaymentSuccessScreenState
+    extends ResourcefulState<PaymentSuccessScreen> {
   late PaymentBloc bloc;
 
   @override
@@ -36,7 +36,7 @@ class _PaymentConfirmScreenState
     // TODO: implement initState
     super.initState();
     bloc = PaymentBloc();
-    bloc.latestInvoiceLoad();
+    bloc.getLastInvoice();
   }
 
   @override
@@ -159,21 +159,21 @@ class _PaymentConfirmScreenState
                           item(
                               intl.paymentDate,
                               bloc.invoice!.payedAt != null &&
-                                      bloc.invoice!.payedAt!.length > 0
+                                  bloc.invoice!.payedAt!.length > 0
                                   ? DateTimeUtils.gregorianToJalaliYMD(
-                                      bloc.invoice!.payedAt!)
+                                  bloc.invoice!.payedAt!)
                                   : '',
                               false),
                           item(
                               intl.amount,
                               bloc.invoice!.amount != null &&
-                                      bloc.invoice!.amount.toString().length >
-                                          0 &&
-                                      bloc.invoice!.amount! > 0
+                                  bloc.invoice!.amount.toString().length >
+                                      0 &&
+                                  bloc.invoice!.amount! > 0
                                   ? double.parse(
-                                          bloc.invoice!.amount.toString())
-                                      .toStringAsFixed(0)
-                                      .seRagham()
+                                  bloc.invoice!.amount.toString())
+                                  .toStringAsFixed(0)
+                                  .seRagham()
                                   : intl.free,
                               true),
                           item(intl.mobile,
