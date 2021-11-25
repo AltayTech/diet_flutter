@@ -5,7 +5,6 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/advice/advice.dart';
-import 'package:behandam/screens/activity/activity_level.dart';
 import 'package:behandam/screens/authentication/code_reset.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/authentication/register.dart';
@@ -28,7 +27,10 @@ import 'package:behandam/screens/psy/intro.dart';
 import 'package:behandam/screens/psy/payment_bill.dart';
 
 import 'package:behandam/screens/psy/terms.dart';
+import 'package:behandam/screens/regime/activity/activity_level.dart';
 import 'package:behandam/screens/regime/body-status.dart';
+import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
+import 'package:behandam/screens/regime/goal/diet_goal.dart';
 import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/regime/package/package_list.dart';
 import 'package:behandam/screens/payment/bill.dart';
@@ -175,7 +177,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: PaymentWaitScreen()),
+    '/': (_, __) => MaterialPage(child: DietHistoryPage()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -217,6 +219,8 @@ final navigator = VxNavigator(
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
     Routes.activity: (_, __) => MaterialPage(child: ActivityLevelPage()),
     Routes.paymentWaiting: (_, __) => MaterialPage(child: PaymentWaitScreen()),
+    Routes.dietHistory: (_, __) => MaterialPage(child: DietHistoryPage()),
+    Routes.dietGoal: (_, __) => MaterialPage(child: DietGoalPage()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

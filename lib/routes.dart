@@ -45,6 +45,8 @@ abstract class Routes {
   // static const PSYPaymentCard = '/PSYPaymentCard';
   static const activity = '/reg/activity';
   static const paymentCardConfirm = '/reg/payment/card/confirm';
+  static const dietHistory = '/reg/diet/history';
+  static const dietGoal = '/reg/diet/goal';
   static const paymentFail = '/reg/payment/online/fail';
   static const paymentWaiting = '/reg/payment/card/wait';
 

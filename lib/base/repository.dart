@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/api/interceptor/logger.dart';
-import 'package:behandam/data/entity/activity/activity_level.dart';
+import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
@@ -15,6 +15,7 @@ import 'package:behandam/data/entity/psy/calender.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
+import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -31,7 +32,6 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/activity/activity_level.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -160,6 +160,8 @@ abstract class Repository {
   NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData);
 
   NetworkResult<ActivityLevelData> activityLevel();
+
+  NetworkResult<DietHistoryData> dietHistory();
 }
 
 class _RepositoryImpl extends Repository {
@@ -539,7 +541,14 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult setCondition(ConditionRequestData requestData) {
-    var response = _apiClient.condition(requestData);
+    Map<String, dynamic> body = {
+      if(requestData.packageId != null) 'package_id': requestData.packageId,
+      if(requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
+      if(requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
+      if(requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
+    };
+    debugPrint('bloc condition2 $body');
+    var response = _apiClient.condition(body);
     debugPrint('condition ${response.toString()}');
     return response;
   }
@@ -584,6 +593,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<ActivityLevelData> activityLevel() {
     var response = _apiClient.activityLevel();
+    return response;
+  }
+
+  @override
+  NetworkResult<DietHistoryData> dietHistory() {
+    var response = _apiClient.dietHistory();
     return response;
   }
 }

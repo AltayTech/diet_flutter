@@ -217,7 +217,7 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(requestData.toJson());
+    _data.addAll(requestData);
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
@@ -1058,6 +1058,25 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<ActivityLevelData>.fromJson(
       _result.data!,
       (json) => ActivityLevelData.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<DietHistoryData>> dietHistory() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<DietHistoryData>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/diet-history',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<DietHistoryData>.fromJson(
+      _result.data!,
+      (json) => DietHistoryData.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
