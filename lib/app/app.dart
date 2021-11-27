@@ -15,6 +15,7 @@ import 'package:behandam/screens/daily_menu/list_food.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
+import 'package:behandam/screens/menu/menu_select.dart';
 import 'package:behandam/screens/payment/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
 import 'package:behandam/screens/payment/wait.dart';
@@ -32,6 +33,7 @@ import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
 import 'package:behandam/screens/regime/help_type.dart';
+import 'package:behandam/screens/regime/overview/overview.dart';
 import 'package:behandam/screens/regime/package/package_list.dart';
 import 'package:behandam/screens/payment/bill.dart';
 import 'package:behandam/screens/payment/success.dart';
@@ -177,7 +179,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: DietGoalPage()),
+    '/': (_, __) => MaterialPage(child: FoodListPage()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -221,6 +223,8 @@ final navigator = VxNavigator(
     Routes.paymentWaiting: (_, __) => MaterialPage(child: PaymentWaitScreen()),
     Routes.dietHistory: (_, __) => MaterialPage(child: DietHistoryPage()),
     Routes.dietGoal: (_, __) => MaterialPage(child: DietGoalPage()),
+    Routes.overview: (_, __) => MaterialPage(child: OverviewPage()),
+    Routes.menuSelect: (_, __) => MaterialPage(child: MenuSelectPage()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

@@ -430,6 +430,7 @@
   "dietHistory": "سابقه رژیم غذایی",
   "haveYouEverBeenOnDiet": "سابقه رژیم غذایی داری؟",
   "dietGoal": "هدف از رژیم",
+  "whatIsYourGoal": "هدفت از رژیم گرفتن چیه؟",
   "paymentFail": "پرداخت ناموفق",
   "paymentFailLabel": "پرداخت شما ناموفق بود",
   "failForAdmin": "پرداخت شما توسط پشتیبانی رد شده است",
@@ -438,5 +439,10 @@
   "paymentWaitLabel": "پرداخت شما با موفقیت ثبت شد",
   "checkPayment": "بررسی مجدد پرداخت",
   "retryPayment": "پرداخت مجدد",
+  "aGlanceToBodyState": "وضعیت جسمانی شما در یک نگاه",
+  "physicalActivity": "فعالیت فیزیکی",
+  "viewFoodList": "مشاهده لیست غذایی",
+  "editPhysicalInfo": "اصلاح وضعیت جسمانی",
+  "selectYourMenu": "لیست غذایی موردنظرتو انتخاب کن",
   "understand": "متوجه شدم"
 }

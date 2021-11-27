@@ -17,6 +17,7 @@ import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -165,6 +166,8 @@ abstract class Repository {
   NetworkResult<DietHistoryData> dietHistory();
 
   NetworkResult<DietGoalData> dietGoals();
+
+  NetworkResult<OverviewData> overview();
 }
 
 class _RepositoryImpl extends Repository {
@@ -552,7 +555,7 @@ class _RepositoryImpl extends Repository {
       if(requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
     };
     debugPrint('bloc condition2 $body');
-    var response = _apiClient.condition(body);
+    var response = _apiClient.setCondition(body);
     debugPrint('condition ${response.toString()}');
     return response;
   }
@@ -609,6 +612,13 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<DietGoalData> dietGoals() {
     var response = _apiClient.dietGoals();
+    return response;
+  }
+
+  @override
+  NetworkResult<OverviewData> overview() {
+    var response = _apiClient.overview();
+    debugPrint('overview repo ${response}');
     return response;
   }
 }

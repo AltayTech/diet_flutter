@@ -51,7 +51,7 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        intl.haveYouEverBeenOnDiet,
+                        intl.whatIsYourGoal,
                         style: typography.caption,
                         textAlign: TextAlign.center,
                       ),
