@@ -34,7 +34,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
   void initListener() {
     bloc.showServerError.listen((event) {
-      if(Routes.paymentWaiting.contains(event)) {
+      if(!Routes.listView.contains(event)) {
         context.vxNav.push(Uri.parse(event));
       }else context.vxNav.replace(Uri.parse(event));
     });

@@ -37,6 +37,14 @@ class PhysicalInfoData {
   int? pregnancyWeek;
   @JsonKey(name: "target_weight")
   double? targetWeight;
+  @JsonKey(name: "age")
+  int? age;
+  @JsonKey(name: "pregnancy_ideal_weight")
+  double? pregnancyIdealWeight;
+  @JsonKey(name: "ideal_weight_based_on_perv_visit")
+  double? idealWeightBasedOnPervVisit;
+  @JsonKey(name: "days_till_childbirth")
+  int? daysTillChildbirth;
 
   int? kilo;
   int? gram;

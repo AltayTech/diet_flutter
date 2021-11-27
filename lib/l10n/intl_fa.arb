@@ -441,5 +441,16 @@
   "waitingForSuccessPayment": "منتظر تایید پرداخت باشید",
   "paymentStatusForLastTime": "پرداخت شما بعد از 1 الی 2 ساعت آینده فعال خواهد شد",
   "statusBodyTermUser": "وضعیت جسمانی در دوره جاری",
+  "remainingWeight": "وزن باقیمانده",
+  "lostWeight": "وزن کم شده",
+  "addedWeight": "وزن اضافه شده",
+  "firstWeight": "وزن اولیه",
+  "none": "??",
+  "age": "سال",
+  "noChangeWeight": "تغییری نداشته اید",
+  "pregnancyIdealWeight": "وزن مناسب هنگام زایمان",
+  "idealWeightBasedOnPervVisit": "وزن مناسب آخرین مراجعه",
+  "daysTillChildbirth": "تعداد روز باقیمانده تا وضع حمل",
+  "chartWeightName": "نمودار تغییر وزن",
   "understand": "متوجه شدم"
 }

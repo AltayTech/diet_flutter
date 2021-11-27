@@ -176,7 +176,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
           iconPath: 'assets/images/diet/wrist_icon.svg',
           onClick: (val) => setState(() => body!.wrist = val),
         ),
-        if (regime.alias == RegimeAlias.Pregnansy)
+        if (regime.alias == RegimeAlias.Pregnancy)
           CustomRuler(
             rulerType: RulerType.Pregnancy,
             value: body!.pregnancyWeek!,

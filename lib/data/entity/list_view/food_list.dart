@@ -380,7 +380,7 @@ class FoodItemPivot {
   Map<String, dynamic> toJson() => _$FoodItemPivotToJson(this);
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class Visit {
   Visit(
     this.id,
@@ -412,10 +412,10 @@ class Visit {
   final int? messageId;
 
   @JsonKey(name: 'weight')
-  final int weight;
+  final double? weight;
 
   @JsonKey(name: 'target_weight')
-  final int targetWeight;
+  final double? targetWeight;
 
   @JsonKey(name: 'height')
   final int height;

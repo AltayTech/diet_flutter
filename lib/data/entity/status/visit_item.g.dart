@@ -11,7 +11,9 @@ VisitItem _$VisitItemFromJson(Map<String, dynamic> json) => VisitItem()
   ..physicalInfo = json['physical_info'] == null
       ? null
       : PhysicalInfoData.fromJson(json['physical_info'] as Map<String, dynamic>)
-  ..visits = json['visits'] as List<dynamic>?
+  ..visits = (json['visits'] as List<dynamic>)
+      .map((e) => Visit.fromJson(e as Map<String, dynamic>))
+      .toList()
   ..weightDifference = (json['weight_difference'] as num?)?.toDouble();
 
 Map<String, dynamic> _$VisitItemToJson(VisitItem instance) => <String, dynamic>{
@@ -22,7 +24,7 @@ Map<String, dynamic> _$VisitItemToJson(VisitItem instance) => <String, dynamic>{
     };
 
 const _$RegimeAliasEnumMap = {
-  RegimeAlias.Pregnansy: 'PREGNANCY',
+  RegimeAlias.Pregnancy: 'PREGNANCY',
   RegimeAlias.WeightLoss: 'WEIGHT_LOSS',
   RegimeAlias.WeightGain: 'WEIGHT_GAIN',
   RegimeAlias.Stabilization: 'STABILIZATION',

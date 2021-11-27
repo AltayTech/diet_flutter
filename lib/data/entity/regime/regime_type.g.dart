@@ -33,7 +33,7 @@ Map<String, dynamic> _$RegimeTypeToJson(RegimeType instance) =>
     };
 
 const _$RegimeAliasEnumMap = {
-  RegimeAlias.Pregnansy: 'PREGNANCY',
+  RegimeAlias.Pregnancy: 'PREGNANCY',
   RegimeAlias.WeightLoss: 'WEIGHT_LOSS',
   RegimeAlias.WeightGain: 'WEIGHT_GAIN',
   RegimeAlias.Stabilization: 'STABILIZATION',

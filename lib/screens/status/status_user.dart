@@ -1,5 +1,8 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/screens/status/bloc.dart';
+import 'package:behandam/screens/status/chart_weight.dart';
+import 'package:behandam/screens/status/status_provider.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -27,21 +30,24 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: Toolbar(titleBar: intl.statusBodyTermUser),
-      body: Container(
-        width: 100.w,
-        height: 100.h,
-        child: Stack(
-          children: [
-            content(),
-            Positioned(
-              bottom: 0,
-              child: BottomNav(
-                currentTab: BottomNavItem.STATUS,
-              ),
-            )
-          ],
+    return StatusProvider(
+      bloc,
+      child: Scaffold(
+        appBar: Toolbar(titleBar: intl.statusBodyTermUser),
+        body: Container(
+          width: 100.w,
+          height: 100.h,
+          child: Stack(
+            children: [
+              content(),
+              Positioned(
+                bottom: 0,
+                child: BottomNav(
+                  currentTab: BottomNavItem.STATUS,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -75,24 +81,35 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                       padding: EdgeInsets.all(4.w),
                       child: Column(
                         children: [
-                          itemUi('سال', '??', 'سن'),
+                          itemUi(
+                              intl.age, (bloc.visitItem?.physicalInfo?.age.toString() ?? intl.none), 'سن'),
                           SizedBox(height: 1.h),
-                          itemUi('سانتی متر', '??', 'قد'),
+                          itemUi(intl.centimeter,
+                              bloc.visitItem?.physicalInfo?.height.toString() ?? intl.none, 'قد'),
                           SizedBox(height: 1.h),
-                          itemUi('کیلوگرم', 0.toString(), 'وزن اولیه'),
+                          itemUi(intl.kiloGr, bloc.visitItem?.firstWeight.toString() ?? 0.toString(),
+                              intl.firstWeight),
                           SizedBox(height: 1.h),
-                          itemUi('کیلوگرم', 0.toString(), 0 > 0 ? 'وزن اضافه شده' : 'وزن کم شده'),
+                          itemUi(
+                              intl.kiloGr,
+                              bloc.visitItem?.lostWeight.toString(),
+                              bloc.visitItem!.lostWeight! > 0
+                                  ? intl.addedWeight
+                                  : bloc.visitItem!.lostWeight! == 0
+                                      ? intl.noChangeWeight
+                                      : intl.lostWeight),
                           SizedBox(height: 1.h),
-                          itemUi('کیلوگرم', '??', 'وزن باقیمانده'),
-                          SizedBox(height: 1.h),
-                          itemUi('کیلوگرم', 0.toString(), "وزن مناسب هنگام زایمان"),
-                          SizedBox(height: 1.h),
-                          itemUi('کیلوگرم', '', "وزن مناسب آخرین مراجعه"),
-                          SizedBox(height: 1.h),
-                          itemUi('کیلوگرم', 0.toString(), "تعداد روز باقیمانده تا وضع حمل"),
+                          itemUi(
+                              intl.kiloGr,
+                              bloc.visitItem?.weightDifference?.abs().toStringAsFixed(1) ?? intl.none,
+                              intl.remainingWeight),
+                          pregnancy(),
                         ],
                       ),
-                    )
+                    ),
+                    SizedBox(height: 2.h),
+                    ChartWeight(),
+                    SizedBox(height: 2.h),
                   ],
                 ),
               );
@@ -123,13 +140,13 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
           Text(
             unit,
             textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.overline,
           ),
           SizedBox(width: 1.w),
           Text(
-            amount ?? '??',
+            amount ?? intl.none,
             textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.caption!.copyWith(fontWeight: FontWeight.bold),
           ),
           Expanded(
             child: Text(
@@ -141,6 +158,30 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
         ],
       ),
     );
+  }
+
+  Widget pregnancy() {
+    return bloc.visitItem?.dietType == RegimeAlias.Pregnancy
+        ? Column(
+            children: [
+              SizedBox(height: 1.h),
+              itemUi(
+                  intl.kiloGr,
+                  bloc.visitItem?.physicalInfo?.pregnancyIdealWeight?.toStringAsFixed(1) ?? 0.toString(),
+                  intl.pregnancyIdealWeight),
+              SizedBox(height: 1.h),
+              itemUi(
+                  intl.kiloGr,
+                  bloc.visitItem?.physicalInfo?.idealWeightBasedOnPervVisit?.toStringAsFixed(1) ?? '',
+                  intl.idealWeightBasedOnPervVisit),
+              SizedBox(height: 1.h),
+              itemUi(
+                  intl.kiloGr,
+                  bloc.visitItem?.physicalInfo?.daysTillChildbirth?.toString() ?? 0.toString(),
+                 intl.daysTillChildbirth),
+            ],
+          )
+        : Container();
   }
 
   @override
