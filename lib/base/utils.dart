@@ -47,7 +47,7 @@ class Utils {
       case RegimeAlias.Diabeties:
         return AppColors.diabeticType;
 
-      case RegimeAlias.Pregnansy:
+      case RegimeAlias.Pregnancy:
         return AppColors.pregnantType;
 
       case RegimeAlias.Ketogenic:
@@ -76,7 +76,7 @@ class Utils {
       case RegimeAlias.Diabeties:
         return 'assets/images/diet/diabetes_diet.svg';
 
-      case RegimeAlias.Pregnansy:
+      case RegimeAlias.Pregnancy:
         return 'assets/images/diet/pregnant_diet.svg';
 
       case RegimeAlias.Ketogenic:

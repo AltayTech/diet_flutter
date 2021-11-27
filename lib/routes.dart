@@ -50,6 +50,7 @@ abstract class Routes {
   static const paymentWaiting = '/reg/payment/card/wait';
   static const overview = '/reg/overview';
   static const menuSelect = '/reg/menu/select';
+  static const statusUser = '/status';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{

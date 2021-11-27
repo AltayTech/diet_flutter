@@ -41,6 +41,7 @@ import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
+import 'package:behandam/screens/status/status_user.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/screens/ticket/ticket_details.dart';
@@ -225,6 +226,7 @@ final navigator = VxNavigator(
     Routes.dietGoal: (_, __) => MaterialPage(child: DietGoalPage()),
     Routes.overview: (_, __) => MaterialPage(child: OverviewPage()),
     Routes.menuSelect: (_, __) => MaterialPage(child: MenuSelectPage()),
+    Routes.statusUser: (_, __) => MaterialPage(child: StatusUserScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

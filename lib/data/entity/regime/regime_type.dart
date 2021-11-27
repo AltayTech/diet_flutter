@@ -41,7 +41,7 @@ class RegimeType {
 
 enum RegimeAlias {
   @JsonValue("PREGNANCY")
-  Pregnansy,
+  Pregnancy,
   @JsonValue("WEIGHT_LOSS")
   WeightLoss,
   @JsonValue("WEIGHT_GAIN")

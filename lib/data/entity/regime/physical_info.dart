@@ -1,11 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'physical_info.g.dart';
 
 enum GenderType {
-@JsonValue(0)
-Female,
-@JsonValue(1)
-Male,
+  @JsonValue(0)
+  Female,
+  @JsonValue(1)
+  Male,
 }
 
 @JsonSerializable()
@@ -34,6 +35,16 @@ class PhysicalInfoData {
   int? multiBirth;
   @JsonKey(name: "pregnancy_week_number", defaultValue: 15)
   int? pregnancyWeek;
+  @JsonKey(name: "target_weight")
+  double? targetWeight;
+  @JsonKey(name: "age")
+  int? age;
+  @JsonKey(name: "pregnancy_ideal_weight")
+  double? pregnancyIdealWeight;
+  @JsonKey(name: "ideal_weight_based_on_perv_visit")
+  double? idealWeightBasedOnPervVisit;
+  @JsonKey(name: "days_till_childbirth")
+  int? daysTillChildbirth;
 
   int? kilo;
   int? gram;

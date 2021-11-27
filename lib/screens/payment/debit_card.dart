@@ -2,8 +2,8 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/payment/bloc.dart';
-import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
@@ -15,7 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:behandam/extensions/string.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class DebitCardPage extends StatefulWidget {
   const DebitCardPage({Key? key}) : super(key: key);
@@ -35,8 +35,11 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
     invoice = LatestInvoiceData();
     bloc = PaymentBloc();
     bloc.getLastInvoice();
-    invoice.ownerName = MemoryApp.userInformation?.fullName;
+    invoice.cardOwner = MemoryApp.userInformation?.fullName;
     invoice.payedAt = DateTime.now().toString().substring(0, 10);
+    bloc.navigateTo.listen((event) {
+      VxNavigator.of(context).push(Uri.parse('/$event'));
+    });
   }
 
   @override
@@ -67,8 +70,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
         child: StreamBuilder(
           stream: bloc.waiting,
           builder: (_, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.hasData) {
-
+            if (snapshot.hasData && snapshot.data == false) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -78,8 +80,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                     decoration: AppDecorations.boxMild.copyWith(
                       color: AppColors.box,
                     ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Column(
                       children: [
                         cardNumber(bloc.invoice!.cardNumber!),
@@ -103,8 +104,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                     showUserInfo
                         ? intl.nowFillFollowingInformation
                         : intl.clickFollowingButtonAfterPayment,
-                    style: typography.subtitle2
-                        ?.apply(color: AppColors.labelColor),
+                    style: typography.subtitle2?.apply(color: AppColors.labelColor),
                     textAlign: TextAlign.center,
                     softWrap: true,
                   ),
@@ -112,12 +112,10 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                   Space(height: 2.h),
                   Center(
                     child: SubmitButton(
-                      label: showUserInfo
-                          ? intl.submitOfflinePayment
-                          : intl.deposited,
+                      label: showUserInfo ? intl.submitOfflinePayment : intl.deposited,
                       onTap: showUserInfo
-                          ? (invoice.ownerName.isNullOrEmpty ||
-                                  invoice.cardNumber.isNullOrEmpty ||
+                          ? (invoice.cardOwner.isNullOrEmpty ||
+                                  invoice.cardNum.isNullOrEmpty ||
                                   invoice.payedAt.isNullOrEmpty)
                               ? null
                               : () {
@@ -287,8 +285,8 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           height: 8.h,
           textInputType: TextInputType.text,
           validation: (val) {},
-          onChanged: (val) => setState(() => invoice.ownerName = val),
-          value: invoice.ownerName,
+          onChanged: (val) => setState(() => invoice.cardOwner = val),
+          value: invoice.cardOwner,
           label: intl.accountOwnerName,
           maxLine: false,
           enable: true,
@@ -303,15 +301,15 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           height: 8.h,
           textInputType: TextInputType.text,
           validation: (val) {},
-          onChanged: (val) => setState(() => invoice.cardNumber = val),
-          value: invoice.cardNumber,
+          onChanged: (val) => setState(() => invoice.cardNum = val),
+          value: invoice.cardNum,
           label: intl.fourLastNumberOfCard,
           maxLine: false,
           ctx: context,
           enable: true,
-          action: TextInputAction.next,
-          formatter: null,
-          textDirection: context.textDirectionOfLocale,
+          action: TextInputAction.done,
+          formatter: FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+          textDirection: TextDirection.ltr,
         ),
         warning(intl.fourLastCardNumberOfWhoPayed),
         Space(height: 2.h),
@@ -383,8 +381,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
   String? dateFormatted() {
     if (!invoice.payedAt.isNullOrEmpty) {
-      var formatter =
-          Jalali.fromDateTime(DateTime.parse(invoice.payedAt!)).formatter;
+      var formatter = Jalali.fromDateTime(DateTime.parse(invoice.payedAt!)).formatter;
       return '${formatter.d} ${formatter.mN} ${formatter.yyyy}';
     }
     return null;
@@ -398,8 +395,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
       lastDate: Jalali(1450, 9),
     );
     setState(() {
-      invoice.payedAt =
-          picked!.toGregorian().toDateTime().toString().substring(0, 10);
+      invoice.payedAt = picked!.toGregorian().toDateTime().toString().substring(0, 10);
       debugPrint('birthdate $picked / ${invoice.payedAt}');
     });
   }

@@ -188,8 +188,8 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       json['id'] as int,
       json['term_id'] as int,
       json['message_id'] as int?,
-      json['weight'] as int,
-      json['target_weight'] as int,
+      (json['weight'] as num?)?.toDouble(),
+      (json['target_weight'] as num?)?.toDouble(),
       json['height'] as int,
       json['wrist'] as int,
       json['pregnancy_week_number'] as int?,
@@ -203,6 +203,26 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       json['calory_value'] as int,
       json['visit_days'] as int,
     );
+
+Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
+      'id': instance.id,
+      'term_id': instance.termId,
+      'message_id': instance.messageId,
+      'weight': instance.weight,
+      'target_weight': instance.targetWeight,
+      'height': instance.height,
+      'wrist': instance.wrist,
+      'pregnancy_week_number': instance.pregnancyWeekNumber,
+      'commitment': instance.commitment,
+      'visited_at': instance.visitedAt,
+      'expired_at': instance.expiredAt,
+      'activity_level_id': instance.activityLevelId,
+      'calory_id': instance.calorieId,
+      'is_active': _$booleanEnumMap[instance.isActive],
+      'deleted_at': instance.deletedAt,
+      'calory_value': instance.calorieValue,
+      'visit_days': instance.visitDays,
+    };
 
 DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType(
       json['id'] as int,

@@ -26,6 +26,7 @@ class AppColors {
   static late Color labelTextColor;
   static late Color labelTab;
   static late Color warning = Colors.orange.shade100;
+
   static const penColor = Color(0xff8A8A8A);
   static const redBar = Color(0xffFF5757);
   static const looseType = Color(0xffF6DED5);
@@ -56,6 +57,7 @@ class AppColors {
   static const greenRuler = Color(0xff59CBB1);
   static const box = Color.fromARGB(255, 245, 245, 245);
   static const pregnantPink = Color(0xffFFD6DC);
+  static const chartBorder = Color.fromARGB(255, 255, 87, 87);
   static var colorPackages = [
   {
   'barColor': Color.fromARGB(255, 249, 203, 202),

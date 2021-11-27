@@ -6,7 +6,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 
 enum BottomNavItem { PROFILE, SUPPORT, DIET, VITRINE, STATUS }
@@ -37,12 +36,12 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
               navigator.routeManager.clearAndPush(Uri.parse(Routes.regimeType));
             break;
           case BottomNavItem.VITRINE:
-           if (widget.currentTab != BottomNavItem.VITRINE)
-             navigator.routeManager.clearAndPush(Uri.parse(Routes.vitrin));
+            if (widget.currentTab != BottomNavItem.VITRINE)
+              navigator.routeManager.clearAndPush(Uri.parse(Routes.vitrin));
             break;
           case BottomNavItem.STATUS:
-            /*  if (title != currentTab)
-              Navigator.pushNamedAndRemoveUntil(context, Status.routeName, (route) => false);*/
+            if (widget.currentTab != BottomNavItem.STATUS)
+              navigator.routeManager.clearAndPush(Uri.parse(Routes.statusUser));
             break;
         }
       },
@@ -162,6 +161,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

@@ -3,17 +3,19 @@ import 'dart:io';
 import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/api/interceptor/logger.dart';
-import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/entity/psy/calender.dart';
+import 'package:behandam/data/entity/payment/latest_invoice.dart';
+
 // import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
-import 'package:behandam/data/entity/payment/latest_invoice.dart';
+import 'package:behandam/data/entity/psy/calender.dart';
+import 'package:behandam/data/entity/regime/activity_level.dart';
+import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
@@ -22,10 +24,10 @@ import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
-import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 
@@ -166,6 +168,8 @@ abstract class Repository {
   NetworkResult<DietHistoryData> dietHistory();
 
   NetworkResult<DietGoalData> dietGoals();
+
+  NetworkResult<VisitItem> getVisits();
 
   NetworkResult<OverviewData> overview();
 }
@@ -548,11 +552,11 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult setCondition(ConditionRequestData requestData) {
     Map<String, dynamic> body = {
-      if(requestData.packageId != null) 'package_id': requestData.packageId,
-      if(requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
-      if(requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
-      if(requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
-      if(requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
+      if (requestData.packageId != null) 'package_id': requestData.packageId,
+      if (requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
+      if (requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
+      if (requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
+      if (requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
     };
     debugPrint('bloc condition2 $body');
     var response = _apiClient.setCondition(body);
@@ -612,6 +616,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<DietGoalData> dietGoals() {
     var response = _apiClient.dietGoals();
+    return response;
+  }
+
+  @override
+  NetworkResult<VisitItem> getVisits() {
+    var response = _apiClient.visits();
     return response;
   }
 
