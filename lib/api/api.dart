@@ -15,6 +15,7 @@ import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
@@ -84,7 +85,7 @@ abstract class RestClient {
   NetworkResult<Help> helpBodyState(@Path('id') int id);
 
   @PATCH("/condition")
-  NetworkResult condition(@Body() Map<String, dynamic> requestData);
+  NetworkResult setCondition(@Body() Map<String, dynamic> requestData);
 
   @PATCH("/physical-info")
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
@@ -224,4 +225,7 @@ abstract class RestClient {
 
   @GET("/diet-goal")
   NetworkResult<DietGoalData> dietGoals();
+
+  @GET("/user/condition")
+  NetworkResult<OverviewData> overview();
 }

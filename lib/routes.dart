@@ -36,7 +36,6 @@ abstract class Routes {
   static const package = '/reg/package';
   static const paymentBill = '/reg/payment/bill';
   static const cardToCard = '/reg/payment/card';
-  // static const bodyStatus = '/bodyStatus';
   static const vitrin = '/vitrin';
   static const PSYIntro = '/PSYIntro';
   static const PSYCalender = '/PSYCalender';
@@ -49,6 +48,8 @@ abstract class Routes {
   static const dietGoal = '/reg/diet/goal';
   static const paymentFail = '/reg/payment/online/fail';
   static const paymentWaiting = '/reg/payment/card/wait';
+  static const overview = '/reg/overview';
+  static const menuSelect = '/reg/menu/select';
 
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
