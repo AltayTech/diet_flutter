@@ -186,10 +186,7 @@ Widget optionUi(IconData icon, String text, int action) {
       if (action == 2) {
         navigator.routeManager.push(Uri.parse(Routes.editProfile));
       } else if (action == 0) {
-        // user.getUser['info'].mobile
-        // Navigator.of(context).pushNamed(ProfileChangePass.routeName, arguments: user.mobile);
-        // Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (ctx) => ProfileChangePass()));
+        navigator.routeManager.push(Uri.parse(Routes.resetPass));
       }
     },
     child: Container(

@@ -19,10 +19,8 @@ import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
-import 'package:behandam/data/entity/regime/overview.dart';
-import 'package:behandam/data/entity/regime/physical_info.dart';
-import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
@@ -492,15 +490,15 @@ class _RepositoryImpl extends Repository {
 
   @override
   ImperativeNetworkResult sendSickness(UserSickness sickness) {
-    List<int> selectedItems = [];
+    List<dynamic> selectedItems = [];
     UserSickness userSickness = new UserSickness();
     sickness.sickness_categories!.forEach((element) {
       element.sicknesses!.forEach((sicknessItem) {
         if (sicknessItem.isSelected!) {
           if (sicknessItem.children!.length > 0) {
-            selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!).id!);
+            selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
           } else {
-            selectedItems.add(sicknessItem.id!);
+            selectedItems.add(sicknessItem);
           }
         }
       });
@@ -519,14 +517,14 @@ class _RepositoryImpl extends Repository {
 
   @override
   ImperativeNetworkResult sendSicknessSpecial(UserSicknessSpecial sickness) {
-    List<int> selectedItems = [];
+    List<dynamic> selectedItems = [];
     UserSickness userSickness = new UserSickness();
     sickness.specials!.forEach((sicknessItem) {
       if (sicknessItem.isSelected!) {
         if (sicknessItem.children!.length > 0) {
-          selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!).id!);
+          selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
         } else {
-          selectedItems.add(sicknessItem.id!);
+          selectedItems.add(sicknessItem);
         }
       }
     });

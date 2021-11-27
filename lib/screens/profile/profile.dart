@@ -2,7 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/profile/ToolsBox.dart';
+import 'package:behandam/screens/profile/tools_box.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/toolbar_profile.dart';

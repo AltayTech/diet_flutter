@@ -9,6 +9,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -86,7 +87,8 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
                 profileBloc.edit(context);
               },
               label: intl.acceptEdit,
-            )
+            ),
+            Space(height: 1.h,)
           ],
         ),
         scrollDirection: Axis.vertical,

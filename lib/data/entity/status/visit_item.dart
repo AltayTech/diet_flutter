@@ -15,10 +15,8 @@ class VisitItem {
   @JsonKey(name: 'physical_info')
   PhysicalInfoData? physicalInfo;
 
-  @JsonKey(name: 'visits')
+  @JsonKey(name: 'visits', defaultValue: [])
   late List<Visit> visits;
-
-
 
   @JsonKey(name: 'weight_difference')
   double? weightDifference;

@@ -468,5 +468,7 @@
   "idealWeightBasedOnPervVisit": "وزن مناسب آخرین مراجعه",
   "daysTillChildbirth": "تعداد روز باقیمانده تا وضع حمل",
   "chartWeightName": "نمودار تغییر وزن",
+  "inbox": "صندوق پیام",
+  "notFoundInbox": "پیامی برای نمایش وجود ندارد",
   "understand": "متوجه شدم"
 }

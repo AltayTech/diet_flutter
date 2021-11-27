@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
@@ -147,7 +148,8 @@ class SicknessBloc {
   void sendSickness() {
     _repository.sendSickness(userSickness!).then((value) {
       _navigateTo.fireMessage('/${value.next}');
-    }).whenComplete(() {});
+    }).whenComplete(() {
+    });
   }
 
   void sendSicknessSpecial() {

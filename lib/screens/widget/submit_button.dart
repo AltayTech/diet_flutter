@@ -3,13 +3,15 @@ import 'package:behandam/app/provider.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SubmitButton extends StatefulWidget {
-  const SubmitButton({Key? key, required this.label, required this.onTap}) : super(key: key);
+  const SubmitButton({Key? key, required this.label, this.icon, required this.onTap})
+      : super(key: key);
 
   final String label;
+  final Icon? icon;
   final void Function()? onTap;
+
   // final Icon icon,
 
   @override
@@ -24,16 +26,42 @@ class _SubmitButtonState extends ResourcefulState<SubmitButton> {
     super.build(context);
     appBloc = AppProvider.of(context);
 
-    return ElevatedButton.icon(
-      onPressed: widget.onTap,
-      icon: Icon(Icons.circle),
-      label: Text(
-        widget.label,
-        style: typography.caption?.apply(
-          color: AppColors.onPrimary,
-        ),
-      ),
-    );
+    return widget.icon != null
+        ? ElevatedButton.icon(
+      style: ButtonStyle(
+          backgroundColor:
+          MaterialStateProperty.all(AppColors.primary),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  side: BorderSide(color: AppColors.primaryColorDark)))),
+            onPressed: widget.onTap,
+            icon: widget.icon!,
+            label: Text(
+              widget.label,
+              style: typography.caption?.apply(
+                color: AppColors.onPrimary,
+              ),
+            ),
+          )
+        : ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor:
+          MaterialStateProperty.all(AppColors.primary),
+          // padding: MaterialStateProperty.all(
+          //     EdgeInsets.fromLTRB(50, 20, 50, 20)),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  side: BorderSide(color: AppColors.primaryColorDark)))),
+            onPressed: widget.onTap,
+            child: Text(
+              widget.label,
+              style: typography.caption?.apply(
+                color: AppColors.onPrimary,
+              ),
+            ),
+          );
   }
 
   @override
@@ -50,6 +78,7 @@ class _SubmitButtonState extends ResourcefulState<SubmitButton> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage
