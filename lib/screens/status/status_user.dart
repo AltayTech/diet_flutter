@@ -81,13 +81,21 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                       padding: EdgeInsets.all(4.w),
                       child: Column(
                         children: [
+                          itemUi('', getDietTypeString(), intl.dietType),
+                          SizedBox(height: 1.h),
                           itemUi(
-                              intl.age, (bloc.visitItem?.physicalInfo?.age.toString() ?? intl.none), 'سن'),
+                              intl.old,
+                              (bloc.visitItem?.physicalInfo?.age.toString() ?? intl.none),
+                              intl.age),
                           SizedBox(height: 1.h),
-                          itemUi(intl.centimeter,
-                              bloc.visitItem?.physicalInfo?.height.toString() ?? intl.none, 'قد'),
+                          itemUi(
+                              intl.centimeter,
+                              bloc.visitItem?.physicalInfo?.height.toString() ?? intl.none,
+                              intl.height),
                           SizedBox(height: 1.h),
-                          itemUi(intl.kiloGr, bloc.visitItem?.firstWeight.toString() ?? 0.toString(),
+                          itemUi(
+                              intl.kiloGr,
+                              bloc.visitItem?.firstWeight.toString() ?? 0.toString(),
                               intl.firstWeight),
                           SizedBox(height: 1.h),
                           itemUi(
@@ -101,7 +109,8 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                           SizedBox(height: 1.h),
                           itemUi(
                               intl.kiloGr,
-                              bloc.visitItem?.weightDifference?.abs().toStringAsFixed(1) ?? intl.none,
+                              bloc.visitItem?.weightDifference?.abs().toStringAsFixed(1) ??
+                                  intl.none,
                               intl.remainingWeight),
                           pregnancy(),
                         ],
@@ -167,21 +176,50 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
               SizedBox(height: 1.h),
               itemUi(
                   intl.kiloGr,
-                  bloc.visitItem?.physicalInfo?.pregnancyIdealWeight?.toStringAsFixed(1) ?? 0.toString(),
+                  bloc.visitItem?.physicalInfo?.pregnancyIdealWeight?.toStringAsFixed(1) ??
+                      0.toString(),
                   intl.pregnancyIdealWeight),
               SizedBox(height: 1.h),
               itemUi(
                   intl.kiloGr,
-                  bloc.visitItem?.physicalInfo?.idealWeightBasedOnPervVisit?.toStringAsFixed(1) ?? '',
+                  bloc.visitItem?.physicalInfo?.idealWeightBasedOnPervVisit?.toStringAsFixed(1) ??
+                      '',
                   intl.idealWeightBasedOnPervVisit),
               SizedBox(height: 1.h),
               itemUi(
                   intl.kiloGr,
                   bloc.visitItem?.physicalInfo?.daysTillChildbirth?.toString() ?? 0.toString(),
-                 intl.daysTillChildbirth),
+                  intl.daysTillChildbirth),
             ],
           )
         : Container();
+  }
+
+  String getDietTypeString() {
+    switch (bloc.visitItem?.dietType) {
+      case RegimeAlias.Pregnancy:
+        return intl.pregnancy;
+      case RegimeAlias.WeightLoss:
+        return intl.weightLoss;
+
+      case RegimeAlias.WeightGain:
+        return intl.weightGain;
+
+      case RegimeAlias.Stabilization:
+        return intl.stabilization;
+
+      case RegimeAlias.Diabeties:
+        return intl.diabetes;
+
+      case RegimeAlias.Ketogenic:
+        return intl.ketogenic;
+      case RegimeAlias.Sport:
+        return intl.sport;
+      case RegimeAlias.Notrica:
+        return intl.notrica;
+      default:
+        return intl.none;
+    }
   }
 
   @override
