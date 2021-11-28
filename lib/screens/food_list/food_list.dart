@@ -116,6 +116,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                     ),
                     SubmitButton(
                       label: isToday(snapshot.requireData!) ? intl.showAdvices : intl.goToToday,
+                      size: Size(40.w,5.h),
                       onTap: isToday(snapshot.requireData!)
                           ? () => VxNavigator.of(context).push(Uri(path: Routes.advice))
                           : () =>

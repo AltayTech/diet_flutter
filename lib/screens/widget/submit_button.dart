@@ -5,11 +5,12 @@ import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 class SubmitButton extends StatefulWidget {
-  const SubmitButton({Key? key, required this.label, this.icon, required this.onTap})
+  SubmitButton({Key? key, required this.label, this.icon, required this.onTap,this.size})
       : super(key: key);
 
   final String label;
   final Icon? icon;
+  final Size? size;
   final void Function()? onTap;
 
   // final Icon icon,
@@ -28,12 +29,15 @@ class _SubmitButtonState extends ResourcefulState<SubmitButton> {
 
     return widget.icon != null
         ? ElevatedButton.icon(
+
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(AppColors.primary),
+                fixedSize: MaterialStateProperty.all(widget.size ?? Size(70.w, 6.h)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                     side: BorderSide(color: AppColors.primaryColorDark)))),
             onPressed: widget.onTap,
+
             icon: widget.icon!,
             label: Text(
               widget.label,
@@ -45,7 +49,7 @@ class _SubmitButtonState extends ResourcefulState<SubmitButton> {
         : ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(AppColors.primary),
-                fixedSize: MaterialStateProperty.all(Size(70.w, 6.h)),
+                fixedSize: MaterialStateProperty.all(widget.size ?? Size(70.w, 6.h)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                     side: BorderSide(color: AppColors.primaryColorDark)))),
