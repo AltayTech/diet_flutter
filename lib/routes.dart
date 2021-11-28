@@ -37,6 +37,7 @@ abstract class Routes {
   static const paymentBill = '/reg/payment/bill';
   static const cardToCard = '/reg/payment/card';
   // static const bodyStatus = '/bodyStatus';
+  static const resetPasswordProfile = '/resetPasswordProfile';
   static const vitrin = '/vitrin';
   static const psychologyIntro = '/psychologyIntro';
   static const psychologyCalender = '/psychologyCalender';

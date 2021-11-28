@@ -6,14 +6,14 @@ import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class TermsScreen extends StatefulWidget {
-  const TermsScreen({Key? key}) : super(key: key);
+class PsychologyTermsScreen extends StatefulWidget {
+  const PsychologyTermsScreen({Key? key}) : super(key: key);
 
   @override
-  _TermsScreenState createState() => _TermsScreenState();
+  _PsychologyTermsScreenState createState() => _PsychologyTermsScreenState();
 }
 
-class _TermsScreenState extends ResourcefulState<TermsScreen> {
+class _PsychologyTermsScreenState extends ResourcefulState<PsychologyTermsScreen> {
   @override
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)!.settings.arguments;

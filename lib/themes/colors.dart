@@ -55,6 +55,7 @@ class AppColors {
   static const greenRuler = Color(0xff59CBB1);
   static const box = Color.fromARGB(255, 245, 245, 245);
   static const pregnantPink = Color(0xffFFD6DC);
+  static const pinkPass = Color(0xffFFE2E2);
   static var colorPackages = [
   {
   'barColor': Color.fromARGB(255, 249, 203, 202),

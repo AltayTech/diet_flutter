@@ -65,13 +65,16 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T> with 
     super.didUpdateWidget(oldWidget);
   }
 
-  /* @override
+  @override
   @mustCallSuper
   void onResume() {
+    super.setState(() {
+
+    });
     _printEvent('onResume()');
   }
 
-  @override
+  /*@override
   @mustCallSuper
   void onPause() {
     _printEvent('onPause()');

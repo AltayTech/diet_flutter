@@ -1,19 +1,20 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/psychology/calender_bloc.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class ReservedMeetingScreen extends StatefulWidget {
-  const ReservedMeetingScreen({Key? key}) : super(key: key);
+class PsychologyReservedMeetingScreen extends StatefulWidget {
+  const PsychologyReservedMeetingScreen({Key? key}) : super(key: key);
 
   @override
-  _ReservedMeetingScreenState createState() => _ReservedMeetingScreenState();
+  _PsychologyReservedMeetingScreenState createState() => _PsychologyReservedMeetingScreenState();
 }
 
-class _ReservedMeetingScreenState extends ResourcefulState<ReservedMeetingScreen> {
+class _PsychologyReservedMeetingScreenState extends ResourcefulState<PsychologyReservedMeetingScreen> {
   late CalenderBloc calenderBloc;
 
 
@@ -29,6 +30,7 @@ class _ReservedMeetingScreenState extends ResourcefulState<ReservedMeetingScreen
       Utils.getSnackbarMessage(context, event);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -53,7 +55,6 @@ class _ReservedMeetingScreenState extends ResourcefulState<ReservedMeetingScreen
                   Text(intl.myMeeting),
                   SizedBox(height: 2.h),
                 Container(
-                          height: 100.h,
                           child: StreamBuilder(
                               stream: calenderBloc.meetingDate,
                               builder: (context, AsyncSnapshot<List<HistoryOutput>> snapshot){
@@ -109,6 +110,17 @@ class _ReservedMeetingScreenState extends ResourcefulState<ReservedMeetingScreen
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          VxNavigator.of(context).pop();
+        },
+        label: Container(
+            width:50.w,
+            height:10.h,
+            child: Center(child: Text(intl.sessionReserve))),
+        backgroundColor: AppColors.btnColor,
+      ),
+      floatingActionButtonLocation:  FloatingActionButtonLocation.centerFloat,
     ));
   }
 

@@ -1063,6 +1063,26 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<BookingOutput>> getBook(booking) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(booking.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<BookingOutput>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/psychology/v2/booking',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<BookingOutput>.fromJson(
+      _result.data!,
+      (json) => BookingOutput.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<HistoryOutput>> getHistory() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1077,6 +1097,25 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<HistoryOutput>.fromJson(
       _result.data!,
       (json) => HistoryOutput.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<LatestInvoiceData>> getInvoice() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<LatestInvoiceData>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/psychology/latest-invoice',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<LatestInvoiceData>.fromJson(
+      _result.data!,
+      (json) => LatestInvoiceData.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

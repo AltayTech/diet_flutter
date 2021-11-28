@@ -1,3 +1,7 @@
+
+
+import 'package:shamsi_date/shamsi_date.dart';
+
 import 'entity/auth/country_code.dart';
 
 import 'package:behandam/data/entity/fast/fast.dart';
@@ -19,6 +23,7 @@ class MemoryApp {
   static List<CountryCode>? countryCode;
   static String? selectedDate;
   static String? routeName;
+  static Jalali? day;
 
   Map<String, FoodListData> _foodList = {};
   Map<String, int> _selectedFastPatten = {};

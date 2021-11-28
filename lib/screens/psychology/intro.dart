@@ -1,10 +1,15 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/const_&_model/list_data.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/psychology/calender_bloc.dart';
+import 'package:behandam/screens/psychology/reserved_meeting.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_video.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
@@ -14,41 +19,72 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:video_player/video_player.dart';
 import 'package:behandam/const_&_model/slider_data.dart';
 
-class PSYIntroScreen extends StatefulWidget {
-  const PSYIntroScreen({Key? key}) : super(key: key);
+import 'calender.dart';
+
+class PsychologyIntroScreen extends StatefulWidget {
+  const PsychologyIntroScreen({Key? key}) : super(key: key);
 
   @override
-  State<PSYIntroScreen> createState() => _PSYIntroScreenState();
+  State<PsychologyIntroScreen> createState() => _PsychologyIntroScreenState();
 }
 
-class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
+class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen> {
   late VideoPlayerController videoPlayerController;
-  ChewieController? chewieController;
+  late ChewieController chewieController;
+  late CalenderBloc calenderBloc;
+  int counter = 0;
 
   @override
   void initState() {
     super.initState();
-    setData();
+    calenderBloc = CalenderBloc();
+    // setData();
+    listenBloc();
   }
 
-  Future<void> setData() async{
-    videoPlayerController = VideoPlayerController.network(
-        'https://as6.cdn.asset.aparat.com/aparat-video/10f0d80a2216af1faab7e2fbbab14c3b16554542-480p.apt');
+  void listenBloc() {
+    calenderBloc.navigateTo.listen((event) {
+      if(event != null) {
+        if (event)
+          VxNavigator.of(context).push(
+              Uri.parse(Routes.psychologyReservedMeeting));
+        else
+          VxNavigator.of(context).push(Uri.parse(Routes.psychologyCalender));
+      }
+    });
+    calenderBloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
+    });
+  }
+
+  // Future<void> setData() async{
+  //   videoPlayerController = VideoPlayerController.network(
+  //       'https://behandam.kermany.com/helia-service/storage/psychology/teaser_480.mp4');
+  //   await Future.wait([videoPlayerController.initialize()]);
+  //   chewieController = ChewieController(
+  //     videoPlayerController: videoPlayerController,
+  //     autoPlay: false,
+  //     looping: false,
+  //   );
+  //   setState(() {
+  //
+  //   });
+  // }
+
+  VideoController(ChewieController chewieController) async{
     await Future.wait([videoPlayerController.initialize()]);
-    chewieController = ChewieController(
+     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
       autoPlay: true,
       looping: true,
     );
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
   void dispose() {
-    videoPlayerController.dispose();
-    chewieController!.dispose();
+    // videoPlayerController.dispose();
+    // chewieController.dispose();
     super.dispose();
   }
 
@@ -79,12 +115,17 @@ class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                         color: Color(0xffE3EBEF)),
                     child: Center(
-                        child: chewieController != null &&
-                            chewieController!.videoPlayerController.value.isInitialized ?
-                        Chewie(
-                            controller:  chewieController!
-                        ):
-                        CircularProgressIndicator()
+                        child:
+                            CustomVideo(
+                              url: 'https://behandam.kermany.com/helia-service/storage/psychology/teaser_480.mp4',
+                              isStart: false,
+                              callBackListener: VideoController)
+                        // chewieController != null &&
+                        //     chewieController!.videoPlayerController.value.isInitialized ?
+                        // Chewie(
+                        //     controller:  chewieController!
+                        // ):
+                        // CircularProgressIndicator()
                     ),
                   ),
                 ),
@@ -215,9 +256,10 @@ class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            if(chewieController!.isPlaying)
-              chewieController!.pause();
-            VxNavigator.of(context).push(Uri.parse(Routes.psychologyCalender));
+            // if(chewieController.isPlaying)
+            //   chewieController.pause();
+              calenderBloc.getHistory();
+
           },
           label: Container(
               width:50.w,

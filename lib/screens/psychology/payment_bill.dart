@@ -1,5 +1,8 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/psychology/booking.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/psychology/calender_bloc.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
@@ -13,8 +16,53 @@ class PsychologyPaymentBillScreen extends StatefulWidget {
   _PsychologyPaymentBillScreenState createState() => _PsychologyPaymentBillScreenState();
 }
 
-class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPaymentBillScreen> {
+class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPaymentBillScreen>  with WidgetsBindingObserver {
   var args;
+  late CalenderBloc calenderBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+    calenderBloc = CalenderBloc();
+    // listenBloc();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("here1");
+    if(state == AppLifecycleState.resumed){
+      calenderBloc.getInvoice();
+      listenBloc();
+    }
+  }
+
+  // @override
+  // void onResume() {
+  //   print("here2");
+  //   calenderBloc.getInvoice();
+  //   listenBloc();
+  //   super.onResume();
+  // }
+
+  void listenBloc() {
+    calenderBloc.navigateToVerify.listen((event) {
+      if (event as bool){
+        VxNavigator.of(context).push(Uri.parse(Routes.psychologyReservedMeeting));
+      } else
+        VxNavigator.of(context).push(Uri.parse(Routes.psychologyCalender));
+    });
+    calenderBloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     args = ModalRoute.of(context)!.settings.arguments;
@@ -128,9 +176,15 @@ class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPayme
                     ),
                   ),
                   SizedBox(height: 2.h),
-                  button(AppColors.primaryVariantLight, intl.cartPay, Size(80.w,5.h),
-                      () {}),
-                          // VxNavigator.of(context).push(Uri.parse(Routes.PSYPaymentCard))),
+                  button(AppColors.primaryVariantLight, intl.onlinePay, Size(80.w,5.h),
+                      () {
+                          Booking booking = Booking();
+                          booking.expertPlanningId = args['sessionId'];
+                          booking.packageId = args['packageId'];
+                          booking.paymentTypeId = 0;
+                          booking.originId = 3;
+                          calenderBloc.getBook(booking);
+                      }),
                   SizedBox(height: 10.h),
                 ],
               ),

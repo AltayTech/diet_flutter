@@ -17,14 +17,14 @@ import 'package:shamsi_date/shamsi_date.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class PSYCalenderScreen extends StatefulWidget {
-  const PSYCalenderScreen({Key? key}) : super(key: key);
+class PsychologyCalenderScreen extends StatefulWidget {
+  const PsychologyCalenderScreen({Key? key}) : super(key: key);
 
   @override
-  _PSYCalenderScreenState createState() => _PSYCalenderScreenState();
+  _PsychologyCalenderScreenState createState() => _PsychologyCalenderScreenState();
 }
 
-class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
+class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalenderScreen> {
   late Future<List<Plan>?> calender;
   late CalenderBloc calenderBloc;
 
@@ -181,7 +181,13 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
               ),
               Row(
                 children: [
-                  ImageUtils.fromNetwork(info.adviserImage,width: 20.w,height: 20.w),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0,left: 8.0),
+                    child: info.adviserImage == null
+                     ? ImageUtils.fromLocal('assets/images/profile/psychology.svg',width: 20.w,height: 7.h)
+                     : Image.network(
+                        'https://debug.behaminplus.ir//helia-service${info.adviserImage}',width: 20.w,height: 10.h),
+                  ),
                   Column(
                     children: [
                       Text(info.adviserName!),
@@ -452,7 +458,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                           child: StreamBuilder(
                             stream: calenderBloc.disabledClickPre,
                             builder: (context,snapshot){
-                              print('statusAgo: ${snapshot.data}');
+                              // print('statusAgo: ${snapshot.data}');
                               return StreamBuilder(
                                 stream: calenderBloc.daysAgo,
                                   builder: (context, AsyncSnapshot<Jalali> previous){
@@ -533,7 +539,8 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                                   Text(intl.thereIsNotTime),
                                   button(AppColors.btnColor, intl.showFirstFreeTime, Size(80.w,4.h),
                                           (){
-                                            var data = calenderBloc.findFirstFreeTime();
+                                            List data = calenderBloc.findFirstFreeTime();
+                                            if(data.length > 0)
                                             showModal(context, data[0], data[0].times[0]);
                                           })
                                 ],
