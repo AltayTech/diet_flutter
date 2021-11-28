@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';

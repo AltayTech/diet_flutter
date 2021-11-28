@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/screens/advice/bloc.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -87,7 +88,7 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
                     ],
                   );
                 }
-                return Center(child: CircularProgressIndicator());
+                return Center(child: Progress());
               },
             ),
           ),

@@ -14,16 +14,17 @@ class StatusBloc {
 
   late String _path;
   late List<Visit>? _visits;
-  late VisitItem _visitItem;
+  VisitItem? _visitItem;
 
   final _waiting = BehaviorSubject<bool>();
   final _showInformation = BehaviorSubject<bool>();
 
   String get path => _path;
 
-  VisitItem? get visitItem => _visitItem;
+  VisitItem? get visitItem => _visitItem ?? VisitItem();
 
   List<Visit> get visits => _visits ?? [];
+
   List<Visit> get visitsChart => _visits ?? [];
 
   Stream<bool> get waiting => _waiting.stream;
@@ -35,10 +36,13 @@ class StatusBloc {
     _repository.getVisits().then((value) {
       _visitItem = value.requireData;
       _visits = value.data?.visits;
-      if(value.data!=null)
-      _visitItem.setMaxMinWeight();
+      if (value.data != null) _visitItem!.setMaxMinWeight();
     }).catchError((onError) {
-      print('onError = > $onError');
+
+      _visitItem = new VisitItem();
+      _visitItem!.visits = [];
+      _visits = [];
+      _visitItem!.setMaxMinWeight();
     }).whenComplete(() {
       _waiting.value = false;
     });

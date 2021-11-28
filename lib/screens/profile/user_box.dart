@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class UserBox extends StatefulWidget {
@@ -50,7 +51,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               action: TextInputAction.next,
               formatter: FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
               textDirection: context.textDirectionOfLocale),
-          SizedBox(height: 3.h),
+          Space(height: 3.h),
           textInput(
               height: 8.h,
               textInputType: TextInputType.text,
@@ -64,7 +65,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               action: TextInputAction.next,
               formatter: FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
               textDirection: context.textDirectionOfLocale),
-          SizedBox(height: 3.h),
+          Space(height: 3.h),
           textInput(
               height: 8.h,
               textInputType: TextInputType.text,
@@ -78,7 +79,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               action: TextInputAction.next,
               formatter: FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
               textDirection: context.textDirectionOfLocale),
-          SizedBox(height: 3.h),
+          Space(height: 3.h),
           textInput(
               height: 8.h,
               enable: true,
@@ -92,7 +93,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               action: TextInputAction.newline,
               formatter: null,
               textDirection: context.textDirectionOfLocale),
-          SizedBox(height: 3.h),
+          Space(height: 3.h),
           textInput(
               height: 8.h,
               textInputType: TextInputType.text,
@@ -106,7 +107,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               action: TextInputAction.next,
               formatter: null,
               textDirection: context.textDirectionOfLocale),
-          SizedBox(height: 3.h),
+          Space(height: 3.h),
           textInput(
               height: 8.h,
               textInputType: TextInputType.text,
@@ -123,7 +124,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               action: TextInputAction.next,
               formatter: null,
               textDirection: context.textDirectionOfLocale),
-          SizedBox(height: 3.h),
+          Space(height: 3.h),
           textInput(
               height: 8.h,
               textInputType: TextInputType.text,
@@ -139,7 +140,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               action: TextInputAction.next,
               formatter: null,
               textDirection: context.textDirectionOfLocale),
-          SizedBox(height: 3.h),
+          Space(height: 3.h),
           textInput(
               height: 8.h,
               textInputType: TextInputType.multiline,
@@ -153,7 +154,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               action: TextInputAction.newline,
               formatter: null,
               textDirection: context.textDirectionOfLocale),
-          SizedBox(height: 3.h),
+          Space(height: 3.h),
           Directionality(
               textDirection: context.textDirectionOfLocale,
               child: MyDropdown(
@@ -167,7 +168,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
                 }),
                 border: true,
               )),
-          if (profileBloc.countryName == 'Iran') SizedBox(height: 3.h),
+          if (profileBloc.countryName == 'Iran') Space(height: 3.h),
           if (profileBloc.countryName == 'Iran')
             Directionality(
                 textDirection: TextDirection.rtl,
@@ -194,7 +195,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
                     }
                   },
                 )),
-          if (profileBloc.countryName == 'Iran') SizedBox(height: 3.h),
+          if (profileBloc.countryName == 'Iran') Space(height: 3.h),
           if (profileBloc.countryName == 'Iran')
             Directionality(
                 textDirection: TextDirection.rtl,

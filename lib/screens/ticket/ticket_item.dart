@@ -8,6 +8,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -56,7 +57,7 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
 //              mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: 3.h),
+                    Space(height: 3.h),
                     Text(
                       intl.closedTicket,
                       textDirection: TextDirection.rtl,
@@ -64,7 +65,7 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
                       softWrap: true,
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
-                    SizedBox(height: 1.5.h),
+                    Space(height: 1.5.h),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +83,7 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
                           },
                           color: Theme.of(context).accentColor,
                         ),
-                        SizedBox(width: 2.w),
+                        Space(width: 2.w),
                         MaterialButton(
                           child: Text(
                             intl.cancel,
@@ -156,7 +157,7 @@ queryParameters:{
                   width: 1.w,
                   color: ticketBloc.statusColor(widget.ticketItem.status!),
                 ),
-                SizedBox(width: 2.w),
+                Space(width: 2.w),
                 Expanded(
                   child: Text(
                     ticketBloc.findTicketStatus(widget.ticketItem.status!),
@@ -166,7 +167,7 @@ queryParameters:{
                         ),
                   ),
                 ),
-                SizedBox(width: 2.w),
+                Space(width: 2.w),
                 ImageUtils.fromLocal(
                   'assets/images/foodlist/archive.svg',
                   width: 6.w,
@@ -174,7 +175,7 @@ queryParameters:{
                   fit: BoxFit.fill,
                   color: AppColors.primary,
                 ),
-                SizedBox(width: 2.w),
+                Space(width: 2.w),
                 Text(
                   DateTimeUtils.gregorianToJalali(widget.ticketItem.createdAt!),
                   style: Theme.of(context).textTheme.caption,

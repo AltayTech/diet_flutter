@@ -2,6 +2,7 @@ import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -158,7 +159,7 @@ class _WeekListState extends ResourcefulState<WeekList> {
             ),
           );
         }
-        return Center(child: CircularProgressIndicator());
+        return Center(child: Progress());
       },
     );
   }

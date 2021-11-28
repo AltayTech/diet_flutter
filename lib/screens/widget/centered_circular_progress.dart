@@ -1,3 +1,4 @@
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -25,12 +26,12 @@ class CenteredCircularProgressIndicator extends StatelessWidget {
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [CircularProgressIndicator()],
+              children: [Progress(size: 5.w,)],
             )
           : Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [CircularProgressIndicator()],
+              children: [Progress(size: 5.w)],
             ),
     );
   }

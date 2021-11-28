@@ -7,6 +7,7 @@ import 'package:behandam/screens/daily_menu/bloc.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/input_widget.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -216,7 +217,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
             itemCount: snapshot.requireData!.length + 1,
           );
         }
-        return Center(child: CircularProgressIndicator());
+        return Center(child: Progress());
       },
     );
   }

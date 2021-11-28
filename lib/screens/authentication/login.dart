@@ -3,6 +3,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
@@ -103,7 +104,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             ),
           );
         } else {
-          return Center(child: Container(width:5.w,height: 5.w,child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 1.0)));
+          return Center(child: Container(width:7.w,height: 7.w,child: Progress()));
         }
       },
     );
@@ -132,7 +133,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       child: Container(
                           width:15.w,
                           height: 15.w,
-                          child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 1.0)));
+                          child: Progress()));
                 }
               })),
     );

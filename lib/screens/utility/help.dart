@@ -1,9 +1,11 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 
 class Help extends StatefulWidget {
@@ -47,13 +49,13 @@ class _HelpState extends ResourcefulState<Help> {
                       child: Column(
                         children: [
                           Text(regimeBloc.name),
-                          SizedBox(height: 2.h),
+                          Space(height: 2.h),
                           // id == 2
                           //     ? ImageUtils.fromLocal('assets/images/diet/body-scale-happy.svg',width: 20.w,height: 20.h,)
                           //     : Container(),
-                          // SizedBox(height: 2.h),
+                          // Space(height: 2.h),
                           // Text(snapshot.data![0].body!,style: TextStyle(fontSize: 16.0)),
-                          SizedBox(height: 2.h),
+                          Space(height: 2.h),
                           button(AppColors.btnColor, intl.understand,Size(100.w,8.h),
                                   () => Navigator.of(context).pop())
                         ],
@@ -67,7 +69,7 @@ class _HelpState extends ResourcefulState<Help> {
                     child: Container(
                         width:15.w,
                         height: 15.w,
-                        child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 1.0)));
+                        child: Progress()));
 
             }),
       ],

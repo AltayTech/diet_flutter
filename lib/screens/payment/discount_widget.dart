@@ -19,7 +19,6 @@ class DiscountWidget extends StatefulWidget {
 class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
   late PaymentBloc bloc;
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -158,12 +157,16 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
             stream: bloc.usedDiscount,
           )),
           SizedBox(width: 4.w),
-          ImageUtils.fromLocal(
-            'assets/images/bill/gift.svg',
-            fit: BoxFit.fill,
-            width: 7.w,
-            height: 7.w,
-            color: bloc.isUsedDiscount ? Color.fromRGBO(87, 206, 121, 1) : null,
+          StreamBuilder(
+            builder: (context, snapshot) {
+              return ImageUtils.fromLocal(
+                'assets/images/bill/gift.svg',
+                fit: BoxFit.fill,
+                width: 7.w,
+                height: 7.w,
+                color: bloc.isUsedDiscount ? Color.fromRGBO(87, 206, 121, 1) : null,
+              );
+            },
           ),
         ],
       ),

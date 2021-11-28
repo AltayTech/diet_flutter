@@ -3,6 +3,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/utility/arc.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:rolling_switch/rolling_switch.dart';
@@ -90,7 +92,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   child: Column(
                       children: [
                         header(),
-                        SizedBox(height: 80.0),
+                        Space(height: 80.0),
                         content(),
                       ]),
                 ),
@@ -101,7 +103,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   child: Container(
                       width:15.w,
                       height: 15.w,
-                      child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 1.0)));
+                      child: Progress()));
             }
           }));
   }

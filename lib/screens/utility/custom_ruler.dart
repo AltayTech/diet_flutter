@@ -297,7 +297,7 @@ class _SliderState extends State<Slider> {
                           width: 0.5.w,
                           height: 3.h,
                         ),
-                        SizedBox(height: 1.w),
+                        Space(height: 1.w),
                         FittedBox(
                           child: Text(
                             widget.type == RulerType.Weight && widget.isSecond

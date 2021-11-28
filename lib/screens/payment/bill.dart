@@ -126,7 +126,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
               ),
               StreamBuilder(
                 builder: (context, snapshot) {
-                  if (bloc.packageItem!.price!.finalPrice! > 0)
+                  if (bloc.packageItem!.price!.totalPrice! > 0)
                     return Center(
                       child: Text(
                         intl.typePaymentLabel,
@@ -147,7 +147,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
               ),
               StreamBuilder(
                 builder: (context, snapshot) {
-                  if (bloc.packageItem!.price!.finalPrice! > 0)
+                  if (bloc.packageItem!.price!.totalPrice! > 0)
                     return _paymentBox();
                   else
                     return Container();
@@ -161,7 +161,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                       DialogUtils.showDialogProgress(context: context);
                       bloc.selectUserPayment();
                     },
-                    label: bloc.packageItem!.price!.finalPrice == 0
+                    label: bloc.packageItem!.price!.totalPrice == 0
                         ? intl.confirmContinue
                         : bloc.isOnline
                             ? intl.onlinePayment
@@ -232,6 +232,25 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                 _rowItems(bloc.packageItem!.price!.price.toString(), bloc.packageItem!.name!),
                 Divider(),
                 _rowItems(bloc.packageItem!.price!.priceDiscount.toString(), intl.discount),
+                StreamBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data == true)
+                      return  Divider();
+                    else
+                      return Container();
+                  },
+                  stream: bloc.usedDiscount,
+                ),
+                StreamBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data == true)
+                      return _rowItems(
+                          bloc.discountInfo!.discount!.toString().seRagham(), intl.discountCodeForYou);
+                    else
+                      return Container();
+                  },
+                  stream: bloc.usedDiscount,
+                ),
                 Divider(),
               ],
             ),
@@ -256,9 +275,9 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                     return Directionality(
                       textDirection: context.textDirectionOfLocale,
                       child: Text(
-                        bloc.packageItem!.price!.finalPrice == 0
+                        bloc.packageItem!.price!.totalPrice == 0
                             ? intl.free
-                            : '${bloc.packageItem!.price!.finalPrice.toString().seRagham()} ${intl.toman}',
+                            : '${bloc.packageItem!.price!.totalPrice.toString().seRagham()} ${intl.toman}',
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme

@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/screens/regime/goal/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -69,7 +70,7 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
                       ),
                     ],
                   );
-                return Center(child: CircularProgressIndicator());
+                return Center(child: Progress());
               },
             ),
           ),

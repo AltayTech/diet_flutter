@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/payment/bloc.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
@@ -131,7 +132,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                 ],
               );
             }
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Progress());
           },
         ),
       ),

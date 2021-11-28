@@ -33,7 +33,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
             break;
           case BottomNavItem.DIET:
             if (widget.currentTab != BottomNavItem.DIET)
-              navigator.routeManager.clearAndPush(Uri.parse(Routes.regimeType));
+              navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
             break;
           case BottomNavItem.VITRINE:
             if (widget.currentTab != BottomNavItem.VITRINE)

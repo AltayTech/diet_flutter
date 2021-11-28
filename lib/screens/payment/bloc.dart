@@ -77,6 +77,7 @@ class PaymentBloc {
     _waiting.value = true;
     _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
+      _packageItem!.price!.totalPrice = _packageItem!.price!.finalPrice;
     }).whenComplete(() {
       _waiting.value = false;
     });
@@ -114,7 +115,7 @@ class PaymentBloc {
     price.code = val;
     _repository.checkCoupon(price).then((value) {
       _discountInfo = value.data;
-      _packageItem!.price!.finalPrice = _discountInfo!.finalPrice;
+      _packageItem!.price!.totalPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
       _online.value = true;
     }).catchError((err) {

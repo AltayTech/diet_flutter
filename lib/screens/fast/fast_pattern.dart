@@ -3,6 +3,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/screens/fast/bloc.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -53,7 +54,7 @@ class _FastPatternPageState extends ResourcefulState<FastPatternPage> {
               if(snapshot.hasData){
                 return content();
               }
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Progress());
             },
           ),
         ),

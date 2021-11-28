@@ -60,7 +60,7 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
                       if (snapshot.hasData && snapshot.data == false)
                         return Column(
                           children: [
-                            SizedBox(height: 4.h),
+                            Space(height: 4.h),
                             Center(
                               child: Text(
                                 intl.sicknessSpecialLabelUser,
@@ -78,14 +78,15 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
                                       sickness: element,
                                     ));
                               }),
-                            Space(height: 2.h),
+                            Space(height: 4.h),
                             SubmitButton(
                               onTap: () {
                                 DialogUtils.showDialogProgress(context: context);
                                 sicknessBloc.sendSicknessSpecial();
                               },
                               label:intl.confirmContinue,
-                            )
+                            ),
+                            Space(height: 2.h),
                           ],
                         );
                       else {

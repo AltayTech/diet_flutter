@@ -15,10 +15,10 @@ class UserSickness {
   List<CategorySickness>? sickness_categories;
 
   @JsonKey(name: "sicknesses")
-  List<int>? sicknesses;
+  List<dynamic>? sicknesses;
 
   @JsonKey(name: "specials")
-  List<int>? specials;
+  List<dynamic>? specials;
 
   UserSickness();
 

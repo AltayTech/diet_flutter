@@ -8,6 +8,7 @@ import 'package:behandam/screens/regime/ruler_header.dart';
 import 'package:behandam/screens/utility/custom_ruler.dart';
 import 'package:behandam/screens/utility/alert.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -101,7 +102,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                           ],
                         );
                       }
-                      return Center(child: CircularProgressIndicator());
+                      return Center(child: Progress());
                     }
                 ),
                 // rulers(),
@@ -349,8 +350,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                 child: Container(
                     width: 15.w,
                     height: 15.w,
-                    child: CircularProgressIndicator(
-                        color: Colors.grey, strokeWidth: 1.0)));
+                    child: Progress()));
         });
   }
 

@@ -478,5 +478,8 @@
   "areYouSureAboutMenu": "برای انتخاب این لیست مطمئن هستی؟",
   "yesWantThisMenu": "بله همین لیست رو میخوام",
   "noWannaChange": "نه میخوام عوضش کنم",
+  "inbox": "صندوق پیام",
+  "notFoundInbox": "پیامی برای نمایش وجود ندارد",
+  "discountCodeForYou": "تخفیف ویژه شما",
   "understand": "متوجه شدم"
 }

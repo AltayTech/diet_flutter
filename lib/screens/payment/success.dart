@@ -116,7 +116,7 @@ class _PaymentSuccessScreenState
                 textDirection: context.textDirectionOfLocaleInversed,
                 child: FlatButton.icon(
                   padding: EdgeInsets.symmetric(
-                    vertical: 3.h,
+                    vertical: 2.h,
                     horizontal: 3.w,
                   ),
                   shape: RoundedRectangleBorder(

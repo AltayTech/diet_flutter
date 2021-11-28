@@ -196,30 +196,32 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   }
 
   String getDietTypeString() {
-    switch (bloc.visitItem?.dietType) {
-      case RegimeAlias.Pregnancy:
-        return intl.pregnancy;
-      case RegimeAlias.WeightLoss:
-        return intl.weightLoss;
+    if(bloc.visitItem!=null) {
+      switch (bloc.visitItem?.dietType) {
+        case RegimeAlias.Pregnancy:
+          return intl.pregnancy;
+        case RegimeAlias.WeightLoss:
+          return intl.weightLoss;
 
-      case RegimeAlias.WeightGain:
-        return intl.weightGain;
+        case RegimeAlias.WeightGain:
+          return intl.weightGain;
 
-      case RegimeAlias.Stabilization:
-        return intl.stabilization;
+        case RegimeAlias.Stabilization:
+          return intl.stabilization;
 
-      case RegimeAlias.Diabeties:
-        return intl.diabetes;
+        case RegimeAlias.Diabeties:
+          return intl.diabetes;
 
-      case RegimeAlias.Ketogenic:
-        return intl.ketogenic;
-      case RegimeAlias.Sport:
-        return intl.sport;
-      case RegimeAlias.Notrica:
-        return intl.notrica;
-      default:
-        return intl.none;
-    }
+        case RegimeAlias.Ketogenic:
+          return intl.ketogenic;
+        case RegimeAlias.Sport:
+          return intl.sport;
+        case RegimeAlias.Notrica:
+          return intl.notrica;
+        default:
+          return intl.none;
+      }
+    }else return intl.none;
   }
 
   @override

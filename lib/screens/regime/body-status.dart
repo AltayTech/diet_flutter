@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -11,6 +12,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -70,7 +72,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                 snapshot.data!.normalWeight,
                                 snapshot.data!.isPregnancy,
                                 snapshot.data!.bmiStatus),
-                        SizedBox(height: 2.h),
+                        Space(height: 2.h),
                         secondContainer(snapshot.data!.bmi, snapshot.data!.bmiStatus),
                         snapshot.data!.isPregnancy == 1
                             ? ImageUtils.fromLocal(
@@ -90,7 +92,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                             width: 15.w,
                             height: 15.w,
                             child:
-                                CircularProgressIndicator(color: Colors.grey, strokeWidth: 1.0)));
+                            Progress()));
                 }),
           ),
         ),
@@ -141,7 +143,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 )),
             Column(
               children: [
-                SizedBox(height: 2.h),
+                Space(height: 2.h),
                 Center(
                   child: Text(
                     intl.firstStatusReport,
@@ -149,7 +151,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),
-                SizedBox(height: 5.h),
+                Space(height: 5.h),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -168,7 +170,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                   intl.appropriateWeight, AppColors.pregnantPink)
                               : colorfulContainer('$dietDays', intl.day, intl.untilReach,
                                   intl.appropriateWeight, AppColors.purpleRuler),
-                          SizedBox(height: 2.h),
+                          Space(height: 2.h),
                           bmiStatus == 0 && pregnancy != 1
                               ? colorfulContainer('$weightDiff', intl.kilo, intl.lakeWeight, '',
                                   AppColors.purpleRuler)
@@ -180,7 +182,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(width: 2.w),
+                    Space(width: 2.w),
                     Column(
                       children: [
                         Container(
@@ -267,7 +269,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                   borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(20.0), topRight: Radius.circular(20.0)),
                   color: color)),
-          SizedBox(width: 4.w),
+          Space(width: 4.w),
           Container(
             width: 20.w,
             child: Center(
@@ -326,7 +328,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 2.h),
+                    Space(height: 2.h),
                     Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
@@ -340,10 +342,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                             children: [
                               ImageUtils.fromLocal('assets/images/physical_report/bmi.svg',
                                   width: 2.w, height: 2.h),
-                              SizedBox(width: 2.w),
+                              Space(width: 2.w),
                               Text('BMI',
                                   style: TextStyle(fontSize: 14.sp, color: AppColors.redBar)),
-                              SizedBox(width: 1.w),
+                              Space(width: 1.w),
                               Text(intl.what,
                                   style: TextStyle(fontSize: 14.sp, color: AppColors.redBar)),
                               ImageUtils.fromLocal('assets/images/physical_report/guide.svg',
@@ -355,7 +357,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                     )
                   ],
                 ),
-                SizedBox(width: 2.w),
+                Space(width: 2.w),
                 bmiPic(bmiStatus),
               ],
             )
@@ -428,7 +430,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                   child: Column(
                     children: [
                       Text(regimeBloc.name),
-                      SizedBox(height: 2.h),
+                      Space(height: 2.h),
                       id == 2
                           ? ImageUtils.fromLocal(
                               'assets/images/diet/body-scale-happy.svg',
@@ -436,9 +438,9 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                               height: 20.h,
                             )
                           : Container(),
-                      SizedBox(height: 2.h),
+                      Space(height: 2.h),
                       Text(snapshot.data![0].body!, style: TextStyle(fontSize: 16.0)),
-                      SizedBox(height: 2.h),
+                      Space(height: 2.h),
                       button(AppColors.btnColor, intl.understand, Size(100.w, 8.h),
                           () => Navigator.of(context).pop())
                     ],
@@ -451,7 +453,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 child: Container(
                     width: 15.w,
                     height: 15.w,
-                    child: CircularProgressIndicator(color: Colors.grey, strokeWidth: 1.0)));
+                    child: Progress()));
         });
   }
 

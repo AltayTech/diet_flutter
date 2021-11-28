@@ -5,6 +5,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/ticket/call_bloc.dart';
 import 'package:behandam/screens/ticket/call_list_widget.dart';
+import 'package:behandam/screens/ticket/call_provider.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Scaffold(
+    return CallProvider(callBloc, child: Scaffold(
       backgroundColor: Color.fromARGB(255, 245, 245, 245),
       body: StreamBuilder(
         builder: (context, snapshot) {
@@ -107,13 +108,13 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
             );
           } else
             return SpinKitCircle(
-               size: 7.w,
+              size: 7.w,
               color: AppColors.primary,
             );
         },
         stream: callBloc.progressNetwork,
       ),
-    );
+    ));
   }
 
   Widget noAccessCall() {
