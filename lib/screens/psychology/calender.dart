@@ -2,10 +2,10 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/const_&_model/selected_time.dart';
-import 'package:behandam/data/entity/psy/calender.dart';
-import 'package:behandam/data/entity/psy/plan.dart';
+import 'package:behandam/data/entity/psychology/calender.dart';
+import 'package:behandam/data/entity/psychology/plan.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/psy/calender_bloc.dart';
+import 'package:behandam/screens/psychology/calender_bloc.dart';
 import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
@@ -17,16 +17,15 @@ import 'package:shamsi_date/shamsi_date.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class PSYCalenderScreen extends StatefulWidget {
-  const PSYCalenderScreen({Key? key}) : super(key: key);
+class PsychologyCalenderScreen extends StatefulWidget {
+  const PsychologyCalenderScreen({Key? key}) : super(key: key);
 
   @override
-  _PSYCalenderScreenState createState() => _PSYCalenderScreenState();
+  _PsychologyCalenderScreenState createState() => _PsychologyCalenderScreenState();
 }
 
-class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
+class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalenderScreen> {
   late Future<List<Plan>?> calender;
-  PSYCalenderScreen calenderScreen = PSYCalenderScreen();
   late CalenderBloc calenderBloc;
 
 
@@ -38,10 +37,6 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
   }
 
   void listenBloc() {
-    calenderBloc.navigateToVerify.listen((event) {
-
-
-    });
     calenderBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
     });
@@ -135,7 +130,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                                 padding: EdgeInsets.only(right: 12.0,left: 12.0),
                                 child: OutlinedButton(
                                   onPressed: () {
-                                    showModal(context,info[index], item.id, item);
+                                    showModal(context,info[index], item);
                                   },
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(AppColors.grey),
@@ -155,7 +150,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
     );
   }
 
-  showModal(BuildContext ctx, SelectedTime info, int? sessionId, Planning item) {
+  showModal(BuildContext ctx, SelectedTime info, Planning item) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
@@ -184,8 +179,23 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                   ],
                 ),
               ),
-              Text(info.adviserName!),
-              Text(info.role!),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0,left: 8.0),
+                    child: info.adviserImage == null
+                     ? ImageUtils.fromLocal('assets/images/profile/psychology.svg',width: 20.w,height: 7.h)
+                     : Image.network(
+                        'https://debug.behaminplus.ir//helia-service${info.adviserImage}',width: 20.w,height: 10.h),
+                  ),
+                  Column(
+                    children: [
+                      Text(info.adviserName!),
+                      Text(info.role!),
+                    ],
+                  )
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(12,8,12,0),
                 child: Row(
@@ -263,9 +273,9 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
               SizedBox(height: 2.h),
               button(AppColors.btnColor, intl.reserveThisTime, Size(70.w,5.h),
                       (){
-                        ctx.vxNav.push(Uri.parse(Routes.PSYTerms),
+                        ctx.vxNav.push(Uri.parse(Routes.psychologyTerms),
                             params: {
-                              'sessionId': sessionId,
+                              'sessionId': item.id,
                               'packageId': info.packageId,
                               'name': info.adviserName,
                               'price': info.price,
@@ -288,31 +298,6 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                 child: Text(intl.iDoNot,style: TextStyle(color: AppColors.penColor,
                     fontSize: 16.sp)),
               ),
-              // ButtonBar(
-              //   mainAxisSize: MainAxisSize.min,
-              //   alignment: MainAxisAlignment.start,
-              //   children: [
-              //     FlatButton(
-              //         textColor: Colors.black,
-              //         onPressed: () {
-              //           // Param p = new Param();
-              //           // p.sessionId = sessionId;
-              //           // p.packageId = info.packageId;
-              //           // p.name = info.adviserName;
-              //           // p.price = info.price;
-              //           // p.date = info.date;
-              //           // ctx.vxNav.push(Uri.parse(Routes.rules), params: p);
-              //
-              //           // ctx.vxNav.push(Uri.parse(Routes.rules),params: {
-              //           //   'sessionId': sessionId,
-              //           //   'packageId': info.packageId,
-              //           //   'name': info.adviserName,
-              //           //   'price': info.price,
-              //           //   'date': info.date,
-              //           // });
-              //         }),
-              //   ],
-              // )
             ],
           ),
         );
@@ -473,7 +458,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                           child: StreamBuilder(
                             stream: calenderBloc.disabledClickPre,
                             builder: (context,snapshot){
-                              print('statusAgo: ${snapshot.data}');
+                              // print('statusAgo: ${snapshot.data}');
                               return StreamBuilder(
                                 stream: calenderBloc.daysAgo,
                                   builder: (context, AsyncSnapshot<Jalali> previous){
@@ -553,7 +538,11 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                                   SizedBox(height: 2.h),
                                   Text(intl.thereIsNotTime),
                                   button(AppColors.btnColor, intl.showFirstFreeTime, Size(80.w,4.h),
-                                          () => calenderBloc.findFirstFreeTime())
+                                          (){
+                                            List data = calenderBloc.findFirstFreeTime();
+                                            if(data.length > 0)
+                                            showModal(context, data[0], data[0].times[0]);
+                                          })
                                 ],
                               ),
                             ),

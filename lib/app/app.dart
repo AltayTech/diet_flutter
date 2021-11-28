@@ -21,13 +21,14 @@ import 'package:behandam/screens/payment/wait.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
+import 'package:behandam/screens/profile/reset_pass.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
-import 'package:behandam/screens/psy/calender.dart';
-import 'package:behandam/screens/psy/intro.dart';
-import 'package:behandam/screens/psy/payment_bill.dart';
-
-import 'package:behandam/screens/psy/terms.dart';
 import 'package:behandam/screens/regime/activity/activity_level.dart';
+import 'package:behandam/screens/psychology/calender.dart';
+import 'package:behandam/screens/psychology/intro.dart';
+import 'package:behandam/screens/psychology/payment_bill.dart';
+import 'package:behandam/screens/psychology/reserved_meeting.dart';
+import 'package:behandam/screens/psychology/terms.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
@@ -215,12 +216,13 @@ final navigator = VxNavigator(
     Routes.paymentCardConfirm: (_, __) => MaterialPage(child: PaymentSuccessScreen()),
     Routes.cardToCard: (_, __) => MaterialPage(child: DebitCardPage()),
     Routes.vitrin: (_, __) => MaterialPage(child: VitrinScreen()),
-    Routes.PSYIntro: (_, __) => MaterialPage(child: PSYIntroScreen()),
-    Routes.PSYCalender: (_, params) => MaterialPage(child: PSYCalenderScreen(), arguments: params),
-    Routes.PSYTerms: (_, params) => MaterialPage(child: TermsScreen(), arguments: params),
-    Routes.PSYPaymentBill: (_, params) => MaterialPage(child: PaymentBillPsyScreen(), arguments: params),
+    Routes.psychologyIntro: (_, __) => MaterialPage(child: PsychologyIntroScreen()),
+    Routes.psychologyCalender: (_, params) => MaterialPage(child: PsychologyCalenderScreen(), arguments: params),
+    Routes.psychologyTerms: (_, params) => MaterialPage(child: PsychologyTermsScreen(), arguments: params),
+    Routes.psychologyPaymentBill: (_, params) => MaterialPage(child: PsychologyPaymentBillScreen(), arguments: params),
+    Routes.psychologyReservedMeeting: (_, __) => MaterialPage(child: PsychologyReservedMeetingScreen()),
+    Routes.resetPasswordProfile: (_, __) => MaterialPage(child: ResetPasswordProfile()),
     Routes.paymentFail: (_, params) => MaterialPage(child: PaymentFailScreen(), arguments: params),
-    // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
     Routes.activity: (_, __) => MaterialPage(child: ActivityLevelPage()),
     Routes.paymentWaiting: (_, __) => MaterialPage(child: PaymentWaitScreen()),
     Routes.dietHistory: (_, __) => MaterialPage(child: DietHistoryPage()),
@@ -229,6 +231,7 @@ final navigator = VxNavigator(
     Routes.menuSelect: (_, __) => MaterialPage(child: MenuSelectPage()),
     Routes.menuConfirm: (_, param) => MaterialPage(child: MenuConfirmPage(), arguments: param),
     Routes.statusUser: (_, __) => MaterialPage(child: StatusUserScreen()),
+    // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

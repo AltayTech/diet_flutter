@@ -416,6 +416,11 @@
   "cartPay": "پرداخت کارت به کارت",
   "adviserName": "نام مشاور",
   "off": "تخفیف",
+  "myMeeting": "جلسات مشاوره من",
+  "meetingWith": "جلسه مشاوره با :",
+  "hour": "ساعت",
+  "onlinePay": "پرداخت آنلاین",
+
   "activityLevel": "فعالیت روزانه",
   "paymentSuccess": "پرداخت موفق",
   "paymentSuccessLabel": "پرداخت با موفقیت انجام شد",

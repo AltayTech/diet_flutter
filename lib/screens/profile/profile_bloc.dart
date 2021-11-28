@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:behandam/data/entity/auth/country_code.dart';
+import 'package:behandam/data/entity/auth/reset.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
@@ -32,6 +33,7 @@ class ProfileBloc {
 
   late UserInformation _userInformation;
   final _showServerError = LiveEvent();
+  final _navigateTo = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
   final _showProgressItem = BehaviorSubject<bool>();
   final _showProgressUploadImage = BehaviorSubject<bool>();
@@ -43,6 +45,8 @@ class ProfileBloc {
   UserInformation get userInfo => _userInformation;
 
   Stream get showServerError => _showServerError.stream;
+
+  Stream get navigateTo => _navigateTo.stream;
 
   Stream<bool> get progressNetwork => _progressNetwork.stream;
 
@@ -130,6 +134,7 @@ class ProfileBloc {
     _cityProvinceModelStream.close();
     _showProgressUploadImage.close();
     _inboxCount.close();
+    _navigateTo.close();
     //  _isPlay.close();
   }
 
@@ -264,4 +269,11 @@ class ProfileBloc {
       Navigator.of(context).pop();
     });
   }
+  void resetPasswordMethod(Reset pass) async {
+    _repository.reset(pass)
+    .then((value) {
+      _showServerError.fire(value.message);
+    }).whenComplete(() => _navigateTo.fire(true));
+  }
+
 }

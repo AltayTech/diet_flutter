@@ -9,11 +9,11 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/psychology/booking.dart';
+import 'package:behandam/data/entity/psychology/calender.dart';
+import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
-
-// import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
-import 'package:behandam/data/entity/psy/calender.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
@@ -22,10 +22,8 @@ import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
-import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
-import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
@@ -163,6 +161,12 @@ abstract class Repository {
   NetworkResult<LatestInvoiceData> latestInvoice();
 
   NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData);
+
+  NetworkResult<BookingOutput> getBook(Booking booking);
+
+  NetworkResult<HistoryOutput> getHistory();
+
+  NetworkResult<LatestInvoiceData> getPsychologyInvoice();
 
   NetworkResult<ActivityLevelData> activityLevel();
 
@@ -608,6 +612,24 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData) {
     var response = _apiClient.newPayment(requestData);
+    return response;
+  }
+
+  @override
+  NetworkResult<HistoryOutput> getHistory() {
+    var response = _apiClient.getHistory();
+    return response;
+  }
+
+  @override
+  NetworkResult<BookingOutput> getBook(Booking booking) {
+    var response = _apiClient.getBook(booking);
+    return response;
+  }
+
+  @override
+  NetworkResult<LatestInvoiceData> getPsychologyInvoice() {
+    var response = _apiClient.getInvoice();
     return response;
   }
 

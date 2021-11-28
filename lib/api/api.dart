@@ -9,9 +9,11 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/entity/psy/calender.dart';
+import 'package:behandam/data/entity/psychology/booking.dart';
+import 'package:behandam/data/entity/psychology/calender.dart';
 // import 'package:behandam/data/entity/regime/body_state.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
+import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
@@ -218,6 +220,16 @@ abstract class RestClient {
 
   @PATCH("/latest-invoice")
   NetworkResult<LatestInvoiceData> newPayment(@Body() LatestInvoiceData requestData);
+
+  @POST("/psychology/v2/booking")
+  NetworkResult<BookingOutput> getBook(@Body() Booking booking);
+
+  @GET("/psychology/v2/booking-histories")
+  NetworkResult<HistoryOutput> getHistory();
+
+  @GET("/psychology/latest-invoice")
+  NetworkResult<LatestInvoiceData> getInvoice();
+
 
   @GET("/activity-level")
   NetworkResult<ActivityLevelData> activityLevel();
