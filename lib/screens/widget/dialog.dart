@@ -27,7 +27,7 @@ abstract class DialogUtils {
     );
   }
 
-  static Future<T?> showDialogPage<T>({
+ /* static Future<T?> showDialogPage<T>({
     required BuildContext context,
     required Widget child,
     bool isDismissible = true,
@@ -45,6 +45,26 @@ abstract class DialogUtils {
               ),
               child: child,
             ),
+          ),
+          onWillPop: () async => isDismissible,
+        );
+      },
+    );
+  }*/
+
+  static Future<T?> showDialogPage<T>({
+    required BuildContext context,
+    required Widget child,
+    bool isDismissible = true,
+  }) {
+    return showDialog(
+      context: context,
+      barrierDismissible: isDismissible,
+      builder: (context) {
+        return WillPopScope(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: child,
           ),
           onWillPop: () async => isDismissible,
         );
