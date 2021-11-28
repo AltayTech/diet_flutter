@@ -5,6 +5,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -69,7 +70,7 @@ Widget attachCard(String imageAdrs, String text) {
         ),
         flex: 1,
       ),
-      SizedBox(height: 1.h),
+      Space(height: 1.h),
       Text(
         text,
         textAlign: TextAlign.center,
@@ -211,7 +212,7 @@ Widget optionUi(IconData icon, String text, int action) {
               color: Color.fromARGB(255, 152, 152, 152),
             ),
           ),
-          SizedBox(
+          Space(
             width: 1.w,
           ),
           Icon(
@@ -288,7 +289,7 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor, Color 
                     fontSize: 12.sp,
                   ),
                 ),
-                SizedBox(
+                Space(
                   width: 3.w,
                 ),
                 ImageUtils.fromLocal(

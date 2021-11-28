@@ -8,6 +8,7 @@ import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/toolbar_profile.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/cross_item_profile.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/screens/widget/widget_icon_text_progress.dart';
@@ -15,6 +16,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -79,10 +81,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                           );
                         } else {
                           return Center(
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1.h,
-                              color: AppColors.primary,
-                            ),
+                            child: Progress(),
                           );
                         }
                       },
@@ -115,10 +114,10 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
               textDirection: context.textDirectionOfLocale,
               children: <Widget>[
                 ToolsBox(),
-                SizedBox(height: 2.h),
+                Space(height: 2.h),
                 fitaminBanner(),
                 attachBox(),
-                SizedBox(height: 3.h),
+                Space(height: 3.h),
                 Column(
                   children: <Widget>[
                     WidgetIconTextProgress(
@@ -126,14 +125,14 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                         title: intl.help,
                         listIcon: 'assets/images/profile/guide.svg',
                         index: 0),
-                    if (MemoryApp.token != null && profileBloc.showRefund) SizedBox(height: 2.h),
+                    if (MemoryApp.token != null && profileBloc.showRefund) Space(height: 2.h),
                     if (MemoryApp.token != null && profileBloc.showRefund)
                       WidgetIconTextProgress(
                           countShow: false,
                           title: intl.requestBackPayment,
                           listIcon: 'assets/images/diet/dollar_symbol.svg',
                           index: 3),
-                    if (MemoryApp.token != null && profileBloc.showPdf) SizedBox(height: 2.h),
+                    if (MemoryApp.token != null && profileBloc.showPdf) Space(height: 2.h),
                     if (MemoryApp.token != null && profileBloc.showPdf)
                       WidgetIconTextProgress(
                           countShow: false,
@@ -142,7 +141,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                           index: 2),
                   ],
                 ),
-                SizedBox(height: 2.h),
+                Space(height: 2.h),
                 // ContactAbout(),
                 Container(
                   decoration: BoxDecoration(
@@ -191,9 +190,9 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 2.h),
+                Space(height: 2.h),
                 exitButton(),
-                SizedBox(height: 2.h),
+                Space(height: 2.h),
               ],
             ),
           ),
@@ -225,7 +224,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
         if (profileBloc.userInfo != null &&
             (profileBloc.userInfo.hasFitaminService != null &&
                 profileBloc.userInfo.hasFitaminService!))
-          SizedBox(height: 3.h),
+          Space(height: 3.h),
       ],
     );
   }

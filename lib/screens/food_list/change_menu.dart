@@ -6,6 +6,7 @@ import 'package:behandam/screens/fast/bloc.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -72,7 +73,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
               return EmptyBox();
             },
           );
-        return Center(child: CircularProgressIndicator());
+        return Center(child: Progress());
       },
     );
   }

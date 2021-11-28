@@ -4,6 +4,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/calendar/bloc.dart';
 import 'package:behandam/screens/calendar/day_item.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -243,7 +244,7 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
             ],
           );
         }
-        return CircularProgressIndicator();
+        return Progress();
       },
     );
   }

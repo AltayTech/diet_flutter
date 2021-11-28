@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/const_&_model/list_data.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/line.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:video_player/video_player.dart';
@@ -70,7 +72,7 @@ class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                SizedBox(height: 30.0),
+                Space(height: 30.0),
                 Center(
                   child: Container(
                     width: 300,
@@ -84,11 +86,11 @@ class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
                         Chewie(
                             controller:  chewieController!
                         ):
-                        CircularProgressIndicator()
+                        Progress()
                     ),
                   ),
                 ),
-                SizedBox(height: 5.h),
+                Space(height: 5.h),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.0),
@@ -99,7 +101,7 @@ class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 3.h),
+                        Space(height: 3.h),
                         Text(intl.whoNeedPsySession,
                             style: TextStyle(fontSize: 14.sp)),
                         SizedBox(
@@ -143,11 +145,11 @@ class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
                           ),
                         ),
                         ),
-                        SizedBox(height: 3.h),
+                        Space(height: 3.h),
                       ]),
                   ),
                   ),
-                SizedBox(height: 3.h),
+                Space(height: 3.h),
                Container(
                  decoration: BoxDecoration(
                      borderRadius: BorderRadius.circular(5.0),
@@ -156,10 +158,10 @@ class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
                  child: Column(
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
-                     SizedBox(height: 3.h),
+                     Space(height: 3.h),
                      Text(intl.stepsOfPsy,
                          style: TextStyle(fontSize: 14.sp)),
-                     SizedBox(height: 3.h),
+                     Space(height: 3.h),
                      Container(
                        height: 50.h,
                        child: ListView(
@@ -193,19 +195,19 @@ class _PSYIntroScreenState extends ResourcefulState<PSYIntroScreen> {
                                                      color: Colors.white,)),
                                              ),
                                            ),
-                                           SizedBox(width: 3.w),
+                                           Space(width: 3.w),
                                            Text(psyList[index].title!,style: TextStyle(fontSize: 14.sp),),
                                          ],
                                        ),
                                        index < 6
                                            ? Container(height: 5.h,width: 10.w, child: VerticalDivider(color: psyList[index].color!.withOpacity(0.5),thickness: 1.w,))
                                            :Container()
-                                       // SizedBox(height: 10.0),
+                                       // Space(height: 10.0),
                                      ]))
 
                          ),
                        ),),
-                     SizedBox(height: 3.h),
+                     Space(height: 3.h),
                    ],
                  ),
                ),

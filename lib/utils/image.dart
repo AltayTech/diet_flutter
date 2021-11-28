@@ -65,7 +65,7 @@ abstract class ImageUtils {
         color: color,
         fit: fit,
         placeholderBuilder: (context) {
-          return SizedBox(width: measuredWidth, height: measuredHeight);
+          return Space(width: measuredWidth, height: measuredHeight);
         },
       );
     } else {

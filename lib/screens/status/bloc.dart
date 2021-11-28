@@ -38,6 +38,7 @@ class StatusBloc {
       _visits = value.data?.visits;
       if (value.data != null) _visitItem!.setMaxMinWeight();
     }).catchError((onError) {
+
       _visitItem = new VisitItem();
       _visitItem!.visits = [];
       _visits = [];

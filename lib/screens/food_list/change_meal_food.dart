@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -95,7 +96,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                     return replaceBox(snapshot.requireData!.meals?.firstWhere((
                         element) => element.id == meal!.id));
                   }
-                  return CircularProgressIndicator();
+                  return Progress();
                 },
               ),
               Space(height: 6.h,),

@@ -3,6 +3,7 @@ import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class PaymentBillPsyScreen extends StatefulWidget {
@@ -39,7 +40,7 @@ class _PaymentBillPsyScreenState extends ResourcefulState<PaymentBillPsyScreen> 
               child: Column(
                 children: [
                  Text(intl.factor,style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w600,color: AppColors.penColor)),
-                  SizedBox(height: 2.h),
+                  Space(height: 2.h),
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15.0),
@@ -103,7 +104,7 @@ class _PaymentBillPsyScreenState extends ResourcefulState<PaymentBillPsyScreen> 
                               ],
                             ),
                           ),
-                          SizedBox(height: 2.h),
+                          Space(height: 2.h),
                           Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15.0),
@@ -115,7 +116,7 @@ class _PaymentBillPsyScreenState extends ResourcefulState<PaymentBillPsyScreen> 
                                 child: Column(
                                   children: [
                                     Text(intl.sum,style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w600,color: AppColors.penColor)),
-                                    SizedBox(height: 1.h),
+                                    Space(height: 1.h),
                                     Text(args!['price'].toString(), style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w600,color: AppColors.redBar)),
                                   ],
                                 ),
@@ -126,11 +127,11 @@ class _PaymentBillPsyScreenState extends ResourcefulState<PaymentBillPsyScreen> 
                       ),
                     ),
                   ),
-                  SizedBox(height: 2.h),
+                  Space(height: 2.h),
                   button(AppColors.primaryVariantLight, intl.cartPay, Size(80.w,5.h),
                       () {}),
                           // VxNavigator.of(context).push(Uri.parse(Routes.PSYPaymentCard))),
-                  SizedBox(height: 10.h),
+                  Space(height: 10.h),
                 ],
               ),
             ),

@@ -51,8 +51,9 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
           appBar: Toolbar(titleBar: intl.sickness),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(4.w),
               child: Container(
+                padding: EdgeInsets.all(4.w),
                 color: Colors.white,
                 child: StreamBuilder(
                     stream: sicknessBloc.waiting,
@@ -60,7 +61,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                       if (snapshot.hasData && snapshot.data == false)
                         return Column(
                           children: [
-                            SizedBox(height: 4.h),
+                            Space(height: 2.h),
                             Center(
                               child: Text(
                                 intl.sicknessLabelUser,
@@ -86,14 +87,15 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                 maxLine: true,
                                 ctx: context,
                                 textDirection: context.textDirectionOfLocale),
-                            Space(height: 2.h),
+                            Space(height: 4.h),
                             SubmitButton(
                               onTap: () {
                                 DialogUtils.showDialogProgress(context: context);
                                 sicknessBloc.sendSickness();
                               },
                               label: intl.confirmContinue,
-                            )
+                            ),
+                            Space(height: 3.h),
                           ],
                         );
                       else {
@@ -120,11 +122,11 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                 Color.fromRGBO(230, 244, 254, 1),
               ),
               if (index != sicknessBloc.userSickness!.sickness_categories!.length - 1)
-                SizedBox(height: 0.5.h),
+                Space(height: 0.5.h),
               if (index != sicknessBloc.userSickness!.sickness_categories!.length - 1)
                 Divider(height: 1.h),
               if (index != sicknessBloc.userSickness!.sickness_categories!.length - 1)
-                SizedBox(height: 1.h),
+                Space(height: 1.h),
             ],
           )
         : Container();
@@ -139,31 +141,43 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
         _titleBox(categorySickness.title!, iconBg),
         Space(height: 1.h),
         if (categorySickness.sicknesses != null && categorySickness.sicknesses!.length > 0)
+
           Container(
             height: 9.h,
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (_, index) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      if (index == 0) Space(width: 5.w),
-                      _itemWithTick(
-                        child: illItem(categorySickness.sicknesses![index], categorySickness),
-                        sickness: categorySickness.sicknesses![index],
-                        current: categorySickness,
-                        index: index,
-                      ),
-                      if (index == categorySickness.sicknesses!.length - 1) Space(width: 5.w),
-                    ],
-                  );
-                },
-                itemCount: categorySickness.sicknesses!.length,
-                separatorBuilder: (ctx, index) => Space(
-                  width: 0.02.w,
+            child: ShaderMask(
+              shaderCallback: (Rect rect) {
+                return LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Colors.black, Colors.transparent, Colors.transparent, Colors.black],
+                  stops: [0.0, 0.1, 0.8, 1.0], // 10% purple, 80% transparent, 10% purple
+                ).createShader(rect);
+              },
+              blendMode: BlendMode.dstOut,
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (_, index) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        if (index == 0) Space(width: 5.w),
+                        _itemWithTick(
+                          child: illItem(categorySickness.sicknesses![index], categorySickness),
+                          sickness: categorySickness.sicknesses![index],
+                          current: categorySickness,
+                          index: index,
+                        ),
+                        if (index == categorySickness.sicknesses!.length - 1) Space(width: 5.w),
+                      ],
+                    );
+                  },
+                  itemCount: categorySickness.sicknesses!.length,
+                  separatorBuilder: (ctx, index) => Space(
+                    width: 0.02.w,
+                  ),
                 ),
               ),
             ),
@@ -266,7 +280,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
 
   Widget _titleBox(String title, Color iconBg) {
     return Padding(
-      padding: EdgeInsets.only(left: 5.w, right: 5.w),
+      padding: EdgeInsets.only(left: 1.w, right: 1.w),
       child: Text(
         title,
         textDirection: context.textDirectionOfLocale,

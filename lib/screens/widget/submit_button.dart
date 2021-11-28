@@ -28,13 +28,11 @@ class _SubmitButtonState extends ResourcefulState<SubmitButton> {
 
     return widget.icon != null
         ? ElevatedButton.icon(
-      style: ButtonStyle(
-          backgroundColor:
-          MaterialStateProperty.all(AppColors.primary),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  side: BorderSide(color: AppColors.primaryColorDark)))),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(AppColors.primary),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    side: BorderSide(color: AppColors.primaryColorDark)))),
             onPressed: widget.onTap,
             icon: widget.icon!,
             label: Text(
@@ -45,15 +43,12 @@ class _SubmitButtonState extends ResourcefulState<SubmitButton> {
             ),
           )
         : ElevatedButton(
-      style: ButtonStyle(
-          backgroundColor:
-          MaterialStateProperty.all(AppColors.primary),
-          // padding: MaterialStateProperty.all(
-          //     EdgeInsets.fromLTRB(50, 20, 50, 20)),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  side: BorderSide(color: AppColors.primaryColorDark)))),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(AppColors.primary),
+                fixedSize: MaterialStateProperty.all(Size(70.w, 6.h)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    side: BorderSide(color: AppColors.primaryColorDark)))),
             onPressed: widget.onTap,
             child: Text(
               widget.label,

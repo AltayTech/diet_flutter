@@ -8,11 +8,13 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/psy/calender_bloc.dart';
 import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/screens/widget/line.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -92,7 +94,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                                       color: AppColors.redBar)),
                             ),
                           ),
-                          SizedBox(width: 5.w),
+                          Space(width: 5.w),
                           Container(
                             width: 25.w,
                             height: 4.h,
@@ -110,7 +112,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 2.h),
+                    Space(height: 2.h),
                     line(),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12,12,12,0),
@@ -260,7 +262,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 2.h),
+              Space(height: 2.h),
               button(AppColors.btnColor, intl.reserveThisTime, Size(70.w,5.h),
                       (){
                         ctx.vxNav.push(Uri.parse(Routes.PSYTerms),
@@ -368,8 +370,7 @@ class _PSYCalenderScreenState extends ResourcefulState<PSYCalenderScreen> {
                                   child: Container(
                                       width: 15.w,
                                       height: 15.w,
-                                      child: CircularProgressIndicator(
-                                          color: Colors.grey, strokeWidth: 1.0)));
+                                      child: Progress()));
                           },
                           );})
                       ),

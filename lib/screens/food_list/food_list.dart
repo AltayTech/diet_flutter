@@ -6,6 +6,7 @@ import 'package:behandam/screens/food_list/food_meals.dart';
 import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/food_list/week_day.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +124,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                   ],
                 );
               }
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Progress());
             },
           ),
         ),

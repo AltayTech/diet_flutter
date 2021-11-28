@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/authentication/login.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
@@ -95,7 +96,7 @@ class _PasswordScreenState extends ResourcefulState<PasswordScreen> {
                     child: Container(
                         width:15.w,
                         height: 15.w,
-                        child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 1.0)));
+                        child: Progress()));
               }
             })
       ),

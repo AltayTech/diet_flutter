@@ -12,6 +12,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/bottom_triangle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class NewTicket extends StatefulWidget {
@@ -74,13 +75,13 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        SizedBox(height: 4.h),
+                        Space(height: 4.h),
                         Text(
                           intl.titleQuestionTicket,
                           style: Theme.of(context).textTheme.caption,
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 2.h),
+                        Space(height: 2.h),
                         StreamBuilder(
                           builder: (context, snapshot) {
                             if (snapshot.data != null && snapshot.data == false) {
@@ -126,7 +127,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                           },
                           stream: bloc.progressNetwork,
                         ),
-                        SizedBox(height: 2.h),
+                        Space(height: 2.h),
                         textInput(
                             height: 8.h,
                             label: intl.subject,
@@ -139,7 +140,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                             enable: true,
                             ctx: context,
                             textDirection: context.textDirectionOfLocale),
-                        SizedBox(height: 2.h),
+                        Space(height: 2.h),
                         Container(
                           height: 24.h,
                           child: Directionality(
@@ -164,7 +165,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                           ),
                         ),
                         TicketTypeButton(),
-                        SizedBox(height: 2.h),
+                        Space(height: 2.h),
                         StreamBuilder(
                             stream: bloc.isShowProgressItem,
                             builder: (context, snapshot) {

@@ -50,7 +50,6 @@ class FoodListBloc {
   void _loadContent({bool invalidate = false, bool fillFood = true}) {
     _loadingContent.value = true;
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
-      //debugPrint('food list ${value.data} / $fillFood');
       if (value.data?.menu != null) {
         _foodList.value = value.data!;
         _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));

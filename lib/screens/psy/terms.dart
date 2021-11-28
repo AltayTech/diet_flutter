@@ -4,6 +4,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class TermsScreen extends StatefulWidget {
@@ -46,7 +47,7 @@ class _TermsScreenState extends ResourcefulState<TermsScreen> {
                       ImageUtils.fromLocal('assets/images/bill/alert.svg',width: 10.w,height: 10.h),
                     ],
                   ),
-                  SizedBox(height: 2.h),
+                  Space(height: 2.h),
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15.0),
@@ -57,21 +58,21 @@ class _TermsScreenState extends ResourcefulState<TermsScreen> {
                       child: Column(
                         children: [
                           bullet(intl.term1),
-                          SizedBox(height: 2.h),
+                          Space(height: 2.h),
                           bullet(intl.term2),
-                          SizedBox(height: 2.h),
+                          Space(height: 2.h),
                           bullet(intl.term3),
-                          SizedBox(height: 2.h),
+                          Space(height: 2.h),
                           bullet(intl.term4),
-                          SizedBox(height: 2.h),
+                          Space(height: 2.h),
                           bullet(intl.term5),
-                          SizedBox(height: 2.h),
+                          Space(height: 2.h),
                           Text(intl.thanks,style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800,color: AppColors.penColor)),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 2.h),
+                  Space(height: 2.h),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -82,7 +83,7 @@ class _TermsScreenState extends ResourcefulState<TermsScreen> {
                       Flexible(child: Text(intl.rulesConfirm,style: TextStyle(fontSize: 10.sp,color: AppColors.redBar))),
                     ],
                   ),
-                  SizedBox(height: 2.h),
+                  Space(height: 2.h),
                   button(AppColors.primaryVariantLight, intl.readRules, Size(70.w,5.h),
                           ()=> VxNavigator.of(context).push(Uri.parse(Routes.PSYPaymentBill), params: args)),
                 ],
@@ -102,7 +103,7 @@ class _TermsScreenState extends ResourcefulState<TermsScreen> {
           padding: const EdgeInsets.only(top: 4.0),
           child: Icon(Icons.circle,color: AppColors.redBar,size: 3.w),
         ),
-        SizedBox(width: 2.w),
+        Space(width: 2.w),
         Flexible(child: Text(txt,style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800,color: AppColors.penColor))),
       ],
     );
