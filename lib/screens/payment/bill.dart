@@ -126,7 +126,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
               ),
               StreamBuilder(
                 builder: (context, snapshot) {
-                  if (bloc.packageItem!.price!.finalPrice! > 0)
+                  if (bloc.packageItem!.price!.totalPrice! > 0)
                     return Center(
                       child: Text(
                         intl.typePaymentLabel,
@@ -147,7 +147,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
               ),
               StreamBuilder(
                 builder: (context, snapshot) {
-                  if (bloc.packageItem!.price!.finalPrice! > 0)
+                  if (bloc.packageItem!.price!.totalPrice! > 0)
                     return _paymentBox();
                   else
                     return Container();
@@ -161,7 +161,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
                       DialogUtils.showDialogProgress(context: context);
                       bloc.selectUserPayment();
                     },
-                    label: bloc.packageItem!.price!.finalPrice == 0
+                    label: bloc.packageItem!.price!.totalPrice == 0
                         ? intl.confirmContinue
                         : bloc.isOnline
                             ? intl.onlinePayment
