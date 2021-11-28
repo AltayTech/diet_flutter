@@ -444,5 +444,10 @@
   "viewFoodList": "مشاهده لیست غذایی",
   "editPhysicalInfo": "اصلاح وضعیت جسمانی",
   "selectYourMenu": "لیست غذایی موردنظرتو انتخاب کن",
+  "whichMenuList": "کدام لیست غذایی را انتخاب کنم؟",
+  "confirmMenuList": "تایید لیست غذایی",
+  "areYouSureAboutMenu": "برای انتخاب این لیست مطمئن هستی؟",
+  "yesWantThisMenu": "بله همین لیست رو میخوام",
+  "noWannaChange": "نه میخوام عوضش کنم",
   "understand": "متوجه شدم"
 }

@@ -76,7 +76,7 @@ class AuthenticationBloc{
     _waiting.value = true;
     _repository.signIn(user).then((value) {
       AppSharedPreferences.setAuthToken(value.data!.token);
-      _navigateToVerify.fire(true);
+      _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
 

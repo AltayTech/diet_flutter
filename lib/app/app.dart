@@ -15,7 +15,6 @@ import 'package:behandam/screens/daily_menu/list_food.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
-import 'package:behandam/screens/menu/menu_select.dart';
 import 'package:behandam/screens/payment/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
 import 'package:behandam/screens/payment/wait.dart';
@@ -33,6 +32,8 @@ import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
 import 'package:behandam/screens/regime/help_type.dart';
+import 'package:behandam/screens/regime/menu/menu_confirm.dart';
+import 'package:behandam/screens/regime/menu/menu_select.dart';
 import 'package:behandam/screens/regime/overview/overview.dart';
 import 'package:behandam/screens/regime/package/package_list.dart';
 import 'package:behandam/screens/payment/bill.dart';
@@ -196,7 +197,7 @@ final navigator = VxNavigator(
     Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
     Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(), arguments: param),
     Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(), arguments: param),
-    Routes.helpType: (_, __) => MaterialPage(child: HelpTypeScreen()),
+    Routes.helpType: (_, param) => MaterialPage(child: HelpTypeScreen(), arguments: param),
     Routes.newTicketMessage: (_, __) => MaterialPage(child: NewTicket()),
     RegExp(r"\/ticket\/details"): (uri, __) => MaterialPage(
         child: TicketDetails(), arguments: int.parse(uri.queryParameters['ticketId'].toString())),
@@ -225,6 +226,7 @@ final navigator = VxNavigator(
     Routes.dietGoal: (_, __) => MaterialPage(child: DietGoalPage()),
     Routes.overview: (_, __) => MaterialPage(child: OverviewPage()),
     Routes.menuSelect: (_, __) => MaterialPage(child: MenuSelectPage()),
+    Routes.menuConfirm: (_, param) => MaterialPage(child: MenuConfirmPage(), arguments: param),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

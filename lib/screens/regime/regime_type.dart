@@ -75,7 +75,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                 InkWell(
                   child: ImageUtils.fromLocal('assets/images/physical_report/guide.svg',
                       width: 5.w, height: 5.h),
-                  onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.helpType)),
+                  onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.helpType), params: HelpPage.regimeType),
                 ),
                 SizedBox(height: 2.h),
               ],

@@ -17,6 +17,7 @@ import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
@@ -72,7 +73,7 @@ abstract class Repository {
 
   NetworkResult<RegisterOutput> register(Register register);
 
-  NetworkResult<FoodListData> foodList(String date, {bool invalidate = false});
+  NetworkResult<FoodListData?> foodList(String date, {bool invalidate = false});
 
   NetworkResult<RegimeType> regimeType();
 
@@ -168,6 +169,10 @@ abstract class Repository {
   NetworkResult<DietGoalData> dietGoals();
 
   NetworkResult<OverviewData> overview();
+
+  NetworkResult<MenuData> menuType();
+
+  NetworkResult<Term> term();
 }
 
 class _RepositoryImpl extends Repository {
@@ -231,14 +236,14 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<FoodListData> foodList(String date, {bool invalidate = false}) async {
+  NetworkResult<FoodListData?> foodList(String date, {bool invalidate = false}) async {
     _cache.saveDate(date);
     NetworkResponse<FoodListData> response;
     debugPrint('repository1 ${_cache.date} / ${_cache.foodList} / $invalidate}');
     if (_cache.date == null || _cache.foodList == null || invalidate) {
       response = await _apiClient.foodList(date);
       debugPrint('repository2 ${response.data}');
-      _cache.saveFoodList(response.requireData, date);
+      if(response.data != null) _cache.saveFoodList(response.requireData, date);
       debugPrint('repository ${response.data}');
     } else {
       response = NetworkResponse.withData(_cache.foodList);
@@ -294,9 +299,7 @@ class _RepositoryImpl extends Repository {
   NetworkResult<FastMenuRequestData> changeToFast(FastMenuRequestData requestData,
       {bool invalidate = false}) async {
     requestData.date = _cache.date;
-    // requestData.userId = _cache.profile?.userId;
-    //ToDo fill it from cache
-    requestData.userId = 63;
+    requestData.userId = MemoryApp.userInformation?.userId ?? null;
     if (requestData.patternId == null) requestData.patternId = 0;
     debugPrint('pattern request ${requestData.toJson()}');
     var response = await _apiClient.changeToFast(requestData);
@@ -553,10 +556,17 @@ class _RepositoryImpl extends Repository {
       if(requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
       if(requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
       if(requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
+      if(requestData.isPreparedMenu != null) 'is_prepared_menu': requestData.isPreparedMenu,
+      if(requestData.menuId != null) 'menu_id': requestData.menuId,
     };
     debugPrint('bloc condition2 $body');
-    var response = _apiClient.setCondition(body);
-    debugPrint('condition ${response.toString()}');
+    var response;
+    try {
+      response = _apiClient.setCondition(body);
+      debugPrint('condition ${response.toString()}');
+    }catch(e){
+      debugPrint('condition error ${e}');
+    }
     return response;
   }
 
@@ -619,6 +629,24 @@ class _RepositoryImpl extends Repository {
   NetworkResult<OverviewData> overview() {
     var response = _apiClient.overview();
     debugPrint('overview repo ${response}');
+    return response;
+  }
+
+  @override
+  NetworkResult<MenuData> menuType() {
+    var response;
+    try{
+      response = _apiClient.menuType();
+    }catch(e){
+      debugPrint('menutype error ${response}');
+    }
+    debugPrint('menutype repo ${response}');
+    return response;
+  }
+
+  @override
+  NetworkResult<Term> term() {
+    var response = _apiClient.term();
     return response;
   }
 }

@@ -9,6 +9,10 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
+enum HelpPage{
+  regimeType,
+  menuType,
+}
 class RegimeBloc {
   RegimeBloc() {
     regimeTypeMethod();
@@ -21,6 +25,7 @@ class RegimeBloc {
   final _waiting = BehaviorSubject<bool>();
   final _itemsList = BehaviorSubject<List<RegimeType>>();
   final _helpers = BehaviorSubject<List<Help>>();
+  final _helpTitle = BehaviorSubject<String>();
   final _status = BehaviorSubject<BodyStatus>();
   final _physicalInfo = BehaviorSubject<PhysicalInfoData>();
   final _navigateToVerify = LiveEvent();
@@ -35,6 +40,8 @@ class RegimeBloc {
   Stream<List<RegimeType>> get itemList => _itemsList.stream;
 
   Stream<List<Help>> get helpers => _helpers.stream;
+
+  Stream<String> get helpTitle => _helpTitle.stream;
 
   Stream<bool> get waiting => _waiting.stream;
 
@@ -62,6 +69,7 @@ class RegimeBloc {
     _waiting.value = true;
     _repository.helpDietType(id).then((value) {
       _helpers.value = value.data!.helpers!;
+      _helpTitle.value = value.requireData.name!;
     }).whenComplete(() => _waiting.value = false);
   }
 
@@ -107,5 +115,7 @@ class RegimeBloc {
     _itemsList.close();
     _waiting.close();
     _physicalInfo.close();
+    _helpers.close();
+    _helpTitle.close();
   }
 }
