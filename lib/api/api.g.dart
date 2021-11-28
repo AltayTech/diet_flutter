@@ -1120,12 +1120,17 @@ class _RestClient implements RestClient {
   }
 
   @override
+<<<<<<< HEAD
   Future<NetworkResponse<VisitItem>> visits() async {
+=======
+  Future<NetworkResponse<MenuData>> menuType() async {
+>>>>>>> menu
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
+<<<<<<< HEAD
         _setStreamType<NetworkResponse<VisitItem>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/user/visits',
@@ -1134,6 +1139,35 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<VisitItem>.fromJson(
       _result.data!,
       (json) => VisitItem.fromJson(json as Map<String, dynamic>),
+=======
+        _setStreamType<NetworkResponse<MenuData>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/menu-type?is_user=1',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<MenuData>.fromJson(
+      _result.data!,
+      (json) => MenuData.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<Term>> term() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<Term>>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/term',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<Term>.fromJson(
+      _result.data!,
+      (json) => Term.fromJson(json as Map<String, dynamic>),
+>>>>>>> menu
     );
     return value;
   }

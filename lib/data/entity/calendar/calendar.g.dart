@@ -45,8 +45,8 @@ Term _$TermFromJson(Map<String, dynamic> json) => Term(
 Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       json['id'] as int,
       json['term_id'] as int,
-      json['weight'] as int,
-      json['target_weight'] as int,
+      (json['weight'] as num).toDouble(),
+      (json['target_weight'] as num).toDouble(),
       json['wrist'] as int,
       json['height'] as int,
       json['pregnancy_week_number'] as int?,

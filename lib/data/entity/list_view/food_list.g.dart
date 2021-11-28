@@ -39,10 +39,14 @@ Meals _$MealsFromJson(Map<String, dynamic> json) => Meals(
         : ListFood.fromJson(json['newFood'] as Map<String, dynamic>);
 
 Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
+      json['id'] as int,
       json['title'] as String,
       json['description'] as String?,
-      json['started_at'] as String,
-      json['expired_at'] as String,
+      json['diet_type_id'] as int?,
+      json['menu_type_id'] as int?,
+      json['menu_term_id'] as int?,
+      json['started_at'] as String?,
+      json['expired_at'] as String?,
     );
 
 Food _$FoodFromJson(Map<String, dynamic> json) => Food(

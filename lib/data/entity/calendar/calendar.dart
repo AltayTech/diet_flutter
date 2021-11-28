@@ -135,10 +135,10 @@ class Visit {
   final int termId;
 
   @JsonKey(name: 'weight')
-  final int weight;
+  final double weight;
 
   @JsonKey(name: 'target_weight')
-  final int targetWeight;
+  final double targetWeight;
 
   @JsonKey(name: 'height')
   final int height;

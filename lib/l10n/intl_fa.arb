@@ -468,5 +468,10 @@
   "idealWeightBasedOnPervVisit": "وزن مناسب آخرین مراجعه",
   "daysTillChildbirth": "تعداد روز باقیمانده تا وضع حمل",
   "chartWeightName": "نمودار تغییر وزن",
+  "whichMenuList": "کدام لیست غذایی را انتخاب کنم؟",
+  "confirmMenuList": "تایید لیست غذایی",
+  "areYouSureAboutMenu": "برای انتخاب این لیست مطمئن هستی؟",
+  "yesWantThisMenu": "بله همین لیست رو میخوام",
+  "noWannaChange": "نه میخوام عوضش کنم",
   "understand": "متوجه شدم"
 }

@@ -39,9 +39,9 @@ class _PasswordScreenState extends ResourcefulState<PasswordScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      if(event == true) {
+      if(!event.toString().isEmptyOrNull) {
         check = true;
-        VxNavigator.of(context).push(Uri.parse(Routes.home));
+        VxNavigator.of(context).push(Uri.parse('/$event'));
       }
     });
     authBloc.showServerError.listen((event) {

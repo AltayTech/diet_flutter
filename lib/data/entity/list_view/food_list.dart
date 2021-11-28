@@ -75,12 +75,12 @@ class Meals {
 @JsonSerializable(createToJson: false)
 class Menu {
   Menu(
-    // this.id,
+    this.id,
     this.title,
     this.description,
-    // this.dietTypeId,
-    // this.menuTypeId,
-    // this.menuTermId,
+    this.dietTypeId,
+    this.menuTypeId,
+    this.menuTermId,
     // this.isCalorieBased,
     // this.isPrepared,
     // this.order,
@@ -89,8 +89,8 @@ class Menu {
     this.expiredAt,
   );
 
-  // @JsonKey(name: 'id')
-  // final int id;
+  @JsonKey(name: 'id')
+  final int id;
 
   @JsonKey(name: 'title')
   final String title;
@@ -98,14 +98,14 @@ class Menu {
   @JsonKey(name: 'description')
   final String? description;
 
-  // @JsonKey(name: 'diet_type_id')
-  // final int dietTypeId;
+  @JsonKey(name: 'diet_type_id')
+  final int? dietTypeId;
 
-  // @JsonKey(name: 'menu_type_id')
-  // final int menuTypeId;
-  //
-  // @JsonKey(name: 'menu_term_id')
-  // final int menuTermId;
+  @JsonKey(name: 'menu_type_id')
+  final int? menuTypeId;
+
+  @JsonKey(name: 'menu_term_id')
+  final int? menuTermId;
 
   // @JsonKey(name: 'is_calory_based')
   // final boolean isCalorieBased;
@@ -120,10 +120,10 @@ class Menu {
   // final int menuDays;
 
   @JsonKey(name: 'started_at')
-  final String startedAt;
+  final String? startedAt;
 
   @JsonKey(name: 'expired_at')
-  final String expiredAt;
+  final String? expiredAt;
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }

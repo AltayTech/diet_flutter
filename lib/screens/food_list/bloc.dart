@@ -50,8 +50,8 @@ class FoodListBloc {
   void _loadContent({bool invalidate = false, bool fillFood = true}) {
     _loadingContent.value = true;
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
-      //debugPrint('food list ${value.data} / $fillFood');
       if (value.data?.menu != null) {
+        debugPrint('food list ${value.data?.menu?.title} / $fillFood');
         _foodList.value = value.data!;
         _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
         setTheme();
@@ -60,7 +60,7 @@ class FoodListBloc {
         _showServerError.fire('/${value.next}');
       }
     }).catchError((onError) {
-      debugPrint('food err $onError');
+      debugPrint('food err bloc $onError');
     }).whenComplete(() => _loadingContent.value = false);
   }
 
@@ -84,7 +84,7 @@ class FoodListBloc {
   }
 
   void fillWeekDays() {
-    DateTime gregorianDate = DateTime.parse(_foodList.value!.menu!.startedAt).toUtc().toLocal();
+    DateTime gregorianDate = DateTime.parse(_foodList.value!.menu!.startedAt!).toUtc().toLocal();
     Jalali jalaliDate = Jalali.fromDateTime(gregorianDate);
     List<WeekDay> data = [];
     debugPrint(
