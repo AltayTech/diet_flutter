@@ -182,6 +182,8 @@ abstract class Repository {
   NetworkResult<MenuData> menuType();
 
   NetworkResult<Term> term();
+
+  ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
 }
 
 class _RepositoryImpl extends Repository {
@@ -680,6 +682,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Term> term() {
     var response = _apiClient.term();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData) {
+    var response = _apiClient.menuSelect(conditionRequestData);
     return response;
   }
 }

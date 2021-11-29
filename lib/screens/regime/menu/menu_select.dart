@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
@@ -6,6 +7,7 @@ import 'package:behandam/screens/regime/menu/item.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -125,9 +127,11 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
                           .map((menu) => MenuItem(
                                 menu: menu,
                                 onClick: () {
-                                  DialogUtils.showDialogProgress(
-                                      context: context);
-                                  bloc.onItemClick(menu);
+                                  if (!navigator.currentConfiguration!.path
+                                      .contains(Routes.listMenuSelect)) {
+                                    DialogUtils.showDialogProgress(context: context);
+                                    bloc.onItemClick(menu);
+                                  }else dailyMenuDialog(menu);
                                 },
                               ))
                           .toList(),
@@ -140,66 +144,83 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
         : EmptyBox();
   }
 
-  // Widget menuItem(Menu menu) {
-  //   return GestureDetector(
-  //     onTap: (){
-  //
-  //     },
-  //     child: Container(
-  //       margin: EdgeInsets.only(bottom: 2.h),
-  //       decoration: AppDecorations.boxLarge.copyWith(
-  //         color: AppColors.onPrimary,
-  //       ),
-  //       padding:
-  //       EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-  //       child: Row(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Expanded(
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Text(
-  //                   menu.title,
-  //                   style: typography.caption,
-  //                   textAlign: TextAlign.start,
-  //                 ),
-  //                 Space(height: 0.2.h),
-  //                 Text(
-  //                   menu.description ?? '',
-  //                   style: typography.caption?.apply(
-  //                     fontSizeDelta: -2,
-  //                   ),
-  //                   textAlign: TextAlign.start,
-  //                   softWrap: true,
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //           Space(width: 2.w),
-  //           helpBox(),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-  //
-  // Widget helpBox() {
-  //   return Container(
-  //     decoration: AppDecorations.boxMedium.copyWith(
-  //       color: AppColors.primary.withOpacity(0.2),
-  //     ),
-  //     width: 15.w,
-  //     height: 15.w,
-  //     child: Center(
-  //       child: ImageUtils.fromLocal(
-  //         'assets/images/diet/help_icon.svg',
-  //         width: 6.w,
-  //         color: AppColors.iconsColor,
-  //       ),
-  //     ),
-  //   );
-  // }
+  void dailyMenuDialog(Menu menu) {
+    DialogUtils.showDialogPage(
+      context: context,
+      isDismissible: true,
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          width: double.maxFinite,
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.onPrimary,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              close(),
+              Text(
+                menu.title,
+                style: typography.bodyText2,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 2.h),
+              Text(
+               menu.description!,
+                style: typography.caption,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 2.h),
+              Container(
+                alignment: Alignment.center,
+                child: SubmitButton(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    DialogUtils.showDialogProgress(context: context);
+                    bloc.onItemClick(menu);
+                  },
+                  label: intl.yesSaveList,
+                ),
+              ),
+              Space(height: 2.h),
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Text(
+                  intl.cancel,
+                  style: typography.caption,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Space(height: 1.h),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget close() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topLeft,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   void onRetryAfterMaintenance() {

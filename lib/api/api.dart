@@ -251,4 +251,7 @@ abstract class RestClient {
 
   @PATCH("/term")
   NetworkResult<Term> term();
+
+  @POST("/menu-select")
+  ImperativeNetworkResult menuSelect(@Body() ConditionRequestData conditionRequestData);
 }

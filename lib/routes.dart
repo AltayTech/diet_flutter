@@ -55,7 +55,12 @@ abstract class Routes {
   static const menuSelect = '/reg/menu/select';
   static const menuConfirm = '/reg/menu/confirm';
   static const statusUser = '/status';
-
+  static const listMenuAlert = '/list/menu/alert';
+  static const listWeightAlert = '/list/weight/alert';
+  static const renewAlert = '/renew/alert';
+  static const reviveAlert = '/revive/alert';
+  static const paymentOnlineSuccess = '/reg/payment/online/success';
+  static const listMenuSelect = '/list/menu/select';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),
