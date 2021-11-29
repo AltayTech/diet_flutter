@@ -41,7 +41,7 @@ class AuthenticationBloc{
   Stream get showServerError => _showServerError.stream;
 
 
-  void fetchCountries() async {
+  void fetchCountries() {
    if(MemoryApp.countryCode == null) {
      _repository.country().then((value) {
        MemoryApp.countryCode = value.data!;
@@ -64,47 +64,53 @@ class AuthenticationBloc{
    }
   }
 
-  void loginMethod(String phoneNumber) async {
+  void loginMethod(String phoneNumber) {
     _waiting.value = true;
+    MemoryApp.needRoute = true;
     _repository.status(phoneNumber).then((value) {
      _navigateToVerify.fire( value.data!.isExist!);
       print('value: ${value.data!.isExist}');
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void passwordMethod(User user) async {
+  void passwordMethod(User user) {
     _waiting.value = true;
-    _repository.signIn(user).then((value) {
-      AppSharedPreferences.setAuthToken(value.data!.token);
+    _repository.signIn(user).then((value) async{
+      await AppSharedPreferences.setAuthToken(value.data!.token);
+      MemoryApp.token = value.requireData.token;
+      print('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void resetPasswordMethod(Reset pass) async {
+  void resetPasswordMethod(Reset pass) {
     _waiting.value = true;
-    _repository.reset(pass).then((value) {
+    _repository.reset(pass).then((value) async{
+      await AppSharedPreferences.setAuthToken(value.data!.token);
+      MemoryApp.token = value.requireData.token;
       _navigateToVerify.fire(true);
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void registerMethod(Register register) async {
+  void registerMethod(Register register){
     _waiting.value = true;
-    _repository.register(register).then((value) {
-      AppSharedPreferences.setAuthToken(value.data!.token);
-      _navigateToVerify.fire(true);
+    _repository.register(register).then((value) async{
+      await AppSharedPreferences.setAuthToken(value.data!.token);
+      MemoryApp.token = value.requireData.token;
+      _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void sendCodeMethod(String mobile) async {
+  void sendCodeMethod(String mobile) {
     _repository.verificationCode(mobile);
   }
 
-  void verifyMethod(VerificationCode verify) async {
+  void verifyMethod(VerificationCode verify) {
     _waiting.value = true;
-    _repository.verify(verify).then((value) {
-      _navigateToVerify.fire(value.data!.verified);
+    _repository.verify(verify).then((value) async{
       if(value.data!.token != null)
-      AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
+      await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
+      _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
 

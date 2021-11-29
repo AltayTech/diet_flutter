@@ -60,7 +60,7 @@ abstract class Repository {
     return _instance!;
   }
 
-  NetworkResult<List<CountryCode>> country();
+  NetworkResult<List<CountryCode>?> country();
 
   NetworkResult<CheckStatus> status(String mobile);
 
@@ -209,8 +209,16 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<List<CountryCode>> country() async {
-    var response = await _apiClient.getCountries();
+  NetworkResult<List<CountryCode>?> country() async {
+    var response;
+    try {
+      response = await _apiClient.getCountries();
+      debugPrint(
+          'countries ${response.data?.length} / ${response.data?[0].name}');
+    }catch(e){
+      debugPrint(
+          'countries error $e');
+    }
     return response;
   }
 
@@ -247,12 +255,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<FoodListData?> foodList(String date, {bool invalidate = false}) async {
     _cache.saveDate(date);
-    NetworkResponse<FoodListData> response;
+    NetworkResponse<FoodListData?> response;
     debugPrint('repository1 ${_cache.date} / ${_cache.foodList} / $invalidate}');
     if (_cache.date == null || _cache.foodList == null || invalidate) {
       response = await _apiClient.foodList(date);
       debugPrint('repository2 ${response.data}');
-      if(response.data != null) _cache.saveFoodList(response.requireData, date);
+      if(response.data != null) _cache.saveFoodList(response.requireData!, date);
       debugPrint('repository ${response.data}');
     } else {
       response = NetworkResponse.withData(_cache.foodList);

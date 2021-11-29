@@ -52,15 +52,13 @@ class FoodListBloc {
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
       if (value.data?.menu != null) {
         debugPrint('food list ${value.data?.menu?.title} / $fillFood');
-        _foodList.value = value.data!;
+        _foodList.value = value.data;
         _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
         setTheme();
         fillWeekDays();
       } else {
         _showServerError.fire('/${value.next}');
       }
-    }).catchError((onError) {
-      debugPrint('food err bloc $onError');
     }).whenComplete(() => _loadingContent.value = false);
   }
 
@@ -135,7 +133,7 @@ class FoodListBloc {
     _loadingContent.value = true;
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
       debugPrint('food list ${value.data}');
-      _foodList.value = value.data!;
+      _foodList.value = value.data;
       _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
       setTheme();
     }).whenComplete(() => _loadingContent.value = false);

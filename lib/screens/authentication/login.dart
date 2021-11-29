@@ -2,6 +2,7 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
@@ -30,31 +31,24 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   String dropdownValue = 'One';
   bool _validate = false;
   late String phoneNumber;
-  late  String number;
+  late String number;
   late AuthenticationBloc authBloc;
   late CountryCode _selectedLocation;
   bool check = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    authBloc  = AuthenticationBloc();
+    MemoryApp.needRoute = false;
+    authBloc = AuthenticationBloc();
     listenBloc();
   }
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      // try {
-        if ((event as bool)) {
-          check = true;
-          VxNavigator.of(context).push(Uri.parse(Routes.pass), params: number);
-        } else {
-          navigator.routeManager.push(Uri.parse(Routes.verify),params: {'mobile' : number, 'countryId': _selectedLocation.id});
-        }
-      // }catch(e){
-      //   print('e ==> ${e.toString()}');
-      // }
+      if(event != null){
+        context.vxNav.push(Uri(path: '/$event'), params: {'mobile': number, 'countryId': _selectedLocation.id},);
+      }
     });
     authBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
@@ -81,8 +75,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             child: DropdownButtonHideUnderline(
               child: DropdownButton<CountryCode>(
                 isExpanded: true,
-                icon: Icon(Icons.arrow_drop_down,
-                color: AppColors.penColor),
+                icon: Icon(Icons.arrow_drop_down, color: AppColors.penColor),
                 iconSize: 26,
                 value: _selectedLocation = authBloc.subject,
                 onChanged: (CountryCode? newValue) {
@@ -90,15 +83,18 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                     _selectedLocation = newValue!;
                   });
                 },
-                items: snapshot.data.map<DropdownMenuItem<CountryCode>>((CountryCode data) {
+                items: snapshot.data
+                    .map<DropdownMenuItem<CountryCode>>((CountryCode data) {
                   return DropdownMenuItem<CountryCode>(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top:6.0),
-                      child: Center(child: Text("${data.name} + ${data.code}",style: TextStyle(
-                          color: AppColors.penColor,
-                      fontSize: 16.0))),
-                    ),
-                    value: data);
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
+                        child: Center(
+                            child: Text("${data.name} + ${data.code}",
+                                style: TextStyle(
+                                    color: AppColors.penColor,
+                                    fontSize: 16.0))),
+                      ),
+                      value: data);
                 }).toList(),
               ),
             ),
@@ -115,73 +111,75 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+          backgroundColor: Colors.white,
           body: StreamBuilder(
               stream: authBloc.waiting,
-              builder: (context, snapshot){
+              builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
                   return SingleChildScrollView(
-                    child: Column(
-                        children: [
-                          header(),
-                          content(),
-                        ]),
-                  );}
-                else{
+                    child: Column(children: [
+                      header(),
+                      content(),
+                    ]),
+                  );
+                } else {
                   check = false;
                   return Center(
                       child: Container(
-                          width:15.w,
+                          width: 15.w,
                           height: 15.w,
                           child: Progress()));
                 }
               })),
     );
   }
-   Widget header(){
-     return Stack(
-       overflow: Overflow.visible,
-       children: [
-         RotatedBox(quarterTurns: 90, child: MyArc(diameter: 250)),
-         Positioned(
-           top: 0.0,
-           right: 0.0,
-           left: 0.0,
-           child: Center(
-               child: ImageUtils.fromLocal('assets/images/registry/app_logo.svg',
-                 width: 50.0,
-                 height: 50.0,)
-           ),
-         ),
-         Positioned(
-           top: 60.0,
-           right: 0.0,
-           left: 0.0,
-           child: Center(
-               child: Text('به اندام دکتر کرمانی',
-                   style: TextStyle(
-                       color: AppColors.penColor,
-                       fontSize: 22.0,
-                       fontFamily: 'Iransans-Bold',
-                       fontWeight: FontWeight.w700))
-           ),
-         ),
-         Positioned(
-           top: 120.0,
-           right: 0.0,
-           left: 0.0,
-           child: Center(
-             child: ImageUtils.fromLocal('assets/images/registry/profile_logo.svg',
-               width: 120.0,
-               height: 120.0,),
-           ),
-         ),
-       ],
-     );
-   }
 
-   Widget content(){
-    return  Column(
+  Widget header() {
+    return Stack(
+      overflow: Overflow.visible,
+      children: [
+        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 250)),
+        Positioned(
+          top: 0.0,
+          right: 0.0,
+          left: 0.0,
+          child: Center(
+              child: ImageUtils.fromLocal(
+            'assets/images/registry/app_logo.svg',
+            width: 50.0,
+            height: 50.0,
+          )),
+        ),
+        Positioned(
+          top: 60.0,
+          right: 0.0,
+          left: 0.0,
+          child: Center(
+              child: Text('به اندام دکتر کرمانی',
+                  style: TextStyle(
+                      color: AppColors.penColor,
+                      fontSize: 22.0,
+                      fontFamily: 'Iransans-Bold',
+                      fontWeight: FontWeight.w700))),
+        ),
+        Positioned(
+          top: 120.0,
+          right: 0.0,
+          left: 0.0,
+          child: Center(
+            child: ImageUtils.fromLocal(
+              'assets/images/registry/profile_logo.svg',
+              width: 120.0,
+              height: 120.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget content() {
+    return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(20.0),
@@ -190,7 +188,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             children: [
               Flexible(
                 child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
                       color: AppColors.arcColor),
                   child: TextField(
                     controller: _text,
@@ -204,8 +203,10 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                         // enabledBorder: OutlineInputBorder(
                         //   borderSide: BorderSide(color: Colors.grey)),
                         labelText: intl.enterYourMobileNumber,
-                       // errorText: _validate ? intl.fillAllField : null,
-                        labelStyle: TextStyle(color: AppColors.penColor,fontSize: 16.0,
+                        // errorText: _validate ? intl.fillAllField : null,
+                        labelStyle: TextStyle(
+                            color: AppColors.penColor,
+                            fontSize: 16.0,
                             fontWeight: FontWeight.w600)),
                     onChanged: (txt) {
                       phoneNumber = txt;
@@ -220,30 +221,32 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                     borderRadius: BorderRadius.circular(15),
                     color: Color(0xF6F5F5F5),
                   ),
-                  width:25.w,
+                  width: 25.w,
                   height: 8.h,
-                  child:_dropDownMenu(),
+                  child: _dropDownMenu(),
                 ),
               )
-
             ],
           ),
         ),
-       Padding(
-         padding: const EdgeInsets.all(20.0),
-         child: button(AppColors.btnColor, intl.registerOrLogin,Size(100.w,8.h),
-             () {
-               while (phoneNumber.startsWith('0')) {
-                 phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
-               }
-               number = _selectedLocation.code! +
-                   phoneNumber;
-               authBloc.loginMethod(number);
-             }),
-       ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: button(
+            AppColors.btnColor,
+            intl.registerOrLogin,
+            Size(100.w, 8.h),
+            () {
+              while (phoneNumber.startsWith('0')) {
+                phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
+              }
+              number = _selectedLocation.code!.toString() + phoneNumber;
+              authBloc.loginMethod(number);
+            },
+          ),
+        ),
       ],
     );
-   }
+  }
 
   @override
   void onRetryAfterMaintenance() {

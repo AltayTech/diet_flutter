@@ -9,6 +9,10 @@ class CountryCode {
   String? name;
   @JsonKey(name: "code")
   String? code;
+  @JsonKey(name: "iso_code")
+  String? isoCode;
+  @JsonKey(name: "iso3")
+  String? iso3;
 
   CountryCode();
 
