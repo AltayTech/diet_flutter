@@ -1,4 +1,5 @@
 
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,8 +7,8 @@ abstract class AppSharedPreferences {
 
   static Future<SharedPreferences> get preference async => await SharedPreferences.getInstance();
 
-  static Future<String> get authToken async {
-    return (await preference).getString(_keyAuthToken) ?? 'null';
+  static Future<String?> get authToken async {
+    return (await preference).getString(_keyAuthToken) ?? null;
   }
 
   static Future<void> setAuthToken(String? value) async {
@@ -32,6 +33,7 @@ abstract class AppSharedPreferences {
   static Future<void> logout() async {
     await setAuthToken(null);
     await setIsLoggedIn(false);
+    MemoryApp.token = null;
   }
 
   static const _keyIsLoggedIn = 'isLoggedIn';

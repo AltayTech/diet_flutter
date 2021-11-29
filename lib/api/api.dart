@@ -59,7 +59,7 @@ abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
   @GET("/country")
-  NetworkResult<List<CountryCode>> getCountries();
+  NetworkResult<List<CountryCode>?> getCountries();
 
   @GET("/check-user-status?mobile={mobile}")
   NetworkResult<CheckStatus> checkUserStatus(@Path('mobile') String? mobile);

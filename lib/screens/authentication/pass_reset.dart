@@ -37,7 +37,6 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     authBloc  = AuthenticationBloc();
     listenBloc();
@@ -45,10 +44,8 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      if(event == true){
-        check = true;
-        VxNavigator.of(context).push(Uri.parse(Routes.home));
-      }
+      if(event != null)
+      context.vxNav.push(Uri(path: '/$event'));
     });
     authBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);

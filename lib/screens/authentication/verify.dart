@@ -72,10 +72,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      if (event == true) {
-        check = true;
-        VxNavigator.of(context).push(Uri.parse(Routes.register),
-            params: {"mobile": args['mobile'], "code": code, 'id': args['countryId']});
+      if(event != null){
+        context.vxNav.push(Uri(path: '/$event'), params: {"mobile": args['mobile'], "code": code , 'id': args['countryId']},);
       }
     });
     authBloc.showServerError.listen((event) {

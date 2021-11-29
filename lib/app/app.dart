@@ -83,6 +83,7 @@ class _AppState extends State<App> {
 
   getToken() async {
     MemoryApp.token = await AppSharedPreferences.authToken;
+    debugPrint('init token ${MemoryApp.token}');
   }
 
   @override
