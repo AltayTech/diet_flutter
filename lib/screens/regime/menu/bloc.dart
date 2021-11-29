@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
@@ -7,6 +8,7 @@ import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -53,10 +55,16 @@ class MenuSelectBloc {
     ConditionRequestData requestData = ConditionRequestData();
     requestData.isPreparedMenu = true;
     requestData.menuId = menu.id;
-    _repository.setCondition(requestData).then((value) {
-      debugPrint('condition menu ${value.next}');
-      _navigateTo.fire(value.next);
-    }).whenComplete(() => _loadingContent.value = false);
+    if(!navigator.currentConfiguration!.path.contains(Routes.listMenuSelect)) {
+      _repository.setCondition(requestData).then((value) {
+        debugPrint('condition menu ${value.next}');
+        _navigateTo.fire(value.next);
+      }).whenComplete(() => _loadingContent.value = false);
+    }else {
+      _repository.menuSelect(requestData).then((value) {
+        _navigateTo.fire(value.next);
+      }).whenComplete(() => _loadingContent.value = false);
+    }
   }
 
   void term(){

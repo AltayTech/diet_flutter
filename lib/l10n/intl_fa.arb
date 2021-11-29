@@ -481,5 +481,13 @@
   "inbox": "صندوق پیام",
   "notFoundInbox": "پیامی برای نمایش وجود ندارد",
   "discountCodeForYou": "تخفیف ویژه شما",
+  "getNewList": "دریافت لیست جدید",
+  "reviveDiet": "تمدید رژیم",
+  "continues": "ادامه",
+  "descriptionNewList": "زمان لیست غذاییت تموم شده و باید لیست جدید بگیری!",
+  "descriptionVisit": "باید وزن جدیدتو وارد کنی",
+  "descriptionRenew": "زمان رژیمت تموم شده! برای تمدید دوره رژیم دکمه زیر رو بزن",
+  "descriptionRevive": "خیلی وقته از رژیمت فاصله گرفتی! \nبرای تمدید دوره رژیم دکمه زیر رو بزن",
+  "yesSaveList": "این لیست را ذخیره کن",
   "understand": "متوجه شدم"
 }

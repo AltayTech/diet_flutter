@@ -6,29 +6,31 @@ import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/advice/advice.dart';
 import 'package:behandam/screens/authentication/code_reset.dart';
-import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/calendar/calendar.dart';
 import 'package:behandam/screens/daily_menu/daily_menu.dart';
 import 'package:behandam/screens/daily_menu/list_food.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
+import 'package:behandam/screens/food_list/alert_list.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
+import 'package:behandam/screens/payment/bill.dart';
 import 'package:behandam/screens/payment/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
+import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/payment/wait.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/profile/reset_pass.dart';
 import 'package:behandam/screens/profile/show_item_inbox.dart';
-import 'package:behandam/screens/regime/activity/activity_level.dart';
 import 'package:behandam/screens/psychology/calender.dart';
 import 'package:behandam/screens/psychology/intro.dart';
 import 'package:behandam/screens/psychology/payment_bill.dart';
 import 'package:behandam/screens/psychology/reserved_meeting.dart';
 import 'package:behandam/screens/psychology/terms.dart';
+import 'package:behandam/screens/regime/activity/activity_level.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
@@ -37,8 +39,6 @@ import 'package:behandam/screens/regime/menu/menu_confirm.dart';
 import 'package:behandam/screens/regime/menu/menu_select.dart';
 import 'package:behandam/screens/regime/overview/overview.dart';
 import 'package:behandam/screens/regime/package/package_list.dart';
-import 'package:behandam/screens/payment/bill.dart';
-import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
@@ -218,10 +218,14 @@ final navigator = VxNavigator(
     Routes.cardToCard: (_, __) => MaterialPage(child: DebitCardPage()),
     Routes.vitrin: (_, __) => MaterialPage(child: VitrinScreen()),
     Routes.psychologyIntro: (_, __) => MaterialPage(child: PsychologyIntroScreen()),
-    Routes.psychologyCalender: (_, params) => MaterialPage(child: PsychologyCalenderScreen(), arguments: params),
-    Routes.psychologyTerms: (_, params) => MaterialPage(child: PsychologyTermsScreen(), arguments: params),
-    Routes.psychologyPaymentBill: (_, params) => MaterialPage(child: PsychologyPaymentBillScreen(), arguments: params),
-    Routes.psychologyReservedMeeting: (_, __) => MaterialPage(child: PsychologyReservedMeetingScreen()),
+    Routes.psychologyCalender: (_, params) =>
+        MaterialPage(child: PsychologyCalenderScreen(), arguments: params),
+    Routes.psychologyTerms: (_, params) =>
+        MaterialPage(child: PsychologyTermsScreen(), arguments: params),
+    Routes.psychologyPaymentBill: (_, params) =>
+        MaterialPage(child: PsychologyPaymentBillScreen(), arguments: params),
+    Routes.psychologyReservedMeeting: (_, __) =>
+        MaterialPage(child: PsychologyReservedMeetingScreen()),
     Routes.resetPasswordProfile: (_, __) => MaterialPage(child: ResetPasswordProfile()),
     Routes.paymentFail: (_, params) => MaterialPage(child: PaymentFailScreen(), arguments: params),
     Routes.activity: (_, __) => MaterialPage(child: ActivityLevelPage()),
@@ -229,9 +233,12 @@ final navigator = VxNavigator(
     Routes.dietHistory: (_, __) => MaterialPage(child: DietHistoryPage()),
     Routes.dietGoal: (_, __) => MaterialPage(child: DietGoalPage()),
     Routes.overview: (_, __) => MaterialPage(child: OverviewPage()),
-    Routes.menuSelect: (_, __) => MaterialPage(child: MenuSelectPage()),
+    RegExp(r"\/(reg|list|renew|revive)(\/menu\/select)"): (_, __) => MaterialPage(child: MenuSelectPage()),
     Routes.menuConfirm: (_, param) => MaterialPage(child: MenuConfirmPage(), arguments: param),
     Routes.statusUser: (_, __) => MaterialPage(child: StatusUserScreen()),
+    Routes.listMenuAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
+    Routes.listWeightAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
+    Routes.paymentOnlineSuccess: (_, __) => MaterialPage(child: PaymentSuccessScreen()),
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(

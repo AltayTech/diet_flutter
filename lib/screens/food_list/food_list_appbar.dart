@@ -1,6 +1,7 @@
 import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/extensions/iterable.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
@@ -12,7 +13,6 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
-import 'package:behandam/extensions/iterable.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -20,7 +20,9 @@ import 'week_day.dart';
 import 'week_list.dart';
 
 class FoodListAppbar extends StatefulWidget {
-  const FoodListAppbar({Key? key}) : super(key: key);
+  FoodListAppbar({Key? key, this.showToolbar, this.isClickable}) : super(key: key);
+  final bool? showToolbar;
+  final bool? isClickable;
 
   @override
   _FoodListAppbarState createState() => _FoodListAppbarState();
@@ -28,7 +30,6 @@ class FoodListAppbar extends StatefulWidget {
 
 class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
   late FoodListBloc bloc;
-  // int? _selectedDayIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
 
   Widget appbar() {
     return Container(
-      height: 37.h,
+      height: widget.showToolbar == null ? 37.h : 32.h,
       color: Colors.transparent,
       child: ClipPath(
         clipper: FoodListCurve(),
@@ -49,47 +50,48 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
           padding: EdgeInsets.symmetric(vertical: 2.h),
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.dark_mode,
-                      size: 6.w,
-                      color: AppColors.surface,
-                    ),
-                    Expanded(
-                      child: StreamBuilder(
-                        stream: bloc.foodList,
-                        builder: (_, AsyncSnapshot<FoodListData?> snapshot) =>
-                            Text(
-                          '${intl.foodList} | ${snapshot.data?.menu?.title ?? ''}',
-                          textAlign: TextAlign.center,
-                          style: typography.caption?.apply(
-                            color: AppColors.surface,
+              if (widget.showToolbar == null)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.dark_mode,
+                        size: 6.w,
+                        color: AppColors.surface,
+                      ),
+                      Expanded(
+                        child: StreamBuilder(
+                          stream: bloc.foodList,
+                          builder: (_, AsyncSnapshot<FoodListData?> snapshot) => Text(
+                            '${intl.foodList} | ${snapshot.data?.menu?.title ?? ''}',
+                            textAlign: TextAlign.center,
+                            style: typography.caption?.apply(
+                              color: AppColors.surface,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Icon(
-                      Icons.dark_mode,
-                      size: 6.w,
-                      color: AppColors.surface,
-                    ),
-                  ],
+                      Icon(
+                        Icons.dark_mode,
+                        size: 6.w,
+                        color: AppColors.surface,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: Divider(
-                  thickness: 0.3,
-                  color: AppColors.surface,
-                  height: 3.h,
+              if (widget.showToolbar == null)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w),
+                  child: Divider(
+                    thickness: 0.3,
+                    color: AppColors.surface,
+                    height: 3.h,
+                  ),
                 ),
-              ),
               calendar(),
               Space(height: 2.h),
-              WeekList(isClickable: true),
+              WeekList(isClickable: widget.isClickable ?? true),
             ],
           ),
         ),
@@ -148,8 +150,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                 children: [
                   if (index == 0) Space(width: 3.w),
                   weekItem(index, snapshot.requireData!),
-                  if (index == snapshot.requireData!.length - 1)
-                    Space(width: 3.w),
+                  if (index == snapshot.requireData!.length - 1) Space(width: 3.w),
                 ],
               );
             },
@@ -168,8 +169,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
         if (snapshot.hasData) {
           return GestureDetector(
             onTap: () {
-              bloc.changeDateWithString(
-                  weekDays[index]!.gregorianDate.toString().substring(0, 10));
+              bloc.changeDateWithString(weekDays[index]!.gregorianDate.toString().substring(0, 10));
             },
             child: Container(
               width: 18.w,
@@ -202,8 +202,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                                     color: AppColors.surface,
                                     width: 0.4,
                                   ),
-                            color: isEqualToSelectedDay(
-                                    weekDays, index, snapshot.requireData)
+                            color: isEqualToSelectedDay(weekDays, index, snapshot.requireData)
                                 ? AppColors.surface
                                 : null,
                           ),
@@ -213,8 +212,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                               weekDays[index]!.jalaliDate.day.toString(),
                               textAlign: TextAlign.center,
                               style: typography.caption?.apply(
-                                color: isEqualToSelectedDay(
-                                        weekDays, index, snapshot.requireData)
+                                color: isEqualToSelectedDay(weekDays, index, snapshot.requireData)
                                     ? AppColors.primary
                                     : AppColors.surface,
                               ),
@@ -229,8 +227,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                           left: 0,
                           child: Container(
                             decoration: AppDecorations.circle.copyWith(
-                              color: isEqualToSelectedDay(
-                                      weekDays, index, snapshot.requireData)
+                              color: isEqualToSelectedDay(weekDays, index, snapshot.requireData)
                                   ? AppColors.surface
                                   : AppColors.primary,
                             ),
@@ -238,8 +235,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                             child: Icon(
                               Icons.check,
                               size: 5.w,
-                              color: isEqualToSelectedDay(
-                                      weekDays, index, snapshot.requireData)
+                              color: isEqualToSelectedDay(weekDays, index, snapshot.requireData)
                                   ? AppColors.primary
                                   : AppColors.surface,
                             ),
@@ -258,17 +254,14 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
   }
 
   bool isAfterToday(WeekDay day) {
-    return day.gregorianDate
-        .isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));
+    return day.gregorianDate.isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));
   }
 
   bool isBeforeToday(WeekDay day) {
-    return day.gregorianDate
-        .isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10)));
+    return day.gregorianDate.isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10)));
   }
 
-  bool isEqualToSelectedDay(
-      List<WeekDay?> weekDays, int index, WeekDay weekday) {
+  bool isEqualToSelectedDay(List<WeekDay?> weekDays, int index, WeekDay weekday) {
     return weekDays[index]!.gregorianDate ==
         weekDays.firstWhere((element) => element == weekday)!.gregorianDate;
   }
@@ -287,6 +280,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

@@ -24,7 +24,16 @@ class FoodListBloc {
     _loadContent(invalidate: true, fillFood: fillFood);
   }
 
+  FoodListBloc.fillWeek() {
+    if (_date.valueOrNull == null && MemoryApp.selectedDate == null)
+      _date.value = DateTime.now().toString().substring(0, 10);
+    else if (_date.valueOrNull == null && MemoryApp.selectedDate != null)
+      _date.value = MemoryApp.selectedDate!;
+    fillWeekDays();
+  }
+
   final _showServerError = LiveEvent();
+  final _navigateTo = LiveEvent();
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _foodList = BehaviorSubject<FoodListData?>();
@@ -36,6 +45,7 @@ class FoodListBloc {
   Stream<bool> get loadingContent => _loadingContent.stream;
 
   Stream get showServerError => _showServerError.stream;
+  Stream get navigateTo => _navigateTo.stream;
 
   Stream<FoodListData?> get foodList => _foodList.stream;
 
@@ -82,7 +92,11 @@ class FoodListBloc {
   }
 
   void fillWeekDays() {
-    DateTime gregorianDate = DateTime.parse(_foodList.value!.menu!.startedAt!).toUtc().toLocal();
+    DateTime gregorianDate;
+    if (_foodList.hasValue)
+      gregorianDate = DateTime.parse(_foodList.value!.menu!.startedAt!).toUtc().toLocal();
+    else
+      gregorianDate = DateTime.now().toUtc().toLocal();
     Jalali jalaliDate = Jalali.fromDateTime(gregorianDate);
     List<WeekDay> data = [];
     debugPrint(
@@ -98,7 +112,8 @@ class FoodListBloc {
           jalaliDate: gregorianDate.add(Duration(days: i)).toJalali(),
           isSelected:
               gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
-      debugPrint('week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
+      debugPrint(
+          'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
     }
     _weekDays.value = data;
     _selectedWeekDay.value = _weekDays.value!.firstWhere(
@@ -187,6 +202,14 @@ class FoodListBloc {
 
   void makingFoodEmpty(int mealId) {
     _foodList.valueOrNull?.meals?.firstWhere((element) => element.id == mealId).newFood = null;
+  }
+
+  void nextStep(){
+    _repository.nextStep().then((value) {
+      _navigateTo.fire(value.next);
+    }).whenComplete(() {
+      _showServerError.fire(false);
+    });
   }
 
   void dispose() {
