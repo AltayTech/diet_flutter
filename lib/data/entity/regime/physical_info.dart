@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'regime_type.dart';
+
 part 'physical_info.g.dart';
 
 enum GenderType {
@@ -45,9 +47,13 @@ class PhysicalInfoData {
   double? idealWeightBasedOnPervVisit;
   @JsonKey(name: "days_till_childbirth")
   int? daysTillChildbirth;
+  @JsonKey(name: "diet_type_alias")
+  RegimeAlias? dietTypeAlias;
 
   int? kilo;
   int? gram;
+  bool? isForbidden = false;
+  bool? mustGetNotrica = false;
 
   PhysicalInfoData();
 

@@ -2,7 +2,11 @@ import 'dart:math' as math;
 
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
+import 'package:behandam/screens/regime/provider.dart';
+import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/regime/ruler_header.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/sizes.dart';
@@ -57,44 +61,49 @@ class CustomRuler extends StatefulWidget {
 
 class _CustomRulerState extends ResourcefulState<CustomRuler> {
   bool showRuler = false;
+  late RegimeBloc bloc;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    bloc = RegimeProvider.of(context);
 
-    return Container(
-      height: 20.h,
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: [
-              Expanded(
-                child: RulerHeader(
-                  iconPath: widget.iconPath,
-                  heading: widget.heading,
-                  onHelpClick: widget.helpClick,
-                ),
-              ),
-              if (widget.rulerType == RulerType.Pregnancy) Space(width: 3.w),
-              if (widget.rulerType == RulerType.Pregnancy)
+    return RegimeProvider(
+      bloc,
+      child: Container(
+        height: 20.h,
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: [
                 Expanded(
-                  child: Text(
-                    intl.multiBirth,
-                    style: typography.subtitle2,
+                  child: RulerHeader(
+                    iconPath: widget.iconPath,
+                    heading: widget.heading,
+                    onHelpClick: widget.helpClick,
                   ),
                 ),
-            ],
-          ),
-          Space(height: 1.5.h),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              meter(),
-              if (widget.rulerType != RulerType.Normal) Space(width: 3.w),
-              if (widget.rulerType != RulerType.Normal) meter(isSecond: true),
-            ],
-          ),
-        ],
+                if (widget.rulerType == RulerType.Pregnancy) Space(width: 3.w),
+                if (widget.rulerType == RulerType.Pregnancy)
+                  Expanded(
+                    child: Text(
+                      intl.multiBirth,
+                      style: typography.subtitle2,
+                    ),
+                  ),
+              ],
+            ),
+            Space(height: 1.5.h),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                meter(),
+                if (widget.rulerType != RulerType.Normal) Space(width: 3.w),
+                if (widget.rulerType != RulerType.Normal) meter(isSecond: true),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -118,28 +127,30 @@ class _CustomRulerState extends ResourcefulState<CustomRuler> {
                                 color: widget.color,
                                 minValue: isSecond
                                     ? widget.rulerType == RulerType.Weight
-                                        ? 0
-                                        : 1
+                                    ? 0
+                                    : 1
                                     : widget.min,
                                 maxValue: isSecond
                                     ? widget.rulerType == RulerType.Weight
-                                        ? 9
-                                        : 6
+                                    ? 9
+                                    : 6
                                     : widget.max,
                                 value: isSecond
                                     ? widget.secondValue!
                                     : widget.value,
                                 onChanged: (val) {
                                   setState(() {
-                                    print('value: $val');
-                                    if (isSecond)
+                                    if (isSecond) {
                                       widget.onClickSecond?.call(val);
-                                    else
-                                      widget.onClick.call(val);
-                                    if (isSecond)
                                       widget.secondValue = val;
-                                    else
+                                      // print(
+                                      // 'ruler value 1: $val / ${widget.secondValue}');
+                                    } else {
+                                      widget.onClick.call(val);
                                       widget.value = val;
+                                      // print(
+                                      //     'ruler value 1:: $val / ${widget.value}');
+                                    }
                                   });
                                 },
                                 width: constraints.maxWidth,
@@ -240,8 +251,11 @@ class Slider extends StatefulWidget {
 }
 
 class _SliderState extends State<Slider> {
+  late RegimeBloc bloc;
   late int newValue;
-  double get itemExtent => widget.width / (widget.type == RulerType.Normal ? 9 : 5);
+  // late ScrollController scrollController;
+  double get itemExtent =>
+      widget.width / (widget.type == RulerType.Normal ? 9 : 5);
 
   List gramList = List<int>.generate(10, (index) => index * 100);
 
@@ -249,45 +263,56 @@ class _SliderState extends State<Slider> {
       widget.minValue + (index - ((widget.type == RulerType.Normal ? 4 : 2)));
 
   @override
-  void initState() {
-    super.initState();
-    newValue = widget.value;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    bloc = RegimeProvider.of(context);
+    // scrollController = ScrollController(
+    //     initialScrollOffset: (value - minValue) *
+    //         width /
+    //         (type == RulerType.Normal ? 9 : 5));
   }
 
   @override
   build(BuildContext context) {
-    int itemCount = (widget.maxValue - widget.minValue) + (widget.type == RulerType.Normal ? 9 : 5);
+    int itemCount = (widget.maxValue - widget.minValue) +
+        (widget.type == RulerType.Normal ? 9 : 5);
+
     return NotificationListener(
       onNotification: _onNotification,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20.0),
-        child: new ListView.builder(
-          controller: widget.scrollController,
-          scrollDirection: Axis.horizontal,
-          itemExtent: itemExtent,
-          itemCount: itemCount,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            int itemValue = _indexToValue(index);
-            bool isExtra;
-            if (widget.type == RulerType.Normal) {
-              isExtra = index == 0 ||
-                  index == 1 ||
-                  index == 2 ||
-                  index == 3 ||
-                  index == itemCount - 4 ||
-                  index == itemCount - 1 ||
-                  index == itemCount - 2 ||
-                  index == itemCount - 3;
-            } else {
-              isExtra = index == 0 ||
-                  index == 1 ||
-                  index == itemCount - 1 ||
-                  index == itemCount - 2;
-            }
-            return isExtra
-                ? Container() //empty first and last element
-                : GestureDetector(
+        child: StreamBuilder(
+          stream: bloc.physicalInfo,
+          builder: (_, AsyncSnapshot<PhysicalInfoData> snapshot) {
+            if (snapshot.hasData) {
+              newValue = widget.value;
+              return ListView.builder(
+                controller: widget.scrollController,
+                scrollDirection: Axis.horizontal,
+                itemExtent: itemExtent,
+                itemCount: itemCount,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  int itemValue = _indexToValue(index);
+                  bool isExtra;
+                  if (widget.type == RulerType.Normal) {
+                    isExtra = index == 0 ||
+                        index == 1 ||
+                        index == 2 ||
+                        index == 3 ||
+                        index == itemCount - 4 ||
+                        index == itemCount - 1 ||
+                        index == itemCount - 2 ||
+                        index == itemCount - 3;
+                  } else {
+                    isExtra = index == 0 ||
+                        index == 1 ||
+                        index == itemCount - 1 ||
+                        index == itemCount - 2;
+                  }
+                  return isExtra
+                      ? Container() //empty first and last element
+                      : GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () => _animateTo(itemValue, durationMillis: 50),
                     child: Column(
@@ -300,15 +325,21 @@ class _SliderState extends State<Slider> {
                         Space(height: 1.w),
                         FittedBox(
                           child: Text(
-                            widget.type == RulerType.Weight && widget.isSecond
+                            widget.type == RulerType.Weight &&
+                                widget.isSecond
                                 ? (itemValue * 100).toString()
                                 : itemValue.toString(),
-                            style: _getTextStyle(context, itemValue, widget.color),
+                            style: _getTextStyle(
+                                context, itemValue, widget.color),
                           ),
                         ),
                       ],
                     ),
                   );
+                },
+              );
+            }
+            return Progress();
           },
         ),
       ),
@@ -350,12 +381,14 @@ class _SliderState extends State<Slider> {
     );
   }
 
-  int _offsetToMiddleIndex(double offset) => (offset + widget.width / 2) ~/ itemExtent;
+  int _offsetToMiddleIndex(double offset) =>
+      (offset + widget.width / 2) ~/ itemExtent;
 
   int _offsetToMiddleValue(double offset) {
     int indexOfMiddleElement = _offsetToMiddleIndex(offset);
     int middleValue = _indexToValue(indexOfMiddleElement);
-    middleValue = math.max(widget.minValue, math.min(widget.maxValue, middleValue));
+    middleValue =
+        math.max(widget.minValue, math.min(widget.maxValue, middleValue));
     return middleValue;
   }
 
@@ -369,9 +402,10 @@ class _SliderState extends State<Slider> {
 
       if (middleValue != newValue) {
         setState(() {
+          widget.value = middleValue;
           newValue = middleValue;
-          widget.onChanged(middleValue);
-        });//update selection
+        }); //update selection
+        widget.onChanged(middleValue);
       }
     }
     return true;

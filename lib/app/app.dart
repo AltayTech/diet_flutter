@@ -183,7 +183,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: FoodListPage()),
+    '/': (_, __) => MaterialPage(child: BodyStateScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -207,7 +207,7 @@ final navigator = VxNavigator(
     Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
     Routes.calendar: (_, __) => MaterialPage(child: CalendarPage()),
     Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
-    Routes.bodyState: (_, param) => MaterialPage(child: BodyStateScreen(), arguments: param),
+    Routes.bodyState: (_, __) => MaterialPage(child: BodyStateScreen()),
     Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
     Routes.sickness: (_, __) => MaterialPage(child: SicknessScreen()),
     Routes.special_sickness: (_, __) => MaterialPage(child: SicknessSpecialScreen()),
@@ -236,6 +236,7 @@ final navigator = VxNavigator(
     RegExp(r"\/(reg|list|renew|revive)(\/menu\/select)"): (_, __) => MaterialPage(child: MenuSelectPage()),
     Routes.menuConfirm: (_, param) => MaterialPage(child: MenuConfirmPage(), arguments: param),
     Routes.statusUser: (_, __) => MaterialPage(child: StatusUserScreen()),
+    Routes.weightEnter: (_, __) => MaterialPage(child: BodyStateScreen()),
     Routes.listMenuAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.listWeightAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.paymentOnlineSuccess: (_, __) => MaterialPage(child: PaymentSuccessScreen()),

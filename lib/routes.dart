@@ -55,6 +55,8 @@ abstract class Routes {
   static const menuSelect = '/reg/menu/select';
   static const menuConfirm = '/reg/menu/confirm';
   static const statusUser = '/status';
+  static const weightEnter = '/reg/weight/enter';
+
   static const listMenuAlert = '/list/menu/alert';
   static const listWeightAlert = '/list/weight/alert';
   static const renewAlert = '/renew/alert';

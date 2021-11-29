@@ -44,6 +44,7 @@ class Alert extends StatelessWidget {
                   style: typography.caption?.apply(
                     color: AppColors.primary,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),

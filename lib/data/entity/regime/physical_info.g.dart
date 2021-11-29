@@ -27,8 +27,12 @@ PhysicalInfoData _$PhysicalInfoDataFromJson(Map<String, dynamic> json) =>
       ..idealWeightBasedOnPervVisit =
           (json['ideal_weight_based_on_perv_visit'] as num?)?.toDouble()
       ..daysTillChildbirth = json['days_till_childbirth'] as int?
+      ..dietTypeAlias =
+          $enumDecodeNullable(_$RegimeAliasEnumMap, json['diet_type_alias'])
       ..kilo = json['kilo'] as int?
-      ..gram = json['gram'] as int?;
+      ..gram = json['gram'] as int?
+      ..isForbidden = json['isForbidden'] as bool?
+      ..mustGetNotrica = json['mustGetNotrica'] as bool?;
 
 Map<String, dynamic> _$PhysicalInfoDataToJson(PhysicalInfoData instance) =>
     <String, dynamic>{
@@ -49,11 +53,25 @@ Map<String, dynamic> _$PhysicalInfoDataToJson(PhysicalInfoData instance) =>
       'pregnancy_ideal_weight': instance.pregnancyIdealWeight,
       'ideal_weight_based_on_perv_visit': instance.idealWeightBasedOnPervVisit,
       'days_till_childbirth': instance.daysTillChildbirth,
+      'diet_type_alias': _$RegimeAliasEnumMap[instance.dietTypeAlias],
       'kilo': instance.kilo,
       'gram': instance.gram,
+      'isForbidden': instance.isForbidden,
+      'mustGetNotrica': instance.mustGetNotrica,
     };
 
 const _$GenderTypeEnumMap = {
   GenderType.Female: 0,
   GenderType.Male: 1,
+};
+
+const _$RegimeAliasEnumMap = {
+  RegimeAlias.Pregnancy: 'PREGNANCY',
+  RegimeAlias.WeightLoss: 'WEIGHT_LOSS',
+  RegimeAlias.WeightGain: 'WEIGHT_GAIN',
+  RegimeAlias.Stabilization: 'STABILIZATION',
+  RegimeAlias.Diabeties: 'DIABETES',
+  RegimeAlias.Ketogenic: 'KETOGENIC',
+  RegimeAlias.Sport: 'SPORTS',
+  RegimeAlias.Notrica: 'NOTRICA',
 };

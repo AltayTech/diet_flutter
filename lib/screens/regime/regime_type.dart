@@ -32,6 +32,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
     // TODO: implement initState
     super.initState();
     regimeBloc = RegimeBloc();
+    regimeBloc.regimeTypeMethod();
     listenBloc();
   }
 

@@ -254,4 +254,7 @@ abstract class RestClient {
 
   @POST("/menu-select")
   ImperativeNetworkResult menuSelect(@Body() ConditionRequestData conditionRequestData);
+
+  @POST("/visit")
+  NetworkResult<dynamic> visit(@Body() PhysicalInfoData requestData);
 }

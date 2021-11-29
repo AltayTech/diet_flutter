@@ -22,12 +22,12 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Accept-Language'] = languageCode;
     options.headers['user-agent'] = DeviceUtils.makeUserAgent();
     options.headers['Charset'] = 'UTF-8';
-    if (authToken != null) {
-      options.headers['authorization'] = 'Bearer ${authToken}';
-    }
+    // if (authToken != null) {
+    //   options.headers['authorization'] = 'Bearer ${authToken}';
+    // }
     // else {
-    //   options.headers['authorization'] =
-    //       'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNzg0ZTE0YzFiYzY0MzE1YzU0ZjdlMGEzNTYzODhhZTAzMjk5MmM1ODcwMWU3MTdhNWI3NGZjNDNmMmJiMjExZTE2MWYwNzUxOGM4MmQzZDUiLCJpYXQiOjE2MzgwODYwNjcuOTY4ODU4LCJuYmYiOjE2MzgwODYwNjcuOTY4ODYzLCJleHAiOjE2Njk2MjIwNjcuOTY0MzUzLCJzdWIiOiI4MzU4ODciLCJzY29wZXMiOltdfQ.KVQ369ho-n2-LfjQbGhW3PXe0r-lMU8YrvpBUK5v7an80iXv64YrFlSK3GfXQ98enwI_Co04FZ7zeQ7_WJr31HRvc3wx50iIJVZnvUfxohLLNJsZwdsabSxpSknCCD22U-4Bm5Fgr6icdS5Y1rsc_utU4gLrsB7NQ_v9xITJBwHoZ3X0wpdHeD8wtP84vgopv1OFU4EQWlaPGh1Q6sumsjnrsWEMGKf1nMMckHv6Z3J4ENlaK_Eie_D0GEa3Isw9QU2j_Cvm1F_BpaLaLcNQEX-uqU4NqJJ6q62w5lVgtLvKCEme0Cdx8w5w5P0S_BfY5m1uuIxpV2Mqj20sD9ArdRZeNKAOJ5bEIYjADgalIo8ASuSMKyhg2UJyTNPwL92wn7Ck2GkacfWIgzG4On0eJGJe9677IHnyoAqGi7j3K0dQGjs5NHgMAmlOu2HV6E1ovLda-M7BXMo6Uue97B0zJuDRWKPPFJ3GZ9fgICGfpaHuc56wDtIgXtYm7KcFll1PdmiAgNMbMlHFiMnIb8U6BkSSjocbl-d7Pnst5B7Arl_NsnC_n2n8xCSfYODY0nnywQyk_NCf6Vi56DruEQsA0A5U2pNoqcfn5TMGixNo2EQbCBjaIbDjoUhKIfjDqNI0l6xsiqKUuHb_ytdl_2ahWMeFRwcyk1dI_zUJDsu_dhM';
+      options.headers['authorization'] =
+          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiN2U0YThiZWMxYWQyODJkNGYxNGU1ZmQ2MGJhOThkOTQyZGVjZmIzMjU3NDI3NDJiNDhjZmMxMGQzZTM1N2Y4ZTU3NTlmNWQ1MGVhMTdjMjMiLCJpYXQiOjE2MzgxNjY4MzIuNDUzNjg2LCJuYmYiOjE2MzgxNjY4MzIuNDUzNjk1LCJleHAiOjE2Njk3MDI4MzIuNDQwOTQxLCJzdWIiOiI2MyIsInNjb3BlcyI6W119.PQNl8dHpauG-QdUXhtEhV3UsB652CuJePfYa5rE_4tDe4qiDiuF8345Y-LqiBE4BFl-A8UVEhWdzEyfTOB9fLwOtFyzxqYnAdZhC_FglcImFJiTadJdqaBrZthtN16qAqVnAvhEZiUpny1Jj9aKE3aUAE28e9VbrIVX0o7ljn37uTMhGFXDv5tBcSUOJ_lf1IdP2rU6z-CNUEDZA6L6FSNwxjY2oLnnxGyjicncVkVg5Qoim6tMClMpP7nczESRK2LUi1nTPTPoDaKF4dqtOy3rEXqampQHzoRP0J4oajfeZyAfAugMRlL9XVnwye1sXWvDRg9NRK1kG5Gzk6qJECnvA9JvVfV4lcLzsW9wJYlOhxS7emUegBVNolLQc0yMxlx9PVC5NNMYqc0MAJ6C8RSdSdUEO8VElVIvk1-JFnyyukrCvxT_V9aJlemLGsv_Kcon-ruFU77A_uKaKJHXe0DY7EAdxQj7Mhs6jfDxUsPICummG8D4pn5p2PzIESDo4AVsa9ngU5VPAtCvOxMU8pG04iNlILiOyLB_7UoASeGlWvNp9py76-0iYqb7EPeJydjVc9R59RnBmP1NIO93sE26eLBeUUm4h_GF5noo5Fx2KoDRqcP3Fc-mKPWHCn9zcAg9kb1vrEW78tGmMMqmQj0qvYrVUXs2h80M9vNZbXWQ';
     // }
     // options.headers['Fcm-Token'] = fcmToken;
     options.headers['App'] = '0';

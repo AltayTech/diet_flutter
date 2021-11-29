@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
@@ -14,9 +15,7 @@ enum HelpPage{
   menuType,
 }
 class RegimeBloc {
-  RegimeBloc() {
-    regimeTypeMethod();
-  }
+  RegimeBloc();
 
   final _repository = Repository.getInstance();
 
@@ -62,7 +61,7 @@ class RegimeBloc {
     _waiting.value = true;
     _repository.physicalInfo().then((value) {
       _physicalInfo.value = value.data!;
-    }).whenComplete(() => _waiting.value = false);
+    }).catchError((e) => debugPrint('error error $e')).whenComplete(() => _waiting.value = false);
   }
 
   void helpMethod(int id) async {
@@ -105,6 +104,12 @@ class RegimeBloc {
 
   void nextStep() async {
     _repository.nextStep().then((value) {
+      _navigateToVerify.fire(value.next);
+    });
+  }
+
+  void sendVisit(PhysicalInfoData info) async {
+    _repository.visit(info).then((value) {
       _navigateToVerify.fire(value.next);
     });
   }

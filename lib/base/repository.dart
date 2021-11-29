@@ -183,6 +183,8 @@ abstract class Repository {
 
   NetworkResult<Term> term();
 
+  NetworkResult<dynamic> visit(PhysicalInfoData requestData);
+
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
 }
 
@@ -498,7 +500,13 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult<PhysicalInfoData> physicalInfo() async {
-    var response = _apiClient.physicalInfo();
+    var response;
+    try {
+      response = _apiClient.physicalInfo();
+      debugPrint('physical info ${response}');
+    }catch(e){
+      debugPrint('physical info error $e');
+    }
     return response;
   }
 
@@ -690,6 +698,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Term> term() {
     var response = _apiClient.term();
+    return response;
+  }
+
+  @override
+  NetworkResult visit(PhysicalInfoData requestData) {
+    var response = _apiClient.visit(requestData);
     return response;
   }
 
