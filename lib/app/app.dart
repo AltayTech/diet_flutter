@@ -238,6 +238,8 @@ final navigator = VxNavigator(
     Routes.statusUser: (_, __) => MaterialPage(child: StatusUserScreen()),
     Routes.listMenuAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.listWeightAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
+    Routes.renewAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
+    Routes.reviveAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.paymentOnlineSuccess: (_, __) => MaterialPage(child: PaymentSuccessScreen()),
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
   },
