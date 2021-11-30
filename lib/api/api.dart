@@ -32,6 +32,7 @@ import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
+import 'package:behandam/data/entity/user/version.dart';
 import 'package:dio/dio.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
@@ -257,4 +258,8 @@ abstract class RestClient {
 
   @POST("/visit")
   NetworkResult<dynamic> visit(@Body() PhysicalInfoData requestData);
+
+  @GET("/check-version")
+  NetworkResult<VersionData> getVersion();
+
 }
