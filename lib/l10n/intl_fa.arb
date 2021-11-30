@@ -491,5 +491,15 @@
   "descriptionRenew": "زمان رژیمت تموم شده! برای تمدید دوره رژیم دکمه زیر رو بزن",
   "descriptionRevive": "خیلی وقته از رژیمت فاصله گرفتی! \nبرای تمدید دوره رژیم دکمه زیر رو بزن",
   "yesSaveList": "این لیست را ذخیره کن",
+  "appNameSplash": "به اندام دکتر کرمانی",
+  "later": "بعدا",
+  "update": "بروزرسانی",
+  "version": "نسخه {versionName}",
+  "@version": {
+    "placeholders": {
+      "versionName": {
+        "type": "String"
+      }
+    }},
   "understand": "متوجه شدم"
 }

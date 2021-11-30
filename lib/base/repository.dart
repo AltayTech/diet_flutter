@@ -35,6 +35,7 @@ import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
+import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -186,6 +187,7 @@ abstract class Repository {
   NetworkResult<dynamic> visit(PhysicalInfoData requestData);
 
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
+  NetworkResult<VersionData>  getVersion();
 }
 
 class _RepositoryImpl extends Repository {
@@ -710,6 +712,13 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData) {
     var response = _apiClient.menuSelect(conditionRequestData);
+    return response;
+  }
+
+  @override
+  NetworkResult<VersionData> getVersion() {
+    // TODO: implement getVersion
+    var response = _apiClient.getVersion();
     return response;
   }
 }

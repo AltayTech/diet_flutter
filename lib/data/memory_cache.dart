@@ -1,5 +1,6 @@
 
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
 import 'entity/auth/country_code.dart';
@@ -25,6 +26,7 @@ class MemoryApp {
   static String? routeName;
   static Jalali? day;
   static bool needRoute = true;
+  static late FirebaseAnalytics analytics;
 
   Map<String, FoodListData> _foodList = {};
   Map<String, int> _selectedFastPatten = {};
