@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/utils/device.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -72,6 +74,10 @@ class PaymentBloc {
   void newPayment(LatestInvoiceData newInvoice) {
     _waiting.value = true;
     _repository.newPayment(newInvoice).then((value) {
+      MemoryApp.analytics!.logEvent(
+          name:
+              '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
+      MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
       _navigateTo.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
@@ -113,6 +119,7 @@ class PaymentBloc {
   }
 
   void checkCode(String val) {
+    MemoryApp.analytics!.logEvent(name: "discount_code");
     _discountLoading.value = true;
     Price price = new Price();
     price.code = val;
@@ -121,16 +128,17 @@ class PaymentBloc {
       _packageItem!.price!.totalPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
       _online.value = true;
+      MemoryApp.analytics!.logEvent(name: "discount_code_success");
     }).catchError((err) {
       _usedDiscount.value = false;
       _wrongDisCode.value = true;
+      MemoryApp.analytics!.logEvent(name: "discount_code_fail");
     }).whenComplete(() {
       _discountLoading.value = false;
     });
   }
 
   void setOnline() {
-    print('setOnline');
     _online.value = true;
     _cardToCard.value = false;
   }

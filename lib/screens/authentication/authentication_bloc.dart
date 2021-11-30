@@ -97,6 +97,7 @@ class AuthenticationBloc{
     _repository.register(register).then((value) async{
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.token = value.requireData.token;
+      MemoryApp.analytics!.logEvent(name: "register_success");
       _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }

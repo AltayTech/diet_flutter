@@ -33,7 +33,7 @@ class SplashBloc {
   int? buildNumber;
   bool forceUpdate = false;
 
- void getPackageInfo() async {
+  void getPackageInfo() async {
     version = await Utils.versionApp();
     buildNumber = await Utils.buildNumber();
     packageName = await Utils.packageName();
@@ -43,6 +43,9 @@ class SplashBloc {
     _waiting.value = true;
     _repository.getUser().then((value) {
       MemoryApp.userInformation = value.data;
+      MemoryApp.analytics!.setUserId(MemoryApp.userInformation!.userId.toString());
+      MemoryApp.analytics!
+          .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
     }).whenComplete(() {
       _waiting.value = false;
       getVersionApp();

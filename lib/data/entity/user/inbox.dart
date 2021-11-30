@@ -17,7 +17,7 @@ class Inbox {
   int? count;
 
   @JsonKey(name: "items")
-  late List<InboxItem> items;
+  List<InboxItem>? items;
 
   Inbox();
 

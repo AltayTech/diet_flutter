@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "343455511841",
+    "project_id": "behandam-test",
+    "storage_bucket": "behandam-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343455511841:android:332a06c700201cfb567a60",
+        "android_client_info": {
+          "package_name": "com.kermany.behandam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343455511841-em0ktdo3fn4hgp6llvshe2ov82lm00vo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam",
+            "certificate_hash": "2196979afbdc1f3fc2cf08030d8a00bb002cb11e"
+          }
+        },
+        {
+          "client_id": "343455511841-qlcin4hacnbic9sqtih46hsilffc7mfu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam",
+            "certificate_hash": "9e89b11112d8a746f7a229835eeaa687123b075d"
+          }
+        },
+        {
+          "client_id": "343455511841-tges655e1md3tqgbtmen05m619p2ncdb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam",
+            "certificate_hash": "8ebc820181bbc71cb3329fb7b89cdd951cc11e46"
+          }
+        },
+        {
+          "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMyp8Nw-9A2oYTRSg22M96hP0etHgPVyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "343455511841-kklojkmsgmitpqvon8v2favmmbsk050s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kermany.behandam"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,8 +8,8 @@ part of 'inbox.dart';
 
 Inbox _$InboxFromJson(Map<String, dynamic> json) => Inbox()
   ..count = json['inbox_count'] as int?
-  ..items = (json['items'] as List<dynamic>)
-      .map((e) => InboxItem.fromJson(e as Map<String, dynamic>))
+  ..items = (json['items'] as List<dynamic>?)
+      ?.map((e) => InboxItem.fromJson(e as Map<String, dynamic>))
       .toList();
 
 Map<String, dynamic> _$InboxToJson(Inbox instance) => <String, dynamic>{
