@@ -25,8 +25,8 @@ class MemoryApp {
   static String? selectedDate;
   static String? routeName;
   static Jalali? day;
-  static bool needRoute = true;
   static late FirebaseAnalytics analytics;
+  static bool forgetPass = false;
 
   Map<String, FoodListData> _foodList = {};
   Map<String, int> _selectedFastPatten = {};

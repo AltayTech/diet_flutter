@@ -12,7 +12,8 @@ abstract class AppSharedPreferences {
   }
 
   static Future<void> setAuthToken(String? value) async {
-    (await preference).setString(_keyAuthToken, value ?? _nullString);
+    MemoryApp.token = value;
+    (await preference).setString(_keyAuthToken, value ?? '');
   }
 
   static Future<bool> get isLoggedIn async {

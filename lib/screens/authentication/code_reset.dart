@@ -5,7 +5,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
-import 'package:behandam/screens/authentication/login.dart';
+import 'package:behandam/screens/authentication/auth.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
@@ -60,6 +60,7 @@ class _CodeResetScreenState extends ResourcefulState<CodeResetScreen> {
   @override
   void dispose() {
     _timer.cancel();
+    authBloc.dispose();
     super.dispose();
   }
 
@@ -216,7 +217,7 @@ class _CodeResetScreenState extends ResourcefulState<CodeResetScreen> {
                 VerificationCode verify = VerificationCode();
                 verify.mobile = args;
                 verify.verifyCode = code;
-                verify.resetPass = '1';
+                verify.resetPass = true;
                 authBloc.verifyMethod(verify);
               }
           ),

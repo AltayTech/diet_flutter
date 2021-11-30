@@ -42,10 +42,16 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
     listenBloc();
   }
 
+  @override
+  void dispose() {
+    authBloc.dispose();
+    super.dispose();
+  }
+
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
       if(event != null)
-      context.vxNav.push(Uri(path: '/$event'));
+      context.vxNav.clearAndPush(Uri(path: '/$event'));
     });
     authBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);

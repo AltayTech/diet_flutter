@@ -36,6 +36,12 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     listenBloc();
   }
 
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   void listenBloc() {
     bloc.showUpdate.listen((event) {
       showUpdate(event);

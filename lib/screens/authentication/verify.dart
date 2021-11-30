@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
@@ -58,12 +59,12 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
   @override
   void dispose() {
     _timer.cancel();
+    authBloc.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     startTimer();
     authBloc = AuthenticationBloc();
@@ -72,8 +73,16 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      if(event != null){
-        context.vxNav.push(Uri(path: '/$event'), params: {"mobile": args['mobile'], "code": code , 'id': args['countryId']},);
+      if (event != null) {
+        debugPrint('verifiy ${navigator.currentConfiguration!.path} / $event');
+        context.vxNav.push(
+          Uri(path: '/$event'),
+          params: {
+            "mobile": args['mobile'],
+            "code": code,
+            'id': args['countryId']
+          },
+        );
       }
     });
     authBloc.showServerError.listen((event) {
@@ -93,7 +102,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
                   return NestedScrollView(
-                    headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[
                         SliverAppBar(
                           backgroundColor: AppColors.arcColor,
@@ -117,7 +127,9 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
                   );
                 } else {
                   check = false;
-                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+                  return Center(
+                      child: Container(
+                          width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -135,7 +147,10 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
           right: 0.0,
           left: 0.0,
           child: Center(
-              child: Text(intl.register,
+              child: Text(
+                  navigator.currentConfiguration!.path.contains('pass')
+                      ? intl.changePassword
+                      : intl.register,
                   style: TextStyle(
                       color: AppColors.penColor,
                       fontSize: 22.0,
@@ -167,7 +182,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -206,12 +222,16 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
                             _start = 15;
                             startTimer();
                           }))
-                  : Text(intl.sendAgain + '$_start', style: TextStyle(fontSize: 14.0))),
+                  : Text(intl.sendAgain + '$_start',
+                      style: TextStyle(fontSize: 14.0))),
           Space(height: 10.h),
           button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
             VerificationCode verification = VerificationCode();
             verification.mobile = args['mobile'];
             verification.verifyCode = code;
+            if (navigator.currentConfiguration!.path.contains('pass'))
+              verification.resetPass = true;
+            debugPrint('query verify ${verification.toJson()}');
             authBloc.verifyMethod(verification);
           }),
         ],

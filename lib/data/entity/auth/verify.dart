@@ -8,7 +8,7 @@ class VerificationCode {
   @JsonKey(name: "verification_code")
   String? verifyCode;
   @JsonKey(name: "reset_pass")
-  String? resetPass;
+  bool? resetPass;
   @JsonKey(name: "route_name")
   String? routeName;
 

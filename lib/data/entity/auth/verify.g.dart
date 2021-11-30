@@ -10,7 +10,7 @@ VerificationCode _$VerificationCodeFromJson(Map<String, dynamic> json) =>
     VerificationCode()
       ..mobile = json['mobile'] as String?
       ..verifyCode = json['verification_code'] as String?
-      ..resetPass = json['reset_pass'] as String?
+      ..resetPass = json['reset_pass'] as bool?
       ..routeName = json['route_name'] as String?;
 
 Map<String, dynamic> _$VerificationCodeToJson(VerificationCode instance) =>

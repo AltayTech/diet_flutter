@@ -53,6 +53,12 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
   }
 
   @override
+  void dispose() {
+    regimeBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
 

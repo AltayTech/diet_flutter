@@ -1,6 +1,7 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/utility/intent.dart';
+import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -26,15 +27,26 @@ class _BlockState extends ResourcefulState<Block> {
 
     return Scaffold(
       appBar: Toolbar(titleBar: intl.needInvestigation),
-      body: SingleChildScrollView(
-        child: Card(
-          margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          shape: AppShapes.rectangleMild,
-          elevation: 2,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-            child: content(),
-          ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Card(
+                  margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  shape: AppShapes.rectangleMild,
+                  elevation: 2,
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    child: content(),
+                  ),
+                ),
+              ),
+            ),
+            BottomNav(currentTab: BottomNavItem.DIET),
+          ],
         ),
       ),
     );

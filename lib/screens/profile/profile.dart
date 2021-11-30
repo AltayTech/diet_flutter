@@ -233,7 +233,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
     return GestureDetector(
       onTap: () async {
     AppSharedPreferences.logout();
-    VxNavigator.of(context).clearAndPush(Uri.parse(Routes.login));
+    VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
         // _emptySharedPreferences();
 //                                               Navigator.pushNamedAndRemoveUntil(
 //                                                   context, LaunchRoute.routeName, (route) => false);

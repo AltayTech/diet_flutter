@@ -32,6 +32,12 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
 
