@@ -267,4 +267,8 @@ abstract class RestClient {
   @GET("/fitamin-url")
   NetworkResult<Fitamin> checkFitamin();
 
+  @GET("/register")
+  NetworkResult<RegisterOutput> landingReg(@Body() Register reg);
+
+
 }
