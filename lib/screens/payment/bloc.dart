@@ -31,6 +31,7 @@ class PaymentBloc {
   final _usedDiscount = BehaviorSubject<bool>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
+  final _onlinePayment = LiveEvent();
 
   String get path => _path;
 
@@ -65,6 +66,8 @@ class PaymentBloc {
   Stream get navigateTo => _navigateTo.stream;
 
   Stream get showServerError => _showServerError.stream;
+
+  Stream get onlinePayment => _onlinePayment.stream;
 
   void newPayment(LatestInvoiceData newInvoice) {
     _waiting.value = true;
@@ -162,6 +165,13 @@ class PaymentBloc {
     }).whenComplete(() => _waiting.value = false);
   }
 
+  void checkOnlinePayment(){
+    _repository.latestInvoice().then((value) {
+      _onlinePayment.fire(value.data!.success);
+      _path = value.next!;
+      });
+  }
+
   void setShowInformation() {
     _showInformation.value = _showInformation.valueOrNull == null ? true : !_showInformation.value;
   }
@@ -176,5 +186,6 @@ class PaymentBloc {
     _showInformation.close();
     _wrongDisCode.close();
     _waiting.close();
+    _onlinePayment.close();
   }
 }

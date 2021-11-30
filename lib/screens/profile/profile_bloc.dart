@@ -41,6 +41,12 @@ class ProfileBloc {
   final _userInformationStream = BehaviorSubject<UserInformation>();
   final _inboxStream = BehaviorSubject<List<InboxItem>>();
   final _cityProvinceModelStream = BehaviorSubject<CityProvinceModel>();
+  final _navigateToVerify = LiveEvent();
+  String? _url;
+
+  String? get url => _url;
+
+  Stream get navigateToVerify => _navigateToVerify.stream;
 
   UserInformation get userInfo => _userInformation;
 
@@ -274,6 +280,16 @@ class ProfileBloc {
     .then((value) {
       _showServerError.fire(value.message);
     }).whenComplete(() => _navigateTo.fire(true));
+  }
+
+  void checkFitamin() async {
+    _repository.checkFitamin().then((value) {
+      _url = value.data!.url;
+      if(_url!.contains('fitamin://'))
+        _navigateToVerify.fire(true);
+      else
+        _navigateToVerify.fire(false);
+    });
   }
 
 }

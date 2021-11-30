@@ -1,15 +1,21 @@
 import 'package:behandam/base/errors.dart';
+import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/extensions/iterable.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
+import 'package:behandam/screens/profile/profile_bloc.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/food_list_curve.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
@@ -30,12 +36,20 @@ class FoodListAppbar extends StatefulWidget {
 
 class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
   late FoodListBloc bloc;
+  late ProfileBloc profileBloc;
+  // int? _selectedDayIndex;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    profileBloc = ProfileBloc();
+  }
 
   @override
   Widget build(BuildContext context) {
     bloc = FoodListProvider.of(context);
     super.build(context);
-
     return appbar();
   }
 
@@ -72,13 +86,41 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                           ),
                         ),
                       ),
-                      Icon(
-                        Icons.dark_mode,
-                        size: 6.w,
-                        color: AppColors.surface,
-                      ),
-                    ],
-                  ),
+                    ),
+                    InkWell(
+                      onTap: () => DialogUtils.showDialogPage(context: context,child: Container(
+                        height: 40.h,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(intl.receiveList,style: TextStyle(fontWeight: FontWeight.w700)),
+                              SizedBox(height: 1.h),
+                              Text(intl.pdfTxt,textAlign: TextAlign.center,style: TextStyle(color: AppColors.penColor)),
+                              button(AppColors.btnColor, intl.receivePdf, Size(70.w,5.h), (){
+                                profileBloc.getPdfMeal(FoodDietPdf.WEEK);
+                              }),
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                style: ButtonStyle(
+                                  fixedSize: MaterialStateProperty.all(Size(70.w,5.h)),
+                                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                                  foregroundColor: MaterialStateProperty.all(AppColors.penColor),
+                                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                                ),
+                                child: Text(intl.cancelPdf,style: TextStyle(color: AppColors.btnColor,
+                                    fontSize: 16.sp)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )),
+                      child: ImageUtils.fromLocal('assets/images/foodlist/share/pdf.svg',width: 2.w,height: 4.h),
+                    )
+                  ],
                 ),
               if (widget.showToolbar == null)
                 Padding(

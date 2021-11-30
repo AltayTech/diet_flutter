@@ -41,6 +41,9 @@ class FoodListBloc {
   final _selectedWeekDay = BehaviorSubject<WeekDay>();
   final _weekDays = BehaviorSubject<List<WeekDay?>?>();
   final AppBloc _appBloc = AppBloc();
+  String? _pdfPath;
+
+  String? get pdfPath => _pdfPath;
 
   Stream<bool> get loadingContent => _loadingContent.stream;
 

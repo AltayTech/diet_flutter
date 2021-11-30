@@ -46,6 +46,7 @@ class CalenderBloc{
   final _data = BehaviorSubject<CalenderOutput>();
   final _meetingDate = BehaviorSubject<List<HistoryOutput>>();
   final _navigateToVerify = LiveEvent();
+  final _navigate = LiveEvent();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
 
@@ -56,6 +57,7 @@ class CalenderBloc{
   Stream<CalenderOutput> get data => _data.stream;
   Stream<bool> get waiting => _waiting.stream;
   Stream get navigateToVerify => _navigateToVerify.stream;
+  Stream get navigate => _navigate.stream;
   Stream get navigateTo => _navigateTo.stream;
   Stream get showServerError => _showServerError.stream;
 
@@ -188,7 +190,7 @@ class CalenderBloc{
   void getInvoice(){
     try{
     _repository.getPsychologyInvoice().then((value) {
-      _navigateToVerify.fire(value.data!.success);
+      _navigate.fire(value.data!.success);
       print('success:${value.data!.success}');
     });}catch(e) {
       print("Myerror:$e");
@@ -205,5 +207,6 @@ class CalenderBloc{
     _daysLater.close();
     _meetingDate.close();
     _navigateTo.close();
+    _navigate.close();
   }
 }

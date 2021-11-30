@@ -2,6 +2,7 @@ import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/payment/discount_widget.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -16,6 +17,7 @@ import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/src/extensions.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import 'bloc.dart';
 import 'provider.dart';
@@ -27,7 +29,7 @@ class PaymentBillScreen extends StatefulWidget {
   _PaymentBillScreenState createState() => _PaymentBillScreenState();
 }
 
-class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
+class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with WidgetsBindingObserver {
   late PaymentBloc bloc;
   String? inputDiscountCode;
   String? messageError;
@@ -36,18 +38,38 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    WidgetsBinding.instance!.addObserver(this);
     bloc = PaymentBloc();
     bloc.getPackagePayment();
     listenBloc();
   }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(state == AppLifecycleState.resumed){
+      bloc.checkOnlinePayment();
+      // listenBloc();
+    }
+  }
+
   void listenBloc() {
+    bloc.onlinePayment.listen((event) {
+        if(event)
+          VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
+        else
+          VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
+    });
     bloc.showServerError.listen((event) {
       Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, intl.offError);
     });
-
     bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
       Payment? result = (event as NetworkResponse<Payment>).data;
@@ -477,12 +499,6 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
   }
 
   @override

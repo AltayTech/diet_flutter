@@ -1235,11 +1235,16 @@ class _RestClient implements RestClient {
   }
 
   @override
+<<<<<<< HEAD
   Future<NetworkResponse<dynamic>> menuSelect(conditionRequestData) async {
+=======
+  Future<NetworkResponse<Fitamin>> checkFitamin() async {
+>>>>>>> help_test
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
+<<<<<<< HEAD
     _data.addAll(conditionRequestData.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
@@ -1289,6 +1294,17 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<VersionData>.fromJson(
       _result.data!,
       (json) => VersionData.fromJson(json as Map<String, dynamic>),
+=======
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<Fitamin>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/fitamin-url',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<Fitamin>.fromJson(
+      _result.data!,
+      (json) => Fitamin.fromJson(json as Map<String, dynamic>),
+>>>>>>> help_test
     );
     return value;
   }

@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/routes.dart';
@@ -13,11 +14,13 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/screens/widget/widget_icon_text_progress.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -39,6 +42,28 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
     /* profileBloc.showServerError.listen((event) {
 
     });*/
+  }
+
+  void listenBloc() {
+    profileBloc.navigateToVerify.listen((event) {
+      if ((event as bool)) {
+        LaunchApp.openApp(
+          androidPackageName: 'com.app.fitamin',
+          // iosUrlScheme: 'pulsesecure://',
+          // appStoreLink: 'itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041',
+          // openStore: false
+        );
+      } else {
+        _launchURL('https://app.fitamin.ir/register');
+      }
+    });
+    profileBloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
+    });
+  }
+
+  _launchURL(_url) async {
+    if (!await launch(_url)) throw 'Could not launch $_url';
   }
 
   @override
@@ -211,7 +236,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
           Container(
             width: 70.w,
             child: GestureDetector(
-              // onTap: () => getFitaminUrl(),
+              onTap: () => profileBloc.checkFitamin(),
               child: card(
                   'assets/images/profile/box_blue_bg.svg',
                   'assets/images/profile/fitamin.svg',

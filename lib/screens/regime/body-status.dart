@@ -61,19 +61,19 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       children: [
                         snapshot.data!.isPregnancy == 1
                             ? firstContainer(
-                                snapshot.data!.dietDays,
-                                snapshot.data!.pregnancyWeightDiff,
-                                snapshot.data!.pregnancyWeight,
+                                snapshot.data!.daysTillChildbirth,
+                                snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
+                                snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
                                 snapshot.data!.isPregnancy,
                                 snapshot.data!.bmiStatus)
                             : firstContainer(
                                 snapshot.data!.dietDays,
-                                snapshot.data!.weightDifference,
-                                snapshot.data!.normalWeight,
+                                snapshot.data!.weightDifference!.toStringAsFixed(1),
+                                snapshot.data!.normalWeight!.toStringAsFixed(1),
                                 snapshot.data!.isPregnancy,
                                 snapshot.data!.bmiStatus),
-                        Space(height: 2.h),
-                        secondContainer(snapshot.data!.bmi, snapshot.data!.bmiStatus),
+                        SizedBox(height: 2.h),
+                        secondContainer(snapshot.data!.bmi!.toStringAsFixed(0), snapshot.data!.bmiStatus),
                         snapshot.data!.isPregnancy == 1
                             ? ImageUtils.fromLocal(
                                 'assets/images/physical_report/banner_pregnant.svg',
@@ -101,7 +101,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   Widget firstContainer(
-      int? dietDays, double? weightDiff, double? weight, int? pregnancy, int? bmiStatus) {
+      int? dietDays, String? weightDiff, String? weight, int? pregnancy, int? bmiStatus) {
     return Container(
       padding: EdgeInsets.only(bottom: 10.0),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white),
@@ -151,7 +151,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),
-                Space(height: 5.h),
+                SizedBox(height: 2.h),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -167,11 +167,12 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                         children: [
                           pregnancy == 1
                               ? colorfulContainer('$dietDays', intl.day, intl.untilBeingMom,
-                                  intl.appropriateWeight, AppColors.pregnantPink)
+                                  ' ', AppColors.pregnantPink)
                               : colorfulContainer('$dietDays', intl.day, intl.untilReach,
                                   intl.appropriateWeight, AppColors.purpleRuler),
-                          Space(height: 2.h),
-                          bmiStatus == 0 && pregnancy != 1
+                          SizedBox(height: 2.h),
+                          if(pregnancy == 0)
+                          bmiStatus == 0
                               ? colorfulContainer('$weightDiff', intl.kilo, intl.lakeWeight, '',
                                   AppColors.purpleRuler)
                               : colorfulContainer('$weightDiff', intl.kilo, intl.extraWeight, '',
@@ -196,8 +197,9 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               pregnancy == 1
-                                  ? Text(intl.appropriateWeightPregnancy)
-                                  : Text(intl.yourAppropriateWeight),
+                                  ? Text(intl.appropriateWeightPregnancy,textAlign: TextAlign.center)
+                                  : Text(intl.yourAppropriateWeight,textAlign: TextAlign.center),
+                              SizedBox(height: 1.h),
                               Container(
                                 width: 30.w,
                                 height: 9.h,
@@ -207,7 +209,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                     child: Column(
                                   children: [
                                     Text('${weight}',
-                                        style: TextStyle(color: AppColors.purpleRuler)),
+                                        style: TextStyle(color: AppColors.purpleRuler,fontWeight: FontWeight.w700)),
                                     Text(intl.kiloGr,
                                         style: TextStyle(color: AppColors.purpleRuler))
                                   ],
@@ -251,49 +253,55 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   Widget colorfulContainer(String txt1, String txt2, String txt3, String txt4, Color color) {
-    return Container(
-        width: 30.w,
-        height: 9.h,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(10.0),
-                topRight: Radius.circular(10.0),
-                bottomLeft: Radius.circular(20.0),
-                topLeft: Radius.circular(20.0)),
-            color: Colors.white),
-        child: Row(children: [
-          Container(
-              width: 3.w,
-              height: 9.h,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-                  color: color)),
-          Space(width: 4.w),
-          Container(
-            width: 20.w,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: txt1,
-                      style: TextStyle(fontSize: 14.sp, color: color),
-                      children: <TextSpan>[TextSpan(text: txt2, style: TextStyle(fontSize: 12.0))],
+    return Padding(
+      padding: const EdgeInsets.only(right: 6.0, left: 6.0),
+      child: Container(
+          // width: 30.w,
+          height: 9.h,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
+                  bottomLeft: Radius.circular(20.0),
+                  topLeft: Radius.circular(20.0)),
+              color: Colors.white),
+          child: Row(children: [
+            Container(
+                width: 3.w,
+                height: 9.h,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+                    color: color)),
+            SizedBox(width: 8.w),
+            Container(
+              // width: 20.w,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RichText(
+                      // textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: txt1,
+                        style: TextStyle(fontSize: 14.sp, color: color,fontWeight: FontWeight.w700),
+                        children: <TextSpan>[
+                          TextSpan(text: ' ', style: TextStyle(fontSize: 12.0)),
+                          TextSpan(text: txt2, style: TextStyle(fontSize: 12.0))],
+                      ),
                     ),
-                  ),
-                  Text(txt3, style: TextStyle(fontSize: 12.0)),
-                  Text(txt4, style: TextStyle(fontSize: 12.0))
-                ],
+                    Text(txt3, style: TextStyle(fontSize: 8.sp)),
+                    Text(txt4, style: TextStyle(fontSize: 8.sp))
+                  ],
+                ),
               ),
-            ),
-          )
-        ]));
+            )
+          ])),
+    );
   }
 
-  Widget secondContainer(var bmi, int? bmiStatus) {
+  Widget secondContainer(String bmi, int? bmiStatus) {
     return Container(
       padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white),
@@ -303,11 +311,12 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Column(
                   children: [
                     Container(
-                      width: 39.w,
+                      width: 40.w,
                       height: 30.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
@@ -323,21 +332,21 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                             height: 9.h,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20.0), color: Colors.white),
-                            child: Center(child: Text('$bmi')),
+                            child: Center(child: Text('$bmi',style: TextStyle(color: AppColors.blueRuler,fontWeight: FontWeight.w700,fontSize: 16.sp),)),
                           )
                         ],
                       ),
                     ),
-                    Space(height: 2.h),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(color: AppColors.redBar)),
+                    SizedBox(height: 2.h),
+                    InkWell(
+                      onTap: () =>
+                          DialogUtils.showBottomSheetPage(context: context, child: help(1)),
                       child: Container(
-                        padding: EdgeInsets.all(4.0),
-                        child: InkWell(
-                          onTap: () =>
-                              DialogUtils.showBottomSheetPage(context: context, child: help(1)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(color: AppColors.redBar)),
+                        child: Container(
+                          padding: EdgeInsets.all(4.0),
                           child: Row(
                             children: [
                               ImageUtils.fromLocal('assets/images/physical_report/bmi.svg',
@@ -357,8 +366,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                     )
                   ],
                 ),
-                Space(width: 2.w),
-                bmiPic(bmiStatus),
+                SizedBox(width: 2.w),
+                Flexible(child: bmiPic(bmiStatus)),
               ],
             )
           ],
@@ -376,37 +385,37 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
         return ImageUtils.fromLocal(
           'assets/images/physical_report/normal.svg',
           width: 40.w,
-          height: 30.h,
+          height: 40.h,
         );
       case 2:
         return ImageUtils.fromLocal(
           'assets/images/physical_report/fat.svg',
           width: 40.w,
-          height: 30.h,
+          height: 40.h,
         );
       case 3:
         return ImageUtils.fromLocal(
           'assets/images/physical_report/obesity.svg',
           width: 40.w,
-          height: 30.h,
+          height: 40.h,
         );
       case 4:
         return ImageUtils.fromLocal(
           'assets/images/physical_report/extreme_obesity.svg',
           width: 40.w,
-          height: 30.h,
+          height: 40.h,
         );
       case 5:
         return ImageUtils.fromLocal(
           'assets/images/physical_report/extreme_obesity.svg',
           width: 40.w,
-          height: 30.h,
+          height: 40.h,
         );
       default:
         return ImageUtils.fromLocal(
           'assets/images/physical_report/extreme_obesity.svg',
           width: 40.w,
-          height: 30.h,
+          height: 40.h,
         );
     }
   }

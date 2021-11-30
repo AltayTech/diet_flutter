@@ -90,6 +90,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    //cache one of vitrin's image for reduce time of loading
+    precacheImage(AssetImage("assets/images/vitrin/bmi_banner.jpg"), context);
     return Sizer(
       builder: (context, orientation, deviceType) {
         return app();
