@@ -53,7 +53,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
     authBloc.navigateToVerify.listen((event) {
       if(event == true){
         check = true;
-        VxNavigator.of(context).push(Uri.parse(Routes.home));
+        VxNavigator.of(context).push(Uri.parse(Routes.listView));
       }
 
     });
