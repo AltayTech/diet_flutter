@@ -14,7 +14,7 @@ class _RestClient implements RestClient {
   String? baseUrl;
 
   @override
-  Future<NetworkResponse<List<CountryCode>?>> getCountries() async {
+  Future<NetworkResponse<List<CountryCode>>> getCountries() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

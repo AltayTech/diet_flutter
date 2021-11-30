@@ -216,6 +216,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
                       default:
                         nextRoute = Routes.paymentBill;
                     }
+                    MemoryApp.analytics!.logEvent(name: "total_payment_fail");
                     context.vxNav.popToRoot();
                     context.vxNav.push(Uri.parse('/${nextRoute}'));
                   },

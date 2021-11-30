@@ -107,7 +107,7 @@ class ProfileBloc {
   void getInbox() {
     _repository.getInbox().then((value) {
       print('data => ${value.data!.toJson()}');
-      _inboxStream.value = value.data!.items;
+      _inboxStream.value = value.data!.items!;
     }).onError((error, stackTrace) {
       print('data => ${error.toString()}');
     });

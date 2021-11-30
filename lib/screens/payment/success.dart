@@ -200,6 +200,8 @@ class _PaymentSuccessScreenState
               SubmitButton(
                   label: intl.confirmContinue,
                   onTap: () {
+                    MemoryApp.analytics!.logEvent(name: "total_payment_success");
+                    MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
                     VxNavigator.of(context)
                         .clearAndPush(Uri.parse('/${bloc.path}'));
                   })

@@ -1,14 +1,15 @@
+import 'package:behandam/api/error/error_observer.dart';
+import 'package:behandam/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:behandam/api/error/error_observer.dart';
-import 'package:behandam/extensions/build_context.dart';
-
-export 'package:sizer/sizer.dart';
-export 'package:behandam/extensions/build_context.dart';
 import '../entry_point.dart';
 
-abstract class ResourcefulState<T extends StatefulWidget> extends State<T> with RouteAware, DioErrorListener {
+export 'package:behandam/extensions/build_context.dart';
+export 'package:sizer/sizer.dart';
+
+abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
+    with RouteAware, DioErrorListener {
   late AppLocalizations intl;
   late TextTheme typography;
   final bool _printLifecycleEvents = true;
@@ -38,6 +39,7 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T> with 
   void dispose() {
     _printEvent('dispose()');
     routeObserver.unsubscribe(this);
+    if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.unsubscribe(this);
     dioErrorObserver.unsubscribe(this);
     super.dispose();
   }
@@ -55,6 +57,7 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T> with 
     final route = ModalRoute.of(context);
     if (route is PageRoute) {
       routeObserver.subscribe(this, route);
+      if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.subscribe(this, route);
     }
     super.didChangeDependencies();
   }
@@ -68,9 +71,7 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T> with 
   @override
   @mustCallSuper
   void onResume() {
-    super.setState(() {
-
-    });
+    super.setState(() {});
     _printEvent('onResume()');
   }
 

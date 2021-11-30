@@ -53,6 +53,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/typography.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -79,6 +80,8 @@ class _AppState extends State<App> {
     AppColors(themeAppColor: ThemeAppColor.DEFAULT);
     navigator.addListener(() {
       print('routeName is => ${navigator.currentConfiguration!.path}');
+      if(MemoryApp.analytics!=null)
+      MemoryApp.analytics!.logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
     });
   }
 
@@ -132,7 +135,7 @@ class _AppState extends State<App> {
               locale: locale,
               localeResolutionCallback: resolveLocale,
               scaffoldMessengerKey: navigatorMessengerKey,
-              // navigatorObservers: [routeObserver],
+              //navigatorObservers: [routeObserver],
               // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
               // routes: Routes.all,
 
@@ -181,8 +184,25 @@ class _AppState extends State<App> {
     bloc.dispose();
   }
 }
+class MyObs extends VxObserver {
 
+  @override
+  void didChangeRoute(Uri route, Page page, String pushOrPop) {
+    print("${route.path} - $pushOrPop");
+
+  }
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    print('Pushed a route');
+  }
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    print('Popped a route');
+  }
+}
 final navigator = VxNavigator(
+
   routes: {
     '/': (_, __) => MaterialPage(child: SplashScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),

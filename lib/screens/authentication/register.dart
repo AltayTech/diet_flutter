@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/register.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -27,6 +28,10 @@ enum gender{
 }
 
 class RegisterScreen extends StatefulWidget {
+  RegisterScreen(){
+    MemoryApp.analytics!.logEvent(name: "register_start");
+  }
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }

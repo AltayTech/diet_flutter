@@ -2,6 +2,7 @@ import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/payment/discount_widget.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -51,9 +52,10 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> {
     bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
       Payment? result = (event as NetworkResponse<Payment>).data;
-      if ((event).next != null)
+      if ((event).next != null) {
         context.vxNav.push(Uri.parse('/${(event).next}'));
-      else if (bloc.isOnline) {
+      }else if (bloc.isOnline) {
+        MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
         Utils.launchURL(result!.url!);
       } else {
         Utils.getSnackbarMessage(context, event.message!);

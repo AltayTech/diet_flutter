@@ -8,6 +8,7 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -59,7 +60,7 @@ class ErrorHandlerInterceptor extends Interceptor {
 
   BuildContext? get _context => navigatorMessengerKey.currentContext;
 
-  //FirebaseCrashlytics get _crashlytics => FirebaseCrashlytics.instance;
+  FirebaseCrashlytics get _crashlytics => FirebaseCrashlytics.instance;
 
   void _showToastIfNotRelease(DioError err) async {
     final packageInfo = await PackageInfo.fromPlatform();
@@ -108,7 +109,7 @@ class ErrorHandlerInterceptor extends Interceptor {
         'Request URI: ${err.requestOptions.uri}\n'
         'Request Body: ${err.requestOptions.data}\n'
         'Request Headers: $headers';
-    //_crashlytics.recordError(err.error, err.stackTrace, reason: reason);
+    _crashlytics.recordError(err.error, err.stackTrace, reason: reason);
   }
 
   void _handleMaintenanceError() async {
