@@ -420,7 +420,6 @@
   "meetingWith": "جلسه مشاوره با :",
   "hour": "ساعت",
   "onlinePay": "پرداخت آنلاین",
-
   "activityLevel": "فعالیت روزانه",
   "paymentSuccess": "پرداخت موفق",
   "paymentSuccessLabel": "پرداخت با موفقیت انجام شد",
@@ -478,5 +477,12 @@
   "areYouSureAboutMenu": "برای انتخاب این لیست مطمئن هستی؟",
   "yesWantThisMenu": "بله همین لیست رو میخوام",
   "noWannaChange": "نه میخوام عوضش کنم",
+  "whichPackage": "کدام پکیج را انتخاب کنم؟",
+  "receiveList": "دریافت لیست غذایی",
+  "pdfTxt": "از این قسمت می توانید نسخه PDF لیست غذایی خود را جهت چاپ کردن یا ذخیره، دریافت کنید",
+  "receivePdf": "دریافت لیست هفته جاری",
+  "cancelPdf": "انصراف",
+  "behandam": "به اندام دکتر کرمانی",
+
   "understand": "متوجه شدم"
 }

@@ -32,6 +32,9 @@ class FoodListBloc {
   final _selectedWeekDay = BehaviorSubject<WeekDay>();
   final _weekDays = BehaviorSubject<List<WeekDay?>?>();
   final AppBloc _appBloc = AppBloc();
+  String? _pdfPath;
+
+  String? get pdfPath => _pdfPath;
 
   Stream<bool> get loadingContent => _loadingContent.stream;
 
@@ -190,6 +193,12 @@ class FoodListBloc {
   void makingFoodEmpty(int mealId) {
     _foodList.valueOrNull?.meals?.firstWhere((element) => element.id == mealId).newFood = null;
   }
+
+  // void getPdf(){
+  //   _repository.getPdf().then((value) {
+  //     _pdfPath = value.data!.url!;
+  //   });
+  // }
 
   void dispose() {
     _loadingContent.close();

@@ -16,7 +16,7 @@ class PsychologyPaymentBillScreen extends StatefulWidget {
   _PsychologyPaymentBillScreenState createState() => _PsychologyPaymentBillScreenState();
 }
 
-class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPaymentBillScreen>  with WidgetsBindingObserver {
+class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPaymentBillScreen> with WidgetsBindingObserver {
   var args;
   late CalenderBloc calenderBloc;
 
@@ -25,7 +25,7 @@ class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPayme
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
     calenderBloc = CalenderBloc();
-    // listenBloc();
+    listenBloc();
   }
 
   @override
@@ -36,23 +36,14 @@ class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPayme
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("here1");
     if(state == AppLifecycleState.resumed){
       calenderBloc.getInvoice();
-      listenBloc();
+      // listenBloc();
     }
   }
 
-  // @override
-  // void onResume() {
-  //   print("here2");
-  //   calenderBloc.getInvoice();
-  //   listenBloc();
-  //   super.onResume();
-  // }
-
   void listenBloc() {
-    calenderBloc.navigateToVerify.listen((event) {
+    calenderBloc.navigate.listen((event) {
       if (event as bool){
         VxNavigator.of(context).push(Uri.parse(Routes.psychologyReservedMeeting));
       } else

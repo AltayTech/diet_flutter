@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
@@ -251,4 +252,8 @@ abstract class RestClient {
 
   @PATCH("/term")
   NetworkResult<Term> term();
+
+  @GET("/fitamin-url")
+  NetworkResult<Fitamin> checkFitamin();
+
 }

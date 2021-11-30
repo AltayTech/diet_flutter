@@ -6,6 +6,7 @@ import 'package:behandam/api/interceptor/logger.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
+import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
@@ -181,6 +182,8 @@ abstract class Repository {
   NetworkResult<MenuData> menuType();
 
   NetworkResult<Term> term();
+
+  NetworkResult<Fitamin> checkFitamin();
 }
 
 class _RepositoryImpl extends Repository {
@@ -681,4 +684,11 @@ class _RepositoryImpl extends Repository {
     var response = _apiClient.term();
     return response;
   }
+
+  @override
+  NetworkResult<Fitamin> checkFitamin() {
+    var response = _apiClient.checkFitamin();
+    return response;
+  }
+
 }

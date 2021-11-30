@@ -260,7 +260,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                   ),
                   SizedBox(width: 2.w),
                   Text(
-                    birthdateFormatted() ?? '',
+                    birthdateFormatted() ?? label,
                     style: typography.subtitle2,
                   ),
                 ],
@@ -302,6 +302,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
     setState(() {
       date = picked!.toGregorian().toDateTime().toString().substring(0, 10);
       body!.birthDate = date;
+      label = picked.formatCompactDate();
       debugPrint('birthdate $date / $picked');
     });
   }

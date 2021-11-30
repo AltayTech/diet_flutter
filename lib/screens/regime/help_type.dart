@@ -5,9 +5,9 @@ import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:image/image.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -36,7 +36,12 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     helpType = ModalRoute.of(context)!.settings.arguments as HelpPage;
-    regimeBloc.helpMethod(helpType == HelpPage.regimeType ? 1 : 2);
+    if(helpType == HelpPage.regimeType)
+      regimeBloc.helpMethod(1);
+    if(helpType == HelpPage.menuType)
+      regimeBloc.helpMethod(2);
+    if(helpType == HelpPage.packageType)
+      regimeBloc.helpMethod(3);
   }
 
   void listenBloc() {
@@ -49,9 +54,16 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Scaffold(
-      appBar: Toolbar(titleBar: intl.whichRegime),
-      body: body(),
+    return  StreamBuilder(
+      stream: regimeBloc.helpTitle,
+      builder: (_, AsyncSnapshot<String> snapshot) {
+        return  Scaffold(
+          appBar: Toolbar(titleBar:
+            snapshot.data ?? intl.whichRegime,
+          ),
+          body: body(),
+        );
+        },
     );
   }
 
@@ -77,7 +89,11 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
                 },
               ),
               Space(height: 1.h),
+              // helpType == HelpPage.packageType ? media(0) : Container(),
+              Space(height: 1.h),
               helps(),
+              Space(height: 1.h),
+              // helpType == HelpPage.packageType ? media(1) : Container(),
               SizedBox(height: 5.h)
             ],
           ),
@@ -109,15 +125,20 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
 
   Widget helps(){
     return StreamBuilder(
-      stream: regimeBloc.helpers,
-      builder: (context, AsyncSnapshot<List<Help>> snapshot) {
+      stream: regimeBloc.help,
+      builder: (context, AsyncSnapshot<Help> snapshot) {
         if (snapshot.hasData) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              ...snapshot.requireData
-                  .map((help) => item(help))
-                  .toList(),
+              ...snapshot.requireData.helpers!.map((help) => item(help)).toList(),
+              ...snapshot.requireData.media!.map((media) =>
+                  ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"]+media.url,
+                    width: 10.w,
+                    height: 20.h))
+                .toList(),
+                  // .map((help) => item(help))
+                  // .toList(),
             ],
           );
         } else {
@@ -129,6 +150,31 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
                   color: Colors.grey, strokeWidth: 1.0),
             ),
           );
+        }
+      },
+    );
+  }
+
+  Widget media(int index){
+    return StreamBuilder(
+      stream: regimeBloc.helpMedia,
+      builder: (context, AsyncSnapshot<List<Help>> snapshot) {
+        if (snapshot.hasData) {
+          // return Column(
+          //   crossAxisAlignment: CrossAxisAlignment.stretch,
+          //   children: [
+          //     ...snapshot.requireData
+          //         .map((media) => ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"]+media.url,
+          //     width: 10.w,
+          //     height: 20.h))
+          //         .toList(),
+          //   ],
+          // );
+          return ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"]+snapshot.data![index].url,
+          width: 10.w,
+          height: 20.h);
+        } else {
+          return Container();
         }
       },
     );

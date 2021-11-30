@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
+import 'package:behandam/screens/vitrin/vitrin_bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
@@ -5,22 +10,58 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
+// import 'package:installed_apps/installed_apps.dart';
 
 import '../../routes.dart';
 
-class VitrinScreen extends StatelessWidget {
+class VitrinScreen extends StatefulWidget {
   const VitrinScreen({Key? key}) : super(key: key);
 
-   _launchURL(_url) async {
+  @override
+  State<VitrinScreen> createState() => _VitrinScreenState();
+}
+
+class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
+  late VitrinBloc vitrinBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    vitrinBloc = VitrinBloc();
+    listenBloc();
+  }
+
+  void listenBloc() {
+    vitrinBloc.navigateToVerify.listen((event) {
+      if ((event as bool)) {
+         LaunchApp.openApp(
+          androidPackageName: 'com.app.fitamin',
+          // iosUrlScheme: 'pulsesecure://',
+          // appStoreLink: 'itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041',
+          // openStore: false
+        );
+      } else {
+        _launchURL('https://app.fitamin.ir/register');
+      }
+    });
+    vitrinBloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
+    });
+  }
+
+  _launchURL(_url) async {
     if (!await launch(_url)) throw 'Could not launch $_url';
   }
 
   @override
   Widget build(BuildContext context) {
+     super.build(context);
     return SafeArea(child: Scaffold(
       appBar:AppBar(
           backgroundColor: AppColors.redBar,
-          title: Text('به اندام دکتر کرمانی',textAlign: TextAlign.center)),
+          title: Text(intl.behandam,textAlign: TextAlign.center)),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: SingleChildScrollView(
@@ -54,7 +95,10 @@ class VitrinScreen extends StatelessWidget {
                       child: ImageUtils.fromLocal('assets/images/vitrin/telegram_banner.jpg',width: 100.w,height: 15.h)),
                   SizedBox(height: 2.h),
                   InkWell(
-                      onTap: () => _launchURL('https://app.fitamin.ir/register'),
+                      onTap: () {
+                        vitrinBloc.checkFitamin();
+                        // _launchURL(vitrinBloc.url);
+                      },
                       child: ImageUtils.fromLocal('assets/images/vitrin/fitamin_banner.png',width: 100.w,height: 15.h)),
                 ],
               ),
@@ -66,5 +110,25 @@ class VitrinScreen extends StatelessWidget {
         currentTab: BottomNavItem.VITRINE,
       ),
     ));
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
   }
 }

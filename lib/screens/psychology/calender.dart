@@ -13,6 +13,7 @@ import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -60,8 +61,7 @@ class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalender
                     ListTile(
                       leading: info[index].adviserImage == null
                           ? ImageUtils.fromLocal('assets/images/profile/psychology.svg',width: 20.w,height: 7.h)
-                          : Image.network(
-                          'https://debug.behaminplus.ir//helia-service${info[index].adviserImage}',width: 20.w,height: 10.h),
+                          : ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"]+info[index].adviserImage, width: 20.w,height: 10.h),
                       title: Text(info[index].adviserName!),
                       subtitle: Text(
                         info[index].role!,
@@ -185,8 +185,7 @@ class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalender
                     padding: const EdgeInsets.only(right: 8.0,left: 8.0),
                     child: info.adviserImage == null
                      ? ImageUtils.fromLocal('assets/images/profile/psychology.svg',width: 20.w,height: 7.h)
-                     : Image.network(
-                        'https://debug.behaminplus.ir//helia-service${info.adviserImage}',width: 20.w,height: 10.h),
+                     : ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"]+info.adviserImage, width: 20.w,height: 10.h),
                   ),
                   Column(
                     children: [

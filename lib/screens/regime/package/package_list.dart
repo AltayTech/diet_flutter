@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/regime/package/card_package.dart';
 import 'package:behandam/screens/regime/package/package_bloc.dart';
 import 'package:behandam/screens/regime/package/package_provider.dart';
@@ -11,6 +12,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
+import 'package:velocity_x/velocity_x.dart';
+
+import '../regime_bloc.dart';
 
 class PackageListScreen extends StatefulWidget {
   const PackageListScreen({Key? key}) : super(key: key);
@@ -76,7 +80,7 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
               Space(height: 1.h),
               Center(
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.helpType), params: HelpPage.packageType),
                   child: Text(
                     intl.differentPackages,
                     style: Theme.of(context)
@@ -88,7 +92,7 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
               ),
               Space(height: 1.h),
               GestureDetector(
-                onTap: () {},
+                onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.helpType), params: HelpPage.packageType),
                 child: Center(
                   child: ImageUtils.fromLocal(
                     'assets/images/diet/guide_icon.svg',
