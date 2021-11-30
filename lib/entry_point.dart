@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:behandam/app/app.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,6 +21,7 @@ Future<void> entryPoint() async {
     AppLocale.initialize();
     updateStatusBar();
     _handleCaughtErrors();
+    _initFireBase();
     runApp(App());
   }, (Object error, StackTrace stack) {
     if (!(error is DioError || error is HttpException)) {
@@ -24,9 +29,20 @@ Future<void> entryPoint() async {
     }
   });
 }
-Future<Locale> get _initializeLocale async {
-  final localeCode = await AppSharedPreferences.localeCode;
-  return Locale(localeCode);
+void _initFireBase () async{
+  try {
+    await Firebase.initializeApp();
+
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  } catch (Exception) {
+    print("not install firebase");
+  }
+  try {
+    MemoryApp.analytics = FirebaseAnalytics();
+  } catch (Exception) {
+    print("not install FirebaseAnalytics");
+  }
 }
 
 void updateStatusBar() {

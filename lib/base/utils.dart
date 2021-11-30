@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
@@ -116,5 +117,19 @@ class Utils {
       // throw 'Could not launch $url';
       print('url lanuch error');
     }
+  }
+
+  static Future<String> versionApp() async {
+    var package = await PackageInfo.fromPlatform();
+    return package.version;
+  }
+  static Future<int> buildNumber() async {
+    var package = await PackageInfo.fromPlatform();
+    return int.parse(package.buildNumber);
+  }
+
+  static Future<String> packageName() async {
+    var package = await PackageInfo.fromPlatform();
+    return package.packageName;
   }
 }
