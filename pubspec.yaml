@@ -69,6 +69,7 @@ dependencies:
   syncfusion_flutter_sliders: ^19.3.54
   share_plus: ^3.0.4
   syncfusion_flutter_charts: ^19.3.55
+  flutter_custom_tabs: ^1.0.3
 
 dev_dependencies:
   json_serializable: ^6.0.1

@@ -31,6 +31,7 @@ import 'package:behandam/screens/psychology/payment_bill.dart';
 import 'package:behandam/screens/psychology/reserved_meeting.dart';
 import 'package:behandam/screens/psychology/terms.dart';
 import 'package:behandam/screens/regime/activity/activity_level.dart';
+import 'package:behandam/screens/regime/block/block.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
@@ -183,7 +184,7 @@ class _AppState extends State<App> {
 
 final navigator = VxNavigator(
   routes: {
-    '/': (_, __) => MaterialPage(child: BodyStateScreen()),
+    '/': (_, __) => MaterialPage(child: Block()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
@@ -206,10 +207,10 @@ final navigator = VxNavigator(
         child: TicketDetails(), arguments: int.parse(uri.queryParameters['ticketId'].toString())),
     Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
     Routes.calendar: (_, __) => MaterialPage(child: CalendarPage()),
-    Routes.regimeType: (_, __) => MaterialPage(child: RegimeTypeScreen()),
+    RegExp(r"\/(reg|list|renew|revive)(\/diet\/type)"): (_, __) => MaterialPage(child: RegimeTypeScreen()),
     Routes.bodyState: (_, __) => MaterialPage(child: BodyStateScreen()),
     Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
-    Routes.sickness: (_, __) => MaterialPage(child: SicknessScreen()),
+    RegExp(r"\/(reg|list|renew|revive)(\/sick\/select)"): (_, __) => MaterialPage(child: SicknessScreen()),
     Routes.special_sickness: (_, __) => MaterialPage(child: SicknessSpecialScreen()),
     Routes.advice: (_, __) => MaterialPage(child: AdvicePage()),
     Routes.package: (_, __) => MaterialPage(child: PackageListScreen()),
@@ -242,6 +243,8 @@ final navigator = VxNavigator(
     Routes.renewAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.reviveAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.paymentOnlineSuccess: (_, __) => MaterialPage(child: PaymentSuccessScreen()),
+    RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) => MaterialPage(child: Block()),
+    RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) => MaterialPage(child: Block()),
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(

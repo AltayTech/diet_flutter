@@ -36,14 +36,12 @@ abstract class Routes {
   static const package = '/reg/package';
   static const paymentBill = '/reg/payment/bill';
   static const cardToCard = '/reg/payment/card';
-  // static const bodyStatus = '/bodyStatus';
   static const resetPasswordProfile = '/resetPasswordProfile';
   static const vitrin = '/vitrin';
   static const psychologyIntro = '/psychologyIntro';
   static const psychologyCalender = '/psychologyCalender';
   static const psychologyTerms = '/psychologyTerms';
   static const psychologyPaymentBill = '/psychologyPaymentBill';
-  // static const psychologyPaymentCard = '/psychologyPaymentCard';
   static const psychologyReservedMeeting = '/psychologyReservedMeeting';
   static const activity = '/reg/activity';
   static const paymentCardConfirm = '/reg/payment/card/confirm';
@@ -56,13 +54,20 @@ abstract class Routes {
   static const menuConfirm = '/reg/menu/confirm';
   static const statusUser = '/status';
   static const weightEnter = '/reg/weight/enter';
-
   static const listMenuAlert = '/list/menu/alert';
   static const listWeightAlert = '/list/weight/alert';
   static const renewAlert = '/renew/alert';
   static const reviveAlert = '/revive/alert';
   static const paymentOnlineSuccess = '/reg/payment/online/success';
   static const listMenuSelect = '/list/menu/select';
+  static const regSickBlock = '/reg/sick/block';
+  static const listSickBlock = '/list/sick/block';
+  static const reviveSickBlock = '/revive/sick/block';
+  static const renewSickBlock = '/renew/sick/block';
+  static const regBlock = '/reg/block';
+  static const listBlock = '/list/block';
+  static const reviveBlock = '/revive/block';
+  static const renewBlock = '/renew/block';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),
