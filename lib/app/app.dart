@@ -6,6 +6,7 @@ import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/advice/advice.dart';
 import 'package:behandam/screens/authentication/code_reset.dart';
+import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/calendar/calendar.dart';
@@ -61,8 +62,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../screens/authentication/auth.dart';
 import '../screens/authentication/login.dart';
-import '../screens/authentication/pass.dart';
 
 class App extends StatefulWidget {
   @override
@@ -207,12 +208,15 @@ class MyObs extends VxObserver {
 final navigator = VxNavigator(
 
   routes: {
-    '/': (_, __) => MaterialPage(child: Block()),
+    '/': (_, __) => MaterialPage(child: AuthScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
-    Routes.login: (_, __) => MaterialPage(child: LoginScreen()),
-    Routes.pass: (_, param) => MaterialPage(child: PasswordScreen(), arguments: param),
-    Routes.verify: (_, param) => MaterialPage(child: VerifyScreen(), arguments: param),
+    Routes.auth: (_, __) => MaterialPage(child: AuthScreen()),
+    Routes.login: (_, param) => MaterialPage(child: LoginScreen(), arguments: param),
+    Routes.authVerify: (_, param) => MaterialPage(child: VerifyScreen(), arguments: param),
+    Routes.passVerify: (_, param) => MaterialPage(child: VerifyScreen(), arguments: param),
+    Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(), arguments: param),
+    Routes.resetCode: (_, param) => MaterialPage(child: ResetPasswordProfile(), arguments: param),
     Routes.register: (_, param) => MaterialPage(child: RegisterScreen(), arguments: param),
     Routes.listView: (_, __) => MaterialPage(child: FoodListPage()),
     Routes.dailyMenu: (_, param) => MaterialPage(child: DailyMenuPage(), arguments: param),
@@ -222,8 +226,6 @@ final navigator = VxNavigator(
     Routes.showInbox: (_, param) => MaterialPage(child: ShowInboxItem(), arguments: param),
     Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
     Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
-    Routes.resetCode: (_, param) => MaterialPage(child: CodeResetScreen(), arguments: param),
-    Routes.resetPass: (_, param) => MaterialPage(child: ResetPasswordProfile(), arguments: param),
     Routes.helpType: (_, param) => MaterialPage(child: HelpTypeScreen(), arguments: param),
     Routes.newTicketMessage: (_, __) => MaterialPage(child: NewTicket()),
     RegExp(r"\/ticket\/details"): (uri, __) => MaterialPage(

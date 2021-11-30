@@ -187,7 +187,7 @@ Widget optionUi(IconData icon, String text, int action) {
       if (action == 2) {
         navigator.routeManager.push(Uri.parse(Routes.editProfile));
       } else if (action == 0) {
-        navigator.routeManager.push(Uri.parse(Routes.resetPass));
+        navigator.routeManager.push(Uri.parse(Routes.resetCode));
       }
     },
     child: Container(

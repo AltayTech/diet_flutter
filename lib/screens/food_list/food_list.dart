@@ -36,9 +36,15 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   void initListener() {
     bloc.showServerError.listen((event) {
       if(!Routes.listView.contains(event)) {
-        context.vxNav.push(Uri.parse(event));
-      }else context.vxNav.replace(Uri.parse(event));
+        context.vxNav.clearAndPush(Uri.parse('/$event'));
+      }else context.vxNav.replace(Uri.parse('/$event'));
     });
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
   }
 
   @override

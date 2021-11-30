@@ -45,6 +45,12 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   @override
+  void dispose() {
+    regimeBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     return SafeArea(

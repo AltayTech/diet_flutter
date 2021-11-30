@@ -45,6 +45,12 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
       regimeBloc.helpMethod(3);
   }
 
+  @override
+  void dispose() {
+    regimeBloc.dispose();
+    super.dispose();
+  }
+
   void listenBloc() {
     regimeBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);

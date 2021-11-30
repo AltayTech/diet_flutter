@@ -45,6 +45,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   @override
   void dispose() {
     scrollController.dispose();
+    bloc.dispose();
     super.dispose();
   }
 

@@ -70,7 +70,7 @@ class FoodListBloc {
         setTheme();
         fillWeekDays();
       } else {
-        _showServerError.fire('/${value.next}');
+        _showServerError.fire(value.next);
       }
     }).whenComplete(() => _loadingContent.value = false);
   }

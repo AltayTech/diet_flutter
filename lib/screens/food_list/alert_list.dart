@@ -46,6 +46,12 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     textItem = getTextAlert(navigator.currentConfiguration?.path ?? Routes.listMenuAlert);

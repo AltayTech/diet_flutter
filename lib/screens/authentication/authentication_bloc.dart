@@ -18,9 +18,8 @@ import '../../routes.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
-
-class AuthenticationBloc{
-  AuthenticationBloc(){
+class AuthenticationBloc {
+  AuthenticationBloc() {
     fetchCountries();
     _waiting.value = false;
   }
@@ -40,77 +39,81 @@ class AuthenticationBloc{
   Stream get navigateToVerify => _navigateToVerify.stream;
   Stream get showServerError => _showServerError.stream;
 
-
   void fetchCountries() {
-   if(MemoryApp.countryCode == null) {
-     _repository.country().then((value) {
-       MemoryApp.countryCode = value.data!;
-       _subjectList.value = value.data!;
-       countries = value.data!;
-       value.data!.forEach((element) {
-         if (element.code == "98") {
-           _subject = element;
-         }
-       });
-     });
-   }else {
-     _subjectList.value = MemoryApp.countryCode!;
-     countries = MemoryApp.countryCode!;
-     _subjectList.value.forEach((element) {
-       if (element.code == "98") {
-         _subject = element;
-       }
-     });
-   }
+    if (MemoryApp.countryCode == null) {
+      _repository.country().then((value) {
+        MemoryApp.countryCode = value.data!;
+        _subjectList.value = value.data!;
+        countries = value.data!;
+        value.data!.forEach((element) {
+          if (element.code == "98") {
+            _subject = element;
+          }
+        });
+      });
+    } else {
+      _subjectList.value = MemoryApp.countryCode!;
+      countries = MemoryApp.countryCode!;
+      _subjectList.value.forEach((element) {
+        if (element.code == "98") {
+          _subject = element;
+        }
+      });
+    }
   }
 
   void loginMethod(String phoneNumber) {
     _waiting.value = true;
-    MemoryApp.needRoute = true;
     _repository.status(phoneNumber).then((value) {
-     _navigateToVerify.fire( value.data!.isExist!);
+      _navigateToVerify.fire(value.next);
       print('value: ${value.data!.isExist}');
     }).whenComplete(() => _waiting.value = false);
   }
 
   void passwordMethod(User user) {
     _waiting.value = true;
-    _repository.signIn(user).then((value) async{
+    _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      MemoryApp.token = value.requireData.token;
-      print('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      print(
+          'pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
 
   void resetPasswordMethod(Reset pass) {
     _waiting.value = true;
-    _repository.reset(pass).then((value) async{
+    _repository.reset(pass).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      MemoryApp.token = value.requireData.token;
-      _navigateToVerify.fire(true);
+      _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void registerMethod(Register register){
+  void registerMethod(Register register) {
     _waiting.value = true;
-    _repository.register(register).then((value) async{
+    _repository.register(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      MemoryApp.token = value.requireData.token;
       MemoryApp.analytics!.logEvent(name: "register_success");
       _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
 
   void sendCodeMethod(String mobile) {
-    _repository.verificationCode(mobile);
+    _waiting.value = true;
+    _repository
+        .verificationCode(mobile)
+        .then((value) => _navigateToVerify.fire(value.next))
+        .whenComplete(() {
+      _waiting.value = false;
+      MemoryApp.forgetPass = false;
+    });
   }
 
   void verifyMethod(VerificationCode verify) {
     _waiting.value = true;
-    _repository.verify(verify).then((value) async{
-      if(value.data!.token != null)
-      await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
+    _repository.verify(verify).then((value) async {
+      if (value.data!.token != null)
+        await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
+      print('verify code ${value.next} ${value.data!.toJson()} / ${await AppSharedPreferences.authToken}');
       _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }

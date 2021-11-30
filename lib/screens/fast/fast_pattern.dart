@@ -31,6 +31,12 @@ class _FastPatternPageState extends ResourcefulState<FastPatternPage> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
 

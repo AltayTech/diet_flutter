@@ -35,6 +35,12 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
     initListener();
   }
 
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   void initListener() {
     bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();

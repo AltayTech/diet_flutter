@@ -22,12 +22,13 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Accept-Language'] = languageCode;
     options.headers['user-agent'] = DeviceUtils.makeUserAgent();
     options.headers['Charset'] = 'UTF-8';
-    // if (authToken != null) {
-    //   options.headers['authorization'] = 'Bearer ${authToken}';
-    // }
+    print('auth token $authToken');
+    if (authToken != null && authToken.isNotEmpty) {
+      options.headers['authorization'] = 'Bearer ${authToken}';
+    }
     // else {
-       options.headers['authorization'] =
-           'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYzZjMDUwOTIzZDZhMmExODM0OWU2MTg5YmFhNjM4NzQ1Nzg3OTk0N2RiNGI0MWRlYWM0MGI0NzMyZjhlMmFlMjJmZGM5Zjk0NWQyNzE1MjEiLCJpYXQiOjE2MzgyNzA1NDcuNjk4NjczLCJuYmYiOjE2MzgyNzA1NDcuNjk4NjgyLCJleHAiOjE2Njk4MDY1NDcuNjkyMDAyLCJzdWIiOiIxNjAyOTEyIiwic2NvcGVzIjpbXX0.ijdnyzOFWp325lIy6j3UUbWeaN8D_gkT2xafasUcrqKRBKZLS5rJY2Hel2ul0HnB3Z56EY2JM9HZ9FV8Ewvoa0MDpY3HbGyrdjCbmqOkGZQcDKlXZiovBu9G9__Xjjow5w_58UlP60XeBwKjYGOn32DieOui9No_MdcKMvNVweU2t8gAzl-0A5DAC6pSalpyHe3t191GQc7Gfa4oSoFyUVjfuLQymCfI0BBKgzv36kzW3jtZ1H29mDOD2MzfYpKj2IYOv4GoV3YApLJwPglSPz6C4J466szCOCaAT4RQqx14ag846Y-D_IDSYlAJ9ZSoGS3SFUWJzfbDJRIdtmGMBpJcmwQkQibMV2S0X8B46mQPaJu9Sdn2okMmV1BN_ebhLDFukf_rUVP1JTPzm4c6KEXsvXExVWvySc1MNMGg-hIMrZciVYkAbKTNL1zbFTVoA-kUcHHWt7eVRfYOiOCbHt8Ol0QYXRMGGk5Gz0JEFkqzmJ8XP1dH4GPqkdjy7AKTse3GcoiwTMmGi7SGL14zZk1XKXXqBET7PbAZKxsu0bPSWf3afji9MQQS6I1wy_8GAliNRD4_RliDd87U_Yl63bt0K3zksdjw_OFXQk53syL2gmiC6hoHnCfoyPeyyd6UCGXUmDCF9OL5H1IIMB8C1RtcYmpF10Ws8HaON6zuhjo';
+    //   options.headers['authorization'] =
+    //       'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiN2U0YThiZWMxYWQyODJkNGYxNGU1ZmQ2MGJhOThkOTQyZGVjZmIzMjU3NDI3NDJiNDhjZmMxMGQzZTM1N2Y4ZTU3NTlmNWQ1MGVhMTdjMjMiLCJpYXQiOjE2MzgxNjY4MzIuNDUzNjg2LCJuYmYiOjE2MzgxNjY4MzIuNDUzNjk1LCJleHAiOjE2Njk3MDI4MzIuNDQwOTQxLCJzdWIiOiI2MyIsInNjb3BlcyI6W119.PQNl8dHpauG-QdUXhtEhV3UsB652CuJePfYa5rE_4tDe4qiDiuF8345Y-LqiBE4BFl-A8UVEhWdzEyfTOB9fLwOtFyzxqYnAdZhC_FglcImFJiTadJdqaBrZthtN16qAqVnAvhEZiUpny1Jj9aKE3aUAE28e9VbrIVX0o7ljn37uTMhGFXDv5tBcSUOJ_lf1IdP2rU6z-CNUEDZA6L6FSNwxjY2oLnnxGyjicncVkVg5Qoim6tMClMpP7nczESRK2LUi1nTPTPoDaKF4dqtOy3rEXqampQHzoRP0J4oajfeZyAfAugMRlL9XVnwye1sXWvDRg9NRK1kG5Gzk6qJECnvA9JvVfV4lcLzsW9wJYlOhxS7emUegBVNolLQc0yMxlx9PVC5NNMYqc0MAJ6C8RSdSdUEO8VElVIvk1-JFnyyukrCvxT_V9aJlemLGsv_Kcon-ruFU77A_uKaKJHXe0DY7EAdxQj7Mhs6jfDxUsPICummG8D4pn5p2PzIESDo4AVsa9ngU5VPAtCvOxMU8pG04iNlILiOyLB_7UoASeGlWvNp9py76-0iYqb7EPeJydjVc9R59RnBmP1NIO93sE26eLBeUUm4h_GF5noo5Fx2KoDRqcP3Fc-mKPWHCn9zcAg9kb1vrEW78tGmMMqmQj0qvYrVUXs2h80M9vNZbXWQ';
     // }
     // options.headers['Fcm-Token'] = fcmToken;
     options.headers['App'] = '0';
@@ -41,14 +42,14 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Is-Emulator'] = await DeviceUtils.isEmulator;
     options.headers['Time-Zone'] = DateTimeUtils.timezoneOffset;
     print(
-        'global ${navigator.currentConfiguration?.path} / ${MemoryApp.token != null} / ${MemoryApp.token != 'null'}');
-    if (MemoryApp.needRoute) {
-      if (navigator.currentConfiguration?.path.substring(1).isEmpty == true) {
-        options.headers['x-route'] = Routes.listView.substring(1);
-      } else {
-        options.headers['x-route'] =
-            navigator.currentConfiguration?.path.substring(1);
-      }
+        'global/ ${MemoryApp.forgetPass} / ${navigator.currentConfiguration?.path} / ${MemoryApp.token != null} / ${MemoryApp.token != 'null'}');
+    if (navigator.currentConfiguration?.path.substring(1).isEmpty == true) {
+      options.headers['x-route'] = Routes.listView.substring(1);
+      // options.headers['x-route'] = 'auth';
+    } else {
+      options.headers['x-route'] = MemoryApp.forgetPass
+          ? '${navigator.currentConfiguration?.path.substring(1)}/forget'
+          : navigator.currentConfiguration?.path.substring(1);
     }
     super.onRequest(options, handler);
   }

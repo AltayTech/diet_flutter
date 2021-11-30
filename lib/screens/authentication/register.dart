@@ -50,10 +50,15 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     authBloc  = AuthenticationBloc();
     listenBloc();
+  }
+
+  @override
+  void dispose() {
+    authBloc.dispose();
+    super.dispose();
   }
 
   void listenBloc() {
