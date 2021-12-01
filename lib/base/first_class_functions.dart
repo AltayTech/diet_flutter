@@ -1,10 +1,12 @@
+import 'package:flutter/material.dart';
+
 /// When there is no functionality for a given action eg. noOp
 void doNothing([dynamic]) => () {};
 
 /// Use this when you just want to track which places to implement later
 @Deprecated('Implement your own code here')
 void notImplemented({String? message}) => () {
-      print(message ?? 'Not implemented functionality');
+      debugPrint(message ?? 'Not implemented functionality');
     };
 
 /// Uses this when you want to inform yourself about important functionality to be implemented
