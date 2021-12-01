@@ -43,13 +43,15 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Time-Zone'] = DateTimeUtils.timezoneOffset;
     print(
         'global/ ${MemoryApp.forgetPass} / ${navigator.currentConfiguration?.path} / ${MemoryApp.token != null} / ${MemoryApp.token != 'null'}');
-    if (navigator.currentConfiguration?.path.substring(1).isEmpty == true) {
-      options.headers['x-route'] = Routes.listView.substring(1);
-      // options.headers['x-route'] = 'auth';
-    } else {
-      options.headers['x-route'] = MemoryApp.forgetPass
-          ? '${navigator.currentConfiguration?.path.substring(1)}/forget'
-          : navigator.currentConfiguration?.path.substring(1);
+    if(MemoryApp.needRoute){
+      if (navigator.currentConfiguration?.path.substring(1).isEmpty == true) {
+        options.headers['x-route'] = Routes.listView.substring(1);
+        // options.headers['x-route'] = 'auth';
+      } else {
+        options.headers['x-route'] = MemoryApp.forgetPass
+            ? '${navigator.currentConfiguration?.path.substring(1)}/forget'
+            : navigator.currentConfiguration?.path.substring(1);
+      }
     }
     super.onRequest(options, handler);
   }
