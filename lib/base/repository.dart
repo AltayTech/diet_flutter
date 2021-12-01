@@ -221,11 +221,13 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult<List<CountryCode>?> country() async {
+    MemoryApp.needRoute = false;
     var response;
     try {
       response = await _apiClient.getCountries();
       debugPrint(
           'countries ${response.data?.length} / ${response.data?[0].name}');
+      MemoryApp.needRoute = true;
     }catch(e){
       debugPrint(
           'countries error $e');
