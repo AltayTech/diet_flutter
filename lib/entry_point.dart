@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/utils/fcm.dart';
 import 'package:dio/dio.dart';
 import 'package:behandam/app/app.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -20,6 +21,7 @@ Future<void> entryPoint() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
     AppLocale.initialize();
+    await AppSharedPreferences.initialize();
     updateStatusBar();
     _handleCaughtErrors();
     _initFireBase();
@@ -33,7 +35,7 @@ Future<void> entryPoint() async {
 void _initFireBase () async{
   try {
     await Firebase.initializeApp();
-
+    await AppFcm.initialize();
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   } catch (Exception) {
