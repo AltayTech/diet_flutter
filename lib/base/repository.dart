@@ -187,6 +187,8 @@ abstract class Repository {
 
   NetworkResult<Fitamin> checkFitamin();
 
+  NetworkResult<RegisterOutput> landingReg(Register register);
+
   NetworkResult<dynamic> visit(PhysicalInfoData requestData);
 
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
@@ -728,6 +730,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Fitamin> checkFitamin() {
     var response = _apiClient.checkFitamin();
+    return response;
+  }
+
+  @override
+  NetworkResult<RegisterOutput> landingReg(Register register) {
+    var response = _apiClient.landingReg(register);
     return response;
   }
 

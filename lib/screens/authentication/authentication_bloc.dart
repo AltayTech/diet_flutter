@@ -30,6 +30,7 @@ class AuthenticationBloc {
   final _waiting = BehaviorSubject<bool>();
   final _subjectList = BehaviorSubject<List<CountryCode>>();
   final _navigateToVerify = LiveEvent();
+  final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
   late List<CountryCode> countries;
 
@@ -37,6 +38,7 @@ class AuthenticationBloc {
   Stream<List<CountryCode>> get subjectList => _subjectList.stream;
   Stream<bool> get waiting => _waiting.stream;
   Stream get navigateToVerify => _navigateToVerify.stream;
+  Stream get navigateTo => _navigateTo.stream;
   Stream get showServerError => _showServerError.stream;
 
   void fetchCountries() {
@@ -118,10 +120,21 @@ class AuthenticationBloc {
     }).whenComplete(() => _waiting.value = false);
   }
 
+  void landingReg(Register register){
+    _waiting.value = true;
+    _repository.landingReg(register).then((value) async{
+      await AppSharedPreferences.setAuthToken(value.data!.token);
+      MemoryApp.token = value.requireData.token;
+      MemoryApp.analytics!.logEvent(name: "register_success");
+      _navigateTo.fire(value.next);
+    }).whenComplete(() => _waiting.value = false);
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateToVerify.close();
     _subjectList.close();
     _waiting.close();
+    _navigateTo.close();
   }
 }

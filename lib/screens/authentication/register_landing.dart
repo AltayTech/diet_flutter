@@ -294,10 +294,10 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                 register.mobile = args['mobile'];
                 register.password = _password;
                 register.gender = _switchValue;
-                register.verifyCode = args['code'];
+                register.verifyCode = '';
                 register.countryId = args['id'];
                 register.appId = '0';
-                authBloc.registerMethod(register);
+                authBloc.landingReg(register);
               }),
         ],
       ),
