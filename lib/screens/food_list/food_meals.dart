@@ -297,6 +297,11 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
         ? []
         : List.generate(
             (meal.food.foodItems!.length * 2) - 1, (i) => i);
+    if(meal.food.freeFood != null) {
+      items.add(items.last + 1);
+      items.add(items.last + 1);
+    }
+    debugPrint('free food ${meal.food.freeFood} / $items');
     int index = 0;
     return Container(
       child: Wrap(
@@ -308,14 +313,32 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           ...items.map(
             (i) {
               final widget;
-              if (i % 2 == 0)
+              if (i % 2 == 0) {
+                debugPrint('even item ${!meal.food.freeFood.isNullOrEmpty} / $i');
+                if(!meal.food.freeFood.isNullOrEmpty && i == items.length - 1)
+                  widget = Chip(
+                    backgroundColor: isCurrentMeal
+                        ? AppColors.primary.withOpacity(0.2)
+                        : AppColors.labelColor.withOpacity(0.2),
+                    label: FittedBox(
+                      child: Text(
+                        '${meal.food.freeFood}',
+                        style: typography.caption,
+                        textAlign: TextAlign.center,
+                        // softWrap: true,
+                        overflow: TextOverflow.visible,
+                      ),
+                    ),
+                  );
+                else
                 widget = Chip(
                   backgroundColor: isCurrentMeal
                       ? AppColors.primary.withOpacity(0.2)
                       : AppColors.labelColor.withOpacity(0.2),
                   label: FittedBox(
                     child: Text(
-                      '${meal.food.foodItems![index].amount} ${meal.food.foodItems![index].title}',
+                      '${meal.food.foodItems![index].amount} ${meal.food
+                          .foodItems![index].title}',
                       style: typography.caption,
                       textAlign: TextAlign.center,
                       // softWrap: true,
@@ -323,7 +346,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                     ),
                   ),
                 );
-              else {
+              }else {
                 widget = Icon(
                   Icons.add,
                   size: 6.w,

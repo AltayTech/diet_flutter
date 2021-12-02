@@ -10,7 +10,9 @@ import 'package:behandam/extensions/object.dart';
 import 'package:behandam/extensions/string.dart';
 
 class ListFoodBloc {
-  ListFoodBloc() {}
+  ListFoodBloc() {
+    _loadContent();
+  }
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _listFood = BehaviorSubject<ListFoodData?>();
@@ -29,14 +31,14 @@ class ListFoodBloc {
     final text;
     if (_selectedTagIds.valueOrNull == null)
       text =
-          '{"page":{"offset":${_offset * 30},"limit":30},"sort":[{"field":"title","dir":"asc"}],"filters":[[{"field":"title","op":"like","value":"${_search ?? ""}"}],[{"field":"meal_id","op":"=","value":${_mealId.value}}]]}';
+          '{"page":{"offset":${_offset * 30},"limit":30},"sort":[{"field":"title","dir":"asc"}],"filters":[[{"field":"title","op":"like","value":"${_search ?? ""}"}],[{"field":"meal_id","op":"=","value":${_mealId.valueOrNull}}]]}';
     else {
       String tags = '';
       _selectedTagIds.value!.forEach((tagId) {
         tags += ',[{"field":"tag_id","op":"=","value":$tagId}]';
       });
       text =
-          '{"page":{"offset":${_offset * 30},"limit":30},"sort":[{"field":"title","dir":"asc"}],"filters":[[{"field":"title","op":"like","value":"${_search ?? ""}"}],[{"field":"meal_id","op":"=","value":${_mealId.value}}]$tags]}';
+          '{"page":{"offset":${_offset * 30},"limit":30},"sort":[{"field":"title","dir":"asc"}],"filters":[[{"field":"title","op":"like","value":"${_search ?? ""}"}],[{"field":"meal_id","op":"=","value":${_mealId.valueOrNull}}]$tags]}';
     }
     return text;
   }

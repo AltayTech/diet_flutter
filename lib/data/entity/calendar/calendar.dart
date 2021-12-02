@@ -56,10 +56,10 @@ class Term {
   final int paymentId;
 
   @JsonKey(name: 'diet_history_id')
-  final int dietHistoryId;
+  final int? dietHistoryId;
 
   @JsonKey(name: 'diet_goal_id')
-  final int dietGoalId;
+  final int? dietGoalId;
 
   @JsonKey(name: 'file_number')
   final int fileNumber;

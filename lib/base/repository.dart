@@ -338,8 +338,13 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult<ListFoodData> listFood(String filter, {bool invalidate = false}) async {
-    var response = await _apiClient.listFood(filter);
-    debugPrint('list food');
+    var response;
+    try {
+      response = await _apiClient.listFood(filter);
+      debugPrint('list food }');
+    }catch(e){
+      debugPrint('list food error $e');
+    }
     return response;
   }
 
@@ -397,7 +402,7 @@ class _RepositoryImpl extends Repository {
     try {
       response = await _apiClient.calendar(start, end);
       debugPrint(
-          'calendar ${response.requireData.terms[0].visits?.length} / ${response.requireData.terms[0].menus?.length}');
+          'calendar repository ${response.requireData.terms[0].visits?.length} / ${response.requireData.terms[0].menus?.length}');
       return response;
     } catch (e) {
       debugPrint('error $e');
