@@ -89,12 +89,14 @@ class ShopCategory {
 class ShopProduct {
   @JsonKey(name: "id")
   int? id;
+  @JsonKey(name: "items")
+  List<ShopProduct>? items;
   @JsonKey(name: "category_id")
   int? categoryId;
   @JsonKey(name: "product_name_en")
-  String? categoryNameEn;
+  String? productNameEn;
   @JsonKey(name: "product_name_hin")
-  String? category_name;
+  String? productNameHin;
   @JsonKey(name: "product_thambnail")
   String? productThambnail;
   @JsonKey(name: "short_descp_en")
@@ -141,4 +143,38 @@ class BannerItem {
   factory BannerItem.fromJson(Map<String, dynamic> json) => _$BannerItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$BannerItemToJson(this);
+}
+
+@JsonSerializable()
+class Orders {
+  @JsonKey(name: "items")
+  List<ShopProduct>? items;
+  @JsonKey(name: "count")
+  int? count;
+  @JsonKey(name: "sum")
+  int? sum;
+
+  Orders();
+
+  factory Orders.fromJson(Map<String, dynamic> json) => _$OrdersFromJson(json);
+
+  Map<String, dynamic> toJson() => _$OrdersToJson(this);
+}
+
+@JsonSerializable()
+class Category {
+  @JsonKey(name: "id")
+  int? id;
+  @JsonKey(name: "category_name_en")
+  int? categoryNameEn;
+  @JsonKey(name: "category_name_hin")
+  String? categoryNameHin;
+  @JsonKey(name: "image")
+  String? image;
+
+  Category();
+
+  factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CategoryToJson(this);
 }

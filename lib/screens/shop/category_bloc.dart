@@ -1,12 +1,7 @@
 import 'dart:async';
-import 'package:behandam/data/entity/psychology/admin.dart';
-import 'package:behandam/data/entity/psychology/calender.dart';
-import 'package:behandam/data/entity/psychology/package.dart';
-import 'package:behandam/data/entity/psychology/plan.dart';
-import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
-import 'package:behandam/data/entity/shop/category.dart';
+import 'package:behandam/extensions/bool.dart';
+import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shamsi_date/shamsi_date.dart';
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
@@ -19,46 +14,44 @@ class CategoryBloc{
 
   final _repository = Repository.getInstance();
 
-  final _category = BehaviorSubject<Category>();
-
-  bool _check = false;
-  List<Plan>? _dates;
-  List<Admin>? _admins;
-  List<Package>? _packages;
+  int _offset = 0;
+  int _totalRow = 0;
   final _waiting = BehaviorSubject<bool>();
+  final _products = BehaviorSubject<List<ShopProduct>>();
+  final _loadingMoreProducts = BehaviorSubject<bool>();
   final _navigateToVerify = LiveEvent();
-  final _navigate = LiveEvent();
-  final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
 
-  bool get check => _check;
-  List<Plan>? get dates => _dates;
-  List<Admin>? get admins => _admins;
-  List<Package>? get packages => _packages;
+  Stream<bool> get loadingMoreProducts => _loadingMoreProducts.stream;
+  bool get _isNotLoadingMore => _loadingMoreProducts.valueOrNull.isNullOrFalse;
+  // bool get _stillHaveMoreItems =>
+  //     (_products.valueOrNull?.length ?? 0) < _totalRow &&
+          // _listFood.valueOrNull?.items.foods?.length != 0;
   Stream<bool> get waiting => _waiting.stream;
+  Stream<List<ShopProduct>> get products => _products.stream;
   Stream get navigateToVerify => _navigateToVerify.stream;
-  Stream get navigate => _navigate.stream;
-  Stream get navigateTo => _navigateTo.stream;
   Stream get showServerError => _showServerError.stream;
 
-  Stream<Category> get category => _category.stream;
-
-
-  void getInvoice(){
-    try{
-      _repository.getPsychologyInvoice().then((value) {
-        _navigate.fire(value.data!.success);
-        print('success:${value.data!.success}');
-      });}catch(e) {
-      print("Myerror:$e");
+  void onScrollReachingEnd() {
+    if (_isNotLoadingMore
+        // && _stillHaveMoreItems
+    ) {
+      _offset++;
+      getProduct();
     }
+  }
+
+  void getProduct(){
+    _loadingMoreProducts.value = true;
+    _repository.getProduct().then((value) {
+      _products.value = value.data!.items!;
+    }).whenComplete(() => _loadingMoreProducts.value = false);
   }
 
   void dispose() {
     _waiting.close();
     _showServerError.close();
     _navigateToVerify.close();
-    _navigateTo.close();
-    _navigate.close();
+    _loadingMoreProducts.close();
   }
 }
