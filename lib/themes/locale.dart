@@ -21,6 +21,20 @@ abstract class AppLocale {
 
   static Future<bool> get isLocaleFreeOfDietCharge async => (await currentLocale) != AppLocale.fa;
 
+  static Future<List<Locale>> get otherLocales async {
+    final current = await currentLocale;
+    switch (current.languageCode) {
+      case 'fa':
+        return [en, ar];
+      case 'ar':
+        return [fa, en];
+      case 'en':
+        return [fa, ar];
+      default:
+        throw 'Current locale ${current.languageCode} is not included in switch statement';
+    }
+  }
+
   static Future<void> initialize() async {
     appInitialLocale = await currentLocale;
   }

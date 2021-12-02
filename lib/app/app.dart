@@ -207,7 +207,7 @@ class MyObs extends VxObserver {
 final navigator = VxNavigator(
 
   routes: {
-    '/': (_, __) => MaterialPage(child: FoodListPage()),
+    Routes.splash: (_, __) => MaterialPage(child: SplashScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.auth: (_, __) => MaterialPage(child: AuthScreen()),
@@ -269,6 +269,7 @@ final navigator = VxNavigator(
     Routes.paymentOnlineSuccess: (_, __) => MaterialPage(child: PaymentSuccessScreen()),
     RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) => MaterialPage(child: Block()),
     RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) => MaterialPage(child: Block()),
+
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(

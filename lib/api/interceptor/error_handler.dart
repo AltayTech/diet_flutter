@@ -96,8 +96,10 @@ class ErrorHandlerInterceptor extends Interceptor {
   }
 
   void _handleUnauthorizedError() async {
-    await AppSharedPreferences.logout();
-    navigator.routeManager.clearAndPush(Uri(path: Routes.auth));
+    if(navigator.currentConfiguration!.path!=Routes.login) {
+      await AppSharedPreferences.logout();
+      navigator.routeManager.clearAndPush(Uri(path: Routes.auth));
+    }
   }
 
   void _submitNonFatalReport(DioError err, [String? message]) {
