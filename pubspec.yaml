@@ -114,6 +114,7 @@ flutter:
     - assets/images/foodlist/archive/
     - assets/images/foodlist/advice/
     - assets/images/foodlist/advice/
+    - assets/images/shop/
   fonts:
     - family: Iransans
       fonts:

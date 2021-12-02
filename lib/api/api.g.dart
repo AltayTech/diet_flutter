@@ -1332,6 +1332,7 @@ class _RestClient implements RestClient {
     return value;
   }
 
+<<<<<<< HEAD
   @override
   Future<NetworkResponse<ShopModel>> getHomeShop() async {
     const _extra = <String, dynamic>{};
@@ -1351,6 +1352,8 @@ class _RestClient implements RestClient {
     return value;
   }
 
+=======
+>>>>>>> shop
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

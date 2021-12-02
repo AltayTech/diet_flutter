@@ -70,6 +70,7 @@ abstract class Routes {
   static const reviveBlock = '/revive/block';
   static const renewBlock = '/renew/block';
   static const splash = '/';
+  static const shopCategory = '/shopCategory';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

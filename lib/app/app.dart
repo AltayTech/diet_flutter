@@ -44,6 +44,7 @@ import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
+import 'package:behandam/screens/shop/category_page.dart';
 import 'package:behandam/screens/shop/home/shop_home.dart';
 import 'package:behandam/screens/splash/splash.dart';
 import 'package:behandam/screens/status/status_user.dart';
@@ -272,6 +273,7 @@ final navigator = VxNavigator(
     RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) => MaterialPage(child: Block()),
 
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
+    Routes.shopCategory: (_, __) => MaterialPage(child: CategoryPage()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),
