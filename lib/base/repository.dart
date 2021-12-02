@@ -28,6 +28,7 @@ import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
@@ -193,6 +194,8 @@ abstract class Repository {
 
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
   NetworkResult<VersionData>  getVersion();
+
+  NetworkResult<ShopModel>  getHomeShop();
 }
 
 class _RepositoryImpl extends Repository {
@@ -743,6 +746,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<RegisterOutput> landingReg(Register register) {
     var response = _apiClient.landingReg(register);
+    return response;
+  }
+
+  @override
+  NetworkResult<ShopModel> getHomeShop() {
+    var response = _apiClient.getHomeShop();
     return response;
   }
 

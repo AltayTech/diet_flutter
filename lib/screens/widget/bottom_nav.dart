@@ -55,8 +55,10 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
               child: Container(
                 width: double.maxFinite,
                 alignment: Alignment.center,
+                padding: EdgeInsets.all(6),
                 child: Stack(
                   alignment: Alignment.center,
+                  fit: StackFit.expand,
                   children: [
                     Container(
                       child: ImageUtils.fromLocal(
@@ -64,12 +66,12 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
                         width: 3.h,
                         height: 3.h,
                         color: widget.currentTab == type ? AppColors.primary : AppColors.iconsColor,
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.contain,
                       ),
                     ),
-                    if (type == BottomNavItem.PROFILE && MemoryApp.inboxCount >= 0)
+                    if (type == BottomNavItem.PROFILE && MemoryApp.inboxCount > 0)
                       Positioned(
-                        left: 0,
+                        left: 1,
                         top: 0,
                         child: Container(
                           width: 2.w,
