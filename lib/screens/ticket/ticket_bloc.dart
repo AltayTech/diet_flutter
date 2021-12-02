@@ -348,24 +348,7 @@ class TicketBloc {
       sendTicketMessage.ticketId = _ticketDetails!.ticket!.id;
       List<TicketItem> list = [];
       _ticketDetails!.ticket!.messages!.forEach((ticket) {
-        ticket.type = TypeTicketMessage.TEXT;
         TicketItem? exists;
-        if (_ticketDetails!.files != null)
-          for (Media file in _ticketDetails!.files!) {
-            //print('file = > ${file.toJson()}');
-            if (file.modelId == ticket.id) {
-              ticket.file = file;
-              if (file.collectionName == 'voice') {
-                ticket.type = TypeTicketMessage.VOICE;
-              } else {
-                ticket.type = TypeTicketMessage.TEXT_AND_ATTACHMENT;
-              }
-              break;
-            }
-          }
-        if (ticket.temp != null) {
-          ticket.type = TypeTicketMessage.TEMP;
-        }
         if (list
             .where((element) => element.createdAt!.contains(ticket.createdAt!.substring(0, 10)))
             .isNotEmpty)

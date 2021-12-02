@@ -25,6 +25,7 @@ import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
@@ -268,5 +269,6 @@ abstract class RestClient {
   @GET("/register")
   NetworkResult<RegisterOutput> landingReg(@Body() Register reg);
 
-
+  @GET("/homepage")
+  NetworkResult<ShopModel> getHomeShop();
 }
