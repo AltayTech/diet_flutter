@@ -53,6 +53,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     meal = ModalRoute.of(context)?.settings.arguments as Meals;
+    debugPrint('meal list food ${meal?.id}');
     if (meal != null) bloc.onMealChanged(meal!.id);
     scrollController = ScrollController()..addListener(onScroll);
   }
@@ -235,6 +236,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   }
 
   Widget foodItem(ListFood food) {
+    debugPrint('food/view item ${food.freeFoodItems?.length}');
     return StreamBuilder(
       stream: bloc.selectedFood,
       builder: (_, AsyncSnapshot<ListFood?> snapshot) {
@@ -257,39 +259,68 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                     : Colors.grey[200],
               ),
               padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        ...makingFoodItems(food).map((e) => e).toList(),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: snapshot.data?.id == food.id
-                            ? AppColors.primary
-                            : Colors.grey[500]!,
-                        width: 0.5,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            ...makingFoodItems(food).map((e) => e).toList(),
+                          ],
+                        ),
                       ),
-                      color: snapshot.data?.id == food.id
-                          ? AppColors.primary
-                          : Colors.grey[200],
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: snapshot.data?.id == food.id
+                                ? AppColors.primary
+                                : Colors.grey[500]!,
+                            width: 0.5,
+                          ),
+                          color: snapshot.data?.id == food.id
+                              ? AppColors.primary
+                              : Colors.grey[200],
+                        ),
+                        width: 7.w,
+                        height: 7.w,
+                        child: snapshot.data?.id == food.id
+                            ? Icon(
+                                Icons.check,
+                                size: 6.w,
+                                color: AppColors.onPrimary,
+                              )
+                            : Container(),
+                      ),
+                    ],
+                  ),
+                  if(snapshot.data?.id == food.id && food.freeFoodItems != null && food.freeFoodItems!.length > 0)
+                  Text(
+                    intl.selectOneFreeFood,
+                    style: typography.caption?.apply(
+                      fontSizeDelta: -2,
                     ),
-                    width: 7.w,
-                    height: 7.w,
-                    child: snapshot.data?.id == food.id
-                        ? Icon(
-                            Icons.check,
-                            size: 6.w,
-                            color: AppColors.onPrimary,
-                          )
-                        : Container(),
+                    textAlign: TextAlign.start,
+                  ),
+                  if(snapshot.data?.id == food.id && food.freeFoodItems != null && food.freeFoodItems!.length > 0)
+                    Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    runSpacing: 0,
+                    children: [
+                      ...food.freeFoodItems!.map((e) => Chip(
+                        backgroundColor: AppColors.onPrimary,
+                        label: Text(
+                          e.title,
+                          style: typography.caption,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                        ),
+                      )).toList(),
+                    ],
                   ),
                 ],
               ),

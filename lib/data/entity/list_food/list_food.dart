@@ -1,4 +1,5 @@
 
+import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'list_food.g.dart';
 
@@ -72,7 +73,7 @@ class ListFood{
       this.title,
       this.description,
       // this.freeFoods,
-      this.freeFoodsItems,
+      this.freeFoodItems,
       this.foodItems,
       );
 
@@ -88,8 +89,8 @@ class ListFood{
   // @JsonKey(name: 'free_foods')
   // final String? freeFoods;
 
-  @JsonKey(name: 'free_foods_items')
-  final List? freeFoodsItems;
+  @JsonKey(name: 'free_food_items')
+  final List<ListFoodItem>? freeFoodItems;
 
   @JsonKey(name: 'food_items')
   final List<ListFoodItem>? foodItems;

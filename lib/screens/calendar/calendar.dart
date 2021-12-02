@@ -393,30 +393,33 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
   }
 
   void alertBetweenVisits(Term term) {
-    for (int i = 1; i < term.visits!.length; i++) {
-      debugPrint(
-          'difference visit ${term.visits![i - 1].expiredAt} / ${term.visits![i].visitedAt}  / ${DateTime.parse(term.visits![i].visitedAt).difference(DateTime.parse(term.visits![i - 1].expiredAt)).inDays}');
-      if (DateTime.parse(term.visits![i].visitedAt)
-              .difference(DateTime.parse(term.visits![i - 1].expiredAt))
-              .inDays >
-          1) {
-        final delays = monthDays.where((element) =>
-            element.gregorian
-                .toDateTime()
-                .isAfter(DateTime.parse(term.visits![i - 1].expiredAt)) &&
-            element.gregorian
-                .toDateTime()
-                .isBefore(DateTime.parse(term.visits![i].visitedAt)));
-        delays.forEach((dayItem) {
-          if (!dayItem.types.contains(DayType.visitAlert))
-            dayItem.types.add(DayType.visitAlert);
-        });
+    if(term.visits != null) {
+      for (int i = 1; i < term.visits!.length; i++) {
+        // debugPrint(
+        //     'difference visit ${term.visits![i - 1].expiredAt} / ${term.visits![i].visitedAt}  / ${DateTime.parse(term.visits![i].visitedAt).difference(DateTime.parse(term.visits![i - 1].expiredAt)).inDays}');
+        if (DateTime
+            .parse(term.visits![i].visitedAt)
+            .difference(DateTime.parse(term.visits![i - 1].expiredAt))
+            .inDays >
+            1) {
+          final delays = monthDays.where((element) =>
+          element.gregorian
+              .toDateTime()
+              .isAfter(DateTime.parse(term.visits![i - 1].expiredAt)) &&
+              element.gregorian
+                  .toDateTime()
+                  .isBefore(DateTime.parse(term.visits![i].visitedAt)));
+          delays.forEach((dayItem) {
+            if (!dayItem.types.contains(DayType.visitAlert))
+              dayItem.types.add(DayType.visitAlert);
+          });
+        }
       }
     }
   }
 
   void alertDifferenceLastVisitAndTerm(Term term) {
-    if (term.visits!.length > 0 &&
+    if (term.visits != null && term.visits!.length > 0 &&
         DateTime.parse(term.expiredAt)
                 .difference(DateTime.parse(term.visits!.last.expiredAt))
                 .inDays >

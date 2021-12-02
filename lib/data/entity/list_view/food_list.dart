@@ -134,7 +134,7 @@ class Food {
     this.id,
     this.title,
     this.description,
-    this.freeFoods,
+    this.freeFood,
     this.freeFoodsItems,
     this.foodItems,
   );
@@ -148,11 +148,11 @@ class Food {
   @JsonKey(name: 'description')
   final String? description;
 
-  @JsonKey(name: 'free_foods')
-  final String? freeFoods;
+  @JsonKey(name: 'free_food')
+  final String? freeFood;
 
   @JsonKey(name: 'free_foods_items')
-  final List? freeFoodsItems;
+  final List<FoodItem>? freeFoodsItems;
 
   @JsonKey(name: 'food_items')
   final List<FoodItem>? foodItems;
