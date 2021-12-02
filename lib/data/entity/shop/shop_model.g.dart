@@ -77,8 +77,8 @@ Map<String, dynamic> _$ShopCategoryToJson(ShopCategory instance) =>
 ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
   ..id = json['id'] as int?
   ..categoryId = json['category_id'] as int?
-  ..categoryNameEn = json['product_name_en'] as String?
-  ..category_name = json['product_name_hin'] as String?
+  ..productNameEn = json['product_name_en'] as String?
+  ..productName = json['product_name_hin'] as String?
   ..productThambnail = json['product_thambnail'] as String?
   ..shortDescriptionEn = json['short_descp_en'] as String?
   ..shortDescription = json['short_descp_hin'] as String?
@@ -93,8 +93,8 @@ Map<String, dynamic> _$ShopProductToJson(ShopProduct instance) =>
     <String, dynamic>{
       'id': instance.id,
       'category_id': instance.categoryId,
-      'product_name_en': instance.categoryNameEn,
-      'product_name_hin': instance.category_name,
+      'product_name_en': instance.productNameEn,
+      'product_name_hin': instance.productName,
       'product_thambnail': instance.productThambnail,
       'short_descp_en': instance.shortDescriptionEn,
       'short_descp_hin': instance.shortDescription,

@@ -8,7 +8,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-enum BottomNavItem { PROFILE, SUPPORT, DIET, VITRINE, STATUS }
+enum BottomNavItem { PROFILE, SUPPORT, DIET, SHOP, STATUS }
 
 class BottomNav extends StatefulWidget {
   final BottomNavItem currentTab;
@@ -35,8 +35,8 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
             if (widget.currentTab != BottomNavItem.DIET)
               navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
             break;
-          case BottomNavItem.VITRINE:
-            if (widget.currentTab != BottomNavItem.VITRINE)
+          case BottomNavItem.SHOP:
+            if (widget.currentTab != BottomNavItem.SHOP)
               navigator.routeManager.clearAndPush(Uri.parse(Routes.vitrin));
             break;
           case BottomNavItem.STATUS:
@@ -139,7 +139,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
                 'assets/images/tab/food_menu_icon.svg', BottomNavItem.DIET, intl.diet, context)),
         Expanded(
             flex: 1,
-            child: item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.VITRINE, intl.vitrin,
+            child: item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.SHOP, intl.vitrin,
                 context)),
         Expanded(
             flex: 1,

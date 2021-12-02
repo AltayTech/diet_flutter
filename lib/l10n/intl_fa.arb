@@ -446,7 +446,6 @@
   "aGlanceToBodyState": "وضعیت جسمانی شما در یک نگاه",
   "physicalActivity": "فعالیت فیزیکی",
   "viewFoodList": "مشاهده لیست غذایی",
-  "editPhysicalInfo": "اصلاح وضعیت جسمانی",
   "selectYourMenu": "لیست غذایی موردنظرتو انتخاب کن",
   "waitingForSuccessPayment": "منتظر تایید پرداخت باشید",
   "paymentStatusForLastTime": "پرداخت شما بعد از 1 الی 2 ساعت آینده فعال خواهد شد",
@@ -518,5 +517,7 @@
   "buyThisCourse": "خرید این دوره",
   "myProduct": "محصولات من",
   "selectOneFreeFood": "یکی از آیتم های آزاد زیر رو انتخاب کن",
+  "view": "مشاهده",
+  "viewAll": "مشاهده همه",
   "understand": "متوجه شدم"
 }

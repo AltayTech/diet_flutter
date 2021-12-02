@@ -107,7 +107,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
         ),
       ),
       bottomNavigationBar: BottomNav(
-        currentTab: BottomNavItem.VITRINE,
+        currentTab: BottomNavItem.SHOP,
       ),
     ));
   }
