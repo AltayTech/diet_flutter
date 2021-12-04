@@ -47,6 +47,7 @@ import 'package:behandam/screens/regime/state_of_body.dart';
 import 'package:behandam/screens/shop/category_page.dart';
 import 'package:behandam/screens/shop/home/shop_home.dart';
 import 'package:behandam/screens/shop/orders.dart';
+import 'package:behandam/screens/shop/product_page.dart';
 import 'package:behandam/screens/splash/splash.dart';
 import 'package:behandam/screens/status/status_user.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
@@ -210,7 +211,7 @@ class MyObs extends VxObserver {
 final navigator = VxNavigator(
 
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: CategoryPage()),
+    Routes.splash: (_, __) => MaterialPage(child: ProductPage()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.auth: (_, __) => MaterialPage(child: AuthScreen()),
@@ -275,6 +276,7 @@ final navigator = VxNavigator(
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
     Routes.shopCategory: (_, __) => MaterialPage(child: CategoryPage()),
     Routes.shopOrders: (_, __) => MaterialPage(child: OrdersPage()),
+    Routes.shopProduct: (_, __) => MaterialPage(child: ProductPage()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

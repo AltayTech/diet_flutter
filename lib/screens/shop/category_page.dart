@@ -144,7 +144,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
               children: [
                 ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),
                 SizedBox(width: 2.w),
-                Text(intl.buyThisCourse,
+                Text(intl.buyCourse,
                     style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
               ],
             ),

@@ -514,10 +514,17 @@
   "cancelPdf": "انصراف",
   "behandam": "به اندام دکتر کرمانی",
   "shop": "فروشگاه به اندام",
-  "buyThisCourse": "خرید این دوره",
+  "buyCourse": "خرید این دوره",
   "myProduct": "محصولات من",
   "selectOneFreeFood": "یکی از آیتم های آزاد زیر رو انتخاب کن",
   "view": "مشاهده",
   "viewAll": "مشاهده همه",
+  "person": "نفر",
+  "courseTime": "زمان دوره",
+  "buyThisCourse": "این دوره را خریداری کردند",
+  "aboutThis": "درباره این دوره",
+  "viewCompletely": "مشاهده کامل",
+  "viewAllCourse": "مشاهده تمام جلسات",
+  "downloadAll": "دانلود همه قسمت ها",
   "understand": "متوجه شدم"
 }
