@@ -92,9 +92,9 @@ class ShopProduct {
   @JsonKey(name: "category_id")
   int? categoryId;
   @JsonKey(name: "product_name_en")
-  String? categoryNameEn;
+  String? productNameEn;
   @JsonKey(name: "product_name_hin")
-  String? category_name;
+  String? productName;
   @JsonKey(name: "product_thambnail")
   String? productThambnail;
   @JsonKey(name: "short_descp_en")
