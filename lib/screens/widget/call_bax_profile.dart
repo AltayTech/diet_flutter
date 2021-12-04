@@ -63,7 +63,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                 Expanded(
                   flex: 1,
                   child:
-                      _callCard('شماره تماس دوم: ', profileBloc.userInfo.callNumber ?? 'ثبت نشده'),
+                      _callCard('شماره تماس دوم: ', profileBloc.userInfo.callNumber ?? intl.notRegister),
                 ),
                 Container(
                   width: double.maxFinite,
@@ -74,7 +74,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                 Expanded(
                   flex: 1,
                   child: _callCard('شماره واتساپ : ',
-                      profileBloc.userInfo.socialMedia![0].pivot!.link ?? 'ثبت نشده'),
+                      profileBloc.userInfo.socialMedia!.length>0 ? profileBloc.userInfo.socialMedia![0].pivot!.link ?? intl.notRegister :intl.notRegister),
                 ),
                 Container(
                   width: double.maxFinite,
@@ -85,7 +85,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                 Expanded(
                   flex: 1,
                   child: _callCard('شماره اسکایپ : ',
-                      profileBloc.userInfo.socialMedia![2].pivot!.link ?? 'ثبت نشده'),
+                      profileBloc.userInfo.socialMedia!.length>0 ? profileBloc.userInfo.socialMedia![2].pivot!.link ?? intl.notRegister:intl.notRegister),
                 ),
               ],
             ),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
@@ -214,10 +215,18 @@ class FoodListBloc {
       _showServerError.fire(false);
     });
   }
-
+  void getPdfMeal(FoodDietPdf type) {
+    _repository.getPdfUrl(type).then((value) {
+      Utils.launchURL(value.data!.url!);
+      // Share.share(value['data']['url'])
+    }).whenComplete(() {
+      _navigateTo.fire(false);
+    });
+  }
   void dispose() {
     _loadingContent.close();
     _foodList.close();
+    _navigateTo.close();
     _date.close();
     _weekDays.close();
     _selectedWeekDay.close();

@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/screens/regime/goal/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -63,15 +64,17 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
                         textAlign: TextAlign.center,
                       ),
                       Space(height: 2.h),
-                      ...snapshot.requireData.items
-                          .map((history) => item(history))
-                          .toList(),
+                      ...snapshot.requireData.items.map((history) => item(history)).toList(),
                       Center(
                         child: SubmitButton(
                             label: intl.nextStage,
                             onTap: () {
-                              DialogUtils.showDialogProgress(context: context);
-                              bloc.condition();
+                              if (bloc.selectedGoalValue != null) {
+                                DialogUtils.showDialogProgress(context: context);
+                                bloc.condition();
+                              } else {
+                                Utils.getSnackbarMessage(context, intl.errorSelectedItem);
+                              }
                             }),
                       ),
                     ],
@@ -94,23 +97,21 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
           child: Container(
             decoration: AppDecorations.boxMedium.copyWith(
               color: AppColors.greenRuler,
-              boxShadow:
-              snapshot.hasData && snapshot.requireData!.id == goal.id
+              boxShadow: snapshot.hasData && snapshot.requireData!.id == goal.id
                   ? [
-                BoxShadow(
-                  color: AppColors.greenRuler,
-                  blurRadius: 6.0,
-                  spreadRadius: 1.0,
-                ),
-              ]
+                      BoxShadow(
+                        color: AppColors.greenRuler,
+                        blurRadius: 6.0,
+                        spreadRadius: 1.0,
+                      ),
+                    ]
                   : null,
             ),
             margin: EdgeInsets.only(bottom: 2.h),
             child: Container(
               margin: EdgeInsets.only(right: 3.w),
               decoration: BoxDecoration(
-                color:
-                snapshot.hasData && snapshot.requireData!.id == goal.id
+                color: snapshot.hasData && snapshot.requireData!.id == goal.id
                     ? AppColors.onPrimary
                     : Colors.grey[300],
                 borderRadius: BorderRadius.only(

@@ -201,6 +201,7 @@ abstract class Repository {
   NetworkResult<ShopProduct>  getProduct();
 
   NetworkResult<Orders>  getOrders();
+  NetworkResult<TermPackage>  getTermPackage();
 }
 
 class _RepositoryImpl extends Repository {
@@ -769,6 +770,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Orders> getOrders() {
     var response = _apiClient.getOrders();
+    return response;
+  }
+
+  @override
+  NetworkResult<TermPackage> getTermPackage() {
+    var response = _apiClient.getTermPackage();
     return response;
   }
 

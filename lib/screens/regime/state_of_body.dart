@@ -3,11 +3,13 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/screens/regime/provider.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/regime/ruler_header.dart';
-import 'package:behandam/screens/utility/custom_ruler.dart';
 import 'package:behandam/screens/utility/alert.dart';
+import 'package:behandam/screens/utility/custom_ruler.dart';
+import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -19,7 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:behandam/extensions/bool.dart';
+
 import '../../routes.dart';
 
 class BodyStateScreen extends StatefulWidget {
@@ -79,8 +81,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (navigator.currentConfiguration!.path !=
-                      Routes.weightEnter)
+                  if (navigator.currentConfiguration!.path != Routes.weightEnter)
                     Text(
                       intl.enterYourState,
                       textAlign: TextAlign.center,
@@ -94,14 +95,12 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                         return Column(
                           children: [
                             rulers(snapshot.requireData),
-                            if (navigator.currentConfiguration!.path !=
-                                Routes.weightEnter)
+                            if (navigator.currentConfiguration!.path != Routes.weightEnter)
                               birthDayBox(snapshot.requireData),
                             Space(height: 2.h),
                             if (!snapshot.requireData.isForbidden.isNullOrFalse)
                               Alert(
-                                  text: snapshot.requireData.mustGetNotrica
-                                          .isNullOrFalse
+                                  text: snapshot.requireData.mustGetNotrica.isNullOrFalse
                                       ? intl.itIsNotPossible
                                       : intl.userNotricaRegime)
                             else
@@ -110,14 +109,11 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                                 intl.confirmContinue,
                                 Size(100.w, 8.h),
                                 () {
-                                  DialogUtils.showDialogProgress(
-                                      context: context);
+                                  DialogUtils.showDialogProgress(context: context);
                                   snapshot.requireData.weight = double.parse(
                                       '${snapshot.requireData.kilo}.${snapshot.requireData.gram}');
-                                  debugPrint(
-                                      'body weight ${snapshot.requireData.weight}');
-                                  if (navigator.currentConfiguration!.path ==
-                                      Routes.weightEnter)
+                                  debugPrint('body weight ${snapshot.requireData.weight}');
+                                  if (navigator.currentConfiguration!.path == Routes.weightEnter)
                                     regimeBloc.sendVisit(snapshot.requireData);
                                   else
                                     regimeBloc.sendInfo(snapshot.requireData);
@@ -152,18 +148,16 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
           unit: intl.kilo,
           secondUnit: intl.gr,
           color: AppColors.purpleRuler,
-          helpClick: () => DialogUtils.showDialogPage(
-              context: context, child: HelpDialog(helpId: 2)),
+          helpClick: () =>
+              DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 2)),
           iconPath: 'assets/images/diet/weight_icon.svg',
           onClick: (val) {
             physicalInfo.kilo = val;
-            physicalInfo.weight =
-                double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
+            physicalInfo.weight = double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
           },
           onClickSecond: (val) {
             physicalInfo.gram = val;
-            physicalInfo.weight =
-                double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
+            physicalInfo.weight = double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
           },
         ),
         if (navigator.currentConfiguration!.path != Routes.weightEnter)
@@ -175,8 +169,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             heading: intl.height,
             unit: intl.centimeter,
             color: AppColors.pinkRuler,
-            helpClick: () => DialogUtils.showDialogPage(
-                context: context, child: HelpDialog(helpId: 3)),
+            helpClick: () =>
+                DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 3)),
             iconPath: 'assets/images/diet/height_icon.svg',
             onClick: (val) => physicalInfo.height = val,
           ),
@@ -189,8 +183,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             heading: intl.wrist,
             unit: intl.centimeter,
             color: AppColors.blueRuler,
-            helpClick: () => DialogUtils.showDialogPage(
-                context: context, child: HelpDialog(helpId: 4)),
+            helpClick: () =>
+                DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 4)),
             iconPath: 'assets/images/diet/wrist_icon.svg',
             onClick: (val) => physicalInfo.wrist = val,
           ),
@@ -204,8 +198,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             heading: intl.pregnancyWeek,
             unit: intl.week,
             color: AppColors.greenRuler,
-            helpClick: () => DialogUtils.showDialogPage(
-                context: context, child: HelpDialog(helpId: 6)),
+            helpClick: () =>
+                DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 6)),
             iconPath: 'assets/images/diet/pregnancy_icon.svg',
             onClick: (val) => setState(() {
               physicalInfo.pregnancyWeek = val;
@@ -228,18 +222,16 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   void setData(PhysicalInfoData data) {
     data.kilo = int.parse(data.weight!.toString().split('.').first);
-    data.gram =
-        int.parse(data.weight!.toString().split('.').last.substring(0, 1));
+    data.gram = int.parse(data.weight!.toString().split('.').last.substring(0, 1));
     data.isForbidden = false;
     data.mustGetNotrica = false;
     if (data.birthDate.isEmptyOrNull)
       data.isForbidden = true;
     else {
-      if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays <
-          (365 * 16)) {
+      if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays < (365 * 16)) {
         data.isForbidden = true;
-        if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays >
-            (365 * 10)) data.mustGetNotrica = true;
+        if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays > (365 * 10))
+          data.mustGetNotrica = true;
         debugPrint(
             'date difference ${DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays}');
       }
@@ -300,28 +292,33 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   String? birthdateFormatted(PhysicalInfoData physicalInfo) {
     if (!physicalInfo.birthDate.isEmptyOrNull) {
-      var formatter =
-          Jalali.fromDateTime(DateTime.parse(physicalInfo.birthDate!))
-              .formatter;
+      var formatter = Jalali.fromDateTime(DateTime.parse(physicalInfo.birthDate!)).formatter;
       return '${formatter.d} ${formatter.mN} ${formatter.yyyy}';
     }
     return null;
   }
 
   Future _selectDate(PhysicalInfoData physicalInfo) async {
-    Jalali? picked = await showPersianDatePicker(
-      context: context,
-      initialDate: physicalInfo.birthDate.isEmptyOrNull
-          ? Jalali.now()
-          : Jalali.fromDateTime(DateTime.parse(physicalInfo.birthDate!)),
-      firstDate: Jalali(1200, 8),
-      lastDate: Jalali(1450, 9),
-    );
-    setState(() {
-      physicalInfo.birthDate =
-          picked!.toGregorian().toDateTime().toString().substring(0, 10);
-      debugPrint('birthdate ${physicalInfo.birthDate} / $picked');
-    });
+    DialogUtils.showBottomSheetPage(
+        context: context,
+        child: SingleChildScrollView(child: Container(
+          height: 32.h,
+          padding: EdgeInsets.all(5.w),
+          alignment: Alignment.center,
+          child: Center(
+            child: CustomDate(
+              function: (value) {
+                print('value = > $value');
+                setState(() {
+                  physicalInfo.birthDate =
+                  value!;
+                });
+              },
+              datetime: physicalInfo.birthDate,
+              maxYear: Jalali.now().year - 10,
+            ),
+          ),
+        ),));
   }
 
   @override
@@ -338,6 +335,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

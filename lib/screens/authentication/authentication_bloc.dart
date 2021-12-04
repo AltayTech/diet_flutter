@@ -1,20 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:behandam/base/network_response.dart';
+
 import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
-import 'package:behandam/data/entity/auth/status.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:velocity_x/velocity_x.dart';
-import 'package:dio/dio.dart';
 
-import '../../api/api.dart';
-import '../../routes.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
@@ -35,10 +29,15 @@ class AuthenticationBloc {
   late List<CountryCode> countries;
 
   CountryCode get subject => _subject;
+
   Stream<List<CountryCode>> get subjectList => _subjectList.stream;
+
   Stream<bool> get waiting => _waiting.stream;
+
   Stream get navigateToVerify => _navigateToVerify.stream;
+
   Stream get navigateTo => _navigateTo.stream;
+
   Stream get showServerError => _showServerError.stream;
 
   void fetchCountries() {
@@ -64,22 +63,23 @@ class AuthenticationBloc {
     }
   }
 
+  void setSubject(CountryCode value) {
+    _subject = value;
+  }
+
   void loginMethod(String phoneNumber) {
-    _waiting.value = true;
     _repository.status(phoneNumber).then((value) {
       _navigateToVerify.fire(value.next);
       print('value: ${value.data!.isExist}');
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _showServerError.fire(false));
   }
 
   void passwordMethod(User user) {
-    _waiting.value = true;
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      print(
-          'pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      print('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       _navigateToVerify.fire(value.next);
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _showServerError.fire(false));
   }
 
   void resetPasswordMethod(Reset pass) {
@@ -115,14 +115,15 @@ class AuthenticationBloc {
     _repository.verify(verify).then((value) async {
       if (value.data!.token != null)
         await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
-      print('verify code ${value.next} ${value.data!.toJson()} / ${await AppSharedPreferences.authToken}');
+      print(
+          'verify code ${value.next} ${value.data!.toJson()} / ${await AppSharedPreferences.authToken}');
       _navigateToVerify.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void landingReg(Register register){
+  void landingReg(Register register) {
     _waiting.value = true;
-    _repository.landingReg(register).then((value) async{
+    _repository.landingReg(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.token = value.requireData.token;
       MemoryApp.analytics!.logEvent(name: "register_success");

@@ -34,6 +34,7 @@ class DietGoalBloc {
   Stream<DietGoalData> get dietGoals => _dietGoals.stream;
 
   Stream<DietGoal?> get selectedGoal => _selectedGoal.stream;
+  DietGoal? get selectedGoalValue => _selectedGoal.stream.valueOrNull;
 
   Stream get navigateTo => _navigateTo.stream;
 

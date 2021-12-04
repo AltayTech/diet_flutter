@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/screens/regime/diet_hostory/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -70,8 +71,12 @@ class _DietHistoryPageState extends ResourcefulState<DietHistoryPage> {
                         child: SubmitButton(
                             label: intl.nextStage,
                             onTap: () {
-                              DialogUtils.showDialogProgress(context: context);
-                              bloc.condition();
+                              if(bloc.selectedDietHistoryValue!=null) {
+                                DialogUtils.showDialogProgress(context: context);
+                                bloc.condition();
+                              }else{
+                                Utils.getSnackbarMessage(context, intl.errorSelectedItem);
+                              }
                             }),
                       ),
                     ],

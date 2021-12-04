@@ -1,12 +1,12 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
-import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -33,10 +33,9 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
   void initState() {
     super.initState();
     // bloc = FoodListBloc(false);
-    _animationController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this, value: 1);
-    _animation =
-        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
+    _animationController =
+        AnimationController(duration: const Duration(milliseconds: 2000), vsync: this, value: 1);
+    _animation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
     _animation = _tween.animate(_animation);
     _animationController.repeat();
   }
@@ -92,18 +91,22 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
               StreamBuilder(
                 stream: bloc.foodList,
                 builder: (_, AsyncSnapshot<FoodListData?> snapshot) {
-                  if(snapshot.hasData) {
-                    return replaceBox(snapshot.requireData!.meals?.firstWhere((
-                        element) => element.id == meal!.id));
+                  if (snapshot.hasData) {
+                    return replaceBox(snapshot.requireData!.meals
+                        ?.firstWhere((element) => element.id == meal!.id));
                   }
                   return Progress();
                 },
               ),
-              Space(height: 6.h,),
-              SubmitButton(label: intl.replaceFood, onTap: (){
-                bloc.onReplacingFood(meal!.id);
-                VxNavigator.of(context).pop();
-              }),
+              Space(
+                height: 6.h,
+              ),
+              SubmitButton(
+                  label: intl.replaceFood,
+                  onTap: () {
+                    bloc.onReplacingFood(meal!.id);
+                    VxNavigator.of(context).pop();
+                  }),
             ],
           );
         },
@@ -111,7 +114,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
     );
   }
 
-  Widget currentMeal(){
+  Widget currentMeal() {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
       shape: AppShapes.rectangleMild,
@@ -127,8 +130,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
               decoration: AppDecorations.boxMild.copyWith(
                 color: AppColors.primary.withOpacity(0.4),
               ),
-              padding:
-              EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -140,7 +142,8 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                         decoration: AppDecorations.circle.copyWith(
                           color: AppColors.onPrimary,
                         ),
-                        // child: ImageUtils(),
+                        child: ImageUtils.fromLocal('assets/images/foodlist/${meal?.icon}.svg',
+                            color: AppColors.accentColor, padding: EdgeInsets.all(2.w)),
                       ),
                       Space(width: 2.w),
                       Expanded(
@@ -179,11 +182,9 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
   }
 
   Widget foodItems() {
-    List<int> items = meal?.food == null
-        ? []
-        : List.generate(
-            (meal!.food.foodItems!.length * 2) - 1, (i) => i);
-            // (meal!.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
+    List<int> items =
+        meal?.food == null ? [] : List.generate((meal!.food.foodItems!.length * 2) - 1, (i) => i);
+    // (meal!.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
     int index = 0;
     return Container(
       child: Wrap(
@@ -201,8 +202,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                   label: FittedBox(
                     child: Text(
                       // '${meal!.food!.ratios![0].ratioFoodItems![index].unitTitle.replaceAll('*', intl.and)} ${meal!.food!.ratios![0].ratioFoodItems![index].title}',
-                      meal?.food?.foodItems?[index].title ??
-                          '',
+                      meal?.food?.foodItems?[index].title ?? '',
                       style: typography.caption,
                       textAlign: TextAlign.center,
                       // softWrap: true,
@@ -246,7 +246,8 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                   decoration: AppDecorations.circle.copyWith(
                     color: AppColors.primary,
                   ),
-                  // child: ImageUtils(),
+                  child: ImageUtils.fromLocal('assets/images/foodlist/${meal?.icon}.svg',
+                      color: Colors.white, padding: EdgeInsets.all(2.w)),
                 ),
                 Space(width: 2.w),
                 Expanded(
@@ -304,8 +305,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                                       widget = Chip(
                                         backgroundColor: AppColors.onPrimary,
                                         label: Text(
-                                          meal?.newFood?.foodItems?[index].title ??
-                                              '',
+                                          meal?.newFood?.foodItems?[index].title ?? '',
                                           style: typography.caption,
                                           textAlign: TextAlign.center,
                                           softWrap: true,
@@ -348,6 +348,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

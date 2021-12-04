@@ -1,8 +1,12 @@
+import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
+import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -49,7 +53,60 @@ class WidgetIconTextProgressState extends ResourcefulState<WidgetIconTextProgres
             //Navigator.of(context).pushNamed(InboxList.routeName);
             break;
           case 2:
-            // showDialogDownload();
+            DialogUtils.showDialogPage(
+                context: context,
+                child: Center(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5.w),
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                    width: double.maxFinite,
+                    decoration: AppDecorations.boxLarge.copyWith(
+                      color: AppColors.onPrimary,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          intl.receiveList,
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                          textAlign: TextAlign.center,
+                          textDirection: context.textDirectionOfLocale,
+                        ),
+                        SizedBox(height: 1.h),
+                        Text(
+                          intl.pdfTxt,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(color: AppColors.penColor),
+                          textDirection: context.textDirectionOfLocale,
+                        ),
+                        SizedBox(height: 3.h),
+                        SubmitButton(
+                            label: intl.receiveTermPdf,
+                            onTap: () {
+                              Navigator.pop(context);
+                              bloc.getPdfMeal(FoodDietPdf.TERM);
+                            }),
+                        SizedBox(height: 1.h),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: ButtonStyle(
+                            fixedSize: MaterialStateProperty.all(Size(70.w, 5.h)),
+                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                          ),
+                          child: Text(intl.cancelPdf,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .button!
+                                  .copyWith(color: AppColors.btnColor)),
+                        ),
+                        SizedBox(height: 1.h),
+                      ],
+                    ),
+                  ),
+                ));
             break;
           case 3:
           // Navigator.of(context).pushNamed(Refund.routeName);

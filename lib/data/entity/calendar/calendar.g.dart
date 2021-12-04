@@ -67,3 +67,9 @@ Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['menu_days'] as int,
       json['menu_title'] as String,
     );
+
+TermPackage _$TermPackageFromJson(Map<String, dynamic> json) => TermPackage()
+  ..term = json['term'] == null
+      ? null
+      : Term.fromJson(json['term'] as Map<String, dynamic>)
+  ..showRefundLink = json['show_refund_link'] as bool?;

@@ -210,7 +210,7 @@ class MyObs extends VxObserver {
 final navigator = VxNavigator(
 
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: CategoryPage()),
+    Routes.splash: (_, __) => MaterialPage(child: SplashScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.auth: (_, __) => MaterialPage(child: AuthScreen()),
@@ -235,15 +235,15 @@ final navigator = VxNavigator(
     Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
     Routes.calendar: (_, __) => MaterialPage(child: CalendarPage()),
     RegExp(r"\/(reg|renew|revive)(\/diet\/type)"): (_, __) => MaterialPage(child: RegimeTypeScreen()),
-    Routes.bodyState: (_, __) => MaterialPage(child: BodyStateScreen()),
-    Routes.bodyStatus: (_, __) => MaterialPage(child: BodyStatusScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/size)"): (_, __) => MaterialPage(child: BodyStateScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/report)"): (_, __) => MaterialPage(child: BodyStatusScreen()),
     RegExp(r"\/(reg|renew|revive)(\/sick\/select)"): (_, __) => MaterialPage(child: SicknessScreen()),
-    Routes.special_sickness: (_, __) => MaterialPage(child: SicknessSpecialScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/special)"): (_, __) => MaterialPage(child: SicknessSpecialScreen()),
     Routes.advice: (_, __) => MaterialPage(child: AdvicePage()),
-    Routes.package: (_, __) => MaterialPage(child: PackageListScreen()),
-    Routes.paymentBill: (_, __) => MaterialPage(child: PaymentBillScreen()),
-    Routes.paymentCardConfirm: (_, __) => MaterialPage(child: PaymentSuccessScreen()),
-    Routes.cardToCard: (_, __) => MaterialPage(child: DebitCardPage()),
+    RegExp(r"\/(reg|renew|revive)(\/package)"): (_, __) => MaterialPage(child: PackageListScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/payment\/bill)"): (_, __) => MaterialPage(child: PaymentBillScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/payment\/card\/confirm)"): (_, __) => MaterialPage(child: PaymentSuccessScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/payment\/card)"): (_, __) => MaterialPage(child: DebitCardPage()),
     Routes.vitrin: (_, __) => MaterialPage(child: VitrinScreen()),
     Routes.psychologyIntro: (_, __) => MaterialPage(child: PsychologyIntroScreen()),
     Routes.psychologyCalender: (_, params) =>
@@ -275,6 +275,7 @@ final navigator = VxNavigator(
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
     Routes.shopCategory: (_, __) => MaterialPage(child: CategoryPage()),
     Routes.shopOrders: (_, __) => MaterialPage(child: OrdersPage()),
+    Routes.shopHome: (_, __) => MaterialPage(child: ShopHomeScreen()),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

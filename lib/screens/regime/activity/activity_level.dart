@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -65,13 +66,19 @@ class _ActivityLevelPageState extends ResourcefulState<ActivityLevelPage> {
                         textAlign: TextAlign.center,
                       ),
                       Space(height: 2.h),
-                      ...snapshot.requireData.items
-                          .map((activity) => item(activity))
-                          .toList(),
-                      Center(child: SubmitButton(label: intl.nextStage, onTap: () {
-                        DialogUtils.showDialogProgress(context: context);
-                        bloc.condition();
-                      })),
+                      ...snapshot.requireData.items.map((activity) => item(activity)).toList(),
+                      Center(
+                          child: SubmitButton(
+                              label: intl.nextStage,
+                              onTap: () {
+
+                                if(bloc.selectedActivity!=null) {
+                                  DialogUtils.showDialogProgress(context: context);
+                                  bloc.condition();
+                                }else{
+                                  Utils.getSnackbarMessage(context, intl.errorSelectedItem);
+                                }
+                              })),
                     ],
                   );
                 return Center(child: Progress());
@@ -88,20 +95,21 @@ class _ActivityLevelPageState extends ResourcefulState<ActivityLevelPage> {
       stream: bloc.selectedActivityLevel,
       builder: (_, AsyncSnapshot<ActivityData?> snapshot) {
         return GestureDetector(
-          onTap: () => bloc.onActivityLevelClick(activity),
+          onTap: () {
+            bloc.onActivityLevelClick(activity);
+          },
           child: Container(
             decoration: AppDecorations.boxMedium.copyWith(
               color: AppColors.greenRuler,
-              boxShadow:
-                  snapshot.hasData && snapshot.requireData!.id == activity.id
-                      ? [
-                          BoxShadow(
-                            color: AppColors.greenRuler,
-                            blurRadius: 6.0,
-                            spreadRadius: 1.0,
-                          ),
-                        ]
-                      : null,
+              boxShadow: snapshot.hasData && snapshot.requireData!.id == activity.id
+                  ? [
+                      BoxShadow(
+                        color: AppColors.greenRuler,
+                        blurRadius: 6.0,
+                        spreadRadius: 1.0,
+                      ),
+                    ]
+                  : null,
             ),
             margin: EdgeInsets.only(bottom: 2.h),
             child: Container(

@@ -11,10 +11,10 @@ import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/food_list_curve.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
@@ -35,7 +35,6 @@ class FoodListAppbar extends StatefulWidget {
 
 class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
   late FoodListBloc bloc;
-  late ProfileBloc profileBloc;
 
   // int? _selectedDayIndex;
 
@@ -43,7 +42,6 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    profileBloc = ProfileBloc();
   }
 
   @override
@@ -89,39 +87,55 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                       InkWell(
                         onTap: () => DialogUtils.showDialogPage(
                             context: context,
-                            child: Container(
-                              height: 40.h,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                                width: double.maxFinite,
+                                decoration: AppDecorations.boxLarge.copyWith(
+                                  color: AppColors.onPrimary,
+                                ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(intl.receiveList,
-                                        style: TextStyle(fontWeight: FontWeight.w700)),
+                                    Text(
+                                      intl.receiveList,
+                                      style: TextStyle(fontWeight: FontWeight.w700),
+                                      textAlign: TextAlign.center,
+                                      textDirection: context.textDirectionOfLocale,
+                                    ),
                                     SizedBox(height: 1.h),
-                                    Text(intl.pdfTxt,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: AppColors.penColor)),
-                                    button(AppColors.btnColor, intl.receivePdf, Size(70.w, 5.h),
-                                        () {
-                                      profileBloc.getPdfMeal(FoodDietPdf.WEEK);
-                                    }),
-                                    OutlinedButton(
+                                    Text(
+                                      intl.pdfTxt,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(color: AppColors.penColor),
+                                      textDirection: context.textDirectionOfLocale,
+                                    ),
+                                    SizedBox(height: 3.h),
+                                    SubmitButton(
+                                        label: intl.receivePdf,
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          DialogUtils.showDialogProgress(context: context);
+                                          bloc.getPdfMeal(FoodDietPdf.WEEK);
+                                        }),
+                                    SizedBox(height: 1.h),
+                                    TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
                                       style: ButtonStyle(
                                         fixedSize: MaterialStateProperty.all(Size(70.w, 5.h)),
                                         backgroundColor: MaterialStateProperty.all(Colors.white),
-                                        foregroundColor:
-                                            MaterialStateProperty.all(AppColors.penColor),
-                                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(30.0))),
                                       ),
                                       child: Text(intl.cancelPdf,
-                                          style: TextStyle(
-                                              color: AppColors.btnColor, fontSize: 16.sp)),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .button!
+                                              .copyWith(color: AppColors.btnColor)),
                                     ),
+                                    SizedBox(height: 1.h),
                                   ],
                                 ),
                               ),
@@ -164,13 +178,13 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.dark_mode,
+              Icons.calendar_today_outlined,
               size: 6.w,
               color: AppColors.surface,
             ),
             Space(width: 3.w),
             Text(
-              'تقویم',
+              intl.calendar,
               textAlign: TextAlign.center,
               style: typography.caption?.apply(
                 color: AppColors.surface,
