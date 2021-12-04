@@ -63,7 +63,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
                               borderRadius: BorderRadius.circular(10.0)),
                           child: Column(
                             children: [
-                              firstTile(order.productNameHin,order.productThambnail),
+                              firstTile(order.productName,order.productThambnail),
                               // Padding(
                               //   padding: const EdgeInsets.only(
                               //       right: 12.0, left: 12.0),

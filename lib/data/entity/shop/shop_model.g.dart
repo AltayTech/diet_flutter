@@ -81,11 +81,7 @@ ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
       .toList()
   ..categoryId = json['category_id'] as int?
   ..productNameEn = json['product_name_en'] as String?
-<<<<<<< HEAD
   ..productName = json['product_name_hin'] as String?
-=======
-  ..productNameHin = json['product_name_hin'] as String?
->>>>>>> category_service
   ..productThambnail = json['product_thambnail'] as String?
   ..shortDescriptionEn = json['short_descp_en'] as String?
   ..shortDescription = json['short_descp_hin'] as String?
@@ -102,11 +98,7 @@ Map<String, dynamic> _$ShopProductToJson(ShopProduct instance) =>
       'items': instance.items,
       'category_id': instance.categoryId,
       'product_name_en': instance.productNameEn,
-<<<<<<< HEAD
       'product_name_hin': instance.productName,
-=======
-      'product_name_hin': instance.productNameHin,
->>>>>>> category_service
       'product_thambnail': instance.productThambnail,
       'short_descp_en': instance.shortDescriptionEn,
       'short_descp_hin': instance.shortDescription,
