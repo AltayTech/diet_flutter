@@ -71,6 +71,7 @@ abstract class Routes {
   static const renewBlock = '/renew/block';
   static const splash = '/';
   static const shopCategory = '/shopCategory';
+  static const shopOrders = '/shopOrders';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

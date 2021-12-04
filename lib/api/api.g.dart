@@ -1351,6 +1351,47 @@ class _RestClient implements RestClient {
     return value;
   }
 
+<<<<<<< HEAD
+=======
+  @override
+  Future<NetworkResponse<ShopProduct>> getProduct() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<ShopProduct>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/products',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<ShopProduct>.fromJson(
+      _result.data!,
+      (json) => ShopProduct.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<Orders>> getOrders() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<Orders>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/orders',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<Orders>.fromJson(
+      _result.data!,
+      (json) => Orders.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+>>>>>>> category_service
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

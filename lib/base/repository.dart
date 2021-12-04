@@ -193,9 +193,14 @@ abstract class Repository {
   NetworkResult<dynamic> visit(PhysicalInfoData requestData);
 
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
+
   NetworkResult<VersionData>  getVersion();
 
   NetworkResult<ShopModel>  getHomeShop();
+
+  NetworkResult<ShopProduct>  getProduct();
+
+  NetworkResult<Orders>  getOrders();
 }
 
 class _RepositoryImpl extends Repository {
@@ -752,6 +757,18 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<ShopModel> getHomeShop() {
     var response = _apiClient.getHomeShop();
+    return response;
+  }
+
+  @override
+  NetworkResult<ShopProduct> getProduct() {
+   var response = _apiClient.getProduct();
+   return response;
+  }
+
+  @override
+  NetworkResult<Orders> getOrders() {
+    var response = _apiClient.getOrders();
     return response;
   }
 

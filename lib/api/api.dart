@@ -271,4 +271,11 @@ abstract class RestClient {
 
   @GET("/homepage")
   NetworkResult<ShopModel> getHomeShop();
+
+  @GET("/products")
+  NetworkResult<ShopProduct> getProduct();
+
+  @GET("/orders")
+  NetworkResult<Orders> getOrders();
 }
+
