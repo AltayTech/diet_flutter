@@ -1,12 +1,11 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/profile/tools_box.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/toolbar_profile.dart';
+import 'package:behandam/screens/profile/tools_box.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/cross_item_profile.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -150,20 +149,50 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                         title: intl.help,
                         listIcon: 'assets/images/profile/guide.svg',
                         index: 0),
-                    if (MemoryApp.token != null && profileBloc.showRefund) Space(height: 2.h),
-                    if (MemoryApp.token != null && profileBloc.showRefund)
-                      WidgetIconTextProgress(
-                          countShow: false,
-                          title: intl.requestBackPayment,
-                          listIcon: 'assets/images/diet/dollar_symbol.svg',
-                          index: 3),
-                    if (MemoryApp.token != null && profileBloc.showPdf) Space(height: 2.h),
-                    if (MemoryApp.token != null && profileBloc.showPdf)
-                      WidgetIconTextProgress(
-                          countShow: false,
-                          title: intl.getPdfTerm,
-                          listIcon: 'assets/images/foodlist/share/downloadPdf.svg',
-                          index: 2),
+                    StreamBuilder(
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data == true)
+                          return Space(height: 2.h);
+                        else
+                          return Container();
+                      },
+                      stream: profileBloc.showRefund,
+                    ),
+                    StreamBuilder(
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data == true)
+                          return WidgetIconTextProgress(
+                              countShow: false,
+                              title: intl.requestBackPayment,
+                              listIcon: 'assets/images/diet/dollar_symbol.svg',
+                              index: 3);
+                        else
+                          return Container();
+                      },
+                      stream: profileBloc.showRefund,
+                    ),
+                    StreamBuilder(
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data == true)
+                          return Space(height: 2.h);
+                        else
+                          return Container();
+                      },
+                      stream: profileBloc.showPdf,
+                    ),
+                    StreamBuilder(
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data == true)
+                          return WidgetIconTextProgress(
+                              countShow: false,
+                              title: intl.getPdfTerm,
+                              listIcon: 'assets/images/foodlist/share/downloadPdf.svg',
+                              index: 2);
+                        else
+                          return Container();
+                      },
+                      stream: profileBloc.showPdf,
+                    ),
                   ],
                 ),
                 Space(height: 2.h),
@@ -254,11 +283,11 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
     );
   }
 
-  Widget exitButton(){
+  Widget exitButton() {
     return GestureDetector(
       onTap: () async {
-    AppSharedPreferences.logout();
-    VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
+        AppSharedPreferences.logout();
+        VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
         // _emptySharedPreferences();
 //                                               Navigator.pushNamedAndRemoveUntil(
 //                                                   context, LaunchRoute.routeName, (route) => false);
@@ -282,13 +311,16 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
           child: Text(
             intl.exit,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.button!.copyWith(
-                color: AppColors.primary, fontSize: 16.sp, fontWeight: FontWeight.w600),
+            style: Theme.of(context)
+                .textTheme
+                .button!
+                .copyWith(color: AppColors.primary, fontSize: 16.sp, fontWeight: FontWeight.w600),
           ),
         ),
       ),
     );
   }
+
   @override
   void onRetryAfterMaintenance() {
     // TODO: implement onRetryAfterMaintenance
@@ -303,6 +335,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

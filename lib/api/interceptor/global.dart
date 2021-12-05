@@ -20,7 +20,7 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Accept'] = 'application/json';
     options.headers['Content-Type'] = 'application/json';
     options.headers['Accept-Language'] = languageCode;
-    options.headers['user-agent'] = DeviceUtils.makeUserAgent();
+    options.headers['user-agent'] = await DeviceUtils.makeUserAgent();
     options.headers['Charset'] = 'UTF-8';
     print('auth token $authToken');
     if (authToken != null && authToken.isNotEmpty) {

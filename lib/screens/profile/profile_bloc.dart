@@ -26,8 +26,6 @@ class ProfileBloc {
   final _repository = Repository.getInstance();
   ImagePicker? _picker;
   XFile? image;
-  bool showRefund = false;
-  bool showPdf = false;
   late CityProvinceModel cityProvinceModel;
   late String countryName;
 
@@ -39,6 +37,8 @@ class ProfileBloc {
   final _showProgressUploadImage = BehaviorSubject<bool>();
   final _inboxCount = BehaviorSubject<int>();
   final _userInformationStream = BehaviorSubject<UserInformation>();
+  final _showRefund = BehaviorSubject<bool>();
+  final _showPdf = BehaviorSubject<bool>();
   final _inboxStream = BehaviorSubject<List<InboxItem>>();
   final _cityProvinceModelStream = BehaviorSubject<CityProvinceModel>();
   final _navigateToVerify = LiveEvent();
@@ -63,6 +63,10 @@ class ProfileBloc {
   Stream<bool> get isShowProgressItem => _showProgressItem.stream;
 
   Stream<UserInformation> get userInformationStream => _userInformationStream.stream;
+
+  Stream<bool> get showRefund => _showRefund.stream;
+
+  Stream<bool> get showPdf => _showPdf.stream;
 
   Stream<List<InboxItem>> get inboxStream => _inboxStream.stream;
 
@@ -95,12 +99,17 @@ class ProfileBloc {
       loginRegisterBloc!.subjectList.listen((event) {
         _userInformation = MemoryApp.userInformation!;
         _userInformationStream.value = _userInformation;
-        cityProvinceModel = MemoryApp.cityProvinceModel!;
-        _cityProvinceModelStream.value = cityProvinceModel;
+        if (MemoryApp.cityProvinceModel == null)
+          getProvinces();
+        else {
+          cityProvinceModel = MemoryApp.cityProvinceModel!;
+          _cityProvinceModelStream.value = cityProvinceModel;
+        }
         _progressNetwork.value = false;
       });
     }
     getUnreadInbox();
+    getTermPackage();
   }
 
   void getUnreadInbox() {
@@ -131,6 +140,16 @@ class ProfileBloc {
     });
   }
 
+  void getTermPackage() {
+    _repository.getTermPackage().then((value) {
+      _showRefund.value = value.data!.showRefundLink!;
+      if (value.data != null &&
+          value.data?.term != null &&
+          DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0)
+        _showPdf.value = true;
+    }).whenComplete(() {});
+  }
+
   void dispose() {
     _showServerError.close();
     _progressNetwork.close();
@@ -139,6 +158,8 @@ class ProfileBloc {
     loginRegisterBloc!.dispose();
     _cityProvinceModelStream.close();
     _showProgressUploadImage.close();
+    _showRefund.close();
+    _showPdf.close();
     _inboxCount.close();
     _navigateTo.close();
     //  _isPlay.close();
@@ -275,9 +296,9 @@ class ProfileBloc {
       Navigator.of(context).pop();
     });
   }
+
   void resetPasswordMethod(Reset pass) async {
-    _repository.reset(pass)
-    .then((value) {
+    _repository.reset(pass).then((value) {
       _showServerError.fire(value.message);
     }).whenComplete(() => _navigateTo.fire(true));
   }
@@ -285,11 +306,10 @@ class ProfileBloc {
   void checkFitamin() async {
     _repository.checkFitamin().then((value) {
       _url = value.data!.url;
-      if(_url!.contains('fitamin://'))
+      if (_url!.contains('fitamin://'))
         _navigateToVerify.fire(true);
       else
         _navigateToVerify.fire(false);
     });
   }
-
 }

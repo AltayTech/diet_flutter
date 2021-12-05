@@ -33,6 +33,7 @@ class ActivityBloc {
   Stream<ActivityLevelData> get activityLevel => _activityLevel.stream;
 
   Stream<ActivityData?> get selectedActivityLevel => _selectedActivityLevel.stream;
+  ActivityData? get selectedActivity => _selectedActivityLevel.stream.valueOrNull;
 
   Stream get navigateTo => _navigateTo.stream;
 
@@ -51,7 +52,6 @@ class ActivityBloc {
   }
 
   void condition(){
-    if(_selectedActivityLevel.valueOrNull != null){
       _loadingContent.value = true;
       ConditionRequestData requestData = ConditionRequestData();
       requestData.activityLevelId = _selectedActivityLevel.value!.id;
@@ -59,7 +59,7 @@ class ActivityBloc {
         debugPrint('bloc condition ${value.data}');
         if(value.data != null) _navigateTo.fire(value.next);
       }).whenComplete(() => _loadingContent.value = false);
-    }
+
   }
 
   void dispose() {

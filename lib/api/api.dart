@@ -277,5 +277,8 @@ abstract class RestClient {
 
   @GET("/orders")
   NetworkResult<Orders> getOrders();
+
+  @GET("/user/term-package")
+  NetworkResult<TermPackage> getTermPackage();
 }
 

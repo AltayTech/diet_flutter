@@ -207,3 +207,19 @@ class Menu {
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }
+
+
+@JsonSerializable(createToJson: false)
+class TermPackage {
+
+
+  @JsonKey(name: 'term')
+  Term? term;
+
+  @JsonKey(name: 'show_refund_link')
+  bool? showRefundLink;
+
+  TermPackage();
+
+  factory TermPackage.fromJson(Map<String, dynamic> json) => _$TermPackageFromJson(json);
+}

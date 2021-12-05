@@ -30,7 +30,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   late Map<String, dynamic> args;
   bool _validate = false;
   bool _obscureText = false;
-  String? _password;
+  String _password="";
   late AuthenticationBloc authBloc;
   bool check = false;
 
@@ -49,14 +49,14 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      context.vxNav.pop();
+      Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
         VxNavigator.of(context).clearAndPush(Uri.parse('/$event'), params: {"mobile": args['mobile'], 'countryId': args['countryId']});
       }
     });
     authBloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
+      Navigator.pop(context);
     });
   }
 
@@ -211,10 +211,12 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           SizedBox(height: 10.h),
           button(AppColors.btnColor, intl.login, Size(100.w, 8.h), () {
             DialogUtils.showDialogProgress(context: context);
-            User user = User();
-            user.mobile = args['mobile'];
-            user.password = _password;
-            authBloc.passwordMethod(user);
+            if(_password.length>0) {
+              User user = User();
+              user.mobile = args['mobile'];
+              user.password = _password;
+              authBloc.passwordMethod(user);
+            }
           }),
           SizedBox(height: 10.h),
           InkWell(

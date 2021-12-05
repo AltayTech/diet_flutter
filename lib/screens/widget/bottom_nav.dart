@@ -20,6 +20,25 @@ class BottomNav extends StatefulWidget {
 }
 
 class _BottomNavState extends ResourcefulState<BottomNav> {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Container(
+      width: 100.w,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+          offset: Offset(0.0, 0.0),
+          color: Colors.grey[300]!,
+          blurRadius: 3.0,
+          spreadRadius: 2.0,
+        ),
+      ]),
+      height: AppSizes.bottomNavHeight,
+      child: bottomNavBar(),
+    );
+  }
+
   Widget item(String imageAddress, BottomNavItem type, String title, BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -37,7 +56,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
             break;
           case BottomNavItem.SHOP:
             if (widget.currentTab != BottomNavItem.SHOP)
-              navigator.routeManager.clearAndPush(Uri.parse(Routes.vitrin));
+              navigator.routeManager.clearAndPush(Uri.parse(Routes.shopHome));
             break;
           case BottomNavItem.STATUS:
             if (widget.currentTab != BottomNavItem.STATUS)
@@ -103,27 +122,9 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return Container(
-      width: 100.w,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(
-          offset: Offset(0.0, 0.0),
-          color: Colors.grey[300]!,
-          blurRadius: 3.0,
-          spreadRadius: 2.0,
-        ),
-      ]),
-      height: AppSizes.bottomNavHeight,
-      child: bottomNavBar(context),
-    );
-  }
-
-  Widget bottomNavBar(context) {
+  Widget bottomNavBar() {
     return Row(
+      textDirection: context.textDirectionOfLocaleInversed,
       children: <Widget>[
         Expanded(
             flex: 1,
@@ -139,8 +140,8 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
                 'assets/images/tab/food_menu_icon.svg', BottomNavItem.DIET, intl.diet, context)),
         Expanded(
             flex: 1,
-            child: item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.SHOP, intl.vitrin,
-                context)),
+            child: item(
+                'assets/images/tab/menu_shop.svg', BottomNavItem.SHOP, intl.shopMenu, context)),
         Expanded(
             flex: 1,
             child: item('assets/images/tab/status_menu_icon.svg', BottomNavItem.STATUS, intl.status,

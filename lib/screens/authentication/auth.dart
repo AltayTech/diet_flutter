@@ -1,26 +1,19 @@
-import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/routes.dart';
+import 'package:behandam/screens/utility/arc.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:json_annotation/json_annotation.dart';
-
-import 'package:velocity_x/velocity_x.dart';
 import 'package:sizer/sizer.dart';
-
-import 'package:behandam/screens/utility/arc.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
 
 class AuthScreen extends StatefulWidget {
-
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -44,12 +37,15 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      if(event != null){
-        context.vxNav.push(Uri(path: '/$event'), params: {'mobile': number, 'countryId': _selectedLocation.id},);
+      if (event != null) {
+        context.vxNav.push(
+          Uri(path: '/$event'),
+          params: {'mobile': number, 'countryId': _selectedLocation.id},
+        );
       }
     });
     authBloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
+      Navigator.pop(context);
     });
   }
 
@@ -75,21 +71,22 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 icon: Icon(Icons.arrow_drop_down, color: AppColors.penColor),
                 iconSize: 26,
                 value: _selectedLocation = authBloc.subject,
+                alignment: Alignment.center,
                 onChanged: (CountryCode? newValue) {
                   setState(() {
                     _selectedLocation = newValue!;
+                    authBloc.setSubject(newValue);
                   });
                 },
-                items: snapshot.data
-                    .map<DropdownMenuItem<CountryCode>>((CountryCode data) {
+                items: snapshot.data.map<DropdownMenuItem<CountryCode>>((CountryCode data) {
                   return DropdownMenuItem<CountryCode>(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: Center(
-                            child: Text("${data.name} + ${data.code}",
-                                style: TextStyle(
-                                    color: AppColors.penColor,
-                                    fontSize: 16.0))),
+                            child: Text("+ ${data.code}",
+                                textAlign: TextAlign.center,
+                                textDirection: TextDirection.ltr,
+                                style: TextStyle(color: AppColors.penColor, fontSize: 16.0))),
                       ),
                       value: data);
                 }).toList(),
@@ -97,7 +94,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
             ),
           );
         } else {
-          return Center(child: Container(width:7.w,height: 7.w,child: Progress()));
+          return Center(child: Container(width: 7.w, height: 7.w, child: Progress()));
         }
       },
     );
@@ -121,11 +118,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   );
                 } else {
                   check = false;
-                  return Center(
-                      child: Container(
-                          width: 15.w,
-                          height: 15.w,
-                          child: Progress()));
+                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -186,8 +179,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               Flexible(
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: AppColors.arcColor),
+                      borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
                   child: TextField(
                     controller: _text,
                     decoration: InputDecoration(
@@ -233,10 +225,21 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
             intl.registerOrLogin,
             Size(100.w, 8.h),
             () {
-              while (phoneNumber.startsWith('0')) {
-                phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
+              if (_selectedLocation.code == '98') {
+                while (phoneNumber.startsWith('0')) {
+                  phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
+                }
+                if ((phoneNumber.length) != 10) {
+                  Utils.getSnackbarMessage(context, intl.errorMobileCondition);
+                  return;
+                }
+              } else if ((_selectedLocation.code!.length + phoneNumber.length) < 7 ||
+                  (_selectedLocation.code!.length + phoneNumber.length) > 15) {
+                Utils.getSnackbarMessage(context, intl.errorMobileCondition);
+                return;
               }
-              number = _selectedLocation.code!.toString() + phoneNumber;
+              number = _selectedLocation.code! + phoneNumber;
+              DialogUtils.showDialogProgress(context: context);
               authBloc.loginMethod(number);
             },
           ),
@@ -259,6 +262,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

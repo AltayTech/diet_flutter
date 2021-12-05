@@ -39,6 +39,9 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       }else context.vxNav.replace(Uri.parse('/$event'));
     });
+    bloc.navigateTo.listen((event) {
+      Navigator.of(context).pop();
+    });
   }
 
   @override

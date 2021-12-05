@@ -33,6 +33,7 @@ class DietHistoryBloc {
   Stream<DietHistoryData> get dietHistory => _dietHistory.stream;
 
   Stream<DietHistory?> get selectedDietHistory => _selectedDietHistory.stream;
+  DietHistory? get selectedDietHistoryValue => _selectedDietHistory.stream.valueOrNull;
 
   Stream get navigateTo => _navigateTo.stream;
 
