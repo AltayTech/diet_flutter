@@ -175,8 +175,7 @@ class FoodListBloc {
     debugPrint('newfood3 ${_foodList.valueOrNull?.meals?[0].newFood?.id}');
     _foodList.valueOrNull?.meals?.forEach((meal) {
       debugPrint('daily menu newfood ${meal.id} / ${meal.title} / ${meal.newFood?.toJson()}');
-      //ToDo calculate the free food id
-      if (meal.newFood?.id != null) foods.add(DailyFood(meal.newFood!.id!, meal.id, day + 1, null));
+      if (meal.newFood?.id != null) foods.add(DailyFood(meal.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
       debugPrint('daily menu change ${foods.last.toJson()}');
     });
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
@@ -193,7 +192,7 @@ class FoodListBloc {
     int day = _weekDays.value!
         .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
     final meal = _foodList.value?.meals?.firstWhere((element) => element.id == mealId);
-    foods.add(DailyFood(meal!.newFood!.id!, meal.id, day + 1, null));
+    foods.add(DailyFood(meal!.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
     debugPrint('replace Food ${foods.last.toJson()}');
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
     _repository.dailyMenu(requestData).then((value) {

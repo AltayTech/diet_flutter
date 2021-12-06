@@ -28,7 +28,6 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     bloc = SplashBloc();
     bloc.getPackageInfo();

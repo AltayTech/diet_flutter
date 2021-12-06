@@ -1,4 +1,5 @@
 import 'package:behandam/data/entity/list_food/list_food.dart';
+import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'food_list.g.dart';
 
@@ -469,7 +470,7 @@ class DietType {
   final int id;
 
   @JsonKey(name: 'alias')
-  final String alias;
+  final RegimeAlias alias;
 
   @JsonKey(name: 'title')
   final String title;

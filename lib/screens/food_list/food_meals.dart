@@ -97,7 +97,9 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                           ),
                           child: ImageUtils.fromLocal(
                             'assets/images/foodlist/${meal.icon}.svg',
-                            color: Colors.white,
+                            color: isCurrentMeal && isToday(snapshot.data)
+                                ? AppColors.primary
+                                : AppColors.onPrimary,
                             padding: EdgeInsets.all(2.w)
                           ),
                         ),

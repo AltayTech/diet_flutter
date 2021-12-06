@@ -5,6 +5,7 @@ import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/screens/regime/menu/bloc.dart';
 import 'package:behandam/screens/regime/menu/item.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
+import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -62,22 +63,32 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
   }
 
   Widget body() {
-    return SingleChildScrollView(
-      child: Card(
-        shape: AppShapes.rectangleMedium,
-        elevation: 1,
-        margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          child: StreamBuilder(
-            stream: bloc.menuTypes,
-            builder: (_, AsyncSnapshot<List<MenuType>> snapshot) {
-              if (snapshot.hasData) return menus(snapshot.requireData);
-              return Center(child: CircularProgressIndicator());
-            },
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Card(
+                shape: AppShapes.rectangleMedium,
+                elevation: 1,
+                margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  child: StreamBuilder(
+                    stream: bloc.menuTypes,
+                    builder: (_, AsyncSnapshot<List<MenuType>> snapshot) {
+                      if (snapshot.hasData) return menus(snapshot.requireData);
+                      return Center(child: CircularProgressIndicator());
+                    },
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
+          BottomNav(currentTab: BottomNavItem.DIET),
+        ],
       ),
     );
   }

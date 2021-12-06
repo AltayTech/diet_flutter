@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -33,9 +34,10 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
   void initState() {
     super.initState();
     // bloc = FoodListBloc(false);
-    _animationController =
-        AnimationController(duration: const Duration(milliseconds: 2000), vsync: this, value: 1);
-    _animation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
+    _animationController = AnimationController(
+        duration: const Duration(milliseconds: 2000), vsync: this, value: 1);
+    _animation =
+        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
     _animation = _tween.animate(_animation);
     _animationController.repeat();
   }
@@ -102,11 +104,14 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                 height: 6.h,
               ),
               SubmitButton(
-                  label: intl.replaceFood,
-                  onTap: () {
+                label: intl.replaceFood,
+                onTap: () {
+                  if(meal?.newFood != null) {
                     bloc.onReplacingFood(meal!.id);
                     VxNavigator.of(context).pop();
-                  }),
+                  }else
+                    Utils.getSnackbarMessage(context, intl.selectReplacedFood);
+                },),
             ],
           );
         },
@@ -142,8 +147,10 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                         decoration: AppDecorations.circle.copyWith(
                           color: AppColors.onPrimary,
                         ),
-                        child: ImageUtils.fromLocal('assets/images/foodlist/${meal?.icon}.svg',
-                            color: AppColors.accentColor, padding: EdgeInsets.all(2.w)),
+                        child: ImageUtils.fromLocal(
+                            'assets/images/foodlist/${meal?.icon}.svg',
+                            color: AppColors.accentColor,
+                            padding: EdgeInsets.all(2.w)),
                       ),
                       Space(width: 2.w),
                       Expanded(
@@ -182,8 +189,10 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
   }
 
   Widget foodItems() {
-    List<int> items =
-        meal?.food == null ? [] : List.generate((meal!.food.foodItems!.length * 2) - 1, (i) => i);
+    int freeFoodLength = meal?.food.freeFood != null ? 1 : 0;
+    List<int> items = meal?.food == null
+        ? []
+        : List.generate(((meal!.food.foodItems!.length + freeFoodLength) * 2) - 1, (i) => i);
     // (meal!.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
     int index = 0;
     return Container(
@@ -202,7 +211,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                   label: FittedBox(
                     child: Text(
                       // '${meal!.food!.ratios![0].ratioFoodItems![index].unitTitle.replaceAll('*', intl.and)} ${meal!.food!.ratios![0].ratioFoodItems![index].title}',
-                      meal?.food?.foodItems?[index].title ?? '',
+                      i == items.length - 1 && items.length > 1 ? meal?.food.freeFood ?? '' : meal?.food.foodItems?[index].title ?? '',
                       style: typography.caption,
                       textAlign: TextAlign.center,
                       // softWrap: true,
@@ -226,9 +235,13 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
   }
 
   Widget replaceBox(Meals? meal) {
+    int freeFoodLength = meal?.newFood?.selectedFreeFood != null ? 1 : 0;
     List<int> items = meal?.newFood == null
         ? []
-        : List.generate((meal!.newFood!.foodItems!.length * 2) - 1, (i) => i);
+        : List.generate(
+            ((meal!.newFood!.foodItems!.length + freeFoodLength) * 2) - 1,
+            (i) => i);
+    debugPrint('food item ${meal?.newFood?.foodItems} / ${meal?.newFood?.selectedFreeFood} / $freeFoodLength / ${items.length}');
     int index = 0;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 3.w),
@@ -246,8 +259,10 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                   decoration: AppDecorations.circle.copyWith(
                     color: AppColors.primary,
                   ),
-                  child: ImageUtils.fromLocal('assets/images/foodlist/${meal?.icon}.svg',
-                      color: Colors.white, padding: EdgeInsets.all(2.w)),
+                  child: ImageUtils.fromLocal(
+                      'assets/images/foodlist/${meal?.icon}.svg',
+                      color: Colors.white,
+                      padding: EdgeInsets.all(2.w)),
                 ),
                 Space(width: 2.w),
                 Expanded(
@@ -305,7 +320,13 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                                       widget = Chip(
                                         backgroundColor: AppColors.onPrimary,
                                         label: Text(
-                                          meal?.newFood?.foodItems?[index].title ?? '',
+                                          i == items.length - 1 && items.length > 1
+                                              ? meal?.newFood?.selectedFreeFood
+                                                      ?.title ??
+                                                  ''
+                                              : meal?.newFood?.foodItems?[index]
+                                                      .title ??
+                                                  '',
                                           style: typography.caption,
                                           textAlign: TextAlign.center,
                                           softWrap: true,

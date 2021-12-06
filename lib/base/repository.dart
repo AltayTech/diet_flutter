@@ -738,7 +738,6 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult<VersionData> getVersion() {
-    // TODO: implement getVersion
     var response = _apiClient.getVersion();
     return response;
   }

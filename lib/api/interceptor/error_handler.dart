@@ -96,7 +96,7 @@ class ErrorHandlerInterceptor extends Interceptor {
   }
 
   void _handleUnauthorizedError() async {
-    if(navigator.currentConfiguration!.path!=Routes.login) {
+    if(navigator.currentConfiguration!.path!=Routes.auth) {
       await AppSharedPreferences.logout();
       navigator.routeManager.clearAndPush(Uri(path: Routes.auth));
     }

@@ -1,5 +1,6 @@
 import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 // import 'package:behandam/data/entity/list_view/food_list.dart';
@@ -95,27 +96,27 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                 cursorColor: AppColors.iconsColor,
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: AppColors.onPrimary,
-                  hintText: intl.whatFoodAreYouLookingFor,
-                  contentPadding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 5.w),
-                  hintStyle: typography.caption?.apply(
-                    color: AppColors.labelColor,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.onPrimary),
-                    borderRadius: AppBorderRadius.borderRadiusExtraLarge,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.onPrimary),
-                    borderRadius: AppBorderRadius.borderRadiusExtraLarge,
-                  ),
-                  suffixIcon: Icon(
-                    Icons.search,
-                    size: 10.w,
-                    color: AppColors.iconsColor,
-                  )
-                ),
+                    filled: true,
+                    fillColor: AppColors.onPrimary,
+                    hintText: intl.whatFoodAreYouLookingFor,
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 5.w),
+                    hintStyle: typography.caption?.apply(
+                      color: AppColors.labelColor,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.onPrimary),
+                      borderRadius: AppBorderRadius.borderRadiusExtraLarge,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.onPrimary),
+                      borderRadius: AppBorderRadius.borderRadiusExtraLarge,
+                    ),
+                    suffixIcon: Icon(
+                      Icons.search,
+                      size: 10.w,
+                      color: AppColors.iconsColor,
+                    )),
                 style: typography.subtitle2?.apply(
                   color: AppColors.onSurface.withOpacity(0.9),
                 ),
@@ -153,8 +154,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
           height: 4.h,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemBuilder: (_, index) =>
-                tagItem(snapshot.data?[index], index),
+            itemBuilder: (_, index) => tagItem(snapshot.data?[index], index),
             separatorBuilder: (_, __) => Space(width: 2.w),
             itemCount: snapshot.data?.length ?? 0,
           ),
@@ -194,7 +194,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     );
   }
 
-  Widget foods(){
+  Widget foods() {
     return StreamBuilder(
       stream: bloc.foods,
       builder: (_, AsyncSnapshot<List<ListFood>?> snapshot) {
@@ -205,8 +205,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
           if (!snapshot.hasData || snapshot.hasError) {
             return EmptyBox();
           }
-          debugPrint(
-              'food length ${snapshot.requireData!.length}');
+          debugPrint('food length ${snapshot.requireData!.length}');
           return ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -236,10 +235,10 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   }
 
   Widget foodItem(ListFood food) {
-    debugPrint('food/view item ${food.freeFoodItems?.length}');
     return StreamBuilder(
       stream: bloc.selectedFood,
       builder: (_, AsyncSnapshot<ListFood?> snapshot) {
+        debugPrint('food/view item ${food.title} / ${food.freeFoodItems?.length} / ${snapshot.data?.id == food.id} / ${food.selectedFreeFood}');
         return GestureDetector(
           onTap: () => bloc.onFoodChanged(food),
           child: Card(
@@ -269,7 +268,9 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                         child: Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            ...makingFoodItems(food).map((e) => e).toList(),
+                            ...makingFoodItems(food, snapshot.data)
+                                .map((item) => item)
+                                .toList(),
                           ],
                         ),
                       ),
@@ -298,30 +299,28 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                       ),
                     ],
                   ),
-                  if(snapshot.data?.id == food.id && food.freeFoodItems != null && food.freeFoodItems!.length > 0)
-                  Text(
-                    intl.selectOneFreeFood,
-                    style: typography.caption?.apply(
-                      fontSizeDelta: -2,
+                  if (snapshot.data?.id == food.id &&
+                      food.freeFoodItems != null &&
+                      food.freeFoodItems!.length > 0)
+                    Text(
+                      intl.selectOneFreeFood,
+                      style: typography.caption?.apply(
+                        fontSizeDelta: -2,
+                      ),
+                      textAlign: TextAlign.start,
                     ),
-                    textAlign: TextAlign.start,
-                  ),
-                  if(snapshot.data?.id == food.id && food.freeFoodItems != null && food.freeFoodItems!.length > 0)
+                  if (snapshot.data?.id == food.id &&
+                      food.freeFoodItems != null &&
+                      food.freeFoodItems!.length > 0)
                     Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    runSpacing: 0,
-                    children: [
-                      ...food.freeFoodItems!.map((e) => Chip(
-                        backgroundColor: AppColors.onPrimary,
-                        label: Text(
-                          e.title,
-                          style: typography.caption,
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                        ),
-                      )).toList(),
-                    ],
-                  ),
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      runSpacing: 0,
+                      children: [
+                        ...food.freeFoodItems!
+                            .map((freeFood) => freeFoodItem(freeFood, snapshot.data))
+                            .toList(),
+                      ],
+                    ),
                 ],
               ),
             ),
@@ -331,14 +330,16 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     );
   }
 
-  List<Widget> makingFoodItems(ListFood food){
+  List<Widget> makingFoodItems(ListFood food, ListFood? selectedFood) {
     List<int> items = List.generate((food.foodItems!.length * 2) - 1, (i) => i);
     List<Widget> widgets = [];
     int index = 0;
-    for(int i = 0; i < items.length; i++){
+    for (int i = 0; i < items.length; i++) {
       if (i % 2 == 0) {
         widgets.add(Chip(
-          backgroundColor: AppColors.onPrimary,
+          backgroundColor: selectedFood != null && food.id == selectedFood.id
+              ? Colors.grey[200]
+              : AppColors.onPrimary,
           label: Text(
             food.foodItems![index].title,
             style: typography.caption,
@@ -347,7 +348,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
           ),
         ));
         index++;
-      }else {
+      } else {
         widgets.add(Icon(
           Icons.add,
           size: 6.w,
@@ -357,7 +358,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     return widgets;
   }
 
-  Widget floatingActionButton(){
+  Widget floatingActionButton() {
     return StreamBuilder(
       stream: bloc.selectedFood,
       builder: (_, AsyncSnapshot<ListFood?> snapshot) {
@@ -365,7 +366,10 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
         if (snapshot.hasData)
           return FloatingActionButton.extended(
             onPressed: () {
+              if(snapshot.data != null)
               VxNavigator.of(context).returnAndPush(snapshot.requireData);
+              else
+                Utils.getSnackbarMessage(context, 'message');
             },
             label: Text(
               intl.addToList,
@@ -382,6 +386,49 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
           );
         return EmptyBox();
       },
+    );
+  }
+
+  Widget freeFoodItem(ListFoodItem freeFood, ListFood? selectedFood){
+    debugPrint('free food item ${selectedFood?.toJson()}');
+    return GestureDetector(
+      onTap: () => bloc.onFreeFoodSelected(freeFood),
+      child: Card(
+        color: AppColors.onPrimary,
+        elevation: selectedFood?.selectedFreeFood != null && freeFood.id == selectedFood!.selectedFreeFood!.id ? 0 : 2,
+        shape: AppShapes.rectangleLarge,
+        child: Container(
+          decoration:
+          AppDecorations.boxLarge.copyWith(
+            border: Border.all(
+              color: selectedFood != null &&
+                  selectedFood.selectedFreeFood != null &&
+                  freeFood.id ==
+                      selectedFood
+                          .selectedFreeFood!.id
+                  ? AppColors.primary
+                  : Colors.transparent,
+            ),
+          ),
+          padding:
+          EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.w),
+          child: Text(
+            freeFood.title,
+            style: typography.caption?.apply(
+              color: selectedFood != null &&
+                  selectedFood.selectedFreeFood != null &&
+                  freeFood.id ==
+                      selectedFood
+                          .selectedFreeFood!.id
+                  ? AppColors.primary
+                  : null,
+              heightDelta: -10,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
     );
   }
 
