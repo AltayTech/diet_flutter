@@ -74,7 +74,6 @@ abstract class Routes {
   static const shopOrders = '/shop/orders';
   static const shopHome = '/shop/home';
   /// All available routes to Navigator
-  static final all = <String, Widget Function(BuildContext)>{
-    //   home: (context) => HomePage(),
+  static final all = <String, Widget Function(BuildContext)>{ //   home: (context) => HomePage(),
   };
 }

@@ -84,8 +84,11 @@ class _AppState extends State<App> {
     AppColors(themeAppColor: ThemeAppColor.DEFAULT);
     navigator.addListener(() {
       print('routeName is => ${navigator.currentConfiguration!.path}');
-      if(MemoryApp.analytics!=null)
-      MemoryApp.analytics!.logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
+      if (MemoryApp.analytics != null)
+        MemoryApp.analytics!.logEvent(
+            name: navigator.currentConfiguration!.path
+                .replaceAll("/", "_")
+                .substring(1));
     });
   }
 
@@ -125,7 +128,8 @@ class _AppState extends State<App> {
                     primary: AppColors.primary,
                     onPrimary: AppColors.onPrimary,
                     onSurface: AppColors.onSurface,
-                    shape: RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: AppBorderRadius.borderRadiusMedium),
                   ),
                 ),
                 primaryColor: AppColors.primary,
@@ -135,7 +139,8 @@ class _AppState extends State<App> {
                 appBarTheme: AppBarTheme(
                   backgroundColor: AppColors.primary,
                 ),
-                colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
+                colorScheme: ColorScheme.fromSwatch(
+                        primarySwatch: AppMaterialColors.primary)
                     .copyWith(secondary: AppColors.primary),
               ),
               locale: locale,
@@ -175,8 +180,10 @@ class _AppState extends State<App> {
   /// resolve locale when device locale is changed
   Locale resolveLocale(Locale? locale, Iterable<Locale> supportedLocales) {
     for (var supportedLocale in supportedLocales) {
-      final isLanguageEqual = supportedLocale.languageCode == locale?.languageCode;
-      final isCountryCodeEqual = supportedLocale.countryCode == locale?.countryCode;
+      final isLanguageEqual =
+          supportedLocale.languageCode == locale?.languageCode;
+      final isCountryCodeEqual =
+          supportedLocale.countryCode == locale?.countryCode;
       if (isLanguageEqual && isCountryCodeEqual) {
         return supportedLocale;
       }
@@ -190,13 +197,13 @@ class _AppState extends State<App> {
     bloc.dispose();
   }
 }
-class MyObs extends VxObserver {
 
+class MyObs extends VxObserver {
   @override
   void didChangeRoute(Uri route, Page page, String pushOrPop) {
     print("${route.path} - $pushOrPop");
-
   }
+
   @override
   void didPush(Route route, Route? previousRoute) {
     print('Pushed a route');
@@ -207,45 +214,69 @@ class MyObs extends VxObserver {
     print('Popped a route');
   }
 }
-final navigator = VxNavigator(
 
+final navigator = VxNavigator(
   routes: {
     Routes.splash: (_, __) => MaterialPage(child: SplashScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.auth: (_, __) => MaterialPage(child: AuthScreen()),
-    Routes.login: (_, param) => MaterialPage(child: LoginScreen(), arguments: param),
-    Routes.authVerify: (_, param) => MaterialPage(child: VerifyScreen(), arguments: param),
-    Routes.passVerify: (_, param) => MaterialPage(child: VerifyScreen(), arguments: param),
-    Routes.resetPass: (_, param) => MaterialPage(child: PasswordResetScreen(), arguments: param),
-    Routes.resetCode: (_, param) => MaterialPage(child: ResetPasswordProfile(), arguments: param),
-    Routes.register: (_, param) => MaterialPage(child: RegisterScreen(), arguments: param),
+    Routes.login: (_, param) =>
+        MaterialPage(child: LoginScreen(), arguments: param),
+    Routes.authVerify: (_, param) =>
+        MaterialPage(child: VerifyScreen(), arguments: param),
+    Routes.passVerify: (_, param) =>
+        MaterialPage(child: VerifyScreen(), arguments: param),
+    Routes.resetPass: (_, param) =>
+        MaterialPage(child: PasswordResetScreen(), arguments: param),
+    Routes.resetCode: (_, param) =>
+        MaterialPage(child: ResetPasswordProfile(), arguments: param),
+    Routes.register: (_, param) =>
+        MaterialPage(child: RegisterScreen(), arguments: param),
     Routes.listView: (_, __) => MaterialPage(child: FoodListPage()),
-    Routes.dailyMenu: (_, param) => MaterialPage(child: DailyMenuPage(), arguments: param),
+    Routes.dailyMenu: (_, param) =>
+        MaterialPage(child: DailyMenuPage(), arguments: param),
     Routes.fastPatterns: (_, __) => MaterialPage(child: FastPatternPage()),
-    Routes.listFood: (_, param) => MaterialPage(child: ListFoodPage(), arguments: param),
+    Routes.listFood: (_, param) =>
+        MaterialPage(child: ListFoodPage(), arguments: param),
     Routes.inbox: (_, __) => MaterialPage(child: InboxList()),
-    Routes.showInbox: (_, param) => MaterialPage(child: ShowInboxItem(), arguments: param),
-    Routes.ticketMessage: (_, param) => MaterialPage(child: TicketTab(), name: 'message'),
-    Routes.ticketCall: (_, param) => VxRoutePage(child: TicketTab(), pageName: 'call'),
-    Routes.helpType: (_, param) => MaterialPage(child: HelpTypeScreen(), arguments: param),
+    Routes.showInbox: (_, param) =>
+        MaterialPage(child: ShowInboxItem(), arguments: param),
+    Routes.ticketMessage: (_, param) =>
+        MaterialPage(child: TicketTab(), name: 'message'),
+    Routes.ticketCall: (_, param) =>
+        VxRoutePage(child: TicketTab(), pageName: 'call'),
+    Routes.helpType: (_, param) =>
+        MaterialPage(child: HelpTypeScreen(), arguments: param),
     Routes.newTicketMessage: (_, __) => MaterialPage(child: NewTicket()),
     RegExp(r"\/ticket\/details"): (uri, __) => MaterialPage(
-        child: TicketDetails(), arguments: int.parse(uri.queryParameters['ticketId'].toString())),
-    Routes.replaceFood: (_, param) => MaterialPage(child: ChangeMealFoodPage(), arguments: param),
+        child: TicketDetails(),
+        arguments: int.parse(uri.queryParameters['ticketId'].toString())),
+    Routes.replaceFood: (_, param) =>
+        MaterialPage(child: ChangeMealFoodPage(), arguments: param),
     Routes.calendar: (_, __) => MaterialPage(child: CalendarPage()),
-    RegExp(r"\/(reg|renew|revive)(\/diet\/type)"): (_, __) => MaterialPage(child: RegimeTypeScreen()),
-    RegExp(r"\/(reg|renew|revive)(\/size)"): (_, __) => MaterialPage(child: BodyStateScreen()),
-    RegExp(r"\/(reg|renew|revive)(\/report)"): (_, __) => MaterialPage(child: BodyStatusScreen()),
-    RegExp(r"\/(reg|renew|revive)(\/sick\/select)"): (_, __) => MaterialPage(child: SicknessScreen()),
-    RegExp(r"\/(reg|renew|revive)(\/special)"): (_, __) => MaterialPage(child: SicknessSpecialScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/diet\/type)"): (_, __) =>
+        MaterialPage(child: RegimeTypeScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/size)"): (_, __) =>
+        MaterialPage(child: BodyStateScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/report)"): (_, __) =>
+        MaterialPage(child: BodyStatusScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/sick\/select)"): (_, __) =>
+        MaterialPage(child: SicknessScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/special)"): (_, __) =>
+        MaterialPage(child: SicknessSpecialScreen()),
     Routes.advice: (_, __) => MaterialPage(child: AdvicePage()),
-    RegExp(r"\/(reg|renew|revive)(\/package)"): (_, __) => MaterialPage(child: PackageListScreen()),
-    RegExp(r"\/(reg|renew|revive)(\/payment\/bill)"): (_, __) => MaterialPage(child: PaymentBillScreen()),
-    RegExp(r"\/(reg|renew|revive)(\/payment\/card\/confirm)"): (_, __) => MaterialPage(child: PaymentSuccessScreen()),
-    RegExp(r"\/(reg|renew|revive)(\/payment\/card)"): (_, __) => MaterialPage(child: DebitCardPage()),
+    RegExp(r"\/(reg|renew|revive)(\/package)"): (_, __) =>
+        MaterialPage(child: PackageListScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/payment\/bill)"): (_, __) =>
+        MaterialPage(child: PaymentBillScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/payment\/card\/confirm)"): (_, __) =>
+        MaterialPage(child: PaymentSuccessScreen()),
+    RegExp(r"\/(reg|renew|revive)(\/payment\/card)"): (_, __) =>
+        MaterialPage(child: DebitCardPage()),
     Routes.vitrin: (_, __) => MaterialPage(child: VitrinScreen()),
-    Routes.psychologyIntro: (_, __) => MaterialPage(child: PsychologyIntroScreen()),
+    Routes.psychologyIntro: (_, __) =>
+        MaterialPage(child: PsychologyIntroScreen()),
     Routes.psychologyCalender: (_, params) =>
         MaterialPage(child: PsychologyCalenderScreen(), arguments: params),
     Routes.psychologyTerms: (_, params) =>
@@ -254,24 +285,31 @@ final navigator = VxNavigator(
         MaterialPage(child: PsychologyPaymentBillScreen(), arguments: params),
     Routes.psychologyReservedMeeting: (_, __) =>
         MaterialPage(child: PsychologyReservedMeetingScreen()),
-    Routes.resetPasswordProfile: (_, __) => MaterialPage(child: ResetPasswordProfile()),
-    Routes.paymentFail: (_, params) => MaterialPage(child: PaymentFailScreen(), arguments: params),
+    Routes.resetPasswordProfile: (_, __) =>
+        MaterialPage(child: ResetPasswordProfile()),
+    Routes.paymentFail: (_, params) =>
+        MaterialPage(child: PaymentFailScreen(), arguments: params),
     Routes.activity: (_, __) => MaterialPage(child: ActivityLevelPage()),
     Routes.paymentWaiting: (_, __) => MaterialPage(child: PaymentWaitScreen()),
     Routes.dietHistory: (_, __) => MaterialPage(child: DietHistoryPage()),
     Routes.dietGoal: (_, __) => MaterialPage(child: DietGoalPage()),
     Routes.overview: (_, __) => MaterialPage(child: OverviewPage()),
-    RegExp(r"\/(reg|list|renew|revive)(\/menu\/select)"): (_, __) => MaterialPage(child: MenuSelectPage()),
-    Routes.menuConfirm: (_, param) => MaterialPage(child: MenuConfirmPage(), arguments: param),
+    RegExp(r"\/(reg|list|renew|revive)(\/menu\/select)"): (_, __) =>
+        MaterialPage(child: MenuSelectPage()),
+    Routes.menuConfirm: (_, param) =>
+        MaterialPage(child: MenuConfirmPage(), arguments: param),
     Routes.statusUser: (_, __) => MaterialPage(child: StatusUserScreen()),
     Routes.weightEnter: (_, __) => MaterialPage(child: BodyStateScreen()),
     Routes.listMenuAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.listWeightAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.renewAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.reviveAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
-    Routes.paymentOnlineSuccess: (_, __) => MaterialPage(child: PaymentSuccessScreen()),
-    RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) => MaterialPage(child: Block()),
-    RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) => MaterialPage(child: Block()),
+    Routes.paymentOnlineSuccess: (_, __) =>
+        MaterialPage(child: PaymentSuccessScreen()),
+    RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) =>
+        MaterialPage(child: Block()),
+    RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) =>
+        MaterialPage(child: Block()),
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
     Routes.shopCategory: (_, __) => MaterialPage(child: CategoryPage()),
     Routes.shopOrders: (_, __) => MaterialPage(child: OrdersPage()),

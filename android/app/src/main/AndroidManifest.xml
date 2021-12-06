@@ -29,7 +29,6 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="behandam"
-        tools:targetApi="m"
         android:requestLegacyExternalStorage="true">
         <provider
             android:name="androidx.core.content.FileProvider"
