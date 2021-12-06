@@ -72,4 +72,8 @@ TermPackage _$TermPackageFromJson(Map<String, dynamic> json) => TermPackage()
   ..term = json['term'] == null
       ? null
       : Term.fromJson(json['term'] as Map<String, dynamic>)
-  ..showRefundLink = json['show_refund_link'] as bool?;
+  ..package = json['package'] == null
+      ? null
+      : PackageItem.fromJson(json['package'] as Map<String, dynamic>)
+  ..showRefundLink = json['show_refund_link'] as bool?
+  ..canRefund = json['can_refund'] as bool?;

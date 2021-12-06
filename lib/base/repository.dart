@@ -10,22 +10,22 @@ import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/payment/latest_invoice.dart';
+import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/psychology/booking.dart';
 import 'package:behandam/data/entity/psychology/calender.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
-import 'package:behandam/data/entity/payment/latest_invoice.dart';
-import 'package:behandam/data/entity/payment/payment.dart';
+import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
-import 'package:behandam/data/entity/regime/physical_info.dart';
-import 'package:behandam/data/entity/regime/help.dart';
-import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
@@ -194,14 +194,23 @@ abstract class Repository {
 
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
 
-  NetworkResult<VersionData>  getVersion();
+  NetworkResult<VersionData> getVersion();
 
-  NetworkResult<ShopModel>  getHomeShop();
+  NetworkResult<ShopModel> getHomeShop();
 
-  NetworkResult<ShopProduct>  getProduct();
+  NetworkResult<ShopProduct> getProduct();
 
-  NetworkResult<Orders>  getOrders();
-  NetworkResult<TermPackage>  getTermPackage();
+  NetworkResult<Orders> getOrders();
+
+  NetworkResult<TermPackage> getTermPackage();
+
+  NetworkResult<RefundItem> getRefund();
+
+  ImperativeNetworkResult editVisit(PhysicalInfoData requestData);
+
+  ImperativeNetworkResult verifyPassword(String pass);
+
+  ImperativeNetworkResult setRefund(RefundVerify refundVerify);
 }
 
 class _RepositoryImpl extends Repository {
@@ -234,12 +243,10 @@ class _RepositoryImpl extends Repository {
     var response;
     try {
       response = await _apiClient.getCountries();
-      debugPrint(
-          'countries ${response.data?.length} / ${response.data?[0].name}');
+      debugPrint('countries ${response.data?.length} / ${response.data?[0].name}');
       MemoryApp.needRoute = true;
-    }catch(e){
-      debugPrint(
-          'countries error $e');
+    } catch (e) {
+      debugPrint('countries error $e');
     }
     return response;
   }
@@ -282,7 +289,7 @@ class _RepositoryImpl extends Repository {
     if (_cache.date == null || _cache.foodList == null || invalidate) {
       response = await _apiClient.foodList(date);
       debugPrint('repository2 ${response.data}');
-      if(response.data != null) _cache.saveFoodList(response.requireData!, date);
+      if (response.data != null) _cache.saveFoodList(response.requireData!, date);
       debugPrint('repository ${response.data}');
     } else {
       response = NetworkResponse.withData(_cache.foodList);
@@ -351,7 +358,7 @@ class _RepositoryImpl extends Repository {
     try {
       response = await _apiClient.listFood(filter);
       debugPrint('list food }');
-    }catch(e){
+    } catch (e) {
       debugPrint('list food error $e');
     }
     return response;
@@ -527,7 +534,7 @@ class _RepositoryImpl extends Repository {
     try {
       response = _apiClient.physicalInfo();
       debugPrint('physical info ${response}');
-    }catch(e){
+    } catch (e) {
       debugPrint('physical info error $e');
     }
     return response;
@@ -601,20 +608,20 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult setCondition(ConditionRequestData requestData) {
     Map<String, dynamic> body = {
-      if(requestData.packageId != null) 'package_id': requestData.packageId,
-      if(requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
-      if(requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
-      if(requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
-      if(requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
-      if(requestData.isPreparedMenu != null) 'is_prepared_menu': requestData.isPreparedMenu,
-      if(requestData.menuId != null) 'menu_id': requestData.menuId,
+      if (requestData.packageId != null) 'package_id': requestData.packageId,
+      if (requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
+      if (requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
+      if (requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
+      if (requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
+      if (requestData.isPreparedMenu != null) 'is_prepared_menu': requestData.isPreparedMenu,
+      if (requestData.menuId != null) 'menu_id': requestData.menuId,
     };
     debugPrint('bloc condition2 $body');
     var response;
     try {
       response = _apiClient.setCondition(body);
       debugPrint('condition ${response.toString()}');
-    }catch(e){
+    } catch (e) {
       debugPrint('condition error ${e}');
     }
     return response;
@@ -709,9 +716,9 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<MenuData> menuType() {
     var response;
-    try{
+    try {
       response = _apiClient.menuType();
-    }catch(e){
+    } catch (e) {
       debugPrint('menutype error ${response}');
     }
     debugPrint('menutype repo ${response}');
@@ -763,8 +770,8 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult<ShopProduct> getProduct() {
-   var response = _apiClient.getProduct();
-   return response;
+    var response = _apiClient.getProduct();
+    return response;
   }
 
   @override
@@ -779,4 +786,27 @@ class _RepositoryImpl extends Repository {
     return response;
   }
 
+  @override
+  NetworkResult<RefundItem> getRefund() {
+    var response = _apiClient.getRefund();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult editVisit(PhysicalInfoData requestData) {
+    var response = _apiClient.editVisit(requestData);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult verifyPassword(String pass) {
+    var response = _apiClient.verifyPassword(pass);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult setRefund(RefundVerify refundVerify) {
+    var response = _apiClient.setRefund(refundVerify);
+    return response;
+  }
 }

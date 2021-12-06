@@ -73,6 +73,10 @@ abstract class Routes {
   static const shopCategory = '/shop/category';
   static const shopOrders = '/shop/orders';
   static const shopHome = '/shop/home';
+  static const renewWeightEnter = '/renew/weight';
+  static const refund = '/refund';
+  static const refundVerify = '/refund/verify';
+  static const refundRecord = '/refund/record';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{ //   home: (context) => HomePage(),
   };

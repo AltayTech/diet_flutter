@@ -170,6 +170,7 @@ class ProfileBloc {
       cityProvinceModel = value.data!;
       _cityProvinceModelStream.value = value.data!;
       MemoryApp.cityProvinceModel = cityProvinceModel;
+      changeProvinceCity();
     }).onError((error, stackTrace) {
       print('err=> $error');
     });
@@ -215,10 +216,10 @@ class ProfileBloc {
 
   dynamic findCityName() {
     if (userInfo.address != null) {
-      print("address = > ${userInfo.address!.toJson()}");
+      print("address = > ${cityProvinceModel.cities?.length}");
       var item;
       if (userInfo.address!.cityId != null) {
-        item = cityProvinceModel.cities!.firstWhere(
+        item = cityProvinceModel.cities?.firstWhere(
           (element) => element.id == userInfo.address!.cityId,
           orElse: () => CityProvince(),
         );

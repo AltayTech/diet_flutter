@@ -1,5 +1,6 @@
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -10,8 +11,8 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class WidgetIconTextProgress extends StatefulWidget {
   late bool countShow;
@@ -20,10 +21,7 @@ class WidgetIconTextProgress extends StatefulWidget {
   late int index;
 
   WidgetIconTextProgress(
-      {required this.countShow,
-      required this.title,
-      required this.listIcon,
-      required this.index});
+      {required this.countShow, required this.title, required this.listIcon, required this.index});
 
   @override
   State createState() => WidgetIconTextProgressState();
@@ -109,7 +107,7 @@ class WidgetIconTextProgressState extends ResourcefulState<WidgetIconTextProgres
                 ));
             break;
           case 3:
-          // Navigator.of(context).pushNamed(Refund.routeName);
+            VxNavigator.of(context).push(Uri.parse(Routes.refund));
         }
       },
       child: Row(
@@ -143,28 +141,27 @@ class WidgetIconTextProgressState extends ResourcefulState<WidgetIconTextProgres
                   child: StreamBuilder(
                     stream: bloc.isShowProgressItem,
                     builder: (context, snapshot) {
-                      return (snapshot.data==true && widget.index == 2)
+                      return (snapshot.data == true && widget.index == 2)
                           ? SpinKitCircle(
-                        size: 4.w,
-                        color: AppColors.primary,
-                      )
+                              size: 4.w,
+                              color: AppColors.primary,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.arrow_forward_ios,
-                          textDirection: context.textDirectionOfLocale,
-                          color: Color.fromARGB(255, 171, 170, 170),
-                        ),
-                        iconSize: 4.w,
-                        padding: EdgeInsets.all(0.0),
-                        alignment: Alignment.centerLeft,
-                        onPressed: () {},
-                      );
+                              icon: Icon(
+                                Icons.arrow_forward_ios,
+                                textDirection: context.textDirectionOfLocale,
+                                color: Color.fromARGB(255, 171, 170, 170),
+                              ),
+                              iconSize: 4.w,
+                              padding: EdgeInsets.all(0.0),
+                              alignment: Alignment.centerLeft,
+                              onPressed: () {},
+                            );
                     },
                   )),
             ],
           ),
           SizedBox(width: 2.w),
-
         ],
       ),
     );
@@ -184,6 +181,7 @@ class WidgetIconTextProgressState extends ResourcefulState<WidgetIconTextProgres
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

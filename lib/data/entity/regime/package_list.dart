@@ -21,6 +21,9 @@ class PackageItem {
   @JsonKey(name: "package_id")
   int? package_id;
 
+  @JsonKey(name: "refund_deadline",defaultValue: 0)
+  int? refundDeadline;
+
   int? index;
 
   PackageItem();

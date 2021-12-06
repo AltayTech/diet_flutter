@@ -1,5 +1,7 @@
 
 
+import 'package:behandam/data/entity/calendar/calendar.dart';
+import 'package:behandam/data/entity/refund.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
@@ -20,6 +22,8 @@ class MemoryApp {
   static int inboxCount = 0;
   static int showR = 0;
   static UserInformation? userInformation;
+  static TermPackage? termPackage;
+  static RefundItem? refundItem;
   static CityProvinceModel? cityProvinceModel;
   static List<CountryCode>? countryCode;
   static String? selectedDate;

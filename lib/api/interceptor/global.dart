@@ -26,10 +26,7 @@ class GlobalInterceptor extends Interceptor {
     if (authToken != null && authToken.isNotEmpty) {
       options.headers['authorization'] = 'Bearer ${authToken}';
     }
-    else {
-      options.headers['authorization'] =
-          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNTAzMzkyZmRhZGMyYzQzNDFjODk4MTkxOGFiMTk4MzgxMjk3M2RhNWJlMTAxZGYwZTllYzBmYzc5NjNmMjZlMjJmN2JhN2E1MjViZTBiMGIiLCJpYXQiOjE2Mzg0MjkzNjcuNjkxODY0LCJuYmYiOjE2Mzg0MjkzNjcuNjkxODczLCJleHAiOjE2Njk5NjUzNjcuNjgwODExLCJzdWIiOiIxNjAyOTEyIiwic2NvcGVzIjpbXX0.QHl3Wf_bJaLNg0koWvLkkrkkcnbUhVKpOvAvP96GgNKz0WgBbJGk7gwDnEdbZixOKvqS_xENkXTid0DRN_-IOHbhnvY9zuk3XCEJtsX_herF8qQljnsRH60KJoZ1k-MnwsItE0TuiNN5bkUcHR8ogUpOz4w6LDBlIT23dlbPDsHD4hk5qntOEp-6y4fc5zXxMlWI3z4i0zMeZ9OSYyPxh9ZuH20WiMz-PyG4_8kchbdvpd8BohvsjnMaCVKs99gakCX_-ZcUINVAXqUtGLaUaNBLe_QZBepItkmLpHpIvi83_uqtejlV67K7JJhoYanoSfFgIv2Cml6-PsBdhSq05JfFIRUeQPIANPSXsNSJ_B8eGLw1onC0LAuva4RPmPVgX6E1YExcDtC0R2e3Kx-nxpFNHT-EQgLYb3yJQor6KADASwc5xhKXrbRIZI23-XtddpqwkNwCTVkDxe7XmmBie5mw8WQw7MWVzTUeAk1DJVNZg7Vv92LnGrtDZCGhDODTep-VPyeRlIrrD1o24cjw0iW0wW4sIqN0QXlGuy_Wz9Ap7faJyqnrynucjUCBPTzMelsiEIUp3wzOXL8Y5jUAd7fDBKzuk-yZZTsHnO8u8S2riyeHuVogvCRCyz8AM9UokTuWK9a5kexUkhKFSrUqwxmjL0t6vU7-LD-4yjhunjA';
-    }
+
     // options.headers['Fcm-Token'] = fcmToken;
     options.headers['App'] = '0';
     options.headers['Application-Version-Code'] = packageInfo.buildNumber;
