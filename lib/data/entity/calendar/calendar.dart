@@ -1,4 +1,6 @@
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'calendar.g.dart';
 
 @JsonSerializable(createToJson: false)
@@ -8,8 +10,7 @@ class CalendarData {
   @JsonKey(name: 'terms')
   final List<Term> terms;
 
-  factory CalendarData.fromJson(Map<String, dynamic> json) =>
-      _$CalendarDataFromJson(json);
+  factory CalendarData.fromJson(Map<String, dynamic> json) => _$CalendarDataFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
@@ -208,16 +209,18 @@ class Menu {
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }
 
-
 @JsonSerializable(createToJson: false)
 class TermPackage {
-
-
   @JsonKey(name: 'term')
   Term? term;
 
+  @JsonKey(name: 'package')
+  PackageItem? package;
+
   @JsonKey(name: 'show_refund_link')
   bool? showRefundLink;
+  @JsonKey(name: 'can_refund')
+  bool? canRefund;
 
   TermPackage();
 

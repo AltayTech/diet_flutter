@@ -19,6 +19,7 @@ PackageItem _$PackageItemFromJson(Map<String, dynamic> json) => PackageItem()
       ?.map((e) => ServicePackage.fromJson(e as Map<String, dynamic>))
       .toList()
   ..package_id = json['package_id'] as int?
+  ..refundDeadline = json['refund_deadline'] as int? ?? 0
   ..index = json['index'] as int?;
 
 Map<String, dynamic> _$PackageItemToJson(PackageItem instance) =>
@@ -29,6 +30,7 @@ Map<String, dynamic> _$PackageItemToJson(PackageItem instance) =>
       'name': instance.name,
       'services': instance.services,
       'package_id': instance.package_id,
+      'refund_deadline': instance.refundDeadline,
       'index': instance.index,
     };
 

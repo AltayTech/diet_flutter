@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:behandam/data/entity/fitamin.dart';
+import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
@@ -280,5 +281,17 @@ abstract class RestClient {
 
   @GET("/user/term-package")
   NetworkResult<TermPackage> getTermPackage();
+
+  @GET("/refund")
+  NetworkResult<RefundItem> getRefund();
+
+  @PATCH("/visit")
+  ImperativeNetworkResult editVisit(@Body() PhysicalInfoData requestData);
+
+  @GET("/auth?password={password}")
+  ImperativeNetworkResult verifyPassword(@Path('password') String? mobile);
+
+  @POST("/refund")
+  ImperativeNetworkResult setRefund(@Body() RefundVerify refundVerify);
 }
 

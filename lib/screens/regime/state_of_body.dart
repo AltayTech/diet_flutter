@@ -68,7 +68,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
       regimeBloc,
       child: Scaffold(
         appBar: Toolbar(
-            titleBar: navigator.currentConfiguration!.path == Routes.weightEnter
+            titleBar: (navigator.currentConfiguration!.path == Routes.weightEnter ||
+                    navigator.currentConfiguration!.path == Routes.renewWeightEnter)
                 ? intl.newVisit
                 : intl.stateOfBody),
         body: SingleChildScrollView(
@@ -81,7 +82,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (navigator.currentConfiguration!.path != Routes.weightEnter)
+                  if (navigator.currentConfiguration!.path != Routes.weightEnter &&
+                      navigator.currentConfiguration!.path != Routes.renewWeightEnter)
                     Text(
                       intl.enterYourState,
                       textAlign: TextAlign.center,
@@ -95,7 +97,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                         return Column(
                           children: [
                             rulers(snapshot.requireData),
-                            if (navigator.currentConfiguration!.path != Routes.weightEnter)
+                            if (navigator.currentConfiguration!.path != Routes.weightEnter &&
+                                navigator.currentConfiguration!.path != Routes.renewWeightEnter)
                               birthDayBox(snapshot.requireData),
                             Space(height: 2.h),
                             if (!snapshot.requireData.isForbidden.isNullOrFalse)
@@ -115,6 +118,9 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                                   debugPrint('body weight ${snapshot.requireData.weight}');
                                   if (navigator.currentConfiguration!.path == Routes.weightEnter)
                                     regimeBloc.sendVisit(snapshot.requireData);
+                                  else if (navigator.currentConfiguration!.path ==
+                                      Routes.renewWeightEnter)
+                                    regimeBloc.sendWeight(snapshot.requireData);
                                   else
                                     regimeBloc.sendInfo(snapshot.requireData);
                                 },
@@ -160,7 +166,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             physicalInfo.weight = double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
           },
         ),
-        if (navigator.currentConfiguration!.path != Routes.weightEnter)
+        if (navigator.currentConfiguration!.path != Routes.weightEnter &&
+            navigator.currentConfiguration!.path != Routes.renewWeightEnter)
           CustomRuler(
             rulerType: RulerType.Normal,
             value: physicalInfo.height!,
@@ -174,7 +181,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             iconPath: 'assets/images/diet/height_icon.svg',
             onClick: (val) => physicalInfo.height = val,
           ),
-        if (navigator.currentConfiguration!.path != Routes.weightEnter)
+        if (navigator.currentConfiguration!.path != Routes.weightEnter &&
+            navigator.currentConfiguration!.path != Routes.renewWeightEnter)
           CustomRuler(
             rulerType: RulerType.Normal,
             value: physicalInfo.wrist!,
@@ -301,24 +309,25 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
   Future _selectDate(PhysicalInfoData physicalInfo) async {
     DialogUtils.showBottomSheetPage(
         context: context,
-        child: SingleChildScrollView(child: Container(
-          height: 32.h,
-          padding: EdgeInsets.all(5.w),
-          alignment: Alignment.center,
-          child: Center(
-            child: CustomDate(
-              function: (value) {
-                print('value = > $value');
-                setState(() {
-                  physicalInfo.birthDate =
-                  value!;
-                });
-              },
-              datetime: physicalInfo.birthDate,
-              maxYear: Jalali.now().year - 10,
+        child: SingleChildScrollView(
+          child: Container(
+            height: 32.h,
+            padding: EdgeInsets.all(5.w),
+            alignment: Alignment.center,
+            child: Center(
+              child: CustomDate(
+                function: (value) {
+                  print('value = > $value');
+                  setState(() {
+                    physicalInfo.birthDate = value!;
+                  });
+                },
+                datetime: physicalInfo.birthDate,
+                maxYear: Jalali.now().year - 10,
+              ),
             ),
           ),
-        ),));
+        ));
   }
 
   @override

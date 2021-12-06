@@ -43,7 +43,7 @@ class ErrorHandlerInterceptor extends Interceptor {
         _submitNonFatalReport(err);
         break;
       case HttpStatus.unauthorized:
-        _handleUnauthorizedError();
+        _handleUnauthorizedError(err);
         break;
       case HttpStatus.unprocessableEntity:
         _showToast(err);
@@ -92,13 +92,17 @@ class ErrorHandlerInterceptor extends Interceptor {
     navigatorMessengerKey.currentState!.showSnackBar(SnackBar(
       content: Text('$message'),
     ));
-
   }
 
-  void _handleUnauthorizedError() async {
-    if(navigator.currentConfiguration!.path!=Routes.login) {
+  void _handleUnauthorizedError(DioError err) async {
+    if (navigator.currentConfiguration!.path != Routes.login &&
+        navigator.currentConfiguration!.path != Routes.refundVerify &&
+        navigator.currentConfiguration!.path != Routes.authVerify &&
+        navigator.currentConfiguration!.path != Routes.passVerify) {
       await AppSharedPreferences.logout();
       navigator.routeManager.clearAndPush(Uri(path: Routes.auth));
+    } else {
+      _showToast(err);
     }
   }
 

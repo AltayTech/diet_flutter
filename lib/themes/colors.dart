@@ -27,9 +27,9 @@ class AppColors {
   static late Color labelTab;
   static late Color warning = Colors.orange.shade100;
 
-  static const penColor = Color(0xff8A8A8A);
+  static const penColor = Color(0xff666666);
   static const redBar = Color(0xffFF5757);
-  static const looseType = Color(0xffF6DED5);
+  static const looseType = Color(0xfff6ded5);
   static const stableType = Color(0xffD5E9E3);
   static const gainType = Color(0xffE6CEEF);
   static const diabeticType = Color(0xffF7EBC7);

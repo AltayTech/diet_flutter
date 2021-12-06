@@ -291,14 +291,14 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       // textAlign: TextAlign.center,
                       text: TextSpan(
                         text: txt1,
-                        style: TextStyle(fontSize: 14.sp, color: color,fontWeight: FontWeight.w700),
+                        style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14.sp, color: color,fontWeight: FontWeight.w700),
                         children: <TextSpan>[
-                          TextSpan(text: ' ', style: TextStyle(fontSize: 12.0)),
-                          TextSpan(text: txt2, style: TextStyle(fontSize: 12.0))],
+                          TextSpan(text: ' ', style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 12.0)),
+                          TextSpan(text: txt2, style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 12.0))],
                       ),
                     ),
-                    Text(txt3, style: TextStyle(fontSize: 8.sp)),
-                    Text(txt4, style: TextStyle(fontSize: 8.sp))
+                    Text(txt3, style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 8.sp)),
+                    Text(txt4, style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 8.sp))
                   ],
                 ),
               ),
@@ -338,7 +338,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                             height: 9.h,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20.0), color: Colors.white),
-                            child: Center(child: Text('$bmi',style: TextStyle(color: AppColors.blueRuler,fontWeight: FontWeight.w700,fontSize: 16.sp),)),
+                            child: Center(child: Text('$bmi',style: Theme.of(context).textTheme.caption!.copyWith(color: AppColors.blueRuler,fontWeight: FontWeight.w700,fontSize: 16.sp),)),
                           )
                         ],
                       ),
@@ -359,10 +359,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                   width: 2.w, height: 2.h),
                               Space(width: 2.w),
                               Text('BMI',
-                                  style: TextStyle(fontSize: 14.sp, color: AppColors.redBar)),
+                                  style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14.sp, color: AppColors.redBar)),
                               Space(width: 1.w),
                               Text(intl.what,
-                                  style: TextStyle(fontSize: 14.sp, color: AppColors.redBar)),
+                                  style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14.sp, color: AppColors.redBar)),
                               ImageUtils.fromLocal('assets/images/physical_report/guide.svg',
                                   width: 3.w, height: 3.h),
                             ],

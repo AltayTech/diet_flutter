@@ -123,7 +123,11 @@ class RegimeBloc {
       _navigateToVerify.fire(value.next);
     });
   }
-
+  void sendWeight(PhysicalInfoData info) async {
+    _repository.editVisit(info).then((value) {
+      _navigateToVerify.fire(value.next);
+    });
+  }
   void dispose() {
     _showServerError.close();
     _navigateToVerify.close();

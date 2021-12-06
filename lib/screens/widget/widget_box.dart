@@ -4,7 +4,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -218,7 +217,7 @@ Widget optionUi(IconData icon, String text, int action) {
           Icon(
             icon,
             color: Color.fromARGB(255, 255, 151, 156),
-             size: 7.w,
+            size: 7.w,
           ),
         ],
       ),
@@ -318,7 +317,10 @@ Widget textInput(
     required BuildContext ctx,
     TextInputAction? action,
     required TextDirection textDirection,
+    TextAlign? textAlign,
+      TextEditingController? textController,
     FilteringTextInputFormatter? formatter}) {
+
   return Container(
     height: height,
     child: Directionality(
@@ -331,15 +333,17 @@ Widget textInput(
             : null,
         textInputAction: action,
         maxLines: maxLine ? 4 : 1,
-        controller: TextEditingController(text: value),
+        controller: textController ?? TextEditingController(text: value),
         enabled: enable,
         decoration: inputDecoration.copyWith(
           labelText: label,
           labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.labelColor),
         ),
         keyboardType: textInputType,
+
         onChanged: (val) => onChanged(val),
         style: Theme.of(ctx).textTheme.subtitle2,
+        textAlign: textAlign ?? TextAlign.start,
         validator: (val) => validation(val),
       ),
     ),

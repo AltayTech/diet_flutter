@@ -49,7 +49,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      Navigator.pop(context);
+      //Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
         VxNavigator.of(context).clearAndPush(Uri.parse('/$event'), params: {"mobile": args['mobile'], 'countryId': args['countryId']});
