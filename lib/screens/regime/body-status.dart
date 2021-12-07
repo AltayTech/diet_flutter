@@ -259,51 +259,48 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   Widget colorfulContainer(String txt1, String txt2, String txt3, String txt4, Color color) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 6.0, left: 6.0),
-      child: Container(
-          // width: 30.w,
-          height: 9.h,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
-                  bottomLeft: Radius.circular(20.0),
-                  topLeft: Radius.circular(20.0)),
-              color: Colors.white),
-          child: Row(children: [
-            Container(
-                width: 3.w,
-                height: 9.h,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-                    color: color)),
-            SizedBox(width: 8.w),
-            Container(
-              // width: 20.w,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RichText(
-                      // textAlign: TextAlign.center,
-                      text: TextSpan(
-                        text: txt1,
-                        style: TextStyle(fontSize: 14.sp, color: color,fontWeight: FontWeight.w700),
-                        children: <TextSpan>[
-                          TextSpan(text: ' ', style: TextStyle(fontSize: 12.0)),
-                          TextSpan(text: txt2, style: TextStyle(fontSize: 12.0))],
-                      ),
-                    ),
-                    Text(txt3, style: TextStyle(fontSize: 8.sp)),
-                    Text(txt4, style: TextStyle(fontSize: 8.sp))
-                  ],
-                ),
-              ),
-            )
-          ])),
+    return Container(
+        height: 9.h,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(10.0),
+                topRight: Radius.circular(10.0),
+                bottomLeft: Radius.circular(20.0),
+                topLeft: Radius.circular(20.0)),
+            color: Colors.white),
+        child: Row(children: [
+          Container(
+              width: 3.w,
+              height: 9.h,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+                  color: color)),
+          SizedBox(width: 8.w),
+          // Container(
+          //   // width: 20.w,
+          //   child: Center(
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: [
+          //         RichText(
+          //           // textAlign: TextAlign.center,
+          //           text: TextSpan(
+          //             text: txt1,
+          //             style: TextStyle(fontSize: 14.sp, color: color,fontWeight: FontWeight.w700),
+          //             children: <TextSpan>[
+          //               TextSpan(text: ' ', style: TextStyle(fontSize: 12.0)),
+          //               TextSpan(text: txt2, style: TextStyle(fontSize: 12.0))],
+          //           ),
+          //         ),
+          //         Text(txt3, style: TextStyle(fontSize: 8.sp)),
+          //         Text(txt4, style: TextStyle(fontSize: 8.sp))
+          //       ],
+          //     ),
+          //   ),
+          // )
+        ],),
     );
   }
 

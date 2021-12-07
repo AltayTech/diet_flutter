@@ -3,7 +3,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
-import 'entity/auth/country_code.dart';
+import 'entity/auth/country.dart';
 
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:flutter/scheduler.dart';
@@ -21,7 +21,7 @@ class MemoryApp {
   static int showR = 0;
   static UserInformation? userInformation;
   static CityProvinceModel? cityProvinceModel;
-  static List<CountryCode>? countryCode;
+  static List<Country>? countries;
   static String? selectedDate;
   static String? routeName;
   static Jalali? day;

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:behandam/data/entity/auth/country_code.dart';
+import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
@@ -11,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
-
+import 'package:behandam/extensions/string.dart';
 class AuthenticationBloc {
   AuthenticationBloc() {
     fetchCountries();
@@ -20,17 +20,23 @@ class AuthenticationBloc {
 
   final _repository = Repository.getInstance();
 
-  late CountryCode _subject;
   final _waiting = BehaviorSubject<bool>();
-  final _subjectList = BehaviorSubject<List<CountryCode>>();
+  final _countries = BehaviorSubject<List<Country>>();
+  final _selectedCountry = BehaviorSubject<Country>();
   final _navigateToVerify = LiveEvent();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
-  late List<CountryCode> countries;
 
-  CountryCode get subject => _subject;
+  List<Country> get countries {
+    if(_search.isNullOrEmpty)
+      return _countries.value;
+    else
+    return _countries.value.where((element) => element.name!.contains(_search!) || element.code!.contains(_search!)).toList();
+  }
 
-  Stream<List<CountryCode>> get subjectList => _subjectList.stream;
+  Stream get countriesStream => _countries.stream;
+
+  Stream<Country> get selectedCountry => _selectedCountry.stream;
 
   Stream<bool> get waiting => _waiting.stream;
 
@@ -40,31 +46,31 @@ class AuthenticationBloc {
 
   Stream get showServerError => _showServerError.stream;
 
+  String? _search;
+
   void fetchCountries() {
-    if (MemoryApp.countryCode == null) {
+    if (MemoryApp.countries == null) {
       _repository.country().then((value) {
-        MemoryApp.countryCode = value.data!;
-        _subjectList.value = value.data!;
-        countries = value.data!;
+        MemoryApp.countries = value.data!;
+        _countries.value = value.data!;
         value.data!.forEach((element) {
           if (element.code == "98") {
-            _subject = element;
+            _selectedCountry.value = element;
           }
         });
       });
     } else {
-      _subjectList.value = MemoryApp.countryCode!;
-      countries = MemoryApp.countryCode!;
-      _subjectList.value.forEach((element) {
+      _countries.value = MemoryApp.countries!;
+      _countries.value.forEach((element) {
         if (element.code == "98") {
-          _subject = element;
+          _selectedCountry.value = element;
         }
       });
     }
   }
 
-  void setSubject(CountryCode value) {
-    _subject = value;
+  void setCountry(Country value) {
+    _selectedCountry.value = value;
   }
 
   void loginMethod(String phoneNumber) {
@@ -131,10 +137,14 @@ class AuthenticationBloc {
     }).whenComplete(() => _waiting.value = false);
   }
 
+  void onCountrySearch(String search) {
+    _search = search;
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateToVerify.close();
-    _subjectList.close();
+    _countries.close();
     _waiting.close();
     _navigateTo.close();
   }

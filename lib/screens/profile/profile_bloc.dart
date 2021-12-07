@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:behandam/data/entity/auth/country_code.dart';
+import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
@@ -96,7 +96,7 @@ class ProfileBloc {
         _progressNetwork.value = false;
       });
     } else {
-      loginRegisterBloc!.subjectList.listen((event) {
+      loginRegisterBloc!.countriesStream.listen((event) {
         _userInformation = MemoryApp.userInformation!;
         _userInformationStream.value = _userInformation;
         if (MemoryApp.cityProvinceModel == null)
@@ -193,7 +193,7 @@ class ProfileBloc {
     print("countris = > ${loginRegisterBloc!.countries.length}");
     var item = loginRegisterBloc!.countries.firstWhere(
       (element) => element.id == userInfo.countryId,
-      orElse: () => CountryCode(),
+      orElse: () => Country(),
     );
     countryName = item.name ?? '';
     return item;
