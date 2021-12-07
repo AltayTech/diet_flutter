@@ -225,7 +225,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 child: StreamBuilder(
                   stream: authBloc.selectedCountry,
                   builder: (_, AsyncSnapshot<Country> snapshot) {
-                    if (snapshot.hasData)
+                    if (snapshot.hasData) {
+                      _selectedLocation = snapshot.requireData;
                       return GestureDetector(
                         onTap: () => DialogUtils.showBottomSheetPage(
                           context: context,
@@ -280,6 +281,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                       onTap: () {
                                         authBloc.setCountry(
                                             authBloc.countries[index]);
+                                        _selectedLocation =
+                                            authBloc.countries[index];
                                         Navigator.of(context).pop();
                                       },
                                       child: Container(
@@ -295,7 +298,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                               Space(width: 3.w),
                                               Expanded(
                                                   child: Text(
-                                                authBloc.countries[index].name ??
+                                                authBloc.countries[index]
+                                                        .name ??
                                                     '',
                                                 style: typography.caption,
                                               )),
@@ -330,6 +334,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                           ],
                         ),
                       );
+                    }
                     return Progress();
                   },
                 ),
@@ -339,28 +344,37 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
         ),
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: button(
-            AppColors.btnColor,
-            intl.registerOrLogin,
-            Size(100.w, 8.h),
-            () {
-              if (_selectedLocation.code == '98') {
-                while (phoneNumber.startsWith('0')) {
-                  phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
-                }
-                if ((phoneNumber.length) != 10) {
-                  Utils.getSnackbarMessage(context, intl.errorMobileCondition);
-                  return;
-                }
-              } else if ((_selectedLocation.code!.length + phoneNumber.length) <
-                      7 ||
-                  (_selectedLocation.code!.length + phoneNumber.length) > 15) {
-                Utils.getSnackbarMessage(context, intl.errorMobileCondition);
-                return;
-              }
-              number = _selectedLocation.code! + phoneNumber;
-              DialogUtils.showDialogProgress(context: context);
-              authBloc.loginMethod(number);
+          child: StreamBuilder(
+            stream: authBloc.selectedCountry,
+            builder: (_, AsyncSnapshot<Country> snapshot) {
+              return button(
+                AppColors.btnColor,
+                intl.registerOrLogin,
+                Size(100.w, 8.h),
+                () {
+                  if (snapshot.requireData.code == '98') {
+                    while (phoneNumber.startsWith('0')) {
+                      phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
+                    }
+                    if ((phoneNumber.length) != 10) {
+                      Utils.getSnackbarMessage(
+                          context, intl.errorMobileCondition);
+                      return;
+                    }
+                  } else if ((snapshot.requireData.code!.length +
+                              phoneNumber.length) <
+                          7 ||
+                      (snapshot.requireData.code!.length + phoneNumber.length) >
+                          15) {
+                    Utils.getSnackbarMessage(
+                        context, intl.errorMobileCondition);
+                    return;
+                  }
+                  number = snapshot.requireData.code! + phoneNumber;
+                  DialogUtils.showDialogProgress(context: context);
+                  authBloc.loginMethod(number);
+                },
+              );
             },
           ),
         ),

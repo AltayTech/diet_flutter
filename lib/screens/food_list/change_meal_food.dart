@@ -164,7 +164,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                   ),
                   Space(height: 1.h),
                   Text(
-                    meal?.food?.title ?? '',
+                    meal?.food.title ?? '',
                     style: typography.caption,
                     softWrap: true,
                   ),

@@ -88,14 +88,14 @@ class ErrorHandlerInterceptor extends Interceptor {
 
     //Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
     //Utils.getSnackbarMessage(_context!, message);
-    dioErrorObserver.showMessage(message);
+    // dioErrorObserver.showMessage(message);
     navigatorMessengerKey.currentState!.showSnackBar(SnackBar(
       content: Text('$message'),
     ));
   }
 
-  void _handleUnauthorizedError() async {
-    if(navigator.currentConfiguration!.path!=Routes.auth) {
+  void _handleUnauthorizedError(DioError err) async {
+    if(navigator.currentConfiguration!.path!=Routes.login &&
         navigator.currentConfiguration!.path != Routes.refundVerify &&
         navigator.currentConfiguration!.path != Routes.authVerify &&
         navigator.currentConfiguration!.path != Routes.passVerify) {
@@ -105,6 +105,7 @@ class ErrorHandlerInterceptor extends Interceptor {
       _showToast(err);
     }
   }
+
 
   void _submitNonFatalReport(DioError err, [String? message]) {
     final headers = Map.of(err.requestOptions.headers);
