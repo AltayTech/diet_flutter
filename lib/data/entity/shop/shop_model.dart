@@ -1,3 +1,4 @@
+import 'package:behandam/base/utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'shop_model.g.dart';
@@ -115,13 +116,29 @@ class ShopProduct {
   String? action;
   @JsonKey(name: "action_type")
   ActionType? action_type;
+  @JsonKey(name: "user_order_date")
+  String? userOrderDate;
+  @JsonKey(name: "state")
+  ProductSate? state;
+  @JsonKey(name: "lessons")
+  List<Lessons>? lessons;
 
   ShopProduct();
+  String get iconState => Utils.productIcon(state);
 
   factory ShopProduct.fromJson(Map<String, dynamic> json) => _$ShopProductFromJson(json);
 
   Map<String, dynamic> toJson() => _$ShopProductToJson(this);
 }
+
+  enum ProductSate {
+  @JsonValue("download")
+  download,
+  @JsonValue("play")
+  play,
+  @JsonValue("wait")
+  wait,
+  }
 
 @JsonSerializable()
 class BannerItem {
@@ -177,4 +194,63 @@ class Category {
   factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
 
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
+}
+
+@JsonSerializable()
+class Lessons {
+  @JsonKey(name: "id")
+  int? id;
+  @JsonKey(name: "product_id")
+  int? productId;
+  @JsonKey(name: "lesson_name")
+  String? lessonName;
+  @JsonKey(name: "is_active")
+  int? isActive;
+  @JsonKey(name: "is_free")
+  int? isFree;
+  @JsonKey(name: "order")
+  int? order;
+  @JsonKey(name: "score")
+  int? score;
+  @JsonKey(name: "minutes")
+  int? minutes;
+  @JsonKey(name: "views")
+  int? views;
+  @JsonKey(name: "downloads")
+  int? downloads;
+  @JsonKey(name: "created_at")
+  String? createdAt;
+  @JsonKey(name: "updated_at")
+  String? updatedAt;
+  @JsonKey(name: "video")
+  String? video;
+  @JsonKey(name: "media")
+  List<ProductMedia>? media;
+
+  Lessons();
+
+  factory Lessons.fromJson(Map<String, dynamic> json) => _$LessonsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LessonsToJson(this);
+}
+@JsonSerializable()
+class ProductMedia {
+  @JsonKey(name: "id")
+  int? id;
+  @JsonKey(name: "name")
+  String? name;
+  @JsonKey(name: "file_name")
+  String? fileName;
+  @JsonKey(name: "size")
+  int? size;
+  @JsonKey(name: "created_at")
+  String? createdAt;
+  @JsonKey(name: "updated_at")
+  String? updatedAt;
+
+  ProductMedia();
+
+  factory ProductMedia.fromJson(Map<String, dynamic> json) => _$ProductMediaFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProductMediaToJson(this);
 }

@@ -273,9 +273,16 @@ abstract class RestClient {
   NetworkResult<ShopModel> getHomeShop();
 
   @GET("/products")
-  NetworkResult<ShopProduct> getProduct();
+  NetworkResult<ShopProduct> getProducts();
 
   @GET("/orders")
   NetworkResult<Orders> getOrders();
+
+  // @GET("/products?filter={filter}")
+  // NetworkResult<ShopProduct> getProduct(@Path('filter') String filter);
+
+  @GET("/products/{id}")
+  NetworkResult<ShopProduct> getProduct(@Path('id') int id);
+
 }
 

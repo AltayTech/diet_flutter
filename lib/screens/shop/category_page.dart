@@ -1,7 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
-import 'package:behandam/screens/shop/category_bloc.dart';
+import 'package:behandam/screens/shop/product_bloc.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -19,18 +19,18 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends ResourcefulState<CategoryPage> {
-  late CategoryBloc categoryBloc;
+  late ProductBloc productBloc;
   Category? args;
 
   @override
   void initState() {
     super.initState();
-    categoryBloc = CategoryBloc();
+    productBloc = ProductBloc();
     listenBloc();
   }
 
   void listenBloc() {
-    categoryBloc.showServerError.listen((event) {
+    productBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
     });
   }
@@ -39,7 +39,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
   Widget build(BuildContext context) {
     args = ModalRoute.of(context)!.settings.arguments as Category;
     super.build(context);
-    categoryBloc.getProduct();
+    productBloc.getProducts();
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -60,7 +60,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: StreamBuilder(
-                stream: categoryBloc.products,
+                stream: productBloc.products,
                 builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
                   if (snapshot.hasData)
                     return ListView.builder(
@@ -85,7 +85,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                                             padding: const EdgeInsets.only(right: 12.0, left: 12.0),
                                             child: Line(color: AppColors.strongPen, height: 0.1.h),
                                           ),
-                                          secondTile(product.sellingPrice, product.discountPrice),
+                                          secondTile(product.sellingPrice, product.discountPrice, product.id),
                                         ],
                                       ),
                                     ))
@@ -117,7 +117,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
     );
   }
 
-  Widget secondTile(int? selling, int? discount) {
+  Widget secondTile(int? selling, int? discount, int? productId) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Row(
@@ -132,7 +132,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
             ],
           ),
           OutlinedButton(
-            onPressed: () {},
+            onPressed: () => productBloc.onProduct(productId!),
             style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
                 backgroundColor: MaterialStateProperty.all(Colors.white),
@@ -156,7 +156,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
 
   Widget loadMoreProgress() {
     return StreamBuilder(
-      stream: categoryBloc.loadingMoreProducts,
+      stream: productBloc.loadingMoreProducts,
       builder: (context, AsyncSnapshot<bool> snapshot) {
         return CenteredCircularProgressIndicator(
           visible: snapshot.data == true,

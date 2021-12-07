@@ -1,15 +1,19 @@
+import 'dart:io';
+
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/country_code.dart';
+import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/screens/shop/product_bloc.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -20,14 +24,18 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends ResourcefulState<ProductPage> {
   late ProductBloc productBloc;
+  final Dio _dio = Dio();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     productBloc = ProductBloc();
   }
+
   @override
   Widget build(BuildContext context) {
+    // productBloc.getProduct(1);
     super.build(context);
     return SafeArea(child: Scaffold(
       appBar: AppBar(
@@ -43,117 +51,48 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
             SizedBox(height: 2.h),
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child:
-              // StreamBuilder(
-              //   stream: productBloc.product,
-              //   builder: (context, snapshot) {
-              //     if (snapshot.hasData)
-              //       return ListView.builder(
-              //         shrinkWrap: true,
-              //         physics: NeverScrollableScrollPhysics(),
-              //         itemBuilder: (_, index) {
+              child: StreamBuilder(
+                stream: productBloc.product,
+                builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
+                  if (snapshot.hasData)
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (_, index) {
                         // if (index == snapshot.requireData.length) {
                         //   return loadMoreProgress();
                         // }
-                        // return
-                          Column(
-                          children: [
-                            // ...snapshot.data!
-                                // .where((element) => element.categoryId == args!.id)
-                                // .map((product) =>
-                                Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: Column(
-                                children: [
-                                  secondSection(),
-                                  firstSection('test')
-                                      // product.productName, product.productThambnail),
-                  //               ],
-                  //             ),
-                  //           ))
-                  //               .toList(),
-                  //         ],
-                  //       );
-                  //     },
-                  //     // itemCount: snapshot.requireData.length + 1,
-                  //   );
-                  // else
-                  //   return Progress();
-                // },
-              // ),
-            // ),
-          ],
-        ),
-      ),
-    ]))]))));
+                        return Column(
+                              children: [
+                                firstSection(snapshot.data!.productName, snapshot.data!.productThambnail,
+                                    snapshot.data!.sellingPrice, snapshot.data!.discountPrice, snapshot.data!.userOrderDate),
+                                secondSection(snapshot.data!.shortDescription,snapshot.data!.longDescription,snapshot.data!.iconState),
+                              ],
+                            );
+                      });
+                  else
+                    return Progress();
+                }
+                ))]))
+    )
+    );
   }
 
-  Widget firstSection(String? title) {
+  Widget firstSection(String? title, String? pic, int? selling, int? discount, String? orderDate) {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
       child: Card(
-        shape: RoundedRectangleBorder(
+       shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)),
         child: Column(
           children: [
-            ImageUtils.fromLocal('assets/images/shop/title.png'),
-            // ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"] + pic),
+            Padding( padding: const EdgeInsets.all(8.0),
+            child: ImageUtils.fromLocal('assets/images/shop/title.png',
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0)),),
+        // ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"] + pic),
+        ),
             Text(title!,
             style: Theme.of(context).textTheme.headline2),
-            RatingBar.builder(
-              initialRating: 3,
-              minRating: 1,
-              direction: Axis.horizontal,
-              allowHalfRating: true,
-              itemCount: 5,
-              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-              itemBuilder: (context, _) => Icon(
-                Icons.star,
-                color: Colors.amber,
-              ),
-              onRatingUpdate: (rating) {
-               Text('$rating / 5');
-              },
-            ),
-            Row(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: AppColors.redBar.withOpacity(0.3)
-                      ),
-                      child: ImageUtils.fromLocal('assets/images/shop/time.svg'),
-                    ),
-                    Column(
-                      children: [
-                        Text('12:45'),
-                        Text(intl.courseTime),
-                      ],
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: AppColors.redBar.withOpacity(0.3)
-                      ),
-                      child: ImageUtils.fromLocal('assets/images/shop/person.png'),
-                    ),
-                    Column(
-                      children: [
-                        Text('125${intl.person}'),
-                        Text(intl.buyThisCourse),
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
             Padding(
               padding: const EdgeInsets.only(right: 12.0, left: 12.0),
               child: Line(color: AppColors.strongPen, height: 0.1.h),
@@ -165,10 +104,10 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 children: [
                   Column(
                     children: [
-                      Text('1000',
+                      Text(selling.toString(),
                           style: TextStyle(
                               decoration: TextDecoration.lineThrough, color: Colors.grey, fontSize: 10.sp)),
-                      Text('500' + intl.currency, style: TextStyle(fontSize: 12.sp))
+                      Text(discount.toString() + intl.currency, style: TextStyle(fontSize: 12.sp))
                     ],
                   ),
                   OutlinedButton(
@@ -180,14 +119,23 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                         shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                         side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar))),
-                    child: Row(
-                      children: [
-                        ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),
-                        SizedBox(width: 2.w),
-                        Text(intl.buyThisCourse,
-                            style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
-                      ],
-                    ),
+                    child: orderDate == null
+                      ? Row(
+                          children: [
+                            ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),
+                            SizedBox(width: 2.w),
+                            Text(intl.buyCourse,
+                                style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
+                          ],
+                        )
+                        : Row(
+                          children: [
+                            ImageUtils.fromLocal('assets/images/shop/download.png', width: 2.w, height: 3.h),
+                            SizedBox(width: 2.w),
+                            Text(intl.downloadAll,
+                                style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
+                          ],
+                        )
                   ),
                 ],
               ),
@@ -198,87 +146,110 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     );
   }
 
-  Widget secondSection() {
+  Widget secondSection(String? shortDes, String? longDes, String? stateIcon) {
     return Card(
-      child: Column(
-        children: [
-          Text(intl.aboutThis),
-          animationsList(
-              Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.')
-          ),
-          Text(intl.viewCompletely),
-          animationsList(
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                color: AppColors.grey.withOpacity(0.4),
-              ),
-              child: StreamBuilder(
-                builder: (context, snapshot) {
-                  return Column(
-                    children: [
-                      ...snapshot.data!.map((product) =>
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  Text('first part'),
-                                  RichText(text: TextSpan(
-                                      text: '12:45',
-                                      children: [
-                                        WidgetSpan(
-                                            child: ImageUtils.fromLocal(
-                                                'assets/images/shop/time.svg')
-                                        ),
-                                      ]
-                                  ))
-                                ],
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    border: Border.all(color: AppColors.redBar)
-                                ),
-                                child: ImageUtils.fromLocal(
-                                    'assets/images/shop/download.png'),
-                              ),
-                            ],
-                          )
-                      ).toList(),
-                    ],
-                  );
-                }
-              ),
-            ),
-          ),
-          RichText(text: TextSpan(
-            text: intl.viewAllCourse,
-            style: TextStyle(color: AppColors.redBar),
+      child: StreamBuilder(
+        builder: (context, snapshot) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              WidgetSpan(child: Icon(Icons.keyboard_arrow_down))
-            ]
-          ))
-        ],
+              ExpansionTile(
+                  title: Text(intl.aboutThis),
+                  subtitle:  Container(
+                    height: 15.h,
+                    child: ListView(
+                        children:[
+                          animationsList(
+                              Text(shortDes!)),
+                        ]),
+                  ),
+                  children: <Widget>[
+                    Text(longDes!),
+                  ]),
+                SizedBox(height: 2.h),
+                ListView.builder(
+                    itemBuilder: (context, index){
+                    return  Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      color: AppColors.grey,
+                      child:
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12,8,12,8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text(productBloc.lessons![index].lessonName!),
+                                RichText(text: TextSpan(
+                                    text: productBloc.lessons![index].minutes.toString(),
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      WidgetSpan(
+                                          child: ImageUtils.fromLocal(
+                                              'assets/images/shop/time.svg',
+                                              color: Colors.black)
+                                      ),
+                                    ]
+                                ))
+                              ],
+                            ),
+                            InkWell(
+                              onTap: () async{
+                                Directory tempDir = await getTemporaryDirectory();
+                                String tempPath = tempDir.path;
+
+                              },
+                              child: Container(
+                                width:10.w,
+                                height:5.h,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: AppColors.redBar),
+                                    borderRadius: BorderRadius.circular(15.0)
+                                ),
+                                child: Center(
+                                  child: ImageUtils.fromLocal(
+                                      stateIcon!,
+                                      width:5.w,
+                                      height:3.h,
+                                      color: AppColors.redBar),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(15.0),
+                      //       border: Border.all(color: AppColors.redBar)
+                      //   ),
+                      //   child: ImageUtils.fromLocal(
+                      //       'assets/images/shop/download.png'),
+                      // ),
+                    );
+                  }),
+            ],
+          );
+        }
       ),
     );
   }
 
   Widget animationsList(Widget child) {
-    return Expanded(
-      child: ShaderMask(
+    return ShaderMask(
         shaderCallback: (Rect bounds) {
           return LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: <Color>[Colors.transparent, Colors.red],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: <Color>[Colors.white.withOpacity(0.1), Colors.white],
           ).createShader(bounds);
         },
-        child: Container(height: 200.0, width: 200.0, color: Colors.blue,
-        child: child),
+        child: child,
         blendMode: BlendMode.dstATop,
-      ),
-    );
+      );
   }
 
   Widget loadMoreProgress() {

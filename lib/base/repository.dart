@@ -194,13 +194,15 @@ abstract class Repository {
 
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
 
-  NetworkResult<VersionData>  getVersion();
+  NetworkResult<VersionData> getVersion();
 
-  NetworkResult<ShopModel>  getHomeShop();
+  NetworkResult<ShopModel> getHomeShop();
 
-  NetworkResult<ShopProduct>  getProduct();
+  NetworkResult<ShopProduct> getProducts();
 
-  NetworkResult<Orders>  getOrders();
+  NetworkResult<Orders> getOrders();
+
+  NetworkResult<ShopProduct> getProduct(int id);
 }
 
 class _RepositoryImpl extends Repository {
@@ -761,8 +763,14 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<ShopProduct> getProduct() {
-   var response = _apiClient.getProduct();
+  NetworkResult<ShopProduct> getProducts() {
+    var response = _apiClient.getProducts();
+    return response;
+  }
+
+  @override
+  NetworkResult<ShopProduct> getProduct(int id) {
+   var response = _apiClient.getProduct(id);
    return response;
   }
 
