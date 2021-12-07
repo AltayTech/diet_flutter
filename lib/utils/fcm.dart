@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/notification.dart';
 import 'package:behandam/data/sharedpreferences.dart';
-import 'package:behandam/extensions/object.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
@@ -12,6 +10,7 @@ import 'package:behandam/utils/deep_link.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+
 enum actionType {
   OpenApp,
   OpenWebUrl,
@@ -21,6 +20,7 @@ enum actionType {
   OpenInstagramPage,
   CallService
 }
+
 class AppFcm {
   static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -46,11 +46,11 @@ class AppFcm {
         // a button on push is pressed
         final json = await AppSharedPreferences.fcmButtonActions;
         debugPrint('json = $json');
-        Notif notif= Notif.fromJson2(jsonDecode(json!));
+        Notif notif = Notif.fromJson2(jsonDecode(json!));
         action = json != null
             ? notif.actions!.where((element) {
-          return element.key == event.buttonKeyPressed;
-        }).single
+                return element.key == event.buttonKeyPressed;
+              }).single
             : null;
         await AppSharedPreferences.setFcmButtonActions(null);
       }
@@ -183,16 +183,14 @@ class AppFcm {
     }
     final List<NotificationActionButton> buttonActions = [];
     if (notifResponse.actions != null && notifResponse.actions!.length > 0) {
-
       int i = 0;
       actionList.clear();
       for (ActionsItem actions in notifResponse.actions!) {
         buttonActions.add(NotificationActionButton(
             key: "10$i",
-            label: actions.title,
+            label: actions.title ?? '',
             enabled: true,
-            showInCompactView: true,
-            buttonType: ActionButtonType.KeepOnTop));
+           ));
         actions.key = "10$i";
         print("actions =>> ${actions.toJson()}");
         actionList.add(actions);
@@ -205,17 +203,17 @@ class AppFcm {
     if (notifResponse.visible == "true")
       AwesomeNotifications().createNotification(
           content: NotificationContent(
-            id: 1,
-            channelKey: notifResponse.chanel_id,
-            displayOnBackground: true,
-            title: notifResponse.title,
-            body: notifResponse.description,
-            customSound: "default",
-            largeIcon: notifResponse.icon,
-            showWhen: true,
-            autoCancel: bool.fromEnvironment(notifResponse.autoCancel!),
-          ),
-          actionButtons:buttonActions);
-
+              id: 1,
+              channelKey: notifResponse.chanel_id ?? 'com.kermany.behandam',
+              displayOnBackground: true,
+              title: notifResponse.title,
+              body: notifResponse.description,
+              customSound: "default",
+              largeIcon: notifResponse.icon,
+              showWhen: true,
+              autoCancel: bool.fromEnvironment(notifResponse.autoCancel!)
+              //  autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
+              ),
+          actionButtons: buttonActions);
   }
 }

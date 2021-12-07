@@ -43,12 +43,29 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
     }
-
+    signingConfigs {
+        release {
+            storeFile file(".\\KeyBehandam.jks")
+            storePassword "Behandam@110"
+            keyAlias "Behandam"
+            keyPassword "Behandam110"
+            v2SigningEnabled false
+        }
+    }
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            minifyEnabled true // add this
+            shrinkResources true
+            useProguard true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'// add this
+            signingConfig signingConfigs.release // this is default for release
+        }
+        debug {
+            minifyEnabled false // a
+            shrinkResources false// dd this
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
+            signingConfig signingConfigs.debug // this is default for release
         }
     }
 }

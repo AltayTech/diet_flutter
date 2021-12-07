@@ -23,6 +23,7 @@ abstract class DeepLinkUtils {
       // app was in background, postpone navigation until we reach home page
       debugPrint('Deeplink => postponing until home page is appeared $deeplink');
       AppSharedPreferences.setDeeplink(deeplink);
+      navigator.routeManager.clearAndPush(Uri.parse(Routes.splash));
     }
   }
 

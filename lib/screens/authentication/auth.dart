@@ -9,6 +9,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -36,8 +37,9 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   }
 
   void listenBloc() {
-    authBloc.navigateToVerify.listen((event) {
+    authBloc.navigateToVerify.listen((event) async{
       if (event != null) {
+        await SmsAutoFill().listenForCode();
         context.vxNav.push(
           Uri(path: '/$event'),
           params: {'mobile': number, 'countryId': _selectedLocation.id},

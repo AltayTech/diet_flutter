@@ -100,7 +100,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                         );
                       else {
                         return SpinKitCircle(
-                           size: 7.w,
+                          size: 7.w,
                           color: AppColors.primary,
                         );
                       }
@@ -141,7 +141,6 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
         _titleBox(categorySickness.title!, iconBg),
         Space(height: 1.h),
         if (categorySickness.sicknesses != null && categorySickness.sicknesses!.length > 0)
-
           Container(
             height: 9.h,
             child: ShaderMask(
@@ -214,10 +213,13 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             print('dialog');
             DialogUtils.showDialogPage(
                 context: context,
-                child: SicknessDialog(
-                  items: current,
-                  itemClick: this,
-                  sicknessType: SicknessType.NORMAL,
+                child: Center(
+                  child: Container(child: SicknessDialog(
+                    items: current,
+                    itemClick: this,
+                    sicknessType: SicknessType.NORMAL,
+                  ),
+                  height: 60.h,),
                 ));
           }
         }
@@ -379,11 +381,12 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                     } else {
                       DialogUtils.showDialogPage(
                           context: context,
-                          child: SicknessDialog(
+                          child: Center(
+                        child: Container(child:SicknessDialog(
                             items: current,
                             itemClick: this,
                             sicknessType: SicknessType.NORMAL,
-                          ));
+                          ))));
                     }
                   }
                 }),
@@ -428,10 +431,12 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage
   }
+
   @override
   click() {
     setState(() {});
