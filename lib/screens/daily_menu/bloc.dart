@@ -131,6 +131,7 @@ class ListFoodBloc {
     debugPrint('new list food ${newFood.toJson()}');
     if (_previousFood == null || _previousFood != newFood) {
       _selectedFood.value = newFood;
+      _selectedFood.value!.selectedFreeFood = null;
       _previousFood = newFood;
     } else {
       _previousFood = null;
@@ -143,6 +144,22 @@ class ListFoodBloc {
     _offset = 0;
     _foods.value = null;
     _loadContent();
+  }
+
+  void onFreeFoodSelected(ListFoodItem freeFood){
+    // _loadingContent.value = true;
+    debugPrint('on free food change ${freeFood.title} ');
+    if(_selectedFood.valueOrNull != null) {
+      if(_selectedFood.value!.selectedFreeFood != null && _selectedFood.value!.selectedFreeFood!.id == freeFood.id) {
+        _selectedFood.value!.selectedFreeFood = null;
+      }else {
+        _selectedFood.value!.selectedFreeFood = null;
+        _selectedFood.value!.selectedFreeFood = freeFood;
+      }
+    }
+    debugPrint('on free food change ${_selectedFood.value?.selectedFreeFood?.toJson()}');
+    _selectedFood.value = _selectedFood.value;
+    // _loadingContent.value = false;
   }
 
   void dispose() {

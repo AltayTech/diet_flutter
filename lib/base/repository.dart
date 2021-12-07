@@ -44,7 +44,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
 import '../api/api.dart';
-import '../data/entity/auth/country_code.dart';
+import '../data/entity/auth/country.dart';
 import '../data/entity/auth/register.dart';
 import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/sign_in.dart';
@@ -63,7 +63,7 @@ abstract class Repository {
     return _instance!;
   }
 
-  NetworkResult<List<CountryCode>?> country();
+  NetworkResult<List<Country>?> country();
 
   NetworkResult<CheckStatus> status(String mobile);
 
@@ -238,7 +238,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<List<CountryCode>?> country() async {
+  NetworkResult<List<Country>?> country() async {
     MemoryApp.needRoute = false;
     var response;
     try {
@@ -745,7 +745,6 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult<VersionData> getVersion() {
-    // TODO: implement getVersion
     var response = _apiClient.getVersion();
     return response;
   }

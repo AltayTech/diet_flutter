@@ -90,10 +90,12 @@ class ListFood{
   // final String? freeFoods;
 
   @JsonKey(name: 'free_food_items')
-  final List<ListFoodItem>? freeFoodItems;
+  List<ListFoodItem>? freeFoodItems;
 
   @JsonKey(name: 'food_items')
   final List<ListFoodItem>? foodItems;
+
+  ListFoodItem? selectedFreeFood;
 
   factory ListFood.fromJson(Map<String, dynamic> json) =>
       _$ListFoodFromJson(json);
@@ -104,7 +106,7 @@ class ListFood{
 @JsonSerializable()
 class ListFoodItem{
   ListFoodItem(
-      // this.id,
+      this.id,
       this.title,
       // this.order,
       // this.amount,
@@ -113,8 +115,8 @@ class ListFoodItem{
       // this.pivot,
       );
 
-  // @JsonKey(name: 'id')
-  // final int id;
+  @JsonKey(name: 'id')
+  final int id;
 
   @JsonKey(name: 'title')
   final String title;

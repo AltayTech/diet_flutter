@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'country_code.g.dart';
+part 'country.g.dart';
 
 @JsonSerializable()
-class CountryCode {
+class Country {
   @JsonKey(name: "id")
   int? id;
   @JsonKey(name: "name")
@@ -14,8 +14,8 @@ class CountryCode {
   @JsonKey(name: "iso3")
   String? iso3;
 
-  CountryCode();
+  Country();
 
-  factory CountryCode.fromJson(Map<String, dynamic> json) => _$CountryCodeFromJson(json);
-  Map<String, dynamic> toJson() => _$CountryCodeToJson(this);
+  factory Country.fromJson(Map<String, dynamic> json) => _$CountryFromJson(json);
+  Map<String, dynamic> toJson() => _$CountryToJson(this);
 }

@@ -48,7 +48,10 @@ ListFood _$ListFoodFromJson(Map<String, dynamic> json) => ListFood(
       (json['food_items'] as List<dynamic>?)
           ?.map((e) => ListFoodItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-    );
+    )..selectedFreeFood = json['selectedFreeFood'] == null
+        ? null
+        : ListFoodItem.fromJson(
+            json['selectedFreeFood'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$ListFoodToJson(ListFood instance) => <String, dynamic>{
       'id': instance.id,
@@ -56,13 +59,16 @@ Map<String, dynamic> _$ListFoodToJson(ListFood instance) => <String, dynamic>{
       'description': instance.description,
       'free_food_items': instance.freeFoodItems,
       'food_items': instance.foodItems,
+      'selectedFreeFood': instance.selectedFreeFood,
     };
 
 ListFoodItem _$ListFoodItemFromJson(Map<String, dynamic> json) => ListFoodItem(
+      json['id'] as int,
       json['title'] as String,
     );
 
 Map<String, dynamic> _$ListFoodItemToJson(ListFoodItem instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'title': instance.title,
     };

@@ -140,7 +140,8 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
           decoration: AppDecorations.boxLarge.copyWith(
             color: AppColors.primary.withOpacity(0.2),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          width: 20.w,
+          padding: EdgeInsets.symmetric(vertical: 1.h),
           child: Column(
             children: [
               Text(

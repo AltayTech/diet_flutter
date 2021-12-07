@@ -37,7 +37,6 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
     bloc = PaymentBloc();
@@ -62,6 +61,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
 
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
+      debugPrint('listen online payment');
         if(event)
           VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
         else
@@ -72,6 +72,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
       Utils.getSnackbarMessage(context, intl.offError);
     });
     bloc.navigateTo.listen((event) {
+      debugPrint('listen navigate');
       Navigator.of(context).pop();
       Payment? result = (event as NetworkResponse<Payment>).data;
       if ((event).next != null) {

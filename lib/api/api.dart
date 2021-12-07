@@ -4,7 +4,7 @@ import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
-import 'package:behandam/data/entity/auth/country_code.dart';
+import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
@@ -61,7 +61,7 @@ abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
   @GET("/country")
-  NetworkResult<List<CountryCode>> getCountries();
+  NetworkResult<List<Country>> getCountries();
 
   @GET("/check-user-status?mobile={mobile}")
   NetworkResult<CheckStatus> checkUserStatus(@Path('mobile') String? mobile);

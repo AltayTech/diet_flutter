@@ -2,6 +2,7 @@ import 'package:behandam/app/bloc.dart';
 import 'package:behandam/app/provider.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/screens/fast/bloc.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -55,17 +56,35 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                 return StreamBuilder(
                   stream: bloc.foodList,
                   builder: (_, AsyncSnapshot<FoodListData?> snapshotFoodList) {
+                    debugPrint(
+                        'regime type ${snapshotFoodList.data?.dietType?.alias}');
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(
-                            flex: 1, child: item(ChangeMenuType.DailyMenu, loadingSnapshot.requireData, snapshot.requireData)),
-                        Expanded(
+                        snapshotFoodList.data?.dietType?.alias ==
+                                RegimeAlias.Pregnancy
+                            ? item(
+                                ChangeMenuType.DailyMenu,
+                                loadingSnapshot.requireData,
+                                snapshot.requireData)
+                            : Expanded(
+                                flex: 1,
+                                child: item(
+                                    ChangeMenuType.DailyMenu,
+                                    loadingSnapshot.requireData,
+                                    snapshot.requireData),
+                              ),
+                        if (snapshotFoodList.data?.dietType?.alias !=
+                            RegimeAlias.Pregnancy)
+                          Expanded(
                             flex: 1,
                             child: item(
                                 snapshotFoodList.data?.isFasting == boolean.True
                                     ? ChangeMenuType.Original
-                                    : ChangeMenuType.Fasting, loadingSnapshot.requireData, snapshot.requireData)),
+                                    : ChangeMenuType.Fasting,
+                                loadingSnapshot.requireData,
+                                snapshot.requireData),
+                          ),
                       ],
                     );
                   },
@@ -158,7 +177,9 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                 child: SubmitButton(
                   onTap: () async {
                     Navigator.of(context).pop();
-                    var result = await VxNavigator.of(context).push(Uri(path: Routes.dailyMenu), params: bloc).then((value) {
+                    var result = await VxNavigator.of(context)
+                        .push(Uri(path: Routes.dailyMenu), params: bloc)
+                        .then((value) {
                       debugPrint('call back }');
                       // if(value != null && value == true) bloc.onRefresh(invalidate: true);
                     });
@@ -307,7 +328,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                             Navigator.of(context).pop();
                             fastBloc!.changeToOriginal();
                             debugPrint('i do not fast');
-                            if(!isLoading) bloc.onRefresh(invalidate: true);
+                            if (!isLoading) bloc.onRefresh(invalidate: true);
                           },
                           label: intl.iDoNotFast,
                         ),

@@ -232,6 +232,17 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
 
 DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType(
       json['id'] as int,
-      json['alias'] as String,
+      $enumDecode(_$RegimeAliasEnumMap, json['alias']),
       json['title'] as String,
     );
+
+const _$RegimeAliasEnumMap = {
+  RegimeAlias.Pregnancy: 'PREGNANCY',
+  RegimeAlias.WeightLoss: 'WEIGHT_LOSS',
+  RegimeAlias.WeightGain: 'WEIGHT_GAIN',
+  RegimeAlias.Stabilization: 'STABILIZATION',
+  RegimeAlias.Diabeties: 'DIABETES',
+  RegimeAlias.Ketogenic: 'KETOGENIC',
+  RegimeAlias.Sport: 'SPORTS',
+  RegimeAlias.Notrica: 'NOTRICA',
+};

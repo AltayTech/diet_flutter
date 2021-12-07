@@ -94,8 +94,8 @@ class ErrorHandlerInterceptor extends Interceptor {
     ));
   }
 
-  void _handleUnauthorizedError(DioError err) async {
-    if (navigator.currentConfiguration!.path != Routes.login &&
+  void _handleUnauthorizedError() async {
+    if(navigator.currentConfiguration!.path!=Routes.auth) {
         navigator.currentConfiguration!.path != Routes.refundVerify &&
         navigator.currentConfiguration!.path != Routes.authVerify &&
         navigator.currentConfiguration!.path != Routes.passVerify) {
