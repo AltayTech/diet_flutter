@@ -1390,17 +1390,31 @@ class _RestClient implements RestClient {
   }
 
   @override
-<<<<<<< HEAD
-  Future<NetworkResponse<TermPackage>> getTermPackage() async {
-=======
   Future<NetworkResponse<ShopProduct>> getProduct(id) async {
->>>>>>> product_page
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-<<<<<<< HEAD
+        _setStreamType<NetworkResponse<ShopProduct>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/products/$id',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<ShopProduct>.fromJson(
+      _result.data!,
+      (json) => ShopProduct.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<TermPackage>> getTermPackage() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<TermPackage>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/user/term-package',
@@ -1488,16 +1502,6 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<dynamic>.fromJson(
       _result.data!,
       (json) => json as dynamic,
-=======
-        _setStreamType<NetworkResponse<ShopProduct>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/products/$id',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<ShopProduct>.fromJson(
-      _result.data!,
-      (json) => ShopProduct.fromJson(json as Map<String, dynamic>),
->>>>>>> product_page
     );
     return value;
   }
