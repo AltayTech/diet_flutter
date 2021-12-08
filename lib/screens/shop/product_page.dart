@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/auth/country_code.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/screens/shop/product_bloc.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
@@ -14,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../../routes.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -28,7 +29,6 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     productBloc = ProductBloc();
   }
@@ -64,8 +64,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                         // }
                         return Column(
                               children: [
-                                firstSection(snapshot.data!.productName, snapshot.data!.productThambnail,
-                                    snapshot.data!.sellingPrice, snapshot.data!.discountPrice, snapshot.data!.userOrderDate),
+                                firstSection(snapshot.data),
                                 secondSection(snapshot.data!.shortDescription,snapshot.data!.longDescription,snapshot.data!.iconState),
                               ],
                             );
@@ -78,7 +77,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     );
   }
 
-  Widget firstSection(String? title, String? pic, int? selling, int? discount, String? orderDate) {
+  Widget firstSection(ShopProduct? product) {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
       child: Card(
@@ -91,7 +90,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0)),),
         // ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"] + pic),
         ),
-            Text(title!,
+            Text(product?.productName ?? '',
             style: Theme.of(context).textTheme.headline2),
             Padding(
               padding: const EdgeInsets.only(right: 12.0, left: 12.0),
@@ -104,22 +103,24 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 children: [
                   Column(
                     children: [
-                      Text(selling.toString(),
+                      Text('${product?.sellingPrice ?? ''}',
                           style: TextStyle(
                               decoration: TextDecoration.lineThrough, color: Colors.grey, fontSize: 10.sp)),
-                      Text(discount.toString() + intl.currency, style: TextStyle(fontSize: 12.sp))
+                      Text('${product?.discountPrice ?? ''}' + intl.currency, style: TextStyle(fontSize: 12.sp))
                     ],
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: product);
+                    },
                     style: ButtonStyle(
                         fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
                         backgroundColor: MaterialStateProperty.all(Colors.white),
                         foregroundColor: MaterialStateProperty.all(AppColors.redBar),
                         shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                        side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar))),
-                    child: orderDate == null
+                        side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar)),),
+                    child: product?.userOrderDate == null
                       ? Row(
                           children: [
                             ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),

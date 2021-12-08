@@ -559,5 +559,7 @@
   "viewCompletely": "مشاهده کامل",
   "viewAllCourse": "مشاهده تمام جلسات",
   "downloadAll": "دانلود همه قسمت ها",
+  "productPrice": "قیمت محصول",
+  "productPriceWithOff": "قیمت تخفیف خورده",
   "understand": "متوجه شدم"
 }
