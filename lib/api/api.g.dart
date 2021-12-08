@@ -1351,7 +1351,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<ShopProduct>> getProduct() async {
+  Future<NetworkResponse<ShopProduct>> getProducts() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1384,6 +1384,25 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<Orders>.fromJson(
       _result.data!,
       (json) => Orders.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<ShopProduct>> getProduct(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<ShopProduct>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/products/$id',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<ShopProduct>.fromJson(
+      _result.data!,
+      (json) => ShopProduct.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

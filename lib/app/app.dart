@@ -50,6 +50,7 @@ import 'package:behandam/screens/regime/state_of_body.dart';
 import 'package:behandam/screens/shop/category_page.dart';
 import 'package:behandam/screens/shop/home/shop_home.dart';
 import 'package:behandam/screens/shop/orders.dart';
+import 'package:behandam/screens/shop/product_page.dart';
 import 'package:behandam/screens/splash/splash.dart';
 import 'package:behandam/screens/status/status_user.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
@@ -314,6 +315,7 @@ final navigator = VxNavigator(
     Routes.refund: (_, __) => MaterialPage(child: RefundScreen()),
     Routes.refundVerify: (_, __) => MaterialPage(child: RefundVerifyScreen()),
     Routes.refundRecord: (_, __) => MaterialPage(child: RefundRecordScreen()),
+    RegExp(r"^\/shop\/product\/[0-9]+"): (uri, __) => MaterialPage(child: ProductPage(),arguments: int.parse(uri.pathSegments[1])),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

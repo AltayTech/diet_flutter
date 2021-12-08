@@ -1,7 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
-import 'package:behandam/screens/shop/category_bloc.dart';
 import 'package:behandam/screens/shop/orders_bloc.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';

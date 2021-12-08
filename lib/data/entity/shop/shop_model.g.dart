@@ -90,7 +90,12 @@ ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
   ..sellingPrice = json['selling_price'] as int?
   ..discountPrice = json['discount_price'] as int?
   ..action = json['action'] as String?
-  ..action_type = $enumDecodeNullable(_$ActionTypeEnumMap, json['action_type']);
+  ..action_type = $enumDecodeNullable(_$ActionTypeEnumMap, json['action_type'])
+  ..userOrderDate = json['user_order_date'] as String?
+  ..state = $enumDecodeNullable(_$ProductSateEnumMap, json['state'])
+  ..lessons = (json['lessons'] as List<dynamic>?)
+      ?.map((e) => Lessons.fromJson(e as Map<String, dynamic>))
+      .toList();
 
 Map<String, dynamic> _$ShopProductToJson(ShopProduct instance) =>
     <String, dynamic>{
@@ -108,7 +113,16 @@ Map<String, dynamic> _$ShopProductToJson(ShopProduct instance) =>
       'discount_price': instance.discountPrice,
       'action': instance.action,
       'action_type': _$ActionTypeEnumMap[instance.action_type],
+      'user_order_date': instance.userOrderDate,
+      'state': _$ProductSateEnumMap[instance.state],
+      'lessons': instance.lessons,
     };
+
+const _$ProductSateEnumMap = {
+  ProductSate.download: 'download',
+  ProductSate.play: 'play',
+  ProductSate.wait: 'wait',
+};
 
 BannerItem _$BannerItemFromJson(Map<String, dynamic> json) => BannerItem()
   ..id = json['id'] as int?
@@ -152,4 +166,57 @@ Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
       'category_name_en': instance.categoryNameEn,
       'category_name_hin': instance.categoryNameHin,
       'image': instance.image,
+    };
+
+Lessons _$LessonsFromJson(Map<String, dynamic> json) => Lessons()
+  ..id = json['id'] as int?
+  ..productId = json['product_id'] as int?
+  ..lessonName = json['lesson_name'] as String?
+  ..isActive = json['is_active'] as int?
+  ..isFree = json['is_free'] as int?
+  ..order = json['order'] as int?
+  ..score = json['score'] as int?
+  ..minutes = json['minutes'] as int?
+  ..views = json['views'] as int?
+  ..downloads = json['downloads'] as int?
+  ..createdAt = json['created_at'] as String?
+  ..updatedAt = json['updated_at'] as String?
+  ..video = json['video'] as String?
+  ..media = (json['media'] as List<dynamic>?)
+      ?.map((e) => ProductMedia.fromJson(e as Map<String, dynamic>))
+      .toList();
+
+Map<String, dynamic> _$LessonsToJson(Lessons instance) => <String, dynamic>{
+      'id': instance.id,
+      'product_id': instance.productId,
+      'lesson_name': instance.lessonName,
+      'is_active': instance.isActive,
+      'is_free': instance.isFree,
+      'order': instance.order,
+      'score': instance.score,
+      'minutes': instance.minutes,
+      'views': instance.views,
+      'downloads': instance.downloads,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'video': instance.video,
+      'media': instance.media,
+    };
+
+ProductMedia _$ProductMediaFromJson(Map<String, dynamic> json) => ProductMedia()
+  ..id = json['id'] as int?
+  ..name = json['name'] as String?
+  ..fileName = json['file_name'] as String?
+  ..size = json['size'] as int?
+  ..createdAt = json['created_at'] as String?
+  ..updatedAt = json['updated_at'] as String?;
+
+Map<String, dynamic> _$ProductMediaToJson(ProductMedia instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'file_name': instance.fileName,
+      'size': instance.size,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };
