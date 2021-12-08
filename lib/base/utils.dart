@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +92,22 @@ class Utils {
 
       default:
         return 'assets/images/diet/gain_weight.svg';
+    }
+  }
+
+  static String productIcon(ProductSate? state) {
+    switch (state) {
+      case ProductSate.download:
+        return 'assets/images/shop/download.png';
+
+      case ProductSate.play:
+        return 'assets/images/shop/lock.png';
+
+      case ProductSate.wait:
+        return 'assets/images/shop/time.svg';
+
+      default:
+        return 'assets/images/shop/download.png';
     }
   }
 
