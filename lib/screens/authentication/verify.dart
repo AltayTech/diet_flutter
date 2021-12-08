@@ -4,7 +4,6 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
-import 'package:behandam/routes.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
@@ -14,6 +13,7 @@ import 'package:behandam/widget/pin_code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -23,8 +23,9 @@ class VerifyScreen extends StatefulWidget {
   _VerifyScreenState createState() => _VerifyScreenState();
 }
 
-class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
+class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFill {
   late AuthenticationBloc authBloc;
+  late TextEditingController textEditingController;
   var args;
   String? firstP;
   String? secondP;
@@ -57,15 +58,17 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     _timer.cancel();
     authBloc.dispose();
+    await SmsAutoFill().unregisterListener();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    textEditingController = TextEditingController();
     startTimer();
     authBloc = AuthenticationBloc();
     listenBloc();
@@ -77,11 +80,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
         debugPrint('verifiy ${navigator.currentConfiguration!.path} / $event');
         context.vxNav.push(
           Uri(path: '/$event'),
-          params: {
-            "mobile": args['mobile'],
-            "code": code,
-            'id': args['countryId']
-          },
+          params: {"mobile": args['mobile'], "code": code, 'id': args['countryId']},
         );
       }
     });
@@ -102,8 +101,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
                   return NestedScrollView(
-                    headerSliverBuilder:
-                        (BuildContext context, bool innerBoxIsScrolled) {
+                    headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[
                         SliverAppBar(
                           backgroundColor: AppColors.arcColor,
@@ -127,9 +125,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
                   );
                 } else {
                   check = false;
-                  return Center(
-                      child: Container(
-                          width: 15.w, height: 15.w, child: Progress()));
+                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -182,8 +178,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -199,7 +194,9 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
                 widthSpace: MediaQuery.of(context).size.width,
                 onDone: (val) => setState(() {
                   code = val;
+                  textEditingController.text = val;
                 }),
+                textController: textEditingController,
                 context: context,
               ),
             ),
@@ -222,8 +219,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
                             _start = 15;
                             startTimer();
                           }))
-                  : Text(intl.sendAgain + '$_start',
-                      style: TextStyle(fontSize: 14.0))),
+                  : Text(intl.sendAgain + '$_start', style: TextStyle(fontSize: 14.0))),
           Space(height: 10.h),
           button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
             VerificationCode verification = VerificationCode();
@@ -257,5 +253,10 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> {
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage
+  }
+
+  @override
+  void codeUpdated() {
+    textEditingController.text = code!;
   }
 }

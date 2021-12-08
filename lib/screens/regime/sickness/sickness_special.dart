@@ -127,12 +127,13 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
           } else {
             DialogUtils.showDialogPage(
                 context: context,
-                child: SicknessDialog(
+                child:Center(
+              child: Container(child: SicknessDialog(
                   items: null,
                   itemClick: this,
                   sicknessType: SicknessType.SPECIAL,
                   sicknessSpecial: sicknessSpecial,
-                ));
+                ))));
           }
         }
       },
@@ -281,11 +282,12 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
                     } else {
                       DialogUtils.showDialogPage(
                           context: context,
-                          child: SicknessDialog(
+                          child:Center(
+                        child: Container(child: SicknessDialog(
                             sicknessSpecial: sickness,
                             itemClick: this,
                             sicknessType: SicknessType.SPECIAL,
-                          ));
+                      ))));
                     }
                   }
                 }),

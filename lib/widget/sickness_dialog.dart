@@ -112,17 +112,19 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
             right: 0,
             left: 0,
             child: Center(
-              child: InkWell(
-                onTap: () => setState(() {
-                  category.children?.forEach((item) {
-                    item.isSelected = false;
-                    current.isSelected = false;
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    category.children?.forEach((item) {
+                      item.isSelected = false;
+                      current.isSelected = false;
+                    });
+                    current.isSelected = true;
+                    category.isSelected = true;
+                    Navigator.of(context).pop();
+                    itemClick.click();
                   });
-                  current.isSelected = true;
-                  category.isSelected = true;
-                  Navigator.of(context).pop();
-                  itemClick.click();
-                }),
+                },
                 child: Container(
                   child: CircleAvatar(
                     backgroundColor:
@@ -151,7 +153,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
   }
 
   Widget illItemChild(bool isSelected, Sickness sickness) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         setState(() {
           widget.items!.children?.forEach((item) {
@@ -218,7 +220,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
   }
 
   Widget illItem(SicknessSpecial sicknessSpecial) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         setState(() {
           widget.sicknessSpecial!.children?.forEach((item) {
@@ -363,17 +365,19 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
             right: 0,
             left: 0,
             child: Center(
-              child: InkWell(
-                onTap: () => setState(() {
-                  widget.sicknessSpecial!.children?.forEach((item) {
-                    item.isSelected = false;
-                    special.isSelected = false;
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    widget.sicknessSpecial!.children?.forEach((item) {
+                      item.isSelected = false;
+                      special.isSelected = false;
+                    });
+                    sickness.isSelected = true;
+                    special.isSelected = true;
+                    Navigator.of(context).pop();
+                    widget.itemClick.click();
                   });
-                  sickness.isSelected = true;
-                  special.isSelected = true;
-                  Navigator.of(context).pop();
-                  widget.itemClick.click();
-                }),
+                },
                 child: CircleAvatar(
                   backgroundColor:
                       sickness.isSelected! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
@@ -411,7 +415,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
     switch (widget.sicknessType) {
       case SicknessType.SPECIAL:
         return Container(
-          height: widget.sicknessSpecial!.children!.length < 2 ? 40.h : 60.h,
+          height: (widget.sicknessSpecial?.children!=null && widget.sicknessSpecial!.children!.length < 2) ? 40.h : 60.h,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
@@ -491,7 +495,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
         break;
       case SicknessType.NORMAL:
         return Container(
-          height: widget.items!.children!.length < 2 ? 40.h : 60.h,
+          height: (widget.items?.children!=null && widget.items!.children!.length < 2) ? 40.h : 60.h,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
@@ -506,7 +510,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
                   ),
                   width: double.infinity,
                   child: Directionality(
-                    textDirection: TextDirection.rtl,
+                    textDirection: context.textDirectionOfLocale,
                     child: ListView.separated(
                       scrollDirection: Axis.vertical,
                       itemBuilder: (_, index) {
@@ -585,6 +589,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

@@ -7,10 +7,14 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class SplashBloc {
   SplashBloc() {
     _waiting.value = false;
+     SmsAutoFill().getAppSignature.then((value) {
+       debugPrint('package is $value');
+     });
   }
 
   final _repository = Repository.getInstance();

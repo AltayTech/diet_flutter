@@ -32,6 +32,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     bloc = SplashBloc();
     bloc.getPackageInfo();
     bloc.getUser();
+
     listenBloc();
   }
 

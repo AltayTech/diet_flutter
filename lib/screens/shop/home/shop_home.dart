@@ -185,7 +185,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                           Space(
                                             height: 1.h,
                                           ),
-                                          Text(
+                                          Expanded(child: Text(
                                             bloc.list[index].category!.products![i].productName ??
                                                 '',
                                             style: Theme.of(context)
@@ -196,7 +196,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                             softWrap: true,
                                             overflow: TextOverflow.ellipsis,
                                             textDirection: context.textDirectionOfLocale,
-                                          ),
+                                          ),),
                                           Space(
                                             height: 1.h,
                                           ),
