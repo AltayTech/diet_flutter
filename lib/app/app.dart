@@ -209,9 +209,8 @@ class MyObs extends VxObserver {
   }
 }
 final navigator = VxNavigator(
-
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: ProductPage()),
+    Routes.splash: (_, __) => MaterialPage(child: SplashScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.auth: (_, __) => MaterialPage(child: AuthScreen()),
@@ -276,7 +275,7 @@ final navigator = VxNavigator(
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
     Routes.shopCategory: (_, __) => MaterialPage(child: CategoryPage()),
     Routes.shopOrders: (_, __) => MaterialPage(child: OrdersPage()),
-    Routes.shopProduct: (_, __) => MaterialPage(child: ProductPage()),
+    RegExp(r"^\/shop\/product\/[0-9]+"): (uri, __) => MaterialPage(child: ProductPage(),arguments: int.parse(uri.pathSegments[1])),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

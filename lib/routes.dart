@@ -72,7 +72,7 @@ abstract class Routes {
   static const splash = '/';
   static const shopCategory = '/shopCategory';
   static const shopOrders = '/shopOrders';
-  static const shopProduct = '/shopProduct';
+  static const shopProduct = '/shop/product';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),
