@@ -9,6 +9,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends ResourcefulState<CategoryPage> {
   late ProductBloc productBloc;
-  Category? args;
+  ShopCategory? args;
 
   @override
   void initState() {
@@ -37,7 +38,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context)!.settings.arguments as Category;
+    args = ModalRoute.of(context)!.settings.arguments as ShopCategory;
     super.build(context);
     productBloc.getProducts();
     return SafeArea(
@@ -55,7 +56,10 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
             args!.image == null
                 ? ImageUtils.fromLocal('assets/images/shop/title.png')
                 : ImageUtils.fromNetwork(
-                    FlavorConfig.instance.variables["baseUrlFile"] + args!.image),
+                    FlavorConfig.instance.variables["baseUrlFileShop"] + args!.image,
+                    width: 100.w,
+                    height: 12.h,
+                    fit: BoxFit.fill),
             SizedBox(height: 2.h),
             Padding(
               padding: const EdgeInsets.all(12.0),
@@ -79,13 +83,13 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                                           borderRadius: BorderRadius.circular(10.0)),
                                       child: Column(
                                         children: [
-                                          firstTile(
-                                              product.productName, product.productThambnail),
+                                          firstTile(product.productName, product.productThambnail),
                                           Padding(
                                             padding: const EdgeInsets.only(right: 12.0, left: 12.0),
                                             child: Line(color: AppColors.strongPen, height: 0.1.h),
                                           ),
-                                          secondTile(product.sellingPrice, product.discountPrice, product.id),
+                                          secondTile(product.sellingPrice, product.discountPrice,
+                                              product.id),
                                         ],
                                       ),
                                     ))
@@ -108,11 +112,35 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
 
   Widget firstTile(String? name, String? pic) {
     return Padding(
-      padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-      child: ListTile(
-        leading: ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"] + pic,
-            width: 20.w, height: 10.h),
-        title: Text(name!),
+      padding: EdgeInsets.only(top: 2.w, bottom: 2.w, left: 2.w, right: 2.w),
+      child: Container(
+        height: 10.h,
+        child: Row(
+          textDirection: context.textDirectionOfLocale,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                child: ImageUtils.fromNetwork(
+                    FlavorConfig.instance.variables["baseUrlFileShop"] + pic,
+                    width: 20.w,
+                    height: 9.h,
+                    fit: BoxFit.fill)),
+            Space(
+              width: 3.w,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  name!,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -144,8 +172,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
               children: [
                 ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),
                 SizedBox(width: 2.w),
-                Text(intl.buyCourse,
-                    style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
+                Text(intl.buyCourse, style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
               ],
             ),
           ),
