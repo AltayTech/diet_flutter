@@ -78,6 +78,8 @@ class ShopCategory {
   String? category_name;
   @JsonKey(name: "category_icon")
   String? category_icon;
+  @JsonKey(name: "image")
+  String? image;
 
   ShopCategory();
 
@@ -176,24 +178,6 @@ class Orders {
   factory Orders.fromJson(Map<String, dynamic> json) => _$OrdersFromJson(json);
 
   Map<String, dynamic> toJson() => _$OrdersToJson(this);
-}
-
-@JsonSerializable()
-class Category {
-  @JsonKey(name: "id")
-  int? id;
-  @JsonKey(name: "category_name_en")
-  int? categoryNameEn;
-  @JsonKey(name: "category_name_hin")
-  String? categoryNameHin;
-  @JsonKey(name: "image")
-  String? image;
-
-  Category();
-
-  factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CategoryToJson(this);
 }
 
 @JsonSerializable()

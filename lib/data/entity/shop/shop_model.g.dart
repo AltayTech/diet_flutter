@@ -63,7 +63,8 @@ ShopCategory _$ShopCategoryFromJson(Map<String, dynamic> json) => ShopCategory()
       .toList()
   ..categoryNameEn = json['category_name_en'] as String?
   ..category_name = json['category_name_hin'] as String?
-  ..category_icon = json['category_icon'] as String?;
+  ..category_icon = json['category_icon'] as String?
+  ..image = json['image'] as String?;
 
 Map<String, dynamic> _$ShopCategoryToJson(ShopCategory instance) =>
     <String, dynamic>{
@@ -72,6 +73,7 @@ Map<String, dynamic> _$ShopCategoryToJson(ShopCategory instance) =>
       'category_name_en': instance.categoryNameEn,
       'category_name_hin': instance.category_name,
       'category_icon': instance.category_icon,
+      'image': instance.image,
     };
 
 ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
@@ -153,19 +155,6 @@ Map<String, dynamic> _$OrdersToJson(Orders instance) => <String, dynamic>{
       'items': instance.items,
       'count': instance.count,
       'sum': instance.sum,
-    };
-
-Category _$CategoryFromJson(Map<String, dynamic> json) => Category()
-  ..id = json['id'] as int?
-  ..categoryNameEn = json['category_name_en'] as int?
-  ..categoryNameHin = json['category_name_hin'] as String?
-  ..image = json['image'] as String?;
-
-Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
-      'id': instance.id,
-      'category_name_en': instance.categoryNameEn,
-      'category_name_hin': instance.categoryNameHin,
-      'image': instance.image,
     };
 
 Lessons _$LessonsFromJson(Map<String, dynamic> json) => Lessons()

@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/shop/home/bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/line.dart';
@@ -12,6 +13,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class ShopHomeScreen extends StatefulWidget {
   const ShopHomeScreen({Key? key}) : super(key: key);
@@ -90,12 +92,22 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                               ),
                               flex: 1,
                             ),
-                            Text(
-                              intl.view,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .overline!
-                                  .copyWith(color: AppColors.primary),
+                            MaterialButton(
+                              onPressed: () {
+                                if (bloc.list[index].action_type == ActionType.deepLink) {
+                                  VxNavigator.of(context)
+                                      .push(Uri.parse('/${bloc.list[index].action}'));
+                                } else if (bloc.list[index].action_type == ActionType.link) {
+                                  Utils.launchURL(bloc.list[index].action!);
+                                }
+                              },
+                              child: Text(
+                                intl.view,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .overline!
+                                    .copyWith(color: AppColors.primary),
+                              ),
                             ),
                             Space(
                               width: 1.w,
@@ -140,12 +152,18 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                   ),
                                   flex: 1,
                                 ),
-                                Text(
-                                  intl.viewAll,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .caption!
-                                      .copyWith(color: AppColors.primary),
+                                MaterialButton(
+                                  onPressed: () {
+                                    VxNavigator.of(context).push(Uri.parse(Routes.shopCategory),
+                                        params: bloc.list[index].category);
+                                  },
+                                  child: Text(
+                                    intl.viewAll,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(color: AppColors.primary),
+                                  ),
                                 ),
                               ],
                             ),
@@ -185,18 +203,20 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                           Space(
                                             height: 1.h,
                                           ),
-                                          Expanded(child: Text(
-                                            bloc.list[index].category!.products![i].productName ??
-                                                '',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption!
-                                                .copyWith(fontWeight: FontWeight.bold),
-                                            maxLines: 2,
-                                            softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                            textDirection: context.textDirectionOfLocale,
-                                          ),),
+                                          Expanded(
+                                            child: Text(
+                                              bloc.list[index].category!.products![i].productName ??
+                                                  '',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption!
+                                                  .copyWith(fontWeight: FontWeight.bold),
+                                              maxLines: 2,
+                                              softWrap: true,
+                                              overflow: TextOverflow.ellipsis,
+                                              textDirection: context.textDirectionOfLocale,
+                                            ),
+                                          ),
                                           Space(
                                             height: 1.h,
                                           ),
@@ -225,7 +245,11 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                 ],
                                               ),
                                               MaterialButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  debugPrint('${Routes.shopProduct}/${bloc.list[index].category!.products![i].id}');
+                                                  VxNavigator.of(context)
+                                                      .push(Uri.parse('${Routes.shopProduct}/${bloc.list[index].category!.products![i].id}'));
+                                                },
                                                 minWidth: 7.w,
                                                 height: 7.w,
                                                 child: Container(
@@ -258,10 +282,15 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                       );
                       break;
                     case StyleType.banner:
-                      print(
-                          'banner = > ${FlavorConfig.instance.variables['baseUrlFileShop'] + bloc.list[index].banner?.sliderImg}');
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          if (bloc.list[index].banner!.action_type == ActionType.deepLink) {
+                            VxNavigator.of(context)
+                                .push(Uri.parse('/${bloc.list[index].banner!.action}'));
+                          } else if (bloc.list[index].banner!.action_type == ActionType.link) {
+                            Utils.launchURL(bloc.list[index].banner!.action!);
+                          }
+                        },
                         child: Container(
                           margin: EdgeInsets.all(5.w),
                           child: ClipRRect(
