@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
 
@@ -129,7 +130,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                   ),
                   OutlinedButton(
                     onPressed: () {
-                      VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: product);
+                      VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: shopProduct);
                     },
                     style: ButtonStyle(
                         fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
@@ -138,7 +139,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                         shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                         side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar)),),
-                    child: product?.userOrderDate == null
+                    child: shopProduct.userOrderDate == null
                       ? Row(
                           children: [
                             ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),

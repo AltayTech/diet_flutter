@@ -70,7 +70,7 @@ abstract class Routes {
   static const reviveBlock = '/revive/block';
   static const renewBlock = '/renew/block';
   static const splash = '/';
-  static const shopCategory = '/shop/category';
+  static const shopCategory = '/shop/categories';
   static const shopOrders = '/shop/orders';
   static const shopHome = '/shop/home';
   static const renewWeightEnter = '/renew/weight';

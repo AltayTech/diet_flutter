@@ -58,22 +58,22 @@ const _$ActionTypeEnumMap = {
 
 ShopCategory _$ShopCategoryFromJson(Map<String, dynamic> json) => ShopCategory()
   ..id = json['id'] as int?
-  ..products = (json['products'] as List<dynamic>?)
-      ?.map((e) => ShopProduct.fromJson(e as Map<String, dynamic>))
-      .toList()
   ..categoryNameEn = json['category_name_en'] as String?
   ..category_name = json['category_name_hin'] as String?
   ..category_icon = json['category_icon'] as String?
-  ..image = json['image'] as String?;
+  ..image = json['image'] as String?
+  ..products = (json['products'] as List<dynamic>?)
+      ?.map((e) => ShopProduct.fromJson(e as Map<String, dynamic>))
+      .toList();
 
 Map<String, dynamic> _$ShopCategoryToJson(ShopCategory instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'products': instance.products,
       'category_name_en': instance.categoryNameEn,
       'category_name_hin': instance.category_name,
       'category_icon': instance.category_icon,
       'image': instance.image,
+      'products': instance.products,
     };
 
 ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
@@ -89,8 +89,8 @@ ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
   ..shortDescription = json['short_descp_hin'] as String?
   ..longDescriptionEn = json['long_descp_en'] as String?
   ..longDescription = json['long_descp_hin'] as String?
-  ..sellingPrice = json['selling_price'] as int?
-  ..discountPrice = json['discount_price'] as int?
+  ..sellingPrice = json['selling_price']
+  ..discountPrice = json['discount_price']
   ..action = json['action'] as String?
   ..action_type = $enumDecodeNullable(_$ActionTypeEnumMap, json['action_type'])
   ..userOrderDate = json['user_order_date'] as String?

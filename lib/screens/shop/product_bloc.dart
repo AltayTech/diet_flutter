@@ -21,7 +21,6 @@ class ProductBloc{
   List<ProductMedia>? _media;
   final _IsBought = BehaviorSubject<bool>();
   final _ = BehaviorSubject<bool>();
-  final _products = BehaviorSubject<List<ShopProduct>>();
   final _product = BehaviorSubject<ShopProduct>();
   final _loadingMoreProducts = BehaviorSubject<bool>();
   final _selectedProduct = BehaviorSubject<int>();
@@ -36,7 +35,6 @@ class ProductBloc{
   //     (_products.valueOrNull?.length ?? 0) < _totalRow &&
   // _listFood.valueOrNull?.items.foods?.length != 0;
   Stream<bool> get IsBought => _IsBought.stream;
-  Stream<List<ShopProduct>> get products => _products.stream;
   Stream<ShopProduct> get product => _product.stream;
   Stream get navigateToVerify => _navigateToVerify.stream;
   Stream get showServerError => _showServerError.stream;
@@ -60,12 +58,6 @@ class ProductBloc{
       _offset++;
       // getProduct();
     }
-  }
-  void getProducts(){
-    _loadingMoreProducts.value = true;
-    _repository.getProducts().then((value) {
-      _products.value = value.data!.items!;
-    }).whenComplete(() => _loadingMoreProducts.value = false);
   }
 
   void getProduct(int id){

@@ -221,7 +221,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: SplashScreen()),
+    Routes.splash: (_, __) => MaterialPage(child: ShopHomeScreen()),
     Routes.editProfile: (_, __) => MaterialPage(child: EditProfileScreen()),
     Routes.profile: (_, __) => MaterialPage(child: ProfileScreen()),
     Routes.auth: (_, __) => MaterialPage(child: AuthScreen()),
@@ -310,7 +310,6 @@ final navigator = VxNavigator(
     RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) => MaterialPage(child: Block()),
     RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) => MaterialPage(child: Block()),
     // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
-    Routes.shopCategory: (_, param) => MaterialPage(child: CategoryPage(), arguments: param),
     Routes.shopOrders: (_, __) => MaterialPage(child: OrdersPage()),
     Routes.shopHome: (_, __) => MaterialPage(child: ShopHomeScreen()),
     Routes.refund: (_, __) => MaterialPage(child: RefundScreen()),
@@ -318,6 +317,7 @@ final navigator = VxNavigator(
     Routes.refundRecord: (_, __) => MaterialPage(child: RefundRecordScreen()),
     RegExp(r"\/shop\/product\/[0-9]+"): (uri, __) => MaterialPage(child: ProductPage(),arguments: uri.pathSegments[2]),
     Routes.shopBill: (_, param) => MaterialPage(child: ShopBillPage(), arguments: param),
+    RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) => MaterialPage(child: CategoryPage(),arguments: uri.pathSegments[2]),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),
