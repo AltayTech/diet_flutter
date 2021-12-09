@@ -215,6 +215,7 @@ abstract class Repository {
   NetworkResult<ShopProduct> getProduct(int id);
 
   NetworkResult<Payment> shopOnlinePayment(Payment requestData);
+  Future<Response> download(String pathFile,String pathDir);
 
   NetworkResult<LatestInvoiceData> shopLastInvoice();
 }
@@ -824,6 +825,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Payment> shopOnlinePayment(Payment requestData) {
     var response = _apiClient.shopOnlinePayment(requestData);
+    return response;
+  }
+
+  @override
+  Future<Response> download(String urlPath, String pathDir) {
+    var response =  _dio.download(urlPath, pathDir);
     return response;
   }
 

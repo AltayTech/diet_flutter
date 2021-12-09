@@ -95,19 +95,19 @@ class Utils {
     }
   }
 
-  static String productIcon(ProductSate? state) {
+  static String productIcon(TypeMediaShop? state) {
     switch (state) {
-      case ProductSate.download:
-        return 'assets/images/shop/download.png';
+      case TypeMediaShop.download:
+        return 'assets/images/shop/download.svg';
 
-      case ProductSate.play:
-        return 'assets/images/shop/lock.png';
+      case TypeMediaShop.lock:
+        return 'assets/images/shop/lock.svg';
 
-      case ProductSate.wait:
-        return 'assets/images/shop/time.svg';
+      case TypeMediaShop.play:
+        return 'assets/images/shop/play.svg';
 
       default:
-        return 'assets/images/shop/download.png';
+        return 'assets/images/shop/lock.svg';
     }
   }
 

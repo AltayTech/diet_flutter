@@ -71,14 +71,14 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-<!--            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />-->
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
             <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="behandam"/>
-                <data android:scheme="https" android:host="behandam.kermany.com" android:pathPrefix="/link"/>
-<!--                <data android:scheme="behandam" android:host="behandam.app" android:pathPrefix="/link"/>-->
+               <!-- <data android:scheme="https" android:host="behandam.kermany.com" android:pathPrefix="/link"/>
+                <data android:scheme="behandam" android:host="behandam.app" android:pathPrefix="/link"/>-->
                 <!--                   android:host="debug.behaminplus.ir"-->
                 <!--                   android:pathPattern="/#/psy/payment/online/fail"-->
 

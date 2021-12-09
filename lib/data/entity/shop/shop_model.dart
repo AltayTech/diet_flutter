@@ -1,4 +1,3 @@
-import 'package:behandam/base/utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'shop_model.g.dart';
@@ -19,6 +18,7 @@ enum ActionType {
   @JsonValue('deep_link')
   deepLink,
 }
+enum TypeMediaShop { lock, play, download,progress }
 
 @JsonSerializable()
 class ShopModel {
@@ -95,19 +95,15 @@ class ShopProduct {
   List<ShopProduct>? items;
   @JsonKey(name: "category_id")
   int? categoryId;
-  @JsonKey(name: "product_name_en")
-  String? productNameEn;
-  @JsonKey(name: "product_name_hin")
+  @JsonKey(name: "product_name")
   String? productName;
   @JsonKey(name: "product_thambnail")
   String? productThambnail;
   @JsonKey(name: "short_descp_en")
   String? shortDescriptionEn;
-  @JsonKey(name: "short_descp_hin")
+  @JsonKey(name: "short_description")
   String? shortDescription;
-  @JsonKey(name: "long_descp_en")
-  String? longDescriptionEn;
-  @JsonKey(name: "long_descp_hin")
+  @JsonKey(name: "long_description")
   String? longDescription;
   @JsonKey(name: "selling_price")
   int? sellingPrice;
@@ -119,27 +115,14 @@ class ShopProduct {
   ActionType? action_type;
   @JsonKey(name: "user_order_date")
   String? userOrderDate;
-  @JsonKey(name: "state")
-  ProductSate? state;
   @JsonKey(name: "lessons")
   List<Lessons>? lessons;
 
   ShopProduct();
 
-  String get iconState => Utils.productIcon(state);
-
   factory ShopProduct.fromJson(Map<String, dynamic> json) => _$ShopProductFromJson(json);
 
   Map<String, dynamic> toJson() => _$ShopProductToJson(this);
-}
-
-enum ProductSate {
-  @JsonValue("download")
-  download,
-  @JsonValue("play")
-  play,
-  @JsonValue("wait")
-  wait,
 }
 
 @JsonSerializable()
@@ -191,8 +174,8 @@ class Lessons {
   String? lessonName;
   @JsonKey(name: "is_active")
   int? isActive;
-  @JsonKey(name: "is_free")
-  int? isFree;
+  @JsonKey(name: "is_free", defaultValue: 0)
+  late int isFree;
   @JsonKey(name: "order")
   int? order;
   @JsonKey(name: "score")
@@ -209,8 +192,11 @@ class Lessons {
   String? updatedAt;
   @JsonKey(name: "video")
   String? video;
-  @JsonKey(name: "media")
-  List<ProductMedia>? media;
+  @JsonKey(name: "path")
+  String? path;
+
+  TypeMediaShop? typeMediaShop;
+
 
   Lessons();
 
