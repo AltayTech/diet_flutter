@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
 
@@ -40,10 +41,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    args = ModalRoute
-        .of(context)!
-        .settings
-        .arguments as String;
+    args = ModalRoute.of(context)!.settings.arguments as String;
     productBloc.getProduct(int.parse(args!));
     debugPrint('args = > $args');
   }
@@ -58,13 +56,16 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
               titleBar: intl.shop,
             ),
             body: SingleChildScrollView(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                   SizedBox(height: 2.h),
                   Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: StreamBuilder(
                           stream: productBloc.product,
-                          builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
+                          builder:
+                              (context, AsyncSnapshot<ShopProduct> snapshot) {
                             if (snapshot.hasData)
                               return Container(
                                 child: Column(
@@ -87,7 +88,8 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: Column(
           children: [
             Padding(
@@ -103,10 +105,8 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
               ),
               // ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"] + pic),
             ),
-            Text(shopProduct.productName!, style: Theme
-                .of(context)
-                .textTheme
-                .headline6),
+            Text(shopProduct.productName!,
+                style: Theme.of(context).textTheme.headline6),
             Padding(
               padding: const EdgeInsets.only(right: 12.0, left: 12.0),
               child: Line(color: AppColors.strongPen, height: 0.1.h),
@@ -128,34 +128,48 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                     ],
                   ),
                   OutlinedButton(
-                    onPressed: () {
-                      VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: product);
-                    },
-                    style: ButtonStyle(
+                      onPressed: () {
+                        VxNavigator.of(context).push(Uri(path: Routes.shopBill),
+                            params: shopProduct);
+                      },
+                      style: ButtonStyle(
                         fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
-                        backgroundColor: MaterialStateProperty.all(Colors.white),
-                        foregroundColor: MaterialStateProperty.all(AppColors.redBar),
-                        shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                        side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar)),),
-                    child: product?.userOrderDate == null
-                      ? Row(
-                          children: [
-                            ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),
-                            SizedBox(width: 2.w),
-                            Text(intl.buyCourse,
-                                style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
-                          ],
-                        )
-                        : Row(
-                          children: [
-                            ImageUtils.fromLocal('assets/images/shop/download.png', width: 2.w, height: 3.h),
-                            SizedBox(width: 2.w),
-                            Text(intl.downloadAll,
-                                style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
-                          ],
-                        )
-                  ),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        foregroundColor:
+                            MaterialStateProperty.all(AppColors.redBar),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0))),
+                        side: MaterialStateProperty.all(
+                            BorderSide(color: AppColors.redBar)),
+                      ),
+                      child: shopProduct.userOrderDate == null
+                          ? Row(
+                              children: [
+                                ImageUtils.fromLocal(
+                                    'assets/images/shop/add_cart.svg',
+                                    width: 2.w,
+                                    height: 3.h),
+                                SizedBox(width: 2.w),
+                                Text(intl.buyCourse,
+                                    style: TextStyle(
+                                        color: AppColors.redBar,
+                                        fontSize: 14.sp)),
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                ImageUtils.fromLocal(
+                                    'assets/images/shop/download.png',
+                                    width: 2.w,
+                                    height: 3.h),
+                                SizedBox(width: 2.w),
+                                Text(intl.downloadAll,
+                                    style: TextStyle(
+                                        color: AppColors.redBar,
+                                        fontSize: 14.sp)),
+                              ],
+                            )),
                 ],
               ),
             )
@@ -171,12 +185,14 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ExpandChild(child: Html(data: shopProduct.longDescription), arrowSize: 5.w,),
+            ExpandChild(
+              child: Html(data: shopProduct.longDescription),
+              arrowSize: 5.w,
+            ),
             SizedBox(height: 2.h),
             ...productBloc.lessons!
                 .asMap()
-                .map((index, value) =>
-                MapEntry(
+                .map((index, value) => MapEntry(
                     index,
                     Card(
                       shape: RoundedRectangleBorder(
@@ -196,24 +212,25 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                           children: [
                             Expanded(
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(value.lessonName!),
-                                    RichText(
-                                        text: TextSpan(
-                                            text: value.minutes.toString(),
-                                            style: TextStyle(color: Colors.black),
-                                            children: [
-                                              WidgetSpan(
-                                                  child: ImageUtils.fromLocal(
-                                                      'assets/images/shop/time.svg',
-                                                      color: Colors.black)),
-                                            ]))
-                                  ],
-                                )),
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(value.lessonName!),
+                                RichText(
+                                    text: TextSpan(
+                                        text: value.minutes.toString(),
+                                        style: TextStyle(color: Colors.black),
+                                        children: [
+                                      WidgetSpan(
+                                          child: ImageUtils.fromLocal(
+                                              'assets/images/shop/time.svg',
+                                              color: Colors.black)),
+                                    ]))
+                              ],
+                            )),
                             InkWell(
                               onTap: () async {
-                                Directory tempDir = await getTemporaryDirectory();
+                                Directory tempDir =
+                                    await getTemporaryDirectory();
                                 String tempPath = tempDir.path;
                               },
                               child: Container(
@@ -223,8 +240,11 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                     border: Border.all(color: AppColors.redBar),
                                     borderRadius: BorderRadius.circular(15.0)),
                                 child: Center(
-                                  child: ImageUtils.fromLocal(shopProduct.iconState,
-                                      width: 5.w, height: 3.h, color: AppColors.redBar),
+                                  child: ImageUtils.fromLocal(
+                                      shopProduct.iconState,
+                                      width: 5.w,
+                                      height: 3.h,
+                                      color: AppColors.redBar),
                                 ),
                               ),
                             )

@@ -11,6 +11,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -32,7 +33,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
     bloc = ProductBloc();
     bloc.navigateToVerify.listen((event) {
       Navigator.of(context).pop();
-      if(event != null) IntentUtils.launchURL(event);
+      if (event != null) IntentUtils.launchURL(event);
     });
   }
 
@@ -40,6 +41,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
   Widget build(BuildContext context) {
     super.build(context);
     product = ModalRoute.of(context)!.settings.arguments as ShopProduct?;
+    debugPrint('product shop ${product?.toJson()}');
 
     return Scaffold(
       appBar: Toolbar(titleBar: intl.shop),
@@ -50,17 +52,22 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
             // discount(),
             priceWithDiscount(),
             Space(height: 3.h),
-            SubmitButton(label: intl.onlinePayment, onTap: product == null ? null : (){
-              DialogUtils.showDialogProgress(context: context);
-              bloc.onlinePaymentClick(product!.id!);
-            },),
+            SubmitButton(
+              label: intl.onlinePayment,
+              onTap: product == null
+                  ? null
+                  : () {
+                      DialogUtils.showDialogProgress(context: context);
+                      bloc.onlinePaymentClick(product!.id!);
+                    },
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget productBox(){
+  Widget productBox() {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
       shape: AppShapes.rectangleMild,
@@ -70,31 +77,41 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ImageUtils.fromLocal(
-              product?.productThambnail ?? 'assets/images/shop/shape.png',
-              decoration: AppDecorations.boxMild,
-              fit: BoxFit.fitWidth,
-            ),
+            product?.productThambnail == null
+                ? ImageUtils.fromLocal(
+                    'assets/images/shop/shape.png',
+                    decoration: AppDecorations.boxMild,
+                    // width: 30.w,
+                    fit: BoxFit.fitWidth,
+                  )
+                : ImageUtils.fromNetwork(
+                    FlavorConfig.instance.variables["baseUrlFile"] +
+                        product!.productThambnail,
+                    // width: 30.w,
+                    fit: BoxFit.fitWidth,
+                  ),
             Space(width: 3.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  product?.productName ?? '---',
-                  style: typography.bodyText2,
-                  softWrap: true,
-                  textAlign: TextAlign.start,
-                ),
-                Space(height: 1.h),
-                Row(
-                  children: [
-                    timeScore('13:45', TimeScoreType.time),
-                    Space(width: 5.w),
-                    timeScore('4.5/5', TimeScoreType.score),
-                  ],
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    product?.productName ?? '---',
+                    style: typography.bodyText2,
+                    softWrap: true,
+                    textAlign: TextAlign.start,
+                  ),
+                  Space(height: 1.h),
+                  // Row(
+                  //   children: [
+                  //     timeScore('13:45', TimeScoreType.time),
+                  //     Space(width: 5.w),
+                  //     timeScore('4.5/5', TimeScoreType.score),
+                  //   ],
+                  // ),
+                ],
+              ),
             ),
           ],
         ),
@@ -125,7 +142,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
     );
   }
 
-  Widget priceWithDiscount(){
+  Widget priceWithDiscount() {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
       shape: AppShapes.rectangleMild,
@@ -139,14 +156,15 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
               thickness: 0.5.w,
               color: AppColors.box,
             ),
-            price(intl.productPriceWithOff, product?.discountPrice.toString() ?? '?'),
+            price(intl.productPriceWithOff,
+                product?.discountPrice.toString() ?? '?'),
           ],
         ),
       ),
     );
   }
 
-  Widget price(String label, String amount){
+  Widget price(String label, String amount) {
     return Row(
       children: [
         Expanded(
@@ -177,7 +195,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
     );
   }
 
-  Widget discount(){
+  Widget discount() {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
       shape: AppShapes.rectangleMild,
