@@ -20,12 +20,6 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
   late PaymentBloc bloc;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
     bloc = PaymentProvider.of(context);

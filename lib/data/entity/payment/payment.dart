@@ -11,6 +11,9 @@ class Payment {
   @JsonKey(name: "origin_id")
   int? originId;
 
+  @JsonKey(name: "product_id")
+  int? productId;
+
   @JsonKey(name: "id")
   int? id;
 
@@ -22,6 +25,7 @@ class Payment {
 
   @JsonKey(name: "url")
   String? url;
+
 
   Payment();
 

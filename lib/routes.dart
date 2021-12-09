@@ -78,6 +78,7 @@ abstract class Routes {
   static const refundVerify = '/refund/verify';
   static const refundRecord = '/refund/record';
   static const shopProduct = '/shop/product';
+  static const shopBill = '/shop/payment/bill';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{ //   home: (context) => HomePage(),
   };

@@ -16,6 +16,8 @@ import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../routes.dart';
+
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
 
@@ -30,7 +32,6 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     productBloc = ProductBloc();
   }
@@ -127,33 +128,34 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                     ],
                   ),
                   OutlinedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                          fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
-                          backgroundColor: MaterialStateProperty.all(Colors.white),
-                          foregroundColor: MaterialStateProperty.all(AppColors.redBar),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                          side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar))),
-                      child: shopProduct.userOrderDate == null
-                          ? Row(
-                        children: [
-                          ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
-                              width: 2.w, height: 3.h),
-                          SizedBox(width: 2.w),
-                          Text(intl.buyCourse,
-                              style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
-                        ],
-                      )
-                          : Row(
-                        children: [
-                          ImageUtils.fromLocal('assets/images/shop/download.png',
-                              width: 2.w, height: 3.h),
-                          SizedBox(width: 2.w),
-                          Text(intl.downloadAll,
-                              style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
-                        ],
-                      )),
+                    onPressed: () {
+                      VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: product);
+                    },
+                    style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
+                        backgroundColor: MaterialStateProperty.all(Colors.white),
+                        foregroundColor: MaterialStateProperty.all(AppColors.redBar),
+                        shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+                        side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar)),),
+                    child: product?.userOrderDate == null
+                      ? Row(
+                          children: [
+                            ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),
+                            SizedBox(width: 2.w),
+                            Text(intl.buyCourse,
+                                style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
+                          ],
+                        )
+                        : Row(
+                          children: [
+                            ImageUtils.fromLocal('assets/images/shop/download.png', width: 2.w, height: 3.h),
+                            SizedBox(width: 2.w),
+                            Text(intl.downloadAll,
+                                style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
+                          ],
+                        )
+                  ),
                 ],
               ),
             )

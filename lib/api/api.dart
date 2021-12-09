@@ -300,5 +300,8 @@ abstract class RestClient {
 
   @POST("/refund")
   ImperativeNetworkResult setRefund(@Body() RefundVerify refundVerify);
+
+  @POST("/payment-shop")
+  NetworkResult<Payment> shopOnlinePayment(@Body() Payment requestData);
 }
 

@@ -211,7 +211,10 @@ abstract class Repository {
   ImperativeNetworkResult verifyPassword(String pass);
 
   ImperativeNetworkResult setRefund(RefundVerify refundVerify);
+
   NetworkResult<ShopProduct> getProduct(int id);
+
+  NetworkResult<Payment> shopOnlinePayment(Payment requestData);
 }
 
 class _RepositoryImpl extends Repository {
@@ -813,6 +816,12 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult setRefund(RefundVerify refundVerify) {
     var response = _apiClient.setRefund(refundVerify);
+    return response;
+  }
+
+  @override
+  NetworkResult<Payment> shopOnlinePayment(Payment requestData) {
+    var response = _apiClient.shopOnlinePayment(requestData);
     return response;
   }
 }

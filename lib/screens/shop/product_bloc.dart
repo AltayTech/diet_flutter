@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
+import 'package:behandam/utils/device.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
@@ -83,6 +86,18 @@ class ProductBloc{
     _productId = newId;
     _offset = 0;
     // getProduct();
+  }
+
+  void onlinePaymentClick(int productId){
+    _loadingMoreProducts.value = true;
+    //ToDo get selected product from bloc not from ui
+    Payment shopPayment = Payment();
+    shopPayment.originId = kIsWeb ? 5 : 6;
+    shopPayment.paymentTypeId = 0;
+    shopPayment.productId = productId;
+    _repository.shopOnlinePayment(shopPayment).then((value) {
+      _navigateToVerify.fire(value.data?.url ?? null);
+    }).whenComplete(() => _loadingMoreProducts.value = false);
   }
 
   void dispose() {
