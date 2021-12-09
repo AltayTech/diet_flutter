@@ -1,7 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
-import 'package:behandam/screens/payment/discount_widget.dart';
 import 'package:behandam/screens/shop/product_bloc.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -16,6 +14,8 @@ import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../routes.dart';
+
 class ShopBillPage extends StatefulWidget {
   const ShopBillPage({Key? key}) : super(key: key);
 
@@ -23,7 +23,8 @@ class ShopBillPage extends StatefulWidget {
   _ShopBillPageState createState() => _ShopBillPageState();
 }
 
-class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
+class _ShopBillPageState extends ResourcefulState<ShopBillPage>
+    with WidgetsBindingObserver {
   late ShopProduct? product;
   late ProductBloc bloc;
 
@@ -33,8 +34,25 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
     bloc = ProductBloc();
     bloc.navigateToVerify.listen((event) {
       Navigator.of(context).pop();
-      if (event != null) IntentUtils.launchURL(event);
+      if(event){
+        VxNavigator.of(context).clearAndPush(Uri(path: Routes.paymentOnlineSuccess));
+      }
     });
+    bloc.onlinePayment.listen((event) {
+      // Navigator.of(context).pop();
+      if (event != null) {
+        bloc.mustCheckLastInvoice();
+        IntentUtils.launchURL(event);
+      }
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && bloc.checkLatestInvoice) {
+      debugPrint('shop on resume');
+      bloc.checkLastInvoice();
+    }
   }
 
   @override
@@ -98,7 +116,9 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> {
                 children: [
                   Text(
                     product?.productName ?? '---',
-                    style: typography.bodyText2,
+                    style: typography.caption?.apply(
+                      fontSizeDelta: 1,
+                    ),
                     softWrap: true,
                     textAlign: TextAlign.start,
                   ),

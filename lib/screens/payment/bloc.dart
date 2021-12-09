@@ -23,6 +23,7 @@ class PaymentBloc {
   PackageItem? _packageItem;
   Price? _discountInfo;
   LatestInvoiceData? _invoice;
+  bool _checkLatestInvoice = false;
 
   final _waiting = BehaviorSubject<bool>();
   final _showInformation = BehaviorSubject<bool>();
@@ -36,6 +37,8 @@ class PaymentBloc {
   final _onlinePayment = LiveEvent();
 
   String get path => _path;
+
+  bool get checkLatestInvoice => _checkLatestInvoice;
 
   LatestInvoiceData? get invoice => _invoice;
 
@@ -70,6 +73,10 @@ class PaymentBloc {
   Stream get showServerError => _showServerError.stream;
 
   Stream get onlinePayment => _onlinePayment.stream;
+
+  void mustCheckLastInvoice (){
+    _checkLatestInvoice = true;
+  }
 
   void newPayment(LatestInvoiceData newInvoice) {
     _waiting.value = true;

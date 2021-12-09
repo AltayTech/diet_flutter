@@ -197,6 +197,28 @@ class _PaymentSuccessScreenState
                     .copyWith(color: AppColors.labelTextColor),
               ),
               Space(height: 3.h),
+              // Container(
+              //   decoration: AppDecorations.boxMild.copyWith(
+              //     color: AppColors.box,
+              //   ),
+              //   child: Column(
+              //     children: [
+              //       Text(
+              //         intl.clickHereToUseProduct,
+              //         softWrap: true,
+              //         textAlign: TextAlign.center,
+              //         style: typography.caption?.apply(
+              //           color: AppColors.labelColor
+              //         ),
+              //       ),
+              //       SubmitButton(
+              //         label: intl.viewProduct,
+              //         onTap: () {
+              //
+              //         },),
+              //     ],
+              //   ),
+              // ),
               SubmitButton(
                   label: intl.confirmContinue,
                   onTap: () {
@@ -204,7 +226,7 @@ class _PaymentSuccessScreenState
                     MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
                     VxNavigator.of(context)
                         .clearAndPush(Uri.parse('/${bloc.path}'));
-                  })
+                  },),
             ],
           ),
         ),

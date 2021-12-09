@@ -16,6 +16,7 @@ class ProductBloc{
 
   int _offset = 0;
   int _totalRow = 0;
+  bool _checkLatestInvoice = false;
 
   List<Lessons>? _lessons;
   List<ProductMedia>? _media;
@@ -26,8 +27,10 @@ class ProductBloc{
   final _loadingMoreProducts = BehaviorSubject<bool>();
   final _selectedProduct = BehaviorSubject<int>();
   final _navigateToVerify = LiveEvent();
+  final _onlinePayment = LiveEvent();
   final _showServerError = LiveEvent();
 
+  bool get checkLatestInvoice => _checkLatestInvoice;
   List<Lessons>? get lessons => _lessons;
   List<ProductMedia>? get media => _media;
   Stream<bool> get loadingMoreProducts => _loadingMoreProducts.stream;
@@ -39,6 +42,7 @@ class ProductBloc{
   Stream<List<ShopProduct>> get products => _products.stream;
   Stream<ShopProduct> get product => _product.stream;
   Stream get navigateToVerify => _navigateToVerify.stream;
+  Stream get onlinePayment => _onlinePayment.stream;
   Stream get showServerError => _showServerError.stream;
   int? _productId;
 
@@ -96,7 +100,19 @@ class ProductBloc{
     shopPayment.paymentTypeId = 0;
     shopPayment.productId = productId;
     _repository.shopOnlinePayment(shopPayment).then((value) {
-      _navigateToVerify.fire(value.data?.url ?? null);
+      _onlinePayment.fire(value.data?.url ?? null);
+    }).whenComplete(() => _loadingMoreProducts.value = false);
+  }
+
+  void mustCheckLastInvoice (){
+    _checkLatestInvoice = true;
+  }
+
+  void checkLastInvoice(){
+    _loadingMoreProducts.value = true;
+    _repository.shopLastInvoice().then((value) {
+      if(value.data?.refId != null && !value.requireData.success.isNullOrFalse && !value.requireData.resolved.isNullOrFalse)
+        _navigateToVerify.fire(true);
     }).whenComplete(() => _loadingMoreProducts.value = false);
   }
 
@@ -104,6 +120,7 @@ class ProductBloc{
     _IsBought.close();
     _showServerError.close();
     _navigateToVerify.close();
+    _onlinePayment.close();
     _loadingMoreProducts.close();
     _product.close();
   }
