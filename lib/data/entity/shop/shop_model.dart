@@ -43,7 +43,6 @@ class ShopItem {
   @JsonKey(name: "banner")
   BannerItem? banner;
 
-
   @JsonKey(name: "title")
   String? title;
   @JsonKey(name: "action_type")
@@ -126,6 +125,7 @@ class ShopProduct {
   List<Lessons>? lessons;
 
   ShopProduct();
+
   String get iconState => Utils.productIcon(state);
 
   factory ShopProduct.fromJson(Map<String, dynamic> json) => _$ShopProductFromJson(json);
@@ -133,14 +133,14 @@ class ShopProduct {
   Map<String, dynamic> toJson() => _$ShopProductToJson(this);
 }
 
-  enum ProductSate {
+enum ProductSate {
   @JsonValue("download")
   download,
   @JsonValue("play")
   play,
   @JsonValue("wait")
   wait,
-  }
+}
 
 @JsonSerializable()
 class BannerItem {
@@ -157,6 +157,7 @@ class BannerItem {
   String? action;
   @JsonKey(name: "action_type")
   ActionType? action_type;
+
   BannerItem();
 
   factory BannerItem.fromJson(Map<String, dynamic> json) => _$BannerItemFromJson(json);
@@ -217,6 +218,7 @@ class Lessons {
 
   Map<String, dynamic> toJson() => _$LessonsToJson(this);
 }
+
 @JsonSerializable()
 class ProductMedia {
   @JsonKey(name: "id")

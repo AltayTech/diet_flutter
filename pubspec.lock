@@ -351,13 +351,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.4"
-  expandable:
+  expand_widget:
     dependency: "direct main"
     description:
-      name: expandable
+      name: expand_widget
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.1"
+    version: "2.1.0"
   external_app_launcher:
     dependency: "direct main"
     description:
