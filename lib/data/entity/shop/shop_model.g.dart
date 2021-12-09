@@ -94,7 +94,6 @@ ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
   ..action = json['action'] as String?
   ..action_type = $enumDecodeNullable(_$ActionTypeEnumMap, json['action_type'])
   ..userOrderDate = json['user_order_date'] as String?
-  ..state = $enumDecodeNullable(_$ProductSateEnumMap, json['state'])
   ..lessons = (json['lessons'] as List<dynamic>?)
       ?.map((e) => Lessons.fromJson(e as Map<String, dynamic>))
       .toList();
@@ -116,15 +115,8 @@ Map<String, dynamic> _$ShopProductToJson(ShopProduct instance) =>
       'action': instance.action,
       'action_type': _$ActionTypeEnumMap[instance.action_type],
       'user_order_date': instance.userOrderDate,
-      'state': _$ProductSateEnumMap[instance.state],
       'lessons': instance.lessons,
     };
-
-const _$ProductSateEnumMap = {
-  ProductSate.download: 'download',
-  ProductSate.play: 'play',
-  ProductSate.wait: 'wait',
-};
 
 BannerItem _$BannerItemFromJson(Map<String, dynamic> json) => BannerItem()
   ..id = json['id'] as int?
@@ -162,7 +154,7 @@ Lessons _$LessonsFromJson(Map<String, dynamic> json) => Lessons()
   ..productId = json['product_id'] as int?
   ..lessonName = json['lesson_name'] as String?
   ..isActive = json['is_active'] as int?
-  ..isFree = json['is_free'] as int?
+  ..isFree = json['is_free'] as int? ?? 0
   ..order = json['order'] as int?
   ..score = json['score'] as int?
   ..minutes = json['minutes'] as int?
@@ -171,9 +163,9 @@ Lessons _$LessonsFromJson(Map<String, dynamic> json) => Lessons()
   ..createdAt = json['created_at'] as String?
   ..updatedAt = json['updated_at'] as String?
   ..video = json['video'] as String?
-  ..media = (json['media'] as List<dynamic>?)
-      ?.map((e) => ProductMedia.fromJson(e as Map<String, dynamic>))
-      .toList();
+  ..path = json['path'] as String?
+  ..typeMediaShop =
+      $enumDecodeNullable(_$TypeMediaShopEnumMap, json['typeMediaShop']);
 
 Map<String, dynamic> _$LessonsToJson(Lessons instance) => <String, dynamic>{
       'id': instance.id,
@@ -189,8 +181,15 @@ Map<String, dynamic> _$LessonsToJson(Lessons instance) => <String, dynamic>{
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'video': instance.video,
-      'media': instance.media,
+      'path': instance.path,
+      'typeMediaShop': _$TypeMediaShopEnumMap[instance.typeMediaShop],
     };
+
+const _$TypeMediaShopEnumMap = {
+  TypeMediaShop.lock: 'lock',
+  TypeMediaShop.play: 'play',
+  TypeMediaShop.download: 'download',
+};
 
 ProductMedia _$ProductMediaFromJson(Map<String, dynamic> json) => ProductMedia()
   ..id = json['id'] as int?
