@@ -101,6 +101,7 @@ class _FastPatternPageState extends ResourcefulState<FastPatternPage> {
     return GestureDetector(
       onTap: () {
         bloc.changeToFast(pattern);
+        // (context as Element).markNeedsBuild();
         VxNavigator.of(context).returnAndPush(true);
       },
       child: Container(

@@ -329,6 +329,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                             fastBloc!.changeToOriginal();
                             debugPrint('i do not fast');
                             if (!isLoading) bloc.onRefresh(invalidate: true);
+                            // (context as Element).markNeedsBuild();
                           },
                           label: intl.iDoNotFast,
                         ),
