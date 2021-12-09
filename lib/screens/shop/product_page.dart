@@ -8,7 +8,6 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:dio/dio.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -27,7 +26,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends ResourcefulState<ProductPage> {
   late ProductBloc productBloc;
-  final Dio _dio = Dio();
+
   String? args;
   late ExpandableController _controller;
 
@@ -66,7 +65,6 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                       builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
                         debugPrint('snapshot.data!= > ${snapshot.data?.toJson()}');
                         if (snapshot.hasData)
-
                           return Container(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -148,25 +146,15 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                         side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar)),
                       ),
-                      child: shopProduct.userOrderDate == null
-                          ? Row(
-                              children: [
-                                ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
-                                    width: 2.w, height: 3.h),
-                                SizedBox(width: 2.w),
-                                Text(intl.buyCourse,
-                                    style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
-                              ],
-                            )
-                          : Row(
-                              children: [
-                                ImageUtils.fromLocal('assets/images/shop/download.png',
-                                    width: 2.w, height: 3.h),
-                                SizedBox(width: 2.w),
-                                Text(intl.downloadAll,
-                                    style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
-                              ],
-                            )),
+                      child: Row(
+                        children: [
+                          ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
+                              width: 2.w, height: 3.h),
+                          SizedBox(width: 2.w),
+                          Text(intl.buyCourse,
+                              style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
+                        ],
+                      )),
                 ],
               ),
             )
@@ -304,7 +292,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                     case TypeMediaShop.download:
                                       return InkWell(
                                         onTap: () async {
-                                          _dio.download(value.video!, value.path);
+                                          productBloc.downloadFile(value);
                                         },
                                         child: Container(
                                           width: 10.w,
@@ -322,22 +310,8 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                         ),
                                       );
                                     default:
-                                      return InkWell(
-                                        onTap: () async {},
-                                        child: Container(
-                                          width: 10.w,
-                                          height: 5.h,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.redBar),
-                                              borderRadius: BorderRadius.circular(15.0)),
-                                          child: Center(
-                                            child: ImageUtils.fromLocal(
-                                                Utils.productIcon(snapshot.data),
-                                                width: 5.w,
-                                                height: 3.h,
-                                                color: AppColors.redBar),
-                                          ),
-                                        ),
+                                      return Progress(
+                                        size: 3.w,
                                       );
                                   }
                                   ;

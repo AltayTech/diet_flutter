@@ -18,7 +18,7 @@ enum ActionType {
   @JsonValue('deep_link')
   deepLink,
 }
-enum TypeMediaShop { lock, play, download }
+enum TypeMediaShop { lock, play, download,progress }
 
 @JsonSerializable()
 class ShopModel {
@@ -95,19 +95,15 @@ class ShopProduct {
   List<ShopProduct>? items;
   @JsonKey(name: "category_id")
   int? categoryId;
-  @JsonKey(name: "product_name_en")
-  String? productNameEn;
-  @JsonKey(name: "product_name_hin")
+  @JsonKey(name: "product_name")
   String? productName;
   @JsonKey(name: "product_thambnail")
   String? productThambnail;
   @JsonKey(name: "short_descp_en")
   String? shortDescriptionEn;
-  @JsonKey(name: "short_descp_hin")
+  @JsonKey(name: "short_description")
   String? shortDescription;
-  @JsonKey(name: "long_descp_en")
-  String? longDescriptionEn;
-  @JsonKey(name: "long_descp_hin")
+  @JsonKey(name: "long_description")
   String? longDescription;
   @JsonKey(name: "selling_price")
   int? sellingPrice;
@@ -200,6 +196,7 @@ class Lessons {
   String? path;
 
   TypeMediaShop? typeMediaShop;
+
 
   Lessons();
 

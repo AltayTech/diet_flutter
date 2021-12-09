@@ -27,7 +27,7 @@ class ProductBloc {
   final _ = BehaviorSubject<bool>();
   final _products = BehaviorSubject<List<ShopProduct>>();
   final _product = BehaviorSubject<ShopProduct>();
-  final _typeMediaShop = BehaviorSubject<TypeMediaShop>();
+
   final _loadingMoreProducts = BehaviorSubject<bool>();
   final _selectedProduct = BehaviorSubject<int>();
   final _navigateToVerify = LiveEvent();
@@ -82,10 +82,10 @@ class ProductBloc {
       _products.value = value.data!.items!;
     }).whenComplete(() => _loadingMoreProducts.value = false);
   }
-
+  final _typeMediaShop = BehaviorSubject<TypeMediaShop>();
   void getProduct(int id) async {
     if (tempDir == null) {
-      tempDir=  await getTemporaryDirectory();
+      tempDir = await getTemporaryDirectory();
     }
     _loadingMoreProducts.value = true;
     try {
@@ -94,21 +94,21 @@ class ProductBloc {
         _lessons = value.data!.lessons;
         if (_lessons != null) {
           _lessons?.forEach((element) async {
-
-            if (element.video != null && element.video!.trim().isNotEmpty) {
-              debugPrint('element.video => ${tempDir?.path}/${element.video?.split('/').last} // ${element.video}');
+            if (element.video != null && element.video!.trim().length>1) {
+              debugPrint(
+                  'element.video => ${tempDir?.path}/${element.video?.split('/').last} // ${element.video}');
               element.path = '${tempDir!.path}/${element.video!.split('/').last}';
               bool exist =
                   await File('${tempDir!.path}/${element.video!.lastIndexOf('/')}').exists();
               if (exist) {
-                _typeMediaShop.value = TypeMediaShop.play;
+                element.typeMediaShop = TypeMediaShop.play;
               } else if (element.isFree == 0 && _product.value.userOrderDate == null) {
-                _typeMediaShop.value = TypeMediaShop.lock;
+                element.typeMediaShop = TypeMediaShop.lock;
               } else {
-                _typeMediaShop.value = TypeMediaShop.download;
+                element.typeMediaShop = TypeMediaShop.download;
               }
             } else {
-              _typeMediaShop.value = TypeMediaShop.lock;
+              element.typeMediaShop = TypeMediaShop.lock;
             }
           });
         }
@@ -116,6 +116,15 @@ class ProductBloc {
     } catch (e) {
       print("error:$e");
     }
+  }
+
+  void downloadFile(Lessons value) async {
+    _typeMediaShop.value = TypeMediaShop.progress;
+    _repository.download(value.video!, value.path!).then((param) {
+      value.typeMediaShop = TypeMediaShop.play;
+    }).catchError((onError) {
+      _typeMediaShop.value = TypeMediaShop.download;
+    });
   }
 
   void onProduct(int newId) {

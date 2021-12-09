@@ -82,13 +82,11 @@ ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
       ?.map((e) => ShopProduct.fromJson(e as Map<String, dynamic>))
       .toList()
   ..categoryId = json['category_id'] as int?
-  ..productNameEn = json['product_name_en'] as String?
-  ..productName = json['product_name_hin'] as String?
+  ..productName = json['product_name'] as String?
   ..productThambnail = json['product_thambnail'] as String?
   ..shortDescriptionEn = json['short_descp_en'] as String?
-  ..shortDescription = json['short_descp_hin'] as String?
-  ..longDescriptionEn = json['long_descp_en'] as String?
-  ..longDescription = json['long_descp_hin'] as String?
+  ..shortDescription = json['short_description'] as String?
+  ..longDescription = json['long_description'] as String?
   ..sellingPrice = json['selling_price'] as int?
   ..discountPrice = json['discount_price'] as int?
   ..action = json['action'] as String?
@@ -103,13 +101,11 @@ Map<String, dynamic> _$ShopProductToJson(ShopProduct instance) =>
       'id': instance.id,
       'items': instance.items,
       'category_id': instance.categoryId,
-      'product_name_en': instance.productNameEn,
-      'product_name_hin': instance.productName,
+      'product_name': instance.productName,
       'product_thambnail': instance.productThambnail,
       'short_descp_en': instance.shortDescriptionEn,
-      'short_descp_hin': instance.shortDescription,
-      'long_descp_en': instance.longDescriptionEn,
-      'long_descp_hin': instance.longDescription,
+      'short_description': instance.shortDescription,
+      'long_description': instance.longDescription,
       'selling_price': instance.sellingPrice,
       'discount_price': instance.discountPrice,
       'action': instance.action,
