@@ -18,26 +18,27 @@ class AdvicePage extends StatefulWidget {
 
 class _AdvicePageState extends ResourcefulState<AdvicePage> {
   late AdviceBloc bloc;
+  String? previousName;
   final List<Map<String, dynamic>> data = [
     {
       'icon': 'assets/images/foodlist/advice/bulb_support.svg',
       'color': AppColors.blueRuler,
-      'type': AdviceType.Admin,
+      'type': AdviceType.admin,
     },
     {
       'icon': 'assets/images/foodlist/advice/bulb.svg',
       'color': AppColors.purpleRuler,
-      'type': AdviceType.Diet,
+      'type': AdviceType.diet,
     },
     {
       'icon': 'assets/images/foodlist/advice/bulb_plus.svg',
       'color': AppColors.greenRuler,
-      'type': AdviceType.Sickness,
+      'type': AdviceType.sickness,
     },
     {
       'icon': 'assets/images/foodlist/advice/bulb_plus.svg',
       'color': AppColors.pinkRuler,
-      'type': AdviceType.Special,
+      'type': AdviceType.special,
     },
   ];
 
@@ -74,17 +75,17 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (snapshot.requireData.adminRecommends != null && snapshot.requireData.adminRecommends!.isNotEmpty)
-                        advicePart(AdviceType.Admin,
-                            snapshot.requireData.adminRecommends!),
+                        advicePart(AdviceType.admin,
+                            snapshot.requireData.adminRecommends!, snapshot.requireData),
                       if (snapshot.requireData.dietTypeRecommends != null && snapshot.requireData.dietTypeRecommends!.isNotEmpty)
-                        advicePart(AdviceType.Diet,
-                            snapshot.requireData.dietTypeRecommends!),
+                        advicePart(AdviceType.diet,
+                            snapshot.requireData.dietTypeRecommends!, snapshot.requireData),
                       if (snapshot.requireData.sicknessRecommends != null && snapshot.requireData.sicknessRecommends!.isNotEmpty)
-                        advicePart(AdviceType.Sickness,
-                            snapshot.requireData.sicknessRecommends!),
+                        advicePart(AdviceType.sickness,
+                            snapshot.requireData.sicknessRecommends!, snapshot.requireData),
                       if (snapshot.requireData.specialRecommends != null && snapshot.requireData.specialRecommends!.isNotEmpty)
-                        advicePart(AdviceType.Special,
-                            snapshot.requireData.specialRecommends!),
+                        advicePart(AdviceType.special,
+                            snapshot.requireData.specialRecommends!, snapshot.requireData),
                     ],
                   );
                 }
@@ -97,7 +98,7 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
     );
   }
 
-  Widget advicePart(AdviceType type, List<dynamic> advices) {
+  Widget advicePart(AdviceType type, List<dynamic> advices, AdviceData adviceData) {
     Map<String, dynamic>? item =
     data.firstWhere((element) => element['type'] == type);
     return Column(
@@ -105,14 +106,14 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
       children: [
         header(type),
         Space(height: 1.h),
-        Text(
+        if(type != AdviceType.sickness && type != AdviceType.special) Text(
           intl.beAdvisedTo,
           textAlign: TextAlign.start,
           style: typography.caption?.apply(
             color: item['color'] ?? Colors.green,
           ),
         ),
-        ...advices.map((advice) => adviceItem(advice, type)).toList(),
+        ...advices.map((advice) => adviceItem(advice, type, adviceData)).toList(),
       ],
     );
   }
@@ -150,46 +151,72 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
   String adviceHeaderText(AdviceType type) {
     String text = '';
     switch (type) {
-      case AdviceType.Admin:
+      case AdviceType.admin:
         text = intl.adminAdvice;
         break;
-      case AdviceType.Diet:
+      case AdviceType.diet:
         text = intl.dietAdvice;
         break;
-      case AdviceType.Sickness:
+      case AdviceType.sickness:
         text = intl.sicknessAdvice;
         break;
-      case AdviceType.Special:
+      case AdviceType.special:
         text = intl.specialAdvice;
         break;
     }
     return text;
   }
 
-  Widget adviceItem(dynamic advice, AdviceType type) {
+  Widget adviceItem(dynamic advice, AdviceType type, AdviceData adviceData) {
     Map<String, dynamic> item =
         data.firstWhere((element) => element['type'] == type);
-    return Container(
-      margin: EdgeInsets.only(bottom: 2.h),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          width: double.infinity,
-          color: item['color'].withOpacity(0.5),
-          padding: EdgeInsets.only(right: 2.w),
-          child: Container(
-            color: AppColors.box,
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-            child: Text(
-              advice.text ?? '',
-              softWrap: true,
-              textAlign: TextAlign.start,
-              style: typography.caption,
+    String? name;
+    if(type == AdviceType.sickness){
+      advice as SicknessTypeRecommend;
+      name = adviceData.userSicknesses?.firstWhere((element) => element.id == advice.pivot.sicknessId).title;
+    }
+    if(type == AdviceType.special){
+      advice as SpecialTypeRecommend;
+      name = adviceData.userSpecials?.firstWhere((element) => element.id == advice.pivot.specialId).title;
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if((type == AdviceType.sickness || type == AdviceType.special) && name != previousName) Text(
+          setText(name!),
+          textAlign: TextAlign.start,
+          style: typography.caption?.apply(
+            color: item['color'] ?? Colors.green,
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 2.h),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              width: double.infinity,
+              color: item['color'].withOpacity(0.5),
+              padding: EdgeInsets.only(right: 2.w),
+              child: Container(
+                color: AppColors.box,
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                child: Text(
+                  advice?.text ?? '',
+                  softWrap: true,
+                  textAlign: TextAlign.start,
+                  style: typography.caption,
+                ),
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
+  }
+
+  String setText(String name){
+    previousName = name;
+    return intl.forSomethingBeAdvisedTo(name);
   }
 
   @override
