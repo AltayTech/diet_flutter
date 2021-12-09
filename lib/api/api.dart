@@ -303,5 +303,8 @@ abstract class RestClient {
 
   @POST("/payment-shop")
   NetworkResult<Payment> shopOnlinePayment(@Body() Payment requestData);
+
+  @GET("/latest-invoice-shop")
+  NetworkResult<LatestInvoiceData> shopLastInvoice();
 }
 

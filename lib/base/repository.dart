@@ -215,6 +215,8 @@ abstract class Repository {
   NetworkResult<ShopProduct> getProduct(int id);
 
   NetworkResult<Payment> shopOnlinePayment(Payment requestData);
+
+  NetworkResult<LatestInvoiceData> shopLastInvoice();
 }
 
 class _RepositoryImpl extends Repository {
@@ -822,6 +824,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Payment> shopOnlinePayment(Payment requestData) {
     var response = _apiClient.shopOnlinePayment(requestData);
+    return response;
+  }
+
+  @override
+  NetworkResult<LatestInvoiceData> shopLastInvoice() {
+    var response = _apiClient.shopLastInvoice();
     return response;
   }
 }

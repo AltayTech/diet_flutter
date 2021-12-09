@@ -30,7 +30,8 @@ class PaymentBillScreen extends StatefulWidget {
   _PaymentBillScreenState createState() => _PaymentBillScreenState();
 }
 
-class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with WidgetsBindingObserver {
+class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
+    with WidgetsBindingObserver {
   late PaymentBloc bloc;
   String? inputDiscountCode;
   String? messageError;
@@ -53,19 +54,18 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if(state == AppLifecycleState.resumed){
+    if (state == AppLifecycleState.resumed && bloc.checkLatestInvoice) {
       bloc.checkOnlinePayment();
-      // listenBloc();
     }
   }
 
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
       debugPrint('listen online payment');
-        if(event)
-          VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
-        else
-          VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
+      if (event)
+        VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
+      else
+        VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
     });
     bloc.showServerError.listen((event) {
       Navigator.of(context).pop();
@@ -77,8 +77,9 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
       Payment? result = (event as NetworkResponse<Payment>).data;
       if ((event).next != null) {
         context.vxNav.push(Uri.parse('/${(event).next}'));
-      }else if (bloc.isOnline) {
+      } else if (bloc.isOnline) {
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
+        bloc.mustCheckLastInvoice();
         Utils.launchURL(result!.url!);
       } else {
         Utils.getSnackbarMessage(context, event.message!);
@@ -89,23 +90,25 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return PaymentProvider(bloc,
-        child: Scaffold(
-          appBar: Toolbar(titleBar: intl.paymentFinalBill),
-          body: StreamBuilder(
-            stream: bloc.waiting,
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data == false) {
-                return content();
-              } else {
-                return SpinKitCircle(
-                  size: 7.w,
-                  color: AppColors.primary,
-                );
-              }
-            },
-          ),
-        ));
+    return PaymentProvider(
+      bloc,
+      child: Scaffold(
+        appBar: Toolbar(titleBar: intl.paymentFinalBill),
+        body: StreamBuilder(
+          stream: bloc.waiting,
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data == false) {
+              return content();
+            } else {
+              return SpinKitCircle(
+                size: 7.w,
+                color: AppColors.primary,
+              );
+            }
+          },
+        ),
+      ),
+    );
   }
 
   Widget content() {
@@ -219,7 +222,10 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
               messageError ?? 'sdfsf',
               textAlign: TextAlign.start,
               textDirection: context.textDirectionOfLocale,
-              style: Theme.of(context).textTheme.overline!.copyWith(color: Colors.red),
+              style: Theme.of(context)
+                  .textTheme
+                  .overline!
+                  .copyWith(color: Colors.red),
             ),
             SizedBox(width: 2.w),
             ImageUtils.fromLocal(
@@ -254,13 +260,15 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
             ),
             child: Column(
               children: <Widget>[
-                _rowItems(bloc.packageItem!.price!.price.toString(), bloc.packageItem!.name!),
+                _rowItems(bloc.packageItem!.price!.price.toString(),
+                    bloc.packageItem!.name!),
                 Divider(),
-                _rowItems(bloc.packageItem!.price!.priceDiscount.toString(), intl.discount),
+                _rowItems(bloc.packageItem!.price!.priceDiscount.toString(),
+                    intl.discount),
                 StreamBuilder(
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data == true)
-                      return  Divider();
+                      return Divider();
                     else
                       return Container();
                   },
@@ -270,7 +278,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data == true)
                       return _rowItems(
-                          bloc.discountInfo!.discount!.toString().seRagham(), intl.discountCodeForYou);
+                          bloc.discountInfo!.discount!.toString().seRagham(),
+                          intl.discountCodeForYou);
                     else
                       return Container();
                   },
@@ -304,10 +313,9 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
                             ? intl.free
                             : '${bloc.packageItem!.price!.totalPrice.toString().seRagham()} ${intl.toman}',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle1!
-                            .copyWith(color: AppColors.primary, fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold),
                       ),
                     );
                   },
@@ -401,7 +409,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
     );
   }
 
-  Widget paymentItemWithTick(Widget child, Function selectPaymentType, bool tickOn) {
+  Widget paymentItemWithTick(
+      Widget child, Function selectPaymentType, bool tickOn) {
     return Expanded(
       flex: 1,
       child: Stack(
@@ -438,7 +447,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen> with W
     );
   }
 
-  Widget paymentItem(String iconAdrs, String title, String subTitle, Function selectPaymentType) {
+  Widget paymentItem(String iconAdrs, String title, String subTitle,
+      Function selectPaymentType) {
     return GestureDetector(
       onTap: () {
         selectPaymentType();
