@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -28,7 +29,6 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     bloc = PaymentBloc();
     bloc.checkLastInvoice();
@@ -40,7 +40,7 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
       Utils.getSnackbarMessage(context, event);
     });
     bloc.navigateTo.listen((event) {
-      context.vxNav.push(Uri.parse('/$event'));
+      context.vxNav.clearAndPush(Uri.parse('/$event'));
     });
   }
 
@@ -50,18 +50,25 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
     return PaymentProvider(bloc,
         child: Scaffold(
           appBar: Toolbar(titleBar: intl.paymentWait),
-          body: StreamBuilder(
-            stream: bloc.waiting,
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data == false) {
-                return content();
-              } else {
-                return SpinKitCircle(
-                  size: 7.w,
-                  color: AppColors.primary,
-                );
-              }
-            },
+          body: Column(
+            children: [
+              Expanded(
+                child: StreamBuilder(
+                  stream: bloc.waiting,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data == false) {
+                      return content();
+                    } else {
+                      return SpinKitCircle(
+                        size: 7.w,
+                        color: AppColors.primary,
+                      );
+                    }
+                  },
+                ),
+              ),
+              BottomNav(currentTab: BottomNavItem.DIET),
+            ],
           ),
         ));
   }

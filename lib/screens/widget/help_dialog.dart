@@ -1,3 +1,4 @@
+import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
@@ -13,17 +14,31 @@ import 'package:sizer/sizer.dart';
 
 import 'progress.dart';
 
-class HelpDialog extends StatelessWidget {
+class HelpDialog extends StatefulWidget {
   HelpDialog({Key? key, required this.helpId}) : super(key: key);
 
   final int helpId;
 
   @override
+  State<HelpDialog> createState() => _HelpDialogState();
+}
+
+class _HelpDialogState extends ResourcefulState<HelpDialog> {
+  late RegimeBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = RegimeBloc();
+    bloc.helpBodyState(widget.helpId);
+    bloc.showServerError.listen((event) {
+      Navigator.of(context).pop();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    AppLocalizations intl = context.intl;
-    TextTheme typography = context.typography;
-    RegimeBloc bloc = RegimeBloc();
-    bloc.helpBodyState(helpId);
+   super.build(context);
 
     return StreamBuilder(
         stream: bloc.helpers,
@@ -47,7 +62,7 @@ class HelpDialog extends StatelessWidget {
                         style: typography.bodyText2,
                       ),
                       Space(height: 1.h),
-                      if (helpId == 2)
+                      if (widget.helpId == 2)
                         ImageUtils.fromLocal(
                           'assets/images/diet/body-scale-happy.svg',
                           width: 20.w,
@@ -72,5 +87,25 @@ class HelpDialog extends StatelessWidget {
           } else
             return Center(child: Progress());
         });
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
   }
 }

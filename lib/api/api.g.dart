@@ -1259,7 +1259,7 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(requestData.toJson());
+    _data.addAll(requestData);
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'POST', headers: _headers, extra: _extra)

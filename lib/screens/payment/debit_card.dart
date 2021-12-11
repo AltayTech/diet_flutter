@@ -39,7 +39,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
     invoice.cardOwner = MemoryApp.userInformation?.fullName;
     invoice.payedAt = DateTime.now().toString().substring(0, 10);
     bloc.navigateTo.listen((event) {
-      VxNavigator.of(context).push(Uri.parse('/$event'));
+      VxNavigator.of(context).clearAndPush(Uri.parse('/$event'));
     });
   }
 

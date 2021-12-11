@@ -740,7 +740,15 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult visit(PhysicalInfoData requestData) {
-    var response = _apiClient.visit(requestData);
+    var response = _apiClient.visit({
+      'weight': requestData.weight,
+      'height': requestData.height,
+      'waist': requestData.waist,
+      'birth_date': requestData.birthDate,
+      // 'hip': requestData.hip,
+      'multi_birth_num': requestData.multiBirth,
+      'pregnancy_week_number': requestData.pregnancyWeek,
+    });
     return response;
   }
 

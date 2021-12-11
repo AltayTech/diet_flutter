@@ -263,9 +263,9 @@ final navigator = VxNavigator(
         MaterialPage(child: RegimeTypeScreen()),
     RegExp(r"\/(reg|renew|revive)(\/size)"): (_, __) => MaterialPage(child: BodyStateScreen()),
     RegExp(r"\/(reg|renew|revive)(\/report)"): (_, __) => MaterialPage(child: BodyStatusScreen()),
-    RegExp(r"\/(reg|renew|revive)(\/sick\/select)"): (_, __) =>
+    RegExp(r"\/(reg|renew|list|revive)(\/sick\/select)"): (_, __) =>
         MaterialPage(child: SicknessScreen()),
-    RegExp(r"\/(reg|renew|revive)(\/special)"): (_, __) =>
+    RegExp(r"\/(reg|renew|list|revive)(\/special)"): (_, __) =>
         MaterialPage(child: SicknessSpecialScreen()),
     Routes.advice: (_, __) => MaterialPage(child: AdvicePage()),
     RegExp(r"\/(reg|renew|revive)(\/package)"): (_, __) => MaterialPage(child: PackageListScreen()),
@@ -289,6 +289,8 @@ final navigator = VxNavigator(
     Routes.resetPasswordProfile: (_, __) => MaterialPage(child: ResetPasswordProfile()),
     RegExp(r"\/(reg|list|renew|revive)(\/payment\/online\/fail)"): (_, params) =>
         MaterialPage(child: PaymentFailScreen(), arguments: params),
+    RegExp(r"\/(reg|list|renew|revive)(\/payment\/card\/reject)"): (_, __) =>
+        MaterialPage(child: PaymentFailScreen()),
     RegExp(r"\/(reg|renew|revive)(\/activity)"): (_, __) => MaterialPage(child: ActivityLevelPage()),
     RegExp(r"\/(reg|list|renew|revive)(\/payment\/card\/wait)"): (_, __) =>
         MaterialPage(child: PaymentWaitScreen()),
@@ -299,7 +301,7 @@ final navigator = VxNavigator(
         MaterialPage(child: MenuSelectPage()),
     Routes.menuConfirm: (_, param) => MaterialPage(child: MenuConfirmPage(), arguments: param),
     Routes.statusUser: (_, __) => MaterialPage(child: StatusUserScreen()),
-    Routes.weightEnter: (_, __) => MaterialPage(child: BodyStateScreen()),
+    RegExp(r"\/(reg|list)(\/weight\/enter)"): (_, __) => MaterialPage(child: BodyStateScreen()),
     RegExp(r"\/(reg|renew|revive)(\/weight)"): (_, __) => MaterialPage(child: BodyStateScreen()),
     Routes.listMenuAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
     Routes.listWeightAlert: (_, __) => MaterialPage(child: AlertFlowPage()),
@@ -309,7 +311,7 @@ final navigator = VxNavigator(
         MaterialPage(child: PaymentSuccessScreen(), arguments: param),
     RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) => MaterialPage(child: Block()),
     RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) => MaterialPage(child: Block()),
-    // Routes.PSYPaymentCard: (_, params) => MaterialPage(child: PaymentCardScreen(), arguments: params),
+    Routes.shopCategory: (_, param) => MaterialPage(child: CategoryPage(), arguments: param),
     Routes.shopOrders: (_, __) => MaterialPage(child: OrdersPage()),
     Routes.shopHome: (_, __) => MaterialPage(child: ShopHomeScreen()),
     Routes.refund: (_, __) => MaterialPage(child: RefundScreen()),

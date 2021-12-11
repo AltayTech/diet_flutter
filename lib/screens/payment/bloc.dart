@@ -22,7 +22,7 @@ class PaymentBloc {
 
   final _repository = Repository.getInstance();
 
-  late String _path;
+  late String? _path;
   String? discountCode;
   PackageItem? _packageItem;
   Price? _discountInfo;
@@ -40,7 +40,7 @@ class PaymentBloc {
   final _showServerError = LiveEvent();
   final _onlinePayment = LiveEvent();
 
-  String get path => _path;
+  String? get path => _path;
 
   bool get checkLatestInvoice => _checkLatestInvoice;
 
@@ -187,7 +187,7 @@ class PaymentBloc {
   void checkOnlinePayment(){
     _repository.latestInvoice().then((value) {
       _onlinePayment.fire(value.data!.success);
-      _path = value.next!;
+      _path = value.next ?? null;
       });
   }
 

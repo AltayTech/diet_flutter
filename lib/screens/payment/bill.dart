@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
@@ -61,11 +62,13 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
 
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
-      debugPrint('listen online payment');
-      if (event)
-        VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
+      debugPrint('listen online payment ${navigator.currentConfiguration?.path}');
+      if(event != null && event)
+        VxNavigator.of(context).clearAndPush(Uri.parse("/${bloc.path}"));
+      else if(event != null && !event)
+        VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
       else
-        VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
+        Navigator.of(context).pop();
     });
     bloc.showServerError.listen((event) {
       Navigator.of(context).pop();
@@ -73,15 +76,16 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
     });
     bloc.navigateTo.listen((event) {
       debugPrint('listen navigate');
-      Navigator.of(context).pop();
       Payment? result = (event as NetworkResponse<Payment>).data;
       if ((event).next != null) {
-        context.vxNav.push(Uri.parse('/${(event).next}'));
+        Navigator.of(context).pop();
+        context.vxNav.clearAndPush(Uri.parse('/${(event).next}'));
       } else if (bloc.isOnline) {
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
         bloc.mustCheckLastInvoice();
         Utils.launchURL(result!.url!);
       } else {
+        Navigator.of(context).pop();
         Utils.getSnackbarMessage(context, event.message!);
       }
     });

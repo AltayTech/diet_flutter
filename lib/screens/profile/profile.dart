@@ -6,6 +6,7 @@ import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/toolbar_profile.dart';
 import 'package:behandam/screens/profile/tools_box.dart';
+import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/cross_item_profile.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -47,12 +48,13 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   void listenBloc() {
     profileBloc.navigateToVerify.listen((event) {
       if ((event as bool)) {
-        LaunchApp.openApp(
-          androidPackageName: 'com.app.fitamin',
-          // iosUrlScheme: 'pulsesecure://',
-          // appStoreLink: 'itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041',
-          // openStore: false
-        );
+        // LaunchApp.openApp(
+        //   androidPackageName: 'com.app.fitamin',
+        //   // iosUrlScheme: 'pulsesecure://',
+        //   // appStoreLink: 'itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041',
+        //   // openStore: false
+        // );
+        IntentUtils.openApp('com.app.fitamin');
       } else {
         _launchURL('https://app.fitamin.ir/register');
       }
