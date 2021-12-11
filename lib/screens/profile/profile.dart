@@ -40,9 +40,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
     super.initState();
     profileBloc = ProfileBloc();
     profileBloc.getInformation();
-    /* profileBloc.showServerError.listen((event) {
-
-    });*/
+    listenBloc();
   }
 
   void listenBloc() {
@@ -66,6 +64,12 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
 
   _launchURL(_url) async {
     if (!await launch(_url)) throw 'Could not launch $_url';
+  }
+
+  @override
+  void dispose() {
+    profileBloc.dispose();
+    super.dispose();
   }
 
   @override
