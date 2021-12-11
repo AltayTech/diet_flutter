@@ -81,7 +81,7 @@ abstract class DateTimeUtils {
     List<String> data = date.replaceAll('-', '/').substring(0, 10).split('/');
     Gregorian g = Gregorian(int.parse(data[0]), int.parse(data[1]), int.parse(data[2]));
     final f = g.toJalali().formatter;
-    return '${f.yyyy}/${f.mN}/${f.dd}';
+    return '${f.d} ${f.mN} ${f.yyyy}';
   }
 }
 

@@ -144,6 +144,7 @@ class ProductBloc {
     shopPayment.paymentTypeId = 0;
     shopPayment.productId = productId;
     _repository.shopOnlinePayment(shopPayment).then((value) {
+      if(value.data?.url != null && value.data!.url!.isNotEmpty) _checkLatestInvoice = true;
       _onlinePayment.fire(value.data?.url ?? null);
     }).whenComplete(() => _loadingMoreProducts.value = false);
   }
@@ -153,11 +154,18 @@ class ProductBloc {
   }
 
   void checkLastInvoice(){
-    _loadingMoreProducts.value = true;
-    _repository.shopLastInvoice().then((value) {
-      if(value.data?.refId != null && !value.requireData.success.isNullOrFalse && !value.requireData.resolved.isNullOrFalse)
-        _navigateToVerify.fire(true);
-    }).whenComplete(() => _loadingMoreProducts.value = false);
+    debugPrint('last invoice ${checkLatestInvoice}');
+    // if(!_checkLatestInvoice.isNullOrFalse) {
+      _loadingMoreProducts.value = true;
+      _repository.shopLastInvoice().then((value) {
+        if (value.data?.refId != null &&
+            !value.requireData.success.isNullOrFalse &&
+            !value.requireData.resolved.isNullOrFalse)
+          _navigateToVerify.fire(true);
+        else
+          _navigateToVerify.fire(false);
+      }).whenComplete(() => _loadingMoreProducts.value = false);
+    // }
   }
 
   void dispose() {
