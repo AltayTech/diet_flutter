@@ -64,12 +64,18 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
     }
   }
 
-
+bool isInit=false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    args = ModalRoute.of(context)!.settings.arguments;
-    bloc.getDetailTicket(args);
+    if(!isInit) {
+      isInit=true;
+      args = ModalRoute
+          .of(context)!
+          .settings
+          .arguments;
+      bloc.getDetailTicket(args);
+    }
     //print('args = > $args');
   }
   @override
@@ -106,7 +112,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                           stream: bloc.progressNetwork,
                           builder: (ctx, snapshot) {
                             WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToEnd());
-                            if (snapshot.data != null && snapshot.data == false) {
+                            if (snapshot.data != null && snapshot.data == false && bloc.ticketDetails!=null) {
                               return ListView.builder(
                                   controller: _scrollController,
                                   itemCount: bloc.ticketDetails!.items!.length,

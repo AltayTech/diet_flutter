@@ -85,18 +85,10 @@ ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
   ..productName = json['product_name'] as String?
   ..productThambnail = json['product_thambnail'] as String?
   ..shortDescriptionEn = json['short_descp_en'] as String?
-<<<<<<< HEAD
   ..shortDescription = json['short_description'] as String?
   ..longDescription = json['long_description'] as String?
-  ..sellingPrice = json['selling_price'] as int?
-  ..discountPrice = json['discount_price'] as int?
-=======
-  ..shortDescription = json['short_descp_hin'] as String?
-  ..longDescriptionEn = json['long_descp_en'] as String?
-  ..longDescription = json['long_descp_hin'] as String?
   ..sellingPrice = json['selling_price']
   ..discountPrice = json['discount_price']
->>>>>>> change_product_and_category_page
   ..action = json['action'] as String?
   ..action_type = $enumDecodeNullable(_$ActionTypeEnumMap, json['action_type'])
   ..userOrderDate = json['user_order_date'] as String?
@@ -193,6 +185,7 @@ const _$TypeMediaShopEnumMap = {
   TypeMediaShop.lock: 'lock',
   TypeMediaShop.play: 'play',
   TypeMediaShop.download: 'download',
+  TypeMediaShop.progress: 'progress',
 };
 
 ProductMedia _$ProductMediaFromJson(Map<String, dynamic> json) => ProductMedia()

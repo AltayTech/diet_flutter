@@ -49,7 +49,6 @@ class ProductBloc {
   // _listFood.valueOrNull?.items.foods?.length != 0;
   Stream<bool> get IsBought => _IsBought.stream;
 
-  Stream<List<ShopProduct>> get products => _products.stream;
 
   Stream<ShopProduct> get product => _product.stream;
 
@@ -79,13 +78,6 @@ class ProductBloc {
       _offset++;
       // getProduct();
     }
-  }
-
-  void getProducts() {
-    _loadingMoreProducts.value = true;
-    _repository.getProducts().then((value) {
-      _products.value = value.data!.items!;
-    }).whenComplete(() => _loadingMoreProducts.value = false);
   }
 
   final _typeMediaShop = BehaviorSubject<TypeMediaShop>();
