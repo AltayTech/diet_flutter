@@ -198,7 +198,7 @@ abstract class Repository {
 
   NetworkResult<ShopModel> getHomeShop();
 
-  NetworkResult<ShopProduct> getProducts();
+  NetworkResult<ShopCategory> getCategory(String id, String filter);
 
   NetworkResult<Orders> getOrders();
 
@@ -775,8 +775,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<ShopProduct> getProducts() {
-    var response = _apiClient.getProducts();
+  NetworkResult<ShopCategory> getCategory(String id,String filter) {
+    var response = _apiClient.getCategory(id,filter);
     return response;
   }
 

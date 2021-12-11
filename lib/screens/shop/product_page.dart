@@ -20,6 +20,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:open_file/open_file.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../routes.dart';
 
@@ -142,11 +143,10 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                     ],
                   ),
                   OutlinedButton(
-                      onPressed: () {
-                        VxNavigator.of(context)
-                            .push(Uri(path: Routes.shopBill), params: shopProduct);
-                      },
-                      style: ButtonStyle(
+                    onPressed: () {
+                      VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: shopProduct);
+                    },
+                    style: ButtonStyle(
                         fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
                         backgroundColor: MaterialStateProperty.all(Colors.white),
                         foregroundColor: MaterialStateProperty.all(AppColors.primary),

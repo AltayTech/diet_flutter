@@ -273,14 +273,14 @@ abstract class RestClient {
   @GET("/homepage")
   NetworkResult<ShopModel> getHomeShop();
 
-  @GET("/products")
-  NetworkResult<ShopProduct> getProducts();
+  @GET("/categories/{id}?filter={filter}")
+  NetworkResult<ShopCategory> getCategory(@Path('id') String id, @Path('filter') String filter);
+
+  // @GET("/categories/{id}?filter={filter}")
+  // NetworkResult<ShopCategory> getProductCategory(@Path('filter') String filter);
 
   @GET("/orders")
   NetworkResult<Orders> getOrders();
-
-  // @GET("/products?filter={filter}")
-  // NetworkResult<ShopProduct> getProduct(@Path('filter') String filter);
 
   @GET("/products/{id}")
   NetworkResult<ShopProduct> getProduct(@Path('id') int id);

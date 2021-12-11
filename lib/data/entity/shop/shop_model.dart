@@ -67,10 +67,6 @@ class ShopItem {
 class ShopCategory {
   @JsonKey(name: "id")
   int? id;
-
-  @JsonKey(name: "products")
-  List<ShopProduct>? products;
-
   @JsonKey(name: "category_name_en")
   String? categoryNameEn;
   @JsonKey(name: "category_name_hin")
@@ -79,6 +75,8 @@ class ShopCategory {
   String? category_icon;
   @JsonKey(name: "image")
   String? image;
+  @JsonKey(name: "products")
+  List<ShopProduct>? products;
 
   ShopCategory();
 
@@ -106,9 +104,9 @@ class ShopProduct {
   @JsonKey(name: "long_description")
   String? longDescription;
   @JsonKey(name: "selling_price")
-  int? sellingPrice;
+  dynamic sellingPrice;
   @JsonKey(name: "discount_price")
-  int? discountPrice;
+  dynamic discountPrice;
   @JsonKey(name: "action")
   String? action;
   @JsonKey(name: "action_type")

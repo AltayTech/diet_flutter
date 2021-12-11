@@ -153,8 +153,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                 ),
                                 MaterialButton(
                                   onPressed: () {
-                                    VxNavigator.of(context).push(Uri.parse(Routes.shopCategory),
-                                        params: bloc.list[index].category);
+                                    VxNavigator.of(context).push(Uri.parse('${Routes.shopCategory}/${bloc.list[index].category!.id}'));
                                   },
                                   child: Text(
                                     intl.viewAll,

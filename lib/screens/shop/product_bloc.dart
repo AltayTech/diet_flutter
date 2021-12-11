@@ -26,7 +26,6 @@ class ProductBloc {
 
   final _IsBought = BehaviorSubject<bool>();
   final _ = BehaviorSubject<bool>();
-  final _products = BehaviorSubject<List<ShopProduct>>();
   final _product = BehaviorSubject<ShopProduct>();
 
   final _loadingMoreProducts = BehaviorSubject<bool>();
