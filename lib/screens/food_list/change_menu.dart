@@ -56,26 +56,19 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                 return StreamBuilder(
                   stream: bloc.foodList,
                   builder: (_, AsyncSnapshot<FoodListData?> snapshotFoodList) {
-                    debugPrint(
-                        'regime type ${snapshotFoodList.data?.dietType?.alias}');
+                    debugPrint('regime type ${snapshotFoodList.data?.dietType?.alias}');
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        snapshotFoodList.data?.dietType?.alias ==
-                                RegimeAlias.Pregnancy
-                            ? item(
-                                ChangeMenuType.DailyMenu,
-                                loadingSnapshot.requireData,
+                        snapshotFoodList.data?.dietType?.alias == RegimeAlias.Pregnancy
+                            ? item(ChangeMenuType.DailyMenu, loadingSnapshot.requireData,
                                 snapshot.requireData)
                             : Expanded(
                                 flex: 1,
-                                child: item(
-                                    ChangeMenuType.DailyMenu,
-                                    loadingSnapshot.requireData,
+                                child: item(ChangeMenuType.DailyMenu, loadingSnapshot.requireData,
                                     snapshot.requireData),
                               ),
-                        if (snapshotFoodList.data?.dietType?.alias !=
-                            RegimeAlias.Pregnancy)
+                        if (snapshotFoodList.data?.dietType?.alias != RegimeAlias.Pregnancy)
                           Expanded(
                             flex: 1,
                             child: item(
@@ -98,8 +91,8 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
   }
 
   bool isTodayOrAfter(WeekDay weekDay) {
-    return weekDay.gregorianDate.isAfter(
-            DateTime.parse(DateTime.now().toString().substring(0, 10))) ||
+    return weekDay.gregorianDate
+            .isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10))) ||
         weekDay.gregorianDate.toString().substring(0, 10) ==
             DateTime.now().toString().substring(0, 10);
   }
@@ -320,7 +313,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                           label: intl.changePattern,
                         ),
                       ),
-                      // Space(height: 2.h),
+                      Space(height: 1.h),
                       Container(
                         width: 50.w,
                         child: SubmitButton(
@@ -380,6 +373,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage
