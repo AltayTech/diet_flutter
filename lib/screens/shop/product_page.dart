@@ -2,17 +2,23 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/screens/shop/product_bloc.dart';
+import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/custom_video.dart';
+import 'package:chewie/chewie.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:open_file/open_file.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -29,6 +35,8 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
 
   String? args;
   late ExpandableController _controller;
+  bool isInit = false;
+  ChewieController? _chewieController;
 
   @override
   void initState() {
@@ -41,9 +49,11 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    args = ModalRoute.of(context)!.settings.arguments as String;
-    productBloc.getProduct(int.parse(args!));
-    debugPrint('args = > $args');
+    if (!isInit) {
+      args = ModalRoute.of(context)!.settings.arguments as String;
+      productBloc.getProduct(int.parse(args!));
+      isInit = true;
+    }
   }
 
   @override
@@ -57,13 +67,11 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
             ),
             body: SingleChildScrollView(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              SizedBox(height: 2.h),
               Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: StreamBuilder(
                       stream: productBloc.product,
                       builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
-                        debugPrint('snapshot.data!= > ${snapshot.data?.toJson()}');
                         if (snapshot.hasData)
                           return Container(
                             child: Column(
@@ -141,18 +149,18 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                       style: ButtonStyle(
                         fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
                         backgroundColor: MaterialStateProperty.all(Colors.white),
-                        foregroundColor: MaterialStateProperty.all(AppColors.redBar),
+                        foregroundColor: MaterialStateProperty.all(AppColors.primary),
                         shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                        side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar)),
+                        side: MaterialStateProperty.all(BorderSide(color: AppColors.primary)),
                       ),
                       child: Row(
                         children: [
                           ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
-                              width: 2.w, height: 3.h),
+                              width: 2.w, height: 3.h,color: AppColors.primary),
                           SizedBox(width: 2.w),
                           Text(intl.buyCourse,
-                              style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
+                              style: TextStyle(color: AppColors.primary, fontSize: 14.sp)),
                         ],
                       )),
                 ],
@@ -252,7 +260,8 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                               )),
                               StreamBuilder(
                                 builder: (context, AsyncSnapshot<TypeMediaShop> snapshot) {
-                                  switch (snapshot.data) {
+                                  debugPrint('snapshot.data!= > ${value.toJson()}');
+                                  switch (value.typeMediaShop) {
                                     case TypeMediaShop.lock:
                                       return InkWell(
                                         onTap: () async {},
@@ -260,39 +269,32 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                           width: 10.w,
                                           height: 5.h,
                                           decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.redBar),
+                                              border: Border.all(color: AppColors.primary),
                                               borderRadius: BorderRadius.circular(15.0)),
                                           child: Center(
                                             child: ImageUtils.fromLocal(
-                                                Utils.productIcon(snapshot.data),
+                                                Utils.productIcon(value.typeMediaShop),
                                                 width: 5.w,
                                                 height: 3.h,
-                                                color: AppColors.redBar),
+                                                color: AppColors.primary),
                                           ),
                                         ),
                                       );
                                     case TypeMediaShop.play:
                                       return InkWell(
-                                        onTap: () async {},
-                                        child: Container(
-                                          width: 10.w,
-                                          height: 5.h,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.redBar),
-                                              borderRadius: BorderRadius.circular(15.0)),
-                                          child: Center(
-                                            child: ImageUtils.fromLocal(
-                                                Utils.productIcon(snapshot.data),
-                                                width: 5.w,
-                                                height: 3.h,
-                                                color: AppColors.redBar),
-                                          ),
-                                        ),
-                                      );
-                                    case TypeMediaShop.download:
-                                      return InkWell(
                                         onTap: () async {
-                                          productBloc.downloadFile(value);
+                                          // dialogVideo(value);
+                                          ResultType res =
+                                              await IntentUtils.openFilePath(value.path!);
+                                          if (res == ResultType.noAppToOpen ||
+                                              res == ResultType.error) {
+                                            Utils.getSnackbarMessage(
+                                                context, "برنامه ای جهت بازکردن فایل پیدا نشد.");
+                                          } else if (res == ResultType.fileNotFound ||
+                                              res == ResultType.permissionDenied) {
+                                            Utils.getSnackbarMessage(
+                                                context, "این فایل وجود ندارد.\n ${res}");
+                                          }
                                         },
                                         child: Container(
                                           width: 10.w,
@@ -302,10 +304,29 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                               borderRadius: BorderRadius.circular(15.0)),
                                           child: Center(
                                             child: ImageUtils.fromLocal(
-                                                Utils.productIcon(snapshot.data),
+                                                Utils.productIcon(value.typeMediaShop),
                                                 width: 5.w,
                                                 height: 3.h,
                                                 color: AppColors.redBar),
+                                          ),
+                                        ),
+                                      );
+                                    case TypeMediaShop.download:
+                                      return InkWell(
+                                        onTap: () {
+                                          productBloc.downloadFile(value);
+                                        },
+                                        child: Container(
+                                          width: 10.w,
+                                          height: 5.h,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(color: AppColors.primary),
+                                              borderRadius: BorderRadius.circular(15.0)),
+                                          child: Center(
+                                            child: ImageUtils.fromLocal(
+                                                Utils.productIcon(value.typeMediaShop),
+                                                width: 5.w,
+                                                height: 3.h,color: AppColors.primary),
                                           ),
                                         ),
                                       );
@@ -362,6 +383,77 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
         );
       },
     );
+  }
+
+  void dialogVideo(Lessons lessons) {
+    DialogUtils.showDialogPage(
+        context: context,
+        child: Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 5.w),
+            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+            width: double.maxFinite,
+            decoration: AppDecorations.boxLarge.copyWith(
+              color: AppColors.onPrimary,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        decoration: AppDecorations.boxSmall.copyWith(
+                          color: AppColors.primary.withOpacity(0.4),
+                        ),
+                        padding: EdgeInsets.all(1.w),
+                        child: Icon(
+                          Icons.close,
+                          size: 6.w,
+                          color: AppColors.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Text(
+                  intl.alternating(lessons.lessonName!),
+                  style: typography.bodyText2,
+                  textAlign: TextAlign.center,
+                ),
+                Space(height: 2.h),
+                AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: CustomVideo(
+                    url: lessons.path!,
+                    isFile: true,
+                    image: null,
+                    isLooping: false,
+                    isStart: false,
+                    callBackListener: (controller) {
+                      _chewieController = controller;
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  @override
+  void dispose() {
+    productBloc.dispose();
+    if (_chewieController != null) {
+      _chewieController!.dispose();
+    }
+    super.dispose();
   }
 
   @override

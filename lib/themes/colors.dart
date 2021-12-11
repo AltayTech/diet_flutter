@@ -60,15 +60,16 @@ class AppColors {
   static const chartBorder = Color.fromARGB(255, 255, 87, 87);
   static const pinkPass = Color(0xffFFE2E2);
   static var colorPackages = [
-  {
-  'barColor': Color.fromARGB(255, 249, 203, 202),
-  'priceColor': primary,
-  },
-  {
-  'barColor': Color.fromRGBO(200, 224, 221, 1),
-  'priceColor': Color.fromRGBO(86, 195, 180, 1),
-  },
+    {
+      'barColor': Color.fromARGB(255, 249, 203, 202),
+      'priceColor': primary,
+    },
+    {
+      'barColor': Color.fromRGBO(200, 224, 221, 1),
+      'priceColor': Color.fromRGBO(86, 195, 180, 1),
+    },
   ];
+
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {
       case ThemeAppColor.DEFAULT:
@@ -82,36 +83,36 @@ class AppColors {
         onSurface = Colors.black;
         scaffold = Color(0xFFF5F8FE);
         onScaffold = onSurface;
-        shadowColor=Color.fromARGB(255, 246, 246, 246);
+        shadowColor = Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
         labelColor = Color(0xf48e8e8e);
         labelTab = Color(0xffffffff);
-        statusTicketClose =Colors.grey[700]!;
+        statusTicketClose = Colors.grey[700]!;
         statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
         statusTicketPendingAdminResponse = Colors.lightBlue;
         statusTicketPendingUserResponse = Colors.pinkAccent;
-        statusTicketOnHold =  primaryVariantLight;
+        statusTicketOnHold = primaryVariantLight;
         statusTicketGlobalIssue = Color(0xFFF3543C);
         background = Color.fromARGB(255, 245, 245, 245);
         colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
         colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
         labelTextColor = Color(0xff7f7f7f);
-        colorCardGray=Color.fromRGBO(245, 245, 245, 1);
-        colorTextApp=Color.fromRGBO(147, 147, 147, 1);
+        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
+        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
         break;
       case ThemeAppColor.BLUE:
-        primary = Color(0xFF0D83DD);
-        accentColor = Color(0xFF71BBF9);
-        primaryColorDark = Color(0xFF043882);
+        primary = Color(0x0ff011230);
+        accentColor = Color(0xff092a49);
+        primaryColorDark = Color(0x0ff000c21);
         onPrimary = Colors.white;
-        primaryVariantLight = Color(0xFF0BF995);
+        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
         iconsColor = Color(0xff646464);
         surface = Colors.white;
         onSurface = Colors.black;
         scaffold = Color(0xFFF5F8FE);
         onScaffold = onSurface;
-        shadowColor=Color.fromARGB(255, 246, 246, 246);
+        shadowColor = Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
         labelColor = Color(0xf48e8e8e);
@@ -122,27 +123,41 @@ class AppColors {
         statusTicketPendingUserResponse = Colors.pinkAccent;
         statusTicketOnHold = Colors.grey[700]!;
         statusTicketGlobalIssue = Color(0xFFF3543C);
+        background = Color.fromARGB(255, 245, 245, 245);
+        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
+        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
+        labelTextColor = Color(0xff7f7f7f);
+        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
+        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
         break;
       case ThemeAppColor.DARK:
-        primary = Color(0xFF0D83DD);
+        primary = Color(0x0ff011230);
+        accentColor = Color(0xff092a49);
+        primaryColorDark = Color(0x0ff000c21);
         onPrimary = Colors.white;
-        primaryVariantLight = Color(0xFF0E8DEE);
+        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
         iconsColor = Color(0xff646464);
         surface = Colors.white;
         onSurface = Colors.black;
         scaffold = Color(0xFFF5F8FE);
         onScaffold = onSurface;
-        shadowColor=Color.fromARGB(255, 246, 246, 246);
+        shadowColor = Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
         labelColor = Color(0xf48e8e8e);
         labelTab = Color(0xffffffff);
-        statusTicketClose = primaryVariantLight;
+        statusTicketClose = Colors.grey[700]!;
         statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
         statusTicketPendingAdminResponse = Colors.lightBlue;
         statusTicketPendingUserResponse = Colors.pinkAccent;
-        statusTicketOnHold = Colors.grey[700]!;
+        statusTicketOnHold = primaryVariantLight;
         statusTicketGlobalIssue = Color(0xFFF3543C);
+        background = Color.fromARGB(255, 245, 245, 245);
+        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
+        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
+        labelTextColor = Color(0xff7f7f7f);
+        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
+        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
         break;
       case ThemeAppColor.PURPLE:
         primary = Color(0xFF0D83DD);
@@ -153,7 +168,7 @@ class AppColors {
         onSurface = Colors.black;
         scaffold = Color(0xFFF5F8FE);
         onScaffold = onSurface;
-        shadowColor=Color.fromARGB(255, 246, 246, 246);
+        shadowColor = Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xfffd5d5f);
         labelColor = Color(0xf48e8e8e);
@@ -167,7 +182,6 @@ class AppColors {
         break;
     }
   }
-
 }
 
 abstract class AppMaterialColors {

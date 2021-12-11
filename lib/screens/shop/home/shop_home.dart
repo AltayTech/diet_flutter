@@ -7,6 +7,7 @@ import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/slider_app.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
@@ -45,9 +46,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
     super.build(context);
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
-          backgroundColor: AppColors.redBar,
-          title: Text(intl.behandam, textAlign: TextAlign.center)),
+      appBar: Toolbar(titleBar: intl.shop,),
       body: StreamBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data == false)
@@ -75,12 +74,12 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                 fit: StackFit.loose,
                                 children: [
                                   ImageUtils.fromLocal('assets/images/shop/back_rec.svg',
-                                      width: 14.w, height: 12.w),
+                                      width: 14.w, height: 12.w,color: AppColors.primary),
                                   ImageUtils.fromNetwork(
                                       FlavorConfig.instance.variables['baseUrlFileShop'] +
                                           bloc.list[index].icon_url,
                                       width: 7.0.w,
-                                      height: 8.w)
+                                      height: 8.w,color: AppColors.primary)
                                 ],
                               ),
                               padding: EdgeInsets.all(4),
@@ -197,7 +196,9 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                       bloc.list[index].category!.products![i]
                                                           .productThambnail,
                                                   width: 50.w,
-                                                  fit: BoxFit.fill),
+
+                                                  fit: BoxFit.fill
+                                              ),
                                             ),
                                           ),
                                           Space(
@@ -262,7 +263,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                       'assets/images/shop/add_cart.svg',
                                                       padding: EdgeInsets.all(4.w),
                                                       width: 5.w,
-                                                      height: 5.w),
+                                                      height: 5.w,color: AppColors.primary),
                                                 ),
                                               ),
                                             ],

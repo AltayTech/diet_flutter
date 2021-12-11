@@ -85,7 +85,7 @@ class _AppState extends State<App> {
     super.initState();
     bloc = AppBloc();
     getToken();
-    AppColors(themeAppColor: ThemeAppColor.DEFAULT);
+    AppColors(themeAppColor: ThemeAppColor.DARK);
     navigator.addListener(() {
       print('routeName is => ${navigator.currentConfiguration!.path}');
       if (MemoryApp.analytics != null)

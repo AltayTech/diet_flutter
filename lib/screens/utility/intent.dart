@@ -115,11 +115,20 @@ abstract class IntentUtils {
   }
 
   /// Open file in corresponding viewer in system
-  static Future<void> openFile(String fileName) async {
+  static Future<OpenResult> openFile(String fileName) async {
     String path = await FileUtils.filePath(fileName);
-    OpenFile.open(path);
+   var r= await OpenFile.open(path);
+   return r;
   }
-
+  static Future<ResultType> openFilePath(String path) async {
+    var r;
+    try {
+      r = await OpenFile.open(path);
+    }catch(e){
+      r=ResultType.noAppToOpen;
+    }
+    return r;
+  }
   static Future<void> shareText(String text) async {
     return await Share.share(text);
   }

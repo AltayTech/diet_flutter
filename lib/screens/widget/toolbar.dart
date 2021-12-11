@@ -1,17 +1,20 @@
+import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class Toolbar extends AppBar{
-
+class Toolbar extends AppBar {
   late Widget item;
   late String titleBar;
-  Toolbar({required this.titleBar}){
-    item= Text(
+  Color? color;
+
+  Toolbar({required this.titleBar}) {
+    color = AppColors.primary;
+    item = Text(
       titleBar,
       textAlign: TextAlign.center,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 15.sp,
+        fontSize: 13.sp,
       ),
     );
   }
@@ -20,5 +23,5 @@ class Toolbar extends AppBar{
   // TODO: implement title
   Widget? get title => item;
 
-
+  Color? get backgroundColor => color;
 }

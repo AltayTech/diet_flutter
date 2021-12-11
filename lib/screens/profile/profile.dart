@@ -9,6 +9,7 @@ import 'package:behandam/screens/profile/tools_box.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/cross_item_profile.dart';
 import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/screens/widget/widget_icon_text_progress.dart';
@@ -245,7 +246,13 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                   ),
                 ),
                 Space(height: 2.h),
-                exitButton(),
+                SubmitButton(
+                  onTap: () {
+                    AppSharedPreferences.logout();
+                    VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
+                  },
+                  label: intl.exit,
+                ),
                 Space(height: 2.h),
               ],
             ),
@@ -280,44 +287,6 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                 profileBloc.userInfo.hasFitaminService!))
           Space(height: 3.h),
       ],
-    );
-  }
-
-  Widget exitButton() {
-    return GestureDetector(
-      onTap: () async {
-        AppSharedPreferences.logout();
-        VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
-        // _emptySharedPreferences();
-//                                               Navigator.pushNamedAndRemoveUntil(
-//                                                   context, LaunchRoute.routeName, (route) => false);
-// //
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: AppColors.onPrimary,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadowColor,
-              spreadRadius: 7.0,
-              blurRadius: 12.0,
-            ),
-          ],
-        ),
-        width: double.infinity,
-        height: 7.h,
-        child: Center(
-          child: Text(
-            intl.exit,
-            textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .button!
-                .copyWith(color: AppColors.primary, fontSize: 16.sp, fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
     );
   }
 

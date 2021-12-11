@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:behandam/themes/colors.dart';
 import 'package:chewie/chewie.dart';
@@ -25,7 +26,8 @@ class CustomVideo extends StatefulWidget {
   bool? isLooping;
   bool? isStart;
   Function? onCompletion;
-  Function(ChewieController chewieController)? callBackListener;
+  bool? isFile;
+  Function(ChewieController chewieController) ? callBackListener;
 
   CustomVideo(
       {Key? key,
@@ -36,11 +38,12 @@ class CustomVideo extends StatefulWidget {
       this.isLooping,
       this.isStart,
       this.onCompletion,
+      this.isFile,
       this.callBackListener})
       : super(key: key);
 
   @override
-  MyWidgetPlayer createState() => MyWidgetPlayer(click, image, title, url, isLooping);
+  MyWidgetPlayer createState() => MyWidgetPlayer(click, image, title, url, isLooping, isFile);
 }
 
 class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
@@ -49,6 +52,7 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
   String? image;
   String? url;
   bool? isLooping;
+  bool? isFile;
 
   // Duration? _position;
   // Duration? _duration;
@@ -62,7 +66,7 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
 
   //double width;
   // double height;
-  MyWidgetPlayer(this.click, this.image, this.title, this.url, this.isLooping) {
+  MyWidgetPlayer(this.click, this.image, this.title, this.url, this.isLooping, this.isFile) {
     if (isLooping == null) this.isLooping = false;
   }
 
@@ -111,6 +115,8 @@ istener(() {
     try {
       if (url == null) {
         _controller = VideoPlayerController.asset('assets/video.mp4');
+      } else if (isFile != null) {
+        _controller = VideoPlayerController.file(File(url!));
       } else
         _controller = VideoPlayerController.network(url!);
       await Future.wait([_controller.initialize()]);
@@ -160,26 +166,28 @@ istener(() {
   @override
   Widget build(BuildContext context) {
     if (_initializeVideoPlayerFuture) {
-      return Stack(
-        children: [
-          Center(
-            child: Container(
-                alignment: Alignment.center,
-                child: ClipRRect(
-                    // transform: Matrix4.translationValues(0.0, -35.0, 0.0),
-                    borderRadius: BorderRadius.circular(10),
-                    child: Chewie(
-                      key: new PageStorageKey(url!),
-                      controller: chewieController!,
-                    ))),
-          ),
-        ],
+      return Scaffold(
+        body: Stack(
+          children: [
+            Center(
+              child: Container(
+                  alignment: Alignment.center,
+                  child: ClipRRect(
+                      // transform: Matrix4.translationValues(0.0, -35.0, 0.0),
+                      borderRadius: BorderRadius.circular(10),
+                      child: Chewie(
+                        key: new PageStorageKey(url!),
+                        controller: chewieController!,
+                      ))),
+            ),
+          ],
+        ),
       );
     } else
       return Center(
         child: SpinKitCircle(
           color: AppColors.primary,
-           size: 7.w,
+          size: 7.w,
         ),
       );
   }
