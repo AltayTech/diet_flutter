@@ -8,7 +8,11 @@ import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/utils/device.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:behandam/extensions/bool.dart';
+
+import '../../routes.dart';
 
 class PaymentBloc {
   PackageBloc() {
@@ -189,6 +193,22 @@ class PaymentBloc {
 
   void setShowInformation() {
     _showInformation.value = _showInformation.valueOrNull == null ? true : !_showInformation.value;
+  }
+
+  void shopLastInvoice(){
+    debugPrint('last invoice ${checkLatestInvoice}');
+    // if(!_checkLatestInvoice.isNullOrFalse) {
+    _waiting.value = true;
+    _repository.shopLastInvoice().then((value) {
+      _invoice = value.data;
+      if (value.data?.refId != null &&
+          !value.requireData.success.isNullOrFalse &&
+          !value.requireData.resolved.isNullOrFalse)
+        _navigateTo.fire(Routes.shopOrders);
+      else
+        _navigateTo.fire(Routes.shopHome);
+    }).whenComplete(() => _waiting.value = false);
+    // }
   }
 
   void dispose() {

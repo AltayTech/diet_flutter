@@ -16,6 +16,11 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../../routes.dart';
 
+enum PaymentType{
+  diet,
+  shop,
+}
+
 class ShopBillPage extends StatefulWidget {
   const ShopBillPage({Key? key}) : super(key: key);
 
@@ -31,15 +36,16 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
     bloc = ProductBloc();
     bloc.navigateToVerify.listen((event) {
-      Navigator.of(context).pop();
-      if(event){
-        VxNavigator.of(context).clearAndPush(Uri(path: Routes.paymentOnlineSuccess));
-      }
+      // Navigator.of(context).pop();
+      if(event)
+        VxNavigator.of(context).clearAndPush(Uri(path: Routes.paymentOnlineSuccess), params: PaymentType.shop);
+      else
+        VxNavigator.of(context).popToRoot();
     });
     bloc.onlinePayment.listen((event) {
-      // Navigator.of(context).pop();
       if (event != null) {
         bloc.mustCheckLastInvoice();
         IntentUtils.launchURL(event);
@@ -49,7 +55,8 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed && bloc.checkLatestInvoice) {
+    debugPrint('shop on resume  / ${state}');
+    if (state == AppLifecycleState.resumed) {
       debugPrint('shop on resume');
       bloc.checkLastInvoice();
     }

@@ -18,7 +18,7 @@ class OrdersPage extends StatefulWidget {
 }
 
 class _OrdersPageState extends ResourcefulState<OrdersPage> {
-  late OrdersBloc ordersBloc  ;
+  late OrdersBloc ordersBloc;
 
   @override
   void initState() {
@@ -37,7 +37,8 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
   Widget build(BuildContext context) {
     super.build(context);
     ordersBloc.getOrders();
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.redBar,
         title: Text(intl.myProduct),
@@ -53,27 +54,36 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
               padding: const EdgeInsets.all(12.0),
               child: StreamBuilder(
                 stream: ordersBloc.orders,
-                builder: (context,AsyncSnapshot<List<ShopProduct>> snapshot){
-                  if(snapshot.hasData)
+                builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
+                  if (snapshot.hasData)
                     return Column(
                       children: [
-                        ...snapshot.data!.map((order) => Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Column(
-                            children: [
-                              firstTile(order.productName,order.productThambnail),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(
-                              //       right: 12.0, left: 12.0),
-                              //   child: Line(
-                              //       color: AppColors.strongPen, height: 0.1.h),
-                              // ),
-                              // secondTile(order.sellingPrice,order.discountPrice),
-                              Text(ordersBloc.count.toString(),style: TextStyle(fontSize: 16.sp,color: AppColors.redBar),)
-                            ],
-                          ),
-                        )).toList(),
+                        ...snapshot.data!
+                            .map((order) => Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  child: Column(
+                                    children: [
+                                      firstTile(order.productName,
+                                          order.productThambnail),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(
+                                      //       right: 12.0, left: 12.0),
+                                      //   child: Line(
+                                      //       color: AppColors.strongPen, height: 0.1.h),
+                                      // ),
+                                      // secondTile(order.sellingPrice,order.discountPrice),
+                                      Text(
+                                        ordersBloc.count.toString(),
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            color: AppColors.redBar),
+                                      )
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
                       ],
                     );
                   else
@@ -87,17 +97,27 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
     ));
   }
 
-  Widget firstTile(String? name, String? pic){
+  Widget firstTile(String? name, String? pic) {
     return Padding(
-      padding: const EdgeInsets.only(top: 12.0,bottom: 12.0),
+      padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
       child: ListTile(
-        leading:  ImageUtils.fromNetwork(FlavorConfig.instance.variables["baseUrlFile"]+pic, width: 20.w,height: 10.h),
-        title: Text(name!),
+        leading: pic == null
+            ? ImageUtils.fromLocal(
+                'assets/images/shop/shape.png',
+                width: 20.w,
+                height: 10.h,
+              )
+            : ImageUtils.fromNetwork(
+                FlavorConfig.instance.variables["baseUrlFile"] + pic,
+                width: 20.w,
+                height: 10.h,
+              ),
+        title: Text(name ?? '--'),
       ),
     );
   }
 
-  Widget secondTile(int? selling, int? discount){
+  Widget secondTile(int? selling, int? discount) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Row(
@@ -105,25 +125,32 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
         children: [
           Column(
             children: [
-              Text(selling.toString(), style: TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey,fontSize: 10.sp)),
-              Text(discount.toString()+intl.currency, style: TextStyle(fontSize: 12.sp))
+              Text(selling.toString(),
+                  style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: Colors.grey,
+                      fontSize: 10.sp)),
+              Text(discount.toString() + intl.currency,
+                  style: TextStyle(fontSize: 12.sp))
             ],
           ),
           OutlinedButton(
             onPressed: () {},
             style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all(Size(45.w,6.h)),
+                fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
                 backgroundColor: MaterialStateProperty.all(Colors.white),
                 foregroundColor: MaterialStateProperty.all(AppColors.redBar),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar))
-            ),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0))),
+                side: MaterialStateProperty.all(
+                    BorderSide(color: AppColors.redBar))),
             child: Row(
               children: [
-                ImageUtils.fromLocal('assets/images/shop/add_cart.svg',width: 2.w,height: 3.h),
+                ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
+                    width: 2.w, height: 3.h),
                 SizedBox(width: 2.w),
-                Text(intl.buyThisCourse,style: TextStyle(color: AppColors.redBar,
-                    fontSize: 14.sp)),
+                Text(intl.buyThisCourse,
+                    style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
               ],
             ),
           ),

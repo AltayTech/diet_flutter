@@ -1,5 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/screens/shop/payment/bill.dart';
+import 'package:behandam/screens/widget/bottom_nav.dart';
 
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -17,6 +19,7 @@ import 'package:sizer/sizer.dart';
 import 'package:persian_number_utility/src/extensions.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../routes.dart';
 import 'bloc.dart';
 import 'provider.dart';
 
@@ -30,35 +33,60 @@ class PaymentSuccessScreen extends StatefulWidget {
 class _PaymentSuccessScreenState
     extends ResourcefulState<PaymentSuccessScreen> {
   late PaymentBloc bloc;
+  late PaymentType paymentType;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     bloc = PaymentBloc();
-    bloc.getLastInvoice();
+    // bloc.getLastInvoice();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    paymentType = ModalRoute.of(context)!.settings.arguments as PaymentType? ??
+        PaymentType.diet;
+    debugPrint('payment type ${paymentType}');
+    if (paymentType == PaymentType.shop)
+      bloc.shopLastInvoice();
+    else
+      bloc.getLastInvoice();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return PaymentProvider(bloc,
-        child: Scaffold(
-          appBar: Toolbar(titleBar: intl.paymentSuccess),
-          body: StreamBuilder(
-            stream: bloc.waiting,
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data == false) {
-                return content();
-              } else {
-                return SpinKitCircle(
-                  size: 7.w,
-                  color: AppColors.primary,
-                );
-              }
-            },
-          ),
-        ));
+
+    return PaymentProvider(
+      bloc,
+      child: Scaffold(
+        appBar: Toolbar(titleBar: intl.paymentSuccess),
+        body: Column(
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                stream: bloc.waiting,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data == false) {
+                    return content();
+                  } else {
+                    return SpinKitCircle(
+                      size: 7.w,
+                      color: AppColors.primary,
+                    );
+                  }
+                },
+              ),
+            ),
+            BottomNav(
+                currentTab: paymentType == PaymentType.shop
+                    ? BottomNavItem.SHOP
+                    : BottomNavItem.DIET),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget content() {
@@ -159,21 +187,21 @@ class _PaymentSuccessScreenState
                           item(
                               intl.paymentDate,
                               bloc.invoice!.payedAt != null &&
-                                  bloc.invoice!.payedAt!.length > 0
+                                      bloc.invoice!.payedAt!.length > 0
                                   ? DateTimeUtils.gregorianToJalaliYMD(
-                                  bloc.invoice!.payedAt!)
+                                      bloc.invoice!.payedAt!)
                                   : '',
                               false),
                           item(
                               intl.amount,
                               bloc.invoice!.amount != null &&
-                                  bloc.invoice!.amount.toString().length >
-                                      0 &&
-                                  bloc.invoice!.amount! > 0
+                                      bloc.invoice!.amount.toString().length >
+                                          0 &&
+                                      bloc.invoice!.amount! > 0
                                   ? double.parse(
-                                  bloc.invoice!.amount.toString())
-                                  .toStringAsFixed(0)
-                                  .seRagham()
+                                          bloc.invoice!.amount.toString())
+                                      .toStringAsFixed(0)
+                                      .seRagham()
                                   : intl.free,
                               true),
                           item(intl.mobile,
@@ -187,46 +215,52 @@ class _PaymentSuccessScreenState
                 stream: bloc.showInformation,
               ),
               Space(height: 3.h),
-              Text(
-                intl.useFromList,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .caption!
-                    .copyWith(color: AppColors.labelTextColor),
-              ),
-              Space(height: 3.h),
-              // Container(
-              //   decoration: AppDecorations.boxMild.copyWith(
-              //     color: AppColors.box,
-              //   ),
-              //   child: Column(
-              //     children: [
-              //       Text(
-              //         intl.clickHereToUseProduct,
-              //         softWrap: true,
-              //         textAlign: TextAlign.center,
-              //         style: typography.caption?.apply(
-              //           color: AppColors.labelColor
-              //         ),
-              //       ),
-              //       SubmitButton(
-              //         label: intl.viewProduct,
-              //         onTap: () {
-              //
-              //         },),
-              //     ],
-              //   ),
-              // ),
-              SubmitButton(
-                  label: intl.confirmContinue,
-                  onTap: () {
-                    MemoryApp.analytics!.logEvent(name: "total_payment_success");
-                    MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
-                    VxNavigator.of(context)
-                        .clearAndPush(Uri.parse('/${bloc.path}'));
-                  },),
+              if (paymentType == PaymentType.diet)
+                Text(
+                  intl.useFromList,
+                  softWrap: true,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption!
+                      .copyWith(color: AppColors.labelTextColor),
+                ),
+              if (paymentType == PaymentType.diet) Space(height: 3.h),
+              paymentType == PaymentType.shop
+                  ? Container(
+                      decoration: AppDecorations.boxMild.copyWith(
+                        color: AppColors.box,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                      child: Column(
+                        children: [
+                          Text(
+                            intl.clickHereToUseProduct,
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            style: typography.caption
+                                ?.apply(color: AppColors.labelColor),
+                          ),
+                          Space(height: 2.h),
+                          SubmitButton(
+                            label: intl.viewProduct,
+                            onTap: () => context.vxNav
+                                .replace(Uri(path: Routes.shopOrders)),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SubmitButton(
+                      label: intl.confirmContinue,
+                      onTap: () {
+                        MemoryApp.analytics!
+                            .logEvent(name: "total_payment_success");
+                        MemoryApp.analytics!
+                            .logEvent(name: "total_payment_online_success");
+                        VxNavigator.of(context)
+                            .clearAndPush(Uri.parse('/${bloc.path}'));
+                      },
+                    ),
             ],
           ),
         ),
@@ -240,7 +274,9 @@ class _PaymentSuccessScreenState
       children: [
         Expanded(
           child: Text(
-            show ? (value!.contains(intl.free) ? value :'$value ${intl.toman}') : value ?? '',
+            show
+                ? (value!.contains(intl.free) ? value : '$value ${intl.toman}')
+                : value ?? '',
             textDirection: context.textDirectionOfLocale,
             textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.caption!.copyWith(
