@@ -244,8 +244,10 @@ class _PaymentSuccessScreenState
                           Space(height: 2.h),
                           SubmitButton(
                             label: intl.viewProduct,
-                            onTap: () => context.vxNav
-                                .replace(Uri(path: Routes.shopOrders)),
+                            onTap: () {
+                              context.vxNav
+                                  .clearAndPushAll([Uri.parse(Routes.shopHome), Uri.parse(Routes.shopOrders)]);
+                            }),
                           ),
                         ],
                       ),
