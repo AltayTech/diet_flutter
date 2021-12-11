@@ -54,9 +54,9 @@ class CallBloc {
         callItems.add(callItem);
       }
       _call!.items!.addAll(callItems);
-      if (_call!.items!.length > 0 && !_call!.items![lengthCalls - 1].done!) {
+      if (_call!.items!.length > 0 && lengthCalls > 0 && !_call!.items![lengthCalls - 1].done!) {
         _callId = _call!.items![lengthCalls - 1].id;
-      } else if (_call!.items!.length > lengthCalls && _call!.items![lengthCalls - 1].done!) {
+      } else if (_call!.items!.length > lengthCalls && lengthCalls > 0 && _call!.items![lengthCalls - 1].done!) {
         _call!.items![lengthCalls].isReserve = true;
       } else if (_call!.totalCallNumber == _call!.remainingCallNumber!) {
         _call!.items![0].isReserve = true;
