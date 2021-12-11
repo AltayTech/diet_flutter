@@ -248,7 +248,6 @@ class _PaymentSuccessScreenState
                               context.vxNav
                                   .clearAndPushAll([Uri.parse(Routes.shopHome), Uri.parse(Routes.shopOrders)]);
                             }),
-                          ),
                         ],
                       ),
                     )
