@@ -35,7 +35,7 @@ abstract class Routes {
   static const special_sickness = '/reg/special';
   static const advice = '/list/notice';
   static const package = '/reg/package';
-  static const paymentBill = '/reg/payment/bill';
+  static const paymentBill = '/payment/bill';
   static const cardToCard = '/reg/payment/card';
   static const resetPasswordProfile = '/resetPasswordProfile';
   static const vitrin = '/vitrin';
@@ -44,7 +44,7 @@ abstract class Routes {
   static const psychologyTerms = '/psychologyTerms';
   static const psychologyPaymentBill = '/psychologyPaymentBill';
   static const psychologyReservedMeeting = '/psychologyReservedMeeting';
-  static const activity = '/reg/activity';
+  static const activity = '/activity';
   static const paymentCardConfirm = '/reg/payment/card/confirm';
   static const dietHistory = '/reg/diet/history';
   static const dietGoal = '/reg/diet/goal';
@@ -54,7 +54,7 @@ abstract class Routes {
   static const menuSelect = '/reg/menu/select';
   static const menuConfirm = '/reg/menu/confirm';
   static const statusUser = '/status';
-  static const weightEnter = '/reg/weight/enter';
+  static const weightEnter = '/weight/enter';
   static const listMenuAlert = '/list/menu/alert';
   static const listWeightAlert = '/list/weight/alert';
   static const renewAlert = '/renew/alert';
@@ -73,7 +73,7 @@ abstract class Routes {
   static const shopCategory = '/shop/category';
   static const shopOrders = '/shop/orders';
   static const shopHome = '/shop/home';
-  static const renewWeightEnter = '/renew/weight';
+  // static const renewWeightEnter = '/renew/weight';
   static const refund = '/refund';
   static const refundVerify = '/refund/verify';
   static const refundRecord = '/refund/record';

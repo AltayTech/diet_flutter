@@ -286,7 +286,10 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
       child: Text(
         title,
         textDirection: context.textDirectionOfLocale,
-        style: Theme.of(context).textTheme.headline6,
+        style: typography.caption?.apply(
+          fontWeightDelta: 1,
+          fontSizeDelta: 1
+        ),
       ),
     );
   }

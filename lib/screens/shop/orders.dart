@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/screens/shop/orders_bloc.dart';
+import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
@@ -43,8 +44,8 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
         backgroundColor: AppColors.redBar,
         title: Text(intl.myProduct),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => VxNavigator.of(context).pop()),
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () => VxNavigator.of(context).pop()),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -54,7 +55,8 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
               padding: const EdgeInsets.all(12.0),
               child: StreamBuilder(
                 stream: ordersBloc.orders,
-                builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
+                builder: (context,
+                    AsyncSnapshot<List<ShopProduct>> snapshot) {
                   if (snapshot.hasData)
                     return Column(
                       children: [

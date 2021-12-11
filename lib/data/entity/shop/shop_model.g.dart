@@ -185,6 +185,7 @@ const _$TypeMediaShopEnumMap = {
   TypeMediaShop.lock: 'lock',
   TypeMediaShop.play: 'play',
   TypeMediaShop.download: 'download',
+  TypeMediaShop.progress: 'progress',
 };
 
 ProductMedia _$ProductMediaFromJson(Map<String, dynamic> json) => ProductMedia()

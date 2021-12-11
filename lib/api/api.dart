@@ -45,7 +45,6 @@ import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
 import '../data/entity/payment/payment.dart';
-
 part 'api.g.dart';
 
 enum help {
@@ -258,7 +257,7 @@ abstract class RestClient {
   ImperativeNetworkResult menuSelect(@Body() ConditionRequestData conditionRequestData);
 
   @POST("/visit")
-  NetworkResult<dynamic> visit(@Body() PhysicalInfoData requestData);
+  NetworkResult<dynamic> visit(@Body() Map<String, dynamic> requestData);
 
   @GET("/check-version")
   NetworkResult<VersionData> getVersion();

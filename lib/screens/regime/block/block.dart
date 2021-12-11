@@ -195,7 +195,7 @@ class _BlockState extends ResourcefulState<Block> {
                         navigator.currentConfiguration!.path ==
                             Routes.renewBlock)
                       VxNavigator.of(context)
-                          .push(Uri(path: Routes.weightEnter));
+                          .push(Uri(path: '/${navigator.currentConfiguration!.path.substring(1).split('/').first}${Routes.weightEnter}'));
                     else
                       VxNavigator.of(context).push(Uri(path: Routes.bodyState));
                   },

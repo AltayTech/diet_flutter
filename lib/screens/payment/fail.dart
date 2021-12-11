@@ -1,6 +1,7 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/pay_diamond.dart';
 
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -35,7 +36,6 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     bloc = PaymentBloc();
     bloc.getLastInvoice();
@@ -47,18 +47,25 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
     return PaymentProvider(bloc,
         child: Scaffold(
           appBar: Toolbar(titleBar: intl.paymentFail),
-          body: StreamBuilder(
-            stream: bloc.waiting,
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data == false) {
-                return content();
-              } else {
-                return SpinKitCircle(
-                  size: 7.w,
-                  color: AppColors.primary,
-                );
-              }
-            },
+          body: Column(
+            children: [
+              Expanded(
+                child: StreamBuilder(
+                  stream: bloc.waiting,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data == false) {
+                      return content();
+                    } else {
+                      return SpinKitCircle(
+                        size: 7.w,
+                        color: AppColors.primary,
+                      );
+                    }
+                  },
+                ),
+              ),
+              BottomNav(currentTab: BottomNavItem.DIET),
+            ],
           ),
         ));
   }
@@ -199,26 +206,8 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
                         width: 0.25.w,
                       )),
                   onPressed: () {
-                    String nextRoute;
-                    switch (navigator.currentConfiguration!.path
-                        .substring(1, navigator.currentConfiguration!.path.length)
-                        .split('/')
-                        .first) {
-                      case 'reg':
-                        nextRoute = Routes.paymentBill;
-                        break;
-                      case 'renew':
-                        nextRoute = Routes.paymentBill;
-                        break;
-                      case 'revive':
-                        nextRoute = Routes.paymentBill;
-                        break;
-                      default:
-                        nextRoute = Routes.paymentBill;
-                    }
                     MemoryApp.analytics!.logEvent(name: "total_payment_fail");
-                    context.vxNav.popToRoot();
-                    context.vxNav.push(Uri.parse('/${nextRoute}'));
+                    context.vxNav.push(Uri.parse('/${bloc.path ?? ''}'));
                   },
                   icon: Icon(
                     Icons.refresh,

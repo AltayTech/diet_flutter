@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
+import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -45,47 +46,54 @@ class _ActivityLevelPageState extends ResourcefulState<ActivityLevelPage> {
 
     return Scaffold(
       appBar: Toolbar(titleBar: intl.activityLevel),
-      body: SingleChildScrollView(
-        child: Card(
-          shape: AppShapes.rectangleMedium,
-          elevation: 1,
-          margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-            child: StreamBuilder(
-              stream: bloc.activityLevel,
-              builder: (_, AsyncSnapshot<ActivityLevelData> snapshot) {
-                if (snapshot.hasData)
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        intl.howMuchIsYourDailyActivity,
-                        style: typography.caption,
-                        textAlign: TextAlign.center,
-                      ),
-                      Space(height: 2.h),
-                      ...snapshot.requireData.items.map((activity) => item(activity)).toList(),
-                      Center(
-                          child: SubmitButton(
-                              label: intl.nextStage,
-                              onTap: () {
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Card(
+                shape: AppShapes.rectangleMedium,
+                elevation: 1,
+                margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  child: StreamBuilder(
+                    stream: bloc.activityLevel,
+                    builder: (_, AsyncSnapshot<ActivityLevelData> snapshot) {
+                      if (snapshot.hasData)
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              intl.howMuchIsYourDailyActivity,
+                              style: typography.caption,
+                              textAlign: TextAlign.center,
+                            ),
+                            Space(height: 2.h),
+                            ...snapshot.requireData.items.map((activity) => item(activity)).toList(),
+                            Center(
+                                child: SubmitButton(
+                                    label: intl.nextStage,
+                                    onTap: () {
 
-                                if(bloc.selectedActivity!=null) {
-                                  DialogUtils.showDialogProgress(context: context);
-                                  bloc.condition();
-                                }else{
-                                  Utils.getSnackbarMessage(context, intl.errorSelectedItem);
-                                }
-                              })),
-                    ],
-                  );
-                return Center(child: Progress());
-              },
+                                      if(bloc.selectedActivity!=null) {
+                                        DialogUtils.showDialogProgress(context: context);
+                                        bloc.condition();
+                                      }else{
+                                        Utils.getSnackbarMessage(context, intl.errorSelectedItem);
+                                      }
+                                    })),
+                          ],
+                        );
+                      return Center(child: Progress());
+                    },
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+          BottomNav(currentTab: BottomNavItem.DIET),
+        ],
       ),
     );
   }

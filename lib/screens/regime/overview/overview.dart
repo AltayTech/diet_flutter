@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
@@ -13,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import '../../../routes.dart';
 
 class OverviewPage extends StatefulWidget {
   const OverviewPage({Key? key}) : super(key: key);
@@ -99,11 +102,10 @@ class _OverviewPageState extends ResourcefulState<OverviewPage> {
                       Space(height: 2.h),
                       TextButton(
                         onPressed: () {
-                          if(VxNavigator.of(context).pages.length > 1)
-                          VxNavigator.of(context).pop();
+                          context.vxNav.clearAndPush(Uri(path: '/${navigator.currentConfiguration?.path.substring(1).split('/').first}${Routes.activity}'));
                         },
                         child: Text(
-                          intl.editPhysicalInfo,
+                          intl.editPhysicalStatus,
                           style: typography.caption?.apply(
                             color: AppColors.labelColor,
                           ),

@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/help_dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -237,8 +238,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
                                 child: InkWell(
-                                  onTap: () => DialogUtils.showBottomSheetPage(
-                                      context: context, child: help(5)),
+                                  onTap: () => DialogUtils.showDialogPage(
+                                      context: context, child: HelpDialog(helpId: 5)),
                                   child: ImageUtils.fromLocal(
                                     'assets/images/diet/help_icon.svg',
                                     color: AppColors.strongPen,
@@ -346,7 +347,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                     SizedBox(height: 2.h),
                     InkWell(
                       onTap: () =>
-                          DialogUtils.showBottomSheetPage(context: context, child: help(1)),
+                          DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 1),),
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
@@ -424,52 +425,6 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
           height: 40.h,
         );
     }
-  }
-
-  Widget help(int id) {
-    regimeBloc.helpBodyState(id);
-    return StreamBuilder(
-        stream: regimeBloc.helpers,
-        builder: (context, AsyncSnapshot<List<Help>> snapshot) {
-          if (snapshot.hasData) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Text(regimeBloc.name),
-                      Space(height: 2.h),
-                      id == 2
-                          ? ImageUtils.fromLocal(
-                              'assets/images/diet/body-scale-happy.svg',
-                              width: 20.w,
-                              height: 20.h,
-                            )
-                          : Container(),
-                      Space(height: 2.h),
-                      Text(snapshot.data![0].body!, style: TextStyle(fontSize: 16.0)),
-                      Space(height: 2.h),
-                      button(AppColors.btnColor, intl.understand, Size(100.w, 8.h),
-                          () => Navigator.of(context).pop())
-                    ],
-                  ),
-                ),
-              ),
-            );
-          } else
-            return Center(
-                child: Container(
-                    width: 15.w,
-                    height: 15.w,
-                    child: Progress()));
-        });
   }
 
   @override

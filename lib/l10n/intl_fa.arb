@@ -513,6 +513,7 @@
   "blockText": "با توجه به وضعیت جسمانی و اطلاعاتی که وارد کردی امکان دریافت رژیم وجود نداره.",
   "selectAnotherRegime": "انتخاب رژیم دیگر",
   "editPhysicalInfo": "ویرایش اطلاعات جسمانی",
+  "editPhysicalStatus": "ویرایش وضعیت جسمانی",
   "callRightNow": "همین الان تماس بگیر",
   "phone": "025-32143",
   "editSickness": "ویرایش بیماری ها",
@@ -573,5 +574,6 @@
   "collapse": "بازگشت",
   "clickHereToUseProduct": "برای استفاده از محصول روی دکمه کلیک کنید",
   "viewProduct": "مشاهده محصول",
+  "enterNewWeight": "وزن جدیدت رو وارد کن",
   "understand": "متوجه شدم"
 }

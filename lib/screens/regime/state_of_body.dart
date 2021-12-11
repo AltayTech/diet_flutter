@@ -68,8 +68,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
       regimeBloc,
       child: Scaffold(
         appBar: Toolbar(
-            titleBar: (navigator.currentConfiguration!.path == Routes.weightEnter ||
-                    navigator.currentConfiguration!.path == Routes.renewWeightEnter)
+            titleBar: (navigator.currentConfiguration!.path.contains(Routes.weightEnter))
                 ? intl.newVisit
                 : intl.stateOfBody),
         body: SingleChildScrollView(
@@ -82,10 +81,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (navigator.currentConfiguration!.path != Routes.weightEnter &&
-                      navigator.currentConfiguration!.path != Routes.renewWeightEnter)
                     Text(
-                      intl.enterYourState,
+                      navigator.currentConfiguration!.path.contains(Routes.weightEnter) ? intl.enterNewWeight : intl.enterYourState,
                       textAlign: TextAlign.center,
                       style: typography.subtitle2,
                     ),
@@ -97,8 +94,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                         return Column(
                           children: [
                             rulers(snapshot.requireData),
-                            if (navigator.currentConfiguration!.path != Routes.weightEnter &&
-                                navigator.currentConfiguration!.path != Routes.renewWeightEnter)
+                            if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
                               birthDayBox(snapshot.requireData),
                             Space(height: 2.h),
                             if (!snapshot.requireData.isForbidden.isNullOrFalse)
@@ -116,10 +112,10 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                                   snapshot.requireData.weight = double.parse(
                                       '${snapshot.requireData.kilo}.${snapshot.requireData.gram}');
                                   debugPrint('body weight ${snapshot.requireData.weight}');
-                                  if (navigator.currentConfiguration!.path == Routes.weightEnter)
+                                  if (navigator.currentConfiguration!.path == '/list${Routes.weightEnter}')
                                     regimeBloc.sendVisit(snapshot.requireData);
                                   else if (navigator.currentConfiguration!.path ==
-                                      Routes.renewWeightEnter)
+                                      '/renew${Routes.weightEnter}')
                                     regimeBloc.sendWeight(snapshot.requireData);
                                   else
                                     regimeBloc.sendInfo(snapshot.requireData);
@@ -166,8 +162,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             physicalInfo.weight = double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
           },
         ),
-        if (navigator.currentConfiguration!.path != Routes.weightEnter &&
-            navigator.currentConfiguration!.path != Routes.renewWeightEnter)
+        if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
           CustomRuler(
             rulerType: RulerType.Normal,
             value: physicalInfo.height!,
@@ -181,8 +176,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             iconPath: 'assets/images/diet/height_icon.svg',
             onClick: (val) => physicalInfo.height = val,
           ),
-        if (navigator.currentConfiguration!.path != Routes.weightEnter &&
-            navigator.currentConfiguration!.path != Routes.renewWeightEnter)
+        if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
           CustomRuler(
             rulerType: RulerType.Normal,
             value: physicalInfo.wrist!,
