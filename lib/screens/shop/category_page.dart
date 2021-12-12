@@ -5,6 +5,7 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:behandam/utils/image.dart';
@@ -72,13 +73,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
             builder: (context, AsyncSnapshot<ShopCategory> snapshot) {
               if (snapshot.hasData)
                 return Scaffold(
-                  appBar: AppBar(
-                    backgroundColor: AppColors.redBar,
-                    title: Text(snapshot.data!.category_name!),
-                    leading: IconButton(
-                        icon: Icon(Icons.arrow_back_ios),
-                        onPressed: () => VxNavigator.of(context).pop()),
-                  ),
+                  appBar: Toolbar(titleBar: snapshot.data!.category_name!,),
                   body: SingleChildScrollView(
                       controller: scrollController,
                       child: Column(
