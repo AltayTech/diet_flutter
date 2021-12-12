@@ -8,8 +8,10 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Alert extends StatelessWidget {
-  const Alert({Key? key, required this.text}) : super(key: key);
+  const Alert({Key? key, required this.text, required this.boxColor, required this.iconPath}) : super(key: key);
   final String text;
+  final Color boxColor;
+  final String iconPath;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class Alert extends StatelessWidget {
                 width: 13.w,
                 height: 3.h,
                 decoration: BoxDecoration(
-                  color: AppColors.warning,
+                  color: boxColor,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(70.0),
                       topRight: Radius.circular(70.0)),
@@ -35,7 +37,7 @@ class Alert extends StatelessWidget {
             ),
             Container(
               decoration: AppDecorations.boxLarge.copyWith(
-                color: AppColors.warning,
+                color: boxColor,
               ),
               padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 2.h),
               child: Center(
@@ -55,7 +57,7 @@ class Alert extends StatelessWidget {
           right: 0,
           left: 0,
           child: ImageUtils.fromLocal(
-            'assets/images/diet/exclamation.svg',
+            iconPath,
             width: 8.w,
             height: 8.w,
           ),

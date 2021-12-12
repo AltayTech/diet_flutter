@@ -29,6 +29,7 @@ PhysicalInfoData _$PhysicalInfoDataFromJson(Map<String, dynamic> json) =>
       ..daysTillChildbirth = json['days_till_childbirth'] as int?
       ..dietTypeAlias =
           $enumDecodeNullable(_$RegimeAliasEnumMap, json['diet_type_alias'])
+      ..needToCall = json['need_to_call'] as bool? ?? false
       ..kilo = json['kilo'] as int?
       ..gram = json['gram'] as int?
       ..isForbidden = json['isForbidden'] as bool?
@@ -54,6 +55,7 @@ Map<String, dynamic> _$PhysicalInfoDataToJson(PhysicalInfoData instance) =>
       'ideal_weight_based_on_perv_visit': instance.idealWeightBasedOnPervVisit,
       'days_till_childbirth': instance.daysTillChildbirth,
       'diet_type_alias': _$RegimeAliasEnumMap[instance.dietTypeAlias],
+      'need_to_call': instance.needToCall,
       'kilo': instance.kilo,
       'gram': instance.gram,
       'isForbidden': instance.isForbidden,

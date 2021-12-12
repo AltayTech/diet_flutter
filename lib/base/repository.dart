@@ -748,6 +748,7 @@ class _RepositoryImpl extends Repository {
       // 'hip': requestData.hip,
       'multi_birth_num': requestData.multiBirth,
       'pregnancy_week_number': requestData.pregnancyWeek,
+      'need_to_call': requestData.needToCall,
     });
     return response;
   }
