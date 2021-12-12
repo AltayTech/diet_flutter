@@ -39,6 +39,12 @@ class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalender
     listenBloc();
   }
 
+  @override
+  void dispose() {
+    calenderBloc.dispose();
+    super.dispose();
+  }
+
   void listenBloc() {
     calenderBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);

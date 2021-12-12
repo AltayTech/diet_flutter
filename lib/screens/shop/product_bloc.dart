@@ -20,6 +20,7 @@ class ProductBloc {
   int _offset = 0;
   int _totalRow = 0;
   bool _checkLatestInvoice = false;
+  String? toolbar;
 
   List<Lessons>? _lessons;
   List<ProductMedia>? _media;
@@ -27,6 +28,7 @@ class ProductBloc {
   final _IsBought = BehaviorSubject<bool>();
   final _ = BehaviorSubject<bool>();
   final _product = BehaviorSubject<ShopProduct>();
+  final _toolbarStream = BehaviorSubject<String>();
 
   final _loadingMoreProducts = BehaviorSubject<bool>();
   final _selectedProduct = BehaviorSubject<int>();
@@ -49,8 +51,9 @@ class ProductBloc {
   // _listFood.valueOrNull?.items.foods?.length != 0;
   Stream<bool> get IsBought => _IsBought.stream;
 
-
   Stream<ShopProduct> get product => _product.stream;
+
+  Stream<String> get toolbarStream => _toolbarStream.stream;
 
   Stream<TypeMediaShop> get typeMediaShop => _typeMediaShop.stream;
 
@@ -90,6 +93,8 @@ class ProductBloc {
     try {
       _repository.getProduct(id).then((value) {
         _product.value = value.data!;
+        toolbar = _product.value.productName;
+        _toolbarStream.value = _product.value.productName!;
         _lessons = value.data!.lessons;
         if (_lessons != null) {
           _lessons?.forEach((element) async {
@@ -97,36 +102,38 @@ class ProductBloc {
               debugPrint(
                   'element.video => ${tempDir?.path}/${element.video?.split('/').last} // ${_product.value.userOrderDate}');
               element.path = '${tempDir!.path}/${element.video!.split('/').last}';
-              bool exist =
-                  await File('${element.path}').exists();
-              if (exist) {
-                element.typeMediaShop = TypeMediaShop.play;
-              } else if (element.isFree == 0 && _product.value.userOrderDate == null) {
+              /*  bool exist =
+                  await File('${element.path}').exists();*/
+              /* if (exist) {
+                element.typeMediaShop = TypeMediaShop.downloadAndPlay;
+              } else*/
+              if (element.isFree == 0 && _product.value.userOrderDate == null) {
                 element.typeMediaShop = TypeMediaShop.lock;
               } else {
-                element.typeMediaShop = TypeMediaShop.download;
+                element.typeMediaShop = TypeMediaShop.downloadAndPlay;
               }
             } else {
               element.typeMediaShop = TypeMediaShop.lock;
             }
           });
-          _typeMediaShop.value = TypeMediaShop.download;
+          _typeMediaShop.value = TypeMediaShop.downloadAndPlay;
         }
       }).whenComplete(() => _loadingMoreProducts.value = false);
     } catch (e) {
       print("error:$e");
     }
   }
+
   void downloadFile(Lessons value) async {
     value.typeMediaShop = TypeMediaShop.progress;
     _typeMediaShop.value = TypeMediaShop.progress;
     _repository.download(value.video!, value.path!).then((param) {
       debugPrint('path => ${value.path!}');
-      value.typeMediaShop = TypeMediaShop.play;
+      value.typeMediaShop = TypeMediaShop.downloadAndPlay;
       _typeMediaShop.value = value.typeMediaShop!;
     }).catchError((onError) {
-      value.typeMediaShop = TypeMediaShop.download;
-      _typeMediaShop.value = TypeMediaShop.download;
+      value.typeMediaShop = TypeMediaShop.downloadAndPlay;
+      _typeMediaShop.value = TypeMediaShop.downloadAndPlay;
     });
   }
 
@@ -144,7 +151,7 @@ class ProductBloc {
     shopPayment.paymentTypeId = 0;
     shopPayment.productId = productId;
     _repository.shopOnlinePayment(shopPayment).then((value) {
-      if(value.data?.url != null && value.data!.url!.isNotEmpty) _checkLatestInvoice = true;
+      if (value.data?.url != null && value.data!.url!.isNotEmpty) _checkLatestInvoice = true;
       _onlinePayment.fire(value.data?.url ?? null);
     }).whenComplete(() => _loadingMoreProducts.value = false);
   }
@@ -153,18 +160,18 @@ class ProductBloc {
     _checkLatestInvoice = true;
   }
 
-  void checkLastInvoice(){
+  void checkLastInvoice() {
     debugPrint('last invoice ${checkLatestInvoice}');
     // if(!_checkLatestInvoice.isNullOrFalse) {
-      _loadingMoreProducts.value = true;
-      _repository.shopLastInvoice().then((value) {
-        if (value.data?.refId != null &&
-            !value.requireData.success.isNullOrFalse &&
-            !value.requireData.resolved.isNullOrFalse)
-          _navigateToVerify.fire(true);
-        else
-          _navigateToVerify.fire(false);
-      }).whenComplete(() => _loadingMoreProducts.value = false);
+    _loadingMoreProducts.value = true;
+    _repository.shopLastInvoice().then((value) {
+      if (value.data?.refId != null &&
+          !value.requireData.success.isNullOrFalse &&
+          !value.requireData.resolved.isNullOrFalse)
+        _navigateToVerify.fire(true);
+      else
+        _navigateToVerify.fire(false);
+    }).whenComplete(() => _loadingMoreProducts.value = false);
     // }
   }
 

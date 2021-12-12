@@ -31,6 +31,7 @@ class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPayme
   @override
   void dispose() {
     WidgetsBinding.instance!.removeObserver(this);
+    calenderBloc.dispose();
     super.dispose();
   }
 

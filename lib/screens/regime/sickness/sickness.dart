@@ -65,7 +65,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                             Center(
                               child: Text(
                                 intl.sicknessLabelUser,
-                                textDirection: TextDirection.rtl,
+                                textDirection: context.textDirectionOfLocale,
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ),

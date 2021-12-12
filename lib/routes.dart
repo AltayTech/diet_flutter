@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 final GlobalKey<ScaffoldMessengerState> navigatorMessengerKey = GlobalKey();
 
 abstract class Routes {
@@ -39,11 +38,11 @@ abstract class Routes {
   static const cardToCard = '/reg/payment/card';
   static const resetPasswordProfile = '/resetPasswordProfile';
   static const vitrin = '/vitrin';
-  static const psychologyIntro = '/psychologyIntro';
-  static const psychologyCalender = '/psychologyCalender';
-  static const psychologyTerms = '/psychologyTerms';
-  static const psychologyPaymentBill = '/psychologyPaymentBill';
-  static const psychologyReservedMeeting = '/psychologyReservedMeeting';
+  static const psychologyIntro = '/psy/intro';
+  static const psychologyCalender = '/psy/calender';
+  static const psychologyTerms = '/psy/terms';
+  static const psychologyPaymentBill = '/psy/paymentBill';
+  static const psychologyReservedMeeting = '/psy/reservedMeeting';
   static const activity = '/activity';
   static const paymentCardConfirm = '/reg/payment/card/confirm';
   static const dietHistory = '/reg/diet/history';
@@ -73,13 +72,16 @@ abstract class Routes {
   static const shopCategory = '/shop/categories';
   static const shopOrders = '/shop/orders';
   static const shopHome = '/shop/home';
+
   // static const renewWeightEnter = '/renew/weight';
   static const refund = '/refund';
   static const refundVerify = '/refund/verify';
   static const refundRecord = '/refund/record';
   static const shopProduct = '/shop/product';
   static const shopBill = '/shop/payment/bill';
+
   /// All available routes to Navigator
-  static final all = <String, Widget Function(BuildContext)>{ //   home: (context) => HomePage(),
+  static final all = <String, Widget Function(BuildContext)>{
+    //   home: (context) => HomePage(),
   };
 }

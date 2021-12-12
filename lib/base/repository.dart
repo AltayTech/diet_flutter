@@ -198,7 +198,7 @@ abstract class Repository {
 
   NetworkResult<ShopModel> getHomeShop();
 
-  NetworkResult<ShopCategory> getCategory(String id, String filter);
+  NetworkResult<ShopCategory> getCategory(String id);
 
   NetworkResult<Orders> getOrders();
 
@@ -215,9 +215,12 @@ abstract class Repository {
   NetworkResult<ShopProduct> getProduct(int id);
 
   NetworkResult<Payment> shopOnlinePayment(Payment requestData);
-  Future<Response> download(String pathFile,String pathDir);
+
+  Future<Response> download(String pathFile, String pathDir);
 
   NetworkResult<LatestInvoiceData> shopLastInvoice();
+
+  NetworkResult<ShopCategory> getProducts(String filter);
 }
 
 class _RepositoryImpl extends Repository {
@@ -784,15 +787,15 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<ShopCategory> getCategory(String id,String filter) {
-    var response = _apiClient.getCategory(id,filter);
+  NetworkResult<ShopCategory> getCategory(String id) {
+    var response = _apiClient.getCategory(id);
     return response;
   }
 
   @override
   NetworkResult<ShopProduct> getProduct(int id) {
-   var response = _apiClient.getProduct(id);
-   return response;
+    var response = _apiClient.getProduct(id);
+    return response;
   }
 
   @override
@@ -839,13 +842,19 @@ class _RepositoryImpl extends Repository {
 
   @override
   Future<Response> download(String urlPath, String pathDir) {
-    var response =  _dio.download(urlPath, pathDir);
+    var response = _dio.download(urlPath, pathDir);
     return response;
   }
 
   @override
   NetworkResult<LatestInvoiceData> shopLastInvoice() {
     var response = _apiClient.shopLastInvoice();
+    return response;
+  }
+
+  @override
+  NetworkResult<ShopCategory> getProducts(String filter) {
+    var response = _apiClient.getProducts(filter);
     return response;
   }
 }

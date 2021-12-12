@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'package:behandam/data/entity/payment/payment.dart';
-import 'package:behandam/extensions/bool.dart';
+
 import 'package:behandam/data/entity/shop/shop_model.dart';
-import 'package:behandam/utils/device.dart';
-import 'package:flutter/foundation.dart';
+import 'package:behandam/extensions/bool.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
-class CategoryBloc{
+class CategoryBloc {
   CategoryBloc();
 
   final _repository = Repository.getInstance();
@@ -26,31 +24,46 @@ class CategoryBloc{
   final _showServerError = LiveEvent();
 
   Stream<bool> get loadingMoreProducts => _loadingMoreProducts.stream;
+
   bool get _isNotLoadingMore => _loadingMoreProducts.valueOrNull.isNullOrFalse;
-  bool get _stillHaveMoreItems =>
-      (_categoryProduct.valueOrNull?.length ?? 0) < _totalRow;
+
+  bool get _stillHaveMoreItems => (_categoryProduct.valueOrNull?.length ?? 0) < _totalRow;
+
   Stream<bool> get loadingContent => _loadingContent.stream;
+
   Stream<ShopCategory> get category => _category.stream;
+
   Stream<List<ShopProduct>> get categoryProduct => _categoryProduct.stream;
+
   Stream get navigateToVerify => _navigateToVerify.stream;
+
   Stream get showServerError => _showServerError.stream;
 
   String get filter {
     final text =
-        '{"with":["products"]}';
-        // '{"page":{"offset":${_offset * 30},"limit":30},"sort":[{"field":"title","dir":"asc"}],"filters":[[{"with":["products"]}]]}';
+        '{"page":{"offset":${_offset * 2},"limit":2},"sort":[{"field":"title","dir":"asc"}],"filters":[[{"field":"category_id","op":"=","value":${_category.value.id}}]]}';
     return text;
   }
 
-  void getCategory(String id){
+  void getCategory(String id) {
     _loadingContent.value = true;
     _loadingMoreProducts.value = true;
-    _repository.getCategory(id,filter).then((value) {
+    _repository.getCategory(id).then((value) {
       // _category.add(value.data!);
       _category.value = value.data!;
-      if(value.data!.products!.length > 0) {
-        _categoryProduct.value = value.data!.products!;
-        _totalRow = value.data?.products!.length ?? 0;
+      getProducts();
+    }).whenComplete(() {});
+  }
+
+  void getProducts() {
+    _repository.getProducts(filter).then((value) {
+      if (value.data!.items!.length > 0) {
+        if (_categoryProduct.valueOrNull == null)
+          _categoryProduct.value = value.data!.items!;
+        else
+          _categoryProduct.value.addAll(value.data!.items!);
+
+        _totalRow = _categoryProduct.valueOrNull?.length ?? 0;
       }
     }).whenComplete(() {
       _loadingContent.value = false;
@@ -62,7 +75,7 @@ class CategoryBloc{
     // print('test:${_isNotLoadingMore && _stillHaveMoreItems}');
     if (_isNotLoadingMore && _stillHaveMoreItems) {
       _offset++;
-      // getCategory('1');
+      getProducts();
     }
   }
 

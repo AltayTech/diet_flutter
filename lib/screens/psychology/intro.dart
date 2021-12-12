@@ -95,19 +95,7 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
     });
   }
 
-  // Future<void> setData() async{
-  //   videoPlayerController = VideoPlayerController.network(
-  //       'https://behandam.kermany.com/helia-service/storage/psychology/teaser_480.mp4');
-  //   await Future.wait([videoPlayerController.initialize()]);
-  //   chewieController = ChewieController(
-  //     videoPlayerController: videoPlayerController,
-  //     autoPlay: false,
-  //     looping: false,
-  //   );
-  //   setState(() {
-  //
-  //   });
-  // }
+
 
   VideoController(ChewieController chewieController) async{
     await Future.wait([videoPlayerController.initialize()]);
@@ -121,8 +109,7 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
 
   @override
   void dispose() {
-    // videoPlayerController.dispose();
-    // chewieController.dispose();
+    calenderBloc.dispose();
     super.dispose();
   }
 

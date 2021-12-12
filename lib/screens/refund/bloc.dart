@@ -80,6 +80,9 @@ class RefundBloc {
     refundVerify.cardNumber = cardNumber;
     refundVerify.cardOwner = cardOwner;
     _repository.setRefund(refundVerify).then((value) {
+      MemoryApp.refundItem=null;
+      MemoryApp.termPackage=null;
+
       _navigateTo.fire(value.next);
     }).whenComplete(() {
       _serverError.fire(false);

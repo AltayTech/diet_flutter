@@ -2,7 +2,6 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/screens/shop/product_bloc.dart';
-import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/line.dart';
@@ -18,9 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:open_file/open_file.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../routes.dart';
 
@@ -62,33 +59,37 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     // productBloc.getProduct(1);
     super.build(context);
     return SafeArea(
-        child: Scaffold(
-            appBar: Toolbar(
-              titleBar: intl.shop,
-            ),
-            body: SingleChildScrollView(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: StreamBuilder(
-                      stream: productBloc.product,
-                      builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
-                        if (snapshot.hasData)
-                          return Container(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                firstSection(
-                                  snapshot.data!,
-                                ),
-                                secondSection(snapshot.data!),
-                              ],
-                            ),
-                          );
-                        else
-                          return Progress();
-                      }))
-            ]))));
+        child: StreamBuilder(
+            stream: productBloc.toolbarStream,
+            builder: (context, snapshot) {
+              return Scaffold(
+                  appBar: Toolbar(
+                    titleBar: productBloc.toolbar ?? intl.shop,
+                  ),
+                  body: SingleChildScrollView(
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                    Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: StreamBuilder(
+                            stream: productBloc.product,
+                            builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
+                              if (snapshot.hasData)
+                                return Container(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      firstSection(
+                                        snapshot.data!,
+                                      ),
+                                      secondSection(snapshot.data!),
+                                    ],
+                                  ),
+                                );
+                              else
+                                return Progress();
+                            }))
+                  ])));
+            }));
   }
 
   Widget firstSection(ShopProduct shopProduct) {
@@ -143,10 +144,11 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                     ],
                   ),
                   OutlinedButton(
-                    onPressed: () {
-                      VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: shopProduct);
-                    },
-                    style: ButtonStyle(
+                      onPressed: () {
+                        VxNavigator.of(context)
+                            .push(Uri(path: Routes.shopBill), params: shopProduct);
+                      },
+                      style: ButtonStyle(
                         fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
                         backgroundColor: MaterialStateProperty.all(Colors.white),
                         foregroundColor: MaterialStateProperty.all(AppColors.primary),
@@ -157,7 +159,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                       child: Row(
                         children: [
                           ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
-                              width: 2.w, height: 3.h,color: AppColors.primary),
+                              width: 2.w, height: 3.h, color: AppColors.primary),
                           SizedBox(width: 2.w),
                           Text(intl.buyCourse,
                               style: TextStyle(color: AppColors.primary, fontSize: 14.sp)),
@@ -226,38 +228,39 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
+                                  flex: 2,
                                   child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    value.lessonName!,
-                                    style: Theme.of(context).textTheme.subtitle1!,
-                                  ),
-                                  Row(
-                                    textDirection: context.textDirectionOfLocale,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      ImageUtils.fromLocal('assets/images/shop/time.svg',
-                                          color: Colors.black),
-                                      Space(
-                                        width: 1.w,
-                                      ),
                                       Text(
-                                        '${value.minutes} ',
-                                        style: Theme.of(context).textTheme.overline,
+                                        value.lessonName!,
+                                        style: Theme.of(context).textTheme.subtitle1!,
                                       ),
-                                      Space(
-                                        width: 1.w,
-                                      ),
-                                      Text(
-                                        intl.min,
-                                        style: Theme.of(context).textTheme.overline,
-                                      ),
+                                      Row(
+                                        textDirection: context.textDirectionOfLocale,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          ImageUtils.fromLocal('assets/images/shop/time.svg',
+                                              color: Colors.black),
+                                          Space(
+                                            width: 1.w,
+                                          ),
+                                          Text(
+                                            '${value.minutes} ',
+                                            style: Theme.of(context).textTheme.overline,
+                                          ),
+                                          Space(
+                                            width: 1.w,
+                                          ),
+                                          Text(
+                                            intl.min,
+                                            style: Theme.of(context).textTheme.overline,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              )),
+                                  )),
                               StreamBuilder(
                                 builder: (context, AsyncSnapshot<TypeMediaShop> snapshot) {
                                   debugPrint('snapshot.data!= > ${value.toJson()}');
@@ -280,56 +283,57 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                           ),
                                         ),
                                       );
-                                    case TypeMediaShop.play:
-                                      return InkWell(
-                                        onTap: () async {
-                                          // dialogVideo(value);
-                                          ResultType res =
-                                              await IntentUtils.openFilePath(value.path!);
-                                          if (res == ResultType.noAppToOpen ||
-                                              res == ResultType.error) {
-                                            Utils.getSnackbarMessage(
-                                                context, "برنامه ای جهت بازکردن فایل پیدا نشد.");
-                                          } else if (res == ResultType.fileNotFound ||
-                                              res == ResultType.permissionDenied) {
-                                            Utils.getSnackbarMessage(
-                                                context, "این فایل وجود ندارد.\n ${res}");
-                                          }
-                                        },
-                                        child: Container(
-                                          width: 10.w,
-                                          height: 5.h,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.redBar),
-                                              borderRadius: BorderRadius.circular(15.0)),
-                                          child: Center(
-                                            child: ImageUtils.fromLocal(
-                                                Utils.productIcon(value.typeMediaShop),
-                                                width: 5.w,
-                                                height: 3.h,
-                                                color: AppColors.redBar),
-                                          ),
-                                        ),
-                                      );
-                                    case TypeMediaShop.download:
-                                      return InkWell(
-                                        onTap: () {
-                                          productBloc.downloadFile(value);
-                                        },
-                                        child: Container(
-                                          width: 10.w,
-                                          height: 5.h,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.primary),
-                                              borderRadius: BorderRadius.circular(15.0)),
-                                          child: Center(
-                                            child: ImageUtils.fromLocal(
-                                                Utils.productIcon(value.typeMediaShop),
-                                                width: 5.w,
-                                                height: 3.h,color: AppColors.primary),
-                                          ),
-                                        ),
-                                      );
+                                    case TypeMediaShop.downloadAndPlay:
+                                      return Expanded(
+                                          flex: 1,
+                                          child: Row(
+                                            textDirection: context.textDirectionOfLocale,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              InkWell(
+                                                onTap: () async {
+                                                  dialogVideo(value);
+                                                },
+                                                child: Container(
+                                                  width: 10.w,
+                                                  height: 5.h,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(color: AppColors.primary),
+                                                      borderRadius: BorderRadius.circular(15.0)),
+                                                  child: Center(
+                                                    child: ImageUtils.fromLocal(
+                                                        Utils.productIcon(TypeMediaShop.play),
+                                                        width: 5.w,
+                                                        height: 3.h,
+                                                        color: AppColors.primary),
+                                                  ),
+                                                ),
+                                              ),
+                                              Space(
+                                                width: 2.w,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  productBloc.downloadFile(value);
+                                                },
+                                                child: Container(
+                                                  width: 10.w,
+                                                  height: 5.h,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(color: AppColors.primary),
+                                                      borderRadius: BorderRadius.circular(15.0)),
+                                                  child: Center(
+                                                    child: ImageUtils.fromLocal(
+                                                        Utils.productIcon(value.typeMediaShop),
+                                                        width: 5.w,
+                                                        height: 3.h,
+                                                        color: AppColors.primary),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ));
+
                                     default:
                                       return Progress(
                                         size: 3.w,
@@ -388,6 +392,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
   void dialogVideo(Lessons lessons) {
     DialogUtils.showDialogPage(
         context: context,
+        isDismissible: false,
         child: Center(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 5.w),
@@ -431,8 +436,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: CustomVideo(
-                    url: lessons.path!,
-                    isFile: true,
+                    url: lessons.video,
                     image: null,
                     isLooping: false,
                     isStart: false,

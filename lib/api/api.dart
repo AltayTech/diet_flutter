@@ -272,8 +272,8 @@ abstract class RestClient {
   @GET("/homepage")
   NetworkResult<ShopModel> getHomeShop();
 
-  @GET("/categories/{id}?filter={filter}")
-  NetworkResult<ShopCategory> getCategory(@Path('id') String id, @Path('filter') String filter);
+  @GET("/categories/{id}")
+  NetworkResult<ShopCategory> getCategory(@Path('id') String id);
 
   // @GET("/categories/{id}?filter={filter}")
   // NetworkResult<ShopCategory> getProductCategory(@Path('filter') String filter);
@@ -283,7 +283,6 @@ abstract class RestClient {
 
   @GET("/products/{id}")
   NetworkResult<ShopProduct> getProduct(@Path('id') int id);
-
 
   @GET("/user/term-package")
   NetworkResult<TermPackage> getTermPackage();
@@ -305,5 +304,8 @@ abstract class RestClient {
 
   @GET("/latest-invoice-shop")
   NetworkResult<LatestInvoiceData> shopLastInvoice();
+
+  @GET("/products?filter={filter}")
+  NetworkResult<ShopCategory> getProducts(@Path('filter') String filter);
 }
 

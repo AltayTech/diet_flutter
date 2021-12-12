@@ -47,7 +47,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
       showUpdate(event);
     });
     bloc.navigateTo.listen((event) {
-      VxNavigator.of(context).push(Uri.parse(Routes.listView));
+      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
     });
   }
 

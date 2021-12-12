@@ -2,7 +2,6 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/shop/product_bloc.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -27,7 +26,7 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends ResourcefulState<CategoryPage> {
   late CategoryBloc categoryBloc;
   String? args;
-  late ScrollController scrollController;
+  ScrollController? scrollController;
 
   @override
   void initState() {
@@ -43,8 +42,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
   }
 
   void onScroll() {
-    if (scrollController.hasClients)
-      if (scrollController.position.extentAfter <
+    if (scrollController!.hasClients) if (scrollController!.position.extentAfter <
         AppSizes.verticalPaginationExtent) {
       categoryBloc.onScrollReachingEnd();
     }
@@ -52,14 +50,15 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
 
   @override
   void dispose() {
-    scrollController.dispose();
+    scrollController!.dispose();
+    categoryBloc.dispose();
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    scrollController = ScrollController()..addListener(onScroll);
+    if (scrollController == null) scrollController = ScrollController()..addListener(onScroll);
   }
 
   @override
@@ -81,12 +80,12 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                         onPressed: () => VxNavigator.of(context).pop()),
                   ),
                   body: SingleChildScrollView(
+                      controller: scrollController,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ImageUtils.fromNetwork(
-                              FlavorConfig.instance
-                                  .variables["baseUrlFileShop"] +
+                              FlavorConfig.instance.variables["baseUrlFileShop"] +
                                   snapshot.data!.image,
                               width: 100.w,
                               height: 12.h,
@@ -96,31 +95,26 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                             padding: const EdgeInsets.all(12.0),
                             child: StreamBuilder(
                               stream: categoryBloc.categoryProduct,
-                              builder: (context, AsyncSnapshot<
-                                  List<ShopProduct>> snapshot) {
+                              builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
                                 if (snapshot.hasData)
                                   return ListView.builder(
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (_, index) {
-                                      if (index == snapshot.requireData.length){
+                                      if (index == snapshot.requireData.length) {
                                         return loadMoreProgress();
                                       }
                                       return Card(
                                         shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius
-                                                .circular(10.0)),
+                                            borderRadius: BorderRadius.circular(10.0)),
                                         child: Column(
                                           children: [
                                             firstTile(snapshot.data![index]),
                                             Padding(
-                                              padding: const EdgeInsets
-                                                  .only(right: 12.0,
-                                                  left: 12.0),
-                                              child: Line(
-                                                  color: AppColors
-                                                      .strongPen,
-                                                  height: 0.1.h),
+                                              padding:
+                                                  const EdgeInsets.only(right: 12.0, left: 12.0),
+                                              child:
+                                                  Line(color: AppColors.strongPen, height: 0.1.h),
                                             ),
                                             secondTile(snapshot.data![index]),
                                           ],
@@ -135,13 +129,11 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                             ),
                           ),
                         ],
-                      )
-                  ),
+                      )),
                 );
               else
                 return Scaffold(body: Progress());
-            }
-    ));
+            }));
   }
 
   Widget firstTile(ShopProduct product) {
@@ -190,11 +182,13 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
               Text(product.sellingPrice.toString().seRagham(),
                   style: TextStyle(
                       decoration: TextDecoration.lineThrough, color: Colors.grey, fontSize: 10.sp)),
-              Text(product.discountPrice.toString().seRagham() + intl.currency, style: TextStyle(fontSize: 12.sp))
+              Text(product.discountPrice.toString().seRagham() + intl.currency,
+                  style: TextStyle(fontSize: 12.sp))
             ],
           ),
           OutlinedButton(
-            onPressed: () => VxNavigator.of(context).push(Uri.parse('${Routes.shopProduct}/${product.id!}')),
+            onPressed: () =>
+                VxNavigator.of(context).push(Uri.parse('${Routes.shopProduct}/${product.id!}')),
             style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
                 backgroundColor: MaterialStateProperty.all(Colors.white),

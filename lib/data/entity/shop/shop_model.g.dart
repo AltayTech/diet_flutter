@@ -64,6 +64,9 @@ ShopCategory _$ShopCategoryFromJson(Map<String, dynamic> json) => ShopCategory()
   ..image = json['image'] as String?
   ..products = (json['products'] as List<dynamic>?)
       ?.map((e) => ShopProduct.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..items = (json['items'] as List<dynamic>?)
+      ?.map((e) => ShopProduct.fromJson(e as Map<String, dynamic>))
       .toList();
 
 Map<String, dynamic> _$ShopCategoryToJson(ShopCategory instance) =>
@@ -74,6 +77,7 @@ Map<String, dynamic> _$ShopCategoryToJson(ShopCategory instance) =>
       'category_icon': instance.category_icon,
       'image': instance.image,
       'products': instance.products,
+      'items': instance.items,
     };
 
 ShopProduct _$ShopProductFromJson(Map<String, dynamic> json) => ShopProduct()
@@ -183,9 +187,9 @@ Map<String, dynamic> _$LessonsToJson(Lessons instance) => <String, dynamic>{
 
 const _$TypeMediaShopEnumMap = {
   TypeMediaShop.lock: 'lock',
-  TypeMediaShop.play: 'play',
-  TypeMediaShop.download: 'download',
   TypeMediaShop.progress: 'progress',
+  TypeMediaShop.downloadAndPlay: 'downloadAndPlay',
+  TypeMediaShop.play: 'play',
 };
 
 ProductMedia _$ProductMediaFromJson(Map<String, dynamic> json) => ProductMedia()

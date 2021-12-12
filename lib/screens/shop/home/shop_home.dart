@@ -55,6 +55,8 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
               child: ListView.builder(
                 padding: EdgeInsets.all(4.w),
                 itemBuilder: (context, index) {
+                  debugPrint('data id > ${bloc.list[index].category?.toJson()}');
+
                   switch (bloc.list[index].styleType) {
                     case StyleType.slider:
                       return SliderApp(banners: bloc.list[index].items!);
@@ -293,16 +295,13 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                         },
                         child: Container(
                           margin: EdgeInsets.all(5.w),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                            child: AspectRatio(
-                              child: ImageUtils.fromNetwork(
-                                  FlavorConfig.instance.variables['baseUrlFileShop'] +
-                                      bloc.list[index].banner!.sliderImg,
-                                  fit: BoxFit.fill),
-                              aspectRatio: 16 / 9,
-                            ),
-                          ),
+                          child: ImageUtils.fromNetwork(
+                              FlavorConfig.instance.variables['baseUrlFileShop'] +
+                                  bloc.list[index].banner!.sliderImg,
+                              decoration: AppDecorations.boxMedium,
+                              width: 80.w,
+                              height: 15.5.h,
+                              fit: BoxFit.fill),
                         ),
                       );
 

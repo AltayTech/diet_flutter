@@ -32,6 +32,12 @@ class _PsychologyReservedMeetingScreenState extends ResourcefulState<PsychologyR
   }
 
   @override
+  void dispose() {
+    calenderBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     calenderBloc.getHistory();

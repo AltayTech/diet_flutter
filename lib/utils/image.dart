@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:behandam/themes/shapes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:behandam/themes/shapes.dart';
 import 'package:logifan/widgets/space.dart';
 
 abstract class ImageUtils {
@@ -98,6 +98,7 @@ abstract class ImageUtils {
     String? placeholder,
     bool showPlaceholder = true,
     bool isCircle = false,
+
     BoxFit fit = BoxFit.contain,
     BoxFit placeholderFit = BoxFit.contain,
     bool backOffSizing = true,

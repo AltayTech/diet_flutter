@@ -97,7 +97,7 @@ class Utils {
 
   static String productIcon(TypeMediaShop? state) {
     switch (state) {
-      case TypeMediaShop.download:
+      case TypeMediaShop.downloadAndPlay:
         return 'assets/images/shop/download.svg';
 
       case TypeMediaShop.lock:
