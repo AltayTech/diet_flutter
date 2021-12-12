@@ -20,7 +20,6 @@ class CalenderBloc{
   CalenderBloc(){
     _waiting.value = false;
     // if(MemoryApp.day == null)
-    getCalender(Jalali.now());
   }
 
   final _repository = Repository.getInstance();
