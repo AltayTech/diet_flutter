@@ -50,6 +50,9 @@ class PhysicalInfoData {
   @JsonKey(name: "diet_type_alias")
   RegimeAlias? dietTypeAlias;
 
+  @JsonKey(name: "need_to_call", defaultValue: false)
+  bool? needToCall;
+
   int? kilo;
   int? gram;
   bool? isForbidden = false;
