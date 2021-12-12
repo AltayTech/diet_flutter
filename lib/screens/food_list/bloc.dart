@@ -7,6 +7,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +22,7 @@ class FoodListBloc {
       _date.value = DateTime.now().toString().substring(0, 10);
     else if (_date.valueOrNull == null && MemoryApp.selectedDate != null)
       _date.value = MemoryApp.selectedDate!;
-    debugPrint('bloc foodlist ${_date.value}');
+    debugPrint('bloc foodlist ${_date.value} / ${MemoryApp.selectedDate}');
     _loadContent(invalidate: true, fillFood: fillFood);
   }
 
@@ -91,6 +92,8 @@ class FoodListBloc {
         'theme ${_foodList.value?.isFasting} / ${_foodList.value?.isFasting == boolean.True}');
     if (_foodList.value?.isFasting == boolean.True)
       _appBloc.changeTheme(ThemeAppColor.DARK);
+    else if(_foodList.value?.dietType?.alias == RegimeAlias.Pregnancy)
+      _appBloc.changeTheme(ThemeAppColor.PURPLE);
     else
       _appBloc.changeTheme(ThemeAppColor.DEFAULT);
   }

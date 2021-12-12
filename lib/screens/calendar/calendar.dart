@@ -9,6 +9,7 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/dialog_close.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -255,8 +256,8 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
       debugPrint('term ${term.menus?.length} / ${term.visits?.length} ');
       findingStartEndTerm(term);
       newTermEvent(term);
-      setVisits(term.visits);
-      setMenus(term.menus);
+      setVisits(term.visits, term.expiredAt);
+      setMenus(term.menus, term.expiredAt);
       menuAlerts(term);
       alertBetweenVisits(term);
       alertDifferenceLastVisitAndTerm(term);
@@ -372,41 +373,44 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
     }
   }
 
-  void setVisits(List<Visit>? visits) {
+  void setVisits(List<Visit>? visits, String termExpire) {
     debugPrint('inside visit ${visits?.length}}');
     visits?.forEach((visit) {
-      visitEvents(visit);
+      visitEvents(visit, termExpire);
     });
   }
 
-  void visitEvents(Visit visit) {
+  void visitEvents(Visit visit, String termExpire) {
     final visitEndIndex = monthDays.indexWhere((element) =>
         element.gregorian.toDateTime().toString().substring(0, 10) ==
         visit.expiredAt);
     if (visitEndIndex >= 0 && visitEndIndex < monthDays.length - 1) {
       if (!monthDays[visitEndIndex + 1].gregorian.toDateTime().isBefore(
               DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
+          monthDays[visitEndIndex]
+              .gregorian
+              .toDateTime()
+              .isBefore(DateTime.parse(termExpire)) &&
           !monthDays[visitEndIndex + 1].types.contains(DayType.visit))
         monthDays[visitEndIndex + 1].types.add(DayType.visit);
       debugPrint(
-          'inside visit ${visitEndIndex} / ${monthDays[visitEndIndex + 1].types}');
+          'inside visit 2 ${visitEndIndex} / ${monthDays[visitEndIndex + 1].types}');
     }
   }
 
   void alertBetweenVisits(Term term) {
-    if(term.visits != null) {
+    if (term.visits != null) {
       for (int i = 1; i < term.visits!.length; i++) {
         // debugPrint(
         //     'difference visit ${term.visits![i - 1].expiredAt} / ${term.visits![i].visitedAt}  / ${DateTime.parse(term.visits![i].visitedAt).difference(DateTime.parse(term.visits![i - 1].expiredAt)).inDays}');
-        if (DateTime
-            .parse(term.visits![i].visitedAt)
-            .difference(DateTime.parse(term.visits![i - 1].expiredAt))
-            .inDays >
+        if (DateTime.parse(term.visits![i].visitedAt)
+                .difference(DateTime.parse(term.visits![i - 1].expiredAt))
+                .inDays >
             1) {
           final delays = monthDays.where((element) =>
-          element.gregorian
-              .toDateTime()
-              .isAfter(DateTime.parse(term.visits![i - 1].expiredAt)) &&
+              element.gregorian
+                  .toDateTime()
+                  .isAfter(DateTime.parse(term.visits![i - 1].expiredAt)) &&
               element.gregorian
                   .toDateTime()
                   .isBefore(DateTime.parse(term.visits![i].visitedAt)));
@@ -420,7 +424,8 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
   }
 
   void alertDifferenceLastVisitAndTerm(Term term) {
-    if (term.visits != null && term.visits!.length > 0 &&
+    if (term.visits != null &&
+        term.visits!.length > 0 &&
         DateTime.parse(term.expiredAt)
                 .difference(DateTime.parse(term.visits!.last.expiredAt))
                 .inDays >
@@ -443,13 +448,13 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
     }
   }
 
-  void setMenus(List<Menu>? menus) {
+  void setMenus(List<Menu>? menus, String termExpire) {
     debugPrint('inside menu ${menus?.length}}');
     menus?.forEach((menu) {
       debugPrint(
           'menu ${jalali.toGregorian().toDateTime().toString()} / ${monthDays.where((element) => element.gregorian.toDateTime().toString().substring(0, 10) == '2021').isNotEmpty}');
       findMenuEndStart(menu);
-      menuEvents(menu);
+      menuEvents(menu, termExpire);
     });
   }
 
@@ -475,9 +480,14 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
         dayItem.types.add(DayType.menuEnd);
       debugPrint('menu end ${dayItem.gregorian} / ${dayItem.types}');
     });
-    if(menuStarts.isNotEmpty || menuEnds.isNotEmpty)
-    menuDays(menuStarts.isEmpty && menuEnds.isNotEmpty ? monthDays.first : menuStarts.first,
-        menuEnds.isEmpty && menuStarts.isNotEmpty ? monthDays.last : menuEnds.first);
+    if (menuStarts.isNotEmpty || menuEnds.isNotEmpty)
+      menuDays(
+          menuStarts.isEmpty && menuEnds.isNotEmpty
+              ? monthDays.first
+              : menuStarts.first,
+          menuEnds.isEmpty && menuStarts.isNotEmpty
+              ? monthDays.last
+              : menuEnds.first);
   }
 
   void menuDays(DayItem start, DayItem end) {
@@ -498,13 +508,17 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
     }
   }
 
-  void menuEvents(Menu menu) {
+  void menuEvents(Menu menu, String termExpire) {
     final menuEndIndex = monthDays.indexWhere((element) =>
         element.gregorian.toDateTime().toString().substring(0, 10) ==
         menu.expiredAt);
     if (menuEndIndex >= 0 && menuEndIndex < monthDays.length - 1) {
       if (!monthDays[menuEndIndex + 1].gregorian.toDateTime().isBefore(
               DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
+          monthDays[menuEndIndex]
+              .gregorian
+              .toDateTime()
+              .isBefore(DateTime.parse(termExpire)) &&
           !monthDays[menuEndIndex + 1].types.contains(DayType.newList))
         monthDays[menuEndIndex + 1].types.add(DayType.newList);
       debugPrint(
@@ -587,12 +601,30 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
             ? DayType.visitAlert
             : DayType.menuAlert),
         child: Container(
-          child: Center(
-            child: Icon(
-              Icons.warning_rounded,
-              color: AppColors.primary,
-              size: 7.w,
-            ),
+          child: Stack(
+            children: [
+              Center(
+                child: Icon(
+                  Icons.warning_rounded,
+                  color: AppColors.primary,
+                  size: 7.w,
+                ),
+              ),
+              Positioned(
+                top: 2,
+                right: 10,
+                child: ImageUtils.fromLocal(
+                  day.types.contains(DayType.visitAlert)
+                      ? 'assets/images/diet/weight_icon.svg'
+                      : 'assets/images/foodlist/advice/bulb_plus.svg',
+                  width: 4.w,
+                  fit: BoxFit.fitWidth,
+                  color: day.types.contains(DayType.visitAlert)
+                      ? null
+                      : AppColors.warning,
+                ),
+              ),
+            ],
           ),
         ),
       );
@@ -872,24 +904,24 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
     String title = '';
     switch (type) {
       case DayType.visitAlert:
-        title = intl
-            .youDidNotSubmitWeight(MemoryApp.userInformation?.firstName ?? '');
+        title = intl.youDidNotSubmitWeight(
+            MemoryApp.userInformation?.firstName ?? intl.user);
         break;
       case DayType.menuAlert:
-        title = intl
-            .youDidNotGetNewMenu(MemoryApp.userInformation?.firstName ?? '');
+        title = intl.youDidNotGetNewMenu(
+            MemoryApp.userInformation?.firstName ?? intl.user);
         break;
       case DayType.visit:
-        title = intl
-            .visitShouldBeRenewed(MemoryApp.userInformation?.firstName ?? '');
+        title = intl.visitShouldBeRenewed(
+            MemoryApp.userInformation?.firstName ?? intl.user);
         break;
       case DayType.newList:
-        title = intl
-            .listShouldBeRenewed(MemoryApp.userInformation?.firstName ?? '');
+        title = intl.listShouldBeRenewed(
+            MemoryApp.userInformation?.firstName ?? intl.user);
         break;
       case DayType.newTerm:
-        title = intl
-            .termShouldBeRenewed(MemoryApp.userInformation?.firstName ?? '');
+        title = intl.termShouldBeRenewed(
+            MemoryApp.userInformation?.firstName ?? intl.user);
         break;
     }
     return title;

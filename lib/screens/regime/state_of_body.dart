@@ -13,6 +13,7 @@ import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -102,7 +103,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                             rulers(snapshot.requireData),
                             if (navigator.currentConfiguration!.path ==
                                 'list${Routes.weightEnter}')
-                            callBox(snapshot.requireData),
+                              callBox(snapshot.requireData),
                             if (!navigator.currentConfiguration!.path
                                 .contains(Routes.weightEnter))
                               birthDayBox(snapshot.requireData),
@@ -117,11 +118,9 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                                 iconPath: 'assets/images/diet/exclamation.svg',
                               )
                             else
-                              button(
-                                AppColors.btnColor,
-                                intl.confirmContinue,
-                                Size(100.w, 8.h),
-                                () {
+                              SubmitButton(
+                                label: intl.confirmContinue,
+                                onTap: () {
                                   DialogUtils.showDialogProgress(
                                       context: context);
                                   snapshot.requireData.weight = double.parse(
@@ -251,7 +250,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
         int.parse(data.weight!.toString().split('.').last.substring(0, 1));
     data.isForbidden = false;
     data.mustGetNotrica = false;
-    if(data.needToCall == null) data.needToCall = false;
+    if (data.needToCall == null) data.needToCall = false;
     if (data.birthDate.isEmptyOrNull)
       data.isForbidden = true;
     else {
@@ -355,15 +354,13 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
         ));
   }
 
-  Widget callBox(PhysicalInfoData physicalInfo){
+  Widget callBox(PhysicalInfoData physicalInfo) {
     return Column(
       children: [
         Alert(
           text: intl.weighEnterCallText,
-          boxColor:
-          AppColors.blueRuler.withOpacity(0.5),
-          iconPath:
-          'assets/images/diet/call-center.svg',
+          boxColor: AppColors.blueRuler.withOpacity(0.5),
+          iconPath: 'assets/images/diet/call-center.svg',
         ),
         Space(height: 2.h),
         Text(
