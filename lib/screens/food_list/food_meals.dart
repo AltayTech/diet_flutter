@@ -77,9 +77,9 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                     topLeft: AppRadius.radiusSmall,
                     topRight: AppRadius.radiusSmall,
                     bottomRight:
-                        meal.food.description.isNullOrEmpty ? AppRadius.radiusSmall : Radius.zero,
+                        (meal.food!=null && meal.food!.description.isNullOrEmpty) ? AppRadius.radiusSmall : Radius.zero,
                     bottomLeft:
-                        meal.food.description.isNullOrEmpty ? AppRadius.radiusSmall : Radius.zero,
+                    (meal.food!=null && meal.food!.description.isNullOrEmpty) ? AppRadius.radiusSmall : Radius.zero,
                   ),
                 ),
                 child: Column(
@@ -124,12 +124,12 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                         softWrap: true,
                       ),
                     Space(height: 1.h),
-                    if (meal.food.foodItems != null && meal.food.foodItems!.isNotEmpty)
+                    if (meal.food?.foodItems != null && meal.food!.foodItems!.isNotEmpty)
                       foodItems(meal, isCurrentMeal && isToday(snapshot.data)),
                   ],
                 ),
               ),
-              if (meal.food.description != null)
+              if (meal.food?.description != null)
                 recipeBox(meal, isCurrentMeal && isToday(snapshot.data)),
             ],
           ),
@@ -299,14 +299,14 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
   }
 
   Widget foodItems(Meals meal, bool isCurrentMeal) {
-    List<int> items = meal.food.foodItems == null
+    List<int> items = meal.food?.foodItems == null
         ? []
-        : List.generate((meal.food.foodItems!.length * 2) - 1, (i) => i);
-    if (meal.food.freeFood != null) {
+        : List.generate((meal.food!.foodItems!.length * 2) - 1, (i) => i);
+    if (meal.food?.freeFood != null) {
       items.add(items.last + 1);
       items.add(items.last + 1);
     }
-    debugPrint('free food ${meal.food.freeFood} / $items');
+    debugPrint('free food ${meal.food?.freeFood} / $items');
     int index = 0;
     return Container(
       child: Wrap(
@@ -319,15 +319,15 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
             (i) {
               final widget;
               if (i % 2 == 0) {
-                debugPrint('even item ${!meal.food.freeFood.isNullOrEmpty} / $i');
-                if (!meal.food.freeFood.isNullOrEmpty && i == items.length - 1)
+                debugPrint('even item ${!meal.food!.freeFood.isNullOrEmpty} / $i');
+                if (!meal.food!.freeFood.isNullOrEmpty && i == items.length - 1)
                   widget = Chip(
                     backgroundColor: isCurrentMeal
                         ? AppColors.primary.withOpacity(0.2)
                         : AppColors.labelColor.withOpacity(0.2),
                     label: FittedBox(
                       child: Text(
-                        '${meal.food.freeFood}',
+                        '${meal.food!.freeFood}',
                         style: typography.caption,
                         textAlign: TextAlign.center,
                         // softWrap: true,
@@ -342,7 +342,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                         : AppColors.labelColor.withOpacity(0.2),
                     label: FittedBox(
                       child: Text(
-                        '${meal.food.foodItems![index].amount} ${meal.food.foodItems![index].title}',
+                        '${meal.food!.foodItems![index].amount} ${meal.food!.foodItems![index].title}',
                         style: typography.caption,
                         textAlign: TextAlign.center,
                         // softWrap: true,
@@ -425,13 +425,13 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
             children: [
               close(),
               Text(
-                intl.recipe(meal.food.title ?? ''),
+                intl.recipe(meal.food!.title ?? ''),
                 style: typography.bodyText2,
                 textAlign: TextAlign.center,
               ),
               Space(height: 2.h),
               Text(
-                meal.food.description ?? '',
+                meal.food!.description ?? '',
                 style: typography.caption,
                 textAlign: TextAlign.start,
                 softWrap: true,

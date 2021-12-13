@@ -33,7 +33,9 @@ Meals _$MealsFromJson(Map<String, dynamic> json) => Meals(
       json['start_at'] as String?,
       json['end_at'] as String?,
       json['description'] as String?,
-      Food.fromJson(json['food'] as Map<String, dynamic>),
+      json['food'] == null
+          ? null
+          : Food.fromJson(json['food'] as Map<String, dynamic>),
     )..newFood = json['newFood'] == null
         ? null
         : ListFood.fromJson(json['newFood'] as Map<String, dynamic>);

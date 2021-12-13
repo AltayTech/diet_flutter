@@ -167,7 +167,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                   ),
                   Space(height: 1.h),
                   Text(
-                    meal?.food.title ?? '',
+                    meal?.food?.title ?? '',
                     style: typography.caption,
                     softWrap: true,
                   ),
@@ -193,10 +193,10 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
   }
 
   Widget foodItems() {
-    int freeFoodLength = meal?.food.freeFood != null && meal!.food.freeFood!.isNotEmpty ? 1 : 0;
+    int freeFoodLength = meal?.food?.freeFood != null && meal!.food!.freeFood!.isNotEmpty ? 1 : 0;
     List<int> items = meal?.food == null
         ? []
-        : List.generate(((meal!.food.foodItems!.length + freeFoodLength) * 2) - 1, (i) => i);
+        : List.generate(((meal!.food!.foodItems!.length + freeFoodLength) * 2) - 1, (i) => i);
     // (meal!.food!.ratios![0].ratioFoodItems!.length * 2) - 1, (i) => i);
     int index = 0;
     return Container(
@@ -216,8 +216,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                   backgroundColor: AppColors.primary.withOpacity(0.3),
                   label: Text(
                     // '${meal!.food!.ratios![0].ratioFoodItems![index].unitTitle.replaceAll('*', intl.and)} ${meal!.food!.ratios![0].ratioFoodItems![index].title}',
-                    i == items.length - 1 && freeFoodLength == 1 ? meal?.food
-                        .freeFood ?? '' : meal?.food.foodItems?[index].title ??
+                    i == items.length - 1 && freeFoodLength == 1 ? meal?.food?.freeFood ?? '' : meal?.food?.foodItems?[index].title ??
                         '',
                     style: typography.caption,
                     textAlign: TextAlign.center,

@@ -66,7 +66,7 @@ class Meals {
   final String? description;
 
   @JsonKey(name: 'food')
-  Food food;
+  Food? food;
 
   ListFood? newFood;
 
