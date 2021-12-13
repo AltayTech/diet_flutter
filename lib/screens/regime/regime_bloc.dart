@@ -115,7 +115,7 @@ class RegimeBloc {
   void nextStep() async {
     _repository.nextStep().then((value) {
       _navigateToVerify.fire(value.next);
-    });
+    }).catchError((e) => _showServerError.fire(e));
   }
 
   void sendVisit(PhysicalInfoData info) async {

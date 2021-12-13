@@ -4,6 +4,8 @@ import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/payment/bloc.dart';
+import 'package:behandam/screens/widget/custom_date_picker.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -398,17 +400,41 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   }
 
   Future _selectDate() async {
-    Jalali? picked = await showPersianDatePicker(
-      context: context,
-      initialDate: Jalali.now(),
-      firstDate: Jalali(1200, 8),
-      lastDate: Jalali(1450, 9),
-    );
-    setState(() {
-      invoice.payedAt = picked!.toGregorian().toDateTime().toString().substring(0, 10);
-      debugPrint('birthdate $picked / ${invoice.payedAt}');
-    });
+    DialogUtils.showBottomSheetPage(
+        context: context,
+        child: SingleChildScrollView(
+          child: Container(
+            height: 32.h,
+            padding: EdgeInsets.all(5.w),
+            alignment: Alignment.center,
+            child: Center(
+              child: CustomDate(
+                function: (value) {
+                  print('value = > $value');
+                  setState(() {
+                    invoice.payedAt = value!;
+                  });
+                },
+                datetime: invoice.payedAt,
+                maxYear: Jalali.now().year,
+              ),
+            ),
+          ),
+        ));
   }
+
+  // Future _selectDate() async {
+  //   Jalali? picked = await showPersianDatePicker(
+  //     context: context,
+  //     initialDate: Jalali.now(),
+  //     firstDate: Jalali(1200, 8),
+  //     lastDate: Jalali(1450, 9),
+  //   );
+  //   setState(() {
+  //     invoice.payedAt = picked!.toGregorian().toDateTime().toString().substring(0, 10);
+  //     debugPrint('birthdate $picked / ${invoice.payedAt}');
+  //   });
+  // }
 
   @override
   void onRetryAfterMaintenance() {
