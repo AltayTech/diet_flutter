@@ -246,7 +246,7 @@ class _PaymentSuccessScreenState
                             label: intl.viewProduct,
                             onTap: () {
                               context.vxNav
-                                  .clearAndPushAll([Uri.parse(Routes.shopHome), Uri.parse(Routes.shopOrders)]);
+                                  .clearAndPushAll([Uri.parse(Routes.shopHome), Uri.parse(Routes.shopOrders), Uri.parse('${Routes.shopProduct}/${bloc.productId}')]);
                             }),
                         ],
                       ),

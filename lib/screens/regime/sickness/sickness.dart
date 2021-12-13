@@ -88,6 +88,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                 enable: true,
                                 maxLine: true,
                                 ctx: context,
+                                textInputType: TextInputType.multiline,
                                 textDirection: context.textDirectionOfLocale),
                             Space(height: 4.h),
                             SubmitButton(

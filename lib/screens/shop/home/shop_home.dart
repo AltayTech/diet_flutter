@@ -55,11 +55,11 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
               child: ListView.builder(
                 padding: EdgeInsets.all(4.w),
                 itemBuilder: (context, index) {
-                  debugPrint('data id > ${bloc.list[index].category?.toJson()}');
+                  debugPrint('data id > ${bloc.list![index].category?.toJson()}');
 
-                  switch (bloc.list[index].styleType) {
+                  switch (bloc.list![index].styleType) {
                     case StyleType.slider:
-                      return SliderApp(banners: bloc.list[index].items!);
+                      return SliderApp(banners: bloc.list![index].items!);
                     case StyleType.userAction:
                       return Card(
                         elevation: 0,
@@ -79,7 +79,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                       width: 14.w, height: 12.w,color: AppColors.primary),
                                   ImageUtils.fromNetwork(
                                       FlavorConfig.instance.variables['baseUrlFileShop'] +
-                                          bloc.list[index].icon_url,
+                                          bloc.list![index].icon_url,
                                       width: 7.0.w,
                                       height: 8.w,color: AppColors.primary)
                                 ],
@@ -88,18 +88,18 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                             ),
                             Expanded(
                               child: Text(
-                                bloc.list[index].title ?? '',
+                                bloc.list![index].title ?? '',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                               flex: 1,
                             ),
                             MaterialButton(
                               onPressed: () {
-                                if (bloc.list[index].action_type == ActionType.deepLink) {
+                                if (bloc.list![index].action_type == ActionType.deepLink) {
                                   VxNavigator.of(context)
-                                      .push(Uri.parse('/${bloc.list[index].action}'));
-                                } else if (bloc.list[index].action_type == ActionType.link) {
-                                  Utils.launchURL(bloc.list[index].action!);
+                                      .push(Uri.parse('/${bloc.list![index].action}'));
+                                } else if (bloc.list![index].action_type == ActionType.link) {
+                                  Utils.launchURL(bloc.list![index].action!);
                                 }
                               },
                               child: Text(
@@ -145,7 +145,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    bloc.list[index].category!.category_name ?? '',
+                                    bloc.list![index].category!.category_name ?? '',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1!
@@ -155,7 +155,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                 ),
                                 MaterialButton(
                                   onPressed: () {
-                                    VxNavigator.of(context).push(Uri.parse('${Routes.shopCategory}/${bloc.list[index].category!.id}'));
+                                    VxNavigator.of(context).push(Uri.parse('${Routes.shopCategory}/${bloc.list![index].category!.id}'));
                                   },
                                   child: Text(
                                     intl.viewAll,
@@ -194,7 +194,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                               child: ImageUtils.fromNetwork(
                                                   FlavorConfig
                                                           .instance.variables['baseUrlFileShop'] +
-                                                      bloc.list[index].category!.products![i]
+                                                      bloc.list![index].category!.products![i]
                                                           .productThambnail,
                                                   width: 50.w,
 
@@ -207,7 +207,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              bloc.list[index].category!.products![i].productName ??
+                                              bloc.list![index].category!.products![i].productName ??
                                                   '',
                                               style: Theme.of(context)
                                                   .textTheme
@@ -236,21 +236,21 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                               Column(
                                                 children: [
                                                   Text(
-                                                      '${bloc.list[index].category!.products![i].sellingPrice}',
+                                                      '${bloc.list![index].category!.products![i].sellingPrice}',
                                                       style: TextStyle(
                                                           decoration: TextDecoration.lineThrough,
                                                           color: Colors.grey,
                                                           fontSize: 10.sp)),
                                                   Text(
-                                                      '${bloc.list[index].category!.products![i].discountPrice} ${intl.currency}',
+                                                      '${bloc.list![index].category!.products![i].discountPrice} ${intl.currency}',
                                                       style: Theme.of(context).textTheme.overline)
                                                 ],
                                               ),
                                               MaterialButton(
                                                 onPressed: () {
-                                                  debugPrint('${Routes.shopProduct}/${bloc.list[index].category!.products![i].id}');
+                                                  debugPrint('${Routes.shopProduct}/${bloc.list![index].category!.products![i].id}');
                                                   VxNavigator.of(context)
-                                                      .push(Uri.parse('${Routes.shopProduct}/${bloc.list[index].category!.products![i].id}'));
+                                                      .push(Uri.parse('${Routes.shopProduct}/${bloc.list![index].category!.products![i].id}'));
                                                 },
                                                 minWidth: 7.w,
                                                 height: 7.w,
@@ -275,7 +275,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                     ),
                                   );
                                 },
-                                itemCount: bloc.list[index].category!.products!.length,
+                                itemCount: bloc.list![index].category!.products!.length,
                                 scrollDirection: Axis.horizontal,
                               ),
                             )
@@ -286,18 +286,18 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                     case StyleType.banner:
                       return GestureDetector(
                         onTap: () {
-                          if (bloc.list[index].banner!.action_type == ActionType.deepLink) {
+                          if (bloc.list![index].banner!.action_type == ActionType.deepLink) {
                             VxNavigator.of(context)
-                                .push(Uri.parse('/${bloc.list[index].banner!.action}'));
-                          } else if (bloc.list[index].banner!.action_type == ActionType.link) {
-                            Utils.launchURL(bloc.list[index].banner!.action!);
+                                .push(Uri.parse('/${bloc.list![index].banner!.action}'));
+                          } else if (bloc.list![index].banner!.action_type == ActionType.link) {
+                            Utils.launchURL(bloc.list![index].banner!.action!);
                           }
                         },
                         child: Container(
                           margin: EdgeInsets.all(5.w),
                           child: ImageUtils.fromNetwork(
                               FlavorConfig.instance.variables['baseUrlFileShop'] +
-                                  bloc.list[index].banner!.sliderImg,
+                                  bloc.list![index].banner!.sliderImg,
                               decoration: AppDecorations.boxMedium,
                               width: 80.w,
                               height: 15.5.h,
@@ -311,7 +311,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                   return Container();
                 },
                 shrinkWrap: true,
-                itemCount: bloc.list.length,
+                itemCount: bloc.list?.length ?? 0,
               ),
             );
           else

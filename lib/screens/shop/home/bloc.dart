@@ -14,13 +14,13 @@ class ShopHomeBloc {
   final _loadingContent = BehaviorSubject<bool>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
-  late List<ShopItem> _list;
+  late List<ShopItem>? _list;
 
   Stream<bool> get loadingContent => _loadingContent.stream;
   Stream get navigateTo => _navigateTo.stream;
   Stream get showServerError => _showServerError.stream;
 
-  List<ShopItem> get list => _list;
+  List<ShopItem>? get list => _list;
 
   void _loadContent() {
     _loadingContent.value = true;

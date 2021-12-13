@@ -23,6 +23,7 @@ class PaymentBloc {
   final _repository = Repository.getInstance();
 
   late String? _path;
+  int? _productId;
   String? discountCode;
   PackageItem? _packageItem;
   Price? _discountInfo;
@@ -41,6 +42,8 @@ class PaymentBloc {
   final _onlinePayment = LiveEvent();
 
   String? get path => _path;
+
+  int? get productId => _productId;
 
   bool get checkLatestInvoice => _checkLatestInvoice;
 
@@ -78,7 +81,7 @@ class PaymentBloc {
 
   Stream get onlinePayment => _onlinePayment.stream;
 
-  void mustCheckLastInvoice (){
+  void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
   }
 
@@ -104,17 +107,19 @@ class PaymentBloc {
   }
 
   void selectUserPayment() {
-    if (!isUsedDiscount && (discountCode != null && discountCode!.trim().isNotEmpty)) {
+    if (!isUsedDiscount &&
+        (discountCode != null && discountCode!.trim().isNotEmpty)) {
       _showServerError.fireMessage('error');
     } else {
       Payment payment = new Payment();
       payment.originId = Device.get().isIos ? 2 : 3;
       payment.coupon = discountCode;
-      payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
-          ? 2
-          : isOnline
-              ? 0
-              : 1;
+      payment.paymentTypeId =
+          (discountInfo != null && discountInfo!.finalPrice == 0)
+              ? 2
+              : isOnline
+                  ? 0
+                  : 1;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       });
@@ -184,28 +189,30 @@ class PaymentBloc {
     }).whenComplete(() => _waiting.value = false);
   }
 
-  void checkOnlinePayment(){
+  void checkOnlinePayment() {
     _repository.latestInvoice().then((value) {
       _onlinePayment.fire(value.data!.success);
       _path = value.next ?? null;
-      });
+    });
   }
 
   void setShowInformation() {
-    _showInformation.value = _showInformation.valueOrNull == null ? true : !_showInformation.value;
+    _showInformation.value =
+        _showInformation.valueOrNull == null ? true : !_showInformation.value;
   }
 
-  void shopLastInvoice(){
-    debugPrint('last invoice ${checkLatestInvoice}');
+  void shopLastInvoice() {
     // if(!_checkLatestInvoice.isNullOrFalse) {
     _waiting.value = true;
     _repository.shopLastInvoice().then((value) {
       _invoice = value.data;
       if (value.data?.refId != null &&
           !value.requireData.success.isNullOrFalse &&
-          !value.requireData.resolved.isNullOrFalse)
+          !value.requireData.resolved.isNullOrFalse) {
         _navigateTo.fire(Routes.shopOrders);
-      else
+        _productId = value.requireData.productId;
+        debugPrint('shop last invoice $productId / ${value.requireData.productId}');
+      } else
         _navigateTo.fire(Routes.shopHome);
     }).whenComplete(() => _waiting.value = false);
     // }
