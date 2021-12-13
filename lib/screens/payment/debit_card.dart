@@ -29,11 +29,16 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   late PaymentBloc bloc;
   bool showUserInfo = false;
   late LatestInvoiceData invoice;
+  TextEditingController nameController = TextEditingController();
+  late TextEditingController cardController;
 
   @override
   void initState() {
     super.initState();
+    cardController = TextEditingController();
     invoice = LatestInvoiceData();
+    nameController.text = invoice.cardOwner ?? '';
+    cardController.text = invoice.cardNum ?? '';
     bloc = PaymentBloc();
     bloc.getLastInvoice();
     invoice.cardOwner = MemoryApp.userInformation?.fullName;
@@ -46,6 +51,8 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   @override
   void dispose() {
     bloc.dispose();
+    cardController.dispose();
+    nameController.dispose();
     super.dispose();
   }
 
@@ -287,7 +294,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           textInputType: TextInputType.text,
           validation: (val) {},
           onChanged: (val) => setState(() => invoice.cardOwner = val),
-          value: invoice.cardOwner,
+          // value: invoice.cardOwner,
           label: intl.accountOwnerName,
           maxLine: false,
           enable: true,
@@ -295,6 +302,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           action: TextInputAction.next,
           formatter: FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
           textDirection: context.textDirectionOfLocale,
+          textController: nameController,
         ),
         warning(intl.nameOfWhoPayed),
         Space(height: 3.h),
@@ -303,7 +311,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           textInputType: TextInputType.text,
           validation: (val) {},
           onChanged: (val) => setState(() => invoice.cardNum = val),
-          value: invoice.cardNum,
+          // value: invoice.cardNum,
           label: intl.fourLastNumberOfCard,
           maxLine: false,
           ctx: context,
@@ -311,6 +319,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           action: TextInputAction.done,
           formatter: FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
           textDirection: TextDirection.ltr,
+          textController: cardController,
         ),
         warning(intl.fourLastCardNumberOfWhoPayed),
         Space(height: 2.h),

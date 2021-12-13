@@ -8,7 +8,8 @@ import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+void fieldFocusChange(
+    BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
   currentFocus.unfocus();
   FocusScope.of(context).requestFocus(nextFocus);
 }
@@ -124,7 +125,8 @@ Widget attachBox() {
                     print('assistant clicked');
                     launchURL('http://support.kermany.com/');
                   },
-                  child: attachCard('assets/images/profile/assistant.svg', 'دستیار'),
+                  child: attachCard(
+                      'assets/images/profile/assistant.svg', 'دستیار'),
                 ),
               ),
               Container(
@@ -136,7 +138,8 @@ Widget attachBox() {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () => launchURL('https://kermany.com/'),
-                  child: attachCard('assets/images/profile/magazine.svg', 'مجله دکتر کرمانی'),
+                  child: attachCard(
+                      'assets/images/profile/magazine.svg', 'مجله دکتر کرمانی'),
                 ),
               ),
             ],
@@ -192,14 +195,16 @@ Widget optionUi(IconData icon, String text, int action) {
     child: Container(
 //        width: _widthSpace / 3.25,
       height: 6.h,
-      decoration:
-          BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30.0), boxShadow: [
-        BoxShadow(
-            color: Color.fromARGB(255, 248, 233, 233),
-            blurRadius: 4.0,
-            spreadRadius: 3.0,
-            offset: Offset(0.0, 0.35.w)),
-      ]),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30.0),
+          boxShadow: [
+            BoxShadow(
+                color: Color.fromARGB(255, 248, 233, 233),
+                blurRadius: 4.0,
+                spreadRadius: 3.0,
+                offset: Offset(0.0, 0.35.w)),
+          ]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -225,8 +230,8 @@ Widget optionUi(IconData icon, String text, int action) {
   );
 }
 
-Widget card(String bgAdrs, String iconAdrs, String text, Color textColor, Color shadow,
-    TextDirection textDirection) {
+Widget card(String bgAdrs, String iconAdrs, String text, Color textColor,
+    Color shadow, TextDirection textDirection) {
   return Container(
     width: 70.w,
     height: 10.h,
@@ -245,7 +250,8 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor, Color 
       textDirection: textDirection,
       children: <Widget>[
         Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -255,7 +261,8 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor, Color 
                   decoration: BoxDecoration(
                       color: Color(0xff66D4C9),
                       borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(12), topRight: Radius.circular(12))),
+                          bottomRight: Radius.circular(12),
+                          topRight: Radius.circular(12))),
                 ),
                 flex: 0,
               ),
@@ -310,7 +317,7 @@ Widget textInput(
     TextInputType? textInputType,
     required Function validation,
     required Function onChanged,
-    String? value,
+    // String? value,
     String? label,
     required bool enable,
     required bool maxLine,
@@ -318,34 +325,34 @@ Widget textInput(
     TextInputAction? action,
     required TextDirection textDirection,
     TextAlign? textAlign,
-      TextEditingController? textController,
+    TextEditingController? textController,
     FilteringTextInputFormatter? formatter}) {
-
+  // textController?.selection = TextSelection.fromPosition(TextPosition(offset: textController.text.length));
   return Container(
     height: height,
-    child: Directionality(
-      textDirection: textDirection,
-      child: TextFormField(
-        inputFormatters: formatter != null
-            ? [
-                formatter,
-              ]
-            : null,
-        textInputAction: action,
-        maxLines: maxLine ? 4 : 1,
-        controller: textController ?? TextEditingController(text: value),
-        enabled: enable,
-        decoration: inputDecoration.copyWith(
-          labelText: label,
-          labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.labelColor),
-        ),
-        keyboardType: textInputType,
-
-        onChanged: (val) => onChanged(val),
-        style: Theme.of(ctx).textTheme.subtitle2,
-        textAlign: textAlign ?? TextAlign.start,
-        validator: (val) => validation(val),
+    child: TextFormField(
+      inputFormatters: formatter != null
+          ? [
+              formatter,
+            ]
+          : null,
+      textInputAction: action,
+      maxLines: maxLine ? 4 : 1,
+      controller: textController,
+      enabled: enable,
+      decoration: inputDecoration.copyWith(
+        labelText: label,
+        labelStyle: Theme.of(ctx)
+            .textTheme
+            .subtitle1!
+            .copyWith(color: AppColors.labelColor),
       ),
+      keyboardType: textInputType,
+      // textDirection: textDirection,
+      onChanged: (val) => onChanged(val),
+      style: Theme.of(ctx).textTheme.subtitle2,
+      textAlign: TextAlign.start,
+      validator: (val) => validation(val),
     ),
   );
 }

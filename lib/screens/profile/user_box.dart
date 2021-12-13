@@ -25,9 +25,34 @@ class UserBox extends StatefulWidget {
 class UserBoxState extends ResourcefulState<UserBox> {
   late ProfileBloc profileBloc;
   UserInformation? userInfo;
+  TextEditingController _firstnameController = TextEditingController();
+  TextEditingController _lastnameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _mobileController = TextEditingController();
+  TextEditingController _whatsappController = TextEditingController();
+  TextEditingController _skypeController = TextEditingController();
+  TextEditingController _zipcodeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    initControllers();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    disposeControllers();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     super.build(context);
     profileBloc = ProfileProvider.of(context);
     userInfo = profileBloc.userInfo;
@@ -43,7 +68,8 @@ class UserBoxState extends ResourcefulState<UserBox> {
               textInputType: TextInputType.text,
               validation: (val) {},
               onChanged: (val) => setState(() => userInfo!.firstName = val),
-              value: userInfo!.firstName,
+              // value: userInfo!.firstName,
+              textController: _firstnameController,
               label: intl.name,
               maxLine: false,
               enable: true,
@@ -57,7 +83,8 @@ class UserBoxState extends ResourcefulState<UserBox> {
               textInputType: TextInputType.text,
               validation: (val) {},
               onChanged: (val) => setState(() => userInfo!.lastName = val),
-              value: userInfo!.lastName,
+              // value: userInfo!.lastName,
+              textController: _lastnameController,
               label: intl.lastName,
               maxLine: false,
               ctx: context,
@@ -68,16 +95,17 @@ class UserBoxState extends ResourcefulState<UserBox> {
           Space(height: 3.h),
           textInput(
               height: 8.h,
-              textInputType: TextInputType.text,
+              textInputType: TextInputType.emailAddress,
               validation: (val) {},
               onChanged: (val) => setState(() => userInfo!.email = val),
-              value: userInfo!.email,
+              // value: userInfo!.email,
+              textController: _emailController,
               label: intl.email,
               maxLine: false,
               enable: true,
               ctx: context,
               action: TextInputAction.next,
-              formatter: FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
+              formatter: FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -86,7 +114,8 @@ class UserBoxState extends ResourcefulState<UserBox> {
               textInputType: TextInputType.multiline,
               validation: (val) {},
               onChanged: (val) => setState(() => userInfo!.address?.address = val),
-              value: userInfo!.address?.address,
+              // value: userInfo!.address?.address,
+              textController: _addressController,
               label: intl.address,
               maxLine: true,
               ctx: context,
@@ -96,10 +125,11 @@ class UserBoxState extends ResourcefulState<UserBox> {
           Space(height: 3.h),
           textInput(
               height: 8.h,
-              textInputType: TextInputType.text,
+              textInputType: TextInputType.number,
               validation: (val) {},
               onChanged: (val) => setState(() => userInfo!.callNumber = val),
-              value: userInfo!.callNumber,
+              // value: userInfo!.callNumber,
+              textController: _mobileController,
               label: intl.callNumber,
               maxLine: false,
               ctx: context,
@@ -110,13 +140,14 @@ class UserBoxState extends ResourcefulState<UserBox> {
           Space(height: 3.h),
           textInput(
               height: 8.h,
-              textInputType: TextInputType.text,
+              textInputType: TextInputType.number,
               validation: (val) {},
               onChanged: (val) => setState(() {
                // userInfo!.whatsApp = val;
                 userInfo!.socialMedia![0].pivot!.link = val;
               }),
-              value: userInfo!.whatsApp,
+              // value: userInfo!.whatsApp,
+              textController: _whatsappController,
               label: intl.whatsApp,
               enable: true,
               maxLine: false,
@@ -131,28 +162,29 @@ class UserBoxState extends ResourcefulState<UserBox> {
               validation: (val) {},
               enable: true,
               onChanged: (val) => setState(() {
-                userInfo!.socialMedia![2].pivot!.link = val;
+                userInfo!.socialMedia![2].pivot!.link = val ?? '';
               }),
-              value: userInfo!.skype,
+              // value: userInfo!.skype,
+              textController: _skypeController,
               label: intl.skype,
               maxLine: false,
               ctx: context,
               action: TextInputAction.next,
-              formatter: null,
+              formatter: FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
               height: 8.h,
-              textInputType: TextInputType.multiline,
+              textInputType: TextInputType.number,
               validation: (val) {},
               onChanged: (val) => setState(() => userInfo!.address?.zipCode = val),
-              value: userInfo!.address?.zipCode,
+              // value: userInfo!.address?.zipCode,
+              textController: _zipcodeController,
               label: intl.zipCode,
               maxLine: true,
               enable: true,
               ctx: context,
               action: TextInputAction.newline,
-              formatter: null,
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           Directionality(
@@ -222,6 +254,27 @@ class UserBoxState extends ResourcefulState<UserBox> {
         ],
       ),
     );
+  }
+
+  void initControllers(){
+    _firstnameController.text = userInfo?.firstName ?? '';
+    _lastnameController.text = userInfo?.lastName ?? '';
+    _emailController.text = userInfo?.email ?? '';
+    _addressController.text = userInfo?.address?.address ?? '';
+    _mobileController.text = userInfo?.callNumber ?? '';
+    _whatsappController.text = userInfo?.whatsApp ?? '';
+    _skypeController.text = userInfo?.skype ?? '';
+    _zipcodeController.text = userInfo?.address?.zipCode ?? '';
+  }
+
+  void disposeControllers(){
+    _firstnameController.dispose();
+    _lastnameController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    _mobileController.dispose();
+    _whatsappController.dispose();
+    _skypeController.dispose();
   }
 
   @override

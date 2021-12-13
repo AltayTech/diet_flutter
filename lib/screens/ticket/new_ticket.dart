@@ -22,12 +22,16 @@ class NewTicket extends StatefulWidget {
 
 class _NewTicketState extends ResourcefulState<NewTicket> {
   late TicketBloc bloc;
+  TextEditingController ticketTitleController = TextEditingController();
+  TextEditingController ticketDescController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     bloc = TicketBloc();
     bloc.getSupportList();
+    ticketTitleController.text = bloc.sendTicketMessage.title ?? '';
+    ticketDescController.text = bloc.sendTicketMessage.body ?? '';
     listen();
   }
 
@@ -131,7 +135,8 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                         textInput(
                             height: 8.h,
                             label: intl.subject,
-                            value: bloc.sendTicketMessage.title ?? '',
+                            // value: bloc.sendTicketMessage.title ?? '',
+                            textController: ticketTitleController,
                             validation: (validation) {},
                             onChanged: (onChanged) {
                               bloc.sendTicketMessage.title = onChanged;
@@ -150,7 +155,8 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                 return textInput(
                                     height: 6.h,
                                     label: intl.lableTextMessage,
-                                    value: bloc.sendTicketMessage.body,
+                                    // value: bloc.sendTicketMessage.body,
+                                    textController: ticketDescController,
                                     validation: (validation) {},
                                     onChanged: (onChanged) {
                                       bloc.sendTicketMessage.body = onChanged;

@@ -148,7 +148,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                                       size: 4.w,
                                     );
                                   }else{
-                                  return  profileBloc.userInfo.media!.url != null
+                                  return  profileBloc.userInfo.media?.url != null
                                         ? ImageUtils.fromNetwork(
                                       '${FlavorConfig.instance.variables['baseUrlFile']}${profileBloc.userInfo.media!.url}',
                                       placeholder: 'assets/images/profile/female_avatar.svg',

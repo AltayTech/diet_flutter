@@ -62,10 +62,11 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
 
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
-      debugPrint('listen online payment ${navigator.currentConfiguration?.path}');
-      if(event != null && event)
+      debugPrint(
+          'listen online payment ${navigator.currentConfiguration?.path}');
+      if (event != null && event)
         VxNavigator.of(context).clearAndPush(Uri.parse("/${bloc.path}"));
-      else if(event != null && !event)
+      else if (event != null && !event)
         VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
       else
         Navigator.of(context).pop();
@@ -75,11 +76,14 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
       Utils.getSnackbarMessage(context, intl.offError);
     });
     bloc.navigateTo.listen((event) {
-      debugPrint('listen navigate');
+      debugPrint('listen navigate ${event.next}');
       Payment? result = (event as NetworkResponse<Payment>).data;
       if ((event).next != null) {
         Navigator.of(context).pop();
-        context.vxNav.clearAndPush(Uri.parse('/${(event).next}'));
+        if (event.next!.contains('card'))
+          context.vxNav.push(Uri.parse('/${(event).next}'));
+        else
+          context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
       } else if (bloc.isOnline) {
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
         bloc.mustCheckLastInvoice();

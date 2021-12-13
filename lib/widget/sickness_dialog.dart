@@ -28,6 +28,7 @@ class SicknessDialog extends StatefulWidget {
 }
 
 class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

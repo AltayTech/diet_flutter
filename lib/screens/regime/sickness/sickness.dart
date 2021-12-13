@@ -26,13 +26,14 @@ class SicknessScreen extends StatefulWidget {
 
 class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements ItemClick {
   late SicknessBloc sicknessBloc;
+  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     sicknessBloc = SicknessBloc();
     sicknessBloc.getSickness();
+    controller.text = sicknessBloc.userSickness?.sicknessNote ?? '';
     listenBloc();
   }
 
@@ -79,7 +80,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                 height: 20.h,
                                 validation: () {},
                                 label: intl.sicknessDescriptionUser,
-                                value: sicknessBloc.userSickness!.sicknessNote,
+                                textController: controller,
+                                // value: sicknessBloc.userSickness!.sicknessNote,
                                 onChanged: (value) {
                                   sicknessBloc.userSickness!.sicknessNote = value;
                                 },
@@ -448,6 +450,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
   @override
   void dispose() {
     sicknessBloc.dispose();
+    controller.dispose();
     super.dispose();
   }
 }

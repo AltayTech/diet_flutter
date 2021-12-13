@@ -112,7 +112,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                           onPressed: () {
                             print('later');
                             Navigator.of(context).pop();
-                            VxNavigator.of(context).push(Uri.parse(Routes.listView));
+                            VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
                           },
                           color: Colors.white,
                         ),

@@ -27,11 +27,11 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _textEditingController = TextEditingController();
     bloc = RefundBloc();
     bloc.getTermPackage();
+    _textEditingController.text = bloc.cardOwner ?? '';
     blocListener();
   }
 
@@ -154,7 +154,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                           ),
                           Space(height: 1.h),
                           textInput(
-                            value: bloc.cardOwner ?? null,
+                            // value: bloc.cardOwner ?? null,
                             label: intl.accountOwnerName,
                             onChanged: (val) {
                               _textEditingController.text = val;

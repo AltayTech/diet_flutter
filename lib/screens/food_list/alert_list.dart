@@ -75,6 +75,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Stack(
                         children: [
@@ -98,12 +99,14 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
                         ),
                       ),
                       Space(height: 4.h),
-                      SubmitButton(
-                        label: textItem!['btnLabel'],
-                        onTap: () {
-                          DialogUtils.showDialogProgress(context: context);
-                          bloc.nextStep();
-                        },
+                      Center(
+                        child: SubmitButton(
+                          label: textItem!['btnLabel'],
+                          onTap: () {
+                            DialogUtils.showDialogProgress(context: context);
+                            bloc.nextStep();
+                          },
+                        ),
                       ),
                     ],
                   ),
