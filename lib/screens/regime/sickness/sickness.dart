@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
 import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
@@ -33,7 +34,6 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     super.initState();
     sicknessBloc = SicknessBloc();
     sicknessBloc.getSickness();
-    controller.text = sicknessBloc.userSickness?.sicknessNote ?? '';
     listenBloc();
   }
 
@@ -41,6 +41,10 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     sicknessBloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
       VxNavigator.of(context).push(Uri.parse(event));
+    });
+    sicknessBloc.showServerError.listen((event) {
+      Navigator.of(context).pop();
+      Utils.getSnackbarMessage(context, event);
     });
   }
 
@@ -59,7 +63,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                 child: StreamBuilder(
                     stream: sicknessBloc.waiting,
                     builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data == false)
+                      if (snapshot.hasData && snapshot.data == false) {
+                        controller.text = sicknessBloc.userSickness?.sicknessNote ?? '';
                         return Column(
                           children: [
                             Space(height: 2.h),
@@ -67,12 +72,16 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                               child: Text(
                                 intl.sicknessLabelUser,
                                 textDirection: context.textDirectionOfLocale,
-                                style: Theme.of(context).textTheme.caption,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .caption,
                               ),
                             ),
                             Space(height: 2.h),
                             if (sicknessBloc.userSickness != null)
-                              ...sicknessBloc.userSickness!.sickness_categories!.map((element) {
+                              ...sicknessBloc.userSickness!.sickness_categories!
+                                  .map((element) {
                                 return _sicknessPartBox(element);
                               }),
                             Space(height: 2.h),
@@ -83,7 +92,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                 textController: controller,
                                 // value: sicknessBloc.userSickness!.sicknessNote,
                                 onChanged: (value) {
-                                  sicknessBloc.userSickness!.sicknessNote = value;
+                                  sicknessBloc.userSickness!.sicknessNote =
+                                      value;
                                 },
                                 enable: true,
                                 maxLine: true,
@@ -93,7 +103,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                             Space(height: 4.h),
                             SubmitButton(
                               onTap: () {
-                                DialogUtils.showDialogProgress(context: context);
+                                DialogUtils.showDialogProgress(
+                                    context: context);
                                 sicknessBloc.sendSickness();
                               },
                               label: intl.confirmContinue,
@@ -101,7 +112,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                             Space(height: 3.h),
                           ],
                         );
-                      else {
+                      }else {
                         return SpinKitCircle(
                           size: 7.w,
                           color: AppColors.primary,
