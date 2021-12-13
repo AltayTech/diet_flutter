@@ -48,9 +48,9 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (!isInit) {
+      isInit = true;
       args = ModalRoute.of(context)!.settings.arguments as String;
       productBloc.getProduct(int.parse(args!));
-      isInit = true;
     }
   }
 
@@ -123,50 +123,56 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 textDirection: context.textDirectionOfLocale,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 12.0, left: 12.0),
-              child: Line(color: AppColors.strongPen, height: 0.1.h),
-            ),
+            if (shopProduct.userOrderDate == null)
+              Padding(
+                padding: const EdgeInsets.only(right: 12.0, left: 12.0),
+                child: Line(color: AppColors.strongPen, height: 0.1.h),
+              ),
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text(shopProduct.sellingPrice.toString(),
-                          style: TextStyle(
-                              decoration: TextDecoration.lineThrough,
-                              color: Colors.grey,
-                              fontSize: 10.sp)),
-                      Text(shopProduct.discountPrice.toString() + intl.currency,
-                          style: TextStyle(fontSize: 12.sp))
-                    ],
-                  ),
-                  OutlinedButton(
-                      onPressed: () {
-                        VxNavigator.of(context)
-                            .push(Uri(path: Routes.shopBill), params: shopProduct);
-                      },
-                      style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
-                        backgroundColor: MaterialStateProperty.all(Colors.white),
-                        foregroundColor: MaterialStateProperty.all(AppColors.primary),
-                        shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                        side: MaterialStateProperty.all(BorderSide(color: AppColors.primary)),
-                      ),
-                      child: Row(
-                        children: [
-                          ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
-                              width: 2.w, height: 3.h, color: AppColors.primary),
-                          SizedBox(width: 2.w),
-                          Text(intl.buyCourse,
-                              style: TextStyle(color: AppColors.primary, fontSize: 14.sp)),
-                        ],
-                      )),
-                ],
-              ),
+              child: shopProduct.userOrderDate == null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text(shopProduct.sellingPrice.toString(),
+                                style: TextStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Colors.grey,
+                                    fontSize: 10.sp)),
+                            Text(shopProduct.discountPrice.toString() + intl.currency,
+                                style: TextStyle(fontSize: 12.sp))
+                          ],
+                        ),
+                        OutlinedButton(
+                            onPressed: () {
+                              VxNavigator.of(context)
+                                  .push(Uri(path: Routes.shopBill), params: shopProduct);
+                            },
+                            style: ButtonStyle(
+                              fixedSize: MaterialStateProperty.all(Size(40.w, 6.h)),
+                              backgroundColor: MaterialStateProperty.all(Colors.white),
+                              foregroundColor: MaterialStateProperty.all(AppColors.primary),
+                              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0))),
+                              side: MaterialStateProperty.all(BorderSide(color: AppColors.primary)),
+                            ),
+                            child: Row(
+                              children: [
+                                ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
+                                    width: 2.w, height: 3.h, color: AppColors.primary),
+                                SizedBox(width: 2.w),
+                                Text(intl.buyCourse,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .button!
+                                        .copyWith(color: AppColors.primary)),
+                              ],
+                            )),
+                      ],
+                    )
+                  : Container(),
             )
           ],
         ),
@@ -186,9 +192,17 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 child: ExpandablePanel(
                   collapsed: Html(
                     data: shopProduct.shortDescription,
+                    style: {
+                      'p': Style(fontSize: FontSize.large, fontWeight: FontWeight.bold),
+                      'body': Style(fontSize: FontSize.large, fontWeight: FontWeight.w500)
+                    },
                   ),
                   expanded: Html(
-                    data: shopProduct.longDescription,
+                    data: '<body>${shopProduct.longDescription}</body>',
+                    style: {
+                      'p': Style(fontSize: FontSize.large, fontWeight: FontWeight.bold),
+                      'body': Style(fontSize: FontSize.large, fontWeight: FontWeight.w500)
+                    },
                   ),
                   controller: _controller,
                 ),
@@ -234,7 +248,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                     children: [
                                       Text(
                                         value.lessonName!,
-                                        style: Theme.of(context).textTheme.subtitle1!,
+                                        style: Theme.of(context).textTheme.subtitle2,
                                       ),
                                       Row(
                                         textDirection: context.textDirectionOfLocale,
@@ -277,6 +291,26 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                           child: Center(
                                             child: ImageUtils.fromLocal(
                                                 Utils.productIcon(value.typeMediaShop),
+                                                width: 5.w,
+                                                height: 3.h,
+                                                color: AppColors.primary),
+                                          ),
+                                        ),
+                                      );
+                                    case TypeMediaShop.play:
+                                      return InkWell(
+                                        onTap: () async {
+                                          dialogVideo(value);
+                                        },
+                                        child: Container(
+                                          width: 10.w,
+                                          height: 5.h,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(color: AppColors.primary),
+                                              borderRadius: BorderRadius.circular(15.0)),
+                                          child: Center(
+                                            child: ImageUtils.fromLocal(
+                                                Utils.productIcon(TypeMediaShop.play),
                                                 width: 5.w,
                                                 height: 3.h,
                                                 color: AppColors.primary),
@@ -436,8 +470,9 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: CustomVideo(
-                    url: lessons.video,
+                    url: lessons.typeMediaShop == TypeMediaShop.play ? lessons.path : lessons.video,
                     image: null,
+                    isFile: lessons.typeMediaShop == TypeMediaShop.play ? true : null,
                     isLooping: false,
                     isStart: false,
                     callBackListener: (controller) {

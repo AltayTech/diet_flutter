@@ -38,5 +38,6 @@ class OrdersBloc{
     _waiting.close();
     _showServerError.close();
     _navigateToVerify.close();
+    _orders.close();
   }
 }

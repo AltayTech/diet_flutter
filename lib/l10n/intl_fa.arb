@@ -563,7 +563,7 @@
   "test" : "تست",
   "person": "نفر",
   "courseTime": "زمان دوره",
-  "buyThisCourse": "این دوره را خریداری کردند",
+  "buyThisCourse": "خریداری شده",
   "aboutThis": "درباره این دوره",
   "viewCompletely": "مشاهده کامل",
   "viewAllCourse": "مشاهده تمام جلسات",
@@ -580,5 +580,6 @@
   "exitAppAlert": "برای خروج بکبار دیگر ضربه بزنید",
   "programNotFoundForOpen": "برنامه ای جهت بازکردن فایل پیدا نشد.",
   "fileNotFound": "این فایل وجود ندارد",
+  "more": "بیشتر",
   "understand": "متوجه شدم"
 }

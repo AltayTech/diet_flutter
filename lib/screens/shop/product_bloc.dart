@@ -102,11 +102,11 @@ class ProductBloc {
               debugPrint(
                   'element.video => ${tempDir?.path}/${element.video?.split('/').last} // ${_product.value.userOrderDate}');
               element.path = '${tempDir!.path}/${element.video!.split('/').last}';
-              /*  bool exist =
-                  await File('${element.path}').exists();*/
-              /* if (exist) {
-                element.typeMediaShop = TypeMediaShop.downloadAndPlay;
-              } else*/
+                bool exist =
+                  await File('${element.path}').exists();
+               if (exist) {
+                element.typeMediaShop = TypeMediaShop.play;
+              } else
               if (element.isFree == 0 && _product.value.userOrderDate == null) {
                 element.typeMediaShop = TypeMediaShop.lock;
               } else {
@@ -129,7 +129,7 @@ class ProductBloc {
     _typeMediaShop.value = TypeMediaShop.progress;
     _repository.download(value.video!, value.path!).then((param) {
       debugPrint('path => ${value.path!}');
-      value.typeMediaShop = TypeMediaShop.downloadAndPlay;
+      value.typeMediaShop = TypeMediaShop.play;
       _typeMediaShop.value = value.typeMediaShop!;
     }).catchError((onError) {
       value.typeMediaShop = TypeMediaShop.downloadAndPlay;

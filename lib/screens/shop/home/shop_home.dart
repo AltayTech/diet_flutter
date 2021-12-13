@@ -46,7 +46,9 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
     super.build(context);
     return SafeArea(
         child: Scaffold(
-      appBar: Toolbar(titleBar: intl.shop,),
+      appBar: Toolbar(
+        titleBar: intl.shop,
+      ),
       body: StreamBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data == false)
@@ -55,8 +57,6 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
               child: ListView.builder(
                 padding: EdgeInsets.all(4.w),
                 itemBuilder: (context, index) {
-                  debugPrint('data id > ${bloc.list[index].category?.toJson()}');
-
                   switch (bloc.list[index].styleType) {
                     case StyleType.slider:
                       return SliderApp(banners: bloc.list[index].items!);
@@ -76,12 +76,13 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                 fit: StackFit.loose,
                                 children: [
                                   ImageUtils.fromLocal('assets/images/shop/back_rec.svg',
-                                      width: 14.w, height: 12.w,color: AppColors.primary),
+                                      width: 14.w, height: 12.w, color: AppColors.primary),
                                   ImageUtils.fromNetwork(
                                       FlavorConfig.instance.variables['baseUrlFileShop'] +
                                           bloc.list[index].icon_url,
                                       width: 7.0.w,
-                                      height: 8.w,color: AppColors.primary)
+                                      height: 8.w,
+                                      color: AppColors.primary)
                                 ],
                               ),
                               padding: EdgeInsets.all(4),
@@ -155,7 +156,8 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                 ),
                                 MaterialButton(
                                   onPressed: () {
-                                    VxNavigator.of(context).push(Uri.parse('${Routes.shopCategory}/${bloc.list[index].category!.id}'));
+                                    VxNavigator.of(context).push(Uri.parse(
+                                        '${Routes.shopCategory}/${bloc.list[index].category!.id}'));
                                   },
                                   child: Text(
                                     intl.viewAll,
@@ -187,21 +189,39 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                                            child: AspectRatio(
+                                          if (bloc.list[index].category!.products![i]
+                                                  .userOrderDate !=
+                                              null)
+                                            ClipRect(
+                                              child: Banner(
+                                                message: intl.buyThisCourse,
+                                                location: BannerLocation.topEnd,
+                                                color: AppColors.primary,
+                                                child: AspectRatio(
+                                                  aspectRatio: 16 / 9,
+                                                  child: ImageUtils.fromNetwork(
+                                                      FlavorConfig.instance
+                                                              .variables['baseUrlFileShop'] +
+                                                          bloc.list[index].category!.products![i]
+                                                              .productThambnail,
+                                                      decoration: AppDecorations.boxMild,
+                                                      fit: BoxFit.fill),
+                                                ),
+                                              ),
+                                            ),
+                                          if (bloc.list[index].category!.products![i]
+                                                  .userOrderDate ==
+                                              null)
+                                            AspectRatio(
                                               aspectRatio: 16 / 9,
                                               child: ImageUtils.fromNetwork(
                                                   FlavorConfig
                                                           .instance.variables['baseUrlFileShop'] +
                                                       bloc.list[index].category!.products![i]
                                                           .productThambnail,
-                                                  width: 50.w,
-
-                                                  fit: BoxFit.fill
-                                              ),
+                                                  decoration: AppDecorations.boxMild,
+                                                  fit: BoxFit.fill),
                                             ),
-                                          ),
                                           Space(
                                             height: 1.h,
                                           ),
@@ -248,24 +268,37 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                               ),
                                               MaterialButton(
                                                 onPressed: () {
-                                                  debugPrint('${Routes.shopProduct}/${bloc.list[index].category!.products![i].id}');
-                                                  VxNavigator.of(context)
-                                                      .push(Uri.parse('${Routes.shopProduct}/${bloc.list[index].category!.products![i].id}'));
+                                                  debugPrint(
+                                                      '${Routes.shopProduct}/${bloc.list[index].category!.products![i].id}');
+                                                  VxNavigator.of(context).push(Uri.parse(
+                                                      '${Routes.shopProduct}/${bloc.list[index].category!.products![i].id}'));
                                                 },
                                                 minWidth: 7.w,
                                                 height: 7.w,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(15.0),
-                                                      color: Colors.white,
-                                                      border: Border.all(
-                                                          width: 0.2.w, color: AppColors.primary)),
-                                                  child: ImageUtils.fromLocal(
-                                                      'assets/images/shop/add_cart.svg',
-                                                      padding: EdgeInsets.all(4.w),
-                                                      width: 5.w,
-                                                      height: 5.w,color: AppColors.primary),
-                                                ),
+                                                child: bloc.list[index].category!.products![i]
+                                                            .userOrderDate !=
+                                                        null
+                                                    ? Text(intl.view,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .button!
+                                                            .copyWith(color: AppColors.primary))
+                                                    : Container(
+                                                        padding: EdgeInsets.all(2.w),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius.circular(15.0),
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                                width: 0.2.w,
+                                                                color: AppColors.primary)),
+                                                        child: ImageUtils.fromLocal(
+                                                            'assets/images/shop/add_cart.svg',
+                                                            padding: EdgeInsets.all(1.w),
+                                                            width: 5.w,
+                                                            height: 5.w,
+                                                            color: AppColors.primary),
+                                                      ),
                                               ),
                                             ],
                                           )

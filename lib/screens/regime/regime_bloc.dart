@@ -87,7 +87,7 @@ class RegimeBloc {
     _repository.helpBodyState(id).then((value) {
       _name = value.data!.name!;
       _helpers.value = value.data!.helpers!;
-    }).catchError((e) => _showServerError.fire(e)).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.value = false);
   }
 
   void pathMethod(RegimeType regime) async {
@@ -96,7 +96,10 @@ class RegimeBloc {
     _repository.setCondition(requestData).then((value) {
       _path = value.next!;
       _navigateToVerify.fire(regime);
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() {
+      _showServerError.fire(true);
+      _waiting.value = false;
+    });
   }
 
   void sendInfo(PhysicalInfoData info) async {
