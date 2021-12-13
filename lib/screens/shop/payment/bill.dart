@@ -110,10 +110,11 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage>
                     fit: BoxFit.fitWidth,
                   )
                 : ImageUtils.fromNetwork(
-                    FlavorConfig.instance.variables["baseUrlFile"] +
+                    FlavorConfig.instance.variables["baseUrlFileShop"] +
                         product!.productThambnail,
-                    // width: 30.w,
-                    fit: BoxFit.fitWidth,
+                      decoration: AppDecorations.boxMedium,
+                      width: 30.w,
+                    fit: BoxFit.fill,
                   ),
             Space(width: 3.w),
             Expanded(

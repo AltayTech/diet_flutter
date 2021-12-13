@@ -22,9 +22,8 @@ Future<void> entryPoint() async {
     WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
     AppLocale.initialize();
     await AppSharedPreferences.initialize();
-    updateStatusBar();
-    _handleCaughtErrors();
     _initFireBase();
+    _handleCaughtErrors();
     runApp(App());
   }, (Object error, StackTrace stack) {
     if (!(error is DioError || error is HttpException)) {
@@ -36,7 +35,6 @@ void _initFireBase () async{
   try {
     await Firebase.initializeApp();
     await AppFcm.initialize();
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   } catch (Exception) {
     print("not install firebase");
@@ -47,16 +45,6 @@ void _initFireBase () async{
   } catch (Exception) {
     print("not install FirebaseAnalytics");
   }
-}
-
-void updateStatusBar() {
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      statusBarColor: AppMaterialColors.primary.shade800,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
-    ),
-  );
 }
 void _handleCaughtErrors() {
   FlutterError.onError = (FlutterErrorDetails details) {

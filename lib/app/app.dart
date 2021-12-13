@@ -65,6 +65,7 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/typography.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -118,42 +119,50 @@ class _AppState extends State<App> {
         stream: bloc.locale,
         builder: (context, AsyncSnapshot<Locale> snapshot) {
           final locale = snapshot.data ?? appInitialLocale;
-          return MaterialApp.router(
-              useInheritedMediaQuery: true,
-              // generate title from localization instead of `MaterialApp.title` property
-              onGenerateTitle: (BuildContext context) => context.intl.appName,
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocale.supportedLocales,
-              theme: ThemeData(
-                elevatedButtonTheme: ElevatedButtonThemeData(
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.primary,
-                    onPrimary: AppColors.onPrimary,
-                    onSurface: AppColors.onSurface,
-                    shape: RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
+          return AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle(
+              statusBarColor: AppColors.primaryColorDark,
+              statusBarBrightness: Brightness.light,
+              statusBarIconBrightness: Brightness.light,
+            ),
+            child: MaterialApp.router(
+                useInheritedMediaQuery: true,
+                // generate title from localization instead of `MaterialApp.title` property
+                onGenerateTitle: (BuildContext context) => context.intl.appName,
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocale.supportedLocales,
+                theme: ThemeData(
+                  elevatedButtonTheme: ElevatedButtonThemeData(
+                    style: ElevatedButton.styleFrom(
+                      primary: AppColors.primary,
+                      onPrimary: AppColors.onPrimary,
+                      onSurface: AppColors.onSurface,
+                      shape:
+                          RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
+                    ),
                   ),
+                  primaryColor: AppColors.primary,
+                  primaryColorDark: AppColors.primaryColorDark,
+                  scaffoldBackgroundColor: AppColors.scaffold,
+                  textTheme: buildTextTheme(locale),
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: AppColors.primary,
+                  ),
+                  colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
+                      .copyWith(secondary: AppColors.primary),
                 ),
-                primaryColor: AppColors.primary,
-                primaryColorDark: AppColors.primaryColorDark,
-                scaffoldBackgroundColor: AppColors.scaffold,
-                textTheme: buildTextTheme(locale),
-                appBarTheme: AppBarTheme(
-                  backgroundColor: AppColors.primary,
-                ),
-                colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
-                    .copyWith(secondary: AppColors.primary),
-              ),
-              locale: locale,
-              localeResolutionCallback: resolveLocale,
-              scaffoldMessengerKey: navigatorMessengerKey,
-              //navigatorObservers: [routeObserver],
-              // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
-              // routes: Routes.all,
+                locale: locale,
+                localeResolutionCallback: resolveLocale,
+                scaffoldMessengerKey: navigatorMessengerKey,
+                //navigatorObservers: [routeObserver],
+                // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
+                // routes: Routes.all,
 
-              routeInformationParser: VxInformationParser(),
-              backButtonDispatcher: RootBackButtonDispatcher(),
-              routerDelegate: navigator);
+                routeInformationParser: VxInformationParser(),
+                backButtonDispatcher: RootBackButtonDispatcher(),
+                routerDelegate: navigator),
+          );
         },
       ),
     );

@@ -9,6 +9,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -56,33 +57,17 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
                     return Column(
                       children: [
                         ...snapshot.data!
-                            .map((order) => GestureDetector(
-                                  onTap: () {
-                                    VxNavigator.of(context)
-                                        .push(Uri.parse('${Routes.shopProduct}/${order.id}'));
-                                  },
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10.0)),
-                                    child: Column(
-                                      children: [
-                                        firstTile(order.productName, order.productThambnail),
-                                        // Padding(
-                                        //   padding: const EdgeInsets.only(
-                                        //       right: 12.0, left: 12.0),
-                                        //   child: Line(
-                                        //       color: AppColors.strongPen, height: 0.1.h),
-                                        // ),
-                                        // secondTile(order.sellingPrice,order.discountPrice),
-                                        Text(
-                                          ordersBloc.count.toString(),
-                                          style:
-                                              TextStyle(fontSize: 16.sp, color: AppColors.redBar),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ))
+                            .map((order) => Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              firstTile(order),
+                              secondTile(order)
+                            ],
+                          ),
+                        ))
                             .toList(),
                       ],
                     );
@@ -97,57 +82,65 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
     ));
   }
 
-  Widget firstTile(String? name, String? pic) {
+  Widget firstTile(ShopProduct product) {
     return Padding(
-      padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-      child: ListTile(
-        leading: pic == null
-            ? ImageUtils.fromLocal(
-                'assets/images/shop/shape.png',
-                width: 20.w,
-                height: 10.h,
-              )
-            : ImageUtils.fromNetwork(
-                FlavorConfig.instance.variables["baseUrlFileShop"] + pic,
-                width: 20.w,
-                height: 10.h,
+      padding: EdgeInsets.only(top: 2.w, bottom: 2.w, left: 2.w, right: 2.w),
+      child: Container(
+        height: 10.h,
+        child: Row(
+          textDirection: context.textDirectionOfLocale,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                child: ImageUtils.fromNetwork(
+                    FlavorConfig.instance.variables["baseUrlFileShop"] + product.productThambnail,
+                    width: 20.w,
+                    height: 9.h,
+                    fit: BoxFit.fill)),
+            Space(
+              width: 3.w,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  product.productName!,
+                  style: Theme.of(context).textTheme.caption,
+                ),
               ),
-        title: Text(name ?? '--'),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget secondTile(int? selling, int? discount) {
+  Widget secondTile(ShopProduct product) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            children: [
-              Text(selling.toString(),
-                  style: TextStyle(
-                      decoration: TextDecoration.lineThrough, color: Colors.grey, fontSize: 10.sp)),
-              Text(discount.toString() + intl.currency, style: TextStyle(fontSize: 12.sp))
-            ],
+          Expanded(
+            child: Container(),
+            flex: 2,
           ),
-          OutlinedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                foregroundColor: MaterialStateProperty.all(AppColors.redBar),
-                shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar))),
-            child: Row(
-              children: [
-                ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),
-                SizedBox(width: 2.w),
-                Text(intl.buyThisCourse,
-                    style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
-              ],
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () =>
+                  VxNavigator.of(context).push(Uri.parse('${Routes.shopProduct}/${product.id!}')),
+              style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  foregroundColor: MaterialStateProperty.all(AppColors.primary),
+                  shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+                  side: MaterialStateProperty.all(BorderSide(color: AppColors.primary))),
+              child: Text(intl.view, style: TextStyle(color: AppColors.primary, fontSize: 14.sp)),
             ),
+            flex: 1,
           ),
         ],
       ),

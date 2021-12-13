@@ -38,11 +38,11 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
 
   void listenBloc() {
     regimeBloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
+      Navigator.of(context).pop();
     });
 
     regimeBloc.navigateToVerify.listen((regime) {
-      Navigator.of(context).pop();
+
       context.vxNav.push(Uri.parse('/' + regimeBloc.path), params: regime);
     });
   }
@@ -189,6 +189,6 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
   }
   @override
   void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+
   }
 }

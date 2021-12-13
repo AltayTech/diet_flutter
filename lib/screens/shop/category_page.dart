@@ -73,7 +73,9 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
             builder: (context, AsyncSnapshot<ShopCategory> snapshot) {
               if (snapshot.hasData)
                 return Scaffold(
-                  appBar: Toolbar(titleBar: snapshot.data!.category_name!,),
+                  appBar: Toolbar(
+                    titleBar: snapshot.data!.category_name!,
+                  ),
                   body: SingleChildScrollView(
                       controller: scrollController,
                       child: Column(
@@ -187,17 +189,26 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
             style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all(Size(45.w, 6.h)),
                 backgroundColor: MaterialStateProperty.all(Colors.white),
-                foregroundColor: MaterialStateProperty.all(AppColors.redBar),
+                foregroundColor: MaterialStateProperty.all(AppColors.primary),
                 shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                side: MaterialStateProperty.all(BorderSide(color: AppColors.redBar))),
-            child: Row(
-              children: [
-                ImageUtils.fromLocal('assets/images/shop/add_cart.svg', width: 2.w, height: 3.h),
-                SizedBox(width: 2.w),
-                Text(intl.buyCourse, style: TextStyle(color: AppColors.redBar, fontSize: 14.sp)),
-              ],
-            ),
+                side: MaterialStateProperty.all(BorderSide(color: AppColors.primary))),
+            child: product.userOrderDate == null
+                ? Row(
+                    textDirection: context.textDirectionOfLocale,
+                    children: [
+                      ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
+                          width: 2.w, height: 3.h),
+                      SizedBox(width: 2.w),
+                      Text(intl.buyCourse,
+                          style: Theme.of(context)
+                              .textTheme
+                              .button!
+                              .copyWith(color: AppColors.primary)),
+                    ],
+                  )
+                : Text(intl.view,
+                    style: Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary)),
           ),
         ],
       ),
