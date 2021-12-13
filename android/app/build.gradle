@@ -52,6 +52,32 @@ android {
             v2SigningEnabled false
         }
     }
+    flavorDimensions "app"
+    productFlavors {
+        debugApp {
+            dimension "app"
+            versionNameSuffix "-ST"
+            applicationIdSuffix ".debug"
+        }
+        develop {
+            dimension "app"
+            versionNameSuffix "-ST"
+            applicationIdSuffix ".debug"
+        }
+        stage {
+            dimension "app"
+            versionNameSuffix "-ST"
+            applicationIdSuffix ".stage"
+        }
+        website {
+            dimension "app"
+            versionNameSuffix "-WS"
+        }
+        googlePlay {
+            dimension "app"
+            versionNameSuffix "-GP"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true // add this
@@ -68,6 +94,7 @@ android {
             signingConfig signingConfigs.debug // this is default for release
         }
     }
+
 }
 
 flutter {

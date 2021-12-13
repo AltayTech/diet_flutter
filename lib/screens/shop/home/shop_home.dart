@@ -57,10 +57,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
               child: ListView.builder(
                 padding: EdgeInsets.all(4.w),
                 itemBuilder: (context, index) {
-                  debugPrint('data id > ${bloc.list![index].category?.toJson()}');
-
                   switch (bloc.list![index].styleType) {
-                  switch (bloc.list[index].styleType) {
                     case StyleType.slider:
                       return SliderApp(banners: bloc.list![index].items!);
                     case StyleType.userAction:
@@ -160,7 +157,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                 MaterialButton(
                                   onPressed: () {
                                     VxNavigator.of(context).push(Uri.parse(
-                                        '${Routes.shopCategory}/${bloc.list[index].category!.id}'));
+                                        '${Routes.shopCategory}/${bloc.list![index].category!.id}'));
                                   },
                                   child: Text(
                                     intl.viewAll,
@@ -192,7 +189,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          if (bloc.list[index].category!.products![i]
+                                          if (bloc.list![index].category!.products![i]
                                                   .userOrderDate !=
                                               null)
                                             ClipRect(
@@ -205,14 +202,14 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                   child: ImageUtils.fromNetwork(
                                                       FlavorConfig.instance
                                                               .variables['baseUrlFileShop'] +
-                                                          bloc.list[index].category!.products![i]
+                                                          bloc.list![index].category!.products![i]
                                                               .productThambnail,
                                                       decoration: AppDecorations.boxMild,
                                                       fit: BoxFit.fill),
                                                 ),
                                               ),
                                             ),
-                                          if (bloc.list[index].category!.products![i]
+                                          if (bloc.list![index].category!.products![i]
                                                   .userOrderDate ==
                                               null)
                                             AspectRatio(
@@ -272,11 +269,11 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                               MaterialButton(
                                                 onPressed: () {
                                                   VxNavigator.of(context).push(Uri.parse(
-                                                      '${Routes.shopProduct}/${bloc.list[index].category!.products![i].id}'));
+                                                      '${Routes.shopProduct}/${bloc.list![index].category!.products![i].id}'));
                                                 },
                                                 minWidth: 7.w,
                                                 height: 7.w,
-                                                child: bloc.list[index].category!.products![i]
+                                                child: bloc.list![index].category!.products![i]
                                                             .userOrderDate !=
                                                         null
                                                     ? Text(intl.view,
@@ -333,9 +330,9 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                               FlavorConfig.instance.variables['baseUrlFileShop'] +
                                   bloc.list![index].banner!.sliderImg,
                               decoration: AppDecorations.boxMedium,
-                              width: 80.w,
+                              width: 80.h,
                               height: 15.5.h,
-                              fit: BoxFit.fill),
+                              fit: BoxFit.fitWidth),
                         ),
                       );
 
