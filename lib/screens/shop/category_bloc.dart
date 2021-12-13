@@ -41,7 +41,7 @@ class CategoryBloc {
 
   String get filter {
     final text =
-        '{"page":{"offset":${_offset * 30},"limit":30},"sort":[{"field":"title","dir":"asc"}],"filters":[[{"field":"category_id","op":"=","value":${_category.value.id}}]]}';
+        '{"page":{"offset":${_offset * 30},"limit":30},"filters":[[{"field":"category_id","op":"=","value":${_category.value.id}}]]}';
     return text;
   }
 
