@@ -56,26 +56,22 @@ android {
     productFlavors {
         debugApp {
             dimension "app"
-            versionNameSuffix "-ST"
             applicationIdSuffix ".debug"
         }
         develop {
             dimension "app"
-            versionNameSuffix "-ST"
             applicationIdSuffix ".debug"
         }
         stage {
             dimension "app"
-            versionNameSuffix "-ST"
             applicationIdSuffix ".stage"
         }
         website {
             dimension "app"
-            versionNameSuffix "-WS"
+
         }
         googlePlay {
             dimension "app"
-            versionNameSuffix "-GP"
         }
     }
     buildTypes {
@@ -89,7 +85,6 @@ android {
         }
         debug {
             minifyEnabled false // a
-            shrinkResources false// dd this
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
             signingConfig signingConfigs.debug // this is default for release
         }
