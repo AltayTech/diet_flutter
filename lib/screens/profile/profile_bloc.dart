@@ -8,6 +8,7 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
@@ -298,8 +299,9 @@ class ProfileBloc {
     });
   }
 
-  void resetPasswordMethod(Reset pass) async {
-    _repository.reset(pass).then((value) {
+  void resetPasswordMethod(Reset pass) {
+    _repository.reset(pass).then((value) async{
+      await AppSharedPreferences.setAuthToken(value.data!.token);
       _showServerError.fire(value.message);
     }).whenComplete(() => _navigateTo.fire(true));
   }

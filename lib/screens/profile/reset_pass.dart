@@ -26,10 +26,10 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     profileBloc = ProfileBloc();
     profileBloc.showServerError.listen((event) {
+      Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
     profileBloc.navigateTo.listen((event) {
