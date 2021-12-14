@@ -29,6 +29,21 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
     super.didChangeDependencies();
     bloc = ModalRoute.of(context)!.settings.arguments as MenuSelectBloc;
   }
+  @override
+  void initState() {
+    super.initState();
+    bloc = MenuSelectBloc();
+    initListener();
+  }
+
+  void initListener() {
+    bloc.navigateTo.listen((event) {
+      if ('/$event' == Routes.listView)
+        context.vxNav.clearAndPush(Uri.parse('/$event'));
+      else
+        context.vxNav.push(Uri.parse('/$event'), params: bloc);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -97,7 +97,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
     return Column(
       children: [
         Text(
-          intl.howMuchIsYourDailyActivity,
+          intl.selectYourMenu,
           style: typography.caption,
           textAlign: TextAlign.center,
         ),

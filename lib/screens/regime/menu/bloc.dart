@@ -71,6 +71,7 @@ class MenuSelectBloc {
     _loadingContent.value = true;
     _repository.term().then((value) {
       debugPrint('condition menu ${value.next}');
+      print("path:${value.next}");
       _navigateTo.fire(value.next);
     }).whenComplete(() => _loadingContent.value = false);
   }

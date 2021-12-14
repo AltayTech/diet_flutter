@@ -303,7 +303,7 @@ final navigator = VxNavigator(
     Routes.overview: (_, __) => MaterialPage(child: routePage(OverviewPage())),
     RegExp(r"\/(reg|list|renew|revive)(\/menu\/select)"): (_, __) =>
         MaterialPage(child: routePage(MenuSelectPage())),
-    Routes.menuConfirm: (_, param) =>
+    RegExp(r"\/(reg|list|renew|revive)(\/menu\/confirm)"): (_, param) =>
         MaterialPage(child: routePage(MenuConfirmPage()), arguments: param),
     Routes.statusUser: (_, __) => MaterialPage(child: routePage(StatusUserScreen())),
     RegExp(r"\/(reg|list)(\/weight\/enter)"): (_, __) =>
@@ -314,7 +314,7 @@ final navigator = VxNavigator(
     Routes.listWeightAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.renewAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.reviveAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
-    RegExp(r"\/(reg|list|renew|revive)(\/payment\/online\/success)"): (_, param) =>
+    RegExp(r"\/(reg|list|renew|revive|shop)(\/payment\/online\/success)"): (_, param) =>
         MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
     RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),
