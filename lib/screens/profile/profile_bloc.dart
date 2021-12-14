@@ -205,20 +205,22 @@ class ProfileBloc {
   dynamic findProvincesName() {
     if (userInfo.address != null) {
       print("address = > ${userInfo.address!.toJson()}");
-      var name = cityProvinceModel.provinces.firstWhere(
-        (element) => element.id == userInfo.address!.provinceId,
-        orElse: () => CityProvince(),
-      );
-      print("ProvincesName = > ${name.name}");
-      return name;
+      if(userInfo.address!.provinceId!=null) {
+        var name = cityProvinceModel.provinces.firstWhere(
+              (element) => element.id == userInfo.address!.provinceId,
+          orElse: () => CityProvince(),
+        );
+        print("ProvincesName = > ${name.name}");
+        return name;
+      }else return null;
     } else {
       return null;
     }
   }
 
   dynamic findCityName() {
-    if (userInfo.address != null) {
-      print("address = > ${cityProvinceModel.cities?.length}");
+    if (userInfo.address != null && cityProvinceModel.cities!.length>0) {
+      //print("address = > ${cityProvinceModel.cities?.length}");
       var item;
       if (userInfo.address!.cityId != null) {
         item = cityProvinceModel.cities?.firstWhere(

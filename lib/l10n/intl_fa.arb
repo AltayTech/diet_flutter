@@ -316,12 +316,12 @@
   "beAdvisedTo": "توصیه میشه:",
   "forSomethingBeAdvisedTo": "برای \"{sickness}\" توصیه میشه:",
   "@forSomethingBeAdvisedTo": {
-      "placeholders": {
-        "sickness": {
-          "type": "String"
-        }
+    "placeholders": {
+      "sickness": {
+        "type": "String"
       }
-    },
+    }
+  },
   "adminAdvice": "توصیه های کارشناس",
   "dietAdvice": "توصیه های کلی",
   "sicknessAdvice": "توصیه های بیماری",
@@ -560,7 +560,7 @@
       }
     }
   },
-  "test" : "تست",
+  "test": "تست",
   "person": "نفر",
   "courseTime": "زمان دوره",
   "buyThisCourse": "خریداری شده",
@@ -581,5 +581,6 @@
   "programNotFoundForOpen": "برنامه ای جهت بازکردن فایل پیدا نشد.",
   "fileNotFound": "این فایل وجود ندارد",
   "more": "بیشتر",
+  "emptyProduct": "محصولی برای نمایش وجود ندارد",
   "understand": "متوجه شدم"
 }

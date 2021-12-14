@@ -462,7 +462,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                   ),
                 ),
                 Text(
-                  intl.alternating(lessons.lessonName!),
+                  lessons.lessonName!,
                   style: typography.bodyText2,
                   textAlign: TextAlign.center,
                 ),

@@ -3,6 +3,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/shop/orders_bloc.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -54,23 +55,28 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
                 stream: ordersBloc.orders,
                 builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
                   if (snapshot.hasData)
-                    return Column(
-                      children: [
-                        ...snapshot.data!
-                            .map((order) => Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              firstTile(order),
-                              secondTile(order)
-                            ],
-                          ),
-                        ))
-                            .toList(),
-                      ],
-                    );
+                    if(snapshot.requireData.length>0) {
+                      return Column(
+                        children: [
+                          ...snapshot.data!
+                              .map((order) =>
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    firstTile(order),
+                                    secondTile(order)
+                                  ],
+                                ),
+                              ))
+                              .toList(),
+                        ],
+                      );
+                    }else{
+                      return EmptyBox(child: Text(intl.emptyProduct),);
+                    }
                   else
                     return Progress();
                 },

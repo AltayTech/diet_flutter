@@ -100,7 +100,7 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                           SizedBox(height: 1.h),
                           itemUi(
                               intl.kiloGr,
-                              bloc.visitItem?.lostWeight.toString(),
+                              bloc.visitItem?.lostWeight?.abs().toString(),
                               bloc.visitItem!.lostWeight! > 0
                                   ? intl.addedWeight
                                   : bloc.visitItem!.lostWeight! == 0
