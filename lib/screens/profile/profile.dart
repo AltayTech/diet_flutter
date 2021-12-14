@@ -45,16 +45,10 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
 
   void listenBloc() {
     profileBloc.navigateToVerify.listen((event) {
-      if ((event as bool)) {
-        // LaunchApp.openApp(
-        //   androidPackageName: 'com.app.fitamin',
-        //   // iosUrlScheme: 'pulsesecure://',
-        //   // appStoreLink: 'itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041',
-        //   // openStore: false
-        // );
+      if (event.contains('fitamin://')) {
         IntentUtils.openApp('com.app.fitamin');
       } else {
-        _launchURL('https://app.fitamin.ir/register');
+        _launchURL(event);
       }
     });
     profileBloc.showServerError.listen((event) {

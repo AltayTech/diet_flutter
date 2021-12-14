@@ -312,10 +312,10 @@ class ProfileBloc {
   void checkFitamin() async {
     _repository.checkFitamin().then((value) {
       _url = value.data!.url;
-      if (_url!.contains('fitamin://'))
-        _navigateToVerify.fire(true);
-      else
-        _navigateToVerify.fire(false);
+      // if (_url!.contains('fitamin://'))
+      //   _navigateToVerify.fire(true);
+      // else
+        _navigateToVerify.fire(url);
     });
   }
 }
