@@ -317,7 +317,7 @@ Widget textInput(
     TextInputType? textInputType,
     required Function validation,
     required Function onChanged,
-    // String? value,
+    String? value,
     String? label,
     required bool enable,
     required bool maxLine,
@@ -327,6 +327,8 @@ Widget textInput(
     TextAlign? textAlign,
     TextEditingController? textController,
     FilteringTextInputFormatter? formatter}) {
+  TextEditingController controller = TextEditingController();
+  controller.text = value ?? '';
   // textController?.selection = TextSelection.fromPosition(TextPosition(offset: textController.text.length));
   return Container(
     height: height,
@@ -338,7 +340,7 @@ Widget textInput(
           : null,
       textInputAction: action,
       maxLines: maxLine ? 4 : 1,
-      controller: textController,
+      controller: controller,
       enabled: enable,
       decoration: inputDecoration.copyWith(
         labelText: label,
