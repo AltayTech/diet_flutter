@@ -22,12 +22,14 @@ class SplashBloc {
   late String _path;
 
   final _waiting = BehaviorSubject<bool>();
+  final _versionApp = BehaviorSubject<String>();
   final _showUpdate = LiveEvent();
   final _navigateTo = LiveEvent();
 
   String get path => _path;
 
   Stream<bool> get waiting => _waiting.stream;
+  Stream<String> get versionApp => _versionApp.stream;
 
   Stream get showUpdate => _showUpdate.stream;
 
@@ -39,6 +41,7 @@ class SplashBloc {
 
   void getPackageInfo() async {
     version = await Utils.versionApp();
+    _versionApp.value = version??'';
     buildNumber = await Utils.buildNumber();
     packageName = await Utils.packageName();
   }
@@ -93,6 +96,7 @@ class SplashBloc {
 
   void dispose() {
     _waiting.close();
+    _versionApp.close();
     _showUpdate.close();
     _navigateTo.close();
   }

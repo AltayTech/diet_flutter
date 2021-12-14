@@ -92,9 +92,9 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                           onTap: () {
                             Utils.launchURL(Platform.isIOS
                                 ? (bloc.packageName!
-                                .contains(FlavorConfig.instance.variables["iappsPackage"]))
-                                ? event.iapps!
-                                : event.sibapp!
+                                        .contains(FlavorConfig.instance.variables["iappsPackage"]))
+                                    ? event.iapps!
+                                    : event.sibapp!
                                 : event.google!);
                           },
                         ),
@@ -156,17 +156,21 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                 ],
               ),
             ),
-            Align(
-              child: Padding(
-                child: Text(
-                  intl.version(bloc.version ?? ''),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                padding: EdgeInsets.only(bottom: 16),
-              ),
-              alignment: Alignment.bottomCenter,
-            )
+            StreamBuilder(
+                stream: bloc.versionApp,
+                builder: (context, snapshot) {
+                  return Align(
+                    child: Padding(
+                      child: Text(
+                        intl.version(snapshot.data?.toString() ?? ''),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      padding: EdgeInsets.only(bottom: 16),
+                    ),
+                    alignment: Alignment.bottomCenter,
+                  );
+                })
           ],
         ),
       ),
