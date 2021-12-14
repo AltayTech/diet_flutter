@@ -303,7 +303,7 @@ final navigator = VxNavigator(
     Routes.overview: (_, __) => MaterialPage(child: routePage(OverviewPage())),
     RegExp(r"\/(reg|list|renew|revive)(\/menu\/select)"): (_, __) =>
         MaterialPage(child: routePage(MenuSelectPage())),
-    Routes.menuConfirm: (_, param) =>
+    RegExp(r"\/(reg|list|renew|revive)(\/menu\/confirm)"): (_, param) =>
         MaterialPage(child: routePage(MenuConfirmPage()), arguments: param),
     Routes.statusUser: (_, __) => MaterialPage(child: routePage(StatusUserScreen())),
     RegExp(r"\/(reg|list)(\/weight\/enter)"): (_, __) =>
