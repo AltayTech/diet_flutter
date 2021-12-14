@@ -329,7 +329,7 @@ Widget textInput(
     FilteringTextInputFormatter? formatter}) {
   TextEditingController controller = TextEditingController();
   controller.text = value ?? '';
-  // textController?.selection = TextSelection.fromPosition(TextPosition(offset: textController.text.length));
+  //controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
   return Container(
     height: height,
     child: TextFormField(
@@ -350,8 +350,13 @@ Widget textInput(
             .copyWith(color: AppColors.labelColor),
       ),
       keyboardType: textInputType,
-      // textDirection: textDirection,
-      onChanged: (val) => onChanged(val),
+      textDirection: textDirection,
+      onChanged: (val) {
+        controller.text = val;
+        controller.selection = TextSelection.fromPosition(
+            TextPosition(offset: controller.text.length));
+        onChanged(val);
+      },
       style: Theme.of(ctx).textTheme.subtitle2,
       textAlign: TextAlign.start,
       validator: (val) => validation(val),

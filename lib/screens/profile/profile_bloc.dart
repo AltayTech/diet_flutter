@@ -184,6 +184,7 @@ class ProfileBloc {
     cityProvinceModel.allCities.forEach((CityProvince city) {
       if (city.provinceId == userInfo.address!.provinceId) {
         relatedCities.add(city);
+        userInfo.address!.cityId = null;
         print("cityProvinceModel.cities ==> ${city.toJson()}");
       }
     });

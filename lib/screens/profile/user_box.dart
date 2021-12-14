@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/widget/custom_curve.dart';
@@ -178,6 +179,10 @@ class UserBoxState extends ResourcefulState<UserBox> {
                 list: profileBloc.loginRegisterBloc!.countries,
                 onChange: (dynamic val) => setState(() {
                   profileBloc.userInfo.countryId = val.id;
+                  if(profileBloc.countryName != 'Iran') {
+                    profileBloc.userInfo.cityId = null;
+                    profileBloc.userInfo.provinceId = null;
+                  }
                   print('country $val / $val.id');
                 }),
                 border: true,
