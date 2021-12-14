@@ -314,7 +314,7 @@ final navigator = VxNavigator(
     Routes.listWeightAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.renewAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.reviveAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
-    RegExp(r"\/(reg|list|renew|revive)(\/payment\/online\/success)"): (_, param) =>
+    RegExp(r"\/(reg|list|renew|revive|shop)(\/payment\/online\/success)"): (_, param) =>
         MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
     RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),

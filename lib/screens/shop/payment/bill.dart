@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/screens/shop/product_bloc.dart';
 import 'package:behandam/screens/utility/intent.dart';
@@ -16,10 +17,7 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../../routes.dart';
 
-enum PaymentType{
-  diet,
-  shop,
-}
+
 
 class ShopBillPage extends StatefulWidget {
   const ShopBillPage({Key? key}) : super(key: key);
@@ -41,7 +39,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage>
     bloc.navigateToVerify.listen((event) {
       // Navigator.of(context).pop();
       if(event)
-        VxNavigator.of(context).clearAndPush(Uri(path: Routes.paymentOnlineSuccess), params: PaymentType.shop);
+        VxNavigator.of(context).clearAndPush(Uri(path: Routes.shopPaymentOnlineSuccess), params: "shop");
       else
         VxNavigator.of(context).popToRoot();
     });

@@ -15,7 +15,7 @@ import 'package:behandam/extensions/bool.dart';
 import '../../routes.dart';
 
 class PaymentBloc {
-  PackageBloc() {
+  PaymentBloc() {
     _waiting.value = false;
     _discountLoading.value = false;
   }
@@ -211,7 +211,7 @@ class PaymentBloc {
           !value.requireData.resolved.isNullOrFalse) {
         _navigateTo.fire(Routes.shopOrders);
         _productId = value.requireData.productId;
-        debugPrint('shop last invoice $productId / ${value.requireData.productId}');
+       // debugPrint('shop last invoice $productId / ${value.requireData.productId}');
       } else
         _navigateTo.fire(Routes.shopHome);
     }).whenComplete(() => _waiting.value = false);

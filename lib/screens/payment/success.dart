@@ -1,22 +1,17 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/shop/payment/bill.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
-
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 import 'package:logifan/widgets/space.dart';
-
-import 'package:sizer/sizer.dart';
 import 'package:persian_number_utility/src/extensions.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -30,10 +25,9 @@ class PaymentSuccessScreen extends StatefulWidget {
   _PaymentSuccessScreenState createState() => _PaymentSuccessScreenState();
 }
 
-class _PaymentSuccessScreenState
-    extends ResourcefulState<PaymentSuccessScreen> {
+class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> {
   late PaymentBloc bloc;
-  late PaymentType paymentType;
+  late String paymentType;
 
   @override
   void initState() {
@@ -42,16 +36,20 @@ class _PaymentSuccessScreenState
     // bloc.getLastInvoice();
   }
 
+  bool isInit = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    paymentType = ModalRoute.of(context)!.settings.arguments as PaymentType? ??
-        PaymentType.diet;
-    debugPrint('payment type ${paymentType}');
-    if (paymentType == PaymentType.shop)
-      bloc.shopLastInvoice();
-    else
-      bloc.getLastInvoice();
+    if (!isInit) {
+      isInit = true;
+      paymentType = ModalRoute.of(context)!.settings.arguments as String? ?? "diet";
+      // debugPrint('payment type ${paymentType}');
+      if (paymentType == "shop")
+        bloc.shopLastInvoice();
+      else
+        bloc.getLastInvoice();
+    }
   }
 
   @override
@@ -79,10 +77,7 @@ class _PaymentSuccessScreenState
                 },
               ),
             ),
-            BottomNav(
-                currentTab: paymentType == PaymentType.shop
-                    ? BottomNavItem.SHOP
-                    : BottomNavItem.DIET),
+            BottomNav(currentTab: paymentType == "shop" ? BottomNavItem.SHOP : BottomNavItem.DIET),
           ],
         ),
       ),
@@ -186,26 +181,21 @@ class _PaymentSuccessScreenState
                           item(intl.refId, bloc.invoice!.refId ?? '', false),
                           item(
                               intl.paymentDate,
-                              bloc.invoice!.payedAt != null &&
-                                      bloc.invoice!.payedAt!.length > 0
-                                  ? DateTimeUtils.gregorianToJalaliYMD(
-                                      bloc.invoice!.payedAt!)
+                              bloc.invoice!.payedAt != null && bloc.invoice!.payedAt!.length > 0
+                                  ? DateTimeUtils.gregorianToJalaliYMD(bloc.invoice!.payedAt!)
                                   : '',
                               false),
                           item(
                               intl.amount,
                               bloc.invoice!.amount != null &&
-                                      bloc.invoice!.amount.toString().length >
-                                          0 &&
+                                      bloc.invoice!.amount.toString().length > 0 &&
                                       bloc.invoice!.amount! > 0
-                                  ? double.parse(
-                                          bloc.invoice!.amount.toString())
+                                  ? double.parse(bloc.invoice!.amount.toString())
                                       .toStringAsFixed(0)
                                       .seRagham()
                                   : intl.free,
                               true),
-                          item(intl.mobile,
-                              MemoryApp.userInformation?.mobile ?? '', false),
+                          item(intl.mobile, MemoryApp.userInformation?.mobile ?? '', false),
                         ],
                       ),
                     );
@@ -215,7 +205,7 @@ class _PaymentSuccessScreenState
                 stream: bloc.showInformation,
               ),
               Space(height: 3.h),
-              if (paymentType == PaymentType.diet)
+              if (paymentType == "diet")
                 Text(
                   intl.useFromList,
                   softWrap: true,
@@ -225,8 +215,8 @@ class _PaymentSuccessScreenState
                       .caption!
                       .copyWith(color: AppColors.labelTextColor),
                 ),
-              if (paymentType == PaymentType.diet) Space(height: 3.h),
-              paymentType == PaymentType.shop
+              if (paymentType == "diet") Space(height: 3.h),
+              paymentType == "shop"
                   ? Container(
                       decoration: AppDecorations.boxMild.copyWith(
                         color: AppColors.box,
@@ -238,28 +228,27 @@ class _PaymentSuccessScreenState
                             intl.clickHereToUseProduct,
                             softWrap: true,
                             textAlign: TextAlign.center,
-                            style: typography.caption
-                                ?.apply(color: AppColors.labelColor),
+                            style: typography.caption?.apply(color: AppColors.labelColor),
                           ),
                           Space(height: 2.h),
                           SubmitButton(
-                            label: intl.viewProduct,
-                            onTap: () {
-                              context.vxNav
-                                  .clearAndPushAll([Uri.parse(Routes.shopHome), Uri.parse(Routes.shopOrders), Uri.parse('${Routes.shopProduct}/${bloc.productId}')]);
-                            }),
+                              label: intl.viewProduct,
+                              onTap: () {
+                                context.vxNav.clearAndPushAll([
+                                  Uri.parse(Routes.shopHome),
+                                  Uri.parse(Routes.shopOrders),
+                                  Uri.parse('${Routes.shopProduct}/${bloc.productId}')
+                                ]);
+                              }),
                         ],
                       ),
                     )
                   : SubmitButton(
                       label: intl.confirmContinue,
                       onTap: () {
-                        MemoryApp.analytics!
-                            .logEvent(name: "total_payment_success");
-                        MemoryApp.analytics!
-                            .logEvent(name: "total_payment_online_success");
-                        VxNavigator.of(context)
-                            .clearAndPush(Uri.parse('/${bloc.path}'));
+                        MemoryApp.analytics!.logEvent(name: "total_payment_success");
+                        MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
+                        VxNavigator.of(context).clearAndPush(Uri.parse('/${bloc.path}'));
                       },
                     ),
             ],
@@ -275,13 +264,13 @@ class _PaymentSuccessScreenState
       children: [
         Expanded(
           child: Text(
-            show
-                ? (value!.contains(intl.free) ? value : '$value ${intl.toman}')
-                : value ?? '',
+            show ? (value!.contains(intl.free) ? value : '$value ${intl.toman}') : value ?? '',
             textDirection: context.textDirectionOfLocale,
             textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.caption!.copyWith(
-                fontWeight: FontWeight.bold, color: AppColors.labelTextColor),
+            style: Theme.of(context)
+                .textTheme
+                .caption!
+                .copyWith(fontWeight: FontWeight.bold, color: AppColors.labelTextColor),
           ),
         ),
         Expanded(
