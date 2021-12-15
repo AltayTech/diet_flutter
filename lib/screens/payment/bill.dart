@@ -227,7 +227,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              messageError ?? 'sdfsf',
+              messageError ?? intl.offErrorResult,
               textAlign: TextAlign.start,
               textDirection: context.textDirectionOfLocale,
               style: Theme.of(context)

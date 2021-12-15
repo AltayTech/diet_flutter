@@ -582,5 +582,6 @@
   "fileNotFound": "این فایل وجود ندارد",
   "more": "بیشتر",
   "emptyProduct": "محصولی برای نمایش وجود ندارد",
+  "offErrorResult": "کد تخفیف اشتباه است",
   "understand": "متوجه شدم"
 }

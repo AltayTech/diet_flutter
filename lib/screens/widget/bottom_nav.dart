@@ -40,8 +40,8 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
   }
 
   Widget item(String imageAddress, BottomNavItem type, String title, BuildContext context) {
-    return GestureDetector(
-      onTap: () {
+    return MaterialButton(
+      onPressed: () {
         switch (type) {
           case BottomNavItem.PROFILE:
             if (widget.currentTab != BottomNavItem.PROFILE)
@@ -64,6 +64,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
             break;
         }
       },
+      padding: EdgeInsets.zero,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 1.w),
         child: Column(
@@ -109,11 +110,12 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                color: type == widget.currentTab ? AppColors.primary : AppColors.iconsColor,
-                fontSize: 10.sp,
-                letterSpacing: -0.5,
-                  ),
+                  softWrap: true,
+                  maxLines: 1,
+                  style: Theme.of(context).textTheme.button!.copyWith(
+                      color: type == widget.currentTab ? AppColors.primary : AppColors.iconsColor,
+                      fontSize: 9.sp,
+                      letterSpacing: -0.5),
                 ))
           ],
         ),

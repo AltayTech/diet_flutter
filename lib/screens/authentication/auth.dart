@@ -142,7 +142,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
       children: [
         RotatedBox(quarterTurns: 90, child: MyArc(diameter: 250)),
         Positioned(
-          top: 0.0,
+          top: 10.0,
           right: 0.0,
           left: 0.0,
           child: Center(
@@ -153,7 +153,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
           )),
         ),
         Positioned(
-          top: 60.0,
+          top: 70.0,
           right: 0.0,
           left: 0.0,
           child: Center(
@@ -195,6 +195,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       color: AppColors.arcColor),
                   child: TextField(
                     controller: _text,
+                    textDirection: TextDirection.ltr,
+                    keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: AppColors.penColor),
@@ -238,43 +240,6 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                             alignment: Alignment.center,
                             child: Column(
                               children: [
-                                //ToDo: uncomment search box to search among countries
-                                // TextField(
-                                //   cursorColor: AppColors.iconsColor,
-                                //   textAlign: TextAlign.start,
-                                //   decoration: InputDecoration(
-                                //     filled: true,
-                                //     fillColor: AppColors.onPrimary,
-                                //     hintText: intl.whatFoodAreYouLookingFor,
-                                //     contentPadding: EdgeInsets.symmetric(
-                                //         vertical: 0.5.h, horizontal: 5.w),
-                                //     hintStyle: typography.caption?.apply(
-                                //       color: AppColors.labelColor,
-                                //     ),
-                                //     enabledBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: AppColors.onPrimary),
-                                //       borderRadius: AppBorderRadius
-                                //           .borderRadiusExtraLarge,
-                                //     ),
-                                //     focusedBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: AppColors.onPrimary),
-                                //       borderRadius: AppBorderRadius
-                                //           .borderRadiusExtraLarge,
-                                //     ),
-                                //     suffixIcon: Icon(
-                                //       Icons.search,
-                                //       size: 10.w,
-                                //       color: AppColors.iconsColor,
-                                //     ),
-                                //   ),
-                                //   style: typography.subtitle2?.apply(
-                                //     color: AppColors.onSurface.withOpacity(0.9),
-                                //   ),
-                                //   onChanged: (value) =>
-                                //       authBloc.onCountrySearch(value),
-                                // ),
                                 Space(height: 2.h),
                                 Expanded(
                                   child: ListView.builder(

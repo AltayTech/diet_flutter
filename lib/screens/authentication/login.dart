@@ -178,6 +178,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             child: TextField(
               obscureText: !_obscureText,
               controller: _text,
+              textDirection: TextDirection.ltr,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.penColor)),

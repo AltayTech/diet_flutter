@@ -129,7 +129,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                                         .copyWith(color: Colors.black38),
                                   ),
                                   inputFormatters: [
-                                    WhitelistingTextInputFormatter.digitsOnly,
+                                    FilteringTextInputFormatter.digitsOnly,
                                     new LengthLimitingTextInputFormatter(16),
                                     new CardNumberInputFormatter()
                                   ],

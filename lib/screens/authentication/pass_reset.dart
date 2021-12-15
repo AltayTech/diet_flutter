@@ -143,6 +143,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
             height: 60.0,
             child: TextField(
               obscureText: !_obscureText1,
+              textDirection: TextDirection.ltr,
               decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: AppColors.penColor)),
@@ -178,6 +179,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
             height: 60.0,
             child: TextField(
               obscureText: !_obscureText2,
+              textDirection: TextDirection.ltr,
               decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: AppColors.penColor)),

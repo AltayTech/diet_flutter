@@ -45,7 +45,7 @@ class CallBloc {
     List<CallItem> callItems = [];
     int lengthCalls = _call!.items!.length;
     print('count => ${_call?.count}');
-    if (_call!.remainingCallNumber != null) {
+    if (_call!.remainingCallNumber != null && _call!.totalCallNumber!=null && _call!.totalCallNumber! >0) {
       _notFoundCall.value = false;
       for (int i = 0; i < _call!.remainingCallNumber!; i++) {
         CallItem callItem = CallItem();
