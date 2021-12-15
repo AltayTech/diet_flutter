@@ -99,8 +99,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                     ),
                               ),
                               if (pack.services != null && pack.services!.length > 0)
-                                ...pack.services!.map((product) =>
-                                    _itemOption(product.name ?? '', pack.barColor)),
+                                ...pack.services!.map(
+                                    (product) => _itemOption(product.name ?? '', pack.barColor)),
                             ],
                           )),
                     ],
@@ -191,7 +191,9 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
       mainAxisAlignment: MainAxisAlignment.end,
       textDirection: context.textDirectionOfLocaleInversed,
       children: <Widget>[
-        Text(text, textAlign: TextAlign.end, style: Theme.of(context).textTheme.overline),
+        Expanded(
+            child: Text(text,
+                textAlign: TextAlign.start, style: Theme.of(context).textTheme.overline)),
         Space(width: 1.w),
         CircleAvatar(
           backgroundColor: color,
@@ -276,6 +278,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

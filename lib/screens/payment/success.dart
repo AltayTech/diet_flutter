@@ -234,6 +234,7 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                           SubmitButton(
                               label: intl.viewProduct,
                               onTap: () {
+                                MemoryApp.analytics!.logEvent(name: "total_shop_payment_online_success");
                                 context.vxNav.clearAndPushAll([
                                   Uri.parse(Routes.shopHome),
                                   Uri.parse(Routes.shopOrders),

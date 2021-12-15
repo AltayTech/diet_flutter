@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/refund/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -38,6 +39,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
   void blocListener() {
     bloc.navigateTo.listen((event) {
       Utils.getSnackbarMessage(context, intl.successRequest);
+      MemoryApp.analytics!.logEvent(name: "click_refund_record");
       Timer(Duration(milliseconds: 1500), () {
         VxNavigator.of(context).popToRoot();
       });
