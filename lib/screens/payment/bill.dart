@@ -372,9 +372,9 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
   Widget _paymentBox() {
     return Container(
       width: double.infinity,
-      height: 30.h,
+      // height: 30.h,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           StreamBuilder(
             builder: (context, snapshot) {
@@ -419,39 +419,30 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
 
   Widget paymentItemWithTick(
       Widget child, Function selectPaymentType, bool tickOn) {
-    return Expanded(
-      flex: 1,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 7.h,
-            child: child,
-          ),
-          Positioned(
-            bottom: 0.0,
-            right: 15.w,
-            left: 15.w,
-            child: GestureDetector(
-              onTap: () {
-                selectPaymentType();
-              },
-              child: CircleAvatar(
-                backgroundColor: Color.fromRGBO(239, 239, 239, 1),
-                radius: 15.w,
-                child: ImageUtils.fromLocal(
-                  'assets/images/bill/tick.svg',
-                  width: 4.w,
-                  height: 4.w,
-                  color: tickOn ? null : Color.fromARGB(255, 217, 217, 217),
-                ),
+    return Column(
+      children: <Widget>[
+        Container(width: 35.w, height: 43.w, child: child),
+        Container(
+          transform: Matrix4.translationValues(0, -4.w, 0),
+          width: 10.w,
+          height: 8.w,
+          child: GestureDetector(
+            onTap: () {
+              selectPaymentType();
+            },
+            child: CircleAvatar(
+              backgroundColor: Color.fromRGBO(239, 239, 239, 1),
+              radius: 15.w,
+              child: ImageUtils.fromLocal(
+                'assets/images/bill/tick.svg',
+                width: 4.w,
+                height: 4.w,
+                color: tickOn ? null : Color.fromARGB(255, 217, 217, 217),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -498,20 +489,22 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                     width: 10.w,
                     height: 10.w,
                   ),
-                  Space(height: 3.h),
+                  Space(height: 1.h),
                   Text(
                     title,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.caption,
                   ),
-                  Space(height: 2.h),
-                  Text(subTitle,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: Theme.of(context)
-                          .textTheme
-                          .overline!
-                          .copyWith(color: AppColors.labelTextColor)),
+                  Space(height: 1.h),
+                  Flexible(
+                    child: Text(subTitle,
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: Theme.of(context)
+                            .textTheme
+                            .overline!
+                            .copyWith(color: AppColors.labelTextColor)),
+                  ),
                   SizedBox(height: 1.h),
                 ],
               ),

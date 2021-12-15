@@ -108,16 +108,16 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                                 .contains(Routes.weightEnter))
                               birthDayBox(snapshot.requireData),
                             Space(height: 2.h),
-                            if (!snapshot.requireData.isForbidden.isNullOrFalse)
-                              Alert(
-                                text: snapshot.requireData.mustGetNotrica
-                                        .isNullOrFalse
-                                    ? intl.itIsNotPossible
-                                    : intl.userNotricaRegime,
-                                boxColor: AppColors.warning,
-                                iconPath: 'assets/images/diet/exclamation.svg',
-                              )
-                            else
+                            // if (!snapshot.requireData.isForbidden.isNullOrFalse)
+                            //   Alert(
+                            //     text: snapshot.requireData.mustGetNotrica
+                            //             .isNullOrFalse
+                            //         ? intl.itIsNotPossible
+                            //         : intl.userNotricaRegime,
+                            //     boxColor: AppColors.warning,
+                            //     iconPath: 'assets/images/diet/exclamation.svg',
+                            //   )
+                            // else
                               SubmitButton(
                                 label: intl.confirmContinue,
                                 onTap: () {
@@ -253,16 +253,16 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
     if (data.needToCall == null) data.needToCall = false;
     if (data.birthDate.isEmptyOrNull)
       data.isForbidden = true;
-    else {
-      if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays <
-          (365 * 16)) {
-        data.isForbidden = true;
-        if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays >
-            (365 * 10)) data.mustGetNotrica = true;
-        debugPrint(
-            'date difference ${DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays}');
-      }
-    }
+    // else {
+      // if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays <
+      //     (365 * 16)) {
+      //   data.isForbidden = true;
+      //   if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays >
+      //       (365 * 10)) data.mustGetNotrica = true;
+        // debugPrint(
+        //     'date difference ${DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays}');
+      // }
+    // }
     if ((data.pregnancyWeek != null && data.pregnancyWeek! >= 35) ||
         (data.multiBirth != null && data.multiBirth! >= 2))
       data.isForbidden = true;

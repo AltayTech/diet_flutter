@@ -43,6 +43,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) async{
       if (event != null) {
+        if(Routes == Routes.authVerify)
         await SmsAutoFill().listenForCode();
         context.vxNav.push(
           Uri(path: '/$event'),

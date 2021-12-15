@@ -213,7 +213,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                               SizedBox(height: 1.h),
                               Container(
                                 width: 30.w,
-                                height: 9.h,
+                                // height: 9.h,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20.0), color: Colors.white),
                                 child: Center(
@@ -270,7 +270,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
       padding: const EdgeInsets.only(right: 6.0, left: 6.0),
       child: Container(
           // width: 30.w,
-          height: 9.h,
+          // height: 10.h,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(10.0),
@@ -281,7 +281,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
           child: Row(children: [
             Container(
                 width: 3.w,
-                height: 9.h,
+                height: 10.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(20.0), topRight: Radius.circular(20.0)),

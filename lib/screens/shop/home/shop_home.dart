@@ -50,6 +50,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
         titleBar: intl.shop,
       ),
       body: StreamBuilder(
+        stream: bloc.loadingContent,
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data == false)
             return Container(
@@ -355,7 +356,6 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
           else
             return Progress();
         },
-        stream: bloc.loadingContent,
       ),
       bottomNavigationBar: BottomNav(
         currentTab: BottomNavItem.SHOP,

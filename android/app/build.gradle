@@ -62,7 +62,7 @@ android {
             dimension "app"
             applicationIdSuffix ".debug"
         }
-        developApp {
+        develop {
             dimension "app"
             applicationIdSuffix ".develop"
         }

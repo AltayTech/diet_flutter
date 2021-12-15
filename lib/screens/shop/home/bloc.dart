@@ -14,7 +14,7 @@ class ShopHomeBloc {
   final _loadingContent = BehaviorSubject<bool>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
-  late List<ShopItem>? _list;
+  List<ShopItem>? _list;
 
   Stream<bool> get loadingContent => _loadingContent.stream;
   Stream get navigateTo => _navigateTo.stream;
