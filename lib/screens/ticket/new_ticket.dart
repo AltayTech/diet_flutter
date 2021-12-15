@@ -135,7 +135,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                         textInput(
                             height: 8.h,
                             label: intl.subject,
-                            // value: bloc.sendTicketMessage.title ?? '',
+                            value: bloc.sendTicketMessage.title ?? '',
                             textController: ticketTitleController,
                             validation: (validation) {},
                             onChanged: (onChanged) {

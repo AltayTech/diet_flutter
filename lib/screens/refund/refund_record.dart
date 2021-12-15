@@ -154,13 +154,13 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                           ),
                           Space(height: 1.h),
                           textInput(
-                            // value: bloc.cardOwner ?? null,
+                            value: bloc.cardOwner ?? '',
                             label: intl.accountOwnerName,
                             onChanged: (val) {
-                              _textEditingController.text = val;
-                              _textEditingController.selection = TextSelection.fromPosition(
-                                  TextPosition(offset: _textEditingController.text.length));
-                              setState(() => bloc.cardOwner = val);
+                              // _textEditingController.text = val;
+                              // _textEditingController.selection = TextSelection.fromPosition(
+                              //     TextPosition(offset: _textEditingController.text.length));
+                              bloc.cardOwner = val;
                             },
                             maxLine: false,
                             textInputType: TextInputType.text,

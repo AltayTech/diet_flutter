@@ -49,16 +49,15 @@ class UserInformation {
 
   String get fullName => firstName == null ? '' : '$firstName $lastName';
 
-  String get whatsApp =>
-      (socialMedia == null || socialMedia!.length == 0 || socialMedia![0].pivot!.link == null)
-          ? ''
-          : socialMedia![0].pivot!.link!;
+  String get whatsApp => (socialMedia == null || socialMedia!.length <= 0 || socialMedia![0].pivot?.link == null)
+      ? ''
+      : socialMedia![0].pivot!.link!;
 
-  String get telegram => (socialMedia == null || socialMedia!.length == 0 || socialMedia![1].pivot!.link == null)
+  String get telegram => (socialMedia == null || socialMedia!.length <= 1 || socialMedia![1].pivot?.link == null)
       ? ''
       : socialMedia![1].pivot!.link!;
 
-  String get skype => (socialMedia == null || socialMedia!.length == 0 || socialMedia![2].pivot!.link == null)
+  String get skype => (socialMedia == null || socialMedia!.length <= 2 || socialMedia![2].pivot?.link == null)
       ? ''
       : socialMedia![2].pivot!.link!;
 

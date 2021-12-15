@@ -28,20 +28,21 @@ class _TicketState extends ResourcefulState<Ticket> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    ticketBloc.getTickets();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     ticketBloc = TicketBloc();
-    ticketBloc.getTickets();
   }
+
   @override
   void dispose() {
     ticketBloc.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);

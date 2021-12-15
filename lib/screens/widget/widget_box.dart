@@ -325,18 +325,17 @@ Widget textInput(
     TextInputAction? action,
     required TextDirection textDirection,
     TextAlign? textAlign,
+      bool? endCursorPosition,
     TextEditingController? textController,
-    FilteringTextInputFormatter? formatter}) {
+      List<TextInputFormatter>? formatters}) {
   TextEditingController controller = TextEditingController();
   controller.text = value ?? '';
   //controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
   return Container(
     height: height,
     child: TextFormField(
-      inputFormatters: formatter != null
-          ? [
-              formatter,
-            ]
+      inputFormatters: formatters != null
+          ? formatters
           : null,
       textInputAction: action,
       maxLines: maxLine ? 4 : 1,

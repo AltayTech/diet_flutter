@@ -148,6 +148,7 @@ class ProfileBloc {
           value.data?.term != null &&
           DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0)
         _showPdf.value = true;
+      else _showPdf.value = false;
     }).whenComplete(() {});
   }
 
