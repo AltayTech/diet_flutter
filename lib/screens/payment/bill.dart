@@ -287,7 +287,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                     if (snapshot.hasData && snapshot.data == true)
                       return _rowItems(
                           bloc.discountInfo!.discount!.toString().seRagham(),
-                          intl.discountCodeForYou);
+                          intl.discountForYou);
                     else
                       return Container();
                   },

@@ -90,7 +90,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                 validation: () {},
                                 label: intl.sicknessDescriptionUser,
                                 textController: controller,
-                                // value: sicknessBloc.userSickness!.sicknessNote,
+                                value: sicknessBloc.userSickness!.sicknessNote,
                                 onChanged: (value) {
                                   sicknessBloc.userSickness!.sicknessNote =
                                       value;

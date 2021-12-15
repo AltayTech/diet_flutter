@@ -72,8 +72,39 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage>
         child: Column(
           children: [
             productBox(),
-            // discount(),
+            discount(),
             priceWithDiscount(),
+            Card(
+              margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+              shape: AppShapes.rectangleMild,
+              elevation: 2,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      intl.totalAmount,
+                      style: typography.caption?.apply(
+                        fontWeightDelta: 1,
+                        fontSizeDelta: 1,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Space(height: 0.5.h),
+                    Text(
+                      '${'250000'.seRagham()} ${intl.toman}',
+                      style: typography.caption?.apply(
+                        fontWeightDelta: 1,
+                        fontSizeDelta: 4,
+                        color: AppColors.primary,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Space(height: 3.h),
             SubmitButton(
               label: intl.onlinePayment,
@@ -170,7 +201,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage>
 
   Widget priceWithDiscount() {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
       shape: AppShapes.rectangleMild,
       elevation: 2,
       child: Container(
@@ -182,7 +213,13 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage>
               thickness: 0.5.w,
               color: AppColors.box,
             ),
-            price(intl.productPriceWithOff,
+            price(intl.discount,
+                product?.discountPrice.toString() ?? '?'),
+            Divider(
+              thickness: 0.5.w,
+              color: AppColors.box,
+            ),
+            price(intl.discountForYou,
                 product?.discountPrice.toString() ?? '?'),
           ],
         ),
@@ -223,7 +260,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage>
 
   Widget discount() {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
       shape: AppShapes.rectangleMild,
       elevation: 2,
       child: Container(

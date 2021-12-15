@@ -184,7 +184,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                     ),
                     StreamBuilder(
                       builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data == true)
+                        if (snapshot.hasData && snapshot.requireData == true)
                           return WidgetIconTextProgress(
                               countShow: false,
                               title: intl.getPdfTerm,
