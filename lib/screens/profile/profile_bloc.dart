@@ -219,7 +219,7 @@ class ProfileBloc {
   }
 
   dynamic findCityName() {
-    if (userInfo.address != null && cityProvinceModel.cities!.length>0) {
+    if (userInfo.address != null && cityProvinceModel.cities != null && cityProvinceModel.cities!.length>0) {
       //print("address = > ${cityProvinceModel.cities?.length}");
       var item;
       if (userInfo.address!.cityId != null) {

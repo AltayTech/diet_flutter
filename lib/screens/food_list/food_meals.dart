@@ -107,7 +107,10 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                         Expanded(
                           child: Text(
                             meal.title,
-                            style: typography.bodyText2,
+                            style: typography.caption?.apply(
+                              fontSizeDelta: 1,
+                              fontWeightDelta: 1,
+                            ),
                             softWrap: true,
                           ),
                         ),

@@ -68,7 +68,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
         padding: EdgeInsets.symmetric(horizontal: 1.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
               child: Container(
@@ -106,16 +106,15 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
             ),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 1.w),
-                child: FittedBox(
-                    child: Text(
+                child: Text(
                   title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: type == widget.currentTab ? AppColors.primary : AppColors.iconsColor,
-                    fontSize: 10.sp,
-                    letterSpacing: -0.5,
+                color: type == widget.currentTab ? AppColors.primary : AppColors.iconsColor,
+                fontSize: 10.sp,
+                letterSpacing: -0.5,
                   ),
-                )))
+                ))
           ],
         ),
       ),

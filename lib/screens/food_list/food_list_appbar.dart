@@ -40,7 +40,6 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -70,7 +69,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                       Icon(
                         Icons.dark_mode,
                         size: 6.w,
-                        color: AppColors.surface,
+                        color: Colors.transparent,
                       ),
                       Expanded(
                         child: StreamBuilder(

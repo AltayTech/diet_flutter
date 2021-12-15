@@ -84,7 +84,7 @@ class AuthenticationBloc {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       print('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
-      _navigateToVerify.fire(value.next);
+      _repository.getUser().then((value) => MemoryApp.userInformation = value.data).whenComplete(() => _navigateToVerify.fire(value.next));
     }).whenComplete(() => _showServerError.fire(false));
   }
 
@@ -101,7 +101,7 @@ class AuthenticationBloc {
     _repository.register(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.analytics!.logEvent(name: "register_success");
-      _navigateToVerify.fire(value.next);
+      _repository.getUser().then((value) => MemoryApp.userInformation = value.data).whenComplete(() => _navigateToVerify.fire(value.next));
     }).whenComplete(() => _waiting.value = false);
   }
 

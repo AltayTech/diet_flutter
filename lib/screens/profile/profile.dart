@@ -9,6 +9,7 @@ import 'package:behandam/screens/profile/tools_box.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/cross_item_profile.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -36,7 +37,6 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     profileBloc = ProfileBloc();
     profileBloc.getInformation();
@@ -45,6 +45,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
 
   void listenBloc() {
     profileBloc.navigateToVerify.listen((event) {
+      Navigator.of(context).pop();
       if (event.contains('fitamin://')) {
         IntentUtils.openApp('com.app.fitamin');
       } else {
@@ -272,7 +273,10 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
           Container(
             width: 70.w,
             child: GestureDetector(
-              onTap: () => profileBloc.checkFitamin(),
+              onTap: () {
+                DialogUtils.showDialogProgress(context: context);
+                profileBloc.checkFitamin();
+              },
               child: card(
                   'assets/images/profile/box_blue_bg.svg',
                   'assets/images/profile/fitamin.svg',

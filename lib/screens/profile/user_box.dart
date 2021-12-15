@@ -225,10 +225,10 @@ class UserBoxState extends ResourcefulState<UserBox> {
                   if (snapshot.data != null &&
                       profileBloc.userInfo.address != null) {
                     return MyDropdown(
-                      value: profileBloc.findCityName(),
+                      value: profileBloc.findCityName() ?? '',
                       alignment: Alignment.centerRight,
                       hint: intl.city,
-                      list: snapshot.data!.cities!,
+                      list: snapshot.data?.cities ?? List.generate(0, (index) => 0),
                       onChange: (dynamic val) => setState(() {
                         profileBloc.userInfo.address!.cityId = val.id;
                         print('city $val.id');
