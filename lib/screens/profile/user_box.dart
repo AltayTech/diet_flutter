@@ -65,7 +65,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               enable: true,
               ctx: context,
               action: TextInputAction.next,
-              formatter: FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
+              formatters: [FilteringTextInputFormatter.deny(RegExp(r'[0-9]'))],
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -79,7 +79,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               ctx: context,
               enable: true,
               action: TextInputAction.next,
-              formatter: FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
+              formatters: [FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),],
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -93,8 +93,8 @@ class UserBoxState extends ResourcefulState<UserBox> {
               enable: true,
               ctx: context,
               action: TextInputAction.next,
-              formatter:
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
+              formatters:
+                  [FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]'))],
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -108,7 +108,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               maxLine: true,
               ctx: context,
               action: TextInputAction.newline,
-              formatter: null,
+              formatters: null,
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -122,7 +122,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               ctx: context,
               enable: true,
               action: TextInputAction.next,
-              formatter: null,
+              formatters: null,
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -136,7 +136,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               maxLine: false,
               ctx: context,
               action: TextInputAction.next,
-              formatter: null,
+              formatters: null,
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -151,8 +151,8 @@ class UserBoxState extends ResourcefulState<UserBox> {
               maxLine: false,
               ctx: context,
               action: TextInputAction.next,
-              formatter:
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
+              formatters:
+                  [FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),],
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
