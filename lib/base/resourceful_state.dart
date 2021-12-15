@@ -39,7 +39,7 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   void dispose() {
     _printEvent('dispose()');
     routeObserver.unsubscribe(this);
-    if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.unsubscribe(this);
+ //   if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.unsubscribe(this);
     dioErrorObserver.unsubscribe(this);
     super.dispose();
   }
@@ -57,7 +57,7 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
     final route = ModalRoute.of(context);
     if (route is PageRoute) {
       routeObserver.subscribe(this, route);
-      if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.subscribe(this, route);
+     // if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.subscribe(this, route);
     }
     super.didChangeDependencies();
   }

@@ -7,9 +7,9 @@ Future<void> main() async {
     color: Colors.green,
     name: 'Preview',
     variables: {
-      'baseUrl': 'https://behaminplus.ir/behandam-diet/api',
-      "baseUrlFile": "https://behaminplus.ir/helia-service",
-      "baseUrlFileShop": "https://behaminplus.ir/shop-service",
+      'baseUrl': 'https://develop.behaminplus.ir/behandam-diet/api',
+      "baseUrlFile": "https://develop.behaminplus.ir/helia-service",
+      "baseUrlFileShop": "https://develop.behaminplus.ir/shop-service",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
       'isProduction': false

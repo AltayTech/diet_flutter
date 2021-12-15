@@ -62,9 +62,16 @@ android {
             dimension "app"
             applicationIdSuffix ".debug"
         }
-        develop {
+        developApp {
             dimension "app"
             applicationIdSuffix ".develop"
+        }
+        stageApp {
+            dimension "app"
+            applicationIdSuffix ".stage"
+        }
+        releaseApp {
+            dimension "app"
         }
     }
     buildTypes {
@@ -81,11 +88,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
             signingConfig signingConfigs.debug // this is default for release
         }
-        develop {
+    /*    develop {
             minifyEnabled false // a
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
             signingConfig signingConfigs.debug // this is default for release
         }
+        stage {
+            minifyEnabled false // a
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
+            signingConfig signingConfigs.debug // this is default for release
+        }*/
     }
 
 }
@@ -97,4 +109,6 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
 }
