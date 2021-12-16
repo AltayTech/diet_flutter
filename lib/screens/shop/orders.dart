@@ -54,29 +54,36 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
               child: StreamBuilder(
                 stream: ordersBloc.orders,
                 builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
-                  if (snapshot.hasData)
-                    if(snapshot.requireData.length>0) {
-                      return Column(
-                        children: [
-                          ...snapshot.data!
-                              .map((order) =>
-                              Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    firstTile(order),
-                                    secondTile(order)
-                                  ],
-                                ),
-                              ))
-                              .toList(),
-                        ],
-                      );
-                    }else{
-                      return EmptyBox(child: Text(intl.emptyProduct),);
-                    }
+                  if (snapshot.hasData) if (snapshot.requireData.length > 0) {
+                    return Column(
+                      children: [
+                        ...snapshot.data!
+                            .map((order) => Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0)),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [firstTile(order), secondTile(order)],
+                                  ),
+                                ))
+                            .toList(),
+                      ],
+                    );
+                  } else {
+                    return SizedBox(
+                        height: 100.h,
+                        child: Center(
+                            child: EmptyBox(
+                          child: Text(
+                            intl.emptyProduct,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(color: AppColors.labelTextColor),
+                          ),
+                          predicate: false,
+                        )));
+                  }
                   else
                     return Progress();
                 },
