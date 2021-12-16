@@ -4,11 +4,12 @@ import 'dart:io';
 import 'package:behandam/app/app.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/utils/fcm.dart';
+import 'package:behandam/utils/firebase_options.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -21,30 +22,38 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver();
 Future<void> entryPoint() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
-    AppLocale.initialize();
     await AppSharedPreferences.initialize();
+    AppLocale.initialize();
+    AppColors(themeAppColor: ThemeAppColor.DEFAULT);
     _initFireBase();
     _handleCaughtErrors();
     runApp(App());
-  }, (Object error, StackTrace stack) {
-    if (!(error is DioError || error is HttpException)) {
-      FirebaseCrashlytics.instance.recordError(error, stack);
+  }, (Object error, StackTrace stack)async {
+    if (error is DioError || error is HttpException) {
+      /// this kind of error is already handled in DioErrorHandlerInterceptor
+      return;
     }
+    FirebaseCrashlytics.instance.recordError(error, stack);
   });
 }
 
 void _initFireBase() async {
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: await DefaultFirebaseConfig.platformOptions,
+    );
+    debugPrint('Firebase.app ${ Firebase.apps.first.name}');
     await AppFcm.initialize();
-    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+    if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled == false) {
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    }
     //FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   } catch (Exception) {
     print("not install firebase");
   }
   try {
-    MemoryApp.analytics = FirebaseAnalytics();
-   // firebaseAnalyticsObserver = FirebaseAnalyticsObserver(analytics: MemoryApp.analytics!);
+    MemoryApp.analytics = FirebaseAnalytics.instance;
+    // firebaseAnalyticsObserver = FirebaseAnalyticsObserver(analytics: MemoryApp.analytics!);
   } catch (Exception) {
     print("not install FirebaseAnalytics");
   }

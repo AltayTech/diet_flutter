@@ -70,9 +70,9 @@ dependencies:
   share_plus: ^3.0.4
   syncfusion_flutter_charts: ^19.3.55
   flutter_custom_tabs: ^1.0.3
-  firebase_core: ^1.10.0
-  firebase_analytics: ^8.3.4
-  firebase_crashlytics: ^2.3.0
+  firebase_core: ^1.10.5
+  firebase_analytics: ^9.0.3
+  firebase_crashlytics: ^2.4.3
   firebase_messaging: ^11.1.0
   external_app_launcher: ^2.0.2
   awesome_notifications: ^0.0.6+12

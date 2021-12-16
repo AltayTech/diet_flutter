@@ -5,6 +5,7 @@ import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -50,7 +51,8 @@ class SplashBloc {
     _waiting.value = true;
     _repository.getUser().then((value) {
       MemoryApp.userInformation = value.data;
-      MemoryApp.analytics!.setUserId(MemoryApp.userInformation!.userId.toString());
+      MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
+      FirebaseCrashlytics.instance.setUserIdentifier(MemoryApp.userInformation!.userId.toString());
       MemoryApp.analytics!
           .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
     }).whenComplete(() {

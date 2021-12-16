@@ -7,6 +7,7 @@ import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/utils/deep_link.dart';
+import 'package:behandam/utils/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -164,7 +165,9 @@ class AppFcm {
     debugPrint('on background message');
 
     await AppSharedPreferences.initialize();
-    // await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: await DefaultFirebaseConfig.platformOptions,
+    );
     _listenAwesomeEvents();
     sendNotification(message.data);
   }
@@ -187,10 +190,10 @@ class AppFcm {
       actionList.clear();
       for (ActionsItem actions in notifResponse.actions!) {
         buttonActions.add(NotificationActionButton(
-            key: "10$i",
-            label: actions.title ?? '',
-            enabled: true,
-           ));
+          key: "10$i",
+          label: actions.title ?? '',
+          enabled: true,
+        ));
         actions.key = "10$i";
         print("actions =>> ${actions.toJson()}");
         actionList.add(actions);
