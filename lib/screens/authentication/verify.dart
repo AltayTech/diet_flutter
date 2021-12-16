@@ -23,7 +23,8 @@ class VerifyScreen extends StatefulWidget {
   _VerifyScreenState createState() => _VerifyScreenState();
 }
 
-class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFill {
+class _VerifyScreenState extends ResourcefulState<VerifyScreen>
+    with CodeAutoFill {
   late AuthenticationBloc authBloc;
   late TextEditingController textEditingController;
   var args;
@@ -33,7 +34,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   String? fourthP;
   String? code;
   late Timer _timer;
-  int _start = 15;
+  int _start = 120;
   bool flag = false;
   final focus = FocusNode();
   bool check = false;
@@ -43,6 +44,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
     _timer = new Timer.periodic(
       oneSec,
       (Timer timer) {
+        debugPrint('timer');
         if (_start == 0) {
           setState(() {
             flag = true;
@@ -58,10 +60,11 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   }
 
   @override
-  void dispose() async {
+  void dispose() {
     _timer.cancel();
     authBloc.dispose();
-    await SmsAutoFill().unregisterListener();
+   // textEditingController.dispose();
+    SmsAutoFill().unregisterListener();
     super.dispose();
   }
 
@@ -78,9 +81,13 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
     authBloc.navigateToVerify.listen((event) {
       if (event != null) {
         debugPrint('verifiy ${navigator.currentConfiguration!.path} / $event');
-        context.vxNav.push(
+        context.vxNav.replace(
           Uri(path: '/$event'),
-          params: {"mobile": args['mobile'], "code": code, 'id': args['countryId']},
+          params: {
+            "mobile": args['mobile'],
+            "code": code,
+            'id': args['countryId']
+          },
         );
       }
     });
@@ -101,7 +108,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
                   return NestedScrollView(
-                    headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[
                         SliverAppBar(
                           backgroundColor: AppColors.arcColor,
@@ -125,7 +133,9 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                   );
                 } else {
                   check = false;
-                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+                  return Center(
+                      child: Container(
+                          width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -178,7 +188,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -192,10 +203,18 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
               textDirection: TextDirection.ltr,
               child: pinCodeInput(
                 widthSpace: MediaQuery.of(context).size.width,
-                onDone: (val) => setState(() {
+                onDone: (val) {
                   code = val;
-                  textEditingController.text = val;
-                }),
+                  if(code!.length==4){
+                    VerificationCode verification = VerificationCode();
+                    verification.mobile = args['mobile'];
+                    verification.verifyCode = code;
+                    if (navigator.currentConfiguration!.path.contains('pass'))
+                      verification.resetPass = true;
+                    authBloc.verifyMethod(verification);
+                  }
+
+                },
                 textController: textEditingController,
                 context: context,
               ),
@@ -216,12 +235,13 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                       onTap: () => setState(() {
                             authBloc.sendCodeMethod(args['mobile']);
                             flag = false;
-                            _start = 15;
+                            _start = 120;
                             startTimer();
                           }))
-                  : Text(intl.sendAgain + '$_start', style: TextStyle(fontSize: 14.0))),
+                  : Text(intl.sendAgain + '$_start',
+                      style: TextStyle(fontSize: 14.0))),
           Space(height: 10.h),
-          button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
+          button(AppColors.btnColor, intl.register, Size(100.w, 6.h), () {
             VerificationCode verification = VerificationCode();
             verification.mobile = args['mobile'];
             verification.verifyCode = code;

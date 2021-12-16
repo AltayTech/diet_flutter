@@ -4,6 +4,7 @@ import 'package:behandam/const_&_model/selected_time.dart';
 import 'package:behandam/data/entity/psychology/plan.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/psychology/calender_bloc.dart';
+import 'package:behandam/screens/psychology/show_advisor.dart';
 import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';

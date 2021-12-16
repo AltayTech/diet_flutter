@@ -210,7 +210,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             ),
           ),
           SizedBox(height: 10.h),
-          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), () {
+          button(AppColors.btnColor, intl.login, Size(100.w, 6.h), () {
             DialogUtils.showDialogProgress(context: context);
             if(_password.length>0) {
               User user = User();

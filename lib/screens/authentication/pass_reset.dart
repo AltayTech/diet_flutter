@@ -211,7 +211,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
             ),
           ),
           SizedBox(height: 20.0),
-          button(AppColors.btnColor, intl.setNewPassword,Size(100.w,8.h),
+          button(AppColors.btnColor, intl.setNewPassword,Size(100.w,6.h),
                   () {
                 if (_password1 != _password2)
                   Utils.getSnackbarMessage(context, intl.notEqualPassword);
