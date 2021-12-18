@@ -307,5 +307,8 @@ abstract class RestClient {
 
   @GET("/products?filter={filter}")
   NetworkResult<ShopCategory> getProducts(@Path('filter') String filter);
+
+  @POST("/check-coupon-shop")
+  NetworkResult<Price?> checkCouponShop(@Body() Price price);
 }
 

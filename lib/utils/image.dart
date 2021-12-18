@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:sizer/sizer.dart';
 
 abstract class ImageUtils {
   /// [backOffSizing] determine whether to use backOff dimension if not set
@@ -98,7 +100,6 @@ abstract class ImageUtils {
     String? placeholder,
     bool showPlaceholder = true,
     bool isCircle = false,
-
     BoxFit fit = BoxFit.contain,
     BoxFit placeholderFit = BoxFit.contain,
     bool backOffSizing = true,
@@ -116,9 +117,13 @@ abstract class ImageUtils {
       fit: placeholderFit,
       backOffSizing: backOffSizing,
     );
-    Widget emptySpace = Space(
+    Widget emptySpace = Container(
       height: measuredHeight,
       width: measuredWidth,
+      color: Colors.white70,
+      child: Progress(
+        size: 3.w,
+      ),
     );
     if (url == null) {
       return showPlaceholder ? placeholderImage : emptySpace;

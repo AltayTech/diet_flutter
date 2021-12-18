@@ -52,6 +52,10 @@ class Price {
   @JsonKey(name: "total_price")
   int? totalPrice;
 
+  @JsonKey(name: "product_id")
+  int? product_id;
+
+
   int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
 
   Price();

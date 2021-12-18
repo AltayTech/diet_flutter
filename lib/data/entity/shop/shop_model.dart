@@ -121,6 +121,8 @@ class ShopProduct {
 
   ShopProduct();
 
+  String? get discount  => (int.parse(sellingPrice.toString()) - int.parse(discountPrice.toString())).toString();
+
   factory ShopProduct.fromJson(Map<String, dynamic> json) => _$ShopProductFromJson(json);
 
   Map<String, dynamic> toJson() => _$ShopProductToJson(this);

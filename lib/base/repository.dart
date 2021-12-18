@@ -221,6 +221,8 @@ abstract class Repository {
   NetworkResult<LatestInvoiceData> shopLastInvoice();
 
   NetworkResult<ShopCategory> getProducts(String filter);
+
+  NetworkResult<Price?> checkCouponShop(Price price);
 }
 
 class _RepositoryImpl extends Repository {
@@ -855,6 +857,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<ShopCategory> getProducts(String filter) {
     var response = _apiClient.getProducts(filter);
+    return response;
+  }
+
+  @override
+  NetworkResult<Price?> checkCouponShop(Price price) {
+    var response = _apiClient.checkCouponShop(price);
     return response;
   }
 }

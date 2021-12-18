@@ -225,6 +225,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                             .instance.variables['baseUrlFileShop'] +
                                                         bloc.list![index].category!.products![i]
                                                             .productThambnail,
+                                                    showPlaceholder: false,
                                                     decoration: AppDecorations.boxMild,
                                                     fit: BoxFit.fill),
                                               ),
@@ -338,6 +339,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                               FlavorConfig.instance.variables['baseUrlFileShop'] +
                                   bloc.list![index].banner!.sliderImg,
                               decoration: AppDecorations.boxMedium,
+                              showPlaceholder: false,
                               width: 80.h,
                               height: 15.5.h,
                               fit: BoxFit.fitWidth),

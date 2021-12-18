@@ -48,6 +48,7 @@ class _SliderAppState extends State<SliderApp> {
                     borderRadius: BorderRadius.all(Radius.circular(16.0)),
                     child: ImageUtils.fromNetwork(
                         FlavorConfig.instance.variables['baseUrlFileShop'] + value.sliderImg,
+                        showPlaceholder: false,
                         fit: BoxFit.fill),
                   ),
                 ),
