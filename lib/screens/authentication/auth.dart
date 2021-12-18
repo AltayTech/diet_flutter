@@ -310,6 +310,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
             ],
           ),
         ),
+        SizedBox(height: 10.h),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: StreamBuilder(
@@ -318,7 +319,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               return button(
                 AppColors.btnColor,
                 intl.registerOrLogin,
-                Size(100.w, 8.h),
+                Size(100.w, 6.h),
                 () {
                   if (snapshot.requireData.code == '98') {
                     while (phoneNumber.startsWith('0')) {

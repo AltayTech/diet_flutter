@@ -37,8 +37,10 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
   }
 
   void listenBloc() {
-    sicknessBloc.navigateTo.listen((event) {
+    sicknessBloc.showServerError.listen((event) {
       Navigator.of(context).pop();
+    });
+    sicknessBloc.navigateTo.listen((event) {
       VxNavigator.of(context).push(Uri.parse(event));
     });
   }

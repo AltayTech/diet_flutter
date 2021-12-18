@@ -20,8 +20,6 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:video_player/video_player.dart';
 import 'package:behandam/const_&_model/slider_data.dart';
 
-import 'calender.dart';
-
 class PsychologyIntroScreen extends StatefulWidget {
   const PsychologyIntroScreen({Key? key}) : super(key: key);
 
@@ -34,50 +32,12 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
   late ChewieController chewieController;
   late CalenderBloc calenderBloc;
   int counter = 0;
- late List<Category> psyList;
   @override
   void initState() {
     super.initState();
     calenderBloc = CalenderBloc();
     // setData();
     listenBloc();
-    psyList = [
-      Category(
-        title: 'ارزشیابی مشکلات خوردن',
-        pic: 'assets/images/psychology/01.svg',
-        color: Color(0xffFF5757),
-      ),
-      Category(
-        title: 'تقویت اراده',
-        pic: 'assets/images/psychology/02.svg',
-        color: Color(0xffED5A24),
-      ),
-      Category(
-        title: 'غلبه بر احساس درماندگی',
-        pic: 'assets/images/psychology/03.svg',
-        color: Color(0xffF7A01F),
-      ),
-      Category(
-        title: 'حل مشکلات مرتبط با خوردن',
-        pic: 'assets/images/psychology/04.svg',
-        color: Color(0xffFFC412),
-      ),
-      Category(
-        title: 'آگاهانه غذا خوردن',
-        pic: 'assets/images/psychology/05.svg',
-        color: Color(0xffBBDC59),
-      ),
-      Category(
-        title: 'یاد گرفتن سبک زندگی سالم',
-        pic: 'assets/images/psychology/06.svg',
-        color: Color(0xff6AB04D),
-      ),
-      Category(
-        title: 'به دست آوردن انگیزه',
-        pic: 'assets/images/psychology/07.svg',
-        color: Color(0xff856DE2),
-      ),
-    ];
   }
 
   void listenBloc() {
@@ -94,8 +54,6 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
       Utils.getSnackbarMessage(context, event);
     });
   }
-
-
 
   VideoController(ChewieController chewieController) async{
     await Future.wait([videoPlayerController.initialize()]);
@@ -199,16 +157,10 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
                                           width: 120.0,
                                           child: Text(psySlider[index].desc!,
                                               style: TextStyle(fontSize: 10.sp)
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ]
-                              ),
-                            )
-                          ),
-                        ),
-                        ),
+                                          ))
+                                      ])
+                                  ])
+                            )))),
                         SizedBox(height: 3.h),
                       ]),
                   ),
@@ -227,8 +179,9 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
                          style: TextStyle(fontSize: 14.sp)),
                      SizedBox(height: 3.h),
                      Container(
-                       height: 50.h,
+                       height: 70.h,
                        child: ListView(
+                         physics: NeverScrollableScrollPhysics(),
                          children :List.generate(psyList.length, (index) =>
                              Container(
                                  width: double.infinity,
@@ -268,7 +221,6 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
                                            :Container()
                                        // SizedBox(height: 10.0),
                                      ]))
-
                          ),
                        ),),
                      SizedBox(height: 3.h),
@@ -284,7 +236,6 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
             // if(chewieController.isPlaying)
             //   chewieController.pause();
               calenderBloc.getHistory();
-
           },
           label: Container(
               width:50.w,

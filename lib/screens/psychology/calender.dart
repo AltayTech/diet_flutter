@@ -1,19 +1,15 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/const_&_model/selected_time.dart';
 import 'package:behandam/data/entity/psychology/plan.dart';
-import 'package:behandam/routes.dart';
 import 'package:behandam/screens/psychology/calender_bloc.dart';
-import 'package:behandam/screens/utility/modal.dart';
-import 'package:behandam/screens/widget/line.dart';
+import 'package:behandam/screens/psychology/show_adviser.dart';
+import 'package:behandam/screens/psychology/show_modal.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:logifan/widgets/space.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -47,274 +43,6 @@ class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalender
     calenderBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
     });
-  }
-
-  ADShow(List<SelectedTime>? info) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height - 540,
-        child: ListView.builder(
-            shrinkWrap: false,
-            itemCount: info!.length,
-            itemBuilder: (_, index) {
-              return Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                elevation: 5,
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: info[index].adviserImage == null
-                          ? ImageUtils.fromLocal('assets/images/profile/psychology.svg',
-                              width: 20.w, height: 7.h)
-                          : ImageUtils.fromNetwork(
-                              FlavorConfig.instance.variables["baseUrlFile"] +
-                                  info[index].adviserImage,
-                              width: 20.w,
-                              height: 10.h),
-                      title: Text(info[index].adviserName!),
-                      subtitle: Text(
-                        info[index].role!,
-                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12.0, left: 12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 25.w,
-                            height: 4.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: AppColors.help,
-                            ),
-                            child: Center(
-                              child: Text("${info[index].duration.toString() + intl.min} ",
-                                  style: TextStyle(fontSize: 12.sp, color: AppColors.redBar)),
-                            ),
-                          ),
-                          Space(width: 5.w),
-                          Container(
-                            width: 25.w,
-                            height: 4.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: AppColors.stableType,
-                            ),
-                            child: Center(
-                              child: Text("${info[index].finalPrice.toString() + intl.currency} ",
-                                  style: TextStyle(fontSize: 12.sp, color: AppColors.greenRuler)),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Space(height: 2.h),
-                    line(),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(intl.selectYourPhoneSession, style: TextStyle(fontSize: 10.sp)),
-                          Text(DateTimeUtils.dateToDetail(info[index].date!),
-                              style: TextStyle(fontSize: 12.sp, color: AppColors.redBar)),
-                        ],
-                      ),
-                    ),
-                    ButtonBar(
-                        buttonPadding: EdgeInsets.all(0.0),
-                        alignment: MainAxisAlignment.start,
-                        children: [
-                          ...info[index].times!.map((item) {
-                            return Padding(
-                                padding: EdgeInsets.only(right: 12.0, left: 12.0),
-                                child: OutlinedButton(
-                                  onPressed: () {
-                                    showModal(context, info[index], item);
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(AppColors.grey),
-                                    foregroundColor: MaterialStateProperty.all(AppColors.onSurface),
-                                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10.0))),
-                                  ),
-                                  child: Text(item.startTime.toString().substring(0, 5)),
-                                ));
-                          }).toList(),
-                        ])
-                  ],
-                ),
-              );
-            }),
-      ),
-    );
-  }
-
-  showModal(BuildContext ctx, SelectedTime info, Planning item) {
-    showModalBottomSheet(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25.0),
-      ),
-      context: ctx,
-      builder: (_) {
-        return Popover(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                        width: 10.w,
-                        height: 5.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: AppColors.help,
-                        ),
-                        child: IconButton(
-                            onPressed: () => Navigator.pop(context),
-                            icon: Icon(Icons.close, color: AppColors.redBar))),
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                    child: info.adviserImage == null
-                        ? ImageUtils.fromLocal('assets/images/profile/psychology.svg',
-                            width: 20.w, height: 7.h)
-                        : ImageUtils.fromNetwork(
-                            FlavorConfig.instance.variables["baseUrlFile"] + info.adviserImage,
-                            width: 20.w,
-                            height: 10.h),
-                  ),
-                  Column(
-                    children: [
-                      Text(info.adviserName!),
-                      Text(info.role!),
-                    ],
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(intl.sessionDuration, style: TextStyle(fontSize: 12.sp)),
-                    Text("${info.duration.toString() + intl.min} ",
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryVariantLight)),
-                  ],
-                ),
-              ),
-              line(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(intl.day, style: TextStyle(fontSize: 12.sp)),
-                    Text(DateTimeUtils.dateToNamesOfDay(info.date!),
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryVariantLight)),
-                  ],
-                ),
-              ),
-              line(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(intl.time, style: TextStyle(fontSize: 12.sp)),
-                    Text(item.startTime.toString().substring(0, 5),
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryVariantLight)),
-                  ],
-                ),
-              ),
-              line(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(intl.date, style: TextStyle(fontSize: 12.sp)),
-                    Text(info.date!,
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryVariantLight)),
-                  ],
-                ),
-              ),
-              line(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(intl.price, style: TextStyle(fontSize: 12.sp)),
-                    Text("${info.finalPrice.toString() + intl.currency} ",
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryVariantLight)),
-                  ],
-                ),
-              ),
-              Space(height: 2.h),
-              button(AppColors.btnColor, intl.reserveThisTime, Size(70.w, 5.h), () {
-                ctx.vxNav.push(Uri.parse(Routes.psychologyTerms), params: {
-                  'sessionId': item.id,
-                  'packageId': info.packageId,
-                  'name': info.adviserName,
-                  'price': info.price,
-                  'finalPrice': info.finalPrice,
-                  'day': DateTimeUtils.dateToNamesOfDay(info.date!),
-                  'date': DateTimeUtils.dateToDetail(info.date!),
-                  'time': item.startTime.toString().substring(0, 5),
-                });
-              }),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(Size(70.w, 5.h)),
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                  foregroundColor: MaterialStateProperty.all(AppColors.penColor),
-                  shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
-                ),
-                child:
-                    Text(intl.iDoNot, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget line() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 12.0, left: 12.0),
-      child: Line(color: AppColors.strongPen, height: 0.1.h),
-    );
   }
 
   @override
@@ -592,7 +320,7 @@ class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalender
                                     ],
                                   ),
                                 ))),
-                if (calenderBloc.flag1) ADShow(calenderBloc.advisersPerDay),
+                if (calenderBloc.flag1) ADShow(context, calenderBloc.advisersPerDay),
               ],
             )
           ],

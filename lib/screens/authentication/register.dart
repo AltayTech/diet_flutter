@@ -5,6 +5,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
@@ -44,7 +45,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   String? lastName;
   String? _password;
   late AuthenticationBloc authBloc;
-  bool?  _switchValue;
+  bool  switchValue = false;
   bool _obscureText = false;
   bool check = false;
 
@@ -176,8 +177,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                     ),
                     labelText: intl.name,
                     labelStyle: TextStyle(color: AppColors.penColor,fontSize: 16.0),
-                    errorText:
-                    _validate ? intl.fillAllField : null,
+                    // errorText:
+                    // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
                 onChanged: (txt) {
                   firstName = txt;
@@ -199,8 +200,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                     ),
                     labelText: intl.lastName,
                     labelStyle: TextStyle(color: AppColors.penColor,fontSize: 16.0),
-                    errorText:
-                    _validate ? intl.fillAllField : null,
+                    // errorText:
+                    // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
                 onChanged: (txt) {
                   lastName = txt;
@@ -222,8 +223,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                       borderSide: BorderSide(color: AppColors.penColor),
                       borderRadius: BorderRadius.circular(15.0)),
                   labelText: intl.password,
-                  errorText:
-                  _validate ? intl.fillAllField : null,
+                  // errorText:
+                  // _validate ? intl.fillAllField : null,
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText
@@ -250,20 +251,6 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               children: [
                 Text(intl.woman, style: TextStyle(fontSize: 14.0,color: AppColors.penColor)),
                 SizedBox(width: 10.0),
-                // RollingSwitch.icon(
-                //   onChanged: (bool state) {
-                //     _switchValue = state;
-                //   },
-                //   rollingInfoRight: const RollingIconInfo(
-                //     icon: Icons.person,
-                //     backgroundColor: Colors.pinkAccent,
-                //     // text: Text('Flag'),
-                //   ),
-                //   rollingInfoLeft: const RollingIconInfo(
-                //     icon: Icons.person,
-                //     // text: Text('Check'),
-                //   ),
-                // ),
                 ToggleSwitch(
                   minWidth: 90.0,
                   minHeight: 45.0,
@@ -280,11 +267,12 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   iconSize: 30.0,
                   activeBgColors: [[Colors.red, Colors.pinkAccent], [Color(0xff3b5998), Color(0xff8b9dc3)]],
                   animate: true, // with just animate set to true, default curve = Curves.easeIn
+                  animationDuration: 200,
                   curve: Curves.bounceInOut, // animate must be set to true when using custom curve
                   onToggle: (index) {
                     index == gender.man.index
-                        ?_switchValue = true
-                        : _switchValue = false;
+                        ?switchValue = true
+                        : switchValue = false;
                   },
                 ),
                 SizedBox(width: 10.0),
@@ -293,23 +281,22 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               ],
             ),
           ),
-          SizedBox(height: 20.0),
-          button(AppColors.btnColor, intl.register,Size(100.w,8.h),
-                  () {
-                    setState(() {
-                      _text.text.isEmpty ? _validate = true : _validate = false;
-                    });
-                Register register = Register();
-                register.firstName = firstName;
-                register.lastName = lastName;
-                register.mobile = args['mobile'];
-                register.password = _password;
-                register.gender = _switchValue;
-                register.verifyCode = args['code'];
-                register.countryId = args['id'];
-                register.appId = '0';
-                authBloc.registerMethod(register);
-              }),
+          SizedBox(height: 10.h),
+          SubmitButton(label: intl.register,size: Size(100.w,6.h), onTap:(){
+          setState(() {
+          _text.text.isEmpty ? _validate = true : _validate = false;
+          });
+          Register register = Register();
+          register.firstName = firstName;
+          register.lastName = lastName;
+          register.mobile = args['mobile'];
+          register.password = _password;
+          register.gender = switchValue;
+          register.verifyCode = args['code'];
+          register.countryId = args['id'];
+          register.appId = '0';
+          authBloc.registerMethod(register);
+          }),
         ],
       ),
     );

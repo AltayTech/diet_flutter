@@ -158,7 +158,9 @@ class SicknessBloc {
   void sendSicknessSpecial() {
     _repository.sendSicknessSpecial(userSicknessSpecial!).then((value) {
       _navigateTo.fireMessage('/${value.next}');
-    }).whenComplete(() {});
+    }).whenComplete(() {
+      _showServerError.fire(false);
+    });
   }
 
   void dispose() {

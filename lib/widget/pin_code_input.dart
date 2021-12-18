@@ -56,14 +56,16 @@ Widget pinCodeInput(
       )
     ],
     keyboardType: TextInputType.number,
-    onCompleted: (v) {
+   /* onCompleted: (v) {
       textController!.text = v;
-    },
+    },*/
     // onTap: () {
     //   Fimber.d("Pressed");
     // },
     onChanged: (value) {
       onDone!(value);
+      textController!.selection = TextSelection.fromPosition(
+          TextPosition(offset: textController.text.length));
       // setState(() {
       //   currentText = value;
       // });

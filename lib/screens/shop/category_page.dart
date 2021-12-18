@@ -86,6 +86,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                                   snapshot.data!.image,
                               width: 100.w,
                               height: 12.h,
+                              showPlaceholder: false,
                               fit: BoxFit.fill),
                           SizedBox(height: 2.h),
                           Padding(

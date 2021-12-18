@@ -43,7 +43,6 @@ class _ActivityLevelPageState extends ResourcefulState<ActivityLevelPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return Scaffold(
       appBar: Toolbar(titleBar: intl.activityLevel),
       body: Column(
