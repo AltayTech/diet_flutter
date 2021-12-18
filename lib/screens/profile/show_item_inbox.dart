@@ -39,12 +39,18 @@ class _ShowInboxItemState extends State<ShowInboxItem> {
     super.initState();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
-
+bool isInit=false;
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    args = (ModalRoute.of(context)!.settings.arguments as InboxItem);
+    if (!isInit) {
+      isInit = true;
+      args = (ModalRoute
+          .of(context)!
+          .settings
+          .arguments as InboxItem);
+    }
   }
 
   @override

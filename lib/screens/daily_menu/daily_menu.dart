@@ -46,11 +46,18 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
     _animation = _tween.animate(_animation);
     _animationController.repeat();
   }
+  bool isInit=false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    bloc = ModalRoute.of(context)?.settings.arguments as FoodListBloc;
+    if (!isInit) {
+      isInit = true;
+      bloc = ModalRoute
+          .of(context)
+          ?.settings
+          .arguments as FoodListBloc;
+    }
   }
 
   @override

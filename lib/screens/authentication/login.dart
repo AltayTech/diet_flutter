@@ -65,12 +65,18 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       _obscureText = !_obscureText;
     });
   }
-
+bool isInit=false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    debugPrint('login args $args');
+    if (!isInit) {
+      isInit = true;
+      args = ModalRoute
+          .of(context)!
+          .settings
+          .arguments as Map<String, dynamic>;
+      debugPrint('login args $args');
+    }
   }
 
   @override

@@ -23,11 +23,18 @@ class MenuConfirmPage extends StatefulWidget {
 
 class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
   late MenuSelectBloc bloc;
-
+  bool isInit=false;
   @override
   void didChangeDependencies() {
+
     super.didChangeDependencies();
-    bloc = ModalRoute.of(context)!.settings.arguments as MenuSelectBloc;
+    if (!isInit) {
+      isInit = true;
+      bloc = ModalRoute
+          .of(context)!
+          .settings
+          .arguments as MenuSelectBloc;
+    }
   }
   @override
   void initState() {
