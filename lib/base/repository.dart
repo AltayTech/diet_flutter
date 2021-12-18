@@ -590,9 +590,12 @@ class _RepositoryImpl extends Repository {
     sickness.specials!.forEach((sicknessItem) {
       if (sicknessItem.isSelected!) {
         if (sicknessItem.children!.length > 0) {
+          sicknessItem.children?.forEach((element) { debugPrint("${element.toJson()}"); });
+
           selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
         } else {
           selectedItems.add(sicknessItem);
+          debugPrint("${sicknessItem.toJson()}");
         }
       }
     });

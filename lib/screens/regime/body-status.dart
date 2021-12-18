@@ -278,7 +278,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                   bottomLeft: Radius.circular(20.0),
                   topLeft: Radius.circular(20.0)),
               color: Colors.white),
-          child: Row(children: [
+          child: Row(
+              children: [
             Container(
                 width: 3.w,
                 height: 10.h,
@@ -286,10 +287,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                     borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(20.0), topRight: Radius.circular(20.0)),
                     color: color)),
-            SizedBox(width: 8.w),
-            Container(
-              // width: 20.w,
-              child: Center(
+            // SizedBox(width: 4.w),
+            Expanded(
+              child: Container(
+                // width: 20.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,

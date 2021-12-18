@@ -29,6 +29,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   late ListFoodBloc bloc;
   Meals? meal;
   late ScrollController scrollController;
+  bool isInitial = false;
 
   @override
   void initState() {
@@ -53,10 +54,17 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    meal = ModalRoute.of(context)?.settings.arguments as Meals;
-    debugPrint('meal list food ${meal?.id}');
-    if (meal != null) bloc.onMealChanged(meal!.id);
-    scrollController = ScrollController()..addListener(onScroll);
+    if(!isInitial) {
+      meal = ModalRoute
+          .of(context)
+          ?.settings
+          .arguments as Meals;
+      debugPrint('meal list food ${meal?.id}');
+      if (meal != null) bloc.onMealChanged(meal!.id);
+      scrollController = ScrollController()
+        ..addListener(onScroll);
+      isInitial = true;
+    }
   }
 
   @override

@@ -12,6 +12,7 @@ import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 showModal(BuildContext ctx, SelectedTime info, Planning item) {
   showModalBottomSheet(
@@ -67,8 +68,8 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("intl.sessionDuration", style: TextStyle(fontSize: 12.sp)),
-                  Text("${info.duration.toString() + "intl.min"} ",
+                  Text(AppLocalizations.of(ctx)!.sessionDuration, style: TextStyle(fontSize: 12.sp)),
+                  Text("${info.duration.toString() + AppLocalizations.of(ctx)!.min}",
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
@@ -82,7 +83,7 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("intl.day", style: TextStyle(fontSize: 12.sp)),
+                  Text(AppLocalizations.of(ctx)!.day, style: TextStyle(fontSize: 12.sp)),
                   Text(DateTimeUtils.dateToNamesOfDay(info.date!),
                       style: TextStyle(
                           fontSize: 12.sp,
@@ -97,7 +98,7 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("intl.time", style: TextStyle(fontSize: 12.sp)),
+                  Text(AppLocalizations.of(ctx)!.time, style: TextStyle(fontSize: 12.sp)),
                   Text(item.startTime.toString().substring(0, 5),
                       style: TextStyle(
                           fontSize: 12.sp,
@@ -112,7 +113,7 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("intl.date", style: TextStyle(fontSize: 12.sp)),
+                  Text(AppLocalizations.of(ctx)!.date, style: TextStyle(fontSize: 12.sp)),
                   Text(info.date!,
                       style: TextStyle(
                           fontSize: 12.sp,
@@ -127,8 +128,8 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("intl.price", style: TextStyle(fontSize: 12.sp)),
-                  Text("${info.finalPrice.toString() + "intl.currency"} ",
+                  Text(AppLocalizations.of(ctx)!.price, style: TextStyle(fontSize: 12.sp)),
+                  Text("${ info.finalPrice.toString() + AppLocalizations.of(ctx)!.currency } ",
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
@@ -137,7 +138,7 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
               ),
             ),
             Space(height: 2.h),
-            button(AppColors.btnColor, "intl.reserveThisTime", Size(70.w, 5.h), () {
+            button(AppColors.btnColor, AppLocalizations.of(ctx)!.reserveThisTime, Size(70.w, 5.h), () {
               ctx.vxNav.push(Uri.parse(Routes.psychologyTerms), params: {
                 'sessionId': item.id,
                 'packageId': info.packageId,
@@ -161,7 +162,7 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
               ),
               child:
-              Text("intl.iDoNot", style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
+              Text(AppLocalizations.of(ctx)!.iDoNot, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
             ),
           ],
         ),

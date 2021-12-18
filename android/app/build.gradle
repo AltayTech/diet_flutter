@@ -83,6 +83,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'// add this
             signingConfig signingConfigs.release // this is default for release
         }
+
         debug {
             minifyEnabled false // a
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this

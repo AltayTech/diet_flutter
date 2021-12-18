@@ -34,6 +34,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   late Animation<double> _animation;
   Tween<double> _tween = Tween(begin: 0.9, end: 1.3);
   WeekDay? selectedWeekDay;
+  bool isInitial = false;
 
   @override
   void initState() {
@@ -50,7 +51,13 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    bloc = ModalRoute.of(context)?.settings.arguments as FoodListBloc;
+    if(!isInitial) {
+      bloc = ModalRoute
+          .of(context)
+          ?.settings
+          .arguments as FoodListBloc;
+      isInitial = true;
+    }
   }
 
   @override

@@ -398,20 +398,6 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     );
   }
 
-  Widget animationsList(Widget child) {
-    return ShaderMask(
-      shaderCallback: (Rect bounds) {
-        return LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: <Color>[Colors.white.withOpacity(0.1), Colors.white],
-        ).createShader(bounds);
-      },
-      child: child,
-      blendMode: BlendMode.dstATop,
-    );
-  }
-
   Widget loadMoreProgress() {
     return StreamBuilder(
       stream: productBloc.loadingMoreProducts,
