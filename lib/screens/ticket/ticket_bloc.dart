@@ -347,7 +347,6 @@ class TicketBloc {
     _isShowFile.value = false;
     _isShowRecorder.value = false;
     _isRecording.value = false;
-
     _progressNetwork.value = true;
     _repository.getTicketDetails(id).then((value) {
       _ticketDetails = value.data;

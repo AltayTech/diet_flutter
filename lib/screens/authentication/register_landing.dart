@@ -283,7 +283,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             ),
           ),
           SizedBox(height: 20.0),
-          button(AppColors.btnColor, intl.register,Size(100.w,6.h),
+          button(AppColors.btnColor, intl.register,Size(100.w,8.h),
                   () {
                     setState(() {
                       _text.text.isEmpty ? _validate = true : _validate = false;
