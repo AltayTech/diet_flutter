@@ -279,8 +279,9 @@ class TicketBloc {
   }
 
   void sendTicketTextDetail() async {
-    _showProgressItem.value = true;
+
     if (_isShowImage.valueOrNull == null || _isShowImage.value == false) {
+      _showProgressItem.value = true;
       _repository.sendTicketMessageDetail(sendTicketMessage).then((value) {
         getDetailTicket(sendTicketMessage.ticketId!);
         _showServerError.fireMessage(value.message!);
@@ -292,19 +293,24 @@ class TicketBloc {
     } else {
       sendTicketMessage.hasAttachment = true;
       sendTicketMessage.isVoice = false;
-      print('sendTicketMessage = > ${sendTicketMessage.toJson()}');
-      try {
-        _repository.sendTicketFileDetail(sendTicketMessage, File(imageFile!.path)).then((value) {
-          getDetailTicket(sendTicketMessage.ticketId!);
-          _showServerError.fireMessage(value.message!);
-        }).catchError((onError) {
-          // _showServerError.fireMessage(onError);
-        }).whenComplete(() {
+     // print('sendTicketMessage = > ${sendTicketMessage.toJson()}');
+      if(sendTicketMessage.body!=null && sendTicketMessage.body!.isNotEmpty) {
+        _showProgressItem.value = true;
+        try {
+          _repository.sendTicketFileDetail(sendTicketMessage, File(imageFile!.path)).then((value) {
+            getDetailTicket(sendTicketMessage.ticketId!);
+            _showServerError.fireMessage(value.message!);
+          }).catchError((onError) {
+            // _showServerError.fireMessage(onError);
+          }).whenComplete(() {
+            _showProgressItem.value = false;
+          });
+        } catch (e) {
+          print('eeee => $e');
           _showProgressItem.value = false;
-        });
-      } catch (e) {
-        print('eeee => $e');
-        _showProgressItem.value = false;
+        }
+      }else{
+        _showServerError.fireMessage("error");
       }
     }
   }

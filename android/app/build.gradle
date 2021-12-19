@@ -49,12 +49,11 @@ android {
             storePassword "Behandam@110"
             keyAlias "Behandam"
             keyPassword "Behandam110"
-            v2SigningEnabled true
-            v1SigningEnabled true
         }
     }
     lintOptions {
         disable 'InvalidPackage'
+        checkReleaseBuilds false
     }
     flavorDimensions "app"
     productFlavors {

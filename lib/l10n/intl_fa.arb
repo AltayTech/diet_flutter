@@ -584,5 +584,6 @@
   "more": "بیشتر",
   "emptyProduct": "محصولی برای نمایش وجود ندارد",
   "offErrorResult": "کد تخفیف اشتباه است",
+  "errorDescriptionTicket": "لطفا متن تیکت را پر کنید",
   "understand": "متوجه شدم"
 }

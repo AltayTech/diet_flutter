@@ -50,7 +50,11 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
 
   void listen() {
     bloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
+      if(event.toString().contains("error")) {
+        Utils.getSnackbarMessage(context, intl.errorDescriptionTicket);
+      }else {
+        Utils.getSnackbarMessage(context, event);
+      }
     });
   }
 
