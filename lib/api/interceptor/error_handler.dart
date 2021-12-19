@@ -88,7 +88,7 @@ class ErrorHandlerInterceptor extends Interceptor {
 
     //Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
     //Utils.getSnackbarMessage(_context!, message);
-    dioErrorObserver.showMessage(message);
+    dioErrorObserver.showMessage(message ?? '');
     navigatorMessengerKey.currentState!.showSnackBar(SnackBar(
       content: Text('$message'),
     ));

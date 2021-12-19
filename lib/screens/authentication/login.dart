@@ -13,12 +13,10 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:behandam/screens/utility/arc.dart';
-import '../../routes.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -28,9 +26,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends ResourcefulState<LoginScreen> {
   final _text = TextEditingController();
   late Map<String, dynamic> args;
-  bool _validate = false;
   bool _obscureText = false;
-  String _password="";
+  String _password = "";
   late AuthenticationBloc authBloc;
   bool check = false;
 
@@ -52,7 +49,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       //Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
-        VxNavigator.of(context).clearAndPush(Uri.parse('/$event'), params: {"mobile": args['mobile'], 'countryId': args['countryId']});
+        VxNavigator.of(context).clearAndPush(Uri.parse('/$event'),
+            params: {"mobile": args['mobile'], 'countryId': args['countryId']});
       }
     });
     authBloc.showServerError.listen((event) {
@@ -60,21 +58,13 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     });
   }
 
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-bool isInit=false;
+  bool isInit = false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
-      args = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as Map<String, dynamic>;
+      args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       debugPrint('login args $args');
     }
   }
@@ -218,7 +208,7 @@ bool isInit=false;
           SizedBox(height: 10.h),
           button(AppColors.btnColor, intl.login, Size(100.w, 6.h), () {
             DialogUtils.showDialogProgress(context: context);
-            if(_password.length>0) {
+            if (_password.length > 0) {
               User user = User();
               user.mobile = args['mobile'];
               user.password = _password;

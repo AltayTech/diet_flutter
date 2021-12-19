@@ -1,6 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
@@ -10,13 +9,9 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:rolling_switch/rolling_switch.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
-import '../../routes.dart';
 
 class PasswordResetScreen extends StatefulWidget {
   @override
@@ -24,13 +19,10 @@ class PasswordResetScreen extends StatefulWidget {
 }
 
 class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
-  final _text = TextEditingController();
   var args;
-  bool _validate = false;
   String? _password1;
   String? _password2;
   late AuthenticationBloc authBloc;
-  bool?  _switchValue;
   bool _obscureText1 = false;
   bool _obscureText2 = false;
   bool check = false;
