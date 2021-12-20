@@ -81,7 +81,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
     authBloc.navigateToVerify.listen((event) {
       if (event != null) {
         debugPrint('verifiy ${navigator.currentConfiguration!.path} / $event');
-        context.vxNav.replace(
+        context.vxNav.push(
           Uri(path: '/$event'),
           params: {
             "mobile": args['mobile'],
@@ -107,7 +107,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
               stream: authBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
-                  return NestedScrollView(
+                  return
+                    NestedScrollView(
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[
@@ -117,7 +118,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                           leading: IconButton(
                               icon: Icon(Icons.arrow_back_ios),
                               color: Color(0xffb4babb),
-                              onPressed: () => VxNavigator.of(context).pop()),
+                              onPressed: () => Navigator.pop(context)),
                           // floating: true,
                           forceElevated: innerBoxIsScrolled,
                         ),
@@ -161,7 +162,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                       color: AppColors.penColor,
                       fontSize: 22.0,
                       fontFamily: 'Iransans-Bold',
-                      fontWeight: FontWeight.w700))),
+                      fontWeight: FontWeight.w700))
+          ),
         ),
         Positioned(
           top: 60.0,
@@ -220,7 +222,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
               ),
             ),
           ),
-          Space(height: 10.h),
+          Space(height: 8.h),
           Container(
               child: flag
                   ? InkWell(
@@ -240,8 +242,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                           }))
                   : Text(intl.sendAgain + '$_start',
                       style: TextStyle(fontSize: 14.0))),
-          Space(height: 10.h),
-          button(AppColors.btnColor, intl.register, Size(100.w, 6.h), () {
+          Space(height: 8.h),
+          button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
             VerificationCode verification = VerificationCode();
             verification.mobile = args['mobile'];
             verification.verifyCode = code;
@@ -250,6 +252,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
             debugPrint('query verify ${verification.toJson()}');
             authBloc.verifyMethod(verification);
           }),
+          Space(height: 5.h),
         ],
       ),
     );

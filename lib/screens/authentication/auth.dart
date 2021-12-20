@@ -319,7 +319,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               return button(
                 AppColors.btnColor,
                 intl.registerOrLogin,
-                Size(100.w, 6.h),
+                Size(100.w, 8.h),
                 () {
                   if (snapshot.requireData.code == '98') {
                     while (phoneNumber.startsWith('0')) {
