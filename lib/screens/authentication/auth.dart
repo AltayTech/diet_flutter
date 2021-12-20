@@ -5,7 +5,6 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
@@ -41,10 +40,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   }
 
   void listenBloc() {
-    authBloc.navigateToVerify.listen((event) async{
+    authBloc.navigateToVerify.listen((event) async {
       if (event != null) {
-        if(Routes == Routes.authVerify)
-        await SmsAutoFill().listenForCode();
         context.vxNav.push(
           Uri(path: '/$event'),
           params: {'mobile': number, 'countryId': _selectedLocation.id},
@@ -129,9 +126,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   );
                 } else {
                   check = false;
-                  return Center(
-                      child: Container(
-                          width: 15.w, height: 15.w, child: Progress()));
+                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -192,8 +187,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               Flexible(
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: AppColors.arcColor),
+                      borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
                   child: TextField(
                     controller: _text,
                     textDirection: TextDirection.ltr,
@@ -247,10 +241,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                     // shrinkWrap: true,
                                     itemBuilder: (_, index) => GestureDetector(
                                       onTap: () {
-                                        authBloc.setCountry(
-                                            authBloc.countries[index]);
-                                        _selectedLocation =
-                                            authBloc.countries[index];
+                                        authBloc.setCountry(authBloc.countries[index]);
+                                        _selectedLocation = authBloc.countries[index];
                                         Navigator.of(context).pop();
                                       },
                                       child: Container(
@@ -266,9 +258,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                               Space(width: 3.w),
                                               Expanded(
                                                   child: Text(
-                                                authBloc.countries[index]
-                                                        .name ??
-                                                    '',
+                                                authBloc.countries[index].name ?? '',
                                                 style: typography.caption,
                                               )),
                                             ],
@@ -319,24 +309,19 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               return button(
                 AppColors.btnColor,
                 intl.registerOrLogin,
-                Size(100.w, 6.h),
+                Size(100.w, 8.h),
                 () {
                   if (snapshot.requireData.code == '98') {
                     while (phoneNumber.startsWith('0')) {
                       phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
                     }
                     if ((phoneNumber.length) != 10) {
-                      Utils.getSnackbarMessage(
-                          context, intl.errorMobileCondition);
+                      Utils.getSnackbarMessage(context, intl.errorMobileCondition);
                       return;
                     }
-                  } else if ((snapshot.requireData.code!.length +
-                              phoneNumber.length) <
-                          7 ||
-                      (snapshot.requireData.code!.length + phoneNumber.length) >
-                          15) {
-                    Utils.getSnackbarMessage(
-                        context, intl.errorMobileCondition);
+                  } else if ((snapshot.requireData.code!.length + phoneNumber.length) < 7 ||
+                      (snapshot.requireData.code!.length + phoneNumber.length) > 15) {
+                    Utils.getSnackbarMessage(context, intl.errorMobileCondition);
                     return;
                   }
                   number = snapshot.requireData.code! + phoneNumber;

@@ -18,6 +18,9 @@ import 'package:velocity_x/velocity_x.dart';
 
 import 'package:behandam/screens/utility/arc.dart';
 
+import '../../routes.dart';
+
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -46,11 +49,12 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      //Navigator.pop(context);
+      Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
-        VxNavigator.of(context).clearAndPush(Uri.parse('/$event'),
-            params: {"mobile": args['mobile'], 'countryId': args['countryId']});
+        if(event.toString().contains(Routes.auth))
+          VxNavigator.of(context).push(Uri.parse('/$event'), params: {"mobile": args['mobile'], 'countryId': args['countryId']});
+        else VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
     });
     authBloc.showServerError.listen((event) {
@@ -206,7 +210,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             ),
           ),
           SizedBox(height: 10.h),
-          button(AppColors.btnColor, intl.login, Size(100.w, 6.h), () {
+          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), () {
             DialogUtils.showDialogProgress(context: context);
             if (_password.length > 0) {
               User user = User();
@@ -244,7 +248,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(intl.changePassword),
+            Text(intl.changePassword,style: typography.bodyText2),
             Container(
               width: 70.w,
               child: RichText(
@@ -265,21 +269,23 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               mainAxisSize: MainAxisSize.min,
               alignment: MainAxisAlignment.start,
               children: [
+                OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(Size(8.w, 5.h)),
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    foregroundColor: MaterialStateProperty.all(AppColors.penColor),
+                    shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+                  ),
+                  child:
+                  Text(intl.no, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
+                ),
                 ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(AppColors.btnColor),
-                        fixedSize: MaterialStateProperty.all(Size(80.0, 50.0))),
-                    child: Text(
-                      intl.no,
-                      style: TextStyle(fontSize: 22.0),
-                    ),
-                    onPressed: () => Navigator.pop(context)),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.btnColor),
-                        fixedSize: MaterialStateProperty.all(Size(80.0, 50.0))),
+                        fixedSize: MaterialStateProperty.all(Size(10.0, 20.0))),
                     child: Text(
                       intl.yes,
                       style: TextStyle(fontSize: 22.0),

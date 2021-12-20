@@ -70,7 +70,6 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return Scaffold(
       appBar: Toolbar(titleBar: intl.selectFoodIn(meal?.title ?? '')),
       body: Container(

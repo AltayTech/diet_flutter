@@ -11,7 +11,7 @@ abstract class Routes {
   static const authVerify = '/auth/verify';
   static const resetCode = '/resetCode';
   static const resetPass = '/auth/pass/reset';
-  static const regimeType = '/reg/diet/type';
+  static const regimeType = '/diet/type';
   static const helpType = '/help';
   static const profile = '/profile';
   static const listView = '/list/view';

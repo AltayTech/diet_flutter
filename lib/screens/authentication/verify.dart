@@ -5,8 +5,10 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/screens/utility/arc.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
@@ -23,28 +25,27 @@ class VerifyScreen extends StatefulWidget {
   _VerifyScreenState createState() => _VerifyScreenState();
 }
 
-class _VerifyScreenState extends ResourcefulState<VerifyScreen>
-    with CodeAutoFill {
+class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFill {
   late AuthenticationBloc authBloc;
-  late TextEditingController textEditingController;
+  late TextEditingController textEditingController = TextEditingController();
   var args;
   String? firstP;
   String? secondP;
   String? thirdP;
   String? fourthP;
-  String? code;
+  String? codeVerify;
   late Timer _timer;
   int _start = 120;
   bool flag = false;
   final focus = FocusNode();
   bool check = false;
+  bool isRequest = false;
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
       (Timer timer) {
-        debugPrint('timer');
         if (_start == 0) {
           setState(() {
             flag = true;
@@ -63,18 +64,22 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
   void dispose() {
     _timer.cancel();
     authBloc.dispose();
-   // textEditingController.dispose();
-    SmsAutoFill().unregisterListener();
+    // textEditingController.dispose();
+    unregisterListener();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    textEditingController = TextEditingController();
+    listenSms();
     startTimer();
     authBloc = AuthenticationBloc();
     listenBloc();
+  }
+
+  void listenSms() async {
+    listenForCode(smsCodeRegexPattern: '\\d{4,6}');
   }
 
   void listenBloc() {
@@ -83,16 +88,13 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
         debugPrint('verifiy ${navigator.currentConfiguration!.path} / $event');
         context.vxNav.replace(
           Uri(path: '/$event'),
-          params: {
-            "mobile": args['mobile'],
-            "code": code,
-            'id': args['countryId']
-          },
+          params: {"mobile": args['mobile'], "code": codeVerify, 'id': args['countryId']},
         );
       }
     });
     authBloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
+      isRequest = false;
+      Navigator.of(context).pop();
     });
   }
 
@@ -108,8 +110,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
                   return NestedScrollView(
-                    headerSliverBuilder:
-                        (BuildContext context, bool innerBoxIsScrolled) {
+                    headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[
                         SliverAppBar(
                           backgroundColor: AppColors.arcColor,
@@ -117,7 +118,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                           leading: IconButton(
                               icon: Icon(Icons.arrow_back_ios),
                               color: Color(0xffb4babb),
-                              onPressed: () => VxNavigator.of(context).pop()),
+                              onPressed: () => Navigator.pop(context)),
                           // floating: true,
                           forceElevated: innerBoxIsScrolled,
                         ),
@@ -133,9 +134,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                   );
                 } else {
                   check = false;
-                  return Center(
-                      child: Container(
-                          width: 15.w, height: 15.w, child: Progress()));
+                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -188,8 +187,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -204,23 +202,27 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
               child: pinCodeInput(
                 widthSpace: MediaQuery.of(context).size.width,
                 onDone: (val) {
-                  code = val;
-                  if(code!.length==4){
-                    VerificationCode verification = VerificationCode();
-                    verification.mobile = args['mobile'];
-                    verification.verifyCode = code;
-                    if (navigator.currentConfiguration!.path.contains('pass'))
-                      verification.resetPass = true;
-                    authBloc.verifyMethod(verification);
+                  if (!isRequest) {
+                    codeVerify = val;
+                    debugPrint('verifyMethod => $codeVerify');
+                    if (codeVerify!.length == 4) {
+                      isRequest = true;
+                      VerificationCode verification = VerificationCode();
+                      verification.mobile = args['mobile'];
+                      verification.verifyCode = codeVerify;
+                      if (navigator.currentConfiguration!.path.contains('pass'))
+                        verification.resetPass = true;
+                      DialogUtils.showDialogProgress(context: context);
+                      authBloc.verifyMethod(verification);
+                    }
                   }
-
                 },
                 textController: textEditingController,
                 context: context,
               ),
             ),
           ),
-          Space(height: 10.h),
+          Space(height: 8.h),
           Container(
               child: flag
                   ? InkWell(
@@ -233,23 +235,23 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                         ],
                       ),
                       onTap: () => setState(() {
-                            authBloc.sendCodeMethod(args['mobile']);
+                            authBloc.tryCodeMethod(args['mobile']);
                             flag = false;
                             _start = 120;
                             startTimer();
                           }))
-                  : Text(intl.sendAgain + '$_start',
-                      style: TextStyle(fontSize: 14.0))),
-          Space(height: 10.h),
-          button(AppColors.btnColor, intl.register, Size(100.w, 6.h), () {
+                  : Text(intl.sendAgain + '${DateTimeUtils.timerFormat(_start)}', style: TextStyle(fontSize: 14.0))),
+          Space(height: 8.h),
+          button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
             VerificationCode verification = VerificationCode();
             verification.mobile = args['mobile'];
-            verification.verifyCode = code;
+            verification.verifyCode = codeVerify;
             if (navigator.currentConfiguration!.path.contains('pass'))
               verification.resetPass = true;
             debugPrint('query verify ${verification.toJson()}');
             authBloc.verifyMethod(verification);
           }),
+          Space(height: 5.h),
         ],
       ),
     );
@@ -277,6 +279,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
 
   @override
   void codeUpdated() {
+    unregisterListener();
     textEditingController.text = code!;
   }
 }

@@ -229,8 +229,6 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
       stream: bloc.calendar,
       builder: (_, AsyncSnapshot<CalendarData?> snapshot) {
         if (snapshot.hasData) {
-          debugPrint(
-              'snapshot  / ${snapshot.requireData?.terms[0].visits?.length}');
           setTerms(snapshot.requireData?.terms);
           for (int i = 0; i < monthDays.length; i++) {
             debugPrint('month days ${monthDays[i].types}');
