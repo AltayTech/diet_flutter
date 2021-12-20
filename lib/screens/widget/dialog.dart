@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 
 abstract class DialogUtils {
   static Future<T?> showBottomSheetPage<T>({

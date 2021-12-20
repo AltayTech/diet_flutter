@@ -1,6 +1,6 @@
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 
 class Toolbar extends AppBar {
   late Widget item;

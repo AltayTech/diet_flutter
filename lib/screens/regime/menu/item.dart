@@ -6,7 +6,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 
 class MenuItem extends StatelessWidget {
   const MenuItem({Key? key, required this.onClick, required this.menu,}) : super(key: key);

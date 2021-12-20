@@ -4,13 +4,14 @@ import 'package:behandam/screens/regime/package/card_package.dart';
 import 'package:behandam/screens/regime/package/package_bloc.dart';
 import 'package:behandam/screens/regime/package/package_provider.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -114,11 +115,14 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
         stream: bloc.waiting,
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData && snapshot.data == false) {
-            return ListView.builder(
-                physics: ClampingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: bloc.list!.length,
-                itemBuilder: (BuildContext context, int index) => CardPackage(bloc.list![index]));
+            return ScrollConfiguration(
+              behavior: MyCustomScrollBehavior(),
+              child: ListView.builder(
+                  physics: ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: bloc.list!.length,
+                  itemBuilder: (BuildContext context, int index) => CardPackage(bloc.list![index])),
+            );
           } else {
             return Center(
                 child: SpinKitCircle(

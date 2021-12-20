@@ -11,7 +11,7 @@ import 'package:behandam/widget/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:rolling_switch/rolling_switch.dart';
 import 'package:toggle_switch/toggle_switch.dart';

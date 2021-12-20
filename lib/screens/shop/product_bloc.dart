@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html' as html;
 import 'dart:io';
 
 import 'package:behandam/data/entity/payment/payment.dart';
@@ -109,7 +110,7 @@ class ProductBloc {
   final _typeMediaShop = BehaviorSubject<TypeMediaShop>();
 
   void getProduct(int id) async {
-    if (tempDir == null) {
+    if (tempDir == null && !kIsWeb) {
       tempDir = await getExternalStorageDirectory();
     }
     _loadingMoreProducts.value = true;
@@ -122,10 +123,11 @@ class ProductBloc {
         if (_lessons != null) {
           _lessons?.forEach((element) async {
             if (element.video != null && element.video!.trim().length > 1) {
-              debugPrint(
-                  'element.video => ${tempDir?.path}/${element.video?.split('/').last} // ${_product.value.userOrderDate}');
-              element.path = '${tempDir!.path}/${element.video!.split('/').last}';
-              bool exist = await File('${element.path}').exists();
+              bool exist = false;
+              if (!kIsWeb) {
+                element.path = '${tempDir!.path}/${element.video!.split('/').last}';
+                exist = await File('${element.path}').exists();
+              }
               if (exist) {
                 element.typeMediaShop = TypeMediaShop.play;
               } else if (element.isFree == 0 && _product.value.userOrderDate == null) {
@@ -146,25 +148,32 @@ class ProductBloc {
   }
 
   void setProduct(ShopProduct product) {
-    _product.value =ShopProduct();
-    _product.value.id=product.id;
-    _product.value.discountPrice=product.discountPrice;
-    _product.value.sellingPrice=product.sellingPrice;
-    _product.value.shortDescription=product.shortDescription;
-    _product.value.productName=product.productName;
+    _product.value = ShopProduct();
+    _product.value.id = product.id;
+    _product.value.discountPrice = product.discountPrice;
+    _product.value.sellingPrice = product.sellingPrice;
+    _product.value.shortDescription = product.shortDescription;
+    _product.value.productName = product.productName;
   }
 
   void downloadFile(Lessons value) async {
-    value.typeMediaShop = TypeMediaShop.progress;
-    _typeMediaShop.value = TypeMediaShop.progress;
-    _repository.download(value.video!, value.path!).then((param) {
-      debugPrint('path => ${value.path!}');
-      value.typeMediaShop = TypeMediaShop.play;
-      _typeMediaShop.value = value.typeMediaShop!;
-    }).catchError((onError) {
-      value.typeMediaShop = TypeMediaShop.downloadAndPlay;
-      _typeMediaShop.value = TypeMediaShop.downloadAndPlay;
-    });
+    if (kIsWeb) {
+     /* html.AnchorElement anchorElement = new html.AnchorElement(href: value.video!);
+      anchorElement.download = value.video!;
+      anchorElement.click();*/
+      html.window.open(value.video!, 'new tab');
+    } else {
+      value.typeMediaShop = TypeMediaShop.progress;
+      _typeMediaShop.value = TypeMediaShop.progress;
+      _repository.download(value.video!, value.path!).then((param) {
+        debugPrint('path => ${value.path!}');
+        value.typeMediaShop = TypeMediaShop.play;
+        _typeMediaShop.value = value.typeMediaShop!;
+      }).catchError((onError) {
+        value.typeMediaShop = TypeMediaShop.downloadAndPlay;
+        _typeMediaShop.value = TypeMediaShop.downloadAndPlay;
+      });
+    }
   }
 
   void onProduct(int newId) {

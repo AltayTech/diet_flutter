@@ -10,6 +10,7 @@ import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/utils/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 enum actionType {
@@ -27,9 +28,9 @@ class AppFcm {
 
   static Future<void> initialize() async {
     _initializeAwesome();
-    _listenAwesomeEvents();
+    if (!kIsWeb) _listenAwesomeEvents();
     _registerOnFirebase();
-    _listenFcmEvents();
+    if (!kIsWeb) _listenFcmEvents();
   }
 
   static void _listenAwesomeEvents() {
@@ -95,6 +96,19 @@ class AppFcm {
   }
 
   static Future<void> _initializeAwesome() async {
+    if (kIsWeb) {
+      NotificationSettings settings = await _firebaseMessaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
+      return;
+    }
+
     await AwesomeNotifications().initialize(
       null, // this makes you use your default icon, if you haven't one
       [

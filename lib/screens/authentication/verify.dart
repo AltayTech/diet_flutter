@@ -10,9 +10,10 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -64,6 +65,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
     _timer.cancel();
     authBloc.dispose();
    // textEditingController.dispose();
+    if(!kIsWeb)
     SmsAutoFill().unregisterListener();
     super.dispose();
   }
