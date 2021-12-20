@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:video_player/video_player.dart';
+import 'dart:html' as html;
+import 'dart:ui' as ui;
 
 abstract class CallBackListener {
   void notifyChange();
@@ -28,6 +30,10 @@ class CustomVideo extends StatefulWidget {
   Function? onCompletion;
   bool? isFile;
   Function(ChewieController chewieController) ? callBackListener;
+  String? src;
+  final double startAt = 0;
+  final bool autoplay = false;
+  final bool controls = true;
 
   CustomVideo(
       {Key? key,
@@ -39,7 +45,8 @@ class CustomVideo extends StatefulWidget {
       this.isStart,
       this.onCompletion,
       this.isFile,
-      this.callBackListener})
+      this.callBackListener,
+      this.src})
       : super(key: key);
 
   @override
@@ -73,10 +80,12 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
   @override
   void initState() {
     super.initState();
+    kIsWeb
+    ? webPlayer()
 
     // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
 
-    setData();
+    : setData();
     /*  _controller.addL
 istener(() {
 
@@ -109,6 +118,29 @@ istener(() {
           });
         });*/
     // }
+  }
+
+  webPlayer(){
+    widget.src = widget.url;
+    String? URL = widget.src! + '#t=${widget.startAt}';
+// Do not remove the below comment - Fix for missing ui.platformViewRegistry in dart.ui
+// ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(widget.src!, (int viewId) {
+//https: //api.flutter.dev/flutter/dart-html/VideoElement-class.html
+      final video = html.VideoElement()
+        ..src = URL
+        ..autoplay = widget.autoplay
+        ..controls = widget.controls
+        ..style.border = 'none'
+        ..style.borderColor = 'red'
+        ..style.height = '100%'
+        ..style.width = '100%';
+
+// Allows Safari iOS to play the video inline
+      video.setAttribute('playsinline', 'true');
+
+      return video;
+    });
   }
 
   Future<void> setData() async {
@@ -165,7 +197,10 @@ istener(() {
 //Color(0xff62D0C5)
   @override
   Widget build(BuildContext context) {
-    if (_initializeVideoPlayerFuture) {
+    if(kIsWeb)
+      return HtmlElementView(viewType: widget.src!);
+    else
+       if (_initializeVideoPlayerFuture) {
       return Scaffold(
         body: Stack(
           children: [
