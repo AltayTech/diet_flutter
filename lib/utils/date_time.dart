@@ -83,6 +83,12 @@ abstract class DateTimeUtils {
     final f = g.toJalali().formatter;
     return '${f.d} ${f.mN} ${f.yyyy}';
   }
+
+  static String timerFormat(int time){
+    int min=(time/60).toInt();
+    int second=time%60;
+    return '$min:$second';
+  }
 }
 
 enum Meal {

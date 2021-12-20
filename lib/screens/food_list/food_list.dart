@@ -35,9 +35,13 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
   void initListener() {
     bloc.showServerError.listen((event) {
-      if(!Routes.listView.contains(event)) {
+      if (event.contains('payment/bill')) {
+        context.vxNav
+            .clearAndPush(Uri.parse('/${event.toString().split('/')[0]}${Routes.regimeType}'));
+      } else if (!Routes.listView.contains(event)) {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
-      }else context.vxNav.replace(Uri.parse('/$event'));
+      } else
+        context.vxNav.replace(Uri.parse('/$event'));
     });
     bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
@@ -125,7 +129,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                     ),
                     SubmitButton(
                       label: isToday(snapshot.requireData!) ? intl.showAdvices : intl.goToToday,
-                      size: Size(40.w,5.h),
+                      size: Size(40.w, 5.h),
                       onTap: isToday(snapshot.requireData!)
                           ? () => VxNavigator.of(context).push(Uri(path: Routes.advice))
                           : () =>
@@ -173,6 +177,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

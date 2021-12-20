@@ -210,7 +210,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
               ),
               GestureDetector(
                 child: Text(
-                  _controller.expanded ? intl.back : intl.viewAll,
+                  _controller.expanded ? intl.close : intl.viewAll,
                   style: Theme.of(context).textTheme.overline!.copyWith(color: AppColors.primary),
                   textAlign: TextAlign.center,
                 ),

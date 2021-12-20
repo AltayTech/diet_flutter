@@ -7,11 +7,12 @@ import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/extensions/string.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
-import 'package:behandam/extensions/string.dart';
+
 class AuthenticationBloc {
   AuthenticationBloc() {
     fetchCountries();
@@ -28,10 +29,12 @@ class AuthenticationBloc {
   final _showServerError = LiveEvent();
 
   List<Country> get countries {
-    if(_search.isNullOrEmpty)
+    if (_search.isNullOrEmpty)
       return _countries.value;
     else
-    return _countries.value.where((element) => element.name!.contains(_search!) || element.code!.contains(_search!)).toList();
+      return _countries.value
+          .where((element) => element.name!.contains(_search!) || element.code!.contains(_search!))
+          .toList();
   }
 
   Stream get countriesStream => _countries.stream;
@@ -84,8 +87,14 @@ class AuthenticationBloc {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       print('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
-      _repository.getUser().then((value) => MemoryApp.userInformation = value.data).whenComplete(() => _navigateToVerify.fire(value.next));
-    }).whenComplete(() => _showServerError.fire(false));
+      _repository
+          .getUser()
+          .then((value) => MemoryApp.userInformation = value.data)
+          .whenComplete(() {
+        _showServerError.fire(false);
+        _navigateToVerify.fire(value.next);
+      });
+    });
   }
 
   void resetPasswordMethod(Reset pass) {
@@ -101,8 +110,14 @@ class AuthenticationBloc {
     _repository.register(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.analytics!.logEvent(name: "register_success");
-      _repository.getUser().then((value) => MemoryApp.userInformation = value.data).whenComplete(() => _navigateToVerify.fire(value.next));
-    }).whenComplete(() => _waiting.value = false);
+      _repository
+          .getUser()
+          .then((value) => MemoryApp.userInformation = value.data)
+          .whenComplete(() {
+        _waiting.value = false;
+        _navigateToVerify.fire(value.next);
+      });
+    });
   }
 
   void sendCodeMethod(String mobile) {
@@ -116,15 +131,18 @@ class AuthenticationBloc {
     });
   }
 
+  void tryCodeMethod(String mobile) {
+    _repository.verificationCode(mobile);
+  }
+
   void verifyMethod(VerificationCode verify) {
-    _waiting.value = true;
     _repository.verify(verify).then((value) async {
       if (value.data!.token != null)
         await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
-      print(
-          'verify code ${value.next} ${value.data!.toJson()} / ${await AppSharedPreferences.authToken}');
       _navigateToVerify.fire(value.next);
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() {
+      _showServerError.fire(true);
+    });
   }
 
   void landingReg(Register register) {
@@ -133,8 +151,14 @@ class AuthenticationBloc {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.token = value.requireData.token;
       MemoryApp.analytics!.logEvent(name: "register_success");
-      _navigateTo.fire(value.next);
-    }).whenComplete(() => _waiting.value = false);
+      _repository
+          .getUser()
+          .then((value) => MemoryApp.userInformation = value.data)
+          .whenComplete(() {
+        _waiting.value = false;
+        _navigateToVerify.fire(value.next);
+      });
+    });
   }
 
   void onCountrySearch(String search) {
