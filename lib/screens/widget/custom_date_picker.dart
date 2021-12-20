@@ -87,7 +87,7 @@ class myDate extends ResourcefulState<CustomDate> {
       yearsList = <int>[];
       daysList = <int>[];
       var forLength = widget.maxYear ?? jalali.year;
-      for (int i = 1340; i <= forLength; i++) {
+      for (int i = 1300; i <= forLength; i++) {
         yearsList!.add(i);
       }
     } else {
@@ -244,7 +244,7 @@ class myDate extends ResourcefulState<CustomDate> {
         birthday = changeItem;
         break;
     }
-print('value is = >  $birthday $birthMonth $birthYear');
+    print('value is = >  $birthday $birthMonth $birthYear');
     setState(() {
       widget.datetime = "$birthday $birthMonth $birthYear";
       selectedIll;

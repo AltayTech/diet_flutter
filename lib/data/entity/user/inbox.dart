@@ -3,11 +3,17 @@ import 'package:json_annotation/json_annotation.dart';
 part 'inbox.g.dart';
 
 enum INBOX_ACTION_TYPE {
+  @JsonValue(0)
   OPEN_WEB_URL,
+  @JsonValue(1)
   OPEN_ESPECIAL_APP,
+  @JsonValue(2)
   OPEN_PAGE,
+  @JsonValue(3)
   OPEN_TELEGRAM_CHANNEL,
+  @JsonValue(4)
   OPEN_INSTAGRAM_PAGE,
+  @JsonValue(5)
   CALL_SERVICE
 }
 
@@ -44,13 +50,13 @@ class InboxItem {
   String? seenAt;
 
   @JsonKey(name: "inbox")
-  late InboxItem inbox;
+  InboxItem? inbox;
 
   @JsonKey(name: "action_type")
   INBOX_ACTION_TYPE? actionType;
 
   @JsonKey(name: "action")
-  late String action;
+  String? action;
 
   InboxItem();
 

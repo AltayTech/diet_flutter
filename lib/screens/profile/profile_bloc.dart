@@ -287,18 +287,32 @@ class ProfileBloc {
   }
 
   void edit(BuildContext context) async {
-    if (userInfo.address != null && userInfo.address!.cityId != null)
+    UserInformationEdit userInformationEdit=UserInformationEdit();
+    if (userInfo.address != null && userInfo.address!.cityId != null) {
       userInfo.cityId = userInfo.address!.cityId;
-    if (userInfo.address != null && userInfo.address!.provinceId != null)
+
+    }if (userInfo.address != null && userInfo.address!.provinceId != null) {
       userInfo.provinceId = userInfo.address!.provinceId;
+
+    }
 
     if (userInfo.socialMedia != null)
       userInfo.socialMedia!.forEach((element) {
         element.link = element.pivot?.link;
+        element.socialMediaId = element.id;
         print('element ${element.toJson()}');
       });
+    userInformationEdit.socialMedia=userInfo.socialMedia;
+    userInformationEdit.firstName=userInfo.firstName;
+    userInformationEdit.lastName=userInfo.lastName;
+    userInformationEdit.callNumber=userInfo.callNumber;
+    userInformationEdit.email=userInfo.email;
+    userInformationEdit.address=userInfo.address?.address;
+    userInformationEdit.countryId=userInfo.countryId;
+    userInformationEdit.cityId=userInfo.cityId;
+    userInformationEdit.provinceId=userInfo.provinceId;
     DialogUtils.showDialogProgress(context: context);
-    _repository.changeProfile(userInfo).whenComplete(() {
+    _repository.changeProfile(userInformationEdit).whenComplete(() {
       Navigator.of(context).pop();
     });
   }

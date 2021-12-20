@@ -117,7 +117,7 @@ abstract class RestClient {
   NetworkResult<Media> sendMedia(@Part(name: "media") File media, @Part(name: "info") String info);
 
   @PATCH("/profile")
-  NetworkResult<UserInformation> updateProfile(@Body() UserInformation userInformation);
+  NetworkResult<UserInformation> updateProfile(@Body() UserInformationEdit userInformation);
 
   @GET("/inbox/unseen/count")
   NetworkResult<Inbox> getUnreadInbox();

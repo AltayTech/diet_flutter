@@ -53,6 +53,36 @@ Map<String, dynamic> _$UserInformationToJson(UserInformation instance) =>
       'media': instance.media,
     };
 
+UserInformationEdit _$UserInformationEditFromJson(Map<String, dynamic> json) =>
+    UserInformationEdit()
+      ..mobile = json['mobile'] as String?
+      ..email = json['email'] as String?
+      ..countryId = json['country_id'] as int?
+      ..cityId = json['city_id'] as int?
+      ..provinceId = json['province_id'] as int?
+      ..callNumber = json['call_number'] as String?
+      ..firstName = json['first_name'] as String?
+      ..lastName = json['last_name'] as String?
+      ..address = json['address'] as String?
+      ..socialMedia = (json['social_media'] as List<dynamic>?)
+          ?.map((e) => SocialMedia.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+Map<String, dynamic> _$UserInformationEditToJson(
+        UserInformationEdit instance) =>
+    <String, dynamic>{
+      'mobile': instance.mobile,
+      'email': instance.email,
+      'country_id': instance.countryId,
+      'city_id': instance.cityId,
+      'province_id': instance.provinceId,
+      'call_number': instance.callNumber,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
+      'address': instance.address,
+      'social_media': instance.socialMedia,
+    };
+
 Address _$AddressFromJson(Map<String, dynamic> json) => Address()
   ..address = json['address'] as String?
   ..provinceId = json['province_id'] as int?
@@ -98,13 +128,15 @@ SocialMedia _$SocialMediaFromJson(Map<String, dynamic> json) => SocialMedia()
       ? null
       : PivotMedia.fromJson(json['pivot'] as Map<String, dynamic>)
   ..link = json['link'] as String?
-  ..id = json['id'] as int?;
+  ..id = json['id'] as int?
+  ..socialMediaId = json['social_media_id'] as int?;
 
 Map<String, dynamic> _$SocialMediaToJson(SocialMedia instance) =>
     <String, dynamic>{
       'pivot': instance.pivot,
       'link': instance.link,
       'id': instance.id,
+      'social_media_id': instance.socialMediaId,
     };
 
 PivotMedia _$PivotMediaFromJson(Map<String, dynamic> json) =>

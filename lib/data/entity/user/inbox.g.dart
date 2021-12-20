@@ -23,10 +23,12 @@ InboxItem _$InboxItemFromJson(Map<String, dynamic> json) => InboxItem()
   ..text = json['text'] as String?
   ..createdAt = json['created_at'] as String?
   ..seenAt = json['seen_at'] as String?
-  ..inbox = InboxItem.fromJson(json['inbox'] as Map<String, dynamic>)
+  ..inbox = json['inbox'] == null
+      ? null
+      : InboxItem.fromJson(json['inbox'] as Map<String, dynamic>)
   ..actionType =
       $enumDecodeNullable(_$INBOX_ACTION_TYPEEnumMap, json['action_type'])
-  ..action = json['action'] as String;
+  ..action = json['action'] as String?;
 
 Map<String, dynamic> _$InboxItemToJson(InboxItem instance) => <String, dynamic>{
       'id': instance.id,
@@ -40,10 +42,10 @@ Map<String, dynamic> _$InboxItemToJson(InboxItem instance) => <String, dynamic>{
     };
 
 const _$INBOX_ACTION_TYPEEnumMap = {
-  INBOX_ACTION_TYPE.OPEN_WEB_URL: 'OPEN_WEB_URL',
-  INBOX_ACTION_TYPE.OPEN_ESPECIAL_APP: 'OPEN_ESPECIAL_APP',
-  INBOX_ACTION_TYPE.OPEN_PAGE: 'OPEN_PAGE',
-  INBOX_ACTION_TYPE.OPEN_TELEGRAM_CHANNEL: 'OPEN_TELEGRAM_CHANNEL',
-  INBOX_ACTION_TYPE.OPEN_INSTAGRAM_PAGE: 'OPEN_INSTAGRAM_PAGE',
-  INBOX_ACTION_TYPE.CALL_SERVICE: 'CALL_SERVICE',
+  INBOX_ACTION_TYPE.OPEN_WEB_URL: 0,
+  INBOX_ACTION_TYPE.OPEN_ESPECIAL_APP: 1,
+  INBOX_ACTION_TYPE.OPEN_PAGE: 2,
+  INBOX_ACTION_TYPE.OPEN_TELEGRAM_CHANNEL: 3,
+  INBOX_ACTION_TYPE.OPEN_INSTAGRAM_PAGE: 4,
+  INBOX_ACTION_TYPE.CALL_SERVICE: 5,
 };

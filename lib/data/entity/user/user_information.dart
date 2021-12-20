@@ -49,23 +49,60 @@ class UserInformation {
 
   String get fullName => firstName == null ? '' : '$firstName $lastName';
 
-  String get whatsApp => (socialMedia == null || socialMedia!.length <= 0 || socialMedia![0].pivot?.link == null)
-      ? ''
-      : socialMedia![0].pivot!.link!;
+  String get whatsApp =>
+      (socialMedia == null || socialMedia!.length <= 0 || socialMedia![0].pivot?.link == null)
+          ? ''
+          : socialMedia![0].pivot!.link!;
 
-  String get telegram => (socialMedia == null || socialMedia!.length <= 1 || socialMedia![1].pivot?.link == null)
-      ? ''
-      : socialMedia![1].pivot!.link!;
+  String get telegram =>
+      (socialMedia == null || socialMedia!.length <= 1 || socialMedia![1].pivot?.link == null)
+          ? ''
+          : socialMedia![1].pivot!.link!;
 
-  String get skype => (socialMedia == null || socialMedia!.length <= 2 || socialMedia![2].pivot?.link == null)
-      ? ''
-      : socialMedia![2].pivot!.link!;
+  String get skype =>
+      (socialMedia == null || socialMedia!.length <= 2 || socialMedia![2].pivot?.link == null)
+          ? ''
+          : socialMedia![2].pivot!.link!;
 
   UserInformation();
 
   factory UserInformation.fromJson(Map<String, dynamic> json) => _$UserInformationFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserInformationToJson(this);
+}
+
+@JsonSerializable()
+class UserInformationEdit {
+  @JsonKey(name: "mobile")
+  String? mobile;
+  @JsonKey(name: "email")
+  String? email;
+  @JsonKey(name: "country_id")
+  int? countryId;
+  @JsonKey(name: "city_id")
+  int? cityId;
+
+  @JsonKey(name: "province_id")
+  int? provinceId;
+
+  @JsonKey(name: "call_number")
+  String? callNumber;
+  @JsonKey(name: "first_name")
+  String? firstName;
+  @JsonKey(name: "last_name")
+  String? lastName;
+
+  @JsonKey(name: "address")
+  String? address;
+
+  @JsonKey(name: "social_media")
+  List<SocialMedia>? socialMedia;
+
+  UserInformationEdit();
+
+  factory UserInformationEdit.fromJson(Map<String, dynamic> json) => _$UserInformationEditFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserInformationEditToJson(this);
 }
 
 @JsonSerializable()
@@ -140,6 +177,9 @@ class SocialMedia {
 
   @JsonKey(name: "id")
   int? id;
+
+  @JsonKey(name: "social_media_id")
+  int? socialMediaId;
 
   SocialMedia();
 

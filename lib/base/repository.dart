@@ -100,7 +100,7 @@ abstract class Repository {
 
   NetworkResult<Media> sendMedia(String info, File media);
 
-  NetworkResult<UserInformation> changeProfile(UserInformation userInformation);
+  NetworkResult<UserInformation> changeProfile(UserInformationEdit userInformation);
 
   NetworkResult<Inbox> getUnreadInbox();
 
@@ -401,7 +401,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<UserInformation> changeProfile(UserInformation userInformation) {
+  NetworkResult<UserInformation> changeProfile(UserInformationEdit userInformation) {
     var response = _apiClient.updateProfile(userInformation);
     return response;
   }

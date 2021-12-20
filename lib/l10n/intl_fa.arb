@@ -586,5 +586,7 @@
   "offErrorResult": "کد تخفیف اشتباه است",
   "errorDescriptionTicket": "لطفا متن تیکت را پر کنید",
   "close": "بستن",
+  "newMessage": "پیام جدید",
+  "messageNotFound": "پیامی برای نمایش وجود ندارد",
   "understand": "متوجه شدم"
 }

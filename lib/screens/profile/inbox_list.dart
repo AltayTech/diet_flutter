@@ -39,7 +39,6 @@ class _InboxList extends ResourcefulState<InboxList> {
       backgroundColor: Color.fromARGB(255, 245, 245, 245),
       body: StreamBuilder(
         builder: (context, AsyncSnapshot<List<InboxItem>> snapshot) {
-          print('snap==> ${snapshot.data}');
           if (snapshot.data == null) {
             return Center(
               child: SpinKitCircle(
@@ -55,6 +54,7 @@ class _InboxList extends ResourcefulState<InboxList> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               shrinkWrap: true,
+              padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   child: Card(
@@ -66,6 +66,29 @@ class _InboxList extends ResourcefulState<InboxList> {
                       constraints: BoxConstraints(minHeight: 15.h),
                       child: Row(
                         children: [
+                          snapshot.data![index].seenAt == null
+                              ? Flexible(
+                            flex: 0,
+                            child: Container(
+                                width: 7.w,
+                                height: 17.5.h,
+                                decoration: BoxDecoration(
+                                    color: AppColors.accentColor,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10))),
+                                child: new RotatedBox(
+                                  quarterTurns: 1,
+                                  child: Center(
+                                    child: new Text(
+                                      intl.newMessage,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                )),
+                          )
+                              : Container(),
                           Flexible(
                             flex: 1,
                             fit: FlexFit.loose,
@@ -78,14 +101,14 @@ class _InboxList extends ResourcefulState<InboxList> {
                                   Flexible(
                                     flex: 0,
                                     child: Container(
-                                      alignment: Alignment.topRight,
                                       width: double.maxFinite,
                                       padding: EdgeInsets.only(left: 8, top: 8, right: 8),
                                       child: Text(
-                                        snapshot.data![index].inbox.title ?? '',
-                                        textAlign: TextAlign.right,
+                                        snapshot.data![index].inbox?.title ?? '',
+                                        textAlign: TextAlign.start,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context).textTheme.bodyText2,
                                       ),
                                     ),
                                   ),
@@ -96,10 +119,11 @@ class _InboxList extends ResourcefulState<InboxList> {
                                       width: double.maxFinite,
                                       padding: EdgeInsets.only(right: 8, left: 8, bottom: 8),
                                       child: Text(
-                                        snapshot.data![index].inbox.text ?? '',
-                                        textAlign: TextAlign.right,
+                                        snapshot.data![index].inbox?.text ?? '',
+                                        textAlign: TextAlign.start,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context).textTheme.subtitle2,
                                       ),
                                     ),
                                   ),
@@ -115,58 +139,56 @@ class _InboxList extends ResourcefulState<InboxList> {
                                   Flexible(
                                     flex: 1,
                                     child: Container(
-                                      alignment: Alignment.centerRight,
                                       width: double.maxFinite,
                                       height: 5.h,
                                       padding: EdgeInsets.all(8),
                                       child: Row(
+                                        textDirection: context.textDirectionOfLocale,
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          Icon(
-                                            Icons.arrow_back_ios_rounded,
-                                            color: AppColors.accentColor,
-                                            size: 18,
-                                          ),
-                                          Text(
-                                            "مشاهده بیشتر",
-                                            style: TextStyle(color: AppColors.accentColor),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              snapshot.data![index].inbox.createdAt == null
-                                                  ? ''
-                                                  : DateTimeUtils.gregorianToJalali(snapshot
-                                                      .data![index].inbox.createdAt!
-                                                      .substring(0, 10)),
-                                              textAlign: TextAlign.right,
-                                              style: TextStyle(
-                                                  color: snapshot.data![index].seenAt == null
-                                                      ? Color(0xffA7A9B4)
-                                                      : Color(0xffA7A9B4).withOpacity(0.7)),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 8, right: 8),
-                                            child: Text(
-                                              snapshot.data![index].inbox.createdAt == null
-                                                  ? ''
-                                                  : DateTimeUtils.getTime(
-                                                      snapshot.data![index].inbox.createdAt!),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: snapshot.data![index].seenAt == null
-                                                      ? Color(0xffA7A9B4)
-                                                      : Color(0xffA7A9B4).withOpacity(0.7)),
-                                            ),
-                                          ),
                                           ImageUtils.fromLocal(
                                             "assets/images/ticket/date_time.svg",
                                             color: snapshot.data![index].seenAt == null
                                                 ? Color(0xffA7A9B4)
                                                 : Color(0xffA7A9B4).withOpacity(0.7),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 8, right: 8),
+                                            child: Text(
+                                              snapshot.data![index].inbox?.createdAt == null
+                                                  ? ''
+                                                  : DateTimeUtils.getTime(
+                                                  snapshot.data![index].inbox!.createdAt!),
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context).textTheme.button!.copyWith(color: snapshot.data![index].seenAt == null
+                                                  ? Color(0xffA7A9B4)
+                                                  : Color(0xffA7A9B4).withOpacity(0.7))
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              snapshot.data![index].inbox?.createdAt == null
+                                                  ? ''
+                                                  : DateTimeUtils.gregorianToJalali(snapshot
+                                                      .data![index].inbox!.createdAt!
+                                                      .substring(0, 10)),
+                                              textAlign: TextAlign.start,
+                                              style: Theme.of(context).textTheme.button!.copyWith(color: snapshot.data![index].seenAt == null
+                                                  ? Color(0xffA7A9B4)
+                                                  : Color(0xffA7A9B4).withOpacity(0.7)),
+                                            ),
+                                          ),
+                                          Text(
+                                            intl.view,
+                                            style: Theme.of(context).textTheme.button!.copyWith(color: AppColors.accentColor),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward_ios_outlined,
+                                            color: AppColors.accentColor,
+                                            size: 18,
                                           ),
                                         ],
                                       ),
@@ -177,49 +199,27 @@ class _InboxList extends ResourcefulState<InboxList> {
                               padding: EdgeInsets.only(left: 12, right: 12),
                             ),
                           ),
-                          snapshot.data![index].seenAt == null
-                              ? Flexible(
-                                  flex: 0,
-                                  child: Container(
-                                      width: 7.w,
-                                      height: 17.5.h,
-                                      decoration: BoxDecoration(
-                                          color: AppColors.accentColor,
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(10),
-                                              bottomRight: Radius.circular(10))),
-                                      child: new RotatedBox(
-                                        quarterTurns: 1,
-                                        child: Center(
-                                          child: new Text(
-                                            'پیام جدید',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      )),
-                                )
-                              : Container(),
+
                         ],
                       ),
                     ),
                   ),
                   onTap: () {
-                    snapshot.data![index].inbox.id = snapshot.data![index].id;
+                    snapshot.data![index].inbox?.id = snapshot.data![index].id;
                     setState(() {
                       snapshot.data![index].seenAt = DateTime.now().toString();
                     });
-                    if (snapshot.data![index].inbox.actionType == null ||
-                        (snapshot.data![index].inbox.actionType ==
+                    if (snapshot.data![index].inbox!.actionType == null ||
+                        (snapshot.data![index].inbox!.actionType ==
                                 INBOX_ACTION_TYPE.OPEN_INSTAGRAM_PAGE.index ||
-                            snapshot.data![index].inbox.actionType ==
+                            snapshot.data![index].inbox!.actionType ==
                                 INBOX_ACTION_TYPE.OPEN_TELEGRAM_CHANNEL.index ||
-                            snapshot.data![index].inbox.actionType ==
+                            snapshot.data![index].inbox!.actionType ==
                                 INBOX_ACTION_TYPE.OPEN_WEB_URL.index))
                       VxNavigator.of(context)
                           .push(Uri.parse(Routes.showInbox), params: snapshot.data![index].inbox);
                     else
-                      launchURL(snapshot.data![index].inbox.action);
+                      launchURL(snapshot.data![index].inbox!.action!);
                   },
                 );
               },

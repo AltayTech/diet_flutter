@@ -94,6 +94,8 @@ class AuthenticationBloc {
         _showServerError.fire(false);
         _navigateToVerify.fire(value.next);
       });
+    }).catchError((onError){
+      _showServerError.fire(false);
     });
   }
 
@@ -117,6 +119,8 @@ class AuthenticationBloc {
         _waiting.value = false;
         _navigateToVerify.fire(value.next);
       });
+    }).catchError((onError){
+      _showServerError.fire(false);
     });
   }
 
@@ -158,6 +162,8 @@ class AuthenticationBloc {
         _waiting.value = false;
         _navigateToVerify.fire(value.next);
       });
+    }).catchError((onError){
+      _showServerError.fire(false);
     });
   }
 
