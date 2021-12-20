@@ -8,18 +8,14 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/gender_switch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:rolling_switch/rolling_switch.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
-import '../../routes.dart';
 
 enum gender{
 @JsonValue(0)
@@ -256,13 +252,15 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   minHeight: 45.0,
                   initialLabelIndex: 0,
                   cornerRadius: 25.0,
-                  activeFgColor: Colors.white,
+                  activeFgColor: AppColors.primary,
                   inactiveBgColor: Colors.grey,
                   inactiveFgColor: Colors.white,
                   totalSwitches: 2,
                   icons: [
-                    Icons.person,
-                    Icons.person_outline,
+                    'assets/images/registry/gender_woman.svg',
+                    'assets/images/registry/gender_man.svg',
+                    'assets/images/registry/gender_woman_selected.svg',
+                    'assets/images/registry/gender_man_selected.svg',
                   ],
                   iconSize: 30.0,
                   activeBgColors: [[Colors.red, Colors.pinkAccent], [Color(0xff3b5998), Color(0xff8b9dc3)]],
