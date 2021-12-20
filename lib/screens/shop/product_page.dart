@@ -13,6 +13,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_video.dart';
 import 'package:chewie/chewie.dart';
 import 'package:expandable/expandable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
