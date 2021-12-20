@@ -90,7 +90,8 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                     decoration: AppDecorations.boxMild.copyWith(
                       color: AppColors.box,
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Column(
                       children: [
                         cardNumber(bloc.invoice!.cardNumber!),
@@ -114,7 +115,8 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                     showUserInfo
                         ? intl.nowFillFollowingInformation
                         : intl.clickFollowingButtonAfterPayment,
-                    style: typography.subtitle2?.apply(color: AppColors.labelColor),
+                    style: typography.subtitle2
+                        ?.apply(color: AppColors.labelColor),
                     textAlign: TextAlign.center,
                     softWrap: true,
                   ),
@@ -122,20 +124,22 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                   Space(height: 2.h),
                   Center(
                     child: SubmitButton(
-                      label: showUserInfo ? intl.submitOfflinePayment : intl.deposited,
-                      onTap: showUserInfo
-                          ? (invoice.cardOwner.isNullOrEmpty ||
-                                  invoice.cardNum.isNullOrEmpty ||
-                                  invoice.payedAt.isNullOrEmpty)
-                              ? null
-                              : () {
-                                  bloc.newPayment(invoice);
-                                }
-                          : () {
-                              setState(() {
-                                showUserInfo = true;
-                              });
-                            },
+                      label: showUserInfo
+                          ? intl.submitOfflinePayment
+                          : intl.deposited,
+                      onTap: () {
+                        showUserInfo
+                            ? (invoice.cardOwner.isNullOrEmpty ||
+                                    invoice.cardNum.isNullOrEmpty ||
+                                    invoice.payedAt.isNullOrEmpty)
+                                ? null
+                                : bloc.newPayment(invoice)
+                            : () {
+                                setState(() {
+                                  showUserInfo = true;
+                                });
+                              };
+                      },
                     ),
                   ),
                 ],
@@ -302,7 +306,9 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           enable: true,
           ctx: context,
           action: TextInputAction.next,
-          formatters: [FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),],
+          formatters: [
+            FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
+          ],
           textDirection: context.textDirectionOfLocale,
           // textController: nameController,
         ),
@@ -319,7 +325,10 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           ctx: context,
           enable: true,
           action: TextInputAction.done,
-          formatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), LengthLimitingTextInputFormatter(4),],
+          formatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            LengthLimitingTextInputFormatter(4),
+          ],
           textDirection: context.textDirectionOfLocale,
           endCursorPosition: true,
           // textController: cardController,
@@ -394,7 +403,8 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
   String? dateFormatted() {
     if (!invoice.payedAt.isNullOrEmpty) {
-      var formatter = Jalali.fromDateTime(DateTime.parse(invoice.payedAt!)).formatter;
+      var formatter =
+          Jalali.fromDateTime(DateTime.parse(invoice.payedAt!)).formatter;
       return '${formatter.d} ${formatter.mN} ${formatter.yyyy}';
     }
     return null;
