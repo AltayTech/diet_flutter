@@ -269,7 +269,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   curve: Curves.bounceInOut, // animate must be set to true when using custom curve
                   onToggle: (index) {
                     index == gender.man.index
-                        ?switchValue = true
+                        ? switchValue = true
                         : switchValue = false;
                   },
                 ),

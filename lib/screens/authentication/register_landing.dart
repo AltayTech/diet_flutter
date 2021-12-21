@@ -6,6 +6,7 @@ import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/gender_switch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,7 +14,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:rolling_switch/rolling_switch.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../routes.dart';
 
@@ -37,7 +37,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   String? lastName;
   String? _password;
   late AuthenticationBloc authBloc;
-  bool?  _switchValue;
+  bool  switchValue = false;
   bool _obscureText = false;
   bool check = false;
 
@@ -239,41 +239,30 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               children: [
                 Text(intl.woman, style: TextStyle(fontSize: 14.0,color: AppColors.penColor)),
                 SizedBox(width: 10.0),
-                // RollingSwitch.icon(
-                //   onChanged: (bool state) {
-                //     _switchValue = state;
-                //   },
-                //   rollingInfoRight: const RollingIconInfo(
-                //     icon: Icons.person,
-                //     backgroundColor: Colors.pinkAccent,
-                //     // text: Text('Flag'),
-                //   ),
-                //   rollingInfoLeft: const RollingIconInfo(
-                //     icon: Icons.person,
-                //     // text: Text('Check'),
-                //   ),
-                // ),
                 ToggleSwitch(
                   minWidth: 90.0,
                   minHeight: 45.0,
                   initialLabelIndex: 0,
                   cornerRadius: 25.0,
-                  activeFgColor: Colors.white,
+                  activeFgColor: AppColors.primary,
                   inactiveBgColor: Colors.grey,
                   inactiveFgColor: Colors.white,
                   totalSwitches: 2,
                   icons: [
-                    Icons.person,
-                    Icons.person_outline,
+                    'assets/images/registry/gender_woman.svg',
+                    'assets/images/registry/gender_man.svg',
+                    'assets/images/registry/gender_woman_selected.svg',
+                    'assets/images/registry/gender_man_selected.svg',
                   ],
                   iconSize: 30.0,
                   activeBgColors: [[Colors.red, Colors.pinkAccent], [Color(0xff3b5998), Color(0xff8b9dc3)]],
                   animate: true, // with just animate set to true, default curve = Curves.easeIn
+                  animationDuration: 200,
                   curve: Curves.bounceInOut, // animate must be set to true when using custom curve
                   onToggle: (index) {
                     index == gender.man.index
-                        ?_switchValue = true
-                        : _switchValue = false;
+                        ? switchValue = true
+                        : switchValue = false;
                   },
                 ),
                 SizedBox(width: 10.0),
@@ -293,7 +282,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                 register.lastName = lastName;
                 register.mobile = args['mobile'];
                 register.password = _password;
-                register.gender = _switchValue;
+                register.gender = switchValue;
                 register.verifyCode = '';
                 register.countryId = args['id'];
                 register.appId = '0';
