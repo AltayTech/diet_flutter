@@ -209,13 +209,14 @@ class _InboxList extends ResourcefulState<InboxList> {
                     setState(() {
                       snapshot.data![index].seenAt = DateTime.now().toString();
                     });
+                    debugPrint('inbox action ${snapshot.data![index].inbox!.actionType} / ${INBOX_ACTION_TYPE.OPEN_WEB_URL.index}');
                     if (snapshot.data![index].inbox!.actionType == null ||
                         (snapshot.data![index].inbox!.actionType ==
-                                INBOX_ACTION_TYPE.OPEN_INSTAGRAM_PAGE.index ||
+                                INBOX_ACTION_TYPE.OPEN_INSTAGRAM_PAGE ||
                             snapshot.data![index].inbox!.actionType ==
-                                INBOX_ACTION_TYPE.OPEN_TELEGRAM_CHANNEL.index ||
+                                INBOX_ACTION_TYPE.OPEN_TELEGRAM_CHANNEL ||
                             snapshot.data![index].inbox!.actionType ==
-                                INBOX_ACTION_TYPE.OPEN_WEB_URL.index))
+                                INBOX_ACTION_TYPE.OPEN_WEB_URL))
                       VxNavigator.of(context)
                           .push(Uri.parse(Routes.showInbox), params: snapshot.data![index].inbox);
                     else

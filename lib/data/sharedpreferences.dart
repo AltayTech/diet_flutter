@@ -75,7 +75,7 @@ abstract class AppSharedPreferences {
   }
 
   static const _keyIsLoggedIn = 'isLoggedIn';
-  static const _keyAuthToken = 'authToken';
+  static const _keyAuthToken = 'token';
   static const _keyLocaleCode = 'localeCode';
   static const _keyFcmPushAction = 'fcmPushAction';
   static const _keyFcmButtonActions = 'fcmButtonActions';

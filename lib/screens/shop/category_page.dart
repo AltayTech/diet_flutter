@@ -28,10 +28,12 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
   late CategoryBloc categoryBloc;
   String? args;
   ScrollController? scrollController;
+  bool isInit = true;
 
   @override
   void initState() {
     super.initState();
+    scrollController = ScrollController()..addListener(onScroll);
     categoryBloc = CategoryBloc();
     listenBloc();
   }
@@ -59,14 +61,17 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (scrollController == null) scrollController = ScrollController()..addListener(onScroll);
+    if(isInit){
+      args = ModalRoute.of(context)!.settings.arguments as String;
+      categoryBloc.getCategory(args!);
+      isInit = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context)!.settings.arguments as String;
     super.build(context);
-    categoryBloc.getCategory(args!);
+
     return SafeArea(
         child: StreamBuilder(
             stream: categoryBloc.category,
@@ -94,25 +99,31 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                             child: StreamBuilder(
                               stream: categoryBloc.categoryProduct,
                               builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
-                                if (snapshot.hasData)
+                                if (snapshot.hasData) {
+                                  debugPrint('list length ${snapshot.requireData.length}');
+
                                   return ListView.builder(
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (_, index) {
-                                      if (index == snapshot.requireData.length) {
+                                      if (index ==
+                                          snapshot.requireData.length) {
                                         return loadMoreProgress();
                                       }
                                       return Card(
                                         shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10.0)),
+                                            borderRadius: BorderRadius.circular(
+                                                10.0)),
                                         child: Column(
                                           children: [
                                             firstTile(snapshot.data![index]),
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.only(right: 12.0, left: 12.0),
+                                              const EdgeInsets.only(
+                                                  right: 12.0, left: 12.0),
                                               child:
-                                                  Line(color: AppColors.strongPen, height: 0.1.h),
+                                              Line(color: AppColors.strongPen,
+                                                  height: 0.1.h),
                                             ),
                                             secondTile(snapshot.data![index]),
                                           ],
@@ -121,6 +132,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                                     },
                                     itemCount: snapshot.requireData.length + 1,
                                   );
+                                }
                                 else
                                   return Progress();
                               },

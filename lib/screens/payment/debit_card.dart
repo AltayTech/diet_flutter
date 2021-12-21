@@ -134,11 +134,10 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                                     invoice.payedAt.isNullOrEmpty)
                                 ? null
                                 : bloc.newPayment(invoice)
-                            : () {
-                                setState(() {
-                                  showUserInfo = true;
-                                });
-                              };
+                            : setState(() {
+                                showUserInfo = true;
+                              });
+                        ;
                       },
                     ),
                   ),
