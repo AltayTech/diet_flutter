@@ -1,7 +1,7 @@
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 
 // todo: resolve locale at runtime in app.dart
 class AppTypography {

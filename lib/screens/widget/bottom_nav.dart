@@ -6,7 +6,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 
 enum BottomNavItem { PROFILE, SUPPORT, DIET, SHOP, STATUS }
 
@@ -69,13 +69,12 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
         padding: EdgeInsets.symmetric(horizontal: 1.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
               child: Container(
-                width: double.maxFinite,
+
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(6),
+                padding: EdgeInsets.all(2.w),
                 child: Stack(
                   alignment: Alignment.center,
                   fit: StackFit.expand,
@@ -125,28 +124,28 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
 
   Widget bottomNavBar() {
     return Row(
-      textDirection: context.textDirectionOfLocaleInversed,
+      textDirection: context.textDirectionOfLocale,
       children: <Widget>[
         Expanded(
             flex: 1,
-            child: item('assets/images/tab/profile_menu_icon.svg', BottomNavItem.PROFILE,
-                intl.profile, context)),
-        Expanded(
-            flex: 1,
-            child: item('assets/images/tab/contact_menu_icon.svg', BottomNavItem.SUPPORT,
-                intl.ticket, context)),
-        Expanded(
-            flex: 1,
-            child: item(
-                'assets/images/tab/food_menu_icon.svg', BottomNavItem.DIET, intl.diet, context)),
+            child: item('assets/images/tab/status_menu_icon.svg', BottomNavItem.STATUS, intl.status,
+                context)),
         Expanded(
             flex: 1,
             child: item(
                 'assets/images/tab/menu_shop.svg', BottomNavItem.SHOP, intl.shopMenu, context)),
         Expanded(
             flex: 1,
-            child: item('assets/images/tab/status_menu_icon.svg', BottomNavItem.STATUS, intl.status,
-                context)),
+            child: item(
+                'assets/images/tab/food_menu_icon.svg', BottomNavItem.DIET, intl.diet, context)),
+        Expanded(
+            flex: 1,
+            child: item('assets/images/tab/contact_menu_icon.svg', BottomNavItem.SUPPORT,
+                intl.ticket, context)),
+        Expanded(
+            flex: 1,
+            child: item('assets/images/tab/profile_menu_icon.svg', BottomNavItem.PROFILE,
+                intl.profile, context)),
       ],
     );
   }

@@ -6,6 +6,7 @@ import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:behandam/utils/image.dart';
@@ -99,40 +100,36 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                             child: StreamBuilder(
                               stream: categoryBloc.categoryProduct,
                               builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
-                                if (snapshot.hasData) {
-                                  debugPrint('list length ${snapshot.requireData.length}');
-
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (_, index) {
-                                      if (index ==
-                                          snapshot.requireData.length) {
-                                        return loadMoreProgress();
-                                      }
-                                      return Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                10.0)),
-                                        child: Column(
-                                          children: [
-                                            firstTile(snapshot.data![index]),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(
-                                                  right: 12.0, left: 12.0),
-                                              child:
-                                              Line(color: AppColors.strongPen,
-                                                  height: 0.1.h),
-                                            ),
-                                            secondTile(snapshot.data![index]),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    itemCount: snapshot.requireData.length + 1,
+                                if (snapshot.hasData)
+                                  return ScrollConfiguration(
+                                    behavior: MyCustomScrollBehavior(),
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: (_, index) {
+                                        if (index == snapshot.requireData.length) {
+                                          return loadMoreProgress();
+                                        }
+                                        return Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10.0)),
+                                          child: Column(
+                                            children: [
+                                              firstTile(snapshot.data![index]),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.only(right: 12.0, left: 12.0),
+                                                child:
+                                                    Line(color: AppColors.strongPen, height: 0.1.h),
+                                              ),
+                                              secondTile(snapshot.data![index]),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                      itemCount: snapshot.requireData.length + 1,
+                                    ),
                                   );
-                                }
                                 else
                                   return Progress();
                               },

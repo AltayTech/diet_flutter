@@ -13,9 +13,10 @@ import 'package:sms_autofill/sms_autofill.dart';
 class SplashBloc {
   SplashBloc() {
     _waiting.value = false;
-     SmsAutoFill().getAppSignature.then((value) {
-       debugPrint('package is $value');
-     });
+    if (!kIsWeb)
+      SmsAutoFill().getAppSignature.then((value) {
+        debugPrint('package is $value');
+      });
   }
 
   final _repository = Repository.getInstance();
@@ -30,6 +31,7 @@ class SplashBloc {
   String get path => _path;
 
   Stream<bool> get waiting => _waiting.stream;
+
   Stream<String> get versionApp => _versionApp.stream;
 
   Stream get showUpdate => _showUpdate.stream;
@@ -42,7 +44,7 @@ class SplashBloc {
 
   void getPackageInfo() async {
     version = await Utils.versionApp();
-    _versionApp.value = version??'';
+    _versionApp.value = version ?? '';
     buildNumber = await Utils.buildNumber();
     packageName = await Utils.packageName();
   }
@@ -52,6 +54,7 @@ class SplashBloc {
     _repository.getUser().then((value) {
       MemoryApp.userInformation = value.data;
       MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
+      if(!kIsWeb)
       FirebaseCrashlytics.instance.setUserIdentifier(MemoryApp.userInformation!.userId.toString());
       MemoryApp.analytics!
           .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
@@ -62,9 +65,10 @@ class SplashBloc {
   }
 
   void getVersionApp() {
-    _waiting.value = true;
+    if (!kIsWeb) {
+      _waiting.value = true;
     _repository.getVersion().then((value) async {
-      if (!kIsWeb) {
+
         if (Platform.isIOS) {
           if (value.data?.ios != null && int.parse(value.data!.ios!.versionCode!) > buildNumber!) {
             if (value.data!.ios!.forceUpdate == 1) forceUpdate = true;
@@ -86,14 +90,15 @@ class SplashBloc {
             _navigateTo.fire(true);
           }
         }
-      } else {
-        _navigateTo.fire(true);
-      }
+
     }).catchError((onError) {
       print('onError = > ${onError}');
     }).whenComplete(() {
       _waiting.value = false;
     });
+    } else {
+      _navigateTo.fire(true);
+    }
   }
 
   void dispose() {

@@ -3,6 +3,7 @@ import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
@@ -51,67 +52,45 @@ class _InboxList extends ResourcefulState<InboxList> {
               child: Text(intl.notFoundInbox),
             );
           } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  child: Card(
-                    margin: EdgeInsets.only(left: 8, right: 8, bottom: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Container(
-                      constraints: BoxConstraints(minHeight: 15.h),
-                      child: Row(
-                        children: [
-                          snapshot.data![index].seenAt == null
-                              ? Flexible(
-                            flex: 0,
-                            child: Container(
-                                width: 7.w,
-                                height: 17.5.h,
-                                decoration: BoxDecoration(
-                                    color: AppColors.accentColor,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10))),
-                                child: new RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Center(
-                                    child: new Text(
-                                      intl.newMessage,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                )),
-                          )
-                              : Container(),
-                          Flexible(
-                            flex: 1,
-                            fit: FlexFit.loose,
-                            child: Container(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Flexible(
-                                    flex: 0,
-                                    child: Container(
-                                      width: double.maxFinite,
-                                      padding: EdgeInsets.only(left: 8, top: 8, right: 8),
-                                      child: Text(
-                                        snapshot.data![index].inbox?.title ?? '',
-                                        textAlign: TextAlign.start,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context).textTheme.bodyText2,
+            return ScrollConfiguration(
+              behavior: MyCustomScrollBehavior(),
+              child: ListView.builder(
+                itemCount: snapshot.data!.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    child: Card(
+                      margin: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Container(
+                        constraints: BoxConstraints(minHeight: 15.h),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              fit: FlexFit.loose,
+                              child: Container(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Flexible(
+                                      flex: 0,
+                                      child: Container(
+                                        alignment: Alignment.topRight,
+                                        width: double.maxFinite,
+                                        padding: EdgeInsets.only(left: 8, top: 8, right: 8),
+                                        child: Text(
+                                          snapshot.data![index].inbox?.title ?? '',
+                                          textAlign: TextAlign.right,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ),
-                                  ),
                                   Flexible(
                                     flex: 1,
                                     child: Container(
@@ -193,17 +172,39 @@ class _InboxList extends ResourcefulState<InboxList> {
                                         ],
                                       ),
                                     ),
-                                  ),
-                                ],
+          )
+                                  ],
+                                ),
+                                padding: EdgeInsets.only(left: 12, right: 12),
                               ),
-                              padding: EdgeInsets.only(left: 12, right: 12),
                             ),
-                          ),
-
-                        ],
+                            snapshot.data![index].seenAt == null
+                                ? Flexible(
+                                    flex: 0,
+                                    child: Container(
+                                        width: 7.w,
+                                        height: 17.5.h,
+                                        decoration: BoxDecoration(
+                                            color: AppColors.accentColor,
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(10),
+                                                bottomRight: Radius.circular(10))),
+                                        child: new RotatedBox(
+                                          quarterTurns: 1,
+                                          child: Center(
+                                            child: new Text(
+                                              'پیام جدید',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+                                          ),
+                                        )),
+                                  )
+                                : Container(),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                   onTap: () {
                     snapshot.data![index].inbox?.id = snapshot.data![index].id;
                     setState(() {
@@ -224,7 +225,7 @@ class _InboxList extends ResourcefulState<InboxList> {
                   },
                 );
               },
-            );
+              ));
           }
         },
         stream: profileBloc.inboxStream,

@@ -2,8 +2,6 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-
-import '../entry_point.dart';
 import '../routes.dart';
 
 

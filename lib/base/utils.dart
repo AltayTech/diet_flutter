@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -140,13 +141,22 @@ class Utils {
     var package = await PackageInfo.fromPlatform();
     return package.version;
   }
+
   static Future<int> buildNumber() async {
-    var package = await PackageInfo.fromPlatform();
-    return int.parse(package.buildNumber);
+    if (kIsWeb) {
+      return 341;
+    } else {
+      var package = await PackageInfo.fromPlatform();
+      return int.parse(package.buildNumber);
+    }
   }
 
   static Future<String> packageName() async {
-    var package = await PackageInfo.fromPlatform();
-    return package.packageName;
+    if (kIsWeb) {
+      return "web.kermany.behandam";
+    } else {
+      var package = await PackageInfo.fromPlatform();
+      return package.packageName;
+    }
   }
 }

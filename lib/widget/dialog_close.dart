@@ -1,7 +1,7 @@
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 
 class DialogClose extends StatelessWidget {
   const DialogClose({Key? key}) : super(key: key);

@@ -11,6 +11,7 @@ import 'package:behandam/screens/widget/input_widget.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/sizes.dart';
@@ -213,16 +214,19 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
             return EmptyBox();
           }
           debugPrint('food length ${snapshot.requireData!.length}');
-          return ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (_, index) {
-              if (index == snapshot.requireData!.length) {
-                return loadMoreProgress();
-              }
-              return foodItem(snapshot.requireData![index]);
-            },
-            itemCount: snapshot.requireData!.length + 1,
+          return ScrollConfiguration(
+            behavior: MyCustomScrollBehavior(),
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (_, index) {
+                if (index == snapshot.requireData!.length) {
+                  return loadMoreProgress();
+                }
+                return foodItem(snapshot.requireData![index]);
+              },
+              itemCount: snapshot.requireData!.length + 1,
+            ),
           );
         }
         return Center(child: Progress());

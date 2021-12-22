@@ -5,13 +5,16 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/web_scroll.dart';
+import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -237,36 +240,43 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                               children: [
                                 Space(height: 2.h),
                                 Expanded(
-                                  child: ListView.builder(
-                                    // shrinkWrap: true,
-                                    itemBuilder: (_, index) => GestureDetector(
-                                      onTap: () {
-                                        authBloc.setCountry(authBloc.countries[index]);
-                                        _selectedLocation = authBloc.countries[index];
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        child: Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                '+${authBloc.countries[index].code}',
-                                                style: typography.caption,
-                                              ),
-                                              Space(width: 3.w),
-                                              Expanded(
-                                                  child: Text(
-                                                authBloc.countries[index].name ?? '',
-                                                style: typography.caption,
-                                              )),
-                                            ],
+                                  child: ScrollConfiguration(
+                                    behavior: MyCustomScrollBehavior(),
+                                    child: ListView.builder(
+                                      // shrinkWrap: true,
+                                      itemBuilder: (_, index) => GestureDetector(
+                                        onTap: () {
+                                          authBloc.setCountry(
+                                              authBloc.countries[index]);
+                                          _selectedLocation =
+                                              authBloc.countries[index];
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Container(
+                                          height: 5.h,
+                                          child: Directionality(
+                                            textDirection: TextDirection.ltr,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '+${authBloc.countries[index].code}',
+                                                  style: typography.caption,
+                                                ),
+                                                Space(width: 3.w),
+                                                Expanded(
+                                                    child: Text(
+                                                  authBloc.countries[index]
+                                                          .name ??
+                                                      '',
+                                                  style: typography.caption,
+                                                )),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
+                                      itemCount: authBloc.countries.length,
                                     ),
-                                    itemCount: authBloc.countries.length,
                                   ),
                                 ),
                               ],
