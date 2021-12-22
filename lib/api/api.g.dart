@@ -308,39 +308,39 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<UserInformation>> getPdfTermUrl() async {
+  Future<NetworkResponse<Media>> getPdfTermUrl() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<UserInformation>>(
+        _setStreamType<NetworkResponse<Media>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/user/menu/all/pdf',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<UserInformation>.fromJson(
+    final value = NetworkResponse<Media>.fromJson(
       _result.data!,
-      (json) => UserInformation.fromJson(json as Map<String, dynamic>),
+      (json) => Media.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
 
   @override
-  Future<NetworkResponse<UserInformation>> getPdfWeekUrl() async {
+  Future<NetworkResponse<Media>> getPdfWeekUrl() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<UserInformation>>(
+        _setStreamType<NetworkResponse<Media>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/user/menu/pdf',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<UserInformation>.fromJson(
+    final value = NetworkResponse<Media>.fromJson(
       _result.data!,
-      (json) => UserInformation.fromJson(json as Map<String, dynamic>),
+      (json) => Media.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

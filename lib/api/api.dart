@@ -105,10 +105,10 @@ abstract class RestClient {
   NetworkResult<UserInformation> getProfile();
 
   @GET("/user/menu/all/pdf")
-  NetworkResult<UserInformation> getPdfTermUrl();
+  NetworkResult<Media> getPdfTermUrl();
 
   @GET("/user/menu/pdf")
-  NetworkResult<UserInformation> getPdfWeekUrl();
+  NetworkResult<Media> getPdfWeekUrl();
 
   @GET("/province")
   NetworkResult<CityProvinceModel> getProvinces();
