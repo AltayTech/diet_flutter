@@ -1,0 +1,1 @@
+class NoResultFoundError extends Error {}

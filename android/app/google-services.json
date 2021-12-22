@@ -1,0 +1,250 @@
+{
+  "project_info": {
+    "project_number": "343455511841",
+    "project_id": "behandam-test",
+    "storage_bucket": "behandam-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343455511841:android:332a06c700201cfb567a60",
+        "android_client_info": {
+          "package_name": "com.kermany.behandam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343455511841-em0ktdo3fn4hgp6llvshe2ov82lm00vo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam",
+            "certificate_hash": "2196979afbdc1f3fc2cf08030d8a00bb002cb11e"
+          }
+        },
+        {
+          "client_id": "343455511841-qlcin4hacnbic9sqtih46hsilffc7mfu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam",
+            "certificate_hash": "9e89b11112d8a746f7a229835eeaa687123b075d"
+          }
+        },
+        {
+          "client_id": "343455511841-tges655e1md3tqgbtmen05m619p2ncdb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam",
+            "certificate_hash": "8ebc820181bbc71cb3329fb7b89cdd951cc11e46"
+          }
+        },
+        {
+          "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMyp8Nw-9A2oYTRSg22M96hP0etHgPVyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "343455511841-kklojkmsgmitpqvon8v2favmmbsk050s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kermany.behandam"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343455511841:android:8d44939289a797f6567a60",
+        "android_client_info": {
+          "package_name": "com.kermany.behandam.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343455511841-1ggs2cpv9s8fda7tf8oe4rnvgda82b4v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam.debug",
+            "certificate_hash": "8ebc820181bbc71cb3329fb7b89cdd951cc11e46"
+          }
+        },
+        {
+          "client_id": "343455511841-8c1p99f0es2c2fddkbriralk5i9pgeqj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam.debug",
+            "certificate_hash": "9e89b11112d8a746f7a229835eeaa687123b075d"
+          }
+        },
+        {
+          "client_id": "343455511841-d16765pe0gc24thmuf35ovtceuuupco9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam.debug",
+            "certificate_hash": "2196979afbdc1f3fc2cf08030d8a00bb002cb11e"
+          }
+        },
+        {
+          "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMyp8Nw-9A2oYTRSg22M96hP0etHgPVyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "343455511841-kklojkmsgmitpqvon8v2favmmbsk050s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kermany.behandam"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343455511841:android:72d854e3145a7d82567a60",
+        "android_client_info": {
+          "package_name": "com.kermany.behandam.develop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343455511841-87ros4k3dpm588m0dp6cq21ptcs931bk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam.develop",
+            "certificate_hash": "2196979afbdc1f3fc2cf08030d8a00bb002cb11e"
+          }
+        },
+        {
+          "client_id": "343455511841-b2ukr495iaqhbd34289ei09lhabhno9o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam.develop",
+            "certificate_hash": "9e89b11112d8a746f7a229835eeaa687123b075d"
+          }
+        },
+        {
+          "client_id": "343455511841-u63kornlfbpd7pd11eplnbeqeq8453re.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam.develop",
+            "certificate_hash": "8ebc820181bbc71cb3329fb7b89cdd951cc11e46"
+          }
+        },
+        {
+          "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMyp8Nw-9A2oYTRSg22M96hP0etHgPVyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "343455511841-kklojkmsgmitpqvon8v2favmmbsk050s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kermany.behandam"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343455511841:android:5802d7ca9ef7c3be567a60",
+        "android_client_info": {
+          "package_name": "com.kermany.behandam.stage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343455511841-nbufvm0f67a5pb187qsufh10d7a230b4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam.stage",
+            "certificate_hash": "9e89b11112d8a746f7a229835eeaa687123b075d"
+          }
+        },
+        {
+          "client_id": "343455511841-o8skf02on55aepf6g9jr9i3bome2m1si.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam.stage",
+            "certificate_hash": "2196979afbdc1f3fc2cf08030d8a00bb002cb11e"
+          }
+        },
+        {
+          "client_id": "343455511841-scv8p5h7mkhhcgvcnlh314pqajac1dkm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kermany.behandam.stage",
+            "certificate_hash": "8ebc820181bbc71cb3329fb7b89cdd951cc11e46"
+          }
+        },
+        {
+          "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMyp8Nw-9A2oYTRSg22M96hP0etHgPVyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343455511841-bj6binikj0k8gh4c6gqktlahnaasupej.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "343455511841-kklojkmsgmitpqvon8v2favmmbsk050s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kermany.behandam"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
