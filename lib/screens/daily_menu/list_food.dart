@@ -342,30 +342,42 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   }
 
   List<Widget> makingFoodItems(ListFood food, ListFood? selectedFood) {
-    List<int> items = List.generate((food.foodItems!.length * 2) - 1, (i) => i);
+    // Expanded(
+    //   child: Chip(
+    //       label:Text(food.title!)),
+    // ),
+    // List<int> items = List.generate((food.foodItems!.length * 2) - 1, (i) => i);
     List<Widget> widgets = [];
-    int index = 0;
-    for (int i = 0; i < items.length; i++) {
-      if (i % 2 == 0) {
-        widgets.add(Chip(
-          backgroundColor: selectedFood != null && food.id == selectedFood.id
-              ? Colors.grey[200]
-              : AppColors.onPrimary,
-          label: Text(
-            food.foodItems![index].title,
-            style: typography.caption,
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ));
-        index++;
-      } else {
-        widgets.add(Icon(
-          Icons.add,
-          size: 6.w,
-        ));
-      }
+    // int index = 0;
+    // for (int i = 0; i < items.length; i++) {
+    //   if (i % 2 == 0) {
+    List<String> title = food.title!.split("+");
+    for (int i = 0; i < title.length; i++) {
+         widgets.add(Chip(
+           backgroundColor: selectedFood != null && food.id == selectedFood.id
+               ? Colors.grey[200]
+               : AppColors.onPrimary,
+           label: Text(
+             title[i],
+             style: typography.caption,
+             textAlign: TextAlign.center,
+             softWrap: true,
+           ),
+         )) ;
+         if( i!= title.length-1)
+          widgets.add(Icon(
+            Icons.add,
+            size: 6.w,
+          ));
     }
+        // index++;
+      // } else {
+      //   widgets.add(Icon(
+      //     Icons.add,
+      //     size: 6.w,
+      //   ));
+      // }
+    // }
     return widgets;
   }
 

@@ -29,7 +29,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   final _text = TextEditingController();
   String dropdownValue = 'One';
   bool _validate = false;
-  late String phoneNumber;
+  String? phoneNumber;
   late String number;
   late AuthenticationBloc authBloc;
   late Country _selectedLocation;
@@ -322,19 +322,19 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 Size(100.w, 8.h),
                 () {
                   if (snapshot.requireData.code == '98') {
-                    while (phoneNumber.startsWith('0')) {
-                      phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
+                    while (phoneNumber!.startsWith('0')) {
+                      phoneNumber = phoneNumber!.replaceFirst(RegExp(r'0'), '');
                     }
-                    if ((phoneNumber.length) != 10) {
+                    if ((phoneNumber!.length) != 10) {
                       Utils.getSnackbarMessage(context, intl.errorMobileCondition);
                       return;
                     }
-                  } else if ((snapshot.requireData.code!.length + phoneNumber.length) < 7 ||
-                      (snapshot.requireData.code!.length + phoneNumber.length) > 15) {
+                  } else if ((snapshot.requireData.code!.length + phoneNumber!.length) < 7 ||
+                      (snapshot.requireData.code!.length + phoneNumber!.length) > 15) {
                     Utils.getSnackbarMessage(context, intl.errorMobileCondition);
                     return;
                   }
-                  number = snapshot.requireData.code! + phoneNumber;
+                  number = snapshot.requireData.code! + phoneNumber!;
                   DialogUtils.showDialogProgress(context: context);
                   authBloc.loginMethod(number);
                 },

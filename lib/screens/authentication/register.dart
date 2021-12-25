@@ -281,9 +281,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
           ),
           SizedBox(height: 10.h),
           SubmitButton(label: intl.register,size: Size(100.w,8.h), onTap:(){
-          setState(() {
-          _text.text.isEmpty ? _validate = true : _validate = false;
-          });
+          // setState(() {
+          // _text.text.isEmpty ? _validate = true : _validate = false;
+          // });
           Register register = Register();
           register.firstName = firstName;
           register.lastName = lastName;

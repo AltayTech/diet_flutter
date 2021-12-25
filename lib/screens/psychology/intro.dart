@@ -217,8 +217,9 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
                                          ],
                                        ),
                                        index < 6
-                                           ? Container(height: 5.h,width: 10.w, child: VerticalDivider(color: psyList[index].color!.withOpacity(0.5),thickness: 1.w,))
-                                           :Container()
+                                           ? Container(height: 5.h,width: 10.w,
+                                           child: VerticalDivider(color: psyList[index].color!.withOpacity(0.5),thickness: 1.w,))
+                                           : Container()
                                        // SizedBox(height: 10.0),
                                      ]))
                          ),
