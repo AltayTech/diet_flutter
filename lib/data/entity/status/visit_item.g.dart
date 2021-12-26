@@ -11,18 +11,11 @@ VisitItem _$VisitItemFromJson(Map<String, dynamic> json) => VisitItem()
   ..physicalInfo = json['physical_info'] == null
       ? null
       : PhysicalInfoData.fromJson(json['physical_info'] as Map<String, dynamic>)
-  ..visits = (json['visits'] as List<dynamic>?)
-          ?.map((e) => Visit.fromJson(e as Map<String, dynamic>))
+  ..terms = (json['terms'] as List<dynamic>?)
+          ?.map((e) => TermStatus.fromJson(e as Map<String, dynamic>))
           .toList() ??
       []
   ..weightDifference = (json['weight_difference'] as num?)?.toDouble();
-
-Map<String, dynamic> _$VisitItemToJson(VisitItem instance) => <String, dynamic>{
-      'diet_type': _$RegimeAliasEnumMap[instance.dietType],
-      'physical_info': instance.physicalInfo,
-      'visits': instance.visits,
-      'weight_difference': instance.weightDifference,
-    };
 
 const _$RegimeAliasEnumMap = {
   RegimeAlias.Pregnancy: 'PREGNANCY',
@@ -34,3 +27,15 @@ const _$RegimeAliasEnumMap = {
   RegimeAlias.Sport: 'SPORTS',
   RegimeAlias.Notrica: 'NOTRICA',
 };
+
+TermStatus _$TermStatusFromJson(Map<String, dynamic> json) => TermStatus()
+  ..startedAt = json['started_at'] as String
+  ..expiredAt = json['expired_at'] as String
+  ..isActive = json['is_active'] as int?
+  ..visits = (json['visits'] as List<dynamic>?)
+      ?.map((e) => VisitStatus.fromJson(e as Map<String, dynamic>))
+      .toList();
+
+VisitStatus _$VisitStatusFromJson(Map<String, dynamic> json) => VisitStatus()
+  ..weight = (json['weight'] as num).toDouble()
+  ..visitedAt = json['visited_at'] as String;

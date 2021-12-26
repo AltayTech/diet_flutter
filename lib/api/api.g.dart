@@ -627,7 +627,7 @@ class _RestClient implements RestClient {
 
   @override
   Future<NetworkResponse<dynamic>> sendTicketFile(
-      media, is_voice, has_attachment, department_id, title) async {
+      media, is_voice, has_attachment, department_id, body, title) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -639,6 +639,7 @@ class _RestClient implements RestClient {
     _data.fields.add(MapEntry('is_voice', is_voice.toString()));
     _data.fields.add(MapEntry('has_attachment', has_attachment.toString()));
     _data.fields.add(MapEntry('department_id', department_id));
+    _data.fields.add(MapEntry('body', body));
     _data.fields.add(MapEntry('title', title));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(

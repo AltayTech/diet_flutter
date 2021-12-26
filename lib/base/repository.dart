@@ -460,9 +460,13 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult sendTicketFile(SendTicket sendTicket, File file) {
     sendTicket.hasAttachment = true;
-    sendTicket.isVoice = true;
-    var response = _apiClient.sendTicketFile(file, sendTicket.isVoice ? 1 : 0,
-        sendTicket.hasAttachment ? 1 : 0, sendTicket.departmentId.toString(), sendTicket.title!);
+    var response = _apiClient.sendTicketFile(
+        file,
+        sendTicket.isVoice ? 1 : 0,
+        sendTicket.hasAttachment ? 1 : 0,
+        sendTicket.departmentId.toString(),
+        sendTicket.body ?? '',
+        sendTicket.title!);
     return response;
   }
 
@@ -592,7 +596,9 @@ class _RepositoryImpl extends Repository {
     sickness.specials!.forEach((sicknessItem) {
       if (sicknessItem.isSelected!) {
         if (sicknessItem.children!.length > 0) {
-          sicknessItem.children?.forEach((element) { debugPrint("${element.toJson()}"); });
+          sicknessItem.children?.forEach((element) {
+            debugPrint("${element.toJson()}");
+          });
 
           selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
         } else {
