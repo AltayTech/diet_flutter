@@ -92,14 +92,14 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                           height: 12.w,
                           decoration: AppDecorations.circle.copyWith(
                             color: isCurrentMeal && isToday(snapshot.data)
-                                ? AppColors.onPrimary
-                                : AppColors.primary,
+                                ? meal.bgColor
+                                : meal.bgColor,
                           ),
                           child: ImageUtils.fromLocal(
                             'assets/images/foodlist/${meal.icon}.svg',
                             color: isCurrentMeal && isToday(snapshot.data)
-                                ? AppColors.primary
-                                : AppColors.onPrimary,
+                                ? meal.color
+                                : meal.color,
                             padding: EdgeInsets.all(2.w)
                           ),
                         ),

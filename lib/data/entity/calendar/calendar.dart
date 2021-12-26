@@ -110,6 +110,37 @@ class Term {
   @JsonKey(name: 'menus')
   List<Menu>? menus;
 
+
+  double? get firstWeight => (visits!.length > 0) ? visits![0].weight : 0;
+
+  double? get lostWeight =>
+      (visits!.length > 0) ? visits![visits!.length - 1].weight - visits![0].weight : 0;
+
+  double? get minWeight => _minWeight! - 10;
+
+  double? get maxWeight => _maxWeight! + 10;
+
+  double? _minWeight;
+  double? _maxWeight;
+
+  setMaxMinWeight() {
+    if ((visits!.length > 0)) {
+      _maxWeight = visits![0].weight;
+      _minWeight = visits![0].weight;
+      for (int i = 0; i < visits!.length; i++) {
+        if (visits![i].weight > _maxWeight!) {
+          _maxWeight = visits![i].weight;
+        }
+        if (visits![i].weight < _minWeight!) {
+          _minWeight = visits![i].weight;
+        }
+      }
+    } else {
+      _minWeight = 0;
+      _maxWeight = 90;
+    }
+  }
+
   factory Term.fromJson(Map<String, dynamic> json) => _$TermFromJson(json);
 }
 

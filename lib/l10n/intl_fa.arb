@@ -588,5 +588,14 @@
   "close": "بستن",
   "newMessage": "پیام جدید",
   "messageNotFound": "پیامی برای نمایش وجود ندارد",
+  "dateStart": "شروع ترم : ",
+  "dateEnd": "پایان ترم : ",
+  "viewChart": "نمایش نمودار",
+  "termsOfUse": "برای مشاهده شرایط و قوانین استفاده از اپلیکیشن به اندام روی ",
+  "link": "لینک ",
+  "clickLink": "کلیک کنید",
+  "selectedFile": "انتخاب فایل",
+  "errorBodyTicket": "متن پیام خود را وارد کنید",
+  "errorTitleTicket": "عنوان پیام خود را وارد کنید",
   "understand": "متوجه شدم"
 }

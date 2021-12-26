@@ -52,7 +52,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
 
   Widget appbar() {
     return Container(
-      height: widget.showToolbar == null ? 37.h : 32.h,
+      height: widget.showToolbar == null ? 40.h : 32.h,
       color: Colors.transparent,
       child: ClipPath(
         clipper: FoodListCurve(),

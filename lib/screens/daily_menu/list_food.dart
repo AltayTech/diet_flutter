@@ -358,7 +358,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                ? Colors.grey[200]
                : AppColors.onPrimary,
            label: Text(
-             title[i],
+             title[i].trim(),
              style: typography.caption,
              textAlign: TextAlign.center,
              softWrap: true,

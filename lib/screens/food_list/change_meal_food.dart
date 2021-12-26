@@ -34,10 +34,9 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
   void initState() {
     super.initState();
     // bloc = FoodListBloc(false);
-    _animationController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this, value: 1);
-    _animation =
-        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
+    _animationController =
+        AnimationController(duration: const Duration(milliseconds: 2000), vsync: this, value: 1);
+    _animation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
     _animation = _tween.animate(_animation);
     _animationController.repeat();
   }
@@ -106,12 +105,13 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
               SubmitButton(
                 label: intl.replaceFood,
                 onTap: () {
-                  if(meal?.newFood != null) {
+                  if (meal?.newFood != null) {
                     bloc.onReplacingFood(meal!.id);
                     VxNavigator.of(context).pop();
-                  }else
+                  } else
                     Utils.getSnackbarMessage(context, intl.selectReplacedFood);
-                },),
+                },
+              ),
             ],
           );
         },
@@ -150,10 +150,8 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                         decoration: AppDecorations.circle.copyWith(
                           color: AppColors.onPrimary,
                         ),
-                        child: ImageUtils.fromLocal(
-                            'assets/images/foodlist/${meal?.icon}.svg',
-                            color: AppColors.accentColor,
-                            padding: EdgeInsets.all(2.w)),
+                        child: ImageUtils.fromLocal('assets/images/foodlist/${meal?.icon}.svg',
+                            color: meal?.color, padding: EdgeInsets.all(2.w)),
                       ),
                       Space(width: 2.w),
                       Expanded(
@@ -209,15 +207,16 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
         children: [
           ...items.map(
             (i) {
-              debugPrint('index $index / $i / ${ i == items.length - 1 && items.length > 1}');
+              debugPrint('index $index / $i / ${i == items.length - 1 && items.length > 1}');
               final widget;
               if (i % 2 == 0) {
                 widget = Chip(
                   backgroundColor: AppColors.primary.withOpacity(0.3),
                   label: Text(
                     // '${meal!.food!.ratios![0].ratioFoodItems![index].unitTitle.replaceAll('*', intl.and)} ${meal!.food!.ratios![0].ratioFoodItems![index].title}',
-                    i == items.length - 1 && freeFoodLength == 1 ? meal?.food?.freeFood ?? '' : meal?.food?.foodItems?[index].title ??
-                        '',
+                    i == items.length - 1 && freeFoodLength == 1
+                        ? meal?.food?.freeFood ?? ''
+                        : meal?.food?.foodItems?[index].title ?? '',
                     style: typography.caption,
                     textAlign: TextAlign.center,
                     // softWrap: true,
@@ -225,7 +224,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                   ),
                 );
                 index++;
-              }else {
+              } else {
                 widget = Icon(
                   Icons.add,
                   size: 6.w,
@@ -240,14 +239,13 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
   }
 
   Widget replaceBox(Meals? meal) {
-    int freeFoodLength = meal?.newFood?.selectedFreeFood != null ? 1 : 0;
-    List<int> items = meal?.newFood == null
-        ? []
-        : List.generate(
-            ((meal!.newFood!.foodItems!.length + freeFoodLength) * 2) - 1,
-            (i) => i);
-    debugPrint('food item ${meal?.newFood?.foodItems} / ${meal?.newFood?.selectedFreeFood} / $freeFoodLength / ${items.length}');
-    int index = 0;
+    List<String> items = meal?.newFood == null ? [] : meal!.newFood!.title!.split("+");
+
+    if (meal?.newFood?.selectedFreeFood != null)
+      items.add(meal?.newFood?.selectedFreeFood?.title ?? '');
+
+    debugPrint('items => ${items.length}');
+
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 3.w),
       shape: AppShapes.rectangleMild,
@@ -262,12 +260,10 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                   width: 12.w,
                   height: 12.w,
                   decoration: AppDecorations.circle.copyWith(
-                    color: AppColors.primary,
+                    color: meal?.bgColor,
                   ),
-                  child: ImageUtils.fromLocal(
-                      'assets/images/foodlist/${meal?.icon}.svg',
-                      color: Colors.white,
-                      padding: EdgeInsets.all(2.w)),
+                  child: ImageUtils.fromLocal('assets/images/foodlist/${meal?.icon}.svg',
+                      color: meal?.color, padding: EdgeInsets.all(2.w)),
                 ),
                 Space(width: 2.w),
                 Expanded(
@@ -318,35 +314,36 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                           : Wrap(
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                ...items.map(
-                                  (i) {
-                                    final widget;
-                                    if (i % 2 == 0)
-                                      widget = Chip(
-                                        backgroundColor: AppColors.onPrimary,
-                                        label: Text(
-                                          i == items.length - 1 && freeFoodLength == 1
-                                              ? meal?.newFood?.selectedFreeFood
-                                                      ?.title ??
-                                                  ''
-                                              : meal?.newFood?.foodItems?[index]
-                                                      .title ??
-                                                  '',
-                                          style: typography.caption,
-                                          textAlign: TextAlign.center,
-                                          softWrap: true,
-                                        ),
-                                      );
-                                    else {
-                                      widget = Icon(
-                                        Icons.add,
-                                        size: 6.w,
-                                      );
-                                      index++;
-                                    }
-                                    return widget;
-                                  },
-                                ).toList(),
+                                ...items
+                                    .asMap()
+                                    .map(
+                                      (i, item) {
+                                        return MapEntry(
+                                            i,
+                                            Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Chip(
+                                                  backgroundColor: AppColors.onPrimary,
+                                                  label: Text(
+                                                    item,
+                                                    style: typography.caption,
+                                                    textAlign: TextAlign.center,
+                                                    softWrap: true,
+                                                  ),
+                                                ),
+                                                if(i!=items.length-1)
+                                                Icon(
+                                                  Icons.add,
+                                                  size: 6.w,
+                                                )
+                                              ],
+                                            ));
+
+                                      },
+                                    )
+                                    .values
+                                    .toList(),
                               ],
                             ),
                     ),

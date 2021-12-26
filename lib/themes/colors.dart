@@ -69,7 +69,80 @@ class AppColors {
       'priceColor': Color.fromRGBO(86, 195, 180, 1),
     },
   ];
-
+  static var mealColors = [
+    {
+      'color': Color.fromRGBO(255, 125, 112, 1),
+      'bgColor': Color.fromRGBO(254, 223, 214, 1),
+    },
+    {
+      'color': Color.fromRGBO(141, 79, 255, 1),
+      'bgColor': Color.fromRGBO(233, 221, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+    {
+      'color': Color.fromRGBO(66, 192, 230, 1),
+      'bgColor': Color.fromRGBO(224, 248, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(220, 127, 148, 1),
+      'bgColor': Color.fromRGBO(240, 225, 228, 1),
+    },
+    {
+      'color': Color.fromRGBO(255, 125, 112, 1),
+      'bgColor': Color.fromRGBO(254, 223, 214, 1),
+    },
+    {
+      'color': Color.fromRGBO(141, 79, 255, 1),
+      'bgColor': Color.fromRGBO(233, 221, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+    {
+      'color': Color.fromRGBO(141, 79, 255, 1),
+      'bgColor': Color.fromRGBO(233, 221, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+    {
+      'color': Color.fromRGBO(66, 192, 230, 1),
+      'bgColor': Color.fromRGBO(224, 248, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+  ];
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {
       case ThemeAppColor.DEFAULT:

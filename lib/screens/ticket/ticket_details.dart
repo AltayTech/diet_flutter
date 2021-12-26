@@ -994,7 +994,7 @@ bool isInit=false;
                                     );
                                   }
                                 },
-                                stream: bloc.isShowFile,
+                                stream: bloc.isShowFileAudio,
                               ),
                               Space(
                                 width: 1.w,
@@ -1106,7 +1106,7 @@ bool isInit=false;
                                     );
                                   }
                                 },
-                                stream: bloc.isShowFile,
+                                stream: bloc.isShowFileAudio,
                               )
                             ]));
                       case TypeTicket.IMAGE:

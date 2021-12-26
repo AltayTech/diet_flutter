@@ -102,20 +102,18 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                       child: illItem(
                                           support: item,
                                           showPastMeal: () => () {
-                                                setState(() {
-                                                  for (SupportItem s in bloc.SupportItems)
-                                                    s.selected = false;
-                                                  item.selected = true;
-                                                  bloc.sendTicketMessage.departmentId = item.id;
-                                                });
+                                                for (SupportItem s in bloc.SupportItems)
+                                                  s.selected = false;
+                                                item.selected = true;
+                                                bloc.sendTicketMessage.departmentId = item.id;
+                                                bloc.setSupportItemSelected();
                                               }),
                                       selectSupport: () => () {
-                                            setState(() {
-                                              for (SupportItem s in bloc.SupportItems)
-                                                s.selected = false;
-                                              item.selected = true;
-                                              bloc.sendTicketMessage.departmentId = item.id;
-                                            });
+                                            for (SupportItem s in bloc.SupportItems)
+                                              s.selected = false;
+                                            item.selected = true;
+                                            bloc.sendTicketMessage.departmentId = item.id;
+                                            bloc.setSupportItemSelected();
                                           },
                                       support: item)).toList()
                                 ],
@@ -180,19 +178,22 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                     padding: EdgeInsets.only(left: 12, right: 12),
                                     child: SubmitButton(
                                       onTap: () {
-                                        if (bloc.isFile == true) {
-                                          bloc.sendTicketFile();
-                                        } else if (bloc.sendTicketMessage.title != null &&
-                                            bloc.sendTicketMessage.title!.length > 0 &&
-                                            bloc.sendTicketMessage.body != null &&
-                                            bloc.sendTicketMessage.body!.length > 0) {
+                                        if (bloc.sendTicketMessage.title != null &&
+                                            bloc.sendTicketMessage.title!.length > 0) {
                                           if (bloc.sendTicketMessage.departmentId != null) {
-                                            bloc.sendTicketText();
+                                            if (bloc.sendTicketMessage.body != null &&
+                                                bloc.sendTicketMessage.body!.length > 0) {
+                                              bloc.sendTicketText();
+                                            } else if (bloc.isFileAudio) {
+                                              bloc.sendTicketFile();
+                                            } else
+                                              Utils.getSnackbarMessage(
+                                                  context, intl.errorBodyTicket);
                                           } else {
                                             Utils.getSnackbarMessage(context, intl.errorDepartment);
                                           }
                                         } else
-                                          Utils.getSnackbarMessage(context, intl.errorFillItem);
+                                          Utils.getSnackbarMessage(context, intl.errorTitleTicket);
                                       },
                                       label: intl.sendMessage,
                                     ));
@@ -271,24 +272,28 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
             left: 3,
             child: GestureDetector(
               onTap: selectSupport(),
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 4.w,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 1.w),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ImageUtils.fromLocal(
-                      'assets/images/bill/tick.svg',
-                      width: 4.w,
-                      height: 4.w,
-                      color: support.isSelected
-                          ? AppColors.primaryVariantLight
-                          : AppColors.colorSelectDepartmentTicket,
-                    ),
-                  ),
-                ),
-              ),
+              child: StreamBuilder(
+                  stream: bloc.supportItemSelected,
+                  builder: (context, snapshot) {
+                    return CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 4.w,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 1.w),
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: ImageUtils.fromLocal(
+                            'assets/images/bill/tick.svg',
+                            width: 4.w,
+                            height: 4.w,
+                            color: support.isSelected
+                                ? AppColors.primaryVariantLight
+                                : AppColors.colorSelectDepartmentTicket,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
             ),
           ),
         ],
@@ -308,19 +313,24 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
             bottom: 0,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
-              child: Container(
-                color:
-                    support.isSelected ? AppColors.colorSelectDepartmentTicket : Colors.grey[100],
-                width: double.infinity,
-                height: double.infinity,
-                child: ClipPath(
-                  clipper: BottomTriangle(),
-                  child: Container(
+              child: StreamBuilder(
+                  stream: bloc.supportItemSelected,
+                builder: (context, snapshot) {
+                  return Container(
+                    color:
+                        support.isSelected ? AppColors.colorSelectDepartmentTicket : Colors.grey[100],
                     width: double.infinity,
                     height: double.infinity,
-                    color: Colors.white,
-                  ),
-                ),
+                    child: ClipPath(
+                      clipper: BottomTriangle(),
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                }
               ),
             ),
           ),
@@ -363,6 +373,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

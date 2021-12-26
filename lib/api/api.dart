@@ -158,6 +158,7 @@ abstract class RestClient {
       @Part(name: "is_voice") int is_voice,
       @Part(name: "has_attachment") int has_attachment,
       @Part(name: "department_id") String department_id,
+      @Part(name: "body") String body,
       @Part(name: "title") String title);
 
   @POST("/message")
