@@ -12,8 +12,10 @@ import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'authentication_bloc.dart';
 
@@ -96,7 +98,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                         .copyWith(color: AppColors.primary),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        Utils.launchURL('https://www.kermany.com');
+                                        Utils.launchURL(
+                                            FlavorConfig.instance.variables['urlTerms']);
                                       }),
                                 TextSpan(
                                   text: intl.clickLink,

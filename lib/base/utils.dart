@@ -136,7 +136,23 @@ class Utils {
       print('url lanuch error');
     }
   }
-
+  static void launchURLWebView(String url) async {
+    // url = Uri.encodeFull(url).toString();
+    if (await canLaunch(url)) {
+      print('can launch');
+      await launch(
+        url,
+        forceSafariVC: true,
+        forceWebView: true,
+        enableJavaScript: true,
+        enableDomStorage: true,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      // throw 'Could not launch $url';
+      print('url lanuch error');
+    }
+  }
   static Future<String> versionApp() async {
     var package = await PackageInfo.fromPlatform();
     return package.version;
