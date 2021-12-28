@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:behandam/app/app.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -9,6 +11,7 @@ import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
@@ -129,6 +132,14 @@ class ProfileBloc {
     });
   }
 
+  void seenInbox(int id) {
+    _repository.seenInbox(id).then((value) {
+      getUnreadInbox();
+    }).onError((error, stackTrace) {
+      print('data => ${error.toString()}');
+    });
+  }
+
   void getPdfMeal(FoodDietPdf type) {
     _showProgressItem.value = true;
     _repository.getPdfUrl(type).then((value) {
@@ -148,7 +159,8 @@ class ProfileBloc {
           value.data?.term != null &&
           DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0)
         _showPdf.value = true;
-      else _showPdf.value = false;
+      else
+        _showPdf.value = false;
     }).whenComplete(() {});
   }
 
@@ -206,21 +218,24 @@ class ProfileBloc {
   dynamic findProvincesName() {
     if (userInfo.address != null) {
       print("address = > ${userInfo.address!.toJson()}");
-      if(userInfo.address!.provinceId!=null) {
+      if (userInfo.address!.provinceId != null) {
         var name = cityProvinceModel.provinces.firstWhere(
-              (element) => element.id == userInfo.address!.provinceId,
+          (element) => element.id == userInfo.address!.provinceId,
           orElse: () => CityProvince(),
         );
         print("ProvincesName = > ${name.name}");
         return name;
-      }else return null;
+      } else
+        return null;
     } else {
       return null;
     }
   }
 
   dynamic findCityName() {
-    if (userInfo.address != null && cityProvinceModel.cities != null && cityProvinceModel.cities!.length>0) {
+    if (userInfo.address != null &&
+        cityProvinceModel.cities != null &&
+        cityProvinceModel.cities!.length > 0) {
       //print("address = > ${cityProvinceModel.cities?.length}");
       var item;
       if (userInfo.address!.cityId != null) {
@@ -287,38 +302,42 @@ class ProfileBloc {
   }
 
   void edit(BuildContext context) async {
-    UserInformationEdit userInformationEdit=UserInformationEdit();
+    UserInformationEdit userInformationEdit = UserInformationEdit();
     if (userInfo.address != null && userInfo.address!.cityId != null) {
       userInfo.cityId = userInfo.address!.cityId;
-
-    }if (userInfo.address != null && userInfo.address!.provinceId != null) {
-      userInfo.provinceId = userInfo.address!.provinceId;
-
     }
-
+    if (userInfo.address != null && userInfo.address!.provinceId != null) {
+      userInfo.provinceId = userInfo.address!.provinceId;
+    }
+    List<SocialMediaEdit> social = [];
     if (userInfo.socialMedia != null)
       userInfo.socialMedia!.forEach((element) {
-        element.link = element.pivot?.link;
-        element.socialMediaId = element.id;
-        print('element ${element.toJson()}');
+        SocialMediaEdit socialMediaEdit = SocialMediaEdit();
+        socialMediaEdit.link = element.pivot?.link;
+        socialMediaEdit.socialMediaId = element.id;
+        debugPrint('${socialMediaEdit.toJson()}');
+        social.add(socialMediaEdit);
       });
-    userInformationEdit.socialMedia=userInfo.socialMedia;
-    userInformationEdit.firstName=userInfo.firstName;
-    userInformationEdit.lastName=userInfo.lastName;
-    userInformationEdit.callNumber=userInfo.callNumber;
-    userInformationEdit.email=userInfo.email;
-    userInformationEdit.address=userInfo.address?.address;
-    userInformationEdit.countryId=userInfo.countryId;
-    userInformationEdit.cityId=userInfo.cityId;
-    userInformationEdit.provinceId=userInfo.provinceId;
+    userInformationEdit.socialMedia = social;
+    userInformationEdit.firstName = userInfo.firstName;
+    userInformationEdit.lastName = userInfo.lastName;
+    userInformationEdit.callNumber = userInfo.callNumber;
+    userInformationEdit.email = userInfo.email;
+    userInformationEdit.address = userInfo.address?.address;
+    userInformationEdit.countryId = userInfo.countryId;
+    userInformationEdit.cityId = userInfo.cityId;
+    userInformationEdit.provinceId = userInfo.provinceId;
     DialogUtils.showDialogProgress(context: context);
-    _repository.changeProfile(userInformationEdit).whenComplete(() {
+    _repository.changeProfile(userInformationEdit).then((value) {
+      Utils.getSnackbarMessage(context, value.message!);
+      Navigator.of(context).pop();
+    }).whenComplete(() {
       Navigator.of(context).pop();
     });
   }
 
   void resetPasswordMethod(Reset pass) {
-    _repository.reset(pass).then((value) async{
+    _repository.reset(pass).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       _showServerError.fire(value.message);
     }).whenComplete(() => _navigateTo.fire(true));
@@ -330,7 +349,13 @@ class ProfileBloc {
       // if (_url!.contains('fitamin://'))
       //   _navigateToVerify.fire(true);
       // else
-        _navigateToVerify.fire(url);
+      _navigateToVerify.fire(url);
     });
+  }
+
+  void logOut() {
+    _repository.logout();
+    AppSharedPreferences.logout();
+    navigator.routeManager.clearAndPush(Uri.parse(Routes.auth));
   }
 }

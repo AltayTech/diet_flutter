@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -77,14 +78,14 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       child: Column(children: [
                         header(),
                         content(),
-                        Padding(
+                       /* Padding(
                           padding: EdgeInsets.only(left: 5.w, right: 5.w),
                           child: RichText(
                               textDirection: context.textDirectionOfLocale,
                               textAlign: TextAlign.center,
                               text: TextSpan(children: [
                                 TextSpan(
-                                  text: intl.termsOfUse,
+                                  text: intl.termsOfUseDescription,
                                   style: Theme.of(context)
                                       .textTheme
                                       .overline!
@@ -98,8 +99,9 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                         .copyWith(color: AppColors.primary),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        Utils.launchURL(
-                                            FlavorConfig.instance.variables['urlTerms']);
+                                        *//*Utils.launchURL(
+                                            FlavorConfig.instance.variables['urlTerms']);*//*
+                                        VxNavigator.of(context).push(Uri.parse(Routes.termsApp));
                                       }),
                                 TextSpan(
                                   text: intl.clickLink,
@@ -109,7 +111,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                       .copyWith(color: AppColors.labelTextColor),
                                 ),
                               ])),
-                        ),
+                        ),*/
                         Space(height: 1.h),
                       ]),
                     ),

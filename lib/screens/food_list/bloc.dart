@@ -71,7 +71,6 @@ class FoodListBloc {
         _foodList.value = value.data;
         _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
         if (_foodList.value?.meals != null)
-
           for (int i = 0; i < _foodList.value!.meals!.length; i++) {
             _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
             _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
@@ -165,6 +164,11 @@ class FoodListBloc {
       debugPrint('food list ${value.data}');
       _foodList.value = value.data;
       _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
+      if (_foodList.value?.meals != null)
+        for (int i = 0; i < _foodList.value!.meals!.length; i++) {
+          _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
+          _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
+        }
       setTheme();
     }).whenComplete(() => _loadingContent.value = false);
   }

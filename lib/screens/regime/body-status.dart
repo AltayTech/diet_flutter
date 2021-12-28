@@ -296,7 +296,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     RichText(
-                      // textAlign: TextAlign.center,
+                      textDirection: context.textDirectionOfLocale,
                       text: TextSpan(
                         text: txt1,
                         style: Theme.of(context)

@@ -9,11 +9,7 @@ import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ShowInboxItem extends StatefulWidget {
-  static const routeName = '/profile/inbox/item';
-
   ShowInboxItem() {
-    /*
-    seenInbox();*/
   }
 
   @override
@@ -23,18 +19,6 @@ class ShowInboxItem extends StatefulWidget {
 class _ShowInboxItemState extends ResourcefulState<ShowInboxItem> {
   late InboxItem args;
   var result;
-
-  /*seenInbox() async {
-    print('call seen');
-    try {
-      result = await profileService.seenInbox(widget.item['id']);
-    //  print('Seen Inbox json: ${result}');
-
-    } catch (e) {
-       print('Seen Inbox json: $e');
-    }
-    getUnreadInbox();
-  }*/
 
   @override
   void initState() {

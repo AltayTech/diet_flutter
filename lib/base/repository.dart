@@ -223,6 +223,12 @@ abstract class Repository {
   NetworkResult<ShopCategory> getProducts(String filter);
 
   NetworkResult<Price?> checkCouponShop(Price price);
+
+  ImperativeNetworkResult seenInbox(int id);
+
+  ImperativeNetworkResult addFcmToken(String token);
+
+  ImperativeNetworkResult logout();
 }
 
 class _RepositoryImpl extends Repository {
@@ -872,6 +878,26 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Price?> checkCouponShop(Price price) {
     var response = _apiClient.checkCouponShop(price);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult seenInbox(int id) {
+    var response = _apiClient.getInboxItem(id);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult addFcmToken(String token) {
+    SignIn signIn = SignIn();
+    signIn.token = token;
+    var response = _apiClient.addFcmToken(signIn);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult logout() {
+    var response = _apiClient.logout();
     return response;
   }
 }

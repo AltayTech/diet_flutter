@@ -59,6 +59,7 @@ import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/screens/ticket/ticket_details.dart';
 import 'package:behandam/screens/vitrin/vitrin.dart';
+import 'package:behandam/screens/widget/webViewApp.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -350,6 +351,7 @@ final navigator = VxNavigator(
     Routes.shopBill: (_, param) => MaterialPage(child: routePage(ShopBillPage()), arguments: param),
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
+    Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

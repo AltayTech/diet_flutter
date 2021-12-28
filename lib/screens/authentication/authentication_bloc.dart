@@ -87,6 +87,7 @@ class AuthenticationBloc {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       print('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      checkFcm();
       _repository
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)
@@ -94,7 +95,7 @@ class AuthenticationBloc {
         _showServerError.fire(false);
         _navigateToVerify.fire(value.next);
       });
-    }).catchError((onError){
+    }).catchError((onError) {
       _showServerError.fire(false);
     });
   }
@@ -112,6 +113,7 @@ class AuthenticationBloc {
     _repository.register(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.analytics!.logEvent(name: "register_success");
+      checkFcm();
       _repository
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)
@@ -119,7 +121,7 @@ class AuthenticationBloc {
         _waiting.value = false;
         _navigateToVerify.fire(value.next);
       });
-    }).catchError((onError){
+    }).catchError((onError) {
       _showServerError.fire(false);
     });
   }
@@ -155,6 +157,7 @@ class AuthenticationBloc {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.token = value.requireData.token;
       MemoryApp.analytics!.logEvent(name: "register_success");
+      checkFcm();
       _repository
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)
@@ -162,13 +165,22 @@ class AuthenticationBloc {
         _waiting.value = false;
         _navigateToVerify.fire(value.next);
       });
-    }).catchError((onError){
+    }).catchError((onError) {
       _showServerError.fire(false);
     });
   }
 
   void onCountrySearch(String search) {
     _search = search;
+  }
+
+  void checkFcm() async {
+    String fcm = await AppSharedPreferences.fcmToken;
+    bool sendFcm = await AppSharedPreferences.sendFcmToken;
+    if (fcm != 'null' && !sendFcm)
+      _repository.addFcmToken(fcm).then((value)async{
+        await AppSharedPreferences.setSendFcmToken(true);
+      });
   }
 
   void dispose() {

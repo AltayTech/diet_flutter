@@ -24,9 +24,7 @@ class TicketTabState extends ResourcefulState<TicketTab> with SingleTickerProvid
     _listTabView.add(Ticket());
     _listTabView.add(CallTicket());
 
-    _list.clear();
-    _list.add(ItemTab(title: "پیام"));
-    _list.add(ItemTab(title: "تماس"));
+
     _controller = TabController(
       vsync: this,
       length: 2,
@@ -56,6 +54,12 @@ class TicketTabState extends ResourcefulState<TicketTab> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    if(_list.isEmpty)
+      {
+        _list.clear();
+        _list.add(ItemTab(title: intl.message));
+        _list.add(ItemTab(title: intl.call));
+      }
     return SafeArea(
         child: Scaffold(
             appBar: Toolbar(titleBar: intl.ticket),

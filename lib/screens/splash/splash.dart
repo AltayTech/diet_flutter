@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/user/version.dart';
+import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/splash/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +35,15 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     bloc = SplashBloc();
     bloc.getPackageInfo();
     bloc.getUser();
-
+    handleDeeplink();
     listenBloc();
   }
-
+  void handleDeeplink() async {
+    final deeplink = await AppSharedPreferences.deeplink;
+    if (deeplink != null) {
+      DeepLinkUtils.navigateDeepLink(deeplink);
+    }
+  }
   @override
   void dispose() {
     bloc.dispose();

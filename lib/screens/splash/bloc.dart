@@ -5,6 +5,7 @@ import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/data/sharedpreferences.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -48,9 +49,20 @@ class SplashBloc {
     buildNumber = await Utils.buildNumber();
     packageName = await Utils.packageName();
   }
+  void checkFcm() async {
+    String fcm = await AppSharedPreferences.fcmToken;
+    bool sendFcm = await AppSharedPreferences.sendFcmToken;
+    if (fcm != 'null' && !sendFcm)
+      _repository.addFcmToken(fcm).then((value)async{
+        await AppSharedPreferences.setSendFcmToken(true);
+      });
 
+  }
   void getUser() {
     _waiting.value = true;
+    if(MemoryApp.token!=null){
+      checkFcm();
+    }
     _repository.getUser().then((value) {
       MemoryApp.userInformation = value.data;
       MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());

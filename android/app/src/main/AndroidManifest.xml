@@ -50,6 +50,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:showWhenLocked="true"
+            android:screenOrientation="portrait"
             android:theme="@style/LaunchTheme"
             android:turnScreenOn="true"
             android:windowSoftInputMode="adjustResize">

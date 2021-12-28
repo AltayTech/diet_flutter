@@ -53,7 +53,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
-        if(event.toString().contains(Routes.auth))
+        if(event.toString().contains(Routes.auth.substring(1)))
           VxNavigator.of(context).push(Uri.parse('/$event'), params: {"mobile": args['mobile'], 'countryId': args['countryId']});
         else VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }

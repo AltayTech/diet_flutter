@@ -65,7 +65,7 @@ UserInformationEdit _$UserInformationEditFromJson(Map<String, dynamic> json) =>
       ..lastName = json['last_name'] as String?
       ..address = json['address'] as String?
       ..socialMedia = (json['social_media'] as List<dynamic>?)
-          ?.map((e) => SocialMedia.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => SocialMediaEdit.fromJson(e as Map<String, dynamic>))
           .toList();
 
 Map<String, dynamic> _$UserInformationEditToJson(
@@ -128,14 +128,23 @@ SocialMedia _$SocialMediaFromJson(Map<String, dynamic> json) => SocialMedia()
       ? null
       : PivotMedia.fromJson(json['pivot'] as Map<String, dynamic>)
   ..link = json['link'] as String?
-  ..id = json['id'] as int?
-  ..socialMediaId = json['social_media_id'] as int?;
+  ..id = json['id'] as int?;
 
 Map<String, dynamic> _$SocialMediaToJson(SocialMedia instance) =>
     <String, dynamic>{
       'pivot': instance.pivot,
       'link': instance.link,
       'id': instance.id,
+    };
+
+SocialMediaEdit _$SocialMediaEditFromJson(Map<String, dynamic> json) =>
+    SocialMediaEdit()
+      ..link = json['link'] as String?
+      ..socialMediaId = json['social_media_id'] as int?;
+
+Map<String, dynamic> _$SocialMediaEditToJson(SocialMediaEdit instance) =>
+    <String, dynamic>{
+      'link': instance.link,
       'social_media_id': instance.socialMediaId,
     };
 

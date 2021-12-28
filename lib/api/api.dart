@@ -311,5 +311,14 @@ abstract class RestClient {
 
   @POST("/check-coupon-shop")
   NetworkResult<Price?> checkCouponShop(@Body() Price price);
+
+  @GET("/inbox/{id}")
+  NetworkResult<Inbox> getInboxItem(@Path('id') int id);
+
+  @POST("/firebase-token")
+  ImperativeNetworkResult addFcmToken(@Body() SignIn signIn);
+
+  @GET("/logout")
+  ImperativeNetworkResult logout();
 }
 

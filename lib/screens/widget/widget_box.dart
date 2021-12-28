@@ -339,7 +339,7 @@ Widget textInput(
           : null,
       textInputAction: action,
       maxLines: maxLine ? 4 : 1,
-      controller: controller,
+      controller: textController ?? controller,
       enabled: enable,
       decoration: inputDecoration.copyWith(
         labelText: label,
@@ -351,13 +351,12 @@ Widget textInput(
       keyboardType: textInputType,
       textDirection: textDirection,
       onChanged: (val) {
-        controller.text = val;
-        controller.selection = TextSelection.fromPosition(
-            TextPosition(offset: controller.text.length));
-        onChanged(val);
+        TextSelection previousSelection = controller.selection;
+        controller.text =  onChanged(val);
+        controller.selection=previousSelection;
       },
       style: Theme.of(ctx).textTheme.subtitle2,
-      textAlign: TextAlign.start,
+     // textAlign: TextAlign.start,
       validator: (val) => validation(val),
     ),
   );
