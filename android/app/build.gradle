@@ -76,8 +76,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true // add this
-            shrinkResources true
-            useProguard true
+            shrinkResources false
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'// add this
             signingConfig signingConfigs.release // this is default for release
@@ -85,6 +84,9 @@ android {
 
         debug {
             minifyEnabled false // a
+            shrinkResources false
+            useProguard true
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
             signingConfig signingConfigs.debug // this is default for release
         }
@@ -111,4 +113,5 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
     implementation 'com.google.firebase:firebase-analytics'
+
 }

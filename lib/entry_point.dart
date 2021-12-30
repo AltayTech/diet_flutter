@@ -48,7 +48,6 @@ void _initFireBase() async {
       options: await DefaultFirebaseConfig.platformOptions,
     );
 
-      await AppFcm.initialize();
     if (!kIsWeb) {
       if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled == false) {
         await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
@@ -58,6 +57,7 @@ void _initFireBase() async {
   } catch (Exception) {
     print("not install firebase");
   }
+  await AppFcm.initialize();
   try {
     MemoryApp.analytics = FirebaseAnalytics.instance;
     // firebaseAnalyticsObserver = FirebaseAnalyticsObserver(analytics: MemoryApp.analytics!);

@@ -13,14 +13,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 enum actionType {
+  @JsonValue(0)
   OpenApp,
+  @JsonValue(1)
   OpenWebUrl,
+  @JsonValue(2)
   OpenEspecialApp,
+  @JsonValue(3)
   OpenPage,
+  @JsonValue(4)
   OpenTelegramChannal,
+  @JsonValue(5)
   OpenInstagramPage,
+  @JsonValue(6)
   CallService
 }
 
@@ -116,8 +124,8 @@ class AppFcm {
       return;
     }
 
-    await AwesomeNotifications().initialize(
-      null, // this makes you use your default icon, if you haven't one
+    AwesomeNotifications().initialize(
+      'resource://drawable/ic_app',
       [
         NotificationChannel(
           channelKey: 'campaign',
@@ -127,9 +135,16 @@ class AppFcm {
           ledColor: AppColors.primary,
         ),
         NotificationChannel(
-          channelKey: 'behandam',
-          channelName: 'behandam',
-          channelDescription: 'behandam',
+            channelKey: 'behandam',
+            channelName: 'behandam',
+            channelDescription: 'behandam',
+            defaultColor: AppColors.primary,
+            ledColor: AppColors.primary,
+            importance: NotificationImportance.High),
+        NotificationChannel(
+          channelKey: 'miscellaneous',
+          channelName: 'miscellaneous',
+          channelDescription: 'miscellaneous',
           defaultColor: AppColors.primary,
           ledColor: AppColors.primary,
         ),
@@ -160,10 +175,17 @@ class AppFcm {
 
   static void _getToken() {
     try {
-      _firebaseMessaging.getToken().then((token) {
-        AppSharedPreferences.setFcmToken(token);
-        debugPrint('Your fcm token is: $token');
-      });
+      if(!kIsWeb) {
+        _firebaseMessaging.getToken().then((token) {
+          AppSharedPreferences.setFcmToken(token);
+          debugPrint('Your fcm token is: $token');
+        });
+      }else{
+        _firebaseMessaging.getToken(vapidKey: "AIzaSyBnqcxB9tpxsOu9PNKTvd0OuXi7k7zx0NE").then((token) {
+          AppSharedPreferences.setFcmToken(token);
+          debugPrint('Your fcm token is: $token');
+        });
+      }
     } catch (e) {
       debugPrint('Firebase service is not available');
     }
@@ -222,32 +244,47 @@ class AppFcm {
         await AppSharedPreferences.setFcmButtonActions(jsonEncode(notifResponse.toJson()));
       }
 
-      if (notifResponse.visible == "true")
-        AwesomeNotifications().createNotification(
+      if (notifResponse.visible == "true") {
+        /* AwesomeNotifications().createNotificationFromJsonData(jsonDecode('''
+        {   "actionKey": "OpenDeeplink",
+            "actionValue": "https://web.zirehapp.com/link/water",
+            "content": {
+            "id": "200",
+            "channelKey": "behandam",
+            "title": "کاربر عزیز زیره",
+            "body": "آپشن های مختلف نوتیف رو میتونی اینجا ببینی",
+            "autoCancel": "true"
+            }
+        }'''));*/
+
+        await AwesomeNotifications().createNotification(
             content: NotificationContent(
-                id: 1,
-                channelKey: notifResponse.chanel_id ?? 'behandam',
-                displayOnBackground: true,
+                id: notifResponse.hashCode,
+                channelKey: notifResponse.channel_id ?? "behandam",
+                // displayOnBackground: true,
+                // notificationLayout: NotificationLayout.Default,
                 title: notifResponse.title,
                 body: notifResponse.description,
                 customSound: "default",
                 largeIcon: notifResponse.icon,
                 showWhen: true,
+                hideLargeIconOnExpand: true,
                 autoCancel: bool.fromEnvironment(notifResponse.autoCancel!)
-                //  autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
+                //autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
                 ),
             actionButtons: buttonActions);
+      }
     } catch (e) {
+      debugPrint('e => $e');
       AwesomeNotifications().createNotification(
         content: NotificationContent(
           id: 1,
-          channelKey: 'behandam',
           displayOnBackground: true,
+          channelKey: "behandam",
           title: message.notification!.title,
           body: message.notification!.body,
           customSound: "default",
           showWhen: true,
-
           //  autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
         ),
       );

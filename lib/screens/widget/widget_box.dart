@@ -122,7 +122,7 @@ Widget attachBox() {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () {
-                    print('assistant clicked');
+                    debugPrint('assistant clicked');
                     launchURL('http://support.kermany.com/');
                   },
                   child: attachCard(
@@ -365,7 +365,7 @@ Widget textInput(
 void launchURL(String url) async {
   // url = Uri.encodeFull(url).toString();
   if (await canLaunch(url)) {
-    print('can launch');
+    debugPrint('can launch');
     await launch(
       url,
       forceSafariVC: false,
@@ -375,7 +375,7 @@ void launchURL(String url) async {
     );
   } else {
     // throw 'Could not launch $url';
-    print('url lanuch error');
+    debugPrint('url lanuch error');
   }
   /*url = Uri.encodeFull(url).toString();
     print('url $url');

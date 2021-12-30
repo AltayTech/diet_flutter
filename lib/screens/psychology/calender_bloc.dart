@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:behandam/const_&_model/selected_time.dart';
 import 'package:behandam/data/entity/psychology/admin.dart';
 import 'package:behandam/data/entity/psychology/booking.dart';
@@ -8,6 +7,7 @@ import 'package:behandam/data/entity/psychology/package.dart';
 import 'package:behandam/data/entity/psychology/plan.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shamsi_date/shamsi_date.dart';
@@ -190,9 +190,9 @@ class CalenderBloc{
     try{
     _repository.getPsychologyInvoice().then((value) {
       _navigate.fire(value.data!.success);
-      print('success:${value.data!.success}');
+      debugPrint('success:${value.data!.success}');
     });}catch(e) {
-      print("Myerror:$e");
+      debugPrint("Myerror:$e");
     }
   }
 

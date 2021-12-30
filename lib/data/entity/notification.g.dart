@@ -17,7 +17,7 @@ Map<String, dynamic> _$NotifResponseToJson(NotifResponse instance) =>
     };
 
 Notif _$NotifFromJson(Map json) => Notif()
-  ..chanel_id = json['chanel_id'] as String?
+  ..channel_id = json['channel_id'] as String?
   ..description = json['description'] as String?
   ..autoCancel = json['auto_cancel'] as String?
   ..action = json['action'] as String?
@@ -32,7 +32,7 @@ Notif _$NotifFromJson(Map json) => Notif()
   ..actionType = json['actionType'] as String?;
 
 Map<String, dynamic> _$NotifToJson(Notif instance) => <String, dynamic>{
-      'chanel_id': instance.chanel_id,
+      'channel_id': instance.channel_id,
       'description': instance.description,
       'auto_cancel': instance.autoCancel,
       'action': instance.action,

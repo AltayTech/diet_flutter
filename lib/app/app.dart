@@ -93,7 +93,7 @@ class _AppState extends State<App> {
     getToken();
 
     navigator.addListener(() {
-      print('routeName is => ${navigator.currentConfiguration!.path}');
+      debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
       if (MemoryApp.analytics != null)
         MemoryApp.analytics!
             .logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
@@ -228,17 +228,17 @@ class _AppState extends State<App> {
 class MyObs extends VxObserver {
   @override
   void didChangeRoute(Uri route, Page page, String pushOrPop) {
-    print("${route.path} - $pushOrPop");
+    debugPrint("${route.path} - $pushOrPop");
   }
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    print('Pushed a route');
+    debugPrint('Pushed a route');
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    print('Popped a route');
+    debugPrint('Popped a route');
   }
 }
 

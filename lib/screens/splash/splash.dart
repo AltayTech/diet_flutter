@@ -37,8 +37,11 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     bloc.getUser();
     handleDeeplink();
     listenBloc();
+
   }
   void handleDeeplink() async {
+    var fcm=await AppSharedPreferences.fcmToken;
+    debugPrint('fcm is => ${fcm}');
     final deeplink = await AppSharedPreferences.deeplink;
     if (deeplink != null) {
       DeepLinkUtils.navigateDeepLink(deeplink);

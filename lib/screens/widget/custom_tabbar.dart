@@ -57,7 +57,7 @@ class _CustomTabBarState extends ResourcefulState<CustomTabBar> {
                     softWrap: true,
                   )),
               onTap: () {
-                print("click > ${indexItem}");
+                debugPrint("click > ${indexItem}");
                 setState(() {
                   indexItem = index;
                   widget._controller.index=indexItem;

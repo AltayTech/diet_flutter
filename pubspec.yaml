@@ -74,7 +74,7 @@ dependencies:
   firebase_crashlytics: ^2.4.3
   firebase_messaging: ^11.1.0
   external_app_launcher: ^2.0.2
-  awesome_notifications: ^0.0.6+12
+  awesome_notifications: 0.0.6+12
   android_intent: ^2.0.2
   device_apps: ^2.1.1
   filesize: ^2.0.1

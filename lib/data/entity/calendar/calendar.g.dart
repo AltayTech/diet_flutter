@@ -28,7 +28,6 @@ Term _$TermFromJson(Map<String, dynamic> json) => Term(
       json['is_stopped'] as int,
       json['is_active'] as int,
       json['remaining_visits'] as int,
-      json['origin_id'] as int,
       json['refunded_at'] as String?,
       json['created_at'] as String,
       json['updated_at'] as String,

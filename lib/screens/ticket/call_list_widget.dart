@@ -5,11 +5,12 @@ import 'package:behandam/screens/ticket/call_bloc.dart';
 import 'package:behandam/screens/ticket/call_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 class CallListWidget extends StatefulWidget {
   late TicketItem ticketItem;
@@ -117,7 +118,7 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
                             builder: (context, snapshot) {
                               if (snapshot.data == true) {
                                 return SpinKitCircle(
-                                   size: 7.w,
+                                  size: 7.w,
                                   color: AppColors.primary,
                                 );
                               } else
@@ -230,23 +231,111 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
     DialogUtils.showDialogPage(
         context: context,
         isDismissible: true,
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 3.h),
+            width: double.maxFinite,
+            decoration: AppDecorations.boxLarge.copyWith(
+              color: AppColors.onPrimary,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    intl.callRequest,
+                    textAlign: TextAlign.center,
+                    textDirection: context.textDirectionOfLocale,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  Space(height: 2.h),
+                  Text(
+                    intl.addCallRequestForYou,
+                    textAlign: TextAlign.center,
+                    textDirection: context.textDirectionOfLocale,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  Space(height: 3.h),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 6.h,
+                          width: 30.w,
+                          child: MaterialButton(
+                            child: Text(
+                              intl.accept,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .copyWith(color: AppColors.primary),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              callBloc.sendCallRequest();
+                            },
+                            color: Colors.white,
+                            elevation: 0,
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                      Space(width: 2.w),
+                      Expanded(
+                        child: Container(
+                          height: 6.h,
+                          width: 30.w,
+                          child: MaterialButton(
+                            child: Text(
+                              intl.cancel,
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: Colors.white,
+                            elevation: 0,
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
+
+  void deleteDialog() async {
+    return DialogUtils.showDialogPage(
+      context: context,
+      isDismissible: true,
+      child: Center(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 3.h),
+          width: double.maxFinite,
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.onPrimary,
+          ),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  intl.callRequest,
+                  intl.cancelCallRequest,
                   textAlign: TextAlign.center,
                   textDirection: context.textDirectionOfLocale,
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 Space(height: 2.h),
                 Text(
-                  intl.addCallRequestForYou,
-                  textAlign: TextAlign.center,
+                  intl.cancelCallRequestForYou,
                   textDirection: context.textDirectionOfLocale,
                   style: Theme.of(context).textTheme.caption,
                 ),
@@ -269,7 +358,7 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
                           ),
                           onPressed: () {
                             Navigator.of(context).pop();
-                            callBloc.sendCallRequest();
+                            callBloc.deleteCallRequest();
                           },
                           color: Colors.white,
                           elevation: 0,
@@ -301,82 +390,6 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
               ],
             ),
           ),
-        ));
-  }
-
-  void deleteDialog() async {
-    return DialogUtils.showDialogPage(
-      context: context,
-      isDismissible: true,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 3.h),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                intl.cancelCallRequest,
-                textAlign: TextAlign.center,
-                textDirection: context.textDirectionOfLocale,
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
-              Space(height: 2.h),
-              Text(
-                intl.cancelCallRequestForYou,
-                textDirection: context.textDirectionOfLocale,
-                style: Theme.of(context).textTheme.caption,
-              ),
-              Space(height: 3.h),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 6.h,
-                      width: 30.w,
-                      child: MaterialButton(
-                        child: Text(
-                          intl.accept,
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(color: AppColors.primary),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          callBloc.deleteCallRequest();
-                        },
-                        color: Colors.white,
-                        elevation: 0,
-                      ),
-                    ),
-                    flex: 1,
-                  ),
-                  Space(width: 2.w),
-                  Expanded(
-                    child: Container(
-                      height: 6.h,
-                      width: 30.w,
-                      child: MaterialButton(
-                        child: Text(
-                          intl.cancel,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        color: Colors.white,
-                        elevation: 0,
-                      ),
-                    ),
-                    flex: 1,
-                  ),
-                ],
-              )
-            ],
-          ),
         ),
       ),
     );
@@ -396,6 +409,7 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

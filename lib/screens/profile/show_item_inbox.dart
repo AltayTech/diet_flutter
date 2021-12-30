@@ -72,7 +72,7 @@ class _ShowInboxItemState extends ResourcefulState<ShowInboxItem> {
                 initialUrl: args.action! + '?from=app',
                 javascriptMode: JavascriptMode.unrestricted,
                 onPageStarted: (val) {
-                  print('$val');
+                  debugPrint('$val');
                 },
               ),
       ),

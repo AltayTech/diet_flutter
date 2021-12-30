@@ -8,6 +8,7 @@ import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/string.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
@@ -79,14 +80,14 @@ class AuthenticationBloc {
   void loginMethod(String phoneNumber) {
     _repository.status(phoneNumber).then((value) {
       _navigateToVerify.fire(value.next);
-      print('value: ${value.data!.isExist}');
+      debugPrint('value: ${value.data!.isExist}');
     }).whenComplete(() => _showServerError.fire(false));
   }
 
   void passwordMethod(User user) {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      print('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      debugPrint('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       checkFcm();
       _repository
           .getUser()

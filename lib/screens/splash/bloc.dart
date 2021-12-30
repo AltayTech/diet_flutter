@@ -49,28 +49,31 @@ class SplashBloc {
     buildNumber = await Utils.buildNumber();
     packageName = await Utils.packageName();
   }
+
   void checkFcm() async {
     String fcm = await AppSharedPreferences.fcmToken;
     bool sendFcm = await AppSharedPreferences.sendFcmToken;
     if (fcm != 'null' && !sendFcm)
-      _repository.addFcmToken(fcm).then((value)async{
+      _repository.addFcmToken(fcm).then((value) async {
         await AppSharedPreferences.setSendFcmToken(true);
       });
-
   }
+
   void getUser() {
     _waiting.value = true;
-    if(MemoryApp.token!=null){
+    if (MemoryApp.token != null) {
       checkFcm();
     }
     _repository.getUser().then((value) {
       MemoryApp.userInformation = value.data;
       MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
-      if(!kIsWeb)
-      FirebaseCrashlytics.instance.setUserIdentifier(MemoryApp.userInformation!.userId.toString());
+      if (!kIsWeb)
+        FirebaseCrashlytics.instance
+            .setUserIdentifier(MemoryApp.userInformation!.userId.toString());
       MemoryApp.analytics!
           .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
     }).whenComplete(() {
+      if(!_waiting.isClosed)
       _waiting.value = false;
       getVersionApp();
     });
@@ -79,8 +82,7 @@ class SplashBloc {
   void getVersionApp() {
     if (!kIsWeb) {
       _waiting.value = true;
-    _repository.getVersion().then((value) async {
-
+      _repository.getVersion().then((value) async {
         if (Platform.isIOS) {
           if (value.data?.ios != null && int.parse(value.data!.ios!.versionCode!) > buildNumber!) {
             if (value.data!.ios!.forceUpdate == 1) forceUpdate = true;
@@ -91,7 +93,7 @@ class SplashBloc {
             _navigateTo.fire(true);
           }
         } else if (Platform.isAndroid) {
-          print('onError = > ${value.data!.android!.toJson()} // $buildNumber');
+          debugPrint('onError = > ${value.data!.android!.toJson()} // $buildNumber');
           if (value.data?.android != null &&
               int.parse(value.data!.android!.versionCode!) > buildNumber!) {
             if (value.data!.android!.forceUpdate == 1) forceUpdate = true;
@@ -102,12 +104,11 @@ class SplashBloc {
             _navigateTo.fire(true);
           }
         }
-
-    }).catchError((onError) {
-      print('onError = > ${onError}');
-    }).whenComplete(() {
-      _waiting.value = false;
-    });
+      }).catchError((onError) {
+        print('onError = > ${onError}');
+      }).whenComplete(() {
+        if (!_waiting.isClosed) _waiting.value = false;
+      });
     } else {
       _navigateTo.fire(true);
     }
