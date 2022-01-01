@@ -220,7 +220,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
               Space(height: 2.h),
               Stack(
                 children: [
-                  Container(height: 13.h),
+                  Container(height: 15.h),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -228,7 +228,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                     top: 2.5.h,
                     child: Container(
                       color: AppColors.primary.withOpacity(0.3),
-                      padding: EdgeInsets.fromLTRB(3.w, 1.h, 3.w, 0),
+                      padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 0),
                       child: Center(
                         child: Text(
                           intl.tryToAlternateOneMealDaily,
