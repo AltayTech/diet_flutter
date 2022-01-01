@@ -85,10 +85,8 @@ android {
         debug {
             minifyEnabled false // a
             shrinkResources false
-            useProguard true
             debuggable true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
-            signingConfig signingConfigs.debug // this is default for release
+         signingConfig signingConfigs.debug // this is default for release
         }
     /*    develop {
             minifyEnabled false // a

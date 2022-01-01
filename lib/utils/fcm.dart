@@ -125,7 +125,7 @@ class AppFcm {
     }
 
     AwesomeNotifications().initialize(
-      'resource://drawable/ic_app',
+      null,
       [
         NotificationChannel(
           channelKey: 'campaign',

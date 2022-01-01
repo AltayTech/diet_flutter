@@ -9,8 +9,6 @@
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
     <queries>
         <!-- If your app opens https URLs -->
@@ -69,9 +67,9 @@
                  screen fades out. A splash screen is useful to avoid any visual
                  gap between the end of Android's launch screen and the painting of
                  Flutter's first frame. -->
-            <meta-data
+         <!--   <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@drawable/launch_background" />
+                android:resource="@drawable/launch_background" />-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -87,8 +85,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="behandam" />
-                <!-- <data android:scheme="https" android:host="behandam.kermany.com" android:pathPrefix="/link"/>
-                 <data android:scheme="behandam" android:host="behandam.app" android:pathPrefix="/link"/>-->
+                <data android:scheme="https" android:host="behandam.kermany.com"/>
+                <!--  <data android:scheme="behandam" android:host="behandam.app" android:pathPrefix="/link"/>-->
                 <!--                   android:host="debug.behaminplus.ir"-->
                 <!--                   android:pathPattern="/#/psy/payment/online/fail"-->
 

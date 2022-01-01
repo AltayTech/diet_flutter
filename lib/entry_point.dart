@@ -47,17 +47,18 @@ void _initFireBase() async {
     await Firebase.initializeApp(
       options: await DefaultFirebaseConfig.platformOptions,
     );
-
+    await AppFcm.initialize();
     if (!kIsWeb) {
       if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled == false) {
         await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
       }
     }
+
     //FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   } catch (Exception) {
     print("not install firebase");
   }
-  await AppFcm.initialize();
+
   try {
     MemoryApp.analytics = FirebaseAnalytics.instance;
     // firebaseAnalyticsObserver = FirebaseAnalyticsObserver(analytics: MemoryApp.analytics!);
