@@ -11,6 +11,7 @@ import 'package:behandam/screens/widget/input_widget.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/sizes.dart';
@@ -213,16 +214,19 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
             return EmptyBox();
           }
           debugPrint('food length ${snapshot.requireData!.length}');
-          return ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (_, index) {
-              if (index == snapshot.requireData!.length) {
-                return loadMoreProgress();
-              }
-              return foodItem(snapshot.requireData![index]);
-            },
-            itemCount: snapshot.requireData!.length + 1,
+          return ScrollConfiguration(
+            behavior: MyCustomScrollBehavior(),
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (_, index) {
+                if (index == snapshot.requireData!.length) {
+                  return loadMoreProgress();
+                }
+                return foodItem(snapshot.requireData![index]);
+              },
+              itemCount: snapshot.requireData!.length + 1,
+            ),
           );
         }
         return Center(child: Progress());
@@ -338,30 +342,42 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   }
 
   List<Widget> makingFoodItems(ListFood food, ListFood? selectedFood) {
-    List<int> items = List.generate((food.foodItems!.length * 2) - 1, (i) => i);
+    // Expanded(
+    //   child: Chip(
+    //       label:Text(food.title!)),
+    // ),
+    // List<int> items = List.generate((food.foodItems!.length * 2) - 1, (i) => i);
     List<Widget> widgets = [];
-    int index = 0;
-    for (int i = 0; i < items.length; i++) {
-      if (i % 2 == 0) {
-        widgets.add(Chip(
-          backgroundColor: selectedFood != null && food.id == selectedFood.id
-              ? Colors.grey[200]
-              : AppColors.onPrimary,
-          label: Text(
-            food.foodItems![index].title,
-            style: typography.caption,
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ));
-        index++;
-      } else {
-        widgets.add(Icon(
-          Icons.add,
-          size: 6.w,
-        ));
-      }
+    // int index = 0;
+    // for (int i = 0; i < items.length; i++) {
+    //   if (i % 2 == 0) {
+    List<String> title = food.title!.split("+");
+    for (int i = 0; i < title.length; i++) {
+         widgets.add(Chip(
+           backgroundColor: selectedFood != null && food.id == selectedFood.id
+               ? Colors.grey[200]
+               : AppColors.onPrimary,
+           label: Text(
+             title[i].trim(),
+             style: typography.caption,
+             textAlign: TextAlign.center,
+             softWrap: true,
+           ),
+         )) ;
+         if( i!= title.length-1)
+          widgets.add(Icon(
+            Icons.add,
+            size: 6.w,
+          ));
     }
+        // index++;
+      // } else {
+      //   widgets.add(Icon(
+      //     Icons.add,
+      //     size: 6.w,
+      //   ));
+      // }
+    // }
     return widgets;
   }
 

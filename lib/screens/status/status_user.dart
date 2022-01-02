@@ -8,6 +8,7 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:logifan/widgets/space.dart';
 
 class StatusUserScreen extends StatefulWidget {
   const StatusUserScreen({Key? key}) : super(key: key);
@@ -61,7 +62,7 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data == false) {
               return Container(
-                constraints: BoxConstraints(minHeight: 80.h, minWidth: 100.w),
+                constraints: BoxConstraints(minHeight: 110.h, minWidth: 100.w),
                 color: Color.fromRGBO(245, 245, 245, 1),
                 padding: EdgeInsets.fromLTRB(
                   4.w,
@@ -82,31 +83,31 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                       child: Column(
                         children: [
                           itemUi('', getDietTypeString(), intl.dietType),
-                          SizedBox(height: 1.h),
+                          Space(height: 1.h),
                           itemUi(
                               intl.old,
                               (bloc.visitItem?.physicalInfo?.age.toString() ?? intl.none),
                               intl.age),
-                          SizedBox(height: 1.h),
+                          Space(height: 1.h),
                           itemUi(
                               intl.centimeter,
                               bloc.visitItem?.physicalInfo?.height.toString() ?? intl.none,
                               intl.height),
-                          SizedBox(height: 1.h),
+                          Space(height: 1.h),
                           itemUi(
                               intl.kiloGr,
-                              bloc.visitItem?.firstWeight.toString() ?? 0.toString(),
+                              bloc.activeTerms?.firstWeight?.toStringAsFixed(1) ?? 0.toString(),
                               intl.firstWeight),
-                          SizedBox(height: 1.h),
+                          Space(height: 1.h),
                           itemUi(
                               intl.kiloGr,
-                              bloc.visitItem?.lostWeight?.abs().toString(),
-                              bloc.visitItem!.lostWeight! > 0
+                              bloc.activeTerms?.lostWeight?.abs().toStringAsFixed(1),
+                              bloc.activeTerms!.lostWeight! > 0
                                   ? intl.addedWeight
-                                  : bloc.visitItem!.lostWeight! == 0
+                                  : bloc.activeTerms!.lostWeight! == 0
                                       ? intl.noChangeWeight
                                       : intl.lostWeight),
-                          SizedBox(height: 1.h),
+                          Space(height: 1.h),
                           itemUi(
                               intl.kiloGr,
                               bloc.visitItem?.weightDifference?.abs().toStringAsFixed(1) ??
@@ -116,9 +117,33 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 2.h),
-                    ChartWeight(),
-                    SizedBox(height: 2.h),
+                    Space(height: 2.h),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(intl.chartWeightName,
+                                style: Theme.of(context).textTheme.caption!.copyWith(
+                                    color: AppColors.colorTextApp, fontWeight: FontWeight.bold)),
+                            ...bloc.terms
+                                .map((e) => Padding(
+                                      padding: EdgeInsets.only(top: 1.h),
+                                      child: ChartWeight(e),
+                                    ))
+                                .toList(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Space(height: 2.h),
                   ],
                 ),
               );
@@ -151,7 +176,7 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
             textAlign: TextAlign.end,
             style: Theme.of(context).textTheme.overline,
           ),
-          SizedBox(width: 1.w),
+          Space(width: 1.w),
           Text(
             amount ?? intl.none,
             textAlign: TextAlign.end,
@@ -173,19 +198,19 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
     return bloc.visitItem?.dietType == RegimeAlias.Pregnancy
         ? Column(
             children: [
-              SizedBox(height: 1.h),
+              Space(height: 1.h),
               itemUi(
                   intl.kiloGr,
                   bloc.visitItem?.physicalInfo?.pregnancyIdealWeight?.toStringAsFixed(1) ??
                       0.toString(),
                   intl.pregnancyIdealWeight),
-              SizedBox(height: 1.h),
+              Space(height: 1.h),
               itemUi(
                   intl.kiloGr,
                   bloc.visitItem?.physicalInfo?.idealWeightBasedOnPervVisit?.toStringAsFixed(1) ??
                       '',
                   intl.idealWeightBasedOnPervVisit),
-              SizedBox(height: 1.h),
+              Space(height: 1.h),
               itemUi(
                   intl.kiloGr,
                   bloc.visitItem?.physicalInfo?.daysTillChildbirth?.toString() ?? 0.toString(),
@@ -196,7 +221,7 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   }
 
   String getDietTypeString() {
-    if(bloc.visitItem!=null) {
+    if (bloc.visitItem != null) {
       switch (bloc.visitItem?.dietType) {
         case RegimeAlias.Pregnancy:
           return intl.pregnancy;
@@ -221,7 +246,8 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
         default:
           return intl.none;
       }
-    }else return intl.none;
+    } else
+      return intl.none;
   }
 
   @override

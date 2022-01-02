@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ShowInboxItem extends StatefulWidget {
@@ -39,7 +40,7 @@ class _ShowInboxItemState extends ResourcefulState<ShowInboxItem> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    if (!kIsWeb && Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
   bool isInit = false;

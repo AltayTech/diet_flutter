@@ -63,11 +63,13 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/typography.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:sizer/sizer.dart';
+import 'package:flutter_web_frame/flutter_web_frame.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 import '../screens/authentication/auth.dart';
@@ -81,7 +83,8 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   late AppBloc bloc;
   late String token;
-
+  static late double webMaxWidth = 500;
+  static late double webMaxHeight = 700;
   @override
   void initState() {
     super.initState();
@@ -104,70 +107,85 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     //cache one of vitrin's image for reduce time of loading
-    precacheImage(AssetImage("assets/images/vitrin/bmi_banner.jpg"), context);
+    //precacheImage(AssetImage("assets/images/vitrin/bmi_banner.jpg"), context);
     return Sizer(
-      builder: (context, orientation, deviceType) {
-        return app();
+      maxWidth: kIsWeb ? webMaxWidth : null,
+      builder: (context, orientation, deviceType, constraints) {
+        return appProvider(constraints);
       },
     );
   }
-
-  Widget app() {
+  Widget appProvider(BoxConstraints constraints) {
     return AppProvider(
       bloc,
       child: StreamBuilder(
         stream: bloc.locale,
         builder: (context, AsyncSnapshot<Locale> snapshot) {
           final locale = snapshot.data ?? appInitialLocale;
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle(
-              statusBarColor: AppColors.primaryColorDark,
-              statusBarBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.light,
-            ),
-            child: MaterialApp.router(
-                useInheritedMediaQuery: true,
-                // generate title from localization instead of `MaterialApp.title` property
-                onGenerateTitle: (BuildContext context) => context.intl.appName,
-                debugShowCheckedModeBanner: false,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocale.supportedLocales,
-                theme: ThemeData(
-                  elevatedButtonTheme: ElevatedButtonThemeData(
-                    style: ElevatedButton.styleFrom(
-                      primary: AppColors.primary,
-                      onPrimary: AppColors.onPrimary,
-                      onSurface: AppColors.onSurface,
-                      shape:
-                          RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
-                    ),
-                  ),
-                  primaryColor: AppColors.primary,
-                  primaryColorDark: AppColors.primaryColorDark,
-                  scaffoldBackgroundColor: AppColors.scaffold,
-                  textTheme: buildTextTheme(locale),
-                  appBarTheme: AppBarTheme(
-                    backgroundColor: AppColors.primary,
-                  ),
-                  colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
-                      .copyWith(secondary: AppColors.primary),
-                ),
-                locale: locale,
-                localeResolutionCallback: resolveLocale,
-                scaffoldMessengerKey: navigatorMessengerKey,
-                //navigatorObservers: [routeObserver],
-                // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
-                // routes: Routes.all,
-
-                routeInformationParser: VxInformationParser(),
-                backButtonDispatcher: RootBackButtonDispatcher(),
-                routerDelegate: navigator),
-          );
+          return kIsWeb ? webFrame(locale, constraints) : app(locale);
         },
       ),
     );
   }
+  Widget app(Locale locale) {
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: AppColors.primaryColorDark,
+        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.light,
+      ),
+      child: MaterialApp.router(
+          useInheritedMediaQuery: true,
+          // generate title from localization instead of `MaterialApp.title` property
+          onGenerateTitle: (BuildContext context) => context.intl.appName,
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocale.supportedLocales,
+          theme: ThemeData(
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.primary,
+                onPrimary: AppColors.onPrimary,
+                onSurface: AppColors.onSurface,
+                shape:
+                RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
+              ),
+            ),
+            primaryColor: AppColors.primary,
+            primaryColorDark: AppColors.primaryColorDark,
+            scaffoldBackgroundColor: AppColors.scaffold,
+            textTheme: buildTextTheme(locale),
+            appBarTheme: AppBarTheme(
+              backgroundColor: AppColors.primary,
+            ),
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
+                .copyWith(secondary: AppColors.primary),
+          ),
+          locale: locale,
+          localeResolutionCallback: resolveLocale,
+          scaffoldMessengerKey: navigatorMessengerKey,
+          //navigatorObservers: [routeObserver],
+          // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
+          // routes: Routes.all,
 
+          routeInformationParser: VxInformationParser(),
+          backButtonDispatcher: RootBackButtonDispatcher(),
+          routerDelegate: navigator),
+    );;
+  }
+  Widget webFrame(Locale locale, BoxConstraints constraints) {
+    return FlutterWebFrame(
+      builder: (context) => app(locale),
+      maximumSize: Size(
+        constraints.maxWidth < webMaxWidth
+            ? constraints.maxWidth
+            : webMaxWidth,
+        webMaxHeight,
+      ),
+      enabled: kIsWeb,
+      backgroundColor: AppColors.primary.withOpacity(0.1),
+    );
+  }
   TextTheme buildTextTheme(Locale locale) {
     final appTypography = AppTypography(locale);
     return TextTheme(

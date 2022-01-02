@@ -28,12 +28,17 @@ Future<void> entryPoint() async {
     _initFireBase();
     _handleCaughtErrors();
     runApp(App());
-  }, (Object error, StackTrace stack)async {
-    if (error is DioError || error is HttpException) {
+  }, (Object error, StackTrace stack) async {
+    if (error is DioError || error is HttpException || error is SocketException) {
       /// this kind of error is already handled in DioErrorHandlerInterceptor
       return;
     }
-    FirebaseCrashlytics.instance.recordError(error, stack);
+    if(!kIsWeb) {
+      FirebaseCrashlytics.instance.recordError(error, stack);
+    }else {
+      debugPrint("error is => ${error.toString()}");
+      debugPrint("error is => ${stack.toString()}");
+    }
   });
 }
 
@@ -42,10 +47,12 @@ void _initFireBase() async {
     await Firebase.initializeApp(
       options: await DefaultFirebaseConfig.platformOptions,
     );
-    debugPrint('Firebase.app ${ Firebase.apps.first.name}');
-    await AppFcm.initialize();
-    if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled == false) {
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+
+      await AppFcm.initialize();
+    if (!kIsWeb) {
+      if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled == false) {
+        await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+      }
     }
     //FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   } catch (Exception) {
@@ -60,10 +67,12 @@ void _initFireBase() async {
 }
 
 void _handleCaughtErrors() {
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
-    if (!(details.exception is DioError || details.exception is HttpException)) {
-      FirebaseCrashlytics.instance.recordError(details.exception, details.stack);
-    }
-  };
+  if(!kIsWeb) {
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+      if (!(details.exception is DioError || details.exception is HttpException || details.exception is SocketException)) {
+        FirebaseCrashlytics.instance.recordError(details.exception, details.stack);
+      }
+    };
+  }
 }

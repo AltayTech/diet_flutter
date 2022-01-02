@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -135,18 +136,43 @@ class Utils {
       print('url lanuch error');
     }
   }
-
+  static void launchURLWebView(String url) async {
+    // url = Uri.encodeFull(url).toString();
+    if (await canLaunch(url)) {
+      print('can launch');
+      await launch(
+        url,
+        forceSafariVC: true,
+        forceWebView: true,
+        enableJavaScript: true,
+        enableDomStorage: true,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      // throw 'Could not launch $url';
+      print('url lanuch error');
+    }
+  }
   static Future<String> versionApp() async {
     var package = await PackageInfo.fromPlatform();
     return package.version;
   }
+
   static Future<int> buildNumber() async {
-    var package = await PackageInfo.fromPlatform();
-    return int.parse(package.buildNumber);
+    if (kIsWeb) {
+      return 341;
+    } else {
+      var package = await PackageInfo.fromPlatform();
+      return int.parse(package.buildNumber);
+    }
   }
 
   static Future<String> packageName() async {
-    var package = await PackageInfo.fromPlatform();
-    return package.packageName;
+    if (kIsWeb) {
+      return "web.kermany.behandam";
+    } else {
+      var package = await PackageInfo.fromPlatform();
+      return package.packageName;
+    }
   }
 }

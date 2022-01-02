@@ -10,10 +10,11 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -90,7 +91,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                         child: SubmitButton(
                           label: intl.update,
                           onTap: () {
-                            Utils.launchURL(Platform.isIOS
+                            Utils.launchURL((!kIsWeb && Platform.isIOS)
                                 ? (bloc.packageName!
                                         .contains(FlavorConfig.instance.variables["iappsPackage"]))
                                     ? event.iapps!

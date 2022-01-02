@@ -1,6 +1,6 @@
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 
 import 'empty_box.dart';
 

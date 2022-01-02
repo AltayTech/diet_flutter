@@ -9,10 +9,13 @@ class DefaultFirebaseConfig {
     if (kIsWeb) {
       // Web
       return const FirebaseOptions(
-        appId: '1:448618578101:web:0b650370bb29e29cac3efc',
-        apiKey: 'AIzaSyAgUhHU8wSJgO5MVNy95tMT07NEjzMOfz0',
-        projectId: 'react-native-firebase-testing',
-        messagingSenderId: '448618578101',
+          apiKey: "AIzaSyBnqcxB9tpxsOu9PNKTvd0OuXi7k7zx0NE",
+          authDomain: "behandam-test.firebaseapp.com",
+          projectId: "behandam-test",
+          storageBucket: "behandam-test.appspot.com",
+          messagingSenderId: "343455511841",
+          appId: "1:343455511841:web:19fc501195f6b0c1567a60",
+          measurementId: "G-7FGHS67SXD"
       );
     } else if (Platform.isIOS || Platform.isMacOS) {
       // iOS and MacOS
