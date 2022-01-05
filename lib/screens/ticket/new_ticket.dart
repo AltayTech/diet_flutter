@@ -131,10 +131,9 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                         ),
                         Space(height: 2.h),
                         textInput(
-                            height: 8.h,
+                            height: 9.h,
                             label: intl.subject,
-                            value: bloc.sendTicketMessage.title ?? '',
-                            textController: ticketTitleController,
+                            value: bloc.sendTicketMessage.title ?? '', textController: ticketTitleController,
                             validation: (validation) {},
                             onChanged: (onChanged) {
                               bloc.sendTicketMessage.title = onChanged;
@@ -153,11 +152,11 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                 return textInput(
                                     height: 6.h,
                                     label: intl.lableTextMessage,
-                                    // value: bloc.sendTicketMessage.body,
                                     textController: ticketDescController,
                                     validation: (validation) {},
                                     onChanged: (onChanged) {
                                       bloc.sendTicketMessage.body = onChanged;
+
                                     },
                                     enable: !(snapshot.data ?? false),
                                     maxLine: true,

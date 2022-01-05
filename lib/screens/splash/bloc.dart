@@ -93,7 +93,7 @@ class SplashBloc {
             _navigateTo.fire(true);
           }
         } else if (Platform.isAndroid) {
-          debugPrint('onError = > ${value.data!.android!.toJson()} // $buildNumber');
+          //debugPrint('onError = > ${value.data!.android!.toJson()} // $buildNumber');
           if (value.data?.android != null &&
               int.parse(value.data!.android!.versionCode!) > buildNumber!) {
             if (value.data!.android!.forceUpdate == 1) forceUpdate = true;

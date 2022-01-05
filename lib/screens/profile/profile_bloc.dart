@@ -89,13 +89,13 @@ class ProfileBloc {
     _progressNetwork.value = true;
     if (MemoryApp.userInformation == null) {
       _repository.getUser().then((value) {
-        print('value ==> ${value.data!.firstName}');
+        debugPrint('value ==> ${value.data!.firstName}');
         _userInformation = value.data!;
         MemoryApp.userInformation = _userInformation;
         getProvinces();
         _userInformationStream.value = value.data!;
       }).catchError((onError) {
-        print('onError ==> ${onError.toString()}');
+        debugPrint('onError ==> ${onError.toString()}');
       }).whenComplete(() {
         _progressNetwork.value = false;
       });
@@ -154,13 +154,15 @@ class ProfileBloc {
 
   void getTermPackage() {
     _repository.getTermPackage().then((value) {
-      _showRefund.value = value.data!.showRefundLink!;
+      if (!_showRefund.isClosed) _showRefund.value = value.data!.showRefundLink!;
       if (value.data != null &&
           value.data?.term != null &&
-          DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0)
+          DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0 &&
+          !_showPdf.isClosed)
         _showPdf.value = true;
-      else
-        _showPdf.value = false;
+      else {
+        if (!_showPdf.isClosed) _showPdf.value = false;
+      }
     }).whenComplete(() {});
   }
 

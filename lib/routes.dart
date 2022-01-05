@@ -68,10 +68,10 @@ abstract class Routes {
   static const listBlock = '/list/block';
   static const reviveBlock = '/revive/block';
   static const renewBlock = '/renew/block';
-  static const splash = '/';
+  static const splash = '/app';
   static const shopCategory = '/shop/categories';
   static const shopOrders = '/shop/orders';
-  static const shopHome = '/shop/home';
+  static const shopHome = '/shop';
   static const termsApp = '/terms';
 
   // static const renewWeightEnter = '/renew/weight';

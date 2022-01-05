@@ -1,4 +1,8 @@
 -keep class androidx.lifecycle.DefaultLifecycleObserver
+-keep class com.google.firebase.* {*;}
+-keepclassmembers class me.carda.awesome_notifications.notifications.* {
+      *;
+    }
 ##------------------------------ Begin: Gson ------------------------------
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
@@ -34,13 +38,9 @@
 #################################################################################################
 ################################ End of OkHttp rules ############################################
 #################################################################################################
--keep class me.carda.awesome_notifications.** {*;}
--keepnames class me.carda.awesome_notifications.** {*;}
--keepclassmembers class me.carda.awesome_notifications.** {*;}
-
 -keepattributes LineNumberTable,SourceFile
 -keep class io.flutter.app.** { *; }
-# -keep class io.flutter.plugin.**  { *; }
+ -keep class io.flutter.plugin.**  { *; }
 # -keep class io.flutter.util.**  { *; }
 # -keep class io.flutter.view.**  { *; }
 # -keep class io.flutter.**  { *; }

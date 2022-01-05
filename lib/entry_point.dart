@@ -14,6 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 late Locale appInitialLocale;
 final RouteObserver<PageRoute> routeObserver = RouteObserver();
@@ -22,6 +23,7 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver();
 Future<void> entryPoint() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
+    Vx.setPathUrlStrategy();
     await AppSharedPreferences.initialize();
     AppLocale.initialize();
     AppColors(themeAppColor: ThemeAppColor.DEFAULT);

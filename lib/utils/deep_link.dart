@@ -27,14 +27,13 @@ abstract class DeepLinkUtils {
 
   static bool isDeepLink(String? url) {
     if (url == null) return false;
-    return url.startsWith('/link/') ||
-        url.startsWith('behandam://behandam.app/link/') ||
-        url.startsWith('https://behandam.kermany.com/link/');
+    return url.startsWith('/app/') ||
+        url.startsWith('https://behandam.kermany.com/app/');
   }
 
   static String generateRoute(String deeplink) {
     print('deeplinkRoute = > $deeplink');
-    final uri = deeplink.split('/link').last;
+    final uri = deeplink.split('/app').last;
     print('deeplinkRoute = > $uri');
     final uriParts = uri.split('?');
     print('deeplinkRoute = > $uriParts');

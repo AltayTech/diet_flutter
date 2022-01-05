@@ -75,8 +75,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true // add this
+            minifyEnabled false // add this
             shrinkResources false
+            useProguard true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'// add this
             signingConfig signingConfigs.release // this is default for release

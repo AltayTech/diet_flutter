@@ -64,6 +64,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/typography.dart';
+import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,11 @@ class _AppState extends State<App> {
 
     navigator.addListener(() {
       debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
+      if(navigator.currentConfiguration!.path=="/"){
+        navigator.routeManager.replace(Uri.parse(Routes.splash));
+      }else if(DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)){
+        navigator.routeManager.replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
+      }
       if (MemoryApp.analytics != null)
         MemoryApp.analytics!
             .logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
@@ -238,7 +244,6 @@ class MyObs extends VxObserver {
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    debugPrint('Popped a route');
   }
 }
 

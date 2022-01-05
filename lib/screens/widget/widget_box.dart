@@ -351,11 +351,18 @@ Widget textInput(
       keyboardType: textInputType,
       textDirection: textDirection,
       onChanged: (val) {
-        TextSelection previousSelection = controller.selection;
-        controller.text =  onChanged(val);
-        controller.selection=previousSelection;
+        if(textController!=null){
+          TextSelection previousSelection = textController.selection;
+          onChanged(val);
+          textController.text = val;
+          textController.selection = previousSelection;
+        }else {
+          TextSelection previousSelection = controller.selection;
+          controller.text = onChanged(val);
+          controller.selection = previousSelection;
+        }
       },
-      style: Theme.of(ctx).textTheme.subtitle2,
+      style: Theme.of(ctx).textTheme.bodyText1,
      // textAlign: TextAlign.start,
       validator: (val) => validation(val),
     ),

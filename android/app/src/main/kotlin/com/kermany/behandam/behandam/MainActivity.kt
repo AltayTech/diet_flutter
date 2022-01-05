@@ -8,6 +8,6 @@ import android.os.Bundle
 class MainActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //GeneratedPluginRegistrant.registerWith(FlutterEngine(this))
+        GeneratedPluginRegistrant.registerWith(FlutterEngine(this))
     }
 }

@@ -984,7 +984,8 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                               StreamBuilder(
                                 builder: (context, snapshot) {
                                   if (snapshot.data == null || snapshot.data == false) {
-                                    return GestureDetector(
+                                    return
+                                      GestureDetector(
                                       onTap: () async {
                                         bloc.changeType(TypeTicket.MESSAGE);
                                       },
@@ -999,25 +1000,39 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                       ),
                                     );
                                   } else {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        controller!.value = TextEditingController(text: '').value;
-                                        bloc.sendTicketFileDetail();
+                                    return  StreamBuilder(
+                                      builder: (context, snapshot) {
+                                        if (snapshot.data == null || snapshot.data == false) {
+                                          return  GestureDetector(
+                                            onTap: () {
+                                              controller!.value = TextEditingController(text: '').value;
+                                              bloc.sendTicketFileDetail();
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primary,
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              padding: EdgeInsets.all(2.w),
+                                              child: ImageUtils.fromLocal(
+                                                'assets/images/foodlist/share/send.svg',
+                                                width: 6.w,
+                                                height: 6.w,
+                                                color: AppColors.surface,
+                                              ),
+                                            ),
+                                          );;
+                                        } else {
+                                          return SpinKitCircle(
+                                            color: AppColors.primary,
+                                            size: 5.w,
+                                          );
+                                        }
                                       },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primary,
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        padding: EdgeInsets.all(2.w),
-                                        child: ImageUtils.fromLocal(
-                                          'assets/images/foodlist/share/send.svg',
-                                          width: 6.w,
-                                          height: 6.w,
-                                          color: AppColors.surface,
-                                        ),
-                                      ),
+                                      stream: bloc.isShowProgressItem,
                                     );
+
+
                                   }
                                 },
                                 stream: bloc.isShowFileAudio,
@@ -1137,7 +1152,184 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                             ]));
                       case TypeTicket.IMAGE:
                         return Container(
-                          color: Colors.green,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(16),
+                                topLeft: Radius.circular(16),
+                              )),
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              StreamBuilder(
+                                builder: (context, snapshot) {
+                                  if (snapshot.data == null || snapshot.data == false) {
+                                    return StreamBuilder(
+                                      builder: (context, snapshot) {
+                                        if (snapshot.data != null && snapshot.data == true ||
+                                            kIsWeb) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              bloc.sendTicketTextDetail();
+                                              controller!.value =
+                                                  TextEditingController(text: '').value;
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primary,
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              padding: EdgeInsets.all(2.w),
+                                              child: ImageUtils.fromLocal(
+                                                'assets/images/foodlist/share/send.svg',
+                                                width: 6.w,
+                                                height: 6.w,
+                                                color: AppColors.surface,
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              bloc.changeType(TypeTicket.RECORD);
+                                              bloc.createRecord();
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primary,
+                                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                              ),
+                                              padding: EdgeInsets.all(2.w),
+                                              child: ImageUtils.fromLocal(
+                                                'assets/images/ticket/recorder.svg',
+                                                color: Colors.white,
+                                                width: 6.w,
+                                                height: 6.w,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      stream: bloc.isShowSendButton,
+                                    );
+                                  } else {
+                                    return SpinKitCircle(
+                                      color: AppColors.primary,
+                                      size: 5.w,
+                                    );
+                                  }
+                                },
+                                stream: bloc.isShowProgressItem,
+                              ),
+                              SizedBox(width: 2.w),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffF2F2FB),
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  child:
+                                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                    Expanded(
+                                      child: Directionality(
+                                        textDirection: context.textDirectionOfLocale,
+                                        child: Padding(
+                                          child: TextField(
+                                            controller: controller,
+                                            onChanged: (val) {
+                                              if (val.isEmpty) {
+                                                bloc.showShowSendButton(false);
+                                              } else
+                                                bloc.showShowSendButton(true);
+                                              bloc.sendTicketMessage.body = val;
+                                            },
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: 'پیام خودت رو اینجا بنویس',
+                                                hintStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .caption!
+                                                    .copyWith(color: AppColors.labelColor)),
+                                          ),
+                                          padding: EdgeInsets.only(right: 2.w, left: 2.w),
+                                        ),
+                                      ),
+                                    ),
+                                    if (!kIsWeb) SizedBox(width: 2.w),
+                                    if (!kIsWeb)
+                                      GestureDetector(
+                                        onTap: () async {
+                                          DialogUtils.showBottomSheetPage(
+                                              context: context,
+                                              child: Container(
+                                                width: 100.w,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(12),
+                                                      topRight: Radius.circular(12)),
+                                                  color: AppColors.surface,
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    Space(
+                                                      height: 2.h,
+                                                    ),
+                                                    Text(
+                                                      intl.pickImage,
+                                                      style: Theme.of(context).textTheme.bodyText2,
+                                                    ),
+                                                    Space(
+                                                      height: 2.h,
+                                                    ),
+                                                    MaterialButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                        bloc.selectGallery();
+                                                      },
+                                                      minWidth: 80.w,
+                                                      height: 7.h,
+                                                      child: Text(
+                                                        intl.selectGallery,
+                                                        style: Theme.of(context).textTheme.caption,
+                                                      ),
+                                                    ),
+                                                    Line(
+                                                      width: 80.w,
+                                                      height: 0.1.h,
+                                                      color: AppColors.labelColor,
+                                                    ),
+                                                    MaterialButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                          bloc.selectCamera();
+                                                        },
+                                                        minWidth: 80.w,
+                                                        height: 7.h,
+                                                        child: Text(
+                                                          intl.selectCamera,
+                                                          style:
+                                                          Theme.of(context).textTheme.caption,
+                                                        )),
+                                                  ],
+                                                ),
+                                              ));
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.only(right: 10, left: 10),
+                                          child: ImageUtils.fromLocal(
+                                            'assets/images/ticket/attach.svg',
+                                            width: 6.w,
+                                            height: 6.w,
+                                            color: AppColors.labelColor,
+                                          ),
+                                        ),
+                                      ),
+                                  ]),
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       default:
                         return Container(
