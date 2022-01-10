@@ -5,7 +5,6 @@ import 'package:app_settings/app_settings.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
-import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +30,10 @@ class TicketBloc {
   final _repository = Repository.getInstance();
   final _showServerError = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
+  final _supportItemSelected = BehaviorSubject<bool>();
   late SendTicket sendTicketMessage;
   final _isRecording = BehaviorSubject<bool>();
-  final _isShowFile = BehaviorSubject<bool>();
+  final _isShowFileAudio = BehaviorSubject<bool>();
   final _isShowSendButton = BehaviorSubject<bool>();
   final _isShowImage = BehaviorSubject<bool>();
   final _showTime = BehaviorSubject<String>();
@@ -49,9 +49,11 @@ class TicketBloc {
 
   Stream<bool> get progressNetwork => _progressNetwork.stream;
 
+  Stream<bool> get supportItemSelected => _supportItemSelected.stream;
+
   Stream<bool> get isRecording => _isRecording.stream;
 
-  Stream<bool> get isShowFile => _isShowFile.stream;
+  Stream<bool> get isShowFileAudio => _isShowFileAudio.stream;
 
   Stream<bool> get isShowImage => _isShowImage.stream;
 
@@ -75,7 +77,11 @@ class TicketBloc {
 
   TicketModel? get ticketDetails => _ticketDetails;
 
-  bool get isFile => _isShowFile.stream.valueOrNull ?? false;
+  bool get isFileAudio => _isShowFileAudio.stream.valueOrNull ?? false;
+
+  void setSupportItemSelected() {
+    _supportItemSelected.value = true;
+  }
 
   void getTickets() {
     _progressNetwork.value = true;
@@ -86,7 +92,7 @@ class TicketBloc {
     }).catchError((onError) {
       print('onError ==> ${onError.toString()}');
     }).whenComplete(() {
-      _progressNetwork.value = false;
+      if (!_progressNetwork.isClosed) _progressNetwork.value = false;
     });
   }
 
@@ -226,7 +232,7 @@ class TicketBloc {
       _recorderSubscription = null;
     }
 
-    if (refresh) _isShowFile.value = true;
+    if (refresh) _isShowFileAudio.value = true;
   }
 
   Timer? _timer;
@@ -248,7 +254,8 @@ class TicketBloc {
   void stopAndStart() async {
     _timer?.cancel();
     if (outputFile != null && await outputFile!.exists()) await outputFile!.delete();
-    _isShowFile.value = false;
+    deleteImage();
+    _isShowFileAudio.value = false;
     _isShowImage.value = false;
     _isRecording.value = false;
     minute = 0;
@@ -258,18 +265,31 @@ class TicketBloc {
 
   void sendTicketText() {
     _showProgressItem.value = true;
-    _repository.sendTicketMessage(sendTicketMessage).then((value) {
-      getTickets();
-      _showServerError.fireMessage(value.message!);
-    }).catchError((onError) {
-      // _showServerError.fireMessage(onError);
-    }).whenComplete(() {
-      _showProgressItem.value = false;
-    });
+    if (_isShowImage.valueOrNull != null && _isShowImage.value == true) {
+      sendTicketMessage.isVoice = false;
+      _repository.sendTicketFile(sendTicketMessage, imageFile!).then((value) {
+        getTickets();
+        _showServerError.fireMessage(value.message!);
+      }).catchError((onError) {
+        // _showServerError.fireMessage(onError);
+      }).whenComplete(() {
+        _showProgressItem.value = false;
+      });
+    } else {
+      _repository.sendTicketMessage(sendTicketMessage).then((value) {
+        getTickets();
+        _showServerError.fireMessage(value.message!);
+      }).catchError((onError) {
+        // _showServerError.fireMessage(onError);
+      }).whenComplete(() {
+        _showProgressItem.value = false;
+      });
+    }
   }
 
   void sendTicketFile() {
     _showProgressItem.value = true;
+    sendTicketMessage.isVoice = true;
     _repository.sendTicketFile(sendTicketMessage, File(outputFile!.path)).then((value) {
       getTickets();
       _showServerError.fireMessage(value.message!);
@@ -279,7 +299,6 @@ class TicketBloc {
   }
 
   void sendTicketTextDetail() async {
-
     if (_isShowImage.valueOrNull == null || _isShowImage.value == false) {
       _showProgressItem.value = true;
       _repository.sendTicketMessageDetail(sendTicketMessage).then((value) {
@@ -293,8 +312,8 @@ class TicketBloc {
     } else {
       sendTicketMessage.hasAttachment = true;
       sendTicketMessage.isVoice = false;
-     // print('sendTicketMessage = > ${sendTicketMessage.toJson()}');
-      if(sendTicketMessage.body!=null && sendTicketMessage.body!.isNotEmpty) {
+      // print('sendTicketMessage = > ${sendTicketMessage.toJson()}');
+      if (sendTicketMessage.body != null && sendTicketMessage.body!.isNotEmpty) {
         _showProgressItem.value = true;
         try {
           _repository.sendTicketFileDetail(sendTicketMessage, File(imageFile!.path)).then((value) {
@@ -309,7 +328,7 @@ class TicketBloc {
           print('eeee => $e');
           _showProgressItem.value = false;
         }
-      }else{
+      } else {
         _showServerError.fireMessage("error");
       }
     }
@@ -344,7 +363,7 @@ class TicketBloc {
     sendTicketMessage.body = "";
     _isShowSendButton.value = false;
     _isShowImage.value = false;
-    _isShowFile.value = false;
+    _isShowFileAudio.value = false;
     _isShowRecorder.value = false;
     _isRecording.value = false;
     _progressNetwork.value = true;
@@ -397,6 +416,7 @@ class TicketBloc {
           minHeight: (imageDecode.height * 0.5).toInt(),
           inSampleSize: 2);
       _isShowImage.value = true;
+      changeType(TypeTicket.IMAGE);
       showShowSendButton(true);
     }
   }
@@ -417,6 +437,7 @@ class TicketBloc {
           minHeight: (imageDecode.height * 0.5).toInt(),
           inSampleSize: 2);
       _isShowImage.value = true;
+      changeType(TypeTicket.IMAGE);
       showShowSendButton(true);
     }
   }
@@ -435,9 +456,10 @@ class TicketBloc {
     _progressNetwork.close();
     _showProgressItem.close();
     _isRecording.close();
-    _isShowFile.close();
+    _isShowFileAudio.close();
     _isShowRecorder.close();
     _typeTicket.close();
+    _supportItemSelected.close();
     _SupportItems.close();
     _isShowSendButton.close();
     _showTime.close();

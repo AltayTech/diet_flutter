@@ -94,7 +94,7 @@ abstract class DeviceUtils {
       final webBrowserInfo = await deviceInfo.webBrowserInfo;
       identifier = webDeviceInfo.call(webBrowserInfo);
     }
-    if (Platform.isAndroid) {
+    else if (Platform.isAndroid) {
       final androidInfo = await deviceInfo.androidInfo;
       identifier = androidDeviceInfo.call(androidInfo);
     } else if (Platform.isIOS) {

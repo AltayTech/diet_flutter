@@ -1,10 +1,10 @@
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SliderApp extends StatefulWidget {
@@ -23,17 +23,16 @@ class _SliderAppState extends State<SliderApp> {
     return CarouselSlider(
       options: CarouselOptions(
           // height: 20.h,
-          autoPlayInterval: Duration(milliseconds: 500),
+          viewportFraction: 0.7,
+          enableInfiniteScroll: true,
           disableCenter: true,
           enlargeCenterPage: true,
           aspectRatio: 16 / 9,
-          enableInfiniteScroll: false,
+          initialPage: 1,
+          pageSnapping: true,
           scrollDirection: Axis.horizontal),
       items: widget.banners
-          .asMap()
-          .map((key, value) => MapEntry(
-              key,
-              GestureDetector(
+          .map((value) => GestureDetector(
                 onTap: () {
                   if (value.action_type == ActionType.deepLink) {
                     VxNavigator.of(context).push(Uri.parse('/${value.action}'));
@@ -52,8 +51,7 @@ class _SliderAppState extends State<SliderApp> {
                         fit: BoxFit.fill),
                   ),
                 ),
-              )))
-          .values
+              ))
           .toList(),
     );
   }

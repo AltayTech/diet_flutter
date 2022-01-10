@@ -39,6 +39,7 @@ abstract class AppSharedPreferences {
   }
   static Future<void> logout() async {
     await setAuthToken(null);
+    await setSendFcmToken(false);
     await setIsLoggedIn(false);
     MemoryApp.token = null;
   }
@@ -57,6 +58,14 @@ abstract class AppSharedPreferences {
   static Future<void> setFcmToken(String? token) async {
     preference.setString(_keyFcmToken, token ?? _nullString);
   }
+  static Future<bool> get sendFcmToken async {
+    return preference.getBool(_keySendFcmToken) ?? false;
+  }
+
+  static Future<void> setSendFcmToken(bool? isSend) async {
+    preference.setBool(_keySendFcmToken, isSend ?? false);
+  }
+
 
   static Future<String?> get fcmPushAction async {
     return await _getString(_keyFcmPushAction);
@@ -80,6 +89,7 @@ abstract class AppSharedPreferences {
   static const _keyFcmPushAction = 'fcmPushAction';
   static const _keyFcmButtonActions = 'fcmButtonActions';
   static const _keyFcmToken = 'fcmToken';
+  static const _keySendFcmToken = 'sendFcmToken';
   static const _nullString = 'null';
   static const _keyDeeplink = 'deeplink';
 }

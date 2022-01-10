@@ -894,6 +894,27 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
       case DayType.newTerm:
         title = intl.newTerm;
         break;
+      case DayType.usual:
+        // TODO: Handle this case.
+        break;
+      case DayType.fade:
+        // TODO: Handle this case.
+        break;
+      case DayType.termStart:
+        // TODO: Handle this case.
+        break;
+      case DayType.termEnd:
+        // TODO: Handle this case.
+        break;
+      case DayType.menuStart:
+        // TODO: Handle this case.
+        break;
+      case DayType.menuEnd:
+        // TODO: Handle this case.
+        break;
+      case DayType.menu:
+        // TODO: Handle this case.
+        break;
     }
     return title;
   }
@@ -920,6 +941,27 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
       case DayType.newTerm:
         title = intl.termShouldBeRenewed(
             MemoryApp.userInformation?.firstName ?? intl.user);
+        break;
+      case DayType.usual:
+        // TODO: Handle this case.
+        break;
+      case DayType.fade:
+        // TODO: Handle this case.
+        break;
+      case DayType.termStart:
+        // TODO: Handle this case.
+        break;
+      case DayType.termEnd:
+        // TODO: Handle this case.
+        break;
+      case DayType.menuStart:
+        // TODO: Handle this case.
+        break;
+      case DayType.menuEnd:
+        // TODO: Handle this case.
+        break;
+      case DayType.menu:
+        // TODO: Handle this case.
         break;
     }
     return title;

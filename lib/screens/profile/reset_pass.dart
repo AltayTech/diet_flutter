@@ -7,7 +7,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ResetPasswordProfile extends StatefulWidget {
@@ -150,8 +150,7 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
                           else if (_password1 == null || _password2 == null)
                             Utils.getSnackbarMessage(
                                 context, intl.fillAllField);
-                          else if (_password1!.length < 4 ||
-                              _password1!.length > 4)
+                          else if (_password1!.length < 4)
                             Utils.getSnackbarMessage(
                                 context, intl.minimumPasswordLength);
                           else if (_password1 == _password2) {

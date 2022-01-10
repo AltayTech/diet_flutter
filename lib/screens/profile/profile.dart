@@ -21,7 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -249,8 +249,8 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                 Space(height: 2.h),
                 SubmitButton(
                   onTap: () {
-                    AppSharedPreferences.logout();
-                    VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
+                    profileBloc.logOut();
+
                   },
                   label: intl.exit,
                 ),

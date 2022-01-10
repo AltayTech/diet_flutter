@@ -627,7 +627,7 @@ class _RestClient implements RestClient {
 
   @override
   Future<NetworkResponse<dynamic>> sendTicketFile(
-      media, is_voice, has_attachment, department_id, title) async {
+      media, is_voice, has_attachment, department_id, body, title) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -639,6 +639,7 @@ class _RestClient implements RestClient {
     _data.fields.add(MapEntry('is_voice', is_voice.toString()));
     _data.fields.add(MapEntry('has_attachment', has_attachment.toString()));
     _data.fields.add(MapEntry('department_id', department_id));
+    _data.fields.add(MapEntry('body', body));
     _data.fields.add(MapEntry('title', title));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
@@ -1579,6 +1580,64 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<Price>.fromJson(
       _result.data!,
       (json) => Price.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<Inbox>> getInboxItem(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<Inbox>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/inbox/$id',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<Inbox>.fromJson(
+      _result.data!,
+      (json) => Inbox.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<dynamic>> addFcmToken(signIn) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(signIn.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<dynamic>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/firebase-token',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<dynamic>> logout() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<dynamic>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/logout',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
     );
     return value;
   }

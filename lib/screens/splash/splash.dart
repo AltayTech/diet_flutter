@@ -1,19 +1,23 @@
 import 'dart:io';
 
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/user/version.dart';
+import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/splash/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -36,6 +40,23 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     listenBloc();
   }
 
+  void handleDeeplink() async {
+    var fcm = await AppSharedPreferences.fcmToken;
+    debugPrint('fcm is => ${fcm}');
+    final deeplink = await AppSharedPreferences.deeplink;
+
+    if (deeplink != null) {
+      debugPrint('deeplink is => ${deeplink}');
+      DeepLinkUtils.navigateDeepLink(deeplink);
+    } else if(navigator.currentConfiguration?.path==Routes.splash) {
+      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
+    }else{
+      debugPrint('deeplink is => ${navigator.currentConfiguration!.path}');
+      VxNavigator.of(context).clearAndPushAll([Uri.parse(Routes.shopHome),Uri.parse(navigator.currentConfiguration!.path)]);
+    }
+
+  }
+
   @override
   void dispose() {
     bloc.dispose();
@@ -44,10 +65,11 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
 
   void listenBloc() {
     bloc.showUpdate.listen((event) {
+      if(navigator.currentConfiguration?.path==Routes.splash)
       showUpdate(event);
     });
     bloc.navigateTo.listen((event) {
-      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
+      handleDeeplink();
     });
   }
 
@@ -90,7 +112,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                         child: SubmitButton(
                           label: intl.update,
                           onTap: () {
-                            Utils.launchURL(Platform.isIOS
+                            Utils.launchURL((!kIsWeb && Platform.isIOS)
                                 ? (bloc.packageName!
                                         .contains(FlavorConfig.instance.variables["iappsPackage"]))
                                     ? event.iapps!
@@ -112,7 +134,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                           onPressed: () {
                             print('later');
                             Navigator.of(context).pop();
-                            VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
+                            handleDeeplink();
                           },
                           color: Colors.white,
                         ),

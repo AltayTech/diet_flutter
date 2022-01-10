@@ -1,7 +1,9 @@
+import 'package:behandam/base/utils.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 
 class CrossItemProfile extends StatelessWidget {
   late String imageAddress;
@@ -18,11 +20,11 @@ class CrossItemProfile extends StatelessWidget {
       required this.context});
 
   Widget _crossItem() {
-    return  GestureDetector(
-        onTap: () {
+    return  MaterialButton(
+        onPressed: () {
           print('clicked');
-         // _launchURL(url);
-        },
+          Utils.launchURL(url);
+        },shape: AppShapes.rectangleDefault,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

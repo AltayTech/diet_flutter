@@ -3,7 +3,7 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CallBoxProfile extends StatefulWidget {
@@ -85,7 +85,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                 Expanded(
                   flex: 1,
                   child: _callCard('شماره اسکایپ : ',
-                      profileBloc.userInfo.socialMedia!.length>0 ? profileBloc.userInfo.socialMedia![2].pivot!.link ?? intl.notRegister:intl.notRegister),
+                      profileBloc.userInfo.socialMedia!.length>2 ? profileBloc.userInfo.socialMedia![2].pivot!.link ?? intl.notRegister:intl.notRegister),
                 ),
               ],
             ),

@@ -2,25 +2,21 @@ import 'dart:async';
 
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/food_list/bloc.dart';
+import 'package:behandam/extensions/object.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shamsi_date/shamsi_date.dart';
-import 'package:behandam/extensions/bool.dart';
-import 'package:behandam/extensions/object.dart';
-import 'package:behandam/extensions/string.dart';
-
 
 class FastBloc {
   FastBloc() {
     _loadContent();
   }
+
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _patterns = BehaviorSubject<List<FastPatternData>>();
   final _selectedPattern = BehaviorSubject<FastPatternData>();
   final _fast = BehaviorSubject<FastMenuRequestData>();
+
   // final FoodListBloc _foodListBloc = FoodListBloc();
 
   Stream<bool> get loadingContent => _loadingContent.stream;
@@ -49,7 +45,9 @@ class FastBloc {
     fastMenuRequestData.isFasting = true;
     _repository.changeToFast(fastMenuRequestData).then((value) {
       _fast.value = value.requireData;
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() {
+      if (!_loadingContent.isClosed) _loadingContent.value = false;
+    });
   }
 
   void changeToOriginal() {

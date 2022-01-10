@@ -12,7 +12,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class BodyStatusScreen extends StatefulWidget {
@@ -296,7 +296,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     RichText(
-                      // textAlign: TextAlign.center,
+                      textDirection: context.textDirectionOfLocale,
                       text: TextSpan(
                         text: txt1,
                         style: Theme.of(context)

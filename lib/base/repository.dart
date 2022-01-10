@@ -223,6 +223,12 @@ abstract class Repository {
   NetworkResult<ShopCategory> getProducts(String filter);
 
   NetworkResult<Price?> checkCouponShop(Price price);
+
+  ImperativeNetworkResult seenInbox(int id);
+
+  ImperativeNetworkResult addFcmToken(String token);
+
+  ImperativeNetworkResult logout();
 }
 
 class _RepositoryImpl extends Repository {
@@ -460,9 +466,13 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult sendTicketFile(SendTicket sendTicket, File file) {
     sendTicket.hasAttachment = true;
-    sendTicket.isVoice = true;
-    var response = _apiClient.sendTicketFile(file, sendTicket.isVoice ? 1 : 0,
-        sendTicket.hasAttachment ? 1 : 0, sendTicket.departmentId.toString(), sendTicket.title!);
+    var response = _apiClient.sendTicketFile(
+        file,
+        sendTicket.isVoice ? 1 : 0,
+        sendTicket.hasAttachment ? 1 : 0,
+        sendTicket.departmentId.toString(),
+        sendTicket.body ?? '',
+        sendTicket.title!);
     return response;
   }
 
@@ -592,7 +602,9 @@ class _RepositoryImpl extends Repository {
     sickness.specials!.forEach((sicknessItem) {
       if (sicknessItem.isSelected!) {
         if (sicknessItem.children!.length > 0) {
-          sicknessItem.children?.forEach((element) { debugPrint("${element.toJson()}"); });
+          sicknessItem.children?.forEach((element) {
+            debugPrint("${element.toJson()}");
+          });
 
           selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
         } else {
@@ -866,6 +878,26 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Price?> checkCouponShop(Price price) {
     var response = _apiClient.checkCouponShop(price);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult seenInbox(int id) {
+    var response = _apiClient.getInboxItem(id);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult addFcmToken(String token) {
+    SignIn signIn = SignIn();
+    signIn.token = token;
+    var response = _apiClient.addFcmToken(signIn);
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult logout() {
+    var response = _apiClient.logout();
     return response;
   }
 }

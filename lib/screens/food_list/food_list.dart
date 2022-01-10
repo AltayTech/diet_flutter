@@ -11,7 +11,7 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -71,7 +71,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
       stream: bloc.loadingContent,
       builder: (_, AsyncSnapshot<bool> snapshot) {
         return Container(
-          height: MediaQuery.of(context).size.height,
+          height: 100.h,
           child: Column(
             children: [
               Expanded(

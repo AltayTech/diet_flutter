@@ -7,6 +7,7 @@ import 'package:behandam/screens/regime/provider.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/regime/ruler_header.dart';
 import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/sizes.dart';
@@ -17,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 enum RulerType { Weight, Normal, Pregnancy }
@@ -286,57 +287,60 @@ class _SliderState extends State<Slider> {
           builder: (_, AsyncSnapshot<PhysicalInfoData> snapshot) {
             if (snapshot.hasData) {
               newValue = widget.value;
-              return ListView.builder(
-                controller: widget.scrollController,
-                scrollDirection: Axis.horizontal,
-                itemExtent: itemExtent,
-                itemCount: itemCount,
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  int itemValue = _indexToValue(index);
-                  bool isExtra;
-                  if (widget.type == RulerType.Normal) {
-                    isExtra = index == 0 ||
-                        index == 1 ||
-                        index == 2 ||
-                        index == 3 ||
-                        index == itemCount - 4 ||
-                        index == itemCount - 1 ||
-                        index == itemCount - 2 ||
-                        index == itemCount - 3;
-                  } else {
-                    isExtra = index == 0 ||
-                        index == 1 ||
-                        index == itemCount - 1 ||
-                        index == itemCount - 2;
-                  }
-                  return isExtra
-                      ? Container() //empty first and last element
-                      : GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () => _animateTo(itemValue, durationMillis: 50),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          color: Color.fromARGB(255, 174, 174, 174),
-                          width: 0.5.w,
-                          height: 3.h,
-                        ),
-                        Space(height: 1.w),
-                        FittedBox(
-                          child: Text(
-                            widget.type == RulerType.Weight &&
-                                widget.isSecond
-                                ? (itemValue * 100).toString()
-                                : itemValue.toString(),
-                            style: _getTextStyle(
-                                context, itemValue, widget.color),
+              return ScrollConfiguration(
+                behavior: MyCustomScrollBehavior(),
+                child: ListView.builder(
+                  controller: widget.scrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemExtent: itemExtent,
+                  itemCount: itemCount,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    int itemValue = _indexToValue(index);
+                    bool isExtra;
+                    if (widget.type == RulerType.Normal) {
+                      isExtra = index == 0 ||
+                          index == 1 ||
+                          index == 2 ||
+                          index == 3 ||
+                          index == itemCount - 4 ||
+                          index == itemCount - 1 ||
+                          index == itemCount - 2 ||
+                          index == itemCount - 3;
+                    } else {
+                      isExtra = index == 0 ||
+                          index == 1 ||
+                          index == itemCount - 1 ||
+                          index == itemCount - 2;
+                    }
+                    return isExtra
+                        ? Container() //empty first and last element
+                        : GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () => _animateTo(itemValue, durationMillis: 50),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            color: Color.fromARGB(255, 174, 174, 174),
+                            width: 0.5.w,
+                            height: 3.h,
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                          Space(height: 1.w),
+                          FittedBox(
+                            child: Text(
+                              widget.type == RulerType.Weight &&
+                                  widget.isSecond
+                                  ? (itemValue * 100).toString()
+                                  : itemValue.toString(),
+                              style: _getTextStyle(
+                                  context, itemValue, widget.color),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               );
             }
             return Progress();

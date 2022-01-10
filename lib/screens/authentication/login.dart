@@ -13,7 +13,8 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:behandam/screens/utility/arc.dart';
@@ -52,7 +53,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
-        if(event.toString().contains(Routes.auth))
+        if(event.toString().contains(Routes.auth.substring(1)))
           VxNavigator.of(context).push(Uri.parse('/$event'), params: {"mobile": args['mobile'], 'countryId': args['countryId']});
         else VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }

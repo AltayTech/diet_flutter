@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/fake_ui.dart'
+    if (dart.library.html) 'package:behandam/utils/real_ui.dart' as ui;
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:sizer/sizer.dart';
+import "package:universal_html/html.dart" as html;
 import 'package:video_player/video_player.dart';
 
 abstract class CallBackListener {
@@ -27,7 +30,11 @@ class CustomVideo extends StatefulWidget {
   bool? isStart;
   Function? onCompletion;
   bool? isFile;
-  Function(ChewieController chewieController) ? callBackListener;
+  Function(ChewieController chewieController)? callBackListener;
+  String? src;
+  final double startAt = 0;
+  final bool autoplay = false;
+  final bool controls = true;
 
   CustomVideo(
       {Key? key,
@@ -39,7 +46,8 @@ class CustomVideo extends StatefulWidget {
       this.isStart,
       this.onCompletion,
       this.isFile,
-      this.callBackListener})
+      this.callBackListener,
+      this.src})
       : super(key: key);
 
   @override
@@ -73,42 +81,35 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
   @override
   void initState() {
     super.initState();
+    kIsWeb
+        ? webPlayer()
 
-    // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
 
-    setData();
-    /*  _controller.addL
-istener(() {
+        : setData();
+  }
 
-        Timer.run(() {
-          this.setState((){
-            _position = _controller.value.position;
-          });
-        });
-        setState(() {
-          _duration = _controller.value.duration;
-        });
-        _duration?.compareTo(_position) == 0 || _duration?.compareTo(_position) == -1 ? this.setState((){
-          _isEnd = true;
-        }) : this.setState((){
-          _isEnd = false;
-        });
+  webPlayer() {
+    widget.src = widget.url;
+    String? URL = widget.src! + '#t=${widget.startAt}';
+// Do not remove the below comment - Fix for missing ui.platformViewRegistry in dart.ui
+// ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(widget.src!, (int viewId) {
+//https: //api.flutter.dev/flutter/dart-html/VideoElement-class.html
+      final video = html.VideoElement()
+        ..src = URL
+        ..autoplay = widget.autoplay
+        ..controls = widget.controls
+        ..style.border = 'none'
+        ..style.borderColor = 'red'
+        ..style.height = '100%'
+        ..style.width = '100%';
 
-        if(_isEnd){
-          _controller.seekTo(new Duration(milliseconds: 0));
-        }
-      });*/
+// Allows Safari iOS to play the video inline
+      video.setAttribute('playsinline', 'true');
 
-    /*_controller = VideoPlayerController.network(url)
-        ..initialize().then((_) {
-          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-          setState(() {
-            // aspect= _controller.value.aspectRatio;
-            Fimber.d("aspect Ratio =>$aspect");
-            _controller.setLooping(false);
-          });
-        });*/
-    // }
+      return video;
+    });
   }
 
   Future<void> setData() async {
@@ -165,7 +166,9 @@ istener(() {
 //Color(0xff62D0C5)
   @override
   Widget build(BuildContext context) {
-    if (_initializeVideoPlayerFuture) {
+    if (kIsWeb)
+      return HtmlElementView(viewType: widget.src!);
+    else if (_initializeVideoPlayerFuture) {
       return Scaffold(
         body: Stack(
           children: [

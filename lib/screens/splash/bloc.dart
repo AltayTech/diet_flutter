@@ -5,6 +5,7 @@ import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/data/sharedpreferences.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,9 +14,10 @@ import 'package:sms_autofill/sms_autofill.dart';
 class SplashBloc {
   SplashBloc() {
     _waiting.value = false;
-     SmsAutoFill().getAppSignature.then((value) {
-       debugPrint('package is $value');
-     });
+    if (!kIsWeb)
+      SmsAutoFill().getAppSignature.then((value) {
+        debugPrint('package is $value');
+      });
   }
 
   final _repository = Repository.getInstance();
@@ -30,6 +32,7 @@ class SplashBloc {
   String get path => _path;
 
   Stream<bool> get waiting => _waiting.stream;
+
   Stream<String> get versionApp => _versionApp.stream;
 
   Stream get showUpdate => _showUpdate.stream;
@@ -42,29 +45,44 @@ class SplashBloc {
 
   void getPackageInfo() async {
     version = await Utils.versionApp();
-    _versionApp.value = version??'';
+    _versionApp.value = version ?? '';
     buildNumber = await Utils.buildNumber();
     packageName = await Utils.packageName();
   }
 
+  void checkFcm() async {
+    String fcm = await AppSharedPreferences.fcmToken;
+    bool sendFcm = await AppSharedPreferences.sendFcmToken;
+    if (fcm != 'null' && !sendFcm)
+      _repository.addFcmToken(fcm).then((value) async {
+        await AppSharedPreferences.setSendFcmToken(true);
+      });
+  }
+
   void getUser() {
     _waiting.value = true;
+    if (MemoryApp.token != null) {
+      checkFcm();
+    }
     _repository.getUser().then((value) {
       MemoryApp.userInformation = value.data;
       MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
-      FirebaseCrashlytics.instance.setUserIdentifier(MemoryApp.userInformation!.userId.toString());
+      if (!kIsWeb)
+        FirebaseCrashlytics.instance
+            .setUserIdentifier(MemoryApp.userInformation!.userId.toString());
       MemoryApp.analytics!
           .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
     }).whenComplete(() {
+      if(!_waiting.isClosed)
       _waiting.value = false;
       getVersionApp();
     });
   }
 
   void getVersionApp() {
-    _waiting.value = true;
-    _repository.getVersion().then((value) async {
-      if (!kIsWeb) {
+    if (!kIsWeb) {
+      _waiting.value = true;
+      _repository.getVersion().then((value) async {
         if (Platform.isIOS) {
           if (value.data?.ios != null && int.parse(value.data!.ios!.versionCode!) > buildNumber!) {
             if (value.data!.ios!.forceUpdate == 1) forceUpdate = true;
@@ -75,7 +93,7 @@ class SplashBloc {
             _navigateTo.fire(true);
           }
         } else if (Platform.isAndroid) {
-          print('onError = > ${value.data!.android!.toJson()} // $buildNumber');
+          //debugPrint('onError = > ${value.data!.android!.toJson()} // $buildNumber');
           if (value.data?.android != null &&
               int.parse(value.data!.android!.versionCode!) > buildNumber!) {
             if (value.data!.android!.forceUpdate == 1) forceUpdate = true;
@@ -86,14 +104,14 @@ class SplashBloc {
             _navigateTo.fire(true);
           }
         }
-      } else {
-        _navigateTo.fire(true);
-      }
-    }).catchError((onError) {
-      print('onError = > ${onError}');
-    }).whenComplete(() {
-      _waiting.value = false;
-    });
+      }).catchError((onError) {
+        print('onError = > ${onError}');
+      }).whenComplete(() {
+        if (!_waiting.isClosed) _waiting.value = false;
+      });
+    } else {
+      _navigateTo.fire(true);
+    }
   }
 
   void dispose() {
