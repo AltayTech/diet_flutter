@@ -96,7 +96,7 @@ class UserInformationEdit {
   String? address;
 
   @JsonKey(name: "social_media")
-  List<SocialMedia>? socialMedia;
+  List<SocialMediaEdit>? socialMedia;
 
   UserInformationEdit();
 
@@ -178,16 +178,26 @@ class SocialMedia {
   @JsonKey(name: "id")
   int? id;
 
-  @JsonKey(name: "social_media_id")
-  int? socialMediaId;
-
   SocialMedia();
 
   factory SocialMedia.fromJson(Map<String, dynamic> json) => _$SocialMediaFromJson(json);
 
   Map<String, dynamic> toJson() => _$SocialMediaToJson(this);
 }
+@JsonSerializable()
+class SocialMediaEdit {
 
+  @JsonKey(name: "link")
+  String? link;
+  @JsonKey(name: "social_media_id")
+  int? socialMediaId;
+
+  SocialMediaEdit();
+
+  factory SocialMediaEdit.fromJson(Map<String, dynamic> json) => _$SocialMediaEditFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SocialMediaEditToJson(this);
+}
 @JsonSerializable()
 class PivotMedia {
   @JsonKey(name: "link")

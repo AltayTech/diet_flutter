@@ -26,7 +26,7 @@ class StatusBloc {
 
   VisitItem? get visitItem => _visitItem;
 
-  TermStatus? get activeTerms => _terms?.where((element) => element.isActive == 1).first;
+  TermStatus? get activeTerms => (terms.length>0 && terms.where((element) => element.isActive == 1).isNotEmpty) ? terms.where((element) => element.isActive == 1).first : ((terms.length>0) ? _terms![0] : null);
   //TermStatus? get activeTerms => _terms![0];
 
   Stream<bool> get waiting => _waiting.stream;
@@ -38,10 +38,17 @@ class StatusBloc {
     _repository.getVisits().then((value) {
       _visitItem = value.data;
       _terms = value.data?.terms;
-      _terms?.sort((TermStatus a,TermStatus b)=> (DateTime.parse(a.startedAt.substring(0,10)).millisecond>DateTime.parse(b.startedAt.substring(0,10)).millisecond)?0:1);
-      _terms?.forEach((element) {
-        element.setMaxMinWeight();
-      });
+      if(terms.length>0) {
+        _terms?.sort((TermStatus a, TermStatus b) =>
+        (DateTime
+            .parse(a.startedAt.substring(0, 10))
+            .millisecond > DateTime
+            .parse(b.startedAt.substring(0, 10))
+            .millisecond) ? 0 : 1);
+        _terms?.forEach((element) {
+          element.setMaxMinWeight();
+        });
+      }
     }).catchError((onError) {
       debugPrint(onError);
       _visitItem = new VisitItem();

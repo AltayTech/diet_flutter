@@ -93,8 +93,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               enable: true,
               ctx: context,
               action: TextInputAction.next,
-              formatters:
-                  [FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]'))],
+              formatters:[],
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -102,7 +101,10 @@ class UserBoxState extends ResourcefulState<UserBox> {
               enable: true,
               textInputType: TextInputType.multiline,
               validation: (val) {},
-              onChanged: (val) => userInfo!.address?.address = val,
+              onChanged: (val) {
+                if(userInfo!.address==null)
+                  userInfo!.address=Address();
+                userInfo!.address!.address = val;},
               value: userInfo!.address?.address,
               label: intl.address,
               maxLine: true,
@@ -144,8 +146,9 @@ class UserBoxState extends ResourcefulState<UserBox> {
               textInputType: TextInputType.text,
               validation: (val) {},
               enable: true,
-              onChanged: (val) =>
-                  userInfo!.socialMedia![2].pivot!.link = val ?? '',
+              onChanged: (val) {
+
+                  userInfo!.socialMedia![2].pivot!.link = val ?? '';},
               value: userInfo!.skype,
               label: intl.skype,
               maxLine: false,

@@ -51,9 +51,9 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
 
   void listen() {
     bloc.showServerError.listen((event) {
-      if(event.toString().contains("error")) {
+      if (event.toString().contains("error")) {
         Utils.getSnackbarMessage(context, intl.errorDescriptionTicket);
-      }else {
+      } else {
         Utils.getSnackbarMessage(context, event);
       }
     });
@@ -69,20 +69,19 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
     }
   }
 
-bool isInit=false;
+  bool isInit = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(!isInit) {
-      isInit=true;
-      args = ModalRoute
-          .of(context)!
-          .settings
-          .arguments;
+    if (!isInit) {
+      isInit = true;
+      args = ModalRoute.of(context)!.settings.arguments;
       bloc.getDetailTicket(args);
     }
     //print('args = > $args');
   }
+
   @override
   void dispose() {
     bloc.dispose();
@@ -117,7 +116,9 @@ bool isInit=false;
                           stream: bloc.progressNetwork,
                           builder: (ctx, snapshot) {
                             WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToEnd());
-                            if (snapshot.data != null && snapshot.data == false && bloc.ticketDetails!=null) {
+                            if (snapshot.data != null &&
+                                snapshot.data == false &&
+                                bloc.ticketDetails != null) {
                               return ScrollConfiguration(
                                 behavior: MyCustomScrollBehavior(),
                                 child: ListView.builder(
@@ -160,8 +161,8 @@ bool isInit=false;
                                             ],
                                           ),
                                           ListView.builder(
-                                              itemCount:
-                                                  bloc.ticketDetails!.items![index].messages!.length,
+                                              itemCount: bloc
+                                                  .ticketDetails!.items![index].messages!.length,
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
                                               padding: EdgeInsets.only(bottom: 8, top: 8),
@@ -170,8 +171,8 @@ bool isInit=false;
                                               itemBuilder: (context, i) {
                                                 debugPrint(
                                                     'message => ${bloc.ticketDetails!.items![index].messages![i].toJson()}');
-                                                switch (bloc
-                                                    .ticketDetails!.items![index].messages![i].type) {
+                                                switch (bloc.ticketDetails!.items![index]
+                                                    .messages![i].type) {
                                                   case TypeTicketMessage.TEXT:
                                                     return Column(
                                                       textDirection: context.textDirectionOfLocale,
@@ -279,15 +280,19 @@ bool isInit=false;
                                                                 ? BoxDecoration(
                                                                     color: Colors.white,
                                                                     borderRadius: BorderRadius.only(
-                                                                        topRight: Radius.circular(16),
-                                                                        topLeft: Radius.circular(16),
+                                                                        topRight:
+                                                                            Radius.circular(16),
+                                                                        topLeft:
+                                                                            Radius.circular(16),
                                                                         bottomLeft:
                                                                             Radius.circular(16)))
                                                                 : BoxDecoration(
                                                                     color: Color(0x2655596E),
                                                                     borderRadius: BorderRadius.only(
-                                                                        topRight: Radius.circular(16),
-                                                                        topLeft: Radius.circular(16),
+                                                                        topRight:
+                                                                            Radius.circular(16),
+                                                                        topLeft:
+                                                                            Radius.circular(16),
                                                                         bottomRight:
                                                                             Radius.circular(16))),
                                                             padding: EdgeInsets.all(16),
@@ -312,7 +317,8 @@ bool isInit=false;
                                                                             style: Theme.of(context)
                                                                                 .textTheme
                                                                                 .caption,
-                                                                            url: FlavorConfig.instance
+                                                                            url: FlavorConfig
+                                                                                        .instance
                                                                                         .variables[
                                                                                     "baseUrlFile"] +
                                                                                 bloc
@@ -336,11 +342,15 @@ bool isInit=false;
                                                                         color: AppColors.primary),
                                                                   ],
                                                                 ),
-                                                                if (bloc.ticketDetails!.items![index]
-                                                                        .messages![i].body !=
+                                                                if (bloc
+                                                                        .ticketDetails!
+                                                                        .items![index]
+                                                                        .messages![i]
+                                                                        .body !=
                                                                     null)
                                                                   Padding(
-                                                                    padding: EdgeInsets.only(top: 8),
+                                                                    padding:
+                                                                        EdgeInsets.only(top: 8),
                                                                     child: Container(
                                                                       width: double.maxFinite,
                                                                       child: Text(
@@ -408,23 +418,28 @@ bool isInit=false;
                                                                 ? BoxDecoration(
                                                                     color: Colors.white,
                                                                     borderRadius: BorderRadius.only(
-                                                                        topRight: Radius.circular(16),
-                                                                        topLeft: Radius.circular(16),
+                                                                        topRight:
+                                                                            Radius.circular(16),
+                                                                        topLeft:
+                                                                            Radius.circular(16),
                                                                         bottomLeft:
                                                                             Radius.circular(16)))
                                                                 : BoxDecoration(
                                                                     color: Color(0x2655596E),
                                                                     borderRadius: BorderRadius.only(
-                                                                        topRight: Radius.circular(16),
-                                                                        topLeft: Radius.circular(16),
+                                                                        topRight:
+                                                                            Radius.circular(16),
+                                                                        topLeft:
+                                                                            Radius.circular(16),
                                                                         bottomRight:
                                                                             Radius.circular(16))),
                                                             padding: EdgeInsets.all(16),
                                                             child: Column(
                                                               children: [
                                                                 GestureDetector(
-                                                                  onTap: () => Navigator.push(context,
-                                                                      MaterialPageRoute(builder: (_) {
+                                                                  onTap: () => Navigator.push(
+                                                                      context, MaterialPageRoute(
+                                                                          builder: (_) {
                                                                     return DetailScreen(FlavorConfig
                                                                                 .instance.variables[
                                                                             "baseUrlFile"] +
@@ -438,12 +453,14 @@ bool isInit=false;
                                                                   child: Container(
                                                                     decoration: BoxDecoration(
                                                                       color: Colors.grey[300],
-                                                                      borderRadius: BorderRadius.all(
-                                                                          Radius.circular(16)),
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(16)),
                                                                     ),
                                                                     width: double.maxFinite,
                                                                     child: ImageUtils.fromNetwork(
-                                                                      FlavorConfig.instance.variables[
+                                                                      FlavorConfig.instance
+                                                                                  .variables[
                                                                               "baseUrlFile"] +
                                                                           bloc
                                                                               .ticketDetails!
@@ -456,11 +473,15 @@ bool isInit=false;
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                if (bloc.ticketDetails!.items![index]
-                                                                        .messages![i].body !=
+                                                                if (bloc
+                                                                        .ticketDetails!
+                                                                        .items![index]
+                                                                        .messages![i]
+                                                                        .body !=
                                                                     null)
                                                                   Padding(
-                                                                    padding: EdgeInsets.only(top: 8),
+                                                                    padding:
+                                                                        EdgeInsets.only(top: 8),
                                                                     child: Container(
                                                                       width: double.maxFinite,
                                                                       child: Text(
@@ -552,7 +573,8 @@ bool isInit=false;
                                                         ),
                                                         Container(
                                                           width: 70.w,
-                                                          padding: EdgeInsets.only(left: 8, right: 8),
+                                                          padding:
+                                                              EdgeInsets.only(left: 8, right: 8),
                                                           child: Text(
                                                             DateTimeUtils.getTime(bloc
                                                                 .ticketDetails!
@@ -580,7 +602,8 @@ bool isInit=false;
                                                               borderRadius: BorderRadius.only(
                                                                   topRight: Radius.circular(16),
                                                                   topLeft: Radius.circular(16),
-                                                                  bottomRight: Radius.circular(16))),
+                                                                  bottomRight:
+                                                                      Radius.circular(16))),
                                                           padding: EdgeInsets.all(16),
                                                           child: Column(
                                                             children: [
@@ -598,7 +621,8 @@ bool isInit=false;
                                                         ),
                                                         Container(
                                                           width: 80.w,
-                                                          padding: EdgeInsets.only(left: 8, right: 8),
+                                                          padding:
+                                                              EdgeInsets.only(left: 8, right: 8),
                                                           child: Text(
                                                             DateTimeUtils.getTime(bloc
                                                                 .ticketDetails!
@@ -673,7 +697,8 @@ bool isInit=false;
                                                         ),
                                                         Container(
                                                           width: 70.w,
-                                                          padding: EdgeInsets.only(left: 8, right: 8),
+                                                          padding:
+                                                              EdgeInsets.only(left: 8, right: 8),
                                                           child: Text(
                                                             DateTimeUtils.getTime(bloc
                                                                 .ticketDetails!
@@ -789,7 +814,8 @@ bool isInit=false;
                                           return GestureDetector(
                                             onTap: () {
                                               bloc.sendTicketTextDetail();
-                                              controller!.value=TextEditingController(text: '').value;
+                                              controller!.value =
+                                                  TextEditingController(text: '').value;
                                             },
                                             child: Container(
                                               decoration: BoxDecoration(
@@ -958,7 +984,8 @@ bool isInit=false;
                               StreamBuilder(
                                 builder: (context, snapshot) {
                                   if (snapshot.data == null || snapshot.data == false) {
-                                    return GestureDetector(
+                                    return
+                                      GestureDetector(
                                       onTap: () async {
                                         bloc.changeType(TypeTicket.MESSAGE);
                                       },
@@ -973,25 +1000,39 @@ bool isInit=false;
                                       ),
                                     );
                                   } else {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        controller!.value=TextEditingController(text: '').value;
-                                        bloc.sendTicketFileDetail();
+                                    return  StreamBuilder(
+                                      builder: (context, snapshot) {
+                                        if (snapshot.data == null || snapshot.data == false) {
+                                          return  GestureDetector(
+                                            onTap: () {
+                                              controller!.value = TextEditingController(text: '').value;
+                                              bloc.sendTicketFileDetail();
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primary,
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              padding: EdgeInsets.all(2.w),
+                                              child: ImageUtils.fromLocal(
+                                                'assets/images/foodlist/share/send.svg',
+                                                width: 6.w,
+                                                height: 6.w,
+                                                color: AppColors.surface,
+                                              ),
+                                            ),
+                                          );;
+                                        } else {
+                                          return SpinKitCircle(
+                                            color: AppColors.primary,
+                                            size: 5.w,
+                                          );
+                                        }
                                       },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primary,
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        padding: EdgeInsets.all(2.w),
-                                        child: ImageUtils.fromLocal(
-                                          'assets/images/foodlist/share/send.svg',
-                                          width: 6.w,
-                                          height: 6.w,
-                                          color: AppColors.surface,
-                                        ),
-                                      ),
+                                      stream: bloc.isShowProgressItem,
                                     );
+
+
                                   }
                                 },
                                 stream: bloc.isShowFileAudio,
@@ -1111,7 +1152,184 @@ bool isInit=false;
                             ]));
                       case TypeTicket.IMAGE:
                         return Container(
-                          color: Colors.green,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(16),
+                                topLeft: Radius.circular(16),
+                              )),
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              StreamBuilder(
+                                builder: (context, snapshot) {
+                                  if (snapshot.data == null || snapshot.data == false) {
+                                    return StreamBuilder(
+                                      builder: (context, snapshot) {
+                                        if (snapshot.data != null && snapshot.data == true ||
+                                            kIsWeb) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              bloc.sendTicketTextDetail();
+                                              controller!.value =
+                                                  TextEditingController(text: '').value;
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primary,
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              padding: EdgeInsets.all(2.w),
+                                              child: ImageUtils.fromLocal(
+                                                'assets/images/foodlist/share/send.svg',
+                                                width: 6.w,
+                                                height: 6.w,
+                                                color: AppColors.surface,
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              bloc.changeType(TypeTicket.RECORD);
+                                              bloc.createRecord();
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primary,
+                                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                              ),
+                                              padding: EdgeInsets.all(2.w),
+                                              child: ImageUtils.fromLocal(
+                                                'assets/images/ticket/recorder.svg',
+                                                color: Colors.white,
+                                                width: 6.w,
+                                                height: 6.w,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      stream: bloc.isShowSendButton,
+                                    );
+                                  } else {
+                                    return SpinKitCircle(
+                                      color: AppColors.primary,
+                                      size: 5.w,
+                                    );
+                                  }
+                                },
+                                stream: bloc.isShowProgressItem,
+                              ),
+                              SizedBox(width: 2.w),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffF2F2FB),
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  child:
+                                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                    Expanded(
+                                      child: Directionality(
+                                        textDirection: context.textDirectionOfLocale,
+                                        child: Padding(
+                                          child: TextField(
+                                            controller: controller,
+                                            onChanged: (val) {
+                                              if (val.isEmpty) {
+                                                bloc.showShowSendButton(false);
+                                              } else
+                                                bloc.showShowSendButton(true);
+                                              bloc.sendTicketMessage.body = val;
+                                            },
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: 'پیام خودت رو اینجا بنویس',
+                                                hintStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .caption!
+                                                    .copyWith(color: AppColors.labelColor)),
+                                          ),
+                                          padding: EdgeInsets.only(right: 2.w, left: 2.w),
+                                        ),
+                                      ),
+                                    ),
+                                    if (!kIsWeb) SizedBox(width: 2.w),
+                                    if (!kIsWeb)
+                                      GestureDetector(
+                                        onTap: () async {
+                                          DialogUtils.showBottomSheetPage(
+                                              context: context,
+                                              child: Container(
+                                                width: 100.w,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(12),
+                                                      topRight: Radius.circular(12)),
+                                                  color: AppColors.surface,
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    Space(
+                                                      height: 2.h,
+                                                    ),
+                                                    Text(
+                                                      intl.pickImage,
+                                                      style: Theme.of(context).textTheme.bodyText2,
+                                                    ),
+                                                    Space(
+                                                      height: 2.h,
+                                                    ),
+                                                    MaterialButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                        bloc.selectGallery();
+                                                      },
+                                                      minWidth: 80.w,
+                                                      height: 7.h,
+                                                      child: Text(
+                                                        intl.selectGallery,
+                                                        style: Theme.of(context).textTheme.caption,
+                                                      ),
+                                                    ),
+                                                    Line(
+                                                      width: 80.w,
+                                                      height: 0.1.h,
+                                                      color: AppColors.labelColor,
+                                                    ),
+                                                    MaterialButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                          bloc.selectCamera();
+                                                        },
+                                                        minWidth: 80.w,
+                                                        height: 7.h,
+                                                        child: Text(
+                                                          intl.selectCamera,
+                                                          style:
+                                                          Theme.of(context).textTheme.caption,
+                                                        )),
+                                                  ],
+                                                ),
+                                              ));
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.only(right: 10, left: 10),
+                                          child: ImageUtils.fromLocal(
+                                            'assets/images/ticket/attach.svg',
+                                            width: 6.w,
+                                            height: 6.w,
+                                            color: AppColors.labelColor,
+                                          ),
+                                        ),
+                                      ),
+                                  ]),
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       default:
                         return Container(
@@ -1262,10 +1480,14 @@ bool isInit=false;
   }
 
   Widget templateItemWidget(TempItem templateItem) {
+
     if (templateItem.alterText != null) {
       return Html(
         data: "<div style='direction:rtl'> ${templateItem.alterText} </div>",
         shrinkWrap: true,
+        onLinkTap: (url, context, attributes, element) {
+          Utils.launchURL(url!);
+        },
       );
     } else {
       if (templateItem.media!.isNotEmpty && templateItem.media![0].mediumType == MediumType.file) {
@@ -1423,6 +1645,7 @@ bool isInit=false;
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

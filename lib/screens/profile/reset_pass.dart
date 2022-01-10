@@ -150,8 +150,7 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
                           else if (_password1 == null || _password2 == null)
                             Utils.getSnackbarMessage(
                                 context, intl.fillAllField);
-                          else if (_password1!.length < 4 ||
-                              _password1!.length > 4)
+                          else if (_password1!.length < 4)
                             Utils.getSnackbarMessage(
                                 context, intl.minimumPasswordLength);
                           else if (_password1 == _password2) {

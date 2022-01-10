@@ -11,7 +11,6 @@ abstract class ResourcelessState <T extends StatelessWidget> {
   late AppLocalizations intl;
   late TextTheme typography;
 
-  @override
   @mustCallSuper
   Widget build(BuildContext context) {
     intl = context.intl;

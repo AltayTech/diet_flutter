@@ -96,15 +96,15 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                           Space(height: 1.h),
                           itemUi(
                               intl.kiloGr,
-                              bloc.activeTerms?.firstWeight?.toStringAsFixed(1) ?? 0.toString(),
+                              bloc.activeTerms?.firstWeight?.toStringAsFixed(1) ?? intl.none,
                               intl.firstWeight),
                           Space(height: 1.h),
                           itemUi(
                               intl.kiloGr,
-                              bloc.activeTerms?.lostWeight?.abs().toStringAsFixed(1),
-                              bloc.activeTerms!.lostWeight! > 0
+                              bloc.activeTerms?.lostWeight?.abs().toStringAsFixed(1) ?? intl.none,
+                              (bloc.activeTerms!=null && bloc.activeTerms!.lostWeight! > 0)
                                   ? intl.addedWeight
-                                  : bloc.activeTerms!.lostWeight! == 0
+                                  : (bloc.activeTerms!=null && bloc.activeTerms!.lostWeight! == 0)
                                       ? intl.noChangeWeight
                                       : intl.lostWeight),
                           Space(height: 1.h),

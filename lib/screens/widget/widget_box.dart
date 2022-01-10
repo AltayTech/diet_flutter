@@ -122,7 +122,7 @@ Widget attachBox() {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () {
-                    print('assistant clicked');
+                    debugPrint('assistant clicked');
                     launchURL('http://support.kermany.com/');
                   },
                   child: attachCard(
@@ -339,7 +339,7 @@ Widget textInput(
           : null,
       textInputAction: action,
       maxLines: maxLine ? 4 : 1,
-      controller: controller,
+      controller: textController ?? controller,
       enabled: enable,
       decoration: inputDecoration.copyWith(
         labelText: label,
@@ -351,13 +351,19 @@ Widget textInput(
       keyboardType: textInputType,
       textDirection: textDirection,
       onChanged: (val) {
-        controller.text = val;
-        controller.selection = TextSelection.fromPosition(
-            TextPosition(offset: controller.text.length));
-        onChanged(val);
+        if(textController!=null){
+          TextSelection previousSelection = textController.selection;
+          onChanged(val);
+          textController.text = val;
+          textController.selection = previousSelection;
+        }else {
+          TextSelection previousSelection = controller.selection;
+          controller.text = onChanged(val);
+          controller.selection = previousSelection;
+        }
       },
-      style: Theme.of(ctx).textTheme.subtitle2,
-      textAlign: TextAlign.start,
+      style: Theme.of(ctx).textTheme.bodyText1,
+     // textAlign: TextAlign.start,
       validator: (val) => validation(val),
     ),
   );
@@ -366,7 +372,7 @@ Widget textInput(
 void launchURL(String url) async {
   // url = Uri.encodeFull(url).toString();
   if (await canLaunch(url)) {
-    print('can launch');
+    debugPrint('can launch');
     await launch(
       url,
       forceSafariVC: false,
@@ -376,7 +382,7 @@ void launchURL(String url) async {
     );
   } else {
     // throw 'Could not launch $url';
-    print('url lanuch error');
+    debugPrint('url lanuch error');
   }
   /*url = Uri.encodeFull(url).toString();
     print('url $url');

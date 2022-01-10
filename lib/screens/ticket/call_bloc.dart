@@ -37,15 +37,17 @@ class CallBloc {
       _call = value.data;
       loadContent();
     }).whenComplete(() {
-      _progressNetwork.value = false;
+      if (!_progressNetwork.isClosed) _progressNetwork.value = false;
     });
   }
 
   void loadContent() {
     List<CallItem> callItems = [];
     int lengthCalls = _call!.items!.length;
-    print('count => ${_call?.count}');
-    if (_call!.remainingCallNumber != null && _call!.totalCallNumber!=null && _call!.totalCallNumber! >0) {
+
+    if (_call!.remainingCallNumber != null &&
+        _call!.totalCallNumber != null &&
+        _call!.totalCallNumber! > 0) {
       _notFoundCall.value = false;
       for (int i = 0; i < _call!.remainingCallNumber!; i++) {
         CallItem callItem = CallItem();
@@ -56,7 +58,9 @@ class CallBloc {
       _call!.items!.addAll(callItems);
       if (_call!.items!.length > 0 && lengthCalls > 0 && !_call!.items![lengthCalls - 1].done!) {
         _callId = _call!.items![lengthCalls - 1].id;
-      } else if (_call!.items!.length > lengthCalls && lengthCalls > 0 && _call!.items![lengthCalls - 1].done!) {
+      } else if (_call!.items!.length > lengthCalls &&
+          lengthCalls > 0 &&
+          _call!.items![lengthCalls - 1].done!) {
         _call!.items![lengthCalls].isReserve = true;
       } else if (_call!.totalCallNumber == _call!.remainingCallNumber!) {
         _call!.items![0].isReserve = true;

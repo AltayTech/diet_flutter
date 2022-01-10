@@ -60,6 +60,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
       builder: (_, AsyncSnapshot<WeekDay> snapshot) {
+        debugPrint("meal.icon = > ${meal.icon} / ${meal.color} / ${meal.bgColor}");
         return Card(
           margin: EdgeInsets.only(bottom: 2.h),
           shape: AppShapes.rectangleMild,

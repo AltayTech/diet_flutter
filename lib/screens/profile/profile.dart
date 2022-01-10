@@ -249,8 +249,8 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                 Space(height: 2.h),
                 SubmitButton(
                   onTap: () {
-                    AppSharedPreferences.logout();
-                    VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
+                    profileBloc.logOut();
+
                   },
                   label: intl.exit,
                 ),

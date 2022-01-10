@@ -273,8 +273,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
                                                               AppColors
                                                                   .onPrimary,
                                                           label: Text(
-                                                            meal
-                                                                    .newFood
+                                                            meal.newFood
                                                                     ?.foodItems?[
                                                                         index]
                                                                     .title ??

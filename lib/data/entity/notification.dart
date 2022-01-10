@@ -18,8 +18,8 @@ class NotifResponse {
 
 @JsonSerializable(anyMap: true)
 class Notif {
-  @JsonKey(name: "chanel_id")
-  String? chanel_id;
+  @JsonKey(name: "channel_id")
+  String? channel_id;
   @JsonKey(name: "description")
   String? description;
   @JsonKey(name: "auto_cancel")
@@ -44,7 +44,7 @@ class Notif {
   Notif();
 
   factory Notif.fromJson(Map<String, dynamic> json) => Notif()
-    ..chanel_id = json['channel_id'] as String?
+    ..channel_id = json['channel_id'] as String?
     ..description = json['description'] as String?
     ..autoCancel = json['auto_cancel'] as String?
     ..action = json['action'] as String?
@@ -63,7 +63,7 @@ class Notif {
         .cast<ActionsItem>()
         .toList();
   factory Notif.fromJson2(Map<String, dynamic> json) => Notif()
-    ..chanel_id = json['channel_id'] as String?
+    ..channel_id = json['channel_id'] as String?
     ..description = json['description'] as String?
     ..autoCancel = json['auto_cancel'] as String?
     ..action = json['action'] as String?

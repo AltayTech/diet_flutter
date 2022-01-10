@@ -59,10 +59,12 @@ import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/screens/ticket/ticket_details.dart';
 import 'package:behandam/screens/vitrin/vitrin.dart';
+import 'package:behandam/screens/widget/webViewApp.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/typography.dart';
+import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +94,12 @@ class _AppState extends State<App> {
     getToken();
 
     navigator.addListener(() {
-      print('routeName is => ${navigator.currentConfiguration!.path}');
+      debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
+      if(navigator.currentConfiguration!.path=="/"){
+        navigator.routeManager.replace(Uri.parse(Routes.splash));
+      }else if(DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)){
+        navigator.routeManager.replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
+      }
       if (MemoryApp.analytics != null)
         MemoryApp.analytics!
             .logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
@@ -227,17 +234,16 @@ class _AppState extends State<App> {
 class MyObs extends VxObserver {
   @override
   void didChangeRoute(Uri route, Page page, String pushOrPop) {
-    print("${route.path} - $pushOrPop");
+    debugPrint("${route.path} - $pushOrPop");
   }
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    print('Pushed a route');
+    debugPrint('Pushed a route');
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    print('Popped a route');
   }
 }
 
@@ -350,6 +356,7 @@ final navigator = VxNavigator(
     Routes.shopBill: (_, param) => MaterialPage(child: routePage(ShopBillPage()), arguments: param),
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
+    Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

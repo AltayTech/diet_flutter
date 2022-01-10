@@ -31,7 +31,6 @@ class Term {
     this.isStopped,
     this.isActive,
     this.remainingVisits,
-    this.originId,
     this.refundedAt,
     this.createdAt,
     this.updatedAt,
@@ -85,9 +84,6 @@ class Term {
 
   @JsonKey(name: 'remaining_visits')
   final int remainingVisits;
-
-  @JsonKey(name: 'origin_id')
-  final int originId;
 
   @JsonKey(name: 'refunded_at')
   final String? refundedAt;

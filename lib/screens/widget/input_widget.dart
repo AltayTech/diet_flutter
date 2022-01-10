@@ -68,9 +68,11 @@ class InputWidgetState extends ResourcefulState<InputWidget> {
               ),
               keyboardType: widget.textInputType,
               onChanged: (val) {
-                widget.onChanged(val);
-                widget.textController!.text=val;
-                widget.textController!.selection = TextSelection.fromPosition(TextPosition(offset: widget.textController!.text.length));
+               // widget.onChanged(val);
+                TextSelection previousSelection = widget.textController!.selection;
+                widget.textController!..text=widget.onChanged(val);
+                widget.textController!.selection=previousSelection;
+               // widget.textController!.selection = TextSelection.fromPosition(TextPosition(offset: widget.textController!.text.length));
               },
               style: Theme.of(context).textTheme.subtitle2,
               textAlign: widget.textAlign ?? TextAlign.start,

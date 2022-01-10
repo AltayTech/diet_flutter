@@ -1,3 +1,4 @@
+import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -8,26 +9,32 @@ class ItemTab {
   bool selected = false;
 }
 
-class CustomTabBar extends StatelessWidget {
+class CustomTabBar extends StatefulWidget {
   CustomTabBar(this.color, this.listItem, this._controller);
 
   final Color color;
   TabController _controller;
   final List<ItemTab> listItem;
 
+  @override
+  State<CustomTabBar> createState() => _CustomTabBarState();
+}
+
+class _CustomTabBarState extends ResourcefulState<CustomTabBar> {
   static int indexItem = 0;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
-      color: color,
+      color: widget.color,
       child: DefaultTabController(
-        length: listItem.length,
+        length: widget.listItem.length,
         child: TabBar(
           unselectedLabelColor: Colors.black87,
           labelColor: Colors.white,
-          /*unselectedLabelStyle: Utils.styleTextTabBar,
-          labelStyle: Utils.styleTextSelectTabBar,*/
+          unselectedLabelStyle:  Theme.of(context).textTheme.button!,
+          labelStyle:  Theme.of(context).textTheme.button!,
           indicatorColor: AppColors.accentColor,
           labelPadding: EdgeInsets.all(8),
           indicatorSize: TabBarIndicatorSize.tab,
@@ -35,8 +42,8 @@ class CustomTabBar extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10)),
             color: AppColors.accentColor,
           ),
-          controller: _controller,
-          tabs: listItem
+          controller: widget._controller,
+          tabs: widget.listItem
               .asMap()
               .map((index, item) => MapEntry(
             index,
@@ -50,10 +57,11 @@ class CustomTabBar extends StatelessWidget {
                     softWrap: true,
                   )),
               onTap: () {
-                print("click > $indexItem");
-                indexItem = index;
-                _controller.index=indexItem;
-                (context as Element).markNeedsBuild();
+                debugPrint("click > ${indexItem}");
+                setState(() {
+                  indexItem = index;
+                  widget._controller.index=indexItem;
+                });
               },
             ),
           ))
@@ -62,5 +70,25 @@ class CustomTabBar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
   }
 }

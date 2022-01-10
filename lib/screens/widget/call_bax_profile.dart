@@ -85,7 +85,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                 Expanded(
                   flex: 1,
                   child: _callCard('شماره اسکایپ : ',
-                      profileBloc.userInfo.socialMedia!.length>0 ? profileBloc.userInfo.socialMedia![2].pivot!.link ?? intl.notRegister:intl.notRegister),
+                      profileBloc.userInfo.socialMedia!.length>2 ? profileBloc.userInfo.socialMedia![2].pivot!.link ?? intl.notRegister:intl.notRegister),
                 ),
               ],
             ),
