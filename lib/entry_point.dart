@@ -14,6 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:logifan/base/first_class_functions.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 late Locale appInitialLocale;
@@ -24,6 +25,7 @@ Future<void> entryPoint() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
     Vx.setPathUrlStrategy();
+    _initializeDebugPrint();
     await AppSharedPreferences.initialize();
     AppLocale.initialize();
     AppColors(themeAppColor: ThemeAppColor.DEFAULT);
@@ -35,13 +37,19 @@ Future<void> entryPoint() async {
       /// this kind of error is already handled in DioErrorHandlerInterceptor
       return;
     }
-    if(!kIsWeb) {
+    if (!kIsWeb) {
       FirebaseCrashlytics.instance.recordError(error, stack);
-    }else {
+    } else {
       debugPrint("error is => ${error.toString()}");
       debugPrint("error is => ${stack.toString()}");
     }
   });
+}
+
+void _initializeDebugPrint() {
+  if (kReleaseMode) {
+    debugPrint = (String? message, {int? wrapWidth}) => doNothing();
+  }
 }
 
 void _initFireBase() async {
@@ -70,10 +78,12 @@ void _initFireBase() async {
 }
 
 void _handleCaughtErrors() {
-  if(!kIsWeb) {
+  if (!kIsWeb) {
     FlutterError.onError = (FlutterErrorDetails details) {
       FlutterError.presentError(details);
-      if (!(details.exception is DioError || details.exception is HttpException || details.exception is SocketException)) {
+      if (!(details.exception is DioError ||
+          details.exception is HttpException ||
+          details.exception is SocketException)) {
         FirebaseCrashlytics.instance.recordError(details.exception, details.stack);
       }
     };
