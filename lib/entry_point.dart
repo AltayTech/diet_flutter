@@ -34,10 +34,11 @@ Future<void> entryPoint() async {
     runApp(App());
   }, (Object error, StackTrace stack) async {
     if (error is DioError || error is HttpException || error is SocketException) {
-      /// this kind of error is already handled in DioErrorHandlerInterceptor
+      debugPrint("error is => ${error.toString()}");
       return;
     }
     if (!kIsWeb) {
+      debugPrint("error is => ${error.toString()}");
       FirebaseCrashlytics.instance.recordError(error, stack);
     } else {
       debugPrint("error is => ${error.toString()}");
