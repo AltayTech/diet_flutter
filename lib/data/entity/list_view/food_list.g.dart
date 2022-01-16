@@ -50,6 +50,7 @@ Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['diet_type_id'] as int?,
       json['menu_type_id'] as int?,
       json['menu_term_id'] as int?,
+      json['is_public'] as int,
       json['started_at'] as String?,
       json['expired_at'] as String?,
     );

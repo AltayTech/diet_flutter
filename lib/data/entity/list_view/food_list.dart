@@ -85,16 +85,16 @@ class Menu {
     this.dietTypeId,
     this.menuTypeId,
     this.menuTermId,
-    // this.isCalorieBased,
-    // this.isPrepared,
-    // this.order,
-    // this.menuDays,
+    this.isPublic,
     this.startedAt,
     this.expiredAt,
   );
 
   @JsonKey(name: 'id')
   final int id;
+
+  @JsonKey(name: 'is_public')
+  final int isPublic;
 
   @JsonKey(name: 'title')
   final String title;
@@ -110,18 +110,6 @@ class Menu {
 
   @JsonKey(name: 'menu_term_id')
   final int? menuTermId;
-
-  // @JsonKey(name: 'is_calory_based')
-  // final boolean isCalorieBased;
-  //
-  // @JsonKey(name: 'is_prepared')
-  // final boolean isPrepared;
-  //
-  // @JsonKey(name: 'order')
-  // final int order;
-  //
-  // @JsonKey(name: 'menu_days')
-  // final int menuDays;
 
   @JsonKey(name: 'started_at')
   final String? startedAt;
