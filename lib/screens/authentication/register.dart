@@ -60,12 +60,14 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
+      print('event:$event');
       if(event != null){
         check = true;
         VxNavigator.of(context).push(Uri.parse('/$event'));
       }
     });
     authBloc.showServerError.listen((event) {
+      VxNavigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
   }
@@ -284,16 +286,20 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
           // setState(() {
           // _text.text.isEmpty ? _validate = true : _validate = false;
           // });
-          Register register = Register();
-          register.firstName = firstName;
-          register.lastName = lastName;
-          register.mobile = args['mobile'];
-          register.password = _password;
-          register.gender = switchValue;
-          register.verifyCode = args['code'];
-          register.countryId = args['id'];
-          register.appId = '0';
-          authBloc.registerMethod(register);
+            if(firstName != null && lastName != null) {
+              Register register = Register();
+              register.firstName = firstName;
+              register.lastName = lastName;
+              register.mobile = args['mobile'];
+              register.password = _password;
+              register.gender = switchValue;
+              register.verifyCode = args['code'];
+              register.countryId = args['id'];
+              register.appId = '0';
+              authBloc.registerMethod(register);
+            }
+            else
+              Utils.getSnackbarMessage(context, intl.fillAllField);
           }),
         ],
       ),

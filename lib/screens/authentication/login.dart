@@ -59,7 +59,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       }
     });
     authBloc.showServerError.listen((event) {
-      Navigator.pop(context);
+      VxNavigator.of(context).pop();
+      Utils.getSnackbarMessage(context, event);
     });
   }
 
@@ -77,7 +78,6 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -219,6 +219,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               user.password = _password;
               authBloc.passwordMethod(user);
             }
+            else
+              Navigator.pop(context);
           }),
           SizedBox(height: 10.h),
           InkWell(
