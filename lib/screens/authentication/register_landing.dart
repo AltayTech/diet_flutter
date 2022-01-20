@@ -58,6 +58,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
 
     });
     authBloc.showServerError.listen((event) {
+      VxNavigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
   }
@@ -165,8 +166,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                     ),
                     labelText: intl.name,
                     labelStyle: TextStyle(color: AppColors.penColor,fontSize: 16.0),
-                    errorText:
-                    _validate ? intl.fillAllField : null,
+                    // errorText:
+                    // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
                 onChanged: (txt) {
                   firstName = txt;
@@ -188,8 +189,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                     ),
                     labelText: intl.lastName,
                     labelStyle: TextStyle(color: AppColors.penColor,fontSize: 16.0),
-                    errorText:
-                    _validate ? intl.fillAllField : null,
+                    // errorText:
+                    // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
                 onChanged: (txt) {
                   lastName = txt;
@@ -211,8 +212,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                       borderSide: BorderSide(color: AppColors.penColor),
                       borderRadius: BorderRadius.circular(15.0)),
                   labelText: intl.password,
-                  errorText:
-                  _validate ? intl.fillAllField : null,
+                  // errorText:
+                  // _validate ? intl.fillAllField : null,
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText
@@ -272,21 +273,24 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             ),
           ),
           SizedBox(height: 20.0),
-          button(AppColors.btnColor, intl.register,Size(100.w,8.h),
-                  () {
-                    setState(() {
-                      _text.text.isEmpty ? _validate = true : _validate = false;
-                    });
-                Register register = Register();
-                register.firstName = firstName;
-                register.lastName = lastName;
-                register.mobile = args['mobile'];
-                register.password = _password;
-                register.gender = switchValue;
-                register.verifyCode = '';
-                register.countryId = args['id'];
-                register.appId = '0';
-                authBloc.landingReg(register);
+          button(AppColors.btnColor, intl.register,Size(100.w,8.h), () {
+                    // setState(() {
+                    //   _text.text.isEmpty ? _validate = true : _validate = false;
+                    // });
+                    if(firstName != null && lastName != null) {
+                      Register register = Register();
+                      register.firstName = firstName;
+                      register.lastName = lastName;
+                      register.mobile = args['mobile'];
+                      register.password = _password;
+                      register.gender = switchValue;
+                      register.verifyCode = '';
+                      register.countryId = args['id'];
+                      register.appId = '0';
+                      authBloc.landingReg(register);
+                    }
+                    else
+                      Utils.getSnackbarMessage(context, intl.fillAllField);
               }),
         ],
       ),
