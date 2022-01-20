@@ -14,6 +14,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -134,7 +135,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
                 ),
                 Container(
                   decoration: AppDecorations.boxMedium.copyWith(
-                    color: AppColors.box,
+                    color: AppColors.box
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 3.w),
                   child: Column(

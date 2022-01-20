@@ -600,5 +600,16 @@
   "errorTitleTicket": "عنوان پیام خود را وارد کنید",
   "message": "پیام",
   "call": "تماس",
+  "cancelFasting": "لغو فستینگ",
+  "helpFasting": "راهنمای فستینگ",
+  "fastTrackModel": "الگوی فستینگ",
+  "cancelFastTrackModel": "در صورت لغو، برنامه غذایی شما در تاریخ {date} به حالت عادی برمی گردد و امکان برگشت مجدد به فستینگ برای این روز وجود ندارد.",
+  "@cancelFastTrackModel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "understand": "متوجه شدم"
 }

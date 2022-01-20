@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -40,6 +41,7 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
       if (helpType == HelpPage.regimeType) regimeBloc.helpMethod(1);
       if (helpType == HelpPage.menuType) regimeBloc.helpMethod(2);
       if (helpType == HelpPage.packageType) regimeBloc.helpMethod(3);
+      if (helpType == HelpPage.fasting) regimeBloc.helpMethod(4);
     }
   }
 
@@ -64,7 +66,7 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
       builder: (_, AsyncSnapshot<String> snapshot) {
         return Scaffold(
           appBar: Toolbar(
-            titleBar: snapshot.data ?? intl.whichRegime,
+            titleBar: snapshot.data ?? "",
           ),
           body: body(),
         );
@@ -152,7 +154,7 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
             child: Container(
               width: 15.w,
               height: 15.w,
-              child: CircularProgressIndicator(color: Colors.grey, strokeWidth: 1.0),
+              child: Progress(),
             ),
           );
         }

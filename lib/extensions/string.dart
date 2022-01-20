@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 extension StringExtensions on String {
@@ -21,6 +22,10 @@ extension StringExtensions on String {
   bool get isValidEmail {
     final regex = RegExp(r'^.+@.+(\..+)+$'); // keeping it simple for brevity
     return regex.hasMatch(this);
+  }
+
+  Color get hexToColor {
+    return new Color(int.parse(this.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }
 

@@ -16,7 +16,8 @@ FoodListData _$FoodListDataFromJson(Map<String, dynamic> json) => FoodListData()
   ..dietType = json['diet_type'] == null
       ? null
       : DietType.fromJson(json['diet_type'] as Map<String, dynamic>)
-  ..isFasting = $enumDecodeNullable(_$booleanEnumMap, json['is_fasting']);
+  ..isFasting = $enumDecodeNullable(_$booleanEnumMap, json['is_fasting'])
+  ..hasPattern = $enumDecodeNullable(_$booleanEnumMap, json['has_pattern']);
 
 const _$booleanEnumMap = {
   boolean.False: 0,
@@ -50,9 +51,21 @@ Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['diet_type_id'] as int?,
       json['menu_type_id'] as int?,
       json['menu_term_id'] as int?,
+      json['is_public'] as int,
+      $enumDecodeNullable(_$TypeThemeEnumMap, json['theme']),
+      (json['fasting_dates'] as List<dynamic>).map((e) => e as String).toList(),
       json['started_at'] as String?,
       json['expired_at'] as String?,
+      json['hex'] as String?,
     );
+
+const _$TypeThemeEnumMap = {
+  TypeTheme.FASTING: 'FASTING',
+  TypeTheme.FASTING2: 'FASTING2',
+  TypeTheme.DEFAULT: 'DEFAULT',
+  TypeTheme.RAMADAN: 'RAMADAN',
+  TypeTheme.PREGNANCY: 'PREGNANCY',
+};
 
 Food _$FoodFromJson(Map<String, dynamic> json) => Food(
       json['id'] as int?,
