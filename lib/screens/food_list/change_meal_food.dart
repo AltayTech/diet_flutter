@@ -151,7 +151,9 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                           color: AppColors.onPrimary,
                         ),
                         child: ImageUtils.fromLocal('assets/images/foodlist/${meal?.icon}.svg',
-                            color: meal?.color, padding: EdgeInsets.all(2.w)),
+                            placeholder: "assets/images/foodlist/meal-1.svg",
+                            color: meal?.color,
+                            padding: EdgeInsets.all(2.w)),
                       ),
                       Space(width: 2.w),
                       Expanded(
@@ -263,7 +265,9 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                     color: meal?.bgColor,
                   ),
                   child: ImageUtils.fromLocal('assets/images/foodlist/${meal?.icon}.svg',
-                      color: meal?.color, padding: EdgeInsets.all(2.w)),
+                      placeholder: "assets/images/foodlist/meal-1.svg",
+                      color: meal?.color,
+                      padding: EdgeInsets.all(2.w)),
                 ),
                 Space(width: 2.w),
                 Expanded(
@@ -321,7 +325,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                                         return MapEntry(
                                             i,
                                             Row(
-                                        mainAxisSize: MainAxisSize.min,
+                                              mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Chip(
                                                   backgroundColor: AppColors.onPrimary,
@@ -332,14 +336,13 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
                                                     softWrap: true,
                                                   ),
                                                 ),
-                                                if(i!=items.length-1)
-                                                Icon(
-                                                  Icons.add,
-                                                  size: 6.w,
-                                                )
+                                                if (i != items.length - 1)
+                                                  Icon(
+                                                    Icons.add,
+                                                    size: 6.w,
+                                                  )
                                               ],
                                             ));
-
                                       },
                                     )
                                     .values

@@ -1,6 +1,7 @@
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'food_list.g.dart';
 
 @JsonSerializable(createToJson: false)
@@ -19,8 +20,10 @@ class FoodListData {
   @JsonKey(name: 'is_fasting')
   boolean? isFasting;
 
-  factory FoodListData.fromJson(Map<String, dynamic> json) =>
-      _$FoodListDataFromJson(json);
+  @JsonKey(name: 'has_pattern')
+  boolean? hasPattern;
+
+  factory FoodListData.fromJson(Map<String, dynamic> json) => _$FoodListDataFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
@@ -86,8 +89,11 @@ class Menu {
     this.menuTypeId,
     this.menuTermId,
     this.isPublic,
+    this.theme,
+    this.fastingDates,
     this.startedAt,
     this.expiredAt,
+    this.hex,
   );
 
   @JsonKey(name: 'id')
@@ -116,6 +122,15 @@ class Menu {
 
   @JsonKey(name: 'expired_at')
   final String? expiredAt;
+
+  @JsonKey(name: 'theme')
+  final TypeTheme? theme;
+
+  @JsonKey(name: 'hex')
+  final String? hex;
+
+  @JsonKey(name: 'fasting_dates')
+  final List<String> fastingDates;
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }
@@ -201,8 +216,7 @@ class RatioFoodItem {
   @JsonKey(name: 'unit_title', defaultValue: '')
   String unitTitle;
 
-  factory RatioFoodItem.fromJson(Map<String, dynamic> json) =>
-      _$RatioFoodItemFromJson(json);
+  factory RatioFoodItem.fromJson(Map<String, dynamic> json) => _$RatioFoodItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$RatioFoodItemToJson(this);
 }
@@ -217,8 +231,7 @@ class RatioAmount {
   @JsonKey(name: 'second_unit')
   DefaultUnit? secondUnit;
 
-  factory RatioAmount.fromJson(Map<String, dynamic> json) =>
-      _$RatioAmountFromJson(json);
+  factory RatioAmount.fromJson(Map<String, dynamic> json) => _$RatioAmountFromJson(json);
 
   Map<String, dynamic> toJson() => _$RatioAmountToJson(this);
 }
@@ -248,8 +261,7 @@ class DefaultUnit {
   @JsonKey(name: 'representational')
   final dynamic representational;
 
-  factory DefaultUnit.fromJson(Map<String, dynamic> json) =>
-      _$DefaultUnitFromJson(json);
+  factory DefaultUnit.fromJson(Map<String, dynamic> json) => _$DefaultUnitFromJson(json);
 
   Map<String, dynamic> toJson() => _$DefaultUnitToJson(this);
 }
@@ -327,8 +339,7 @@ class FoodItem {
   // @JsonKey(name: 'pivot')
   // final FoodItemPivot? pivot;
 
-  factory FoodItem.fromJson(Map<String, dynamic> json) =>
-      _$FoodItemFromJson(json);
+  factory FoodItem.fromJson(Map<String, dynamic> json) => _$FoodItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$FoodItemToJson(this);
 }
@@ -366,8 +377,7 @@ class FoodItemPivot {
   @JsonKey(name: 'max_calories')
   final int maxCalorie;
 
-  factory FoodItemPivot.fromJson(Map<String, dynamic> json) =>
-      _$FoodItemPivotFromJson(json);
+  factory FoodItemPivot.fromJson(Map<String, dynamic> json) => _$FoodItemPivotFromJson(json);
 
   Map<String, dynamic> toJson() => _$FoodItemPivotToJson(this);
 }
@@ -466,8 +476,7 @@ class DietType {
   @JsonKey(name: 'title')
   final String title;
 
-  factory DietType.fromJson(Map<String, dynamic> json) =>
-      _$DietTypeFromJson(json);
+  factory DietType.fromJson(Map<String, dynamic> json) => _$DietTypeFromJson(json);
 }
 
 enum boolean {
@@ -475,4 +484,17 @@ enum boolean {
   False,
   @JsonValue(1)
   True,
+}
+
+enum TypeTheme {
+  @JsonValue("FASTING")
+  FASTING,
+  @JsonValue("FASTING2")
+  FASTING2,
+  @JsonValue("DEFAULT")
+  DEFAULT,
+  @JsonValue("RAMADAN")
+  RAMADAN,
+  @JsonValue("PREGNANCY")
+  PREGNANCY,
 }

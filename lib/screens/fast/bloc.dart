@@ -50,10 +50,11 @@ class FastBloc {
     });
   }
 
-  void changeToOriginal() {
+  void changeToOriginal(String date) {
     _loadingContent.value = true;
     final fastMenuRequestData = FastMenuRequestData();
     fastMenuRequestData.isFasting = false;
+    fastMenuRequestData.date = date;
     _repository.changeToFast(fastMenuRequestData).then((value) {
       _fast.value = value.requireData;
       // _foodListBloc.onRefresh(invalidate: true);

@@ -1,5 +1,6 @@
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/extensions/build_context.dart';
+import 'package:behandam/extensions/string.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
@@ -39,9 +40,9 @@ class MenuItem extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     // height: double.infinity,
-                    color: menu.isPublic == 1
-                        ? AppColors.accentColor.withAlpha(100)
-                        : AppColors.blueRuler.withAlpha(100),
+                    color: menu.hex == null
+                        ? AppColors.menuColorDefault.withAlpha(50)
+                        : menu.hex!.hexToColor.withAlpha(50),
                     padding: EdgeInsets.symmetric(
                       horizontal: 1.w,
                       vertical: 3.h,
@@ -95,7 +96,9 @@ class MenuItem extends StatelessWidget {
   Widget helpBox() {
     return Container(
       decoration: AppDecorations.boxMedium.copyWith(
-        color: AppColors.primary.withOpacity(0.2),
+        color: menu.hex == null
+            ? AppColors.menuColorDefault.withAlpha(30)
+            : menu.hex!.hexToColor.withAlpha(30),
       ),
       width: 15.w,
       height: 15.w,
@@ -103,7 +106,7 @@ class MenuItem extends StatelessWidget {
         child: ImageUtils.fromLocal(
           'assets/images/diet/help_icon.svg',
           width: 6.w,
-          color: AppColors.iconsColor,
+          color: menu.hex == null ? AppColors.menuColorDefault : menu.hex!.hexToColor,
         ),
       ),
     );

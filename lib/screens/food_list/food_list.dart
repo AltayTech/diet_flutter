@@ -1,4 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/change_menu.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
@@ -6,12 +8,14 @@ import 'package:behandam/screens/food_list/food_meals.dart';
 import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/food_list/week_day.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -90,6 +94,29 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 3.w),
                         child: FoodMeals(),
+                      ),
+                      Space(
+                        height: 1.h,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.w),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                          child: InkWell(
+                              onTap: () {
+                                DialogUtils.showDialogProgress(context: context);
+                                bloc.checkFitamin();
+                                // _launchURL(vitrinBloc.url);
+                              },
+                              child: ImageUtils.fromLocal(
+                                MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
+                                    ? 'assets/images/vitrin/fitamin_banner.png'
+                                    : 'assets/images/vitrin/fitamin_banner_02.png',
+                              )),
+                        ),
+                      ),
+                      Space(
+                        height: 2.h,
                       ),
                     ],
                   ),

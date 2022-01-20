@@ -15,6 +15,7 @@ enum HelpPage{
   regimeType,
   menuType,
   packageType,
+  fasting
 }
 class RegimeBloc {
   RegimeBloc();

@@ -62,6 +62,7 @@ class FoodListBloc {
   Stream<List<WeekDay?>?> get weekDays => _weekDays.stream;
 
   late WeekDay _previousWeekDay;
+  late Menu _menu;
 
   void _loadContent({bool invalidate = false, bool fillFood = true}) {
     _loadingContent.value = true;
@@ -75,7 +76,7 @@ class FoodListBloc {
             _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
             _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
           }
-
+        MemoryApp.fastingDates = _foodList.value?.menu?.fastingDates ?? [];
         setTheme();
         fillWeekDays();
       } else {
@@ -97,10 +98,16 @@ class FoodListBloc {
   void setTheme() {
     debugPrint(
         'theme ${_foodList.value?.isFasting} / ${_foodList.value?.isFasting == boolean.True}');
-    if (_foodList.value?.isFasting == boolean.True)
+    if (_foodList.value?.menu?.theme == TypeTheme.RAMADAN)
       _appBloc.changeTheme(ThemeAppColor.DARK);
+    else if (_foodList.value?.isFasting == boolean.True)
+      _appBloc.changeTheme(ThemeAppColor.DARK);
+    else if (_foodList.value?.menu?.theme == TypeTheme.FASTING2)
+      _appBloc.changeTheme(ThemeAppColor.FASTTINGLIST);
     else if (_foodList.value?.dietType?.alias == RegimeAlias.Pregnancy)
       _appBloc.changeTheme(ThemeAppColor.PURPLE);
+    else if (_foodList.value?.menu?.theme == TypeTheme.FASTING)
+      _appBloc.changeTheme(ThemeAppColor.FASTTING);
     else
       _appBloc.changeTheme(ThemeAppColor.DEFAULT);
   }
@@ -240,6 +247,12 @@ class FoodListBloc {
     }).whenComplete(() {
       _navigateTo.fire(false);
     });
+  }
+
+  void checkFitamin() async {
+    _repository.checkFitamin().then((value) {
+      Utils.launchURL(value.data!.url!);
+    }).whenComplete(() => _navigateTo.fire(false));
   }
 
   void dispose() {
