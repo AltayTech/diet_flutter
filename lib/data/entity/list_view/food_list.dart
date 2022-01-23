@@ -130,7 +130,7 @@ class Menu {
   final String? hex;
 
   @JsonKey(name: 'fasting_dates')
-  final List<String> fastingDates;
+  final List<String>? fastingDates;
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }

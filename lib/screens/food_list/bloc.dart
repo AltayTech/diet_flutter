@@ -176,6 +176,7 @@ class FoodListBloc {
           _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
           _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
         }
+      MemoryApp.fastingDates = _foodList.value?.menu?.fastingDates ?? [];
       setTheme();
     }).whenComplete(() => _loadingContent.value = false);
   }

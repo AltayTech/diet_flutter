@@ -53,7 +53,9 @@ Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['menu_term_id'] as int?,
       json['is_public'] as int,
       $enumDecodeNullable(_$TypeThemeEnumMap, json['theme']),
-      (json['fasting_dates'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['fasting_dates'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       json['started_at'] as String?,
       json['expired_at'] as String?,
       json['hex'] as String?,

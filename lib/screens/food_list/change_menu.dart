@@ -63,40 +63,42 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                     debugPrint('regime type ${snapshotFoodList.data?.dietType?.alias}');
                     return Column(
                       children: [
-                        SizedBox(
-                          width: 50.w,
-                          child: MaterialButton(
-                            onPressed: () {
-                              VxNavigator.of(context)
-                                  .push(Uri.parse(Routes.helpType), params: HelpPage.fasting);
-                            },
-                            shape: AppShapes.rectangleMedium,
-                            color: AppColors.helpFastingButton,
-                            disabledElevation: 0,
-                            disabledColor: Color.fromRGBO(225, 225, 225, 1.0),
-                            elevation: 1,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 1.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.help_outline_rounded,
-                                    size: 6.w,
-                                    color: Colors.white,
-                                  ),
-                                  Space(width: 2.w),
-                                  Text(
-                                    intl.helpFasting,
-                                    style: typography.caption!.copyWith(color: Colors.white),
-                                    softWrap: true,
-                                  ),
-                                ],
+                        if (snapshotFoodList.data?.menu?.theme == TypeTheme.FASTING &&
+                            snapshotFoodList.data?.menu?.theme == TypeTheme.FASTING2)
+                          SizedBox(
+                            width: 50.w,
+                            child: MaterialButton(
+                              onPressed: () {
+                                VxNavigator.of(context)
+                                    .push(Uri.parse(Routes.helpType), params: HelpPage.fasting);
+                              },
+                              shape: AppShapes.rectangleMedium,
+                              color: AppColors.helpFastingButton,
+                              disabledElevation: 0,
+                              disabledColor: Color.fromRGBO(225, 225, 225, 1.0),
+                              elevation: 1,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 1.h),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.help_outline_rounded,
+                                      size: 6.w,
+                                      color: Colors.white,
+                                    ),
+                                    Space(width: 2.w),
+                                    Text(
+                                      intl.helpFasting,
+                                      style: typography.caption!.copyWith(color: Colors.white),
+                                      softWrap: true,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -446,40 +448,41 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
               StreamBuilder(
                 stream: bloc.date,
                 builder: (_, AsyncSnapshot<String> snapshot) {
-                  if(snapshot.hasData)
-                  return Column(
-                    children: [
-                      Text(
-                        intl.cancelFastTrackModel(
-                            DateTimeUtils.gregorianToJalali(snapshot.requireData)),
-                        style: typography.caption,
-                        textAlign: TextAlign.center,
-                      ),
-                      Space(height: 1.h),
-                      Container(
-                        width: 50.w,
-                        child: SubmitButton(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            fastBloc!.changeToOriginal(snapshot.requireData);
-                            //  debugPrint('i do not fast');
-                            if (!isLoading) bloc.onRefresh(invalidate: true);
-                          },
-                          label: intl.cancelFasting,
-                        ),
-                      ),
-                      Space(height: 2.h),
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Text(
-                          intl.iRegret,
+                  if (snapshot.hasData)
+                    return Column(
+                      children: [
+                        Text(
+                          intl.cancelFastTrackModel(
+                              DateTimeUtils.gregorianToJalali(snapshot.requireData)),
                           style: typography.caption,
                           textAlign: TextAlign.center,
                         ),
-                      ),
-                    ],
-                  );
-                  else return Progress();
+                        Space(height: 1.h),
+                        Container(
+                          width: 50.w,
+                          child: SubmitButton(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              fastBloc!.changeToOriginal(snapshot.requireData);
+                              //  debugPrint('i do not fast');
+                              if (!isLoading) bloc.onRefresh(invalidate: true);
+                            },
+                            label: intl.cancelFasting,
+                          ),
+                        ),
+                        Space(height: 2.h),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Text(
+                            intl.iRegret,
+                            style: typography.caption,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    );
+                  else
+                    return Progress();
                 },
               ),
               Space(height: 2.h),

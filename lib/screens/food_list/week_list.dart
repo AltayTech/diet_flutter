@@ -107,10 +107,31 @@ class _WeekListState extends ResourcefulState<WeekList> {
                             child: Container(
                               decoration: AppDecorations.circle.copyWith(
                                 border: isAfterToday(weekDays[index]!)
-                                    ? null
+                                    ? (MemoryApp.fastingDates.isNotEmpty &&
+                                            MemoryApp.fastingDates.contains(weekDays[index]!
+                                                .gregorianDate
+                                                .toString()
+                                                .substring(0, 10)))
+                                        ? Border.all(
+                                            color: AppColors.helpFastingButton,
+                                            width: 2,
+                                          )
+                                        : null
                                     : Border.all(
-                                        color: AppColors.surface,
-                                        width: 0.4,
+                                        color: (MemoryApp.fastingDates.isNotEmpty &&
+                                                MemoryApp.fastingDates.contains(weekDays[index]!
+                                                    .gregorianDate
+                                                    .toString()
+                                                    .substring(0, 10)))
+                                            ? AppColors.helpFastingButton
+                                            : AppColors.surface,
+                                        width: (MemoryApp.fastingDates.isNotEmpty &&
+                                                MemoryApp.fastingDates.contains(weekDays[index]!
+                                                    .gregorianDate
+                                                    .toString()
+                                                    .substring(0, 10)))
+                                            ? 2
+                                            : 0.4,
                                       ),
                                 color: isEqualToSelectedDay(weekDays, index, snapshot.requireData)
                                     ? AppColors.surface
@@ -160,7 +181,7 @@ class _WeekListState extends ResourcefulState<WeekList> {
                       MemoryApp.fastingDates
                           .contains(weekDays[index]!.gregorianDate.toString().substring(0, 10)))
                     Positioned(
-                        left: -5,
+                        left: -4,
                         top: 5,
                         child: ImageUtils.fromLocal("assets/images/foodlist/fasting_item.svg",
                             width: 5.w, height: 7.h))

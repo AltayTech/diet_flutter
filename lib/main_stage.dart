@@ -10,7 +10,7 @@ Future<void> main() async {
       'baseUrl': 'https://behaminplus.ir/behandam-diet/api',
       "baseUrlFile": "https://behaminplus.ir/helia-service",
       "baseUrlFileShop": "https://behaminplus.ir/shop-service",
-      "urlTerms": "https://behaminplus.ir/#/terms",
+      "urlTerms": "https://kermany.com/terms/",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
       'isProduction': false
