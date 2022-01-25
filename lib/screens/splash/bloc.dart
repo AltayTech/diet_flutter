@@ -14,10 +14,6 @@ import 'package:sms_autofill/sms_autofill.dart';
 class SplashBloc {
   SplashBloc() {
     _waiting.value = false;
-    if (!kIsWeb)
-      SmsAutoFill().getAppSignature.then((value) {
-        debugPrint('package is $value');
-      });
   }
 
   final _repository = Repository.getInstance();

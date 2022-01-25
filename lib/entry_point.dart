@@ -48,9 +48,9 @@ Future<void> entryPoint() async {
 }
 
 void _initializeDebugPrint() {
-  if (kReleaseMode) {
+ /* if (kReleaseMode) {
     debugPrint = (String? message, {int? wrapWidth}) => doNothing();
-  }
+  }*/
 }
 
 void _initFireBase() async {

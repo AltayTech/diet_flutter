@@ -33,8 +33,7 @@ class RegimeType {
 
   String get icon => Utils.getIcon(alias);
 
-  factory RegimeType.fromJson(Map<String, dynamic> json) =>
-      _$RegimeTypeFromJson(json);
+  factory RegimeType.fromJson(Map<String, dynamic> json) => _$RegimeTypeFromJson(json);
 
   Map<String, dynamic> toJson() => _$RegimeTypeToJson(this);
 }
@@ -56,4 +55,6 @@ enum RegimeAlias {
   Sport,
   @JsonValue("NOTRICA")
   Notrica,
+  @JsonValue("WEIGHT_STABILIZATION")
+  WeightStabilization,
 }

@@ -265,4 +265,5 @@ const _$RegimeAliasEnumMap = {
   RegimeAlias.Ketogenic: 'KETOGENIC',
   RegimeAlias.Sport: 'SPORTS',
   RegimeAlias.Notrica: 'NOTRICA',
+  RegimeAlias.WeightStabilization: 'WEIGHT_STABILIZATION',
 };
