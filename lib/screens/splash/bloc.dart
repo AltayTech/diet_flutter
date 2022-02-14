@@ -9,7 +9,6 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 
 class SplashBloc {
   SplashBloc() {
@@ -69,8 +68,7 @@ class SplashBloc {
       MemoryApp.analytics!
           .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
     }).whenComplete(() {
-      if(!_waiting.isClosed)
-      _waiting.value = false;
+      if (!_waiting.isClosed) _waiting.value = false;
       getVersionApp();
     });
   }

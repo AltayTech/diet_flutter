@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/data/entity/user/user_information.dart' as info;
 import 'package:behandam/screens/ticket/ticket_bloc.dart';
 import 'package:behandam/screens/ticket/ticket_provider.dart';
 import 'package:behandam/screens/widget/detail_screen.dart';
@@ -59,7 +60,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
     });
   }
 
-  _scrollToEnd() {
+  void _scrollToEnd() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
@@ -254,279 +255,135 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                       ],
                                                     );
                                                   case TypeTicketMessage.TEXT_AND_ATTACHMENT:
-                                                    if (Utils.checkFile(FlavorConfig
-                                                                .instance.variables["baseUrlFile"] +
-                                                            bloc.ticketDetails!.items![index]
-                                                                .messages![i].file!.url) ==
-                                                        TypeTicketItem.FILE) {
-                                                      return Column(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        crossAxisAlignment: bloc
-                                                                    .ticketDetails!
-                                                                    .items![index]
-                                                                    .messages![i]
-                                                                    .isAdmin ==
-                                                                0
-                                                            ? CrossAxisAlignment.start
-                                                            : CrossAxisAlignment.end,
-                                                        children: [
-                                                          Container(
-                                                            decoration: bloc
-                                                                        .ticketDetails!
-                                                                        .items![index]
-                                                                        .messages![i]
-                                                                        .isAdmin ==
-                                                                    0
-                                                                ? BoxDecoration(
-                                                                    color: Colors.white,
-                                                                    borderRadius: BorderRadius.only(
-                                                                        topRight:
-                                                                            Radius.circular(16),
-                                                                        topLeft:
-                                                                            Radius.circular(16),
-                                                                        bottomLeft:
-                                                                            Radius.circular(16)))
-                                                                : BoxDecoration(
-                                                                    color: Color(0x2655596E),
-                                                                    borderRadius: BorderRadius.only(
-                                                                        topRight:
-                                                                            Radius.circular(16),
-                                                                        topLeft:
-                                                                            Radius.circular(16),
-                                                                        bottomRight:
-                                                                            Radius.circular(16))),
-                                                            padding: EdgeInsets.all(16),
-                                                            child: Column(
-                                                              textDirection:
-                                                                  context.textDirectionOfLocale,
-                                                              children: [
-                                                                Row(
-                                                                  textDirection:
-                                                                      context.textDirectionOfLocale,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment.end,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment.center,
-                                                                  children: [
-                                                                    Expanded(
-                                                                      child: Padding(
-                                                                        padding: EdgeInsets.only(
-                                                                            left: 2.w, right: 2.w),
-                                                                        child: RichText(
-                                                                          text: new LinkFile(
-                                                                            style: Theme.of(context)
-                                                                                .textTheme
-                                                                                .caption,
-                                                                            url: FlavorConfig
-                                                                                        .instance
-                                                                                        .variables[
-                                                                                    "baseUrlFile"] +
-                                                                                bloc
-                                                                                    .ticketDetails!
-                                                                                    .items![index]
-                                                                                    .messages![i]
-                                                                                    .file!
-                                                                                    .url,
-                                                                            text:
-                                                                                '${bloc.ticketDetails!.items![index].messages![i].file!.name}.pdf',
-                                                                          ),
-                                                                          textAlign: TextAlign.end,
-                                                                        ),
-                                                                      ),
-                                                                      flex: 1,
-                                                                    ),
-                                                                    ImageUtils.fromLocal(
-                                                                        'assets/images/ticket/pdf.svg',
-                                                                        width: 6.w,
-                                                                        height: 6.w,
-                                                                        color: AppColors.primary),
-                                                                  ],
-                                                                ),
-                                                                if (bloc
-                                                                        .ticketDetails!
-                                                                        .items![index]
-                                                                        .messages![i]
-                                                                        .body !=
-                                                                    null)
-                                                                  Padding(
-                                                                    padding:
-                                                                        EdgeInsets.only(top: 8),
-                                                                    child: Container(
-                                                                      width: double.maxFinite,
-                                                                      child: Text(
-                                                                        bloc
+                                                    return Align(
+                                                      alignment: bloc.ticketDetails!.items![index]
+                                                                  .messages![i].isAdmin ==
+                                                              0
+                                                          ? Alignment.centerRight
+                                                          : Alignment.centerLeft,
+                                                      child: Container(
+                                                          margin: EdgeInsets.only(
+                                                              right: 3.w, left: 3.w),
+                                                          width: 70.w,
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                decoration: bloc
                                                                             .ticketDetails!
                                                                             .items![index]
                                                                             .messages![i]
-                                                                            .body!,
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .caption,
-                                                                        textDirection: context
-                                                                            .textDirectionOfLocale,
-                                                                        textAlign: TextAlign.end,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                              ],
-                                                            ),
-                                                            width: 70.w,
-                                                          ),
-                                                          Container(
-                                                            width: 70.w,
-                                                            padding:
-                                                                EdgeInsets.only(left: 8, right: 8),
-                                                            child: Text(
-                                                              DateTimeUtils.getTime(bloc
-                                                                  .ticketDetails!
-                                                                  .items![index]
-                                                                  .messages![i]
-                                                                  .createdAt!),
-                                                              style: Theme.of(context)
-                                                                  .textTheme
-                                                                  .overline!
-                                                                  .copyWith(
-                                                                      color: AppColors.labelColor),
-                                                              textAlign: TextAlign.start,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    } else if (Utils.checkFile(FlavorConfig
-                                                                .instance.variables["baseUrlFile"] +
-                                                            bloc.ticketDetails!.items![index]
-                                                                .messages![i].file!.url) ==
-                                                        TypeTicketItem.IMAGE) {
-                                                      return Column(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        crossAxisAlignment: bloc
-                                                                    .ticketDetails!
-                                                                    .items![index]
-                                                                    .messages![i]
-                                                                    .isAdmin ==
-                                                                0
-                                                            ? CrossAxisAlignment.start
-                                                            : CrossAxisAlignment.end,
-                                                        children: [
-                                                          Container(
-                                                            decoration: bloc
-                                                                        .ticketDetails!
-                                                                        .items![index]
-                                                                        .messages![i]
-                                                                        .isAdmin ==
-                                                                    0
-                                                                ? BoxDecoration(
-                                                                    color: Colors.white,
-                                                                    borderRadius: BorderRadius.only(
-                                                                        topRight:
-                                                                            Radius.circular(16),
-                                                                        topLeft:
-                                                                            Radius.circular(16),
-                                                                        bottomLeft:
-                                                                            Radius.circular(16)))
-                                                                : BoxDecoration(
-                                                                    color: Color(0x2655596E),
-                                                                    borderRadius: BorderRadius.only(
-                                                                        topRight:
-                                                                            Radius.circular(16),
-                                                                        topLeft:
-                                                                            Radius.circular(16),
-                                                                        bottomRight:
-                                                                            Radius.circular(16))),
-                                                            padding: EdgeInsets.all(16),
-                                                            child: Column(
-                                                              children: [
-                                                                GestureDetector(
-                                                                  onTap: () => Navigator.push(
-                                                                      context, MaterialPageRoute(
-                                                                          builder: (_) {
-                                                                    return DetailScreen(FlavorConfig
-                                                                                .instance.variables[
-                                                                            "baseUrlFile"] +
-                                                                        bloc
-                                                                            .ticketDetails!
-                                                                            .items![index]
-                                                                            .messages![i]
-                                                                            .file!
-                                                                            .url);
-                                                                  })),
-                                                                  child: Container(
-                                                                    decoration: BoxDecoration(
-                                                                      color: Colors.grey[300],
-                                                                      borderRadius:
-                                                                          BorderRadius.all(
-                                                                              Radius.circular(16)),
-                                                                    ),
-                                                                    width: double.maxFinite,
-                                                                    child: ImageUtils.fromNetwork(
-                                                                      FlavorConfig.instance
-                                                                                  .variables[
-                                                                              "baseUrlFile"] +
-                                                                          bloc
+                                                                            .isAdmin ==
+                                                                        0
+                                                                    ? BoxDecoration(
+                                                                        color: Colors.white,
+                                                                        borderRadius: BorderRadius.only(
+                                                                            topRight:
+                                                                                Radius.circular(16),
+                                                                            topLeft:
+                                                                                Radius.circular(16),
+                                                                            bottomLeft:
+                                                                                Radius.circular(
+                                                                                    16)))
+                                                                    : BoxDecoration(
+                                                                        color: Color(0x2655596E),
+                                                                        borderRadius: BorderRadius.only(
+                                                                            topRight:
+                                                                                Radius.circular(16),
+                                                                            topLeft:
+                                                                                Radius.circular(16),
+                                                                            bottomRight:
+                                                                                Radius.circular(
+                                                                                    16))),
+                                                                padding: EdgeInsets.all(16),
+                                                                child: Column(
+                                                                    textDirection: context
+                                                                        .textDirectionOfLocale,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment.center,
+                                                                    crossAxisAlignment: bloc
+                                                                                .ticketDetails!
+                                                                                .items![index]
+                                                                                .messages![i]
+                                                                                .isAdmin ==
+                                                                            0
+                                                                        ? CrossAxisAlignment.end
+                                                                        : CrossAxisAlignment.start,
+                                                                    children: [
+                                                                      ...bloc
+                                                                          .ticketDetails!
+                                                                          .items![index]
+                                                                          .messages![i]
+                                                                          .file!
+                                                                          .asMap()
+                                                                          .map((id, value) => MapEntry(
+                                                                              id,
+                                                                              itemFileWidget(
+                                                                                  value,
+                                                                                  bloc
+                                                                                      .ticketDetails!
+                                                                                      .items![index]
+                                                                                      .messages![i])))
+                                                                          .values
+                                                                          .toList(),
+                                                                      if (bloc
                                                                               .ticketDetails!
                                                                               .items![index]
                                                                               .messages![i]
-                                                                              .file!
-                                                                              .url,
-                                                                      width: double.infinity,
-                                                                      height: 20.h,
-                                                                    ),
-                                                                  ),
+                                                                              .body !=
+                                                                          null)
+                                                                        Padding(
+                                                                          padding: EdgeInsets.only(
+                                                                              top: 8),
+                                                                          child: Container(
+                                                                            width: double.maxFinite,
+                                                                            child: Text(
+                                                                              bloc
+                                                                                  .ticketDetails!
+                                                                                  .items![index]
+                                                                                  .messages![i]
+                                                                                  .body!,
+                                                                              style:
+                                                                                  Theme.of(context)
+                                                                                      .textTheme
+                                                                                      .caption,
+                                                                              textDirection: context
+                                                                                  .textDirectionOfLocale,
+                                                                              textAlign:
+                                                                                  TextAlign.start,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                    ]),
+                                                              ),
+                                                              Container(
+                                                                padding: EdgeInsets.only(
+                                                                    left: 8, right: 8),
+                                                                child: Text(
+                                                                  DateTimeUtils.getTime(bloc
+                                                                      .ticketDetails!
+                                                                      .items![index]
+                                                                      .messages![i]
+                                                                      .createdAt!),
+                                                                  style: Theme.of(context)
+                                                                      .textTheme
+                                                                      .overline!
+                                                                      .copyWith(
+                                                                          color:
+                                                                              AppColors.labelColor),
+                                                                  textAlign: bloc
+                                                                              .ticketDetails!
+                                                                              .items![index]
+                                                                              .messages![i]
+                                                                              .isAdmin ==
+                                                                          1
+                                                                      ? TextAlign.start
+                                                                      : TextAlign.end,
                                                                 ),
-                                                                if (bloc
-                                                                        .ticketDetails!
-                                                                        .items![index]
-                                                                        .messages![i]
-                                                                        .body !=
-                                                                    null)
-                                                                  Padding(
-                                                                    padding:
-                                                                        EdgeInsets.only(top: 8),
-                                                                    child: Container(
-                                                                      width: double.maxFinite,
-                                                                      child: Text(
-                                                                        bloc
-                                                                            .ticketDetails!
-                                                                            .items![index]
-                                                                            .messages![i]
-                                                                            .body!,
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .caption,
-                                                                        textDirection: context
-                                                                            .textDirectionOfLocale,
-                                                                        textAlign: TextAlign.start,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                              ],
-                                                            ),
-                                                            width: 70.w,
-                                                          ),
-                                                          Container(
-                                                            width: 70.w,
-                                                            padding:
-                                                                EdgeInsets.only(left: 8, right: 8),
-                                                            child: Text(
-                                                              DateTimeUtils.getTime(bloc
-                                                                  .ticketDetails!
-                                                                  .items![index]
-                                                                  .messages![i]
-                                                                  .createdAt!),
-                                                              style: Theme.of(context)
-                                                                  .textTheme
-                                                                  .overline!
-                                                                  .copyWith(
-                                                                      color: AppColors.labelColor),
-                                                              textAlign: TextAlign.end,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    } else {
-                                                      return Container();
-                                                    }
-                                                    break;
+                                                                width: double.maxFinite,
+                                                              ),
+                                                            ],
+                                                          )),
+                                                    );
                                                   case TypeTicketMessage.VOICE:
                                                     return Column(
                                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -567,7 +424,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                             url: FlavorConfig.instance
                                                                     .variables["baseUrlFile"] +
                                                                 bloc.ticketDetails!.items![index]
-                                                                    .messages![i].file!.url,
+                                                                    .messages![i].file![0].url,
                                                           ),
                                                           width: 70.w,
                                                         ),
@@ -984,8 +841,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                               StreamBuilder(
                                 builder: (context, snapshot) {
                                   if (snapshot.data == null || snapshot.data == false) {
-                                    return
-                                      GestureDetector(
+                                    return GestureDetector(
                                       onTap: () async {
                                         bloc.changeType(TypeTicket.MESSAGE);
                                       },
@@ -1000,12 +856,13 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                       ),
                                     );
                                   } else {
-                                    return  StreamBuilder(
+                                    return StreamBuilder(
                                       builder: (context, snapshot) {
                                         if (snapshot.data == null || snapshot.data == false) {
-                                          return  GestureDetector(
+                                          return GestureDetector(
                                             onTap: () {
-                                              controller!.value = TextEditingController(text: '').value;
+                                              controller!.value =
+                                                  TextEditingController(text: '').value;
                                               bloc.sendTicketFileDetail();
                                             },
                                             child: Container(
@@ -1021,7 +878,8 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                 color: AppColors.surface,
                                               ),
                                             ),
-                                          );;
+                                          );
+                                          ;
                                         } else {
                                           return SpinKitCircle(
                                             color: AppColors.primary,
@@ -1031,8 +889,6 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                       },
                                       stream: bloc.isShowProgressItem,
                                     );
-
-
                                   }
                                 },
                                 stream: bloc.isShowFileAudio,
@@ -1230,7 +1086,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                     borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                   child:
-                                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                      Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                                     Expanded(
                                       child: Directionality(
                                         textDirection: context.textDirectionOfLocale,
@@ -1309,7 +1165,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                         child: Text(
                                                           intl.selectCamera,
                                                           style:
-                                                          Theme.of(context).textTheme.caption,
+                                                              Theme.of(context).textTheme.caption,
                                                         )),
                                                   ],
                                                 ),
@@ -1479,8 +1335,66 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
     );
   }
 
-  Widget templateItemWidget(TempItem templateItem) {
+  Widget itemFileWidget(info.Media value, MessageTicket ticket) {
+    return Column(
+      textDirection: context.textDirectionOfLocale,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: ticket.isAdmin == 0 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        if (value.mediumType == MediumType.file)
+          Row(
+            textDirection: context.textDirectionOfLocale,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 2.w, right: 2.w),
+                  child: RichText(
+                    text: new LinkFile(
+                      style: Theme.of(context).textTheme.caption!.copyWith(
+                          decoration: TextDecoration.underline, color: Colors.lightBlueAccent),
+                      url: FlavorConfig.instance.variables["baseUrlFile"] + value.url,
+                      text: '${value.fileName}',
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+                flex: 1,
+              ),
+              /*ImageUtils.fromLocal(
+                                'assets/images/ticket/pdf.svg',
+                                width: 6.w,
+                                height: 6.w,
+                                color: AppColors.primary),*/
+            ],
+          ),
+        if (value.mediumType == MediumType.IMAGE)
+          GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) {
+              return DetailScreen(FlavorConfig.instance.variables["baseUrlFile"] + value.url);
+            })),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+              width: double.maxFinite,
+              child: ImageUtils.fromNetwork(
+                FlavorConfig.instance.variables["baseUrlFile"] + value.url,
+                width: double.infinity,
+                height: 20.h,
+              ),
+            ),
+          ),
+        Space(
+          height: 2.h,
+        )
+      ],
+    );
+  }
 
+  Widget templateItemWidget(TempItem templateItem) {
     if (templateItem.alterText != null) {
       return Html(
         data: "<div style='direction:rtl'> ${templateItem.alterText} </div>",

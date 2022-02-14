@@ -183,8 +183,11 @@ class MessageTicket {
   @JsonKey(name: "is_admin")
   int? isAdmin;
 
+  @JsonKey(name: "is_voice")
+  int? isVoice;
+
   @JsonKey(name: "file")
-  Media? file;
+  List<Media>? file;
 
   @JsonKey(name: "template")
   TempTicket? temp;

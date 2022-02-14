@@ -79,6 +79,18 @@ class TicketBloc {
 
   bool get isFileAudio => _isShowFileAudio.stream.valueOrNull ?? false;
 
+  int minute = 0;
+  int start = 0;
+  bool? _mRecorderIsInited;
+
+  StreamSubscription? _recorderSubscription;
+  Directory? tempDir;
+  File? outputFile;
+  Duration? timeRecord;
+
+  FlutterSoundRecorder? _myRecorder;
+  Timer? _timer;
+
   void setSupportItemSelected() {
     _supportItemSelected.value = true;
   }
@@ -161,18 +173,7 @@ class TicketBloc {
     });
   }
 
-  int minute = 0;
-  int start = 0;
-  bool? _mRecorderIsInited;
-
-  StreamSubscription? _recorderSubscription;
-  Directory? tempDir;
-  File? outputFile;
-  Duration? timeRecord;
-
-  FlutterSoundRecorder? _myRecorder;
-
-  createRecord() {
+  void createRecord() {
     minute = 0;
     start = 0;
     if (_myRecorder == null) {
@@ -234,8 +235,6 @@ class TicketBloc {
 
     if (refresh) _isShowFileAudio.value = true;
   }
-
-  Timer? _timer;
 
   void _setTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -373,6 +372,15 @@ class TicketBloc {
       List<TicketItem> list = [];
       _ticketDetails!.ticket!.messages!.forEach((ticket) {
         TicketItem? exists;
+        if(ticket.file==null && ticket.temp==null){
+          ticket.type=TypeTicketMessage.TEXT;
+        }else if(ticket.temp!=null){
+          ticket.type=TypeTicketMessage.TEMP;
+        }else if(ticket.isVoice==1){
+          ticket.type=TypeTicketMessage.VOICE;
+        }else{
+          ticket.type=TypeTicketMessage.TEXT_AND_ATTACHMENT;
+        }
         if (list
             .where((element) => element.createdAt!.contains(ticket.createdAt!.substring(0, 10)))
             .isNotEmpty)
