@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:behandam/data/entity/fitamin.dart';
+import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
@@ -320,5 +321,9 @@ abstract class RestClient {
 
   @GET("/logout")
   ImperativeNetworkResult logout();
+
+  @GET("/user/date/articles")
+  NetworkResult<List<ArticleVideo>> getArticles(@Queries(encoded: false) TimeRequest articleVideo);
+
 }
 

@@ -73,6 +73,7 @@ abstract class Routes {
   static const shopOrders = '/shop/orders';
   static const shopHome = '/shop';
   static const termsApp = '/terms';
+  static const targetWeight = '/list/weight/target';
 
   // static const renewWeightEnter = '/renew/weight';
   static const refund = '/refund';

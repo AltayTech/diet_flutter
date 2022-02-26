@@ -350,6 +350,7 @@ final navigator = VxNavigator(
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
+    Routes.targetWeight: (_, __) => MaterialPage(child: routePage(Block())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

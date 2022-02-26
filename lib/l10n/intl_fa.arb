@@ -58,7 +58,7 @@
       }
     }
   },
-  "showAdvices": "نمایش توصیه ها",
+  "showAdvices": "توصیه ها",
   "goToToday": "برو به امروز",
   "selectAllFoodYourself": "میخواهی همه ی غذاهای این روز رو خودت انتخاب کنی؟",
   "yesGoToSelectFoodPage": "بله برو به صفحه انتخاب غذا",
@@ -611,5 +611,6 @@
       }
     }
   },
+  "descriptionArticle": "دکتر امروز چی برات داره:",
   "understand": "متوجه شدم"
 }
