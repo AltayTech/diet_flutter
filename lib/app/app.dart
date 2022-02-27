@@ -15,6 +15,7 @@ import 'package:behandam/screens/daily_menu/list_food.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/alert_list.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
+import 'package:behandam/screens/food_list/daily_message.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/payment/bill.dart';
 import 'package:behandam/screens/payment/debit_card.dart';
@@ -351,6 +352,7 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
     Routes.targetWeight: (_, __) => MaterialPage(child: routePage(Block())),
+    Routes.dailyMessage: (_, param) => MaterialPage(child: routePage(DailyMessage()), arguments: param),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

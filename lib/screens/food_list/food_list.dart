@@ -111,10 +111,12 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                                 // _launchURL(vitrinBloc.url);
                               },
                               child: ImageUtils.fromLocal(
-                                MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
-                                    ? 'assets/images/vitrin/fitamin_banner.png'
-                                    : 'assets/images/vitrin/fitamin_banner_02.png',
-                              )),
+                                // MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
+                                //     ? 'assets/images/vitrin/fitamin_banner.png'
+                                //     :
+                                'assets/images/vitrin/fitamin_banner_02.png',
+                              )
+                          ),
                         ),
                       ),
                       Space(

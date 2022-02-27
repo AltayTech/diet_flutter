@@ -71,6 +71,8 @@ class FoodListBloc {
   late WeekDay _previousWeekDay;
   late Menu _menu;
 
+  int? adviceId;
+
   void _loadContent({bool invalidate = false, bool fillFood = true}) {
     _loadingContent.value = true;
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
@@ -283,7 +285,8 @@ class FoodListBloc {
   }
 
   void setArticle() {
-    _adviceVideo.value=_articles.firstWhere((element) => _selectedWeekDay.value.gregorianDate.toString().contains(element.date!));
+    _adviceVideo.value = _articles.firstWhere((element) => _selectedWeekDay.value.gregorianDate.toString().contains(element.date!));
+    adviceId = _adviceVideo.value.id;
   }
 
   void dispose() {

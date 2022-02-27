@@ -6,6 +6,7 @@ import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -174,5 +175,28 @@ class Utils {
       var package = await PackageInfo.fromPlatform();
       return package.packageName;
     }
+  }
+
+  static Widget loading(double size) {
+    Size siz = WidgetsBinding.instance!.window.physicalSize;
+    double width = siz.width;
+    double height = siz.height/2;
+    return Center(
+        child: Container(
+          height: height,
+          child: SpinKitCircle(
+            size: size,
+            itemBuilder: (BuildContext context, index) {
+              return DecoratedBox(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.primary,
+                        width: 3,
+                      ),
+                      color: Colors.white,
+                      shape: BoxShape.circle));
+            },
+          ),
+        ));
   }
 }

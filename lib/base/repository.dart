@@ -52,6 +52,7 @@ import '../data/entity/auth/sign_in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/daily_message.dart';
 import 'network_response.dart';
 
 enum FoodDietPdf { TERM, WEEK }
@@ -232,6 +233,8 @@ abstract class Repository {
   ImperativeNetworkResult logout();
 
   NetworkResult<List<ArticleVideo>> getArticles(TimeRequest articleVideo);
+
+  NetworkResult<DailyMessageTemplate> getDailyMessage(int id);
 }
 
 class _RepositoryImpl extends Repository {
@@ -913,6 +916,12 @@ class _RepositoryImpl extends Repository {
     } else
       response = NetworkResponse.withData(_cache.articles);
 
+    return response;
+  }
+
+  @override
+  NetworkResult<DailyMessageTemplate> getDailyMessage(int id) {
+    var response = _apiClient.getDailyMessage(id);
     return response;
   }
 }

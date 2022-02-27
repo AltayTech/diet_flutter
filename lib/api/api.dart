@@ -45,6 +45,7 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/daily_message.dart';
 import '../data/entity/payment/payment.dart';
 part 'api.g.dart';
 
@@ -325,5 +326,7 @@ abstract class RestClient {
   @GET("/user/date/articles")
   NetworkResult<List<ArticleVideo>> getArticles(@Queries(encoded: false) TimeRequest articleVideo);
 
+  @GET("/template/{id}?need-log=1")
+  NetworkResult<DailyMessageTemplate> getDailyMessage(@Path('id') int id);
 }
 
