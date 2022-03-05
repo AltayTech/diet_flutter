@@ -73,6 +73,7 @@ abstract class Routes {
   static const shopOrders = '/shop/orders';
   static const shopHome = '/shop';
   static const termsApp = '/terms';
+  static const targetWeight = '/list/weight/target';
 
   // static const renewWeightEnter = '/renew/weight';
   static const refund = '/refund';
@@ -81,6 +82,7 @@ abstract class Routes {
   static const shopProduct = '/shop/product';
   static const shopBill = '/shop/payment/bill';
   static const shopPaymentOnlineSuccess = '/shop/payment/online/success';
+  static const dailyMessage = '/dailyMessage';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

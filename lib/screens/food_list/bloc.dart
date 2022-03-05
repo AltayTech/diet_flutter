@@ -4,6 +4,7 @@ import 'package:behandam/app/bloc.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
@@ -42,10 +43,12 @@ class FoodListBloc {
   final _date = BehaviorSubject<String>();
   final _selectedWeekDay = BehaviorSubject<WeekDay>();
   final _weekDays = BehaviorSubject<List<WeekDay?>?>();
+  final _adviceVideo = BehaviorSubject<ArticleVideo>();
   final AppBloc _appBloc = AppBloc();
   String? _pdfPath;
 
   String? get pdfPath => _pdfPath;
+  late List<ArticleVideo> _articles;
 
   Stream<bool> get loadingContent => _loadingContent.stream;
 
@@ -61,8 +64,14 @@ class FoodListBloc {
 
   Stream<List<WeekDay?>?> get weekDays => _weekDays.stream;
 
+  Stream<ArticleVideo> get adviceVideo => _adviceVideo.stream;
+
+  List<ArticleVideo> get articles => _articles;
+
   late WeekDay _previousWeekDay;
   late Menu _menu;
+
+  int? adviceId;
 
   void _loadContent({bool invalidate = false, bool fillFood = true}) {
     _loadingContent.value = true;
@@ -79,6 +88,7 @@ class FoodListBloc {
         MemoryApp.fastingDates = _foodList.value?.menu?.fastingDates ?? [];
         setTheme();
         fillWeekDays();
+        getArticles();
       } else {
         _showServerError.fire(value.next);
       }
@@ -121,7 +131,8 @@ class FoodListBloc {
     Jalali jalaliDate = Jalali.fromDateTime(gregorianDate);
     List<WeekDay> data = [];
     debugPrint(
-        'date2 $gregorianDate / $jalaliDate / ${WeekDay(gregorianDate: gregorianDate, jalaliDate: jalaliDate)}');
+        'date2 $gregorianDate / $jalaliDate / ${WeekDay(
+            gregorianDate: gregorianDate, jalaliDate: jalaliDate)}');
     data.add(WeekDay(
         gregorianDate: gregorianDate,
         jalaliDate: jalaliDate,
@@ -132,13 +143,14 @@ class FoodListBloc {
           gregorianDate: gregorianDate.add(Duration(days: i)),
           jalaliDate: gregorianDate.add(Duration(days: i)).toJalali(),
           isSelected:
-              gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
+          gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
       debugPrint(
-          'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
+          'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(
+              Duration(days: i))} /');
     }
     _weekDays.value = data;
     _selectedWeekDay.value = _weekDays.value!.firstWhere(
-        (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
+            (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
     _previousWeekDay = _selectedWeekDay.value;
   }
 
@@ -159,6 +171,8 @@ class FoodListBloc {
       });
       _foodList.value = null;
       _previousWeekDay = _selectedWeekDay.value;
+      if(_articles.isNotEmpty)
+      setArticle();
       debugPrint('change date 3 $newDate / ${_previousWeekDay.gregorianDate}');
       MemoryApp.selectedDate = newDate;
       onRefresh();
@@ -187,7 +201,8 @@ class FoodListBloc {
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     debugPrint(
-        'newfood ${_foodList.valueOrNull?.meals?[index!].title} / ${_foodList.valueOrNull?.meals?[index!].newFood?.toJson()}');
+        'newfood ${_foodList.valueOrNull?.meals?[index!].title} / ${_foodList.valueOrNull
+            ?.meals?[index!].newFood?.toJson()}');
   }
 
   onDailyMenu() {
@@ -230,7 +245,9 @@ class FoodListBloc {
   }
 
   void makingFoodEmpty(int mealId) {
-    _foodList.valueOrNull?.meals?.firstWhere((element) => element.id == mealId).newFood = null;
+    _foodList.valueOrNull?.meals
+        ?.firstWhere((element) => element.id == mealId)
+        .newFood = null;
   }
 
   void nextStep() {
@@ -256,6 +273,22 @@ class FoodListBloc {
     }).whenComplete(() => _navigateTo.fire(false));
   }
 
+  void getArticles() async {
+    TimeRequest articleVideo = TimeRequest();
+    articleVideo.started_at = _weekDays.value![0]!.gregorianDate.toString().substring(0, 10);
+    articleVideo.expired_at =
+        _weekDays.value![_weekDays.value!.length - 1]!.gregorianDate.toString().substring(0, 10);
+    _repository.getArticles(articleVideo).then((value) {
+      _articles = value.requireData;
+      setArticle();
+    });
+  }
+
+  void setArticle() {
+    _adviceVideo.value = _articles.firstWhere((element) => _selectedWeekDay.value.gregorianDate.toString().contains(element.date!));
+    adviceId = _adviceVideo.value.id;
+  }
+
   void dispose() {
     _loadingContent.close();
     _foodList.close();
@@ -263,5 +296,6 @@ class FoodListBloc {
     _date.close();
     _weekDays.close();
     _selectedWeekDay.close();
+    _adviceVideo.close();
   }
 }

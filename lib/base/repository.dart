@@ -7,6 +7,7 @@ import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/fitamin.dart';
+import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
@@ -51,6 +52,7 @@ import '../data/entity/auth/sign_in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/daily_message.dart';
 import 'network_response.dart';
 
 enum FoodDietPdf { TERM, WEEK }
@@ -229,6 +231,10 @@ abstract class Repository {
   ImperativeNetworkResult addFcmToken(String token);
 
   ImperativeNetworkResult logout();
+
+  NetworkResult<List<ArticleVideo>> getArticles(TimeRequest articleVideo);
+
+  NetworkResult<TempTicket> getDailyMessage(int id);
 }
 
 class _RepositoryImpl extends Repository {
@@ -898,6 +904,24 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult logout() {
     var response = _apiClient.logout();
+    return response;
+  }
+
+  @override
+  NetworkResult<List<ArticleVideo>> getArticles(TimeRequest articleVideo) async {
+    NetworkResponse<List<ArticleVideo>> response;
+    if (_cache.articles == null) {
+      response = await _apiClient.getArticles(articleVideo);
+      _cache.saveArticle(response.data ?? []);
+    } else
+      response = NetworkResponse.withData(_cache.articles);
+
+    return response;
+  }
+
+  @override
+  NetworkResult<TempTicket> getDailyMessage(int id) {
+    var response = _apiClient.getDailyMessage(id);
     return response;
   }
 }
