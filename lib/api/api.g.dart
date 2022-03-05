@@ -1665,20 +1665,20 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<DailyMessageTemplate>> getDailyMessage(id) async {
+  Future<NetworkResponse<TempTicket>> getDailyMessage(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<DailyMessageTemplate>>(
+        _setStreamType<NetworkResponse<TempTicket>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/template/$id?need-log=1',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<DailyMessageTemplate>.fromJson(
+    final value = NetworkResponse<TempTicket>.fromJson(
       _result.data!,
-      (json) => DailyMessageTemplate.fromJson(json as Map<String, dynamic>),
+      (json) => TempTicket.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

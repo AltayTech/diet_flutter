@@ -1,9 +1,12 @@
 
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
-import '../../data/entity/daily_message.dart';
+import '../../data/entity/ticket/ticket_item.dart';
 
 class DailyMessageBloc{
   DailyMessageBloc();
@@ -13,8 +16,8 @@ class DailyMessageBloc{
   final _serverError = LiveEvent();
   final _navigateTo = LiveEvent();
 
-  final _messageTemplate = BehaviorSubject<DailyMessageTemplate>();
-  Stream<DailyMessageTemplate> get messageTemplate => _messageTemplate.stream;
+  final _messageTemplate = BehaviorSubject<TempTicket>();
+  Stream<TempTicket> get messageTemplate => _messageTemplate.stream;
 
   Stream<bool> get loadingContent => _loadingContent.stream;
   Stream get serverError => _serverError.stream;
@@ -23,10 +26,16 @@ class DailyMessageBloc{
   String? _messageTitle;
   String? get messageTitle => _messageTitle;
 
+
+
   void getDailyMessage(int id){
     _repository.getDailyMessage(id).then((value) {
       _messageTemplate.value = value.data!;
-      // _messageTitle = value.data!.title;
     });
+  }
+
+  void dispose(){
+    _messageTemplate.close();
+    _loadingContent.close();
   }
 }

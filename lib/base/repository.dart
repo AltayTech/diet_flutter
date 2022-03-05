@@ -234,7 +234,7 @@ abstract class Repository {
 
   NetworkResult<List<ArticleVideo>> getArticles(TimeRequest articleVideo);
 
-  NetworkResult<DailyMessageTemplate> getDailyMessage(int id);
+  NetworkResult<TempTicket> getDailyMessage(int id);
 }
 
 class _RepositoryImpl extends Repository {
@@ -920,7 +920,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<DailyMessageTemplate> getDailyMessage(int id) {
+  NetworkResult<TempTicket> getDailyMessage(int id) {
     var response = _apiClient.getDailyMessage(id);
     return response;
   }

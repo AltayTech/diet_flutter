@@ -327,6 +327,6 @@ abstract class RestClient {
   NetworkResult<List<ArticleVideo>> getArticles(@Queries(encoded: false) TimeRequest articleVideo);
 
   @GET("/template/{id}?need-log=1")
-  NetworkResult<DailyMessageTemplate> getDailyMessage(@Path('id') int id);
+  NetworkResult<TempTicket> getDailyMessage(@Path('id') int id);
 }
 
