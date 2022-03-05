@@ -611,7 +611,8 @@
       }
     }
   },
-  "descriptionArticle": "دکتر امروز چی برات داره:",
+  "descriptionArticle": "پیشنهاد امروز دکتر برای شما:",
   "dailyMessage": "پیام روزانه",
+  "showVideoButton": "مشاهده ویدیو",
   "understand": "متوجه شدم"
 }

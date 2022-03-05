@@ -4,8 +4,8 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -33,7 +33,7 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
   Widget build(BuildContext context) {
     bloc = FoodListProvider.of(context);
     super.build(context);
-    return  appbarStackBox();
+    return appbarStackBox();
   }
 
   Widget appbarStackBox() {
@@ -41,56 +41,96 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
       bottom: 0,
       right: 0,
       left: 0,
-      child: GestureDetector(
-        onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.dailyMessage), params: bloc.adviceId),
-        child:Card(
-          shape: AppShapes.rectangleMedium,
-          elevation: 1,
-          margin: EdgeInsets.symmetric(horizontal: 3.w),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-            child: StreamBuilder(
-              stream: bloc.selectedWeekDay,
-              builder: (_, AsyncSnapshot<WeekDay?> snapshot) {
-                if (snapshot.hasData) {
-                  return StreamBuilder(
-                    stream: bloc.adviceVideo,
-                    builder: (_, AsyncSnapshot<ArticleVideo> articleVideo) {
-                      if (articleVideo.hasData) {
-                        return Row(
-                          children: [
-                            ImageUtils.fromLocal("assets/images/foodlist/advice/video_advice.svg"),
-                            Space(
-                              width: 2.w,
-                            ),
-                            Expanded(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  intl.descriptionArticle,
-                                  style: typography.caption,
-                                ),
-                                Text(
-                                  articleVideo.requireData.title!,
-                                  style: typography.caption!.copyWith(fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ))
-                          ],
-                        );
-                      }
-                      return Center(child: EmptyBox());
-                    },
-                  );
-                }
-                return Center(child: EmptyBox());
-              },
-            ),
+      child: Card(
+        shape: AppShapes.rectangleMedium,
+        elevation: 1,
+        margin: EdgeInsets.symmetric(horizontal: 3.w),
+
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+          child: StreamBuilder(
+            stream: bloc.selectedWeekDay,
+            builder: (_, AsyncSnapshot<WeekDay?> snapshot) {
+              if (snapshot.hasData) {
+                return StreamBuilder(
+                  stream: bloc.adviceVideo,
+                  builder: (_, AsyncSnapshot<ArticleVideo> articleVideo) {
+                    if (articleVideo.hasData) {
+                      return Row(
+                        children: [
+                          Expanded(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                intl.descriptionArticle,
+                                style: typography.caption,
+                              ),
+                              Text(
+                                articleVideo.requireData.title!,
+                                style: typography.caption!.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )),
+                          Space(
+                            width: 2.w,
+                          ),
+                          videoButton(),
+                        ],
+                      );
+                    }
+                    return Center(child: EmptyBox());
+                  },
+                );
+              }
+              return Center(child: Container(height:8.h,child: EmptyBox()));
+            },
           ),
         ),
       ),
+    );
+  }
+
+  Widget videoButton() {
+    return GestureDetector(
+      child: Container(
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.primary.withOpacity(0.3),
+          ),
+          width: 35.w,
+          height: 6.h,
+          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                decoration: AppDecorations.boxLarge.copyWith(
+                  color: AppColors.primary.withOpacity(0.6),
+                ),
+                width: 7.w,
+                height: 7.w,
+                child: Icon(
+                  Icons.play_arrow_rounded,
+                  size: 5.w,
+                  color: AppColors.primary,
+                ),
+              ),
+              Expanded(
+                  child: Text(
+                intl.showVideoButton,
+                textAlign: TextAlign.center,
+                style: typography.overline?.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+              )),
+            ],
+          )),
+      onTap: () {
+        VxNavigator.of(context).push(Uri.parse(Routes.dailyMessage), params: bloc.adviceId);
+      },
     );
   }
 

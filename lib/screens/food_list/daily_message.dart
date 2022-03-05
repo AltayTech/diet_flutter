@@ -1,16 +1,7 @@
-import 'package:behandam/screens/widget/link_file.dart';
-import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/custom_player.dart';
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
-
 import '../../base/resourceful_state.dart';
 import '../../base/utils.dart';
-import '../../data/entity/daily_message.dart';
 import '../../data/entity/ticket/ticket_item.dart';
-import '../../widget/custom_video.dart';
-import '../widget/progress.dart';
 import '../widget/template.dart';
 import '../widget/toolbar.dart';
 import 'daily_message_bloc.dart';
