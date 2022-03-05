@@ -1,3 +1,4 @@
+import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import '../../base/resourceful_state.dart';
 import '../../base/utils.dart';
@@ -34,6 +35,7 @@ class _DailyMessageState extends ResourcefulState<DailyMessage> {
     super.build(context);
     return Scaffold(
       appBar: Toolbar(titleBar: intl.dailyMessage),
+      backgroundColor: AppColors.background,
       body: SingleChildScrollView(
         child: SafeArea(
             child: StreamBuilder(

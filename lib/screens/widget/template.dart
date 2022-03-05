@@ -39,7 +39,7 @@ class _MessageTemplateState extends State<MessageTemplate> {
   }
 
   Future<Directory?> getPath() async {
-    tempDir = await getTemporaryDirectory();
+    tempDir = (await getExternalStorageDirectory()) ?? await getTemporaryDirectory();
     debugPrint("path:$tempDir");
     return tempDir;
   }
@@ -56,12 +56,12 @@ class _MessageTemplateState extends State<MessageTemplate> {
     } else {
       MediumType? mediumType = templateItem[index].media![0].mediumType;
       if (templateItem[index].media!.isNotEmpty &&
-          templateItem[index].media![0].mediumType == MediumType.file &&
-          !templateItem[index].media![0].mediumUrls!.url!.contains("${tempDir.path}")) {
+          templateItem[index].media![0].mediumType == MediumType.file) {
         if (templateItem[index].media![0].progress == null)
           templateItem[index].media![0].progress = false;
         String? name = templateItem[index].media![0].fileName;
-        if (Utils.checkExistFile(name, tempDir.path)) {
+        if (!templateItem[index].media![0].mediumUrls!.url!.contains("${tempDir.path}") &&
+            Utils.checkExistFile(name, tempDir.path)) {
           templateItem[index].media![0].mediumUrls!.url = "${tempDir.absolute.path}/$name";
         }
       }
@@ -215,7 +215,7 @@ class _MessageTemplateState extends State<MessageTemplate> {
         item.media![0].progress = false;
       });
       if (data.statusCode == 200)
-        item.media![0].mediumUrls!.url = "${tempDir.path}/$item.media![0].fileName}";
+        item.media![0].mediumUrls!.url = "${tempDir.path}/${item.media![0].fileName}";
       setState(() {});
     } catch (e) {}
   }
