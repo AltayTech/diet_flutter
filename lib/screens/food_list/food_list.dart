@@ -148,10 +148,6 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
     return text;
   }*/
 
-  bool isToday(WeekDay weekDay) {
-    return weekDay.gregorianDate.toString().substring(0, 10) ==
-        DateTime.now().toString().substring(0, 10);
-  }
 
   @override
   void onRetryAfterMaintenance() {

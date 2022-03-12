@@ -6,6 +6,7 @@ import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -45,7 +46,6 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
         shape: AppShapes.rectangleMedium,
         elevation: 1,
         margin: EdgeInsets.symmetric(horizontal: 3.w),
-
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
           child: StreamBuilder(
@@ -56,40 +56,66 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
                   stream: bloc.adviceVideo,
                   builder: (_, AsyncSnapshot<ArticleVideo> articleVideo) {
                     if (articleVideo.hasData) {
-                      return Row(
-                        children: [
-                          Expanded(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                intl.descriptionArticle,
+                      if (isAfterToday(snapshot.data!))
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                appbarStackBoxText(snapshot.requireData!),
                                 style: typography.caption,
+                                softWrap: true,
                               ),
-                              Text(
-                                articleVideo.requireData.title!,
-                                style: typography.caption!.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          )),
-                          Space(
-                            width: 2.w,
-                          ),
-                          videoButton(),
-                        ],
-                      );
+                            ),
+                            todayButton(),
+                          ],
+                        );
+                      else
+                        return Row(
+                          children: [
+                            Expanded(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              textDirection: context.textDirectionOfLocale,
+                              children: [
+                                Text(
+                                  intl.descriptionArticle,
+                                  style: typography.caption,
+                                ),
+                                Text(
+                                  articleVideo.requireData.title!,
+                                  textAlign: TextAlign.start,
+                                  textDirection: context.textDirectionOfLocale,
+                                  maxLines: 1,
+                                  style: typography.overline!.copyWith(
+                                      fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
+                                ),
+                              ],
+                            )),
+                            Space(
+                              width: 2.w,
+                            ),
+                            videoButton(),
+                          ],
+                        );
                     }
                     return Center(child: EmptyBox());
                   },
                 );
               }
-              return Center(child: Container(height:8.h,child: EmptyBox()));
+              return Center(child: Container(height: 8.h, child: EmptyBox()));
             },
           ),
         ),
       ),
     );
+  }
+
+  String appbarStackBoxText(WeekDay weekday) {
+    String text = '';
+    text = intl.viewingMenu(
+        '${weekday.jalaliDate.formatter.wN} ${weekday.jalaliDate.formatter.d} ${weekday.jalaliDate.formatter.mN}');
+    return text;
   }
 
   Widget videoButton() {
@@ -132,6 +158,33 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
         VxNavigator.of(context).push(Uri.parse(Routes.dailyMessage), params: bloc.adviceId);
       },
     );
+  }
+
+  Widget todayButton() {
+    return GestureDetector(
+      child: Container(
+        decoration: AppDecorations.boxLarge.copyWith(
+          color: AppColors.primary.withOpacity(0.3),
+        ),
+        width: 25.w,
+        height: 6.h,
+        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+        child: Center(
+          child: Text(
+            intl.goToToday,
+            style: typography.caption!.copyWith(color: AppColors.primary,fontWeight: FontWeight.w700,),
+            softWrap: true,
+          ),
+        ),
+      ),
+      onTap: () {
+        bloc.changeDateWithString(DateTime.now().toString().substring(0, 10));
+      },
+    );
+  }
+
+  bool isAfterToday(WeekDay day) {
+    return day.gregorianDate.isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));
   }
 
   @override
