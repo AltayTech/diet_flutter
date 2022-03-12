@@ -58,7 +58,7 @@
       }
     }
   },
-  "showAdvices": "نمایش توصیه ها",
+  "showAdvices": "توصیه ها",
   "goToToday": "برو به امروز",
   "selectAllFoodYourself": "میخواهی همه ی غذاهای این روز رو خودت انتخاب کنی؟",
   "yesGoToSelectFoodPage": "بله برو به صفحه انتخاب غذا",
@@ -591,7 +591,7 @@
   "dateStart": "شروع ترم: ",
   "dateEnd": "پایان ترم: ",
   "viewChart": "نمایش نمودار",
-  "termsOfUseDescription": "برای مشاهده شرایط و قوانین استفاده از اپلیکیشن به اندام روی ",
+  "termsOfUseDescription": "شرایط و قوانین استفاده",
   "termsOfUse": "شرایط و قوانین استفاده",
   "link": "لینک ",
   "clickLink": "کلیک کنید",
@@ -600,5 +600,19 @@
   "errorTitleTicket": "عنوان پیام خود را وارد کنید",
   "message": "پیام",
   "call": "تماس",
+  "cancelFasting": "لغو فستینگ",
+  "helpFasting": "راهنمای فستینگ",
+  "fastTrackModel": "الگوی فستینگ",
+  "cancelFastTrackModel": "در صورت لغو، برنامه غذایی شما در تاریخ {date} به حالت عادی برمی گردد و امکان برگشت مجدد به فستینگ برای این روز وجود ندارد.",
+  "@cancelFastTrackModel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "descriptionArticle": "پیشنهاد امروز دکتر برای شما:",
+  "dailyMessage": "پیام روزانه",
+  "showVideoButton": "مشاهده ویدیو",
   "understand": "متوجه شدم"
 }

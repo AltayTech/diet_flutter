@@ -107,7 +107,8 @@ Media _$MediaFromJson(Map<String, dynamic> json) => Media()
   ..tutorialUrl = json['tutorial_url'] as String?
   ..avatarUrl = json['avatar_url'] as String?
   ..collectionName = json['collection_name'] as String?
-  ..mimeType = json['mime_type'] as String?;
+  ..mimeType = json['mime_type'] as String?
+  ..mediumType = $enumDecodeNullable(_$MediumTypeEnumMap, json['medium_type']);
 
 Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
       'url': instance.url,
@@ -121,7 +122,16 @@ Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
       'avatar_url': instance.avatarUrl,
       'collection_name': instance.collectionName,
       'mime_type': instance.mimeType,
+      'medium_type': _$MediumTypeEnumMap[instance.mediumType],
     };
+
+const _$MediumTypeEnumMap = {
+  MediumType.IMAGE: 0,
+  MediumType.VIDEO: 1,
+  MediumType.NONE: 2,
+  MediumType.AUDIO: 3,
+  MediumType.file: 4,
+};
 
 SocialMedia _$SocialMediaFromJson(Map<String, dynamic> json) => SocialMedia()
   ..pivot = json['pivot'] == null

@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_information.g.dart';
@@ -100,7 +101,8 @@ class UserInformationEdit {
 
   UserInformationEdit();
 
-  factory UserInformationEdit.fromJson(Map<String, dynamic> json) => _$UserInformationEditFromJson(json);
+  factory UserInformationEdit.fromJson(Map<String, dynamic> json) =>
+      _$UserInformationEditFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserInformationEditToJson(this);
 }
@@ -160,6 +162,9 @@ class Media {
   @JsonKey(name: "mime_type")
   String? mimeType;
 
+  @JsonKey(name: "medium_type")
+  MediumType? mediumType;
+
   Media();
 
   factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);
@@ -184,9 +189,9 @@ class SocialMedia {
 
   Map<String, dynamic> toJson() => _$SocialMediaToJson(this);
 }
+
 @JsonSerializable()
 class SocialMediaEdit {
-
   @JsonKey(name: "link")
   String? link;
   @JsonKey(name: "social_media_id")
@@ -198,6 +203,7 @@ class SocialMediaEdit {
 
   Map<String, dynamic> toJson() => _$SocialMediaEditToJson(this);
 }
+
 @JsonSerializable()
 class PivotMedia {
   @JsonKey(name: "link")

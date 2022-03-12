@@ -227,14 +227,27 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             print('dialog');
             DialogUtils.showDialogPage(
                 context: context,
-                child: Center(
-                  child: Container(child: SicknessDialog(
-                    items: current,
-                    itemClick: this,
-                    sicknessType: SicknessType.NORMAL,
-                  ),
-                  height: 60.h,),
-                ));
+                child: StreamBuilder(
+                  stream: sicknessBloc.waiting,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data == false) {
+                      return Center(
+                        child: Container(child: SicknessDialog(
+                          items: current,
+                          itemClick: this,
+                          sicknessType: SicknessType.NORMAL,
+                        ),
+                          height: 60.h,),
+                      );
+                    } else {
+                      return SpinKitCircle(
+                        size: 7.w,
+                        color: AppColors.primary,
+                      );
+                    }
+                  }
+                )
+            );
           }
         }
       },
@@ -399,11 +412,26 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                       DialogUtils.showDialogPage(
                           context: context,
                           child: Center(
-                        child: Container(child:SicknessDialog(
-                            items: current,
-                            itemClick: this,
-                            sicknessType: SicknessType.NORMAL,
-                          ))));
+                        child: StreamBuilder(
+                              stream: sicknessBloc.waiting,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData && snapshot.data == false) {
+                                  return
+                                    Container(child: SicknessDialog(
+                                      items: current,
+                                      itemClick: this,
+                                      sicknessType: SicknessType.NORMAL,
+                                    ));
+                                } else {
+                                  return SpinKitCircle(
+                                    size: 7.w,
+                                    color: AppColors.primary,
+                                  );
+                                }
+                              }
+                          )
+                      )
+                  );
                     }
                   }
                 }),

@@ -1,3 +1,4 @@
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class DetailScreen extends StatelessWidget {
           child: Center(
             child: Hero(
               tag: 'imageHero',
-              child: Image.network(
+              child: ImageUtils.fromNetwork(
                 imagePath!,
                 fit: BoxFit.contain,
               ),

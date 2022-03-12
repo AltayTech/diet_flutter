@@ -83,7 +83,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
                             showToolbar: false,
                             isClickable: false,
                           ),
-                          appbarStackBox(),
+                          //appbarStackBox(),
                         ],
                       ),
                       Space(height: 7.h),

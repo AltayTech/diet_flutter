@@ -15,6 +15,7 @@ import 'package:behandam/screens/daily_menu/list_food.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/alert_list.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
+import 'package:behandam/screens/food_list/daily_message.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/payment/bill.dart';
 import 'package:behandam/screens/payment/debit_card.dart';
@@ -135,50 +136,43 @@ class _AppState extends State<App> {
     );
   }
   Widget app(Locale locale) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: AppColors.primaryColorDark,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.light,
-      ),
-      child: MaterialApp.router(
-          useInheritedMediaQuery: true,
-          // generate title from localization instead of `MaterialApp.title` property
-          onGenerateTitle: (BuildContext context) => context.intl.appName,
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocale.supportedLocales,
-          theme: ThemeData(
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                primary: AppColors.primary,
-                onPrimary: AppColors.onPrimary,
-                onSurface: AppColors.onSurface,
-                shape:
-                RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
-              ),
+    return MaterialApp.router(
+        useInheritedMediaQuery: true,
+        // generate title from localization instead of `MaterialApp.title` property
+        onGenerateTitle: (BuildContext context) => context.intl.appName,
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocale.supportedLocales,
+        theme: ThemeData(
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.primary,
+              onPrimary: AppColors.onPrimary,
+              onSurface: AppColors.onSurface,
+              shape:
+              RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
             ),
-            primaryColor: AppColors.primary,
-            primaryColorDark: AppColors.primaryColorDark,
-            scaffoldBackgroundColor: AppColors.scaffold,
-            textTheme: buildTextTheme(locale),
-            appBarTheme: AppBarTheme(
-              backgroundColor: AppColors.primary,
-            ),
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
-                .copyWith(secondary: AppColors.primary),
           ),
-          locale: locale,
-          localeResolutionCallback: resolveLocale,
-          scaffoldMessengerKey: navigatorMessengerKey,
-          //navigatorObservers: [routeObserver],
-          // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
-          // routes: Routes.all,
+          primaryColor: AppColors.primary,
+          primaryColorDark: AppColors.primaryColorDark,
+          scaffoldBackgroundColor: AppColors.scaffold,
+          textTheme: buildTextTheme(locale),
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.primary,
+          ),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
+              .copyWith(secondary: AppColors.primary),
+        ),
+        locale: locale,
+        localeResolutionCallback: resolveLocale,
+        scaffoldMessengerKey: navigatorMessengerKey,
+        //navigatorObservers: [routeObserver],
+        // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
+        // routes: Routes.all,
 
-          routeInformationParser: VxInformationParser(),
-          backButtonDispatcher: RootBackButtonDispatcher(),
-          routerDelegate: navigator),
-    );;
+        routeInformationParser: VxInformationParser(),
+        backButtonDispatcher: RootBackButtonDispatcher(),
+        routerDelegate: navigator);;
   }
   Widget webFrame(Locale locale, BoxConstraints constraints) {
     return FlutterWebFrame(
@@ -357,6 +351,8 @@ final navigator = VxNavigator(
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
+    Routes.targetWeight: (_, __) => MaterialPage(child: routePage(Block())),
+    Routes.dailyMessage: (_, param) => MaterialPage(child: routePage(DailyMessage()), arguments: param),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

@@ -1,7 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
-import 'package:behandam/routes.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -15,8 +14,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import 'authentication_bloc.dart';
 
@@ -78,40 +77,26 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       child: Column(children: [
                         header(),
                         content(),
-                       /* Padding(
-                          padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                          child: RichText(
-                              textDirection: context.textDirectionOfLocale,
-                              textAlign: TextAlign.center,
-                              text: TextSpan(children: [
-                                TextSpan(
-                                  text: intl.termsOfUseDescription,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .overline!
-                                      .copyWith(color: AppColors.labelTextColor),
-                                ),
-                                TextSpan(
-                                    text: intl.link,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .button!
-                                        .copyWith(color: AppColors.primary),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        *//*Utils.launchURL(
-                                            FlavorConfig.instance.variables['urlTerms']);*//*
-                                        VxNavigator.of(context).push(Uri.parse(Routes.termsApp));
-                                      }),
-                                TextSpan(
-                                  text: intl.clickLink,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .overline!
-                                      .copyWith(color: AppColors.labelTextColor),
-                                ),
-                              ])),
-                        ),*/
+                        Container(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 8, left: 5.w, right: 5.w),
+                            child: RichText(
+                                textDirection: context.textDirectionOfLocale,
+                                textAlign: TextAlign.center,
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: intl.termsOfUseDescription,
+                                      style: Theme.of(context).textTheme.button!.copyWith(
+                                          color: AppColors.labelTextColor,
+                                          decoration: TextDecoration.underline),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Utils.launchURL(
+                                              FlavorConfig.instance.variables['urlTerms']);
+                                        }),
+                                ])),
+                          ),
+                        ),
                         Space(height: 1.h),
                       ]),
                     ),

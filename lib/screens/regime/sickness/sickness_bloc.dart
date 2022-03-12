@@ -146,13 +146,14 @@ class SicknessBloc {
   }
 
   void sendSickness() {
+    _waiting.value = true;
     _repository
         .sendSickness(userSickness!)
         .then((value) {
           _navigateTo.fireMessage('/${value.next}');
         })
         .catchError((e) => _showServerError.fire(e))
-        .whenComplete(() {});
+        .whenComplete(() {_waiting.value = false;});
   }
 
   void sendSicknessSpecial() {

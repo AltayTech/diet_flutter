@@ -50,11 +50,13 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:showWhenLocked="true"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/LaunchTheme"
             android:turnScreenOn="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            tools:replace="android:exported">
+
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
@@ -111,6 +113,15 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+        <receiver
+            android:name="androidx.media.session.MediaButtonReceiver"
+            android:exported="true"
+            tools:replace="android:exported"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
     </application>
     <queries>
         <!-- If your app makes calls -->

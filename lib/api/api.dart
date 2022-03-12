@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:behandam/data/entity/fitamin.dart';
+import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
@@ -44,6 +45,7 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/daily_message.dart';
 import '../data/entity/payment/payment.dart';
 part 'api.g.dart';
 
@@ -320,5 +322,11 @@ abstract class RestClient {
 
   @GET("/logout")
   ImperativeNetworkResult logout();
+
+  @GET("/user/date/articles")
+  NetworkResult<List<ArticleVideo>> getArticles(@Queries(encoded: false) TimeRequest articleVideo);
+
+  @GET("/template/{id}?need-log=1")
+  NetworkResult<TempTicket> getDailyMessage(@Path('id') int id);
 }
 

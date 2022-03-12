@@ -45,7 +45,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file(".\\KeyBehandam.jks")
+            storeFile file(".\\keyBehandam.jks")
             storePassword "Behandam@110"
             keyAlias "Behandam"
             keyPassword "Behandam110"
@@ -78,7 +78,6 @@ android {
             minifyEnabled false // add this
             shrinkResources false
             useProguard true
-            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'// add this
             signingConfig signingConfigs.release // this is default for release
         }
@@ -87,18 +86,18 @@ android {
             minifyEnabled false // a
             shrinkResources false
             debuggable true
-         signingConfig signingConfigs.debug // this is default for release
-        }
-    /*    develop {
-            minifyEnabled false // a
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
             signingConfig signingConfigs.debug // this is default for release
         }
-        stage {
-            minifyEnabled false // a
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
-            signingConfig signingConfigs.debug // this is default for release
-        }*/
+        /*    develop {
+                minifyEnabled false // a
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
+                signingConfig signingConfigs.debug // this is default for release
+            }
+            stage {
+                minifyEnabled false // a
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
+                signingConfig signingConfigs.debug // this is default for release
+            }*/
     }
 
 }

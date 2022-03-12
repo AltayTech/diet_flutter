@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 abstract class ImageUtils {
   /// [backOffSizing] determine whether to use backOff dimension if not set
@@ -51,6 +51,7 @@ abstract class ImageUtils {
     BoxDecoration? decoration,
     EdgeInsets? padding,
     EdgeInsets? margin,
+    String? placeholder,
     bool isCircle = false,
     BoxFit fit = BoxFit.contain,
     bool backOffSizing = true,
@@ -66,8 +67,25 @@ abstract class ImageUtils {
         width: measuredWidth,
         color: color,
         fit: fit,
+        /* errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            placeholder ?? "assets/images/registry/app_logo.svg",
+            width: measuredWidth,
+            height: measuredHeight,
+            color: color,
+            fit: fit,
+          );
+        },*/
         placeholderBuilder: (context) {
-          return Space(width: measuredWidth, height: measuredHeight);
+          return placeholder != null
+              ? SvgPicture.asset(
+                  placeholder,
+                  width: measuredWidth,
+                  height: measuredHeight,
+                  color: color,
+                  fit: fit,
+                )
+              : Space(width: measuredWidth, height: measuredHeight);
         },
       );
     } else {

@@ -348,16 +348,14 @@ class ProfileBloc {
   void checkFitamin() async {
     _repository.checkFitamin().then((value) {
       _url = value.data!.url;
-      // if (_url!.contains('fitamin://'))
-      //   _navigateToVerify.fire(true);
-      // else
       _navigateToVerify.fire(url);
     });
   }
 
   void logOut() {
-    _repository.logout();
-    AppSharedPreferences.logout();
-    navigator.routeManager.clearAndPush(Uri.parse(Routes.auth));
+    _repository.logout().whenComplete(() {
+      AppSharedPreferences.logout();
+      navigator.routeManager.clearAndPush(Uri.parse(Routes.auth));
+    });
   }
 }

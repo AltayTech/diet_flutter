@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -12,10 +12,10 @@ import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -41,6 +41,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   final focus = FocusNode();
   bool check = false;
   bool isRequest = false;
+  bool isAutoVerify=false;
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -65,8 +66,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   void dispose() {
     _timer.cancel();
     authBloc.dispose();
-    if(!kIsWeb)
-    unregisterListener();
+    if (!kIsWeb) unregisterListener();
     super.dispose();
   }
 
@@ -214,6 +214,11 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                       if (navigator.currentConfiguration!.path.contains('pass'))
                         verification.resetPass = true;
                       DialogUtils.showDialogProgress(context: context);
+                      if(isAutoVerify){
+                        MemoryApp.analytics!.logEvent(name: "AutoVerifyCode");
+                      }else{
+                        MemoryApp.analytics!.logEvent(name: "ManualVerifyCode");
+                      }
                       authBloc.verifyMethod(verification);
                     }
                   }
@@ -241,7 +246,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                             _start = 120;
                             startTimer();
                           }))
-                  : Text(intl.sendAgain + '${DateTimeUtils.timerFormat(_start)}', style: TextStyle(fontSize: 14.0))),
+                  : Text(intl.sendAgain + '${DateTimeUtils.timerFormat(_start)}',
+                      style: TextStyle(fontSize: 14.0))),
           Space(height: 8.h),
           button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
             VerificationCode verification = VerificationCode();
@@ -281,6 +287,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   @override
   void codeUpdated() {
     unregisterListener();
+    isAutoVerify=true;
     textEditingController.text = code!;
   }
 }

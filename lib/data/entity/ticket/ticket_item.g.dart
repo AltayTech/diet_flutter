@@ -112,9 +112,10 @@ MessageTicket _$MessageTicketFromJson(Map<String, dynamic> json) =>
       ..body = json['body'] as String?
       ..type = $enumDecodeNullable(_$TypeTicketMessageEnumMap, json['type'])
       ..isAdmin = json['is_admin'] as int?
-      ..file = json['file'] == null
-          ? null
-          : Media.fromJson(json['file'] as Map<String, dynamic>)
+      ..isVoice = json['is_voice'] as int?
+      ..file = (json['file'] as List<dynamic>?)
+          ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
+          .toList()
       ..temp = json['template'] == null
           ? null
           : TempTicket.fromJson(json['template'] as Map<String, dynamic>)
@@ -127,6 +128,7 @@ Map<String, dynamic> _$MessageTicketToJson(MessageTicket instance) =>
       'body': instance.body,
       'type': _$TypeTicketMessageEnumMap[instance.type],
       'is_admin': instance.isAdmin,
+      'is_voice': instance.isVoice,
       'file': instance.file,
       'template': instance.temp,
       'created_at': instance.createdAt,

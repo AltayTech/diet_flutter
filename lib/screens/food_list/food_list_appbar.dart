@@ -5,7 +5,6 @@ import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/extensions/iterable.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
-import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/food_list_curve.dart';
@@ -15,9 +14,9 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -154,7 +153,22 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                     height: 3.h,
                   ),
                 ),
-              calendar(),
+              Row(
+                children: [
+                  Space(
+                    width: 2.w,
+                  ),
+                  calendar(),
+                  Expanded(
+                    child: Space(),
+                    flex: 1,
+                  ),
+                  adviceButton(),
+                  Space(
+                    width: 2.w,
+                  ),
+                ],
+              ),
               Space(height: 2.h),
               WeekList(isClickable: widget.isClickable ?? true),
             ],
@@ -171,17 +185,18 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
         decoration: AppDecorations.boxLarge.copyWith(
           color: AppColors.surface.withOpacity(0.3),
         ),
-        width: 40.w,
+        width: 35.w,
         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
               Icons.calendar_today_outlined,
               size: 6.w,
               color: AppColors.surface,
             ),
-            Space(width: 3.w),
+            Space(width: 1.w),
             Text(
               intl.calendar,
               textAlign: TextAlign.center,
@@ -195,6 +210,39 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
     );
   }
 
+  Widget adviceButton(){
+    return GestureDetector(
+      child: Container(
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.surface.withOpacity(0.3),
+          ),
+          width: 30.w,
+          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ImageUtils.fromLocal(
+                "assets/images/foodlist/advice/bulb.svg",
+                width: 6.w,
+                height: 6.w,
+                color: AppColors.surface,
+              ),
+              Space(width: 1.w),
+              Text(
+                intl.showAdvices,
+                textAlign: TextAlign.center,
+                style: typography.caption?.apply(
+                  color: AppColors.surface,
+                ),
+              ),
+            ],
+          )),
+      onTap: () {
+        VxNavigator.of(context).push(Uri(path: Routes.advice));
+      },
+    );
+  }
   Widget weekList() {
     return StreamBuilder(
       stream: bloc.weekDays,

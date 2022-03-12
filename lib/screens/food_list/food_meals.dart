@@ -9,9 +9,9 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -77,10 +77,12 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                   borderRadius: BorderRadius.only(
                     topLeft: AppRadius.radiusSmall,
                     topRight: AppRadius.radiusSmall,
-                    bottomRight:
-                        (meal.food!=null && meal.food!.description.isNullOrEmpty) ? AppRadius.radiusSmall : Radius.zero,
-                    bottomLeft:
-                    (meal.food!=null && meal.food!.description.isNullOrEmpty) ? AppRadius.radiusSmall : Radius.zero,
+                    bottomRight: (meal.food != null && meal.food!.description.isNullOrEmpty)
+                        ? AppRadius.radiusSmall
+                        : Radius.zero,
+                    bottomLeft: (meal.food != null && meal.food!.description.isNullOrEmpty)
+                        ? AppRadius.radiusSmall
+                        : Radius.zero,
                   ),
                 ),
                 child: Column(
@@ -96,13 +98,11 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                                 ? meal.bgColor
                                 : meal.bgColor,
                           ),
-                          child: ImageUtils.fromLocal(
-                            'assets/images/foodlist/${meal.icon}.svg',
-                            color: isCurrentMeal && isToday(snapshot.data)
-                                ? meal.color
-                                : meal.color,
-                            padding: EdgeInsets.all(2.w)
-                          ),
+                          child: ImageUtils.fromLocal('assets/images/foodlist/${meal.icon}.svg',
+                              placeholder: "assets/images/foodlist/meal-1.svg",
+                              color:
+                                  isCurrentMeal && isToday(snapshot.data) ? meal.color : meal.color,
+                              padding: EdgeInsets.all(2.w)),
                         ),
                         Space(width: 2.w),
                         Expanded(
@@ -124,6 +124,13 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                       Text(
                         intl.timeOfTheMeal(
                             meal.startAt!.substring(0, 5), meal.endAt!.substring(0, 5)),
+                        style: typography.caption,
+                        softWrap: true,
+                      ),
+                    Space(height: 1.h),
+                    if (meal.description.isNotNullAndEmpty)
+                      Text(
+                        meal.description!,
                         style: typography.caption,
                         softWrap: true,
                       ),
@@ -173,7 +180,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                   color: AppColors.onSurface,
                   width: 0.4,
                 ),
-                color: AppColors.onPrimary,
+                color: AppColors.replaceFoodButton,
               ),
               child: Text(
                 intl.manipulateFood,
@@ -221,7 +228,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
               Space(height: 2.h),
               Stack(
                 children: [
-                  Container(height: 13.h),
+                  Container(height: 15.h),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -229,7 +236,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                     top: 2.5.h,
                     child: Container(
                       color: AppColors.primary.withOpacity(0.3),
-                      padding: EdgeInsets.fromLTRB(3.w, 1.h, 3.w, 0),
+                      padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 0),
                       child: Center(
                         child: Text(
                           intl.tryToAlternateOneMealDaily,
@@ -423,25 +430,27 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           decoration: AppDecorations.boxLarge.copyWith(
             color: AppColors.onPrimary,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              close(),
-              Text(
-                intl.recipe(meal.food!.title ?? ''),
-                style: typography.bodyText2,
-                textAlign: TextAlign.center,
-              ),
-              Space(height: 2.h),
-              Text(
-                meal.food!.description ?? '',
-                style: typography.caption,
-                textAlign: TextAlign.start,
-                softWrap: true,
-              ),
-              Space(height: 2.h),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                close(),
+                Text(
+                  intl.recipe(meal.food!.title ?? ''),
+                  style: typography.bodyText2,
+                  textAlign: TextAlign.center,
+                ),
+                Space(height: 2.h),
+                Text(
+                  meal.food!.description ?? '',
+                  style: typography.caption,
+                  textAlign: TextAlign.start,
+                  softWrap: true,
+                ),
+                Space(height: 2.h),
+              ],
+            ),
           ),
         ),
       ),
