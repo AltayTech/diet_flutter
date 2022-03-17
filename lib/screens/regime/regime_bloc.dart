@@ -106,6 +106,8 @@ class RegimeBloc {
   void sendInfo(PhysicalInfoData info) async {
     _repository.sendInfo(info).then((value) {
       _navigateToVerify.fire(value.next);
+    }).catchError((onError){
+      _showServerError.fire(true);
     });
   }
 
@@ -125,6 +127,8 @@ class RegimeBloc {
   void sendVisit(PhysicalInfoData info) async {
     _repository.visit(info).then((value) {
       _navigateToVerify.fire(value.next);
+    }).catchError((err){
+      _showServerError.fire(true);
     });
   }
   void sendWeight(PhysicalInfoData info) async {

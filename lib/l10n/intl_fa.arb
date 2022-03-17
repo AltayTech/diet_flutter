@@ -614,5 +614,10 @@
   "descriptionArticle": "پیشنهاد امروز دکتر برای شما:",
   "dailyMessage": "پیام روزانه",
   "showVideoButton": "مشاهده ویدیو",
+  "noInternetTitle": "قطع اتصال اینترنت",
+  "noInternetMessage": "مثل اینکه یه مشکلی پیش اومده\n از اتصال به اینترنت مطمئن شو",
+  "retry": "تلاش مجدد",
+  "checkYourConnection": "بررسی اتصال",
+  "maintenanceError": "کاربر گرامی! سرور در حال بروزرسانی است.\nاز صبر و شکیبایی شما متشکریم",
   "understand": "متوجه شدم"
 }

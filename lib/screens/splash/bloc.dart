@@ -54,6 +54,10 @@ class SplashBloc {
       });
   }
 
+  void onRetryLoadingPage() {
+    getUser();
+  }
+
   void getUser() {
     _waiting.value = true;
     if (MemoryApp.token != null) {

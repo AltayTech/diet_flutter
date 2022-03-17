@@ -68,13 +68,6 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
     super.didUpdateWidget(oldWidget);
   }
 
-  @override
-  @mustCallSuper
-  void onResume() {
-    super.setState(() {});
-    _printEvent('onResume()');
-  }
-
   /*@override
   @mustCallSuper
   void onPause() {
@@ -109,5 +102,22 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   @mustCallSuper
   void didPopNext() {
     _printEvent('didPopNext()');
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
   }
 }

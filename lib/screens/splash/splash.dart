@@ -4,6 +4,7 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/user/version.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/splash/bloc.dart';
@@ -47,13 +48,13 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     if (deeplink != null) {
       debugPrint('deeplink is => ${deeplink}');
       DeepLinkUtils.navigateDeepLink(deeplink);
-    } else if(navigator.currentConfiguration?.path==Routes.splash) {
+    } else if (navigator.currentConfiguration?.path == Routes.splash) {
       VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
-    }else{
+    } else {
       debugPrint('deeplink is => ${navigator.currentConfiguration!.path}');
-      VxNavigator.of(context).clearAndPushAll([Uri.parse(Routes.shopHome),Uri.parse(navigator.currentConfiguration!.path)]);
+      VxNavigator.of(context).clearAndPushAll(
+          [Uri.parse(Routes.shopHome), Uri.parse(navigator.currentConfiguration!.path)]);
     }
-
   }
 
   @override
@@ -64,8 +65,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
 
   void listenBloc() {
     bloc.showUpdate.listen((event) {
-      if(navigator.currentConfiguration?.path==Routes.splash)
-      showUpdate(event);
+      if (navigator.currentConfiguration?.path == Routes.splash) showUpdate(event);
     });
     bloc.navigateTo.listen((event) {
       handleDeeplink();
@@ -199,22 +199,8 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    MemoryApp.isShowDialog = false;
+    bloc.onRetryLoadingPage();
   }
 }
