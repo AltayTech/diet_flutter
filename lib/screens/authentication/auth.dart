@@ -113,24 +113,25 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     return Stack(
       overflow: Overflow.visible,
       children: [
-        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 250)),
+        SizedBox(
+            height: 40.h,child: MyArc(diameter: 100.w,)),
         Positioned(
-          top: 10.0,
+          top: 2.h,
           right: 0.0,
           left: 0.0,
           child: Center(
               child: ImageUtils.fromLocal(
             'assets/images/registry/app_logo.svg',
-            width: 50.0,
-            height: 50.0,
+            width: 15.w,
+            height: 15.w,
           )),
         ),
         Positioned(
-          top: 70.0,
+          top: 11.h,
           right: 0.0,
           left: 0.0,
           child: Center(
-              child: Text('به اندام دکتر کرمانی',
+              child: Text(intl.behandamDrKermany,
                   style: TextStyle(
                       color: AppColors.penColor,
                       fontSize: 22.0,
@@ -138,14 +139,14 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       fontWeight: FontWeight.w700))),
         ),
         Positioned(
-          top: 120.0,
+          top: 16.h,
           right: 0.0,
           left: 0.0,
           child: Center(
             child: ImageUtils.fromLocal(
               'assets/images/registry/profile_logo.svg',
-              width: 120.0,
-              height: 120.0,
+              width: 25.w,
+              height: 25.w,
             ),
           ),
         ),

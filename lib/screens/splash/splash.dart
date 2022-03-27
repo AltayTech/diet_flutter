@@ -14,7 +14,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -153,8 +152,8 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
         child: Scaffold(
       body: Container(
         color: Colors.white,
-        width: double.infinity,
-        height: double.infinity,
+        width:100.w,
+        height: 100.h,
         child: Stack(
           children: [
             Center(
