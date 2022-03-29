@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:rxdart/rxdart.dart';
@@ -31,10 +31,10 @@ class CalendarBloc {
   Stream<CalendarData?> get calendar => _calendar.stream;
 
   void _loadContent() {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     _repository.calendar(_startDate.value, _endDate.value).then((value) {
       _calendar.value = value.requireData;
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
   }
 
   void dispose() {

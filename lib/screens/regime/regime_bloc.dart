@@ -10,7 +10,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
-
+import 'package:behandam/extensions/stream.dart';
 enum HelpPage{
   regimeType,
   menuType,
@@ -60,35 +60,35 @@ class RegimeBloc {
   Stream get showServerError => _showServerError.stream;
 
   void regimeTypeMethod() async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.regimeType().then((value) {
       _itemsList.value = value.data!.items!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void physicalInfoData() async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.physicalInfo().then((value) {
       _physicalInfo.value = value.data!;
-    }).catchError((e) => debugPrint('error error $e')).whenComplete(() => _waiting.value = false);
+    }).catchError((e) => debugPrint('error error $e')).whenComplete(() => _waiting.safeValue = false);
   }
 
   void helpMethod(int id) async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.helpDietType(id).then((value) {
       _help.value = value.data!;
       _helpers.value = value.data!.helpers!;
       _helpTitle.value = value.requireData.name!;
       _helpMedia.value = value.requireData.media!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void helpBodyState(int id) async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.helpBodyState(id).then((value) {
       _name = value.data!.name!;
       _helpers.value = value.data!.helpers!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void pathMethod(RegimeType regime) async {
@@ -99,7 +99,7 @@ class RegimeBloc {
       _navigateToVerify.fire(regime);
     }).whenComplete(() {
       _showServerError.fire(true);
-      _waiting.value = false;
+      _waiting.safeValue = false;
     });
   }
 
@@ -112,10 +112,10 @@ class RegimeBloc {
   }
 
   void getStatus() async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.getStatus().then((value) {
       _status.value = value.data!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void nextStep() async {

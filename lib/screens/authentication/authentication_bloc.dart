@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
@@ -17,7 +17,7 @@ import '../../base/repository.dart';
 class AuthenticationBloc {
   AuthenticationBloc() {
     fetchCountries();
-    _waiting.value = false;
+    _waiting.safeValue = false;
   }
 
   final _repository = Repository.getInstance();
@@ -102,15 +102,15 @@ class AuthenticationBloc {
   }
 
   void resetPasswordMethod(Reset pass) {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.reset(pass).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       _navigateToVerify.fire(value.next);
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void registerMethod(Register register) {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.register(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.analytics!.logEvent(name: "register_success");
@@ -119,7 +119,7 @@ class AuthenticationBloc {
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)
           .whenComplete(() {
-        _waiting.value = false;
+        _waiting.safeValue = false;
         _navigateToVerify.fire(value.next);
       });
     }).catchError((onError) {
@@ -128,12 +128,12 @@ class AuthenticationBloc {
   }
 
   void sendCodeMethod(String mobile) {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository
         .verificationCode(mobile)
         .then((value) => _navigateToVerify.fire(value.next))
         .whenComplete(() {
-      _waiting.value = false;
+      _waiting.safeValue = false;
       MemoryApp.forgetPass = false;
     });
   }
@@ -153,7 +153,7 @@ class AuthenticationBloc {
   }
 
   void landingReg(Register register) {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.landingReg(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.token = value.requireData.token;
@@ -163,7 +163,7 @@ class AuthenticationBloc {
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)
           .whenComplete(() {
-        _waiting.value = false;
+        _waiting.safeValue = false;
         _navigateToVerify.fire(value.next);
       });
     }).catchError((onError) {

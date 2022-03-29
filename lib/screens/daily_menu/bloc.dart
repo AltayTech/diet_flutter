@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/extensions/object.dart';
-import 'package:behandam/extensions/string.dart';
+import 'package:behandam/extensions/stream.dart';
 
 class ListFoodBloc {
   ListFoodBloc() {
@@ -66,7 +66,7 @@ class ListFoodBloc {
   Stream<ListFood?> get selectedFood => _selectedFood.stream;
 
   void _loadContent() {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     _loadingMoreFoods.value = true;
     _repository.listFood(filter).then((value) {
       _listFood.value = value.requireData;
@@ -79,7 +79,7 @@ class ListFoodBloc {
       debugPrint('tags $_totalRow / ${_foods.value?.length}');
     }).whenComplete(() {
       _loadingMoreFoods.value = false;
-      _loadingContent.value = false;
+      _loadingContent.safeValue = false;
     });
   }
 
@@ -147,7 +147,7 @@ class ListFoodBloc {
   }
 
   void onFreeFoodSelected(ListFoodItem freeFood){
-    // _loadingContent.value = true;
+    // _loadingContent.safeValue = true;
     debugPrint('on free food change ${freeFood.title} ');
     if(_selectedFood.valueOrNull != null) {
       if(_selectedFood.value!.selectedFreeFood != null && _selectedFood.value!.selectedFreeFood!.id == freeFood.id) {
@@ -159,7 +159,7 @@ class ListFoodBloc {
     }
     debugPrint('on free food change ${_selectedFood.value?.selectedFreeFood?.toJson()}');
     _selectedFood.value = _selectedFood.value;
-    // _loadingContent.value = false;
+    // _loadingContent.safeValue = false;
   }
 
   void dispose() {

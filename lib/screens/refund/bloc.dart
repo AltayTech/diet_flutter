@@ -6,10 +6,10 @@ import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:behandam/extensions/stream.dart';
 class RefundBloc {
   RefundBloc() {
-    _waiting.value = false;
+    _waiting.safeValue = false;
   }
 
   final _repository = Repository.getInstance();
@@ -41,7 +41,7 @@ class RefundBloc {
   void getTermPackage() {
 
     if (MemoryApp.termPackage == null) {
-      _waiting.value = true;
+      _waiting.safeValue = true;
       _repository.getTermPackage().then((value) {
         MemoryApp.termPackage = value.data;
       }).whenComplete(() {
@@ -57,7 +57,7 @@ class RefundBloc {
       _repository.getRefund().then((value) {
         MemoryApp.refundItem = value.data;
       }).whenComplete(() {
-        _waiting.value = false;
+        _waiting.safeValue = false;
       });
     }
 

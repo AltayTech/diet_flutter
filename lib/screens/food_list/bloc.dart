@@ -16,7 +16,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
 import 'week_day.dart';
-
+import 'package:behandam/extensions/stream.dart';
 class FoodListBloc {
   FoodListBloc(bool fillFood) {
     if (_date.valueOrNull == null && MemoryApp.selectedDate == null)
@@ -74,7 +74,7 @@ class FoodListBloc {
   int? adviceId;
 
   void _loadContent({bool invalidate = false, bool fillFood = true}) {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
       if (value.data?.menu != null) {
         debugPrint('food list ${value.data?.menu?.title} / $fillFood');
@@ -92,7 +92,7 @@ class FoodListBloc {
       } else {
         _showServerError.fire(value.next);
       }
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
   }
 
   bool checkDefaultUnit(RatioFoodItem ratioFoodItem) {
@@ -158,7 +158,7 @@ class FoodListBloc {
     debugPrint(
         'change date 1 $newDate / ${_previousWeekDay.gregorianDate} / ${_weekDays.value!.length}');
     if (_previousWeekDay.gregorianDate.toString().substring(0, 10) != newDate) {
-      _loadingContent.value = true;
+      _loadingContent.safeValue = true;
       _date.value = newDate;
       _weekDays.value!.forEach((element) {
         debugPrint('change date 4 ${element?.gregorianDate} / ');
@@ -180,7 +180,7 @@ class FoodListBloc {
   }
 
   void onRefresh({bool invalidate = false}) {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
       debugPrint('food list ${value.data}');
       _foodList.value = value.data;
@@ -192,7 +192,7 @@ class FoodListBloc {
         }
       MemoryApp.fastingDates = _foodList.value?.menu?.fastingDates ?? [];
       setTheme();
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
   }
 
   void onMealFood(ListFood newFood, int mealId) {
@@ -206,7 +206,7 @@ class FoodListBloc {
   }
 
   onDailyMenu() {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     List<DailyFood> foods = [];
     int day = _weekDays.value!
         .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
@@ -223,11 +223,11 @@ class FoodListBloc {
       if (value.data != null && value.requireData) {
         onRefresh(invalidate: true);
       }
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
   }
 
   void onReplacingFood(int mealId) {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     List<DailyFood> foods = [];
     int day = _weekDays.value!
         .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
@@ -240,7 +240,7 @@ class FoodListBloc {
       if (value.data != null && value.requireData) {
         onRefresh(invalidate: true);
       }
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
     makingFoodEmpty(mealId);
   }
 

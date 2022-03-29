@@ -6,6 +6,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/extensions/string.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/splash/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -43,17 +44,19 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     var fcm = await AppSharedPreferences.fcmToken;
     debugPrint('fcm is => ${fcm}');
     final deeplink = await AppSharedPreferences.deeplink;
-
-    if (deeplink != null) {
-      debugPrint('deeplink is => ${deeplink}');
-      DeepLinkUtils.navigateDeepLink(deeplink);
-    } else if (navigator.currentConfiguration?.path == Routes.splash) {
-      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
-    } else {
-      debugPrint('deeplink is => ${navigator.currentConfiguration!.path}');
-      VxNavigator.of(context).clearAndPushAll(
-          [Uri.parse(Routes.shopHome), Uri.parse(navigator.currentConfiguration!.path)]);
-    }
+    if (MemoryApp.token.isNotNullAndEmpty) {
+      if (deeplink != null) {
+        debugPrint('deeplink is => ${deeplink}');
+        DeepLinkUtils.navigateDeepLink(deeplink);
+      } else if (navigator.currentConfiguration?.path == Routes.splash) {
+        VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
+      } else {
+        debugPrint('notDeeplink is => ${navigator.currentConfiguration!.path}');
+        VxNavigator.of(context).clearAndPushAll(
+            [Uri.parse(Routes.shopHome), Uri.parse(navigator.currentConfiguration!.path)]);
+      }
+    } else
+      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
   }
 
   @override
@@ -152,7 +155,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
         child: Scaffold(
       body: Container(
         color: Colors.white,
-        width:100.w,
+        width: 100.w,
         height: 100.h,
         child: Stack(
           children: [

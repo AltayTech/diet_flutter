@@ -104,7 +104,7 @@ class TicketBloc {
     }).catchError((onError) {
       print('onError ==> ${onError.toString()}');
     }).whenComplete(() {
-      if (!_progressNetwork.isClosed) _progressNetwork.value = false;
+       _progressNetwork.value = false;
     });
   }
 

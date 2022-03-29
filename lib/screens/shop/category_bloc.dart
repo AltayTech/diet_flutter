@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/extensions/bool.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:behandam/extensions/stream.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
@@ -46,7 +46,7 @@ class CategoryBloc {
   }
 
   void getCategory(String id) {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     _loadingMoreProducts.value = true;
     _repository.getCategory(id).then((value) {
       // _category.add(value.data!);
@@ -66,7 +66,7 @@ class CategoryBloc {
         _totalRow = _categoryProduct.valueOrNull?.length ?? 0;
       }
     }).whenComplete(() {
-      _loadingContent.value = false;
+      _loadingContent.safeValue = false;
       _loadingMoreProducts.value = false;
     });
   }

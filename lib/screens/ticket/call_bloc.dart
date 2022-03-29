@@ -37,7 +37,7 @@ class CallBloc {
       _call = value.data;
       loadContent();
     }).whenComplete(() {
-      if (!_progressNetwork.isClosed) _progressNetwork.value = false;
+       _progressNetwork.value = false;
     });
   }
 

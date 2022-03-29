@@ -5,10 +5,10 @@ import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:behandam/extensions/stream.dart';
 class PackageBloc {
   PackageBloc() {
-    _waiting.value = false;
+    _waiting.safeValue = false;
   }
 
   final _repository = Repository.getInstance();
@@ -34,14 +34,14 @@ class PackageBloc {
   Stream get showServerError => _showServerError.stream;
 
   void getPackage() {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.getPackagesList().then((value) {
       _list = value.data!.items;
       for (int i = 0; i < _list!.length; i++) {
         _list![i].index = i;
       }
     }).whenComplete(() {
-      _waiting.value = false;
+      _waiting.safeValue = false;
     });
   }
 

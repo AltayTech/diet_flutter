@@ -13,10 +13,10 @@ import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/bool.dart';
 
 import '../../routes.dart';
-
+import 'package:behandam/extensions/stream.dart';
 class PaymentBloc {
   PaymentBloc() {
-    _waiting.value = false;
+    _waiting.safeValue = false;
     _discountLoading.value = false;
   }
 
@@ -86,23 +86,23 @@ class PaymentBloc {
   }
 
   void newPayment(LatestInvoiceData newInvoice) {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.newPayment(newInvoice).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
               '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
       MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
       _navigateTo.fire(value.next);
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void getPackagePayment() {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
       _packageItem!.price!.totalPrice = _packageItem!.price!.finalPrice;
     }).whenComplete(() {
-      _waiting.value = false;
+      _waiting.safeValue = false;
     });
   }
 
@@ -166,15 +166,15 @@ class PaymentBloc {
   }
 
   void getLastInvoice() {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.latestInvoice().then((value) {
       _invoice = value.data;
       _path = value.next!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void checkLastInvoice() {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.latestInvoice().then((value) {
       if (value.data?.refId != null &&
           value.data?.success != null &&
@@ -186,7 +186,7 @@ class PaymentBloc {
         _showServerError.fireMessage(value.data!.note!);
       }
       _invoice = value.data;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void checkOnlinePayment() {
@@ -203,7 +203,7 @@ class PaymentBloc {
 
   void shopLastInvoice() {
     // if(!_checkLatestInvoice.isNullOrFalse) {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.shopLastInvoice().then((value) {
       _invoice = value.data;
       if (value.data?.refId != null &&
@@ -214,7 +214,7 @@ class PaymentBloc {
        // debugPrint('shop last invoice $productId / ${value.requireData.productId}');
       } else
         _navigateTo.fire(Routes.shopHome);
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
     // }
   }
 

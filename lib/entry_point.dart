@@ -48,7 +48,7 @@ Future<void> entryPoint() async {
 }
 
 void _initializeDebugPrint() {
-  if (kReleaseMode) {
+  if (kReleaseMode || !kIsWeb) {
     debugPrint = (String? message, {int? wrapWidth}) => doNothing();
   }
 }

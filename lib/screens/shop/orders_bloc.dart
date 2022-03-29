@@ -5,11 +5,11 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
-
+import 'package:behandam/extensions/stream.dart';
 
 class OrdersBloc{
   OrdersBloc(){
-    _waiting.value = false;
+    _waiting.safeValue = false;
   }
 
   final _repository = Repository.getInstance();
