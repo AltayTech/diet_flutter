@@ -11,6 +11,7 @@ import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
 class CallListWidget extends StatefulWidget {
   late TicketItem ticketItem;
@@ -322,72 +323,74 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
           decoration: AppDecorations.boxLarge.copyWith(
             color: AppColors.onPrimary,
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  intl.cancelCallRequest,
-                  textAlign: TextAlign.center,
-                  textDirection: context.textDirectionOfLocale,
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                Space(height: 2.h),
-                Text(
-                  intl.cancelCallRequestForYou,
-                  textDirection: context.textDirectionOfLocale,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                Space(height: 3.h),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 6.h,
-                        width: 30.w,
-                        child: MaterialButton(
-                          child: Text(
-                            intl.accept,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(color: AppColors.primary),
+          child: TouchMouseScrollable(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    intl.cancelCallRequest,
+                    textAlign: TextAlign.center,
+                    textDirection: context.textDirectionOfLocale,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  Space(height: 2.h),
+                  Text(
+                    intl.cancelCallRequestForYou,
+                    textDirection: context.textDirectionOfLocale,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  Space(height: 3.h),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 6.h,
+                          width: 30.w,
+                          child: MaterialButton(
+                            child: Text(
+                              intl.accept,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .copyWith(color: AppColors.primary),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              callBloc.deleteCallRequest();
+                            },
+                            color: Colors.white,
+                            elevation: 0,
                           ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            callBloc.deleteCallRequest();
-                          },
-                          color: Colors.white,
-                          elevation: 0,
                         ),
+                        flex: 1,
                       ),
-                      flex: 1,
-                    ),
-                    Space(width: 2.w),
-                    Expanded(
-                      child: Container(
-                        height: 6.h,
-                        width: 30.w,
-                        child: MaterialButton(
-                          child: Text(
-                            intl.cancel,
-                            style: Theme.of(context).textTheme.caption,
+                      Space(width: 2.w),
+                      Expanded(
+                        child: Container(
+                          height: 6.h,
+                          width: 30.w,
+                          child: MaterialButton(
+                            child: Text(
+                              intl.cancel,
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: Colors.white,
+                            elevation: 0,
                           ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          color: Colors.white,
-                          elevation: 0,
                         ),
+                        flex: 1,
                       ),
-                      flex: 1,
-                    ),
-                  ],
-                )
-              ],
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -17,6 +17,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -41,7 +42,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   final focus = FocusNode();
   bool check = false;
   bool isRequest = false;
-  bool isAutoVerify=false;
+  bool isAutoVerify = false;
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -125,12 +126,14 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                         ),
                       ];
                     },
-                    body: SingleChildScrollView(
-                      child: Column(children: [
-                        header(),
-                        Space(height: 80.0),
-                        content(),
-                      ]),
+                    body: TouchMouseScrollable(
+                      child: SingleChildScrollView(
+                        child: Column(children: [
+                          header(),
+                          Space(height: 80.0),
+                          content(),
+                        ]),
+                      ),
                     ),
                   );
                 } else {
@@ -214,9 +217,9 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                       if (navigator.currentConfiguration!.path.contains('pass'))
                         verification.resetPass = true;
                       DialogUtils.showDialogProgress(context: context);
-                      if(isAutoVerify){
+                      if (isAutoVerify) {
                         MemoryApp.analytics!.logEvent(name: "AutoVerifyCode");
-                      }else{
+                      } else {
                         MemoryApp.analytics!.logEvent(name: "ManualVerifyCode");
                       }
                       authBloc.verifyMethod(verification);
@@ -287,7 +290,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   @override
   void codeUpdated() {
     unregisterListener();
-    isAutoVerify=true;
+    isAutoVerify = true;
     textEditingController.text = code!;
   }
 }

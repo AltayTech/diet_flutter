@@ -9,10 +9,11 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class BodyStatusScreen extends StatefulWidget {
@@ -56,54 +57,56 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: Toolbar(titleBar: intl.statusReport),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: StreamBuilder(
-                stream: regimeBloc.status,
-                builder: (context, AsyncSnapshot<BodyStatus> snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        snapshot.data!.isPregnancy == 1
-                            ? firstContainer(
-                                snapshot.data!.daysTillChildbirth,
-                                snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
-                                snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
-                                snapshot.data!.isPregnancy,
-                                snapshot.data!.bmiStatus)
-                            : firstContainer(
-                                snapshot.data!.dietDays,
-                                snapshot.data!.weightDifference!.toStringAsFixed(1),
-                                snapshot.data!.normalWeight!.toStringAsFixed(1),
-                                snapshot.data!.isPregnancy,
-                                snapshot.data!.bmiStatus),
-                        SizedBox(height: 2.h),
-                        secondContainer(
-                            snapshot.data!.bmi!.toStringAsFixed(0), snapshot.data!.bmiStatus),
-                        GestureDetector(
-                          onTap: () {
-                            DialogUtils.showDialogProgress(context: context);
-                            regimeBloc.nextStep();
-                          },
-                          child: snapshot.data!.isPregnancy == 1
-                              ? ImageUtils.fromLocal(
-                                  'assets/images/physical_report/banner_pregnant.svg',
-                                  height: 15.h)
-                              : ImageUtils.fromLocal('assets/images/physical_report/banner.svg',
-                                  height: 15.h),
-                        ),
-                        SubmitButton(
-                            label: intl.confirmContinue,
+        body: TouchMouseScrollable(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: StreamBuilder(
+                  stream: regimeBloc.status,
+                  builder: (context, AsyncSnapshot<BodyStatus> snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          snapshot.data!.isPregnancy == 1
+                              ? firstContainer(
+                                  snapshot.data!.daysTillChildbirth,
+                                  snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
+                                  snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
+                                  snapshot.data!.isPregnancy,
+                                  snapshot.data!.bmiStatus)
+                              : firstContainer(
+                                  snapshot.data!.dietDays,
+                                  snapshot.data!.weightDifference!.toStringAsFixed(1),
+                                  snapshot.data!.normalWeight!.toStringAsFixed(1),
+                                  snapshot.data!.isPregnancy,
+                                  snapshot.data!.bmiStatus),
+                          SizedBox(height: 2.h),
+                          secondContainer(
+                              snapshot.data!.bmi!.toStringAsFixed(0), snapshot.data!.bmiStatus),
+                          GestureDetector(
                             onTap: () {
                               DialogUtils.showDialogProgress(context: context);
                               regimeBloc.nextStep();
-                            }),
-                      ],
-                    );
-                  } else
-                    return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
-                }),
+                            },
+                            child: snapshot.data!.isPregnancy == 1
+                                ? ImageUtils.fromLocal(
+                                    'assets/images/physical_report/banner_pregnant.svg',
+                                    height: 15.h)
+                                : ImageUtils.fromLocal('assets/images/physical_report/banner.svg',
+                                    height: 15.h),
+                          ),
+                          SubmitButton(
+                              label: intl.confirmContinue,
+                              onTap: () {
+                                DialogUtils.showDialogProgress(context: context);
+                                regimeBloc.nextStep();
+                              }),
+                        ],
+                      );
+                    } else
+                      return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+                  }),
+            ),
           ),
         ),
       ),
@@ -278,8 +281,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                   bottomLeft: Radius.circular(20.0),
                   topLeft: Radius.circular(20.0)),
               color: Colors.white),
-          child: Row(
-              children: [
+          child: Row(children: [
             Container(
                 width: 3.w,
                 height: 10.h,

@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -71,34 +72,36 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               stream: authBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
-                  return SingleChildScrollView(
-                    child: SizedBox(
-                      height: 100.h,
-                      child: Column(children: [
-                        header(),
-                        content(),
-                        Container(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 8, left: 5.w, right: 5.w),
-                            child: RichText(
-                                textDirection: context.textDirectionOfLocale,
-                                textAlign: TextAlign.center,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: intl.termsOfUseDescription,
-                                      style: Theme.of(context).textTheme.button!.copyWith(
-                                          color: AppColors.labelTextColor,
-                                          decoration: TextDecoration.underline),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Utils.launchURL(
-                                              FlavorConfig.instance.variables['urlTerms']);
-                                        }),
-                                ])),
+                  return TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: 100.h,
+                        child: Column(children: [
+                          header(),
+                          content(),
+                          Container(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 8, left: 5.w, right: 5.w),
+                              child: RichText(
+                                  textDirection: context.textDirectionOfLocale,
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: intl.termsOfUseDescription,
+                                        style: Theme.of(context).textTheme.button!.copyWith(
+                                            color: AppColors.labelTextColor,
+                                            decoration: TextDecoration.underline),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            Utils.launchURL(
+                                                FlavorConfig.instance.variables['urlTerms']);
+                                          }),
+                                  ])),
+                            ),
                           ),
-                        ),
-                        Space(height: 1.h),
-                      ]),
+                          Space(height: 1.h),
+                        ]),
+                      ),
                     ),
                   );
                 } else {

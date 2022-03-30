@@ -16,6 +16,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SicknessScreen extends StatefulWidget {
@@ -54,71 +55,73 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     return SicknessProvider(sicknessBloc,
         child: Scaffold(
           appBar: Toolbar(titleBar: intl.sickness),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(4.w),
-              child: Container(
+          body: TouchMouseScrollable(
+            child: SingleChildScrollView(
+              child: Padding(
                 padding: EdgeInsets.all(4.w),
-                color: Colors.white,
-                child: StreamBuilder(
-                    stream: sicknessBloc.waiting,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data == false) {
-                        controller.text = sicknessBloc.userSickness?.sicknessNote ?? '';
-                        return Column(
-                          children: [
-                            Space(height: 2.h),
-                            Center(
-                              child: Text(
-                                intl.sicknessLabelUser,
-                                textDirection: context.textDirectionOfLocale,
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .caption,
+                child: Container(
+                  padding: EdgeInsets.all(4.w),
+                  color: Colors.white,
+                  child: StreamBuilder(
+                      stream: sicknessBloc.waiting,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data == false) {
+                          controller.text = sicknessBloc.userSickness?.sicknessNote ?? '';
+                          return Column(
+                            children: [
+                              Space(height: 2.h),
+                              Center(
+                                child: Text(
+                                  intl.sicknessLabelUser,
+                                  textDirection: context.textDirectionOfLocale,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .caption,
+                                ),
                               ),
-                            ),
-                            Space(height: 2.h),
-                            if (sicknessBloc.userSickness != null)
-                              ...sicknessBloc.userSickness!.sickness_categories!
-                                  .map((element) {
-                                return _sicknessPartBox(element);
-                              }),
-                            Space(height: 2.h),
-                            textInput(
-                                height: 20.h,
-                                validation: () {},
-                                label: intl.sicknessDescriptionUser,
-                                textController: controller,
-                                value: sicknessBloc.userSickness!.sicknessNote,
-                                onChanged: (value) {
-                                  sicknessBloc.userSickness!.sicknessNote =
-                                      value;
+                              Space(height: 2.h),
+                              if (sicknessBloc.userSickness != null)
+                                ...sicknessBloc.userSickness!.sickness_categories!
+                                    .map((element) {
+                                  return _sicknessPartBox(element);
+                                }),
+                              Space(height: 2.h),
+                              textInput(
+                                  height: 20.h,
+                                  validation: () {},
+                                  label: intl.sicknessDescriptionUser,
+                                  textController: controller,
+                                  value: sicknessBloc.userSickness!.sicknessNote,
+                                  onChanged: (value) {
+                                    sicknessBloc.userSickness!.sicknessNote =
+                                        value;
+                                  },
+                                  enable: true,
+                                  maxLine: true,
+                                  ctx: context,
+                                  textInputType: TextInputType.multiline,
+                                  textDirection: context.textDirectionOfLocale),
+                              Space(height: 4.h),
+                              SubmitButton(
+                                onTap: () {
+                                  DialogUtils.showDialogProgress(
+                                      context: context);
+                                  sicknessBloc.sendSickness();
                                 },
-                                enable: true,
-                                maxLine: true,
-                                ctx: context,
-                                textInputType: TextInputType.multiline,
-                                textDirection: context.textDirectionOfLocale),
-                            Space(height: 4.h),
-                            SubmitButton(
-                              onTap: () {
-                                DialogUtils.showDialogProgress(
-                                    context: context);
-                                sicknessBloc.sendSickness();
-                              },
-                              label: intl.confirmContinue,
-                            ),
-                            Space(height: 3.h),
-                          ],
-                        );
-                      }else {
-                        return SpinKitCircle(
-                          size: 7.w,
-                          color: AppColors.primary,
-                        );
-                      }
-                    }),
+                                label: intl.confirmContinue,
+                              ),
+                              Space(height: 3.h),
+                            ],
+                          );
+                        }else {
+                          return SpinKitCircle(
+                            size: 7.w,
+                            color: AppColors.primary,
+                          );
+                        }
+                      }),
+                ),
               ),
             ),
           ),

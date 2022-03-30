@@ -21,7 +21,7 @@ import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
-
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 class FoodListPage extends StatefulWidget {
   const FoodListPage({Key? key}) : super(key: key);
 
@@ -81,48 +81,50 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
           child: Column(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          FoodListAppbar(),
-                          AppbarBoxAdviceVideo(),
-                        ],
-                      ),
-                      Space(height: 2.h),
-                      ChangeMenu(),
-                      Space(height: 2.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        child: FoodMeals(),
-                      ),
-                      Space(
-                        height: 1.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                          child: InkWell(
-                              onTap: () {
-                                DialogUtils.showDialogProgress(context: context);
-                                bloc.checkFitamin();
-                                // _launchURL(vitrinBloc.url);
-                              },
-                              child: ImageUtils.fromLocal(
-                                // MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
-                                //     ? 'assets/images/vitrin/fitamin_banner.png'
-                                //     :
-                                'assets/images/vitrin/fitamin_banner_02.png',
-                              )
+                child: TouchMouseScrollable(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Stack(
+                          children: [
+                            FoodListAppbar(),
+                            AppbarBoxAdviceVideo(),
+                          ],
+                        ),
+                        Space(height: 2.h),
+                        ChangeMenu(),
+                        Space(height: 2.h),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.w),
+                          child: FoodMeals(),
+                        ),
+                        Space(
+                          height: 1.h,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.w),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                            child: InkWell(
+                                onTap: () {
+                                  DialogUtils.showDialogProgress(context: context);
+                                  bloc.checkFitamin();
+                                  // _launchURL(vitrinBloc.url);
+                                },
+                                child: ImageUtils.fromLocal(
+                                  // MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
+                                  //     ? 'assets/images/vitrin/fitamin_banner.png'
+                                  //     :
+                                  'assets/images/vitrin/fitamin_banner_02.png',
+                                )
+                            ),
                           ),
                         ),
-                      ),
-                      Space(
-                        height: 2.h,
-                      ),
-                    ],
+                        Space(
+                          height: 2.h,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

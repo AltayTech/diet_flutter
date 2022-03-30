@@ -9,23 +9,23 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/gender_switch.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-
-enum gender{
-@JsonValue(0)
+enum gender {
+  @JsonValue(0)
   woman,
-@JsonValue(1)
+  @JsonValue(1)
   man
 }
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen(){
+  RegisterScreen() {
     MemoryApp.analytics!.logEvent(name: "register_start");
   }
 
@@ -41,14 +41,14 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   String? lastName;
   String? _password;
   late AuthenticationBloc authBloc;
-  bool  switchValue = false;
+  bool switchValue = false;
   bool _obscureText = false;
   bool check = false;
 
   @override
   void initState() {
     super.initState();
-    authBloc  = AuthenticationBloc();
+    authBloc = AuthenticationBloc();
     listenBloc();
   }
 
@@ -61,7 +61,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
       print('event:$event');
-      if(event != null){
+      if (event != null) {
         check = true;
         VxNavigator.of(context).push(Uri.parse('/$event'));
       }
@@ -71,52 +71,51 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
       Utils.getSnackbarMessage(context, event);
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     args = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: StreamBuilder(
-          stream: authBloc.waiting,
-          builder: (context, snapshot){
-            if (snapshot.data == false && !check) {
-              return NestedScrollView(
-                headerSliverBuilder:  (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverAppBar(
-                      backgroundColor: AppColors.arcColor,
-                      elevation: 0.0,
-                      leading: IconButton( icon: Icon(Icons.arrow_back_ios),
-                          color: Color(0xffb4babb),
-                          onPressed: () => VxNavigator.of(context).pop()),
-                      // floating: true,
-                      forceElevated: innerBoxIsScrolled,
-                    ),
-                  ];
-                },
-                body: SingleChildScrollView(
-                  child: Column(
-                      children: [
+        backgroundColor: Colors.white,
+        body: StreamBuilder(
+            stream: authBloc.waiting,
+            builder: (context, snapshot) {
+              if (snapshot.data == false && !check) {
+                return NestedScrollView(
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      SliverAppBar(
+                        backgroundColor: AppColors.arcColor,
+                        elevation: 0.0,
+                        leading: IconButton(
+                            icon: Icon(Icons.arrow_back_ios),
+                            color: Color(0xffb4babb),
+                            onPressed: () => VxNavigator.of(context).pop()),
+                        // floating: true,
+                        forceElevated: innerBoxIsScrolled,
+                      ),
+                    ];
+                  },
+                  body: TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                      child: Column(children: [
                         header(),
                         Space(height: 80.0),
                         content(),
                       ]),
-                ),
-              );}
-            else{
-              check = false;
-              return Center(
-                  child: Container(
-                      width:15.w,
-                      height: 15.w,
-                      child: Progress()));
-            }
-          }));
+                    ),
+                  ),
+                );
+              } else {
+                check = false;
+                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+              }
+            }));
   }
-  Widget header(){
-    return  Stack(
+
+  Widget header() {
+    return Stack(
       overflow: Overflow.visible,
       children: [
         RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
@@ -125,28 +124,30 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
           right: 0.0,
           left: 0.0,
           child: Center(
-              child: Text(intl.register, style: TextStyle(
-                  color: AppColors.penColor,
-                  fontSize: 22.0,
-                  fontFamily: 'Iransans-Bold',
-                  fontWeight: FontWeight.w700))
-          ),
+              child: Text(intl.register,
+                  style: TextStyle(
+                      color: AppColors.penColor,
+                      fontSize: 22.0,
+                      fontFamily: 'Iransans-Bold',
+                      fontWeight: FontWeight.w700))),
         ),
         Positioned(
           top: 60.0,
           right: 0.0,
           left: 0.0,
           child: Center(
-            child: ImageUtils.fromLocal('assets/images/registry/profile_logo.svg',
+            child: ImageUtils.fromLocal(
+              'assets/images/registry/profile_logo.svg',
               width: 120.0,
-              height: 120.0,),
+              height: 120.0,
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget content(){
+  Widget content() {
     return Padding(
       padding: const EdgeInsets.only(left: 30.0, right: 30.0),
       child: Column(
@@ -156,10 +157,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.arcColor),
-              child: Text("+ ${args['mobile']}",textDirection: TextDirection.ltr,
-                  style: TextStyle(color: AppColors.penColor))),
+                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+              child: Text("+ ${args['mobile']}",
+                  textDirection: TextDirection.ltr, style: TextStyle(color: AppColors.penColor))),
           SizedBox(height: 20.0),
           Container(
             height: 60.0,
@@ -167,21 +167,18 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: AppColors.penColor),
-                        borderRadius: BorderRadius.circular(15.0)
-                    ),
+                        borderRadius: BorderRadius.circular(15.0)),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: AppColors.penColor),
-                        borderRadius: BorderRadius.circular(15.0)
-                    ),
+                        borderRadius: BorderRadius.circular(15.0)),
                     labelText: intl.name,
-                    labelStyle: TextStyle(color: AppColors.penColor,fontSize: 16.0),
+                    labelStyle: TextStyle(color: AppColors.penColor, fontSize: 16.0),
                     // errorText:
                     // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
                 onChanged: (txt) {
                   firstName = txt;
-                }
-            ),
+                }),
           ),
           SizedBox(height: 20.0),
           Container(
@@ -190,21 +187,18 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: AppColors.penColor),
-                        borderRadius: BorderRadius.circular(15.0)
-                    ),
+                        borderRadius: BorderRadius.circular(15.0)),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: AppColors.penColor),
-                        borderRadius: BorderRadius.circular(15.0)
-                    ),
+                        borderRadius: BorderRadius.circular(15.0)),
                     labelText: intl.lastName,
-                    labelStyle: TextStyle(color: AppColors.penColor,fontSize: 16.0),
+                    labelStyle: TextStyle(color: AppColors.penColor, fontSize: 16.0),
                     // errorText:
                     // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
                 onChanged: (txt) {
                   lastName = txt;
-                }
-            ),
+                }),
           ),
           SizedBox(height: 20.0),
           Container(
@@ -212,8 +206,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             child: TextField(
               obscureText: !_obscureText,
               decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.penColor)),
+                  focusedBorder:
+                      OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -225,9 +219,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   // _validate ? intl.fillAllField : null,
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscureText
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
                       color: AppColors.penColor,
                     ),
                     onPressed: () {
@@ -236,7 +228,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                       });
                     },
                   ),
-                  labelStyle: TextStyle(color: AppColors.penColor,fontSize: 18.0)),
+                  labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
               onChanged: (txt) {
                 _password = txt;
               },
@@ -247,7 +239,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(intl.woman, style: TextStyle(fontSize: 14.0,color: AppColors.penColor)),
+                Text(intl.woman, style: TextStyle(fontSize: 14.0, color: AppColors.penColor)),
                 SizedBox(width: 10.0),
                 ToggleSwitch(
                   minWidth: 90.0,
@@ -265,42 +257,46 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                     'assets/images/registry/gender_man_selected.svg',
                   ],
                   iconSize: 30.0,
-                  activeBgColors: [[Colors.red, Colors.pinkAccent], [Color(0xff3b5998), Color(0xff8b9dc3)]],
-                  animate: true, // with just animate set to true, default curve = Curves.easeIn
+                  activeBgColors: [
+                    [Colors.red, Colors.pinkAccent],
+                    [Color(0xff3b5998), Color(0xff8b9dc3)]
+                  ],
+                  animate: true,
+                  // with just animate set to true, default curve = Curves.easeIn
                   animationDuration: 200,
-                  curve: Curves.bounceInOut, // animate must be set to true when using custom curve
+                  curve: Curves.bounceInOut,
+                  // animate must be set to true when using custom curve
                   onToggle: (index) {
-                    index == gender.man.index
-                        ? switchValue = true
-                        : switchValue = false;
+                    index == gender.man.index ? switchValue = true : switchValue = false;
                   },
                 ),
                 SizedBox(width: 10.0),
-                Text(intl.man, style: TextStyle(fontSize: 14.0,
-                    color: AppColors.penColor)),
+                Text(intl.man, style: TextStyle(fontSize: 14.0, color: AppColors.penColor)),
               ],
             ),
           ),
           SizedBox(height: 10.h),
-          SubmitButton(label: intl.register,size: Size(100.w,8.h), onTap:(){
-          // setState(() {
-          // _text.text.isEmpty ? _validate = true : _validate = false;
-          // });
-            if(firstName != null && lastName != null) {
-              Register register = Register();
-              register.firstName = firstName;
-              register.lastName = lastName;
-              register.mobile = args['mobile'];
-              register.password = _password;
-              register.gender = switchValue;
-              register.verifyCode = args['code'];
-              register.countryId = args['id'];
-              register.appId = '0';
-              authBloc.registerMethod(register);
-            }
-            else
-              Utils.getSnackbarMessage(context, intl.fillAllField);
-          }),
+          SubmitButton(
+              label: intl.register,
+              size: Size(100.w, 8.h),
+              onTap: () {
+                // setState(() {
+                // _text.text.isEmpty ? _validate = true : _validate = false;
+                // });
+                if (firstName != null && lastName != null) {
+                  Register register = Register();
+                  register.firstName = firstName;
+                  register.lastName = lastName;
+                  register.mobile = args['mobile'];
+                  register.password = _password;
+                  register.gender = switchValue;
+                  register.verifyCode = args['code'];
+                  register.countryId = args['id'];
+                  register.appId = '0';
+                  authBloc.registerMethod(register);
+                } else
+                  Utils.getSnackbarMessage(context, intl.fillAllField);
+              }),
         ],
       ),
     );
@@ -320,6 +316,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

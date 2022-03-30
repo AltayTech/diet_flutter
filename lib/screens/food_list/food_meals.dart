@@ -12,6 +12,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -430,26 +431,28 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           decoration: AppDecorations.boxLarge.copyWith(
             color: AppColors.onPrimary,
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                close(),
-                Text(
-                  intl.recipe(meal.food!.title ?? ''),
-                  style: typography.bodyText2,
-                  textAlign: TextAlign.center,
-                ),
-                Space(height: 2.h),
-                Text(
-                  meal.food!.description ?? '',
-                  style: typography.caption,
-                  textAlign: TextAlign.start,
-                  softWrap: true,
-                ),
-                Space(height: 2.h),
-              ],
+          child: TouchMouseScrollable(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  close(),
+                  Text(
+                    intl.recipe(meal.food!.title ?? ''),
+                    style: typography.bodyText2,
+                    textAlign: TextAlign.center,
+                  ),
+                  Space(height: 2.h),
+                  Text(
+                    meal.food!.description ?? '',
+                    style: typography.caption,
+                    textAlign: TextAlign.start,
+                    softWrap: true,
+                  ),
+                  Space(height: 2.h),
+                ],
+              ),
             ),
           ),
         ),
