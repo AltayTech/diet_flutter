@@ -35,7 +35,7 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		15A59C6D6846AE2FFABBF7EB /* Pods-Runner.debug-iapps.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-iapps.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-iapps.xcconfig"; sourceTree = "<group>"; };
-		24FA41B2276F1FB600B7EB18 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; name = config; path = ../../../Desktop/config; sourceTree = "<group>"; };
+		24FA41B2276F1FB600B7EB18 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
 		37ACEC59BF0555D7F31164D5 /* Pods-Runner.debug-stage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-stage.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-stage.xcconfig"; sourceTree = "<group>"; };
 		38FB718C6BF76F6E5BF86238 /* Pods-Runner.release-debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-debug.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
@@ -160,7 +160,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
-				FB13C41427EA6E44D56011EC /* [CP] Embed Pods Frameworks */,
+				CAAACD4115C76FF256811555 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -177,7 +177,7 @@
 		97C146E61CF9000F007C117D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					97C146ED1CF9000F007C117D = {
@@ -288,7 +288,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
 		};
-		FB13C41427EA6E44D56011EC /* [CP] Embed Pods Frameworks */ = {
+		CAAACD4115C76FF256811555 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -381,7 +381,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -394,12 +394,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام";
@@ -475,13 +476,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -543,7 +544,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -555,12 +556,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام دیباگ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دیباگ";
@@ -636,13 +638,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -705,7 +707,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -717,12 +719,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام دولوپ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دولوپ";
@@ -798,13 +801,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -867,7 +870,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -879,12 +882,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام استیج";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام استیج";
@@ -960,13 +964,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -1023,7 +1027,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1038,12 +1042,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام دیباگ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دیباگ";
@@ -1119,13 +1124,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -1181,7 +1186,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1196,12 +1201,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام دولوپ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دولوپ";
@@ -1277,13 +1283,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -1339,7 +1345,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1354,12 +1360,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام استیج";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام استیج";
@@ -1435,13 +1442,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -1497,7 +1504,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1510,12 +1517,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام دیباگ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دیباگ";
@@ -1591,13 +1599,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -1653,7 +1661,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1666,12 +1674,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام دولوپ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دولوپ";
@@ -1747,13 +1756,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -1809,7 +1818,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1822,12 +1831,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام استیج";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام استیج";
@@ -1903,13 +1913,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -1971,7 +1981,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2021,7 +2031,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -2036,12 +2046,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام";
@@ -2117,13 +2128,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
@@ -2142,12 +2153,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "به اندام";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = XY4GZW2M8G;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام";
@@ -2223,13 +2235,13 @@
 					"-framework",
 					"\"permission_handler\"",
 					"-framework",
-					"\"shared_preferences\"",
+					"\"shared_preferences_ios\"",
 					"-framework",
 					"\"sqflite\"",
 					"-framework",
-					"\"url_launcher\"",
+					"\"url_launcher_ios\"",
 					"-framework",
-					"\"video_player\"",
+					"\"video_player_avfoundation\"",
 					"-framework",
 					"\"wakelock\"",
 					"-framework",
