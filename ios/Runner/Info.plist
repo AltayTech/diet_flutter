@@ -27,6 +27,19 @@
 		<string>https</string>
 		<string>http</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+        	<array>
+        		<dict>
+        			<key>CFBundleTypeRole</key>
+        			<string>Editor</string>
+        			<key>CFBundleURLName</key>
+        			<string>debug.behaminplus.ir</string>
+        			<key>CFBundleURLSchemes</key>
+        			<array>
+        				<string>behandam</string>
+        			</array>
+        		</dict>
+        	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -36,8 +49,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
