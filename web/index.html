@@ -33,8 +33,78 @@
     <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@8/js/flutter_sound/flutter_sound_player.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@8/js/flutter_sound/flutter_sound_recorder.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script>
+
+<style>
+        .loading {
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+          align-items: center;
+          margin: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+        }
+
+        .loader {
+          border: 8px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 8px solid #FA727EFF;
+          border-right: 8px solid #555572FF;
+          border-bottom: 8px solid #FA727EFF;
+          border-left: 8px solid #555572FF;
+          width: 60px !important;
+          height: 60px !important;
+          -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+        }
+
+        @font-face {
+            font-family: yekan;
+            src: url(./assets/fonts/iransans_bold.ttf);
+        }
+        .waiting {
+            margin-top: 30px;
+            font-size: 16px;
+            color: black;
+            font-family: yekan;
+        }
+
+        @-webkit-keyframes spin {
+          0% {
+            -webkit-transform: rotate(0deg);
+          }
+          100% {
+            -webkit-transform: rotate(360deg);
+          }
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+    </style>
 </head>
 <body>
+<div class="loading">
+    <div class="loader"></div>
+    <p class="waiting">لطفا تا بارگیری اطلاعات صبر کنید</p>
+</div>
+<!-- Ensure first time loading progress is gone after app loads -->
+<script>
+    window.addEventListener("flutter-first-frame", function() {
+        var element = document.getElementsByClassName("loading");
+        element[0].parentNode.removeChild(element[0]);
+    });
+
+</script>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 
@@ -59,101 +129,79 @@
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
 
-
 </script>
 <!-- This script installs service_worker.js to provide PWA functionality to
      application. For more information, see:
      https://developers.google.com/web/fundamentals/primers/service-workers -->
 <script>
-    var serviceWorkerVersion = null;
-    var scriptLoaded = false;
-    function loadMainDartJs() {
-      if (scriptLoaded) {
-        return;
-      }
-      scriptLoaded = true;
-      var scriptTag = document.createElement('script');
-      scriptTag.src = 'main.dart.js';
-      scriptTag.type = 'application/javascript';
-      document.body.append(scriptTag);
-    }
-
-    if ('serviceWorker' in navigator) {
-      // Service workers are supported. Use them.
-      window.addEventListener('load', function () {
-        // Wait for registration to finish before dropping the <script> tag.
-        // Otherwise, the browser will load the script multiple times,
-        // potentially different versions.
-        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
-        navigator.serviceWorker.register(serviceWorkerUrl)
-          .then((reg) => {
-            function waitForActivation(serviceWorker) {
-              serviceWorker.addEventListener('statechange', () => {
-                if (serviceWorker.state == 'activated') {
-                  console.log('Installed new service worker.');
-                  loadMainDartJs();
-                }
-              });
-            }
-            if (!reg.active && (reg.installing || reg.waiting)) {
-              // No active web worker and we have installed or are installing
-              // one for the first time. Simply wait for it to activate.
-              waitForActivation(reg.installing ?? reg.waiting);
-            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
-              // When the app updates the serviceWorkerVersion changes, so we
-              // need to ask the service worker to update.
-              console.log('New service worker available.');
-              reg.update();
-              waitForActivation(reg.installing);
-            } else {
-              // Existing service worker is still good.
-              console.log('Loading app from service worker.');
-              loadMainDartJs();
-            }
-          });
-
-        // If service worker doesn't succeed in a reasonable amount of time,
-        // fallback to plaint <script> tag.
-        setTimeout(() => {
-          if (!scriptLoaded) {
-            console.warn(
-              'Failed to load app from service worker. Falling back to plain <script> tag.',
-            );
-            loadMainDartJs();
-          }
-        }, 4000);
-      });
-    } else {
-      // Service workers not supported. Just drop the <script> tag.
-      loadMainDartJs();
-    }
-
+  window.flutterConfiguration = {
+    canvasKitBaseUrl: "/beh-flutter/canvaskit/"
+  };
 </script>
 <script>
+    function _beginServiceWorkerUpdateFlow(registration) {
+      if (
+        window.confirm("New version of the app is available. Refresh now?") &&
+        registration.waiting
+      ) {
+        // let waiting Service Worker know it should become active
+        registration.waiting.postMessage("skipWaiting");
+      }
+    }
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("flutter_service_worker.js").then(
+          function (registration) {
+            if (registration.waiting) {
+              _beginServiceWorkerUpdateFlow(registration);
+            }
 
-    if ('serviceWorker' in navigator) {
-     window.addEventListener("load", function () {
-     navigator.serviceWorker.register("/firebase-messaging-sw.js");
-  });
-      window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
+            // detect Service Worker update available and wait for it to install
+            registration.addEventListener("updatefound", () => {
+              if (registration.installing) {
+                // wait until the new Service worker is actually installed
+                registration.installing.addEventListener(
+                  "statechange",
+                  () => {
+                    if (registration.waiting) {
+                      // if there's an existing Service Worker, show the prompt
+                      if (navigator.serviceWorker.controller) {
+                        _beginServiceWorkerUpdateFlow(registration);
+                      } else {
+                        // otherwise it's the first install, there is nothing to do
+                        console.log(
+                          "Service Worker initialized for the first time"
+                        );
+                      }
+                    }
+                  }
+                );
+              }
+            });
 
+            let refreshing = false;
+
+            // detect controller change and refresh the page
+            navigator.serviceWorker.addEventListener(
+              "controllerchange",
+              () => {
+                if (!refreshing) {
+                  window.location.reload(true);
+                  refreshing = true;
+                }
+              }
+            );
+          },
+          function (err) {
+            // registration failed
+            console.log("ServiceWorker registration failed: ", err);
+          }
+        );
       });
     }
 
-
 </script>
 
-<script type="text/javascript">
-    let useHtml = false;
-    if(useHtml) {
-      window.flutterWebRenderer = "html";
-    } else {
-      window.flutterWebRenderer = "canvaskit";
-    }
-
-</script>
 <script src="main.dart.js" type="application/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest" type="application/javascript"></script>
 </body>
 </html>

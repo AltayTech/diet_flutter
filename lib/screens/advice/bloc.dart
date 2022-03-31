@@ -2,16 +2,9 @@ import 'dart:async';
 
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
-import 'package:behandam/data/entity/fast/fast.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shamsi_date/shamsi_date.dart';
-import 'package:behandam/extensions/bool.dart';
-import 'package:behandam/extensions/object.dart';
-import 'package:behandam/extensions/string.dart';
-
+import 'package:behandam/extensions/stream.dart';
 
 class AdviceBloc {
   AdviceBloc() {
@@ -33,11 +26,11 @@ class AdviceBloc {
   // Stream<FastMenuRequestData> get fast => _fast.stream;
 
   void _loadContent() {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     _repository.advice().then((value) {
       _advices.value = value.data!;
       debugPrint('advice bloc ${_advices.value}');
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
   }
 
   void dispose() {

@@ -6,11 +6,12 @@ import 'package:behandam/screens/profile/user_box.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
 class EditProfileScreen extends StatefulWidget {
   EditProfileScreen();
@@ -77,21 +78,25 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
 
   Widget content() {
     return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ToolbarEditProfile(),
-            UserBox(),
-            SubmitButton(
-              onTap: () {
-                profileBloc.edit(context);
-              },
-              label: intl.acceptEdit,
-            ),
-            Space(height: 1.h,)
-          ],
+      child: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ToolbarEditProfile(),
+              UserBox(),
+              SubmitButton(
+                onTap: () {
+                  profileBloc.edit(context);
+                },
+                label: intl.acceptEdit,
+              ),
+              Space(
+                height: 1.h,
+              )
+            ],
+          ),
+          scrollDirection: Axis.vertical,
         ),
-        scrollDirection: Axis.vertical,
       ),
     );
   }
@@ -110,6 +115,7 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

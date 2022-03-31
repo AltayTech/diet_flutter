@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
@@ -23,10 +23,10 @@ class ShopHomeBloc {
   List<ShopItem>? get list => _list;
 
   void _loadContent() {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     _repository.getHomeShop().then((value) {
       _list = value.data!.items!;
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
   }
 
   void dispose() {

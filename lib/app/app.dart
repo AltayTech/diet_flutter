@@ -69,7 +69,6 @@ import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 
@@ -87,6 +86,7 @@ class _AppState extends State<App> {
   late AppBloc bloc;
   late String token;
   static late double webMaxWidth = 500;
+  static late double webMinRatio = 1 / 2; // minimum aspect ratio for application size
   static late double webMaxHeight = 700;
   @override
   void initState() {
@@ -118,6 +118,7 @@ class _AppState extends State<App> {
     //precacheImage(AssetImage("assets/images/vitrin/bmi_banner.jpg"), context);
     return Sizer(
       maxWidth: kIsWeb ? webMaxWidth : null,
+      minRatio: kIsWeb ? webMinRatio : null,
       builder: (context, orientation, deviceType, constraints) {
         return appProvider(constraints);
       },
@@ -178,9 +179,7 @@ class _AppState extends State<App> {
     return FlutterWebFrame(
       builder: (context) => app(locale),
       maximumSize: Size(
-        constraints.maxWidth < webMaxWidth
-            ? constraints.maxWidth
-            : webMaxWidth,
+        constraints.maxWidth < webMaxWidth ? constraints.maxWidth : webMaxWidth,
         webMaxHeight,
       ),
       enabled: kIsWeb,

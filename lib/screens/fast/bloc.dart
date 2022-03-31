@@ -5,6 +5,7 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/extensions/object.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:behandam/extensions/stream.dart';
 
 class FastBloc {
   FastBloc() {
@@ -28,17 +29,17 @@ class FastBloc {
   Stream<FastMenuRequestData> get fast => _fast.stream;
 
   void _loadContent() {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     _repository.fastPattern().then((value) {
       value.data?.let((it) {
         _patterns.value = it.map((e) => e).toList();
       });
       debugPrint('repository ${_patterns.value.length}');
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
   }
 
   void changeToFast(FastPatternData pattern) {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     _selectedPattern.value = pattern;
     final fastMenuRequestData = FastMenuRequestData();
     fastMenuRequestData.patternId = _patterns.value.indexWhere((element) => element == pattern);
@@ -46,19 +47,19 @@ class FastBloc {
     _repository.changeToFast(fastMenuRequestData).then((value) {
       _fast.value = value.requireData;
     }).whenComplete(() {
-      if (!_loadingContent.isClosed) _loadingContent.value = false;
+       _loadingContent.safeValue = false;
     });
   }
 
   void changeToOriginal(String date) {
-    _loadingContent.value = true;
+    _loadingContent.safeValue = true;
     final fastMenuRequestData = FastMenuRequestData();
     fastMenuRequestData.isFasting = false;
     fastMenuRequestData.date = date;
     _repository.changeToFast(fastMenuRequestData).then((value) {
       _fast.value = value.requireData;
       // _foodListBloc.onRefresh(invalidate: true);
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
   }
 
   void dispose() {

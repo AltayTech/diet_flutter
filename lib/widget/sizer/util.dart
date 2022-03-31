@@ -23,6 +23,7 @@ class SizerUtil {
   static void setScreenSize({
     required BoxConstraints constraints,
     required Orientation currentOrientation,
+    double? minRatio,
     double? maxWidth,
     double? maxHeight,
   }) {
@@ -39,11 +40,19 @@ class SizerUtil {
       height = boxConstraints.maxWidth;
     }
 
-    if (maxWidth != null && width > maxWidth) {
+    if (kIsWeb && maxWidth != null && width > maxWidth) {
       width = maxWidth;
     }
-    if (maxHeight != null && height > maxHeight) {
+    if (kIsWeb && maxHeight != null && height > maxHeight) {
       height = maxHeight;
+    }
+
+    if (kIsWeb &&
+        minRatio != null &&
+        (width / height) > minRatio &&
+        maxWidth != null &&
+        maxWidth <= width) {
+      width = height * minRatio;
     }
 
     // Sets ScreenType
@@ -72,8 +81,8 @@ class SizerUtil {
     return width < 600
         ? smallSize //'phone'
         : width >= 600 && width <= 1024
-            ? mediumSize //'tablet'
-            : largeSize; //'desktop';
+        ? mediumSize //'tablet'
+        : largeSize; //'desktop';
   }
 }
 

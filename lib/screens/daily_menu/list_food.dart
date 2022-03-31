@@ -3,11 +3,11 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+
 // import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/screens/daily_menu/bloc.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
-import 'package:behandam/screens/widget/input_widget.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -17,6 +17,7 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ListFoodPage extends StatefulWidget {
@@ -39,8 +40,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   }
 
   void onScroll() {
-    if (scrollController.position.extentAfter <
-        AppSizes.verticalPaginationExtent) {
+    if (scrollController.position.extentAfter < AppSizes.verticalPaginationExtent) {
       bloc.onScrollReachingEnd();
     }
   }
@@ -55,15 +55,11 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(!isInitial) {
-      meal = ModalRoute
-          .of(context)
-          ?.settings
-          .arguments as Meals;
+    if (!isInitial) {
+      meal = ModalRoute.of(context)?.settings.arguments as Meals;
       debugPrint('meal list food ${meal?.id}');
       if (meal != null) bloc.onMealChanged(meal!.id);
-      scrollController = ScrollController()
-        ..addListener(onScroll);
+      scrollController = ScrollController()..addListener(onScroll);
       isInitial = true;
     }
   }
@@ -74,14 +70,16 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     return Scaffold(
       appBar: Toolbar(titleBar: intl.selectFoodIn(meal?.title ?? '')),
       body: Container(
-        child: SingleChildScrollView(
-          controller: scrollController,
-          child: StreamBuilder(
-            stream: bloc.loadingContent,
-            builder: (_, AsyncSnapshot<bool> snapshot) {
-              return content();
-              // return Center(child: CircularProgressIndicator());
-            },
+        child: TouchMouseScrollable(
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: StreamBuilder(
+              stream: bloc.loadingContent,
+              builder: (_, AsyncSnapshot<bool> snapshot) {
+                return content();
+                // return Center(child: CircularProgressIndicator());
+              },
+            ),
           ),
         ),
       ),
@@ -107,8 +105,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                     filled: true,
                     fillColor: AppColors.onPrimary,
                     hintText: intl.whatFoodAreYouLookingFor,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 5.w),
+                    contentPadding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 5.w),
                     hintStyle: typography.caption?.apply(
                       color: AppColors.labelColor,
                     ),
@@ -188,8 +185,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
               child: Text(
                 tag?.title ?? '',
                 style: typography.caption?.apply(
-                  color: snapshot.hasData &&
-                          snapshot.requireData!.contains(tag?.id)
+                  color: snapshot.hasData && snapshot.requireData!.contains(tag?.id)
                       ? AppColors.primary.withOpacity(0.3)
                       : Colors.grey,
                 ),
@@ -249,7 +245,8 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     return StreamBuilder(
       stream: bloc.selectedFood,
       builder: (_, AsyncSnapshot<ListFood?> snapshot) {
-        debugPrint('food/view item ${food.title} / ${food.freeFoodItems?.length} / ${snapshot.data?.id == food.id} / ${food.selectedFreeFood}');
+        debugPrint(
+            'food/view item ${food.title} / ${food.freeFoodItems?.length} / ${snapshot.data?.id == food.id} / ${food.selectedFreeFood}');
         return GestureDetector(
           onTap: () => bloc.onFoodChanged(food),
           child: Card(
@@ -264,9 +261,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                         width: 0.3,
                       )
                     : null,
-                color: snapshot.data?.id == food.id
-                    ? AppColors.onPrimary
-                    : Colors.grey[200],
+                color: snapshot.data?.id == food.id ? AppColors.onPrimary : Colors.grey[200],
               ),
               padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
               child: Column(
@@ -279,9 +274,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                         child: Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            ...makingFoodItems(food, snapshot.data)
-                                .map((item) => item)
-                                .toList(),
+                            ...makingFoodItems(food, snapshot.data).map((item) => item).toList(),
                           ],
                         ),
                       ),
@@ -294,9 +287,8 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                                 : Colors.grey[500]!,
                             width: 0.5,
                           ),
-                          color: snapshot.data?.id == food.id
-                              ? AppColors.primary
-                              : Colors.grey[200],
+                          color:
+                              snapshot.data?.id == food.id ? AppColors.primary : Colors.grey[200],
                         ),
                         width: 7.w,
                         height: 7.w,
@@ -353,30 +345,30 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     //   if (i % 2 == 0) {
     List<String> title = food.title!.split("+");
     for (int i = 0; i < title.length; i++) {
-         widgets.add(Chip(
-           backgroundColor: selectedFood != null && food.id == selectedFood.id
-               ? Colors.grey[200]
-               : AppColors.onPrimary,
-           label: Text(
-             title[i].trim(),
-             style: typography.caption,
-             textAlign: TextAlign.center,
-             softWrap: true,
-           ),
-         )) ;
-         if( i!= title.length-1)
-          widgets.add(Icon(
-            Icons.add,
-            size: 6.w,
-          ));
+      widgets.add(Chip(
+        backgroundColor: selectedFood != null && food.id == selectedFood.id
+            ? Colors.grey[200]
+            : AppColors.onPrimary,
+        label: Text(
+          title[i].trim(),
+          style: typography.caption,
+          textAlign: TextAlign.center,
+          softWrap: true,
+        ),
+      ));
+      if (i != title.length - 1)
+        widgets.add(Icon(
+          Icons.add,
+          size: 6.w,
+        ));
     }
-        // index++;
-      // } else {
-      //   widgets.add(Icon(
-      //     Icons.add,
-      //     size: 6.w,
-      //   ));
-      // }
+    // index++;
+    // } else {
+    //   widgets.add(Icon(
+    //     Icons.add,
+    //     size: 6.w,
+    //   ));
+    // }
     // }
     return widgets;
   }
@@ -389,8 +381,8 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
         if (snapshot.hasData)
           return FloatingActionButton.extended(
             onPressed: () {
-              if(snapshot.data != null)
-              VxNavigator.of(context).returnAndPush(snapshot.requireData);
+              if (snapshot.data != null)
+                VxNavigator.of(context).returnAndPush(snapshot.requireData);
               else
                 Utils.getSnackbarMessage(context, 'message');
             },
@@ -412,37 +404,34 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     );
   }
 
-  Widget freeFoodItem(ListFoodItem freeFood, ListFood? selectedFood){
+  Widget freeFoodItem(ListFoodItem freeFood, ListFood? selectedFood) {
     debugPrint('free food item ${selectedFood?.toJson()}');
     return GestureDetector(
       onTap: () => bloc.onFreeFoodSelected(freeFood),
       child: Card(
         color: AppColors.onPrimary,
-        elevation: selectedFood?.selectedFreeFood != null && freeFood.id == selectedFood!.selectedFreeFood!.id ? 0 : 2,
+        elevation: selectedFood?.selectedFreeFood != null &&
+                freeFood.id == selectedFood!.selectedFreeFood!.id
+            ? 0
+            : 2,
         shape: AppShapes.rectangleLarge,
         child: Container(
-          decoration:
-          AppDecorations.boxLarge.copyWith(
+          decoration: AppDecorations.boxLarge.copyWith(
             border: Border.all(
               color: selectedFood != null &&
-                  selectedFood.selectedFreeFood != null &&
-                  freeFood.id ==
-                      selectedFood
-                          .selectedFreeFood!.id
+                      selectedFood.selectedFreeFood != null &&
+                      freeFood.id == selectedFood.selectedFreeFood!.id
                   ? AppColors.primary
                   : Colors.transparent,
             ),
           ),
-          padding:
-          EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.w),
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.w),
           child: Text(
             freeFood.title,
             style: typography.caption?.apply(
               color: selectedFood != null &&
-                  selectedFood.selectedFreeFood != null &&
-                  freeFood.id ==
-                      selectedFood
-                          .selectedFreeFood!.id
+                      selectedFood.selectedFreeFood != null &&
+                      freeFood.id == selectedFood.selectedFreeFood!.id
                   ? AppColors.primary
                   : null,
               heightDelta: -10,
@@ -469,6 +458,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

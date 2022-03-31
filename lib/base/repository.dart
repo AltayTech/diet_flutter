@@ -242,9 +242,9 @@ class _RepositoryImpl extends Repository {
   late RestClient _apiClient;
   late MemoryApp _cache;
 
-  static const receiveTimeout = 5 * 60 * 1000;
-  static const connectTimeout = 60 * 1000;
-  static const sendTimeout = 5 * 60 * 1000;
+  static const receiveTimeout = 3 * 60 * 1000;
+  static const connectTimeout = 5 * 1000;
+  static const sendTimeout = 3 * 60 * 1000;
 
   _RepositoryImpl() {
     _dio = Dio();

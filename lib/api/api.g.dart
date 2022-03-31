@@ -294,7 +294,7 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
+    final _result =                  await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<UserInformation>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/profile',

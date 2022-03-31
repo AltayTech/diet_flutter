@@ -15,6 +15,7 @@ import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:behandam/screens/utility/arc.dart';
@@ -101,12 +102,14 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       ),
                     ];
                   },
-                  body: SingleChildScrollView(
-                    child: Column(children: [
-                      header(),
-                      SizedBox(height: 80.0),
-                      content(),
-                    ]),
+                  body: TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        header(),
+                        SizedBox(height: 80.0),
+                        content(),
+                      ]),
+                    ),
                   ),
                 );
               } else {

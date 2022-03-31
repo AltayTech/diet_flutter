@@ -8,10 +8,10 @@ import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:behandam/extensions/stream.dart';
 class SicknessBloc {
   SicknessBloc() {
-    _waiting.value = false;
+    _waiting.safeValue = false;
   }
 
   List<Map<String, dynamic>> _illColor = [
@@ -70,7 +70,7 @@ class SicknessBloc {
   Stream get showServerError => _showServerError.stream;
 
   void getSickness() async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.getSickness().then((value) {
       _userSickness = value.data!;
       int index = 0;
@@ -107,11 +107,11 @@ class SicknessBloc {
             index += 1;
         });
       }
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void getSicknessSpecial() async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.getSicknessSpecial().then((value) {
       _userSicknessSpecial = value.data!;
       int index = 0;
@@ -142,18 +142,18 @@ class SicknessBloc {
         else
           index += 1;
       }
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void sendSickness() {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository
         .sendSickness(userSickness!)
         .then((value) {
           _navigateTo.fireMessage('/${value.next}');
         })
         .catchError((e) => _showServerError.fire(e))
-        .whenComplete(() {_waiting.value = false;});
+        .whenComplete(() {_waiting.safeValue = false;});
   }
 
   void sendSicknessSpecial() {

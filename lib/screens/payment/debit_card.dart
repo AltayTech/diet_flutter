@@ -18,6 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class DebitCardPage extends StatefulWidget {
@@ -64,8 +65,10 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
     return Scaffold(
       appBar: Toolbar(titleBar: intl.paymentCardToCard),
-      body: SingleChildScrollView(
-        child: cardOwnerBox(),
+      body: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: cardOwnerBox(),
+        ),
       ),
     );
   }
@@ -90,8 +93,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                     decoration: AppDecorations.boxMild.copyWith(
                       color: AppColors.box,
                     ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Column(
                       children: [
                         cardNumber(bloc.invoice!.cardNumber!),
@@ -115,8 +117,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                     showUserInfo
                         ? intl.nowFillFollowingInformation
                         : intl.clickFollowingButtonAfterPayment,
-                    style: typography.subtitle2
-                        ?.apply(color: AppColors.labelColor),
+                    style: typography.subtitle2?.apply(color: AppColors.labelColor),
                     textAlign: TextAlign.center,
                     softWrap: true,
                   ),
@@ -124,9 +125,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                   Space(height: 2.h),
                   Center(
                     child: SubmitButton(
-                      label: showUserInfo
-                          ? intl.submitOfflinePayment
-                          : intl.deposited,
+                      label: showUserInfo ? intl.submitOfflinePayment : intl.deposited,
                       onTap: () {
                         showUserInfo
                             ? (invoice.cardOwner.isNullOrEmpty ||
@@ -402,8 +401,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
   String? dateFormatted() {
     if (!invoice.payedAt.isNullOrEmpty) {
-      var formatter =
-          Jalali.fromDateTime(DateTime.parse(invoice.payedAt!)).formatter;
+      var formatter = Jalali.fromDateTime(DateTime.parse(invoice.payedAt!)).formatter;
       return '${formatter.d} ${formatter.mN} ${formatter.yyyy}';
     }
     return null;
@@ -412,8 +410,9 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   Future _selectDate() async {
     DialogUtils.showBottomSheetPage(
         context: context,
-        child: SingleChildScrollView(
-          child: Container(
+        child: TouchMouseScrollable(
+          child: SingleChildScrollView(
+              child: Container(
             height: 32.h,
             padding: EdgeInsets.all(5.w),
             alignment: Alignment.center,
@@ -429,7 +428,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
                 maxYear: Jalali.now().year,
               ),
             ),
-          ),
+          )),
         ));
   }
 

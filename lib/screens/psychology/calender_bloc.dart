@@ -14,11 +14,11 @@ import 'package:shamsi_date/shamsi_date.dart';
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
-
+import 'package:behandam/extensions/stream.dart';
 
 class CalenderBloc{
   CalenderBloc(){
-    _waiting.value = false;
+    _waiting.safeValue = false;
     // if(MemoryApp.day == null)
   }
 
@@ -108,7 +108,7 @@ class CalenderBloc{
   }
 
   void calenderMethod(String startDate ,String endDate, Jalali jour) async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _disabledClickPre.value = true;
     _disabledClick.value = true;
     _repository.getCalendar(startDate, endDate).then((value) {
@@ -118,7 +118,7 @@ class CalenderBloc{
       _dates = value.data!.dates!;
       _navigateToVerify.fire(true);
     }).whenComplete(() {
-      _waiting.value = false;
+      _waiting.safeValue = false;
       _disabledClick.value = false;
       if (jour.toString().substring(7,18) != Jalali.now().toString().substring(7,18))
         _disabledClickPre.value = false;

@@ -154,14 +154,14 @@ class ProfileBloc {
 
   void getTermPackage() {
     _repository.getTermPackage().then((value) {
-      if (!_showRefund.isClosed) _showRefund.value = value.data!.showRefundLink!;
+       _showRefund.value = value.data!.showRefundLink!;
       if (value.data != null &&
           value.data?.term != null &&
           DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0 &&
           !_showPdf.isClosed)
         _showPdf.value = true;
       else {
-        if (!_showPdf.isClosed) _showPdf.value = false;
+         _showPdf.value = false;
       }
     }).whenComplete(() {});
   }

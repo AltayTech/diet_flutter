@@ -7,11 +7,12 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/src/extensions.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -87,172 +88,175 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
   Widget content() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: SingleChildScrollView(
-        child: Container(
-          constraints: BoxConstraints(
-            minHeight: 80.h,
-          ),
-          decoration: AppDecorations.boxSmall.copyWith(
-            color: Colors.white,
-          ),
-          padding: EdgeInsets.only(left: 5.w, right: 5.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            textDirection: context.textDirectionOfLocale,
-            children: [
-              Space(
-                height: 2.h,
-              ),
-              ImageUtils.fromLocal(
-                'assets/images/bill/success_pay.svg',
-                width: 40.w,
-                height: 50.w,
-                fit: BoxFit.fitHeight,
-              ),
-              SizedBox(height: 3.h),
-              Row(
-                textDirection: context.textDirectionOfLocaleInversed,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+      child: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: 80.h,
+            ),
+            decoration: AppDecorations.boxSmall.copyWith(
+              color: Colors.white,
+            ),
+            padding: EdgeInsets.only(left: 5.w, right: 5.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              textDirection: context.textDirectionOfLocale,
+              children: [
+                Space(
+                  height: 2.h,
+                ),
+                ImageUtils.fromLocal(
+                  'assets/images/bill/success_pay.svg',
+                  width: 40.w,
+                  height: 50.w,
+                  fit: BoxFit.fitHeight,
+                ),
+                SizedBox(height: 3.h),
+                Row(
+                  textDirection: context.textDirectionOfLocaleInversed,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      intl.paymentSuccessLabel,
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6!
+                          .copyWith(color: AppColors.primaryVariantLight),
+                    ),
+                    SizedBox(width: 3.w),
+                    ImageUtils.fromLocal(
+                      'assets/images/bill/happy_face.svg',
+                      width: 7.w,
+                      height: 7.w,
+                      fit: BoxFit.fill,
+                    ),
+                  ],
+                ),
+                Space(
+                  height: 2.h,
+                ),
+                Directionality(
+                  textDirection: context.textDirectionOfLocaleInversed,
+                  child: FlatButton.icon(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 2.h,
+                      horizontal: 3.w,
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        side: BorderSide(
+                          color: Color.fromRGBO(178, 178, 178, 1),
+                          width: 0.2.w,
+                        )),
+                    onPressed: () {
+                      bloc.setShowInformation();
+                    },
+                    icon: ImageUtils.fromLocal(
+                      'assets/images/bill/info.svg',
+                      width: 7.w,
+                      height: 7.w,
+                    ),
+                    label: Text(
+                      intl.paymentInformation,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ),
+                ),
+                Space(height: 2.h),
+                StreamBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data == true) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(245, 245, 245, 1),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 1.5.w,
+                          vertical: 2.h,
+                        ),
+                        child: Column(
+                          children: [
+                            item(intl.refId, bloc.invoice!.refId ?? '', false),
+                            item(
+                                intl.paymentDate,
+                                bloc.invoice!.payedAt != null && bloc.invoice!.payedAt!.length > 0
+                                    ? DateTimeUtils.gregorianToJalaliYMD(bloc.invoice!.payedAt!)
+                                    : '',
+                                false),
+                            item(
+                                intl.amount,
+                                bloc.invoice!.amount != null &&
+                                        bloc.invoice!.amount.toString().length > 0 &&
+                                        bloc.invoice!.amount! > 0
+                                    ? double.parse(bloc.invoice!.amount.toString())
+                                        .toStringAsFixed(0)
+                                        .seRagham()
+                                    : intl.free,
+                                true),
+                            item(intl.mobile, MemoryApp.userInformation?.mobile ?? '', false),
+                          ],
+                        ),
+                      );
+                    } else
+                      return Container();
+                  },
+                  stream: bloc.showInformation,
+                ),
+                Space(height: 3.h),
+                if (paymentType == "diet")
                   Text(
-                    intl.paymentSuccessLabel,
-                    textAlign: TextAlign.center,
+                    intl.useFromList,
                     softWrap: true,
+                    textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
-                        .headline6!
-                        .copyWith(color: AppColors.primaryVariantLight),
+                        .caption!
+                        .copyWith(color: AppColors.labelTextColor),
                   ),
-                  SizedBox(width: 3.w),
-                  ImageUtils.fromLocal(
-                    'assets/images/bill/happy_face.svg',
-                    width: 7.w,
-                    height: 7.w,
-                    fit: BoxFit.fill,
-                  ),
-                ],
-              ),
-              Space(
-                height: 2.h,
-              ),
-              Directionality(
-                textDirection: context.textDirectionOfLocaleInversed,
-                child: FlatButton.icon(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 2.h,
-                    horizontal: 3.w,
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      side: BorderSide(
-                        color: Color.fromRGBO(178, 178, 178, 1),
-                        width: 0.2.w,
-                      )),
-                  onPressed: () {
-                    bloc.setShowInformation();
-                  },
-                  icon: ImageUtils.fromLocal(
-                    'assets/images/bill/info.svg',
-                    width: 7.w,
-                    height: 7.w,
-                  ),
-                  label: Text(
-                    intl.paymentInformation,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ),
-              ),
-              Space(height: 2.h),
-              StreamBuilder(
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data == true) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(245, 245, 245, 1),
-                        borderRadius: BorderRadius.circular(10.0),
+                if (paymentType == "diet") Space(height: 3.h),
+                paymentType == "shop"
+                    ? Container(
+                        decoration: AppDecorations.boxMild.copyWith(
+                          color: AppColors.box,
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                        child: Column(
+                          children: [
+                            Text(
+                              intl.clickHereToUseProduct,
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: typography.caption?.apply(color: AppColors.labelColor),
+                            ),
+                            Space(height: 2.h),
+                            SubmitButton(
+                                label: intl.viewProduct,
+                                onTap: () {
+                                  MemoryApp.analytics!
+                                      .logEvent(name: "total_shop_payment_online_success");
+                                  context.vxNav.clearAndPushAll([
+                                    Uri.parse(Routes.shopHome),
+                                    Uri.parse(Routes.shopOrders),
+                                    Uri.parse('${Routes.shopProduct}/${bloc.productId}')
+                                  ]);
+                                }),
+                          ],
+                        ),
+                      )
+                    : SubmitButton(
+                        label: intl.confirmContinue,
+                        onTap: () {
+                          MemoryApp.analytics!.logEvent(name: "total_payment_success");
+                          MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
+                          VxNavigator.of(context).clearAndPush(Uri.parse('/${bloc.path}'));
+                        },
                       ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 1.5.w,
-                        vertical: 2.h,
-                      ),
-                      child: Column(
-                        children: [
-                          item(intl.refId, bloc.invoice!.refId ?? '', false),
-                          item(
-                              intl.paymentDate,
-                              bloc.invoice!.payedAt != null && bloc.invoice!.payedAt!.length > 0
-                                  ? DateTimeUtils.gregorianToJalaliYMD(bloc.invoice!.payedAt!)
-                                  : '',
-                              false),
-                          item(
-                              intl.amount,
-                              bloc.invoice!.amount != null &&
-                                      bloc.invoice!.amount.toString().length > 0 &&
-                                      bloc.invoice!.amount! > 0
-                                  ? double.parse(bloc.invoice!.amount.toString())
-                                      .toStringAsFixed(0)
-                                      .seRagham()
-                                  : intl.free,
-                              true),
-                          item(intl.mobile, MemoryApp.userInformation?.mobile ?? '', false),
-                        ],
-                      ),
-                    );
-                  } else
-                    return Container();
-                },
-                stream: bloc.showInformation,
-              ),
-              Space(height: 3.h),
-              if (paymentType == "diet")
-                Text(
-                  intl.useFromList,
-                  softWrap: true,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption!
-                      .copyWith(color: AppColors.labelTextColor),
-                ),
-              if (paymentType == "diet") Space(height: 3.h),
-              paymentType == "shop"
-                  ? Container(
-                      decoration: AppDecorations.boxMild.copyWith(
-                        color: AppColors.box,
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                      child: Column(
-                        children: [
-                          Text(
-                            intl.clickHereToUseProduct,
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                            style: typography.caption?.apply(color: AppColors.labelColor),
-                          ),
-                          Space(height: 2.h),
-                          SubmitButton(
-                              label: intl.viewProduct,
-                              onTap: () {
-                                MemoryApp.analytics!.logEvent(name: "total_shop_payment_online_success");
-                                context.vxNav.clearAndPushAll([
-                                  Uri.parse(Routes.shopHome),
-                                  Uri.parse(Routes.shopOrders),
-                                  Uri.parse('${Routes.shopProduct}/${bloc.productId}')
-                                ]);
-                              }),
-                        ],
-                      ),
-                    )
-                  : SubmitButton(
-                      label: intl.confirmContinue,
-                      onTap: () {
-                        MemoryApp.analytics!.logEvent(name: "total_payment_success");
-                        MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
-                        VxNavigator.of(context).clearAndPush(Uri.parse('/${bloc.path}'));
-                      },
-                    ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

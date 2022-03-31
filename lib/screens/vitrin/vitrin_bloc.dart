@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:behandam/data/entity/auth/country.dart';
-import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
@@ -10,7 +9,7 @@ import '../../base/repository.dart';
 
 class VitrinBloc{
   VitrinBloc(){
-    _waiting.value = false;
+    _waiting.safeValue = false;
   }
 
   final _repository = Repository.getInstance();

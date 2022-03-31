@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AppSharedPreferences {
   static late SharedPreferences preference;
+  static const int defaultInputDebounce = 500;
   static Future<void> initialize() async {
     preference = await SharedPreferences.getInstance();
   }
@@ -83,6 +84,14 @@ abstract class AppSharedPreferences {
     preference.setString(_keyFcmButtonActions, notifResponse ?? _nullString);
   }
 
+  static Future<int> get inputDebounce async {
+    return (await preference).getInt(_keyInputDebounce) ?? defaultInputDebounce;
+  }
+
+  static Future<void> setInputDebounce(int value) async {
+    (await preference).setInt(_keyInputDebounce, value);
+  }
+
   static const _keyIsLoggedIn = 'isLoggedIn';
   static const _keyAuthToken = 'token';
   static const _keyLocaleCode = 'localeCode';
@@ -90,6 +99,7 @@ abstract class AppSharedPreferences {
   static const _keyFcmButtonActions = 'fcmButtonActions';
   static const _keyFcmToken = 'fcmToken';
   static const _keySendFcmToken = 'sendFcmToken';
+  static const _keyInputDebounce = 'inputDebounce';
   static const _nullString = 'null';
   static const _keyDeeplink = 'deeplink';
 }

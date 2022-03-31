@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -71,34 +72,36 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               stream: authBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
-                  return SingleChildScrollView(
-                    child: SizedBox(
-                      height: 100.h,
-                      child: Column(children: [
-                        header(),
-                        content(),
-                        Container(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 8, left: 5.w, right: 5.w),
-                            child: RichText(
-                                textDirection: context.textDirectionOfLocale,
-                                textAlign: TextAlign.center,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: intl.termsOfUseDescription,
-                                      style: Theme.of(context).textTheme.button!.copyWith(
-                                          color: AppColors.labelTextColor,
-                                          decoration: TextDecoration.underline),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Utils.launchURL(
-                                              FlavorConfig.instance.variables['urlTerms']);
-                                        }),
-                                ])),
+                  return TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: 100.h,
+                        child: Column(children: [
+                          header(),
+                          content(),
+                          Container(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 8, left: 5.w, right: 5.w),
+                              child: RichText(
+                                  textDirection: context.textDirectionOfLocale,
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: intl.termsOfUseDescription,
+                                        style: Theme.of(context).textTheme.button!.copyWith(
+                                            color: AppColors.labelTextColor,
+                                            decoration: TextDecoration.underline),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            Utils.launchURL(
+                                                FlavorConfig.instance.variables['urlTerms']);
+                                          }),
+                                  ])),
+                            ),
                           ),
-                        ),
-                        Space(height: 1.h),
-                      ]),
+                          Space(height: 1.h),
+                        ]),
+                      ),
                     ),
                   );
                 } else {
@@ -113,24 +116,25 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     return Stack(
       overflow: Overflow.visible,
       children: [
-        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 250)),
+        SizedBox(
+            height: 40.h,child: MyArc(diameter: 100.w,)),
         Positioned(
-          top: 10.0,
+          top: 2.h,
           right: 0.0,
           left: 0.0,
           child: Center(
               child: ImageUtils.fromLocal(
             'assets/images/registry/app_logo.svg',
-            width: 50.0,
-            height: 50.0,
+            width: 15.w,
+            height: 15.w,
           )),
         ),
         Positioned(
-          top: 70.0,
+          top: 11.h,
           right: 0.0,
           left: 0.0,
           child: Center(
-              child: Text('به اندام دکتر کرمانی',
+              child: Text(intl.behandamDrKermany,
                   style: TextStyle(
                       color: AppColors.penColor,
                       fontSize: 22.0,
@@ -138,14 +142,14 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       fontWeight: FontWeight.w700))),
         ),
         Positioned(
-          top: 120.0,
+          top: 16.h,
           right: 0.0,
           left: 0.0,
           child: Center(
             child: ImageUtils.fromLocal(
               'assets/images/registry/profile_logo.svg',
-              width: 120.0,
-              height: 120.0,
+              width: 25.w,
+              height: 25.w,
             ),
           ),
         ),

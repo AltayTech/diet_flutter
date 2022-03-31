@@ -16,6 +16,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../routes.dart';
@@ -69,20 +70,22 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
       child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Card(
-                shape: AppShapes.rectangleMedium,
-                elevation: 1,
-                margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                  child: StreamBuilder(
-                    stream: bloc.menuTypes,
-                    builder: (_, AsyncSnapshot<List<MenuType>> snapshot) {
-                      if (snapshot.hasData) return menus(snapshot.requireData);
-                      return Center(child: CircularProgressIndicator());
-                    },
+            child: TouchMouseScrollable(
+              child: SingleChildScrollView(
+                child: Card(
+                  shape: AppShapes.rectangleMedium,
+                  elevation: 1,
+                  margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    child: StreamBuilder(
+                      stream: bloc.menuTypes,
+                      builder: (_, AsyncSnapshot<List<MenuType>> snapshot) {
+                        if (snapshot.hasData) return menus(snapshot.requireData);
+                        return Center(child: CircularProgressIndicator());
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -134,9 +137,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
                   textAlign: TextAlign.start,
                 ),
                 Container(
-                  decoration: AppDecorations.boxMedium.copyWith(
-                    color: AppColors.box
-                  ),
+                  decoration: AppDecorations.boxMedium.copyWith(color: AppColors.box),
                   padding: EdgeInsets.symmetric(horizontal: 3.w),
                   child: Column(
                     children: [
@@ -149,7 +150,8 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
                                       .contains(Routes.listMenuSelect)) {
                                     DialogUtils.showDialogProgress(context: context);
                                     bloc.onItemClick(menu);
-                                  }else dailyMenuDialog(menu);
+                                  } else
+                                    dailyMenuDialog(menu);
                                 },
                               ))
                           .toList(),
@@ -187,7 +189,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
               ),
               Space(height: 2.h),
               Text(
-               menu.description!,
+                menu.description!,
                 style: typography.caption,
                 textAlign: TextAlign.center,
               ),
