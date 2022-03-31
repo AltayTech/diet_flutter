@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -68,29 +69,31 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                   appBar: Toolbar(
                     titleBar: productBloc.toolbar ?? intl.shop,
                   ),
-                  body: SingleChildScrollView(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                    Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: StreamBuilder(
-                            stream: productBloc.product,
-                            builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
-                              if (snapshot.hasData)
-                                return Container(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      firstSection(
-                                        snapshot.data!,
-                                      ),
-                                      secondSection(snapshot.data!),
-                                    ],
-                                  ),
-                                );
-                              else
-                                return Progress();
-                            }))
-                  ])));
+                  body: TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                      Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: StreamBuilder(
+                              stream: productBloc.product,
+                              builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
+                                if (snapshot.hasData)
+                                  return Container(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        firstSection(
+                                          snapshot.data!,
+                                        ),
+                                        secondSection(snapshot.data!),
+                                      ],
+                                    ),
+                                  );
+                                else
+                                  return Progress();
+                              }))
+                    ])),
+                  ));
             }));
   }
 

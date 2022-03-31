@@ -5,12 +5,11 @@ import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webviewx/webviewx.dart' as webViewForWeb;
 
 class ShowInboxItem extends StatefulWidget {
-  ShowInboxItem() {
-  }
+  ShowInboxItem() {}
 
   @override
   State<ShowInboxItem> createState() => _ShowInboxItemState();
@@ -68,13 +67,21 @@ class _ShowInboxItemState extends ResourcefulState<ShowInboxItem> {
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
               )
-            : WebView(
-                initialUrl: args.action! + '?from=app',
-                javascriptMode: JavascriptMode.unrestricted,
-                onPageStarted: (val) {
-                  debugPrint('$val');
-                },
-              ),
+            : kIsWeb
+                ? webViewForWeb.WebViewX(
+                    initialContent: args.action! + '?from=app',
+                    javascriptMode: webViewForWeb.JavascriptMode.unrestricted,
+                    width: 100.w,
+                    height: 100.h,
+                    initialSourceType: webViewForWeb.SourceType.url,
+                  )
+                : WebView(
+                    initialUrl: args.action! + '?from=app',
+                    javascriptMode: JavascriptMode.unrestricted,
+                    onPageStarted: (val) {
+                      debugPrint('$val');
+                    },
+                  ),
       ),
     );
   }

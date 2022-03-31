@@ -88,6 +88,7 @@ dependencies:
   universal_html: ^2.0.8
   flutter_math_fork: ^0.4.2+2
   touch_mouse_behavior: ^0.0.1
+  webviewx: ^0.2.1
 
 dependency_overrides:
   provider: ^6.0.2
