@@ -72,7 +72,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
-
 import 'package:velocity_x/velocity_x.dart';
 
 import '../screens/authentication/auth.dart';
@@ -89,6 +88,7 @@ class _AppState extends State<App> {
   static late double webMaxWidth = 500;
   static late double webMinRatio = 1 / 2; // minimum aspect ratio for application size
   static late double webMaxHeight = 700;
+
   @override
   void initState() {
     super.initState();
@@ -97,10 +97,11 @@ class _AppState extends State<App> {
 
     navigator.addListener(() {
       debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
-      if(navigator.currentConfiguration!.path=="/"){
+      if (navigator.currentConfiguration!.path == "/") {
         navigator.routeManager.replace(Uri.parse(Routes.splash));
-      }else if(DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)){
-        navigator.routeManager.replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
+      } else if (DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)) {
+        navigator.routeManager
+            .replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
       }
       if (MemoryApp.analytics != null)
         MemoryApp.analytics!
@@ -125,6 +126,7 @@ class _AppState extends State<App> {
       },
     );
   }
+
   Widget appProvider(BoxConstraints constraints) {
     return AppProvider(
       bloc,
@@ -137,6 +139,7 @@ class _AppState extends State<App> {
       ),
     );
   }
+
   Widget app(Locale locale) {
     return MaterialApp.router(
         useInheritedMediaQuery: true,
@@ -151,8 +154,7 @@ class _AppState extends State<App> {
               primary: AppColors.primary,
               onPrimary: AppColors.onPrimary,
               onSurface: AppColors.onSurface,
-              shape:
-              RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
+              shape: RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
             ),
           ),
           primaryColor: AppColors.primary,
@@ -174,8 +176,10 @@ class _AppState extends State<App> {
 
         routeInformationParser: VxInformationParser(),
         backButtonDispatcher: RootBackButtonDispatcher(),
-        routerDelegate: navigator);;
+        routerDelegate: navigator);
+    ;
   }
+
   Widget webFrame(Locale locale, BoxConstraints constraints) {
     return FlutterWebFrame(
       builder: (context) => app(locale),
@@ -187,6 +191,7 @@ class _AppState extends State<App> {
       backgroundColor: AppColors.primary.withOpacity(0.1),
     );
   }
+
   TextTheme buildTextTheme(Locale locale) {
     final appTypography = AppTypography(locale);
     return TextTheme(
@@ -237,13 +242,12 @@ class MyObs extends VxObserver {
   }
 
   @override
-  void didPop(Route route, Route? previousRoute) {
-  }
+  void didPop(Route route, Route? previousRoute) {}
 }
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage(SelectPackageSubscriptionScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
@@ -352,7 +356,10 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
     Routes.targetWeight: (_, __) => MaterialPage(child: routePage(Block())),
-    Routes.dailyMessage: (_, param) => MaterialPage(child: routePage(DailyMessage()), arguments: param),
+    Routes.dailyMessage: (_, param) =>
+        MaterialPage(child: routePage(DailyMessage()), arguments: param),
+    Routes.selectPackageSubscription: (_, __) =>
+        MaterialPage(child: routePage(SelectPackageSubscriptionScreen())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

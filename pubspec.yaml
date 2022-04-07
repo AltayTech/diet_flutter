@@ -138,15 +138,15 @@ flutter:
     - family: Iransans-Ultralight
       fonts:
         - asset: fonts/iransans_ultralight.ttf
+    - family: Iransans-light
+      fonts:
+        - asset: fonts/iransans_light.ttf
     - family: yekan
       fonts:
-        - asset: assets/fonts/YekanBakhFaNumMedium.ttf
+        - asset: fonts/YekanBakhFaNumMedium.ttf
     - family: yekan_bold
       fonts:
-        - asset: assets/fonts/YekanBakhFaNumBold.ttf
-    - family: yekan_light
-      fonts:
-        - asset: assets/fonts/YekanBakhFaNumLight.ttf
+        - asset: fonts/YekanBakhFaNumBold.ttf
     - family: yekan_regular
       fonts:
-        - asset: assets/fonts/YekanBakhFaNumRegular.ttf
+        - asset: fonts/YekanBakhFaNumRegular.ttf

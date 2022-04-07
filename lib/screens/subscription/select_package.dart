@@ -1,4 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/screens/subscription/card_package.dart';
+import 'package:behandam/screens/widget/box_end_date_subscription.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
@@ -15,10 +18,35 @@ class SelectPackageSubscriptionScreen extends StatefulWidget {
 
 class _SelectPackageSubscriptionScreenState
     extends ResourcefulState<SelectPackageSubscriptionScreen> {
+  late PackageItem packageItem, packageItem2;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    packageItem = PackageItem();
+    packageItem.index = 0;
+    packageItem.id = 1;
+    packageItem.name = 'اشتراک سه ماهه';
+    packageItem.price = Price()
+      ..price = 100000
+      ..finalPrice = 56000
+      ..product_id = 12;
+    packageItem.services = [ServicePackage()..name = 'رژیم', ServicePackage()..name = 'پشتیبانی'];
+    packageItem2 = PackageItem();
+    packageItem2 = PackageItem();
+    packageItem2.index = 1;
+    packageItem2.id = 2;
+    packageItem2.name = 'اشتراک شش ماهه';
+    packageItem2.price = Price()
+      ..price = 130000
+      ..finalPrice = 99000
+      ..product_id = 13;
+    packageItem2.services = [
+      ServicePackage()..name = 'رژیم',
+      ServicePackage()..name = 'پشتیبانی',
+      ServicePackage()..name = 'برنامه ورزش'
+    ];
   }
 
   @override
@@ -33,43 +61,37 @@ class _SelectPackageSubscriptionScreenState
   Widget body() {
     return TouchMouseScrollable(
       child: SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            textDirection: context.textDirectionOfLocale,
-            children: [
-              Container(
-                width: 80.w,
-                decoration: AppDecorations.boxSmall.copyWith(
-                  color: Colors.white,
-                ),
-                margin: EdgeInsets.only(top: 2.h),
-                padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  textDirection: context.textDirectionOfLocale,
-                  children: [
-                    ImageUtils.fromLocal("assets/images/bill/subscription.svg",
-                        width: 5.w, height: 5.w),
-                    Space(
-                      width: 2.w,
+        child: SizedBox(
+            width: 100.w,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 90.w,
+                    decoration: AppDecorations.boxSmall.copyWith(
+                      color: Colors.white,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "121روز",
-                          style: typography.titleSmall!.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "تا پایان دوره رژیم شما",
-                          style: typography.subtitle2!.copyWith(fontWeight: FontWeight.w300),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ]),
+                    margin: EdgeInsets.only(top: 2.h),
+                    padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
+                    child:  BoxEndTimeSubscription(time: "121",mainAxisAlignment: MainAxisAlignment.center),
+                  ),
+                  Container(
+                    width: 90.w,
+                    decoration: AppDecorations.boxSmall.copyWith(
+                      color: Colors.white,
+                    ),
+                    margin: EdgeInsets.only(top: 1.5.h),
+                    padding: EdgeInsets.only( top: 2.h),
+                    child: ListView.builder(
+                        physics: ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: 2,
+                        itemBuilder: (BuildContext context, int index) =>
+                            CardPackage(index == 0 ? packageItem : packageItem2)),
+                  )
+                ])),
       ),
     );
   }

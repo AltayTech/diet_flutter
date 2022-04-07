@@ -18,7 +18,7 @@ import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:behandam/extensions/stream.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
@@ -86,30 +86,30 @@ class ProfileBloc {
   }
 
   void fetchUserInformation() async {
-    _progressNetwork.value = true;
+    _progressNetwork.safeValue = true;
     if (MemoryApp.userInformation == null) {
       _repository.getUser().then((value) {
         debugPrint('value ==> ${value.data!.firstName}');
         _userInformation = value.data!;
         MemoryApp.userInformation = _userInformation;
         getProvinces();
-        _userInformationStream.value = value.data!;
+        _userInformationStream.safeValue = value.data!;
       }).catchError((onError) {
         debugPrint('onError ==> ${onError.toString()}');
       }).whenComplete(() {
-        _progressNetwork.value = false;
+        _progressNetwork.safeValue = false;
       });
     } else {
       loginRegisterBloc!.countriesStream.listen((event) {
         _userInformation = MemoryApp.userInformation!;
-        _userInformationStream.value = _userInformation;
+        _userInformationStream.safeValue = _userInformation;
         if (MemoryApp.cityProvinceModel == null)
           getProvinces();
         else {
           cityProvinceModel = MemoryApp.cityProvinceModel!;
-          _cityProvinceModelStream.value = cityProvinceModel;
+          _cityProvinceModelStream.safeValue = cityProvinceModel;
         }
-        _progressNetwork.value = false;
+        _progressNetwork.safeValue = false;
       });
     }
     getUnreadInbox();
@@ -118,7 +118,7 @@ class ProfileBloc {
 
   void getUnreadInbox() {
     _repository.getUnreadInbox().then((value) {
-      _inboxCount.value = value.data!.count ?? 0;
+      _inboxCount.safeValue = value.data!.count ?? 0;
       MemoryApp.inboxCount = value.data!.count ?? 0;
     });
   }
@@ -126,7 +126,7 @@ class ProfileBloc {
   void getInbox() {
     _repository.getInbox().then((value) {
       print('data => ${value.data!.toJson()}');
-      _inboxStream.value = value.data!.items!;
+      _inboxStream.safeValue = value.data!.items!;
     }).onError((error, stackTrace) {
       print('data => ${error.toString()}');
     });
@@ -141,27 +141,27 @@ class ProfileBloc {
   }
 
   void getPdfMeal(FoodDietPdf type) {
-    _showProgressItem.value = true;
+    _showProgressItem.safeValue = true;
     _repository.getPdfUrl(type).then((value) {
       launchURL(value.data!.url!);
       // Share.share(value['data']['url'])
     }).catchError((onError) {
       _showServerError.fireMessage(onError);
     }).whenComplete(() {
-      _showProgressItem.value = false;
+      _showProgressItem.safeValue = false;
     });
   }
 
   void getTermPackage() {
     _repository.getTermPackage().then((value) {
-       _showRefund.value = value.data!.showRefundLink!;
+       _showRefund.safeValue = value.data!.showRefundLink!;
       if (value.data != null &&
           value.data?.term != null &&
           DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0 &&
           !_showPdf.isClosed)
-        _showPdf.value = true;
+        _showPdf.safeValue = true;
       else {
-         _showPdf.value = false;
+         _showPdf.safeValue = false;
       }
     }).whenComplete(() {});
   }
@@ -184,7 +184,7 @@ class ProfileBloc {
   void getProvinces() {
     _repository.getProvinces().then((value) {
       cityProvinceModel = value.data!;
-      _cityProvinceModelStream.value = value.data!;
+      _cityProvinceModelStream.safeValue = value.data!;
       MemoryApp.cityProvinceModel = cityProvinceModel;
       changeProvinceCity();
     }).onError((error, stackTrace) {
@@ -260,7 +260,7 @@ class ProfileBloc {
     // Pick an image
     image = await _picker!.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      _showProgressUploadImage.value = true;
+      _showProgressUploadImage.safeValue = true;
       _repository
           .sendMedia(
               jsonEncode({
@@ -274,7 +274,7 @@ class ProfileBloc {
         if (userInfo.media == null) userInfo.media = Media();
         userInfo.media!.url = value.data!.url;
       }).whenComplete(() {
-        _showProgressUploadImage.value = false;
+        _showProgressUploadImage.safeValue = false;
       });
     }
   }
@@ -284,7 +284,7 @@ class ProfileBloc {
     // Pick an image
     image = await _picker!.pickImage(source: ImageSource.camera);
     if (image != null) {
-      _showProgressUploadImage.value = true;
+      _showProgressUploadImage.safeValue = true;
       _repository
           .sendMedia(
               jsonEncode({
@@ -298,7 +298,7 @@ class ProfileBloc {
         if (userInfo.media == null) userInfo.media = Media();
         userInfo.media!.url = value.data!.url;
       }).whenComplete(() {
-        _showProgressUploadImage.value = false;
+        _showProgressUploadImage.safeValue = false;
       });
     }
   }

@@ -61,17 +61,15 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
     }
   }
 
-  bool isInit=false;
+  bool isInit = false;
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    if(!isInit) {
-      isInit=true;
-      product = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as ShopProduct?;
+    if (!isInit) {
+      isInit = true;
+      product = ModalRoute.of(context)!.settings.arguments as ShopProduct?;
       bloc.setProduct(product!);
     }
   }
@@ -89,53 +87,52 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
             discount(),
             priceWithDiscount(),
             StreamBuilder(
-              stream: bloc.usedDiscount,
-              builder: (context, snapshot) {
-                return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                  shape: AppShapes.rectangleMild,
-                  elevation: 2,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          intl.totalAmount,
-                          style: typography.caption?.apply(
-                            fontWeightDelta: 1,
-                            fontSizeDelta: 1,
+                stream: bloc.usedDiscount,
+                builder: (context, snapshot) {
+                  return Card(
+                    margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                    shape: AppShapes.rectangleMild,
+                    elevation: 2,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            intl.totalAmount,
+                            style: typography.caption?.apply(
+                              fontWeightDelta: 1,
+                              fontSizeDelta: 1,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Space(height: 0.5.h),
-                        Text(
-                          '${bloc.productValue?.discountPrice.toString().seRagham()} ${intl.toman}',
-                          style: typography.caption?.apply(
-                            fontWeightDelta: 1,
-                            fontSizeDelta: 4,
-                            color: AppColors.primary,
+                          Space(height: 0.5.h),
+                          Text(
+                            '${bloc.productValue?.discountPrice.toString().seRagham()} ${intl.toman}',
+                            style: typography.caption?.apply(
+                              fontWeightDelta: 1,
+                              fontSizeDelta: 4,
+                              color: AppColors.primary,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }
-            ),
+                  );
+                }),
             Space(height: 3.h),
             SubmitButton(
               label: intl.onlinePayment,
               onTap: product == null
                   ? null
                   : () {
-                if(!bloc.discountCode.isEmptyOrNull && !bloc.isUsedDiscount) {
-                 Utils.getSnackbarMessage(context, intl.offError);
-                }else{
-                  DialogUtils.showDialogProgress(context: context);
-                  bloc.onlinePaymentClick(product!.id!);
-                }
+                      if (!bloc.discountCode.isEmptyOrNull && !bloc.isUsedDiscount) {
+                        Utils.getSnackbarMessage(context, intl.offError);
+                      } else {
+                        DialogUtils.showDialogProgress(context: context);
+                        bloc.onlinePaymentClick(product!.id!);
+                      }
                     },
             ),
           ],
@@ -309,7 +306,8 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
           '${amount.seRagham()}',
           style: typography.caption?.apply(
             fontWeightDelta: 1,
-            color: AppColors.primary,),
+            color: AppColors.primary,
+          ),
           textDirection: TextDirection.ltr,
         ),
         Space(width: 1.w),
@@ -349,85 +347,85 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
             Space(width: 2.w),
             Expanded(
                 child: StreamBuilder(
-                  builder: (context, snapshot) {
-                    if (snapshot.data == null || snapshot.data == false)
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
+              builder: (context, snapshot) {
+                if (snapshot.data == null || snapshot.data == false)
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.white,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 3.w),
+                    height: 7.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      textDirection: context.textDirectionOfLocaleInversed,
+                      children: <Widget>[
+                        StreamBuilder(
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data == true) {
+                              return ImageUtils.fromLocal(
+                                'assets/images/bill/mark.svg',
+                                fit: BoxFit.fill,
+                                width: 5.w,
+                                height: 5.w,
+                              );
+                            } else
+                              return Container();
+                          },
+                          stream: bloc.wrongDisCode,
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        height: 7.h,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          textDirection: context.textDirectionOfLocaleInversed,
-                          children: <Widget>[
-                            StreamBuilder(
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData && snapshot.data == true) {
-                                  return ImageUtils.fromLocal(
-                                    'assets/images/bill/mark.svg',
-                                    fit: BoxFit.fill,
-                                    width: 5.w,
-                                    height: 5.w,
-                                  );
-                                } else
-                                  return Container();
-                              },
-                              stream: bloc.wrongDisCode,
-                            ),
-                            StreamBuilder(
-                              builder: (context, snapshot) {
-                                return Expanded(
-                                  child: Directionality(
-                                    textDirection: context.textDirectionOfLocale,
-                                    child: TextFormField(
-                                      decoration: textFieldDecoration(),
-                                      initialValue: bloc.discountCode ?? null,
-                                      onChanged: (value) {
-                                        bloc.discountCode = value;
-                                        bloc.changeDiscountLoading(false);
-                                        bloc.changeWrongDisCode(false);
-                                      },
-                                      keyboardType: TextInputType.text,
-                                      style: Theme.of(context).textTheme.caption!.copyWith(
+                        StreamBuilder(
+                          builder: (context, snapshot) {
+                            return Expanded(
+                              child: Directionality(
+                                textDirection: context.textDirectionOfLocale,
+                                child: TextFormField(
+                                  decoration: textFieldDecoration(),
+                                  initialValue: bloc.discountCode ?? null,
+                                  onChanged: (value) {
+                                    bloc.discountCode = value;
+                                    bloc.changeDiscountLoading(false);
+                                    bloc.changeWrongDisCode(false);
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  style: Theme.of(context).textTheme.caption!.copyWith(
                                         color: bloc.isWrongDisCode ? Colors.red : Colors.black,
                                       ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              stream: bloc.wrongDisCode,
-                            ),
-                          ],
+                                ),
+                              ),
+                            );
+                          },
+                          stream: bloc.wrongDisCode,
                         ),
-                      );
-                    else {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50),
+                      ],
+                    ),
+                  );
+                else {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 3.w),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FittedBox(
+                        child: Text(
+                          '${bloc.discountInfo?.discount.toString().seRagham()} ${intl.yourDiscount}',
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline!
+                              .copyWith(color: Color.fromRGBO(87, 206, 121, 1)),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: FittedBox(
-                            child: Text(
-                              '${bloc.discountInfo?.discount.toString().seRagham()} ${intl.yourDiscount}',
-                              textDirection: TextDirection.rtl,
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .overline!
-                                  .copyWith(color: Color.fromRGBO(87, 206, 121, 1)),
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  stream: bloc.usedDiscount,
-                )),
+                      ),
+                    ),
+                  );
+                }
+              },
+              stream: bloc.usedDiscount,
+            )),
             Space(width: 2.w),
             StreamBuilder(
                 stream: bloc.usedDiscount,
@@ -441,7 +439,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
                       color: bloc.isUsedDiscount ? Color.fromRGBO(87, 206, 121, 1) : null,
                     );
                   else {
-                    return  StreamBuilder(
+                    return StreamBuilder(
                       builder: (context, snapshot) {
                         if (snapshot.data == null || snapshot.data == false)
                           return submitDiscountBtn();
@@ -455,7 +453,6 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
                     );
                   }
                 }),
-
           ],
         ),
       ),

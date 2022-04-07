@@ -19,15 +19,17 @@ class ToolsBoxState extends ResourcefulState<ToolsBox> {
   Widget body() {
     return Column(
       children: [
+        optionUi(Icons.list_alt_outlined, 'سوابق خرید اشتراک', 0,TextDirection.ltr),
+        Space(height: 2.h),
         Flexible(
           flex: 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Expanded(flex: 1, child: optionUi(Icons.lock, intl.changePassword, 0)),
+              Expanded(flex: 1, child: optionUi(Icons.lock, intl.changePassword, 0,TextDirection.ltr)),
               Space(width: 5.w),
 //                  _optionUi(Icons.add, 'افزایش موجودی', 1),
-              Expanded(flex: 1, child: optionUi(Icons.edit, intl.editProfile, 2)),
+              Expanded(flex: 1, child: optionUi(Icons.edit, intl.editProfile, 2,TextDirection.ltr)),
             ],
           ),
         ),

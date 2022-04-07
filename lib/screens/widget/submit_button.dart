@@ -54,10 +54,12 @@ class _SubmitButtonState extends ResourcefulState<SubmitButton> {
                     borderRadius: BorderRadius.circular(30.0),
                     side: BorderSide(color: AppColors.primaryColorDark)))),
             onPressed: widget.onTap,
-            child: Text(
-              widget.label,
-              style: typography.caption?.apply(
-                color: AppColors.onPrimary,
+            child: Center(
+              child: Text(
+                widget.label,
+                style: typography.caption?.apply(
+                  color: AppColors.onPrimary,
+                ),
               ),
             ),
           );
