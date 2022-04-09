@@ -1,13 +1,10 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
+import 'package:behandam/screens/subscription/card_package.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:velocity_x/velocity_x.dart';
-
-import '../../../routes.dart';
 
 class PurchasedSubscriptionWidget extends StatefulWidget {
   PurchasedSubscriptionWidget({Key? key}) : super(key: key);
@@ -70,7 +67,8 @@ class _PurchasedSubscriptionWidget
                 )
               ],
             ),
-          )
+          ),
+          CardPackage(bloc.packageItem!, false)
         ]);
   }
 

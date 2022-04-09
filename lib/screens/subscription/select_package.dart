@@ -89,7 +89,7 @@ class _SelectPackageSubscriptionScreenState
                         shrinkWrap: true,
                         itemCount: 2,
                         itemBuilder: (BuildContext context, int index) =>
-                            CardPackage(index == 0 ? packageItem : packageItem2)),
+                            CardPackage(index == 0 ? packageItem : packageItem2,true)),
                   )
                 ])),
       ),

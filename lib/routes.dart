@@ -83,7 +83,8 @@ abstract class Routes {
   static const shopBill = '/shop/payment/bill';
   static const shopPaymentOnlineSuccess = '/shop/payment/online/success';
   static const dailyMessage = '/dailyMessage';
-  static const selectPackageSubscription = '/select-package-subscription';
+  static const selectPackageSubscription = '/subscription/select-package';
+  static const billSubscription = '/subscription/bill';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

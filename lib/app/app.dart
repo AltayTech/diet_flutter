@@ -57,7 +57,6 @@ import 'package:behandam/screens/shop/product_page.dart';
 import 'package:behandam/screens/splash/splash.dart';
 import 'package:behandam/screens/status/status_user.dart';
 import 'package:behandam/screens/subscription/bill_payment/bill_payment.dart';
-import 'package:behandam/screens/subscription/history_subscription_payment/bill_payment.dart';
 import 'package:behandam/screens/subscription/select_package.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
@@ -362,6 +361,8 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(DailyMessage()), arguments: param),
     Routes.selectPackageSubscription: (_, __) =>
         MaterialPage(child: routePage(SelectPackageSubscriptionScreen())),
+    Routes.billSubscription: (_, params) =>
+        MaterialPage(child: routePage(BillPaymentScreen()),arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

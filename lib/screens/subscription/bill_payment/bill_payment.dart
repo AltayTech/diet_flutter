@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/enable_discount_box.dart';
 import 'package:behandam/screens/subscription/bill_payment/payment_type.dart';
@@ -23,15 +24,31 @@ class BillPaymentScreen extends StatefulWidget {
 
 class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
   late BillPaymentBloc bloc;
-
+  late PackageItem packageItem;
+  late bool isInit=false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    bloc = BillPaymentBloc();
+
   }
 
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if(!isInit) {
+      packageItem = ModalRoute
+          .of(context)!
+          .settings
+          .arguments as PackageItem;
+      isInit=true;
+      bloc = BillPaymentBloc();
+      bloc.setPackageItem(packageItem);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     super.build(context);

@@ -1,15 +1,17 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class CardPackage extends StatefulWidget {
   PackageItem packageItem;
-
-  CardPackage(this.packageItem);
+  bool isSelected;
+  CardPackage(this.packageItem,this.isSelected);
 
   @override
   _CardPackageState createState() => _CardPackageState();
@@ -37,6 +39,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
         borderRadius: BorderRadius.circular(20.0),
         child: InkWell(
           onTap: () {
+            if(widget.isSelected)
             DialogUtils.showBottomSheetPage(context: context, child: bottomSheet());
           },
           child: Container(
@@ -212,7 +215,6 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
             ),
             Space(height: 1.h),
             Text(
-
               widget.packageItem.price != null &&
                   widget.packageItem.price!.finalPrice != 0
                   ? '${widget.packageItem.price!.finalPrice.toString().seRagham()} ${intl.toman}'
@@ -232,8 +234,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                 height: 7.h,
                 onPressed: () {
                   Navigator.pop(context);
-                  DialogUtils.showDialogProgress(context: context);
-                 // bloc.sendPackage();
+                VxNavigator.of(context).push(Uri.parse(Routes.billSubscription),params: widget.packageItem);
                 },
                 shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(30.0),
