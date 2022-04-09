@@ -6,9 +6,8 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 ///
 const int tSAMPLERATE = 8000;
@@ -102,7 +101,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
   @override
   void dispose() {
     // Be careful : you must `close` the audio session when you have finished with it.
-    _myPlayer!.closeAudioSession();
+    _myPlayer!.closePlayer();
     _myPlayer = null;
     super.dispose();
   }
@@ -196,14 +195,14 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
   }
 
   Future<void> _initializeExample(bool withUI) async {
-    await _myPlayer!.closeAudioSession();
+    await _myPlayer!.closePlayer();
     // _isAudioPlayer = withUI;
-    await _myPlayer!.openAudioSession(
-        withUI: withUI,
+    await _myPlayer!.openPlayer(
+        /*withUI: withUI,
         focus: AudioFocus.requestFocusAndStopOthers,
         category: SessionCategory.playAndRecord,
         mode: SessionMode.modeDefault,
-        device: AudioDevice.speaker);
+        device: AudioDevice.speaker*/);
     await _myPlayer!.setSubscriptionDuration(Duration(milliseconds: 10));
     // await initializeDateFormatting();
     //await setCodec(_codec);
@@ -211,11 +210,11 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
 
   Future<void> init() async {
     try {
-      await _myPlayer!.openAudioSession(
-          focus: AudioFocus.requestFocusAndStopOthers,
+      await _myPlayer!.openPlayer(
+          /*focus: AudioFocus.requestFocusAndStopOthers,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
-          device: AudioDevice.speaker);
+          device: AudioDevice.speaker*/);
       await _initializeExample(false);
     }catch(err){
 
