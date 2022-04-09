@@ -620,5 +620,13 @@
   "checkYourConnection": "بررسی اتصال",
   "maintenanceError": "کاربر گرامی! سرور در حال بروزرسانی است.\nاز صبر و شکیبایی شما متشکریم",
   "behandamDrKermany": "به اندام دکتر کرمانی",
+  "purchasedSubscription": "اشتراک خریداری شده",
+  "enterCode": "وارد کردن",
+  "haveDiscountCode": "کد تخفیف داری؟",
+  "paymentType": "نوع پرداخت",
+  "confirmAndPay": "تایید و پرداخت",
+  "ruleCheckBox": "قوانین و مقررات برنامه غذایی دکتر کرمانی را می پذیرم",
+  "totalPrice": "مبلغ کل",
+
   "understand": "متوجه شدم"
 }
