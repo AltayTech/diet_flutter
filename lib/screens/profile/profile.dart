@@ -1,11 +1,13 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/toolbar_profile.dart';
 import 'package:behandam/screens/profile/tools_box.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/box_end_date_subscription.dart';
 import 'package:behandam/screens/widget/cross_item_profile.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -21,6 +23,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen();
@@ -137,6 +140,27 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 textDirection: context.textDirectionOfLocale,
                 children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        BoxEndTimeSubscription(
+                          time: "121",
+                          mainAxisAlignment: MainAxisAlignment.start,
+                        ),
+                        SubmitButton(
+                          onTap: () {
+                            VxNavigator.of(context).push(Uri.parse(Routes.selectPackageSubscription));
+                          },
+                          label: intl.reviveSubscription,
+                          size: Size(35.w,5.h),
+                        )
+                      ],
+                    ),
+                  ),
+                  Space(height: 2.h),
                   ToolsBox(),
                   Space(height: 2.h),
                   fitaminBanner(),

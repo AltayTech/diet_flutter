@@ -183,7 +183,7 @@ Widget attachBox() {
   );
 }
 
-Widget optionUi(IconData icon, String text, int action) {
+Widget optionUi(IconData icon, String text, int action,TextDirection textDirection) {
   return GestureDetector(
     onTap: () {
       if (action == 2) {
@@ -201,11 +201,12 @@ Widget optionUi(IconData icon, String text, int action) {
           boxShadow: [
             BoxShadow(
                 color: Color.fromARGB(255, 248, 233, 233),
-                blurRadius: 4.0,
-                spreadRadius: 3.0,
-                offset: Offset(0.0, 0.35.w)),
+                blurRadius: 3.0,
+                spreadRadius: 2.5,
+                offset: Offset(0.0, 0.3.w)),
           ]),
       child: Row(
+        textDirection: textDirection,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
