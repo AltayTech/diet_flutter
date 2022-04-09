@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 ///
 const int tSAMPLERATE = 8000;
