@@ -623,5 +623,13 @@
   "endYourTermDiet": "تا پایان دوره رژیم شما",
   "reviveSubscription": "تمدید اشتراک",
   "newSubscription": "خرید اشتراک",
+  "purchasedSubscription": "اشتراک خریداری شده",
+  "enterCode": "وارد کردن",
+  "haveDiscountCode": "کد تخفیف داری؟",
+  "paymentType": "نوع پرداخت",
+  "confirmAndPay": "تایید و پرداخت",
+  "ruleCheckBox": "قوانین و مقررات برنامه غذایی دکتر کرمانی را می پذیرم",
+  "totalPrice": "مبلغ کل",
+
   "understand": "متوجه شدم"
 }

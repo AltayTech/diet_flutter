@@ -52,6 +52,10 @@ class AppColors {
   static late Color colorTextApp;
   static late Color colorSelectDepartmentTicket;
   static const grey = Color(0xffF5F5F5);
+  static const priceGreyColor = Color(0xff717171);
+  static const priceDiscountColor = Color(0xffED4C67);
+  static const priceGreenColor = Color(0xff1ABC9C);
+  static const priceColor = Color.fromRGBO(86, 195, 180, 1);
   static const purpleRuler = Color(0xff927DFC);
   static const pinkRuler = Color(0xffEC4CA2);
   static const blueRuler = Color(0xff65A8E0);
