@@ -47,6 +47,7 @@ class BillPaymentBloc {
   bool get isWrongDisCode => _wrongDisCode.valueOrNull ?? false;
 
   Price? get discountInfo => _discountInfo;
+  PackageItem? get packageItem => _packageItem;
 
   set setEnterDiscount(bool val) => _enterDiscount.value = val;
 
@@ -80,6 +81,10 @@ class BillPaymentBloc {
     }).whenComplete(() {
       _discountLoading.value = false;
     });
+  }
+
+  void setPackageItem(PackageItem p){
+    _packageItem=p;
   }
 
   void dispose() {
