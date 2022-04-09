@@ -142,7 +142,6 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +155,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                             VxNavigator.of(context).push(Uri.parse(Routes.selectPackageSubscription));
                           },
                           label: intl.reviveSubscription,
-                          size: Size(30.w,5.h),
+                          size: Size(35.w,5.h),
                         )
                       ],
                     ),
