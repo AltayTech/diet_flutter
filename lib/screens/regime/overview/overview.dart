@@ -31,10 +31,6 @@ class _OverviewPageState extends ResourcefulState<OverviewPage> {
   void initState() {
     super.initState();
     bloc = OverviewBloc();
-    bloc.navigateTo.listen((event) {
-      Navigator.of(context).pop();
-      context.vxNav.push(Uri.parse('/$event'));
-    });
   }
 
   @override
@@ -92,7 +88,7 @@ class _OverviewPageState extends ResourcefulState<OverviewPage> {
                         child: SubmitButton(
                           label: intl.viewFoodList,
                           onTap: () {
-                            DialogUtils.showDialogProgress(context: context);
+                            //DialogUtils.showDialogProgress(context: context);
                             if (!bloc.path.isEmptyOrNull)
                               VxNavigator.of(context)
                                   .push(Uri(path: '/${bloc.path}'));
