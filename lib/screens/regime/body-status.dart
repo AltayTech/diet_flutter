@@ -100,7 +100,12 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                           SubmitButton(
                               label: intl.confirmContinue,
                               onTap: () {
-                                pregnancyWeekAlert();
+                                if(snapshot.data!.isPregnancy == 1) {
+                                  pregnancyWeekAlert();
+                                } else {
+                                  DialogUtils.showDialogProgress(context: context);
+                                  regimeBloc.nextStep();
+                                }
                               }),
                         ],
                       );
