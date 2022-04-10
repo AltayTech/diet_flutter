@@ -37,6 +37,7 @@ import 'package:behandam/screens/refund/refund_record.dart';
 import 'package:behandam/screens/refund/refund_verify.dart';
 import 'package:behandam/screens/regime/activity/activity_level.dart';
 import 'package:behandam/screens/regime/block/block.dart';
+import 'package:behandam/screens/regime/block/block_week_pergnancy.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
@@ -343,6 +344,8 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(Block())),
     RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),
+    RegExp(r"\/list\/preg\/block"): (_, __) =>
+        MaterialPage(child: routePage(BlockPregnancy())),
     Routes.shopCategory: (_, param) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: param),
     Routes.shopOrders: (_, __) => MaterialPage(child: routePage(OrdersPage())),
