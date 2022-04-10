@@ -96,6 +96,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                         return Column(
                           children: [
                             rulers(snapshot.requireData),
+                            Space(height: 2.h),
                             if (navigator.currentConfiguration!.path == 'list${Routes.weightEnter}')
                               callBox(snapshot.requireData),
                             if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))

@@ -8,6 +8,7 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,6 +32,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     super.initState();
     regimeBloc = RegimeBloc();
     regimeBloc.getStatus();
+    regimeBloc.physicalInfoData();
     listenBloc();
   }
 
@@ -98,8 +100,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                           SubmitButton(
                               label: intl.confirmContinue,
                               onTap: () {
-                                DialogUtils.showDialogProgress(context: context);
-                                regimeBloc.nextStep();
+                                pregnancyWeekAlert();
                               }),
                         ],
                       );
@@ -458,6 +459,84 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
           height: 40.h,
         );
     }
+  }
+
+  void pregnancyWeekAlert() {
+    DialogUtils.showDialogPage(
+      context: context,
+      isDismissible: true,
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          width: double.maxFinite,
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.onPrimary,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              close(),
+              Text(
+                '',
+                style: typography.bodyText2,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 2.h),
+              Text(
+                intl.pregnancyWeekAlertDesc(regimeBloc.bodyStatus.allowedWeeksNum!),
+                style: typography.caption,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 2.h),
+              Container(
+                alignment: Alignment.center,
+                child: SubmitButton(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    DialogUtils.showDialogProgress(context: context);
+                    regimeBloc.nextStep();
+                  },
+                  label: intl.understandGoToNext,
+                ),
+              ),
+              Space(height: 2.h),
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Text(
+                  intl.cancel,
+                  style: typography.caption,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Space(height: 1.h),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget close() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topLeft,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
+          ),
+        ),
+      ),
+    );
   }
 
   @override
