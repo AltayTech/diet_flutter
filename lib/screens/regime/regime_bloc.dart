@@ -59,6 +59,8 @@ class RegimeBloc {
 
   Stream get showServerError => _showServerError.stream;
 
+  BodyStatus get bodyStatus => _status.value;
+
   void regimeTypeMethod() async {
     _waiting.safeValue = true;
     _repository.regimeType().then((value) {

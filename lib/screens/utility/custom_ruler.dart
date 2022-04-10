@@ -75,24 +75,26 @@ class _CustomRulerState extends ResourcefulState<CustomRuler> {
         height: 20.h,
         child: Column(
           children: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  child: RulerHeader(
-                    iconPath: widget.iconPath,
-                    heading: widget.heading,
-                    onHelpClick: widget.helpClick,
-                  ),
-                ),
-                if (widget.rulerType == RulerType.Pregnancy) Space(width: 3.w),
-                if (widget.rulerType == RulerType.Pregnancy)
+            Expanded(
+              child: Row(
+                children: [
                   Expanded(
-                    child: Text(
-                      intl.multiBirth,
-                      style: typography.subtitle2,
+                    child: RulerHeader(
+                      iconPath: widget.iconPath,
+                      heading: widget.heading,
+                      onHelpClick: widget.helpClick,
                     ),
                   ),
-              ],
+                  if (widget.rulerType == RulerType.Pregnancy) Space(width: 3.w),
+                  if (widget.rulerType == RulerType.Pregnancy)
+                    Expanded(
+                      child: Text(
+                        intl.multiBirth,
+                        style: typography.subtitle2,
+                      ),
+                    ),
+                ],
+              ),
             ),
             Space(height: 1.5.h),
             Row(
