@@ -22,10 +22,11 @@ import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
-import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/entity/regime/body_status.dart' as body;
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
@@ -98,7 +99,7 @@ abstract class RestClient {
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
 
   @GET("/body-status")
-  NetworkResult<BodyStatus> getStatus();
+  NetworkResult<body.BodyStatus> getStatus();
 
   @GET("/user/menu?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);
@@ -328,5 +329,8 @@ abstract class RestClient {
 
   @GET("/template/{id}?need-log=1")
   NetworkResult<TempTicket> getDailyMessage(@Path('id') int id);
+
+  @GET("/target-weight")
+  NetworkResult<TargetWeight> targetWeight();
 }
 

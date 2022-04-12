@@ -50,6 +50,7 @@ import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
+import 'package:behandam/screens/regime/target_weight/target_weight.dart';
 import 'package:behandam/screens/shop/category_page.dart';
 import 'package:behandam/screens/shop/home/shop_home.dart';
 import 'package:behandam/screens/shop/orders.dart';
@@ -359,7 +360,7 @@ final navigator = VxNavigator(
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
-    Routes.targetWeight: (_, __) => MaterialPage(child: routePage(Block())),
+    Routes.targetWeight: (_, __) => MaterialPage(child: routePage(TargetWeightScreen())),
     Routes.dailyMessage: (_, param) =>
         MaterialPage(child: routePage(DailyMessage()), arguments: param),
     Routes.selectPackageSubscription: (_, __) =>

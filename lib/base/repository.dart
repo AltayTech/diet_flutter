@@ -18,7 +18,7 @@ import 'package:behandam/data/entity/psychology/calender.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
-import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/entity/regime/body_status.dart' as body;
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
@@ -28,6 +28,7 @@ import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
@@ -138,7 +139,7 @@ abstract class Repository {
 
   NetworkResult<CalenderOutput> getCalendar(String? startDate, String? endDate);
 
-  NetworkResult<BodyStatus> getStatus();
+  NetworkResult<body.BodyStatus> getStatus();
 
   NetworkResult<PhysicalInfoData> physicalInfo();
 
@@ -235,6 +236,8 @@ abstract class Repository {
   NetworkResult<List<ArticleVideo>> getArticles(TimeRequest articleVideo);
 
   NetworkResult<TempTicket> getDailyMessage(int id);
+
+  NetworkResult<TargetWeight> targetWeight();
 }
 
 class _RepositoryImpl extends Repository {
@@ -545,7 +548,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<BodyStatus> getStatus() {
+  NetworkResult<body.BodyStatus> getStatus() {
     var response = _apiClient.getStatus();
     return response;
   }
@@ -922,6 +925,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<TempTicket> getDailyMessage(int id) {
     var response = _apiClient.getDailyMessage(id);
+    return response;
+  }
+
+  @override
+  NetworkResult<TargetWeight> targetWeight() {
+    var response = _apiClient.targetWeight();
     return response;
   }
 }
