@@ -76,14 +76,15 @@ class _TicketState extends ResourcefulState<Ticket> {
                         children: <Widget>[
                           Space(height: 3.h),
                           GestureDetector(
-                            onTap: () =>
-                                VxNavigator.of(context).push(Uri.parse(Routes.newTicketMessage)),
+                            onTap: () => VxNavigator.of(context)
+                                .push(Uri.parse(Routes.newTicketMessage)),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: AppColors.primary,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 1.w, vertical: 1.h),
                               child: Row(
                                 children: [
                                   Container(
@@ -105,7 +106,8 @@ class _TicketState extends ResourcefulState<Ticket> {
                                     child: Text(
                                       intl.newTicket,
                                       textAlign: TextAlign.start,
-                                      style: Theme.of(context).textTheme.subtitle1,
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
                                     ),
                                   ),
                                   SizedBox(width: 2.w),
@@ -132,11 +134,15 @@ class _TicketState extends ResourcefulState<Ticket> {
                           return Container(
                             child: Column(
                               children: [
-                                ...ticketBloc.listTickets
-                                    .map((message) => TicketItemWidget(
-                                          ticketItem: message,
-                                        ))
-                                    .toList()
+                                if (ticketBloc.listTickets.length > 0)
+                                  ...ticketBloc.listTickets
+                                      .map((message) => TicketItemWidget(
+                                            ticketItem: message,
+                                          ))
+                                      .toList()
+                                else
+                                  Text(intl.noTicketAvailable,
+                                      style: typography.caption)
                               ],
                             ),
                           );
