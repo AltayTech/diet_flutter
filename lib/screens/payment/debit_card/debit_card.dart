@@ -4,6 +4,10 @@ import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/payment/bloc.dart';
+import 'package:behandam/screens/payment/debit_card/card_info.dart';
+import 'package:behandam/screens/payment/debit_card/card_owner_box.dart';
+import 'package:behandam/screens/payment/debit_card/payment_date.dart';
+import 'package:behandam/screens/payment/provider.dart';
 import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -63,89 +67,64 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Scaffold(
-      appBar: Toolbar(titleBar: intl.paymentCardToCard),
-      body: TouchMouseScrollable(
-        child: SingleChildScrollView(
-          child: cardOwnerBox(),
+    return PaymentProvider(
+      bloc,
+      child: Scaffold(
+        appBar: Toolbar(titleBar: intl.paymentCardToCard),
+        body: TouchMouseScrollable(
+          child: SingleChildScrollView(
+            child: body(),
+          ),
         ),
       ),
     );
   }
 
-  Widget cardOwnerBox() {
-    return Card(
-      shape: AppShapes.rectangleMedium,
-      elevation: 1,
-      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-        child: StreamBuilder(
-          stream: bloc.waiting,
-          builder: (_, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.hasData && snapshot.data == false) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+  Widget body() {
+    return Container(
+      margin: EdgeInsets.all(4.w),
+      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+      child: StreamBuilder(
+        stream: bloc.waiting,
+        builder: (_, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData && snapshot.data == false) {
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  amountDescription(bloc.invoice!),
+                  CardOwnerBoxWidget(),
+                  Space(height: 4.h),
+                  CardInfoWidget(),
                   Space(height: 2.h),
-                  Container(
-                    decoration: AppDecorations.boxMild.copyWith(
-                      color: AppColors.box,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                    child: Column(
-                      children: [
-                        cardNumber(bloc.invoice!.cardNumber!),
-                        Space(height: 2.h),
-                        Text(
-                          intl.inNameOf(bloc.invoice!.ownerName!),
-                          style: typography.subtitle2?.apply(
-                            color: AppColors.primary,
-                            fontWeightDelta: 3,
-                          ),
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                        ),
-                        Space(height: 2.h),
-                        copyShareBox(bloc.invoice!),
-                      ],
-                    ),
-                  ),
+                  PaymentDateWidget(),
                   Space(height: 2.h),
-                  Text(
-                    showUserInfo
-                        ? intl.nowFillFollowingInformation
-                        : intl.clickFollowingButtonAfterPayment,
-                    style: typography.subtitle2?.apply(color: AppColors.labelColor),
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                  ),
-                  if (showUserInfo) userInfo(),
-                  Space(height: 2.h),
-                  Center(
-                    child: SubmitButton(
-                      label: showUserInfo ? intl.submitOfflinePayment : intl.deposited,
-                      onTap: () {
-                        showUserInfo
-                            ? (invoice.cardOwner.isNullOrEmpty ||
-                                    invoice.cardNum.isNullOrEmpty ||
-                                    invoice.payedAt.isNullOrEmpty)
-                                ? null
-                                : bloc.newPayment(invoice)
-                            : setState(() {
-                                showUserInfo = true;
-                              });
-                        ;
-                      },
-                    ),
-                  ),
-                ],
-              );
-            }
-            return Center(child: Progress());
-          },
-        ),
+                  registerPaymentInfo()
+                ]);
+          }
+          return Center(child: Progress());
+        },
+      ),
+    );
+  }
+
+  Widget registerPaymentInfo() {
+    return Center(
+      child: SubmitButton(
+        label: showUserInfo
+            ? intl.submitOfflinePayment
+            : intl.deposited,
+        onTap: () {
+          showUserInfo
+              ? (invoice.cardOwner.isNullOrEmpty ||
+              invoice.cardNum.isNullOrEmpty ||
+              invoice.payedAt.isNullOrEmpty)
+              ? null
+              : bloc.newPayment(invoice)
+              : setState(() {
+            showUserInfo = true;
+          });
+          ;
+        },
+        size: Size(80.w, 6.h),
       ),
     );
   }
@@ -223,67 +202,6 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
             textAlign: TextAlign.center,
             overflow: TextOverflow.visible,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget copyShareBox(LatestInvoiceData latestInvoiceData) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 1,
-          child: copyShareItem('assets/images/bill/copy.svg', intl.copy, () {
-            Clipboard.setData(ClipboardData(
-              text: intl.debitCardInfo(
-                latestInvoiceData.cardNumber!,
-                latestInvoiceData.ownerName!,
-                latestInvoiceData.amount!.toInt().toString(),
-              ),
-            ));
-            Utils.getSnackbarMessage(context, intl.copied);
-          }),
-        ),
-        Space(width: 3.w),
-        Expanded(
-          flex: 1,
-          child: copyShareItem('assets/images/bill/share.svg', intl.share, () {
-            Share.share(
-                intl.debitCardInfo(
-                  latestInvoiceData.cardNumber!,
-                  latestInvoiceData.ownerName!,
-                  latestInvoiceData.amount!.toInt().toString(),
-                ),
-                subject: 'شماره کارت');
-          }),
-        ),
-      ],
-    );
-  }
-
-  Widget copyShareItem(String iconPath, String title, Function onTap) {
-    return GestureDetector(
-      onTap: () => onTap(),
-      child: Container(
-        decoration: AppDecorations.boxMedium.copyWith(
-          color: AppColors.labelColor.withOpacity(0.5),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.7.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ImageUtils.fromLocal(
-              iconPath,
-              width: 7.w,
-              height: 7.w,
-            ),
-            Space(width: 2.w),
-            Text(
-              title,
-              style: typography.caption,
-              textAlign: TextAlign.center,
-            ),
-          ],
         ),
       ),
     );
@@ -401,7 +319,8 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
   String? dateFormatted() {
     if (!invoice.payedAt.isNullOrEmpty) {
-      var formatter = Jalali.fromDateTime(DateTime.parse(invoice.payedAt!)).formatter;
+      var formatter =
+          Jalali.fromDateTime(DateTime.parse(invoice.payedAt!)).formatter;
       return '${formatter.d} ${formatter.mN} ${formatter.yyyy}';
     }
     return null;

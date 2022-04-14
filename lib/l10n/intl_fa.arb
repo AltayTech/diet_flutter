@@ -363,7 +363,7 @@
       }
     }
   },
-  "share": "به اشتراک بگذار",
+  "share": "اشتراک گزاری",
   "copy": "کپی کن",
   "debitCardInfo": "شماره کارت {cardNumber} \n به نام {ownerName} \n مبلغ {amount} تومان",
   "@debitCardInfo": {
@@ -643,5 +643,12 @@
       }
     }
   },
+  "cardToCardDescription": "مبلغ موردنظر رو از طریق عابربانک یا اپلیکیشن های بانکی به شماره کارت زیر واریز کنید.",
+  "copyCardNumber": "کپی شماره کارت",
+  "enterDataAfterPayment": "پس از پرداخت، اطلاعات زیر رو تکمیل کنید",
+  "cardOwnerName": "نام و نام خانوادگی صاحب کارت",
+  "lastFourDigitsCardNumber": "4 رقم آخر شماره کارت",
+  "todayPay": "امروز واریز کردم",
+  "newDate": "تاریخ جدید",
   "understand": "متوجه شدم"
 }
