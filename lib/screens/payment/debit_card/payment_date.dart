@@ -37,9 +37,14 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
 
   TextEditingController _cardOwnerNameController = TextEditingController();
 
+  late Jalali jalali;
+
   @override
   void initState() {
     super.initState();
+
+    jalali = Jalali.fromDateTime(
+        DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10)));
   }
 
   @override
@@ -84,7 +89,7 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
               Container(
                 margin: EdgeInsets.only(right: 2.w, left: 2.w),
                 child: StreamBuilder<PaymentDate?>(
-                    stream: bloc.selectedDate,
+                    stream: bloc.selectedDateType,
                     builder: (context, selectedDate) {
                       if (selectedDate.hasData)
                         return Container(
@@ -120,10 +125,14 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
 
   Widget paymentDateItem(bool isSelected, PaymentDate date) {
     return InkWell(
-      onTap: () => bloc.SetSelectedDate = date,
+      onTap: () {
+        bloc.setSelectedDateType = date;
+        if (date == PaymentDate.customDate) selectDate();
+      },
       child: Container(
         width: double.maxFinite,
         alignment: Alignment.center,
+        margin: EdgeInsets.only(right: 2.w),
         decoration: BoxDecoration(
           color: Colors.white,
           border: isSelected
@@ -132,67 +141,177 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
           borderRadius: BorderRadius.circular(10),
         ),
         constraints: BoxConstraints(minHeight: 8.h),
-        child: Container(
-          margin: EdgeInsets.only(right: 2.w),
-          width: double.maxFinite,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 0,
-                child: ImageUtils.fromLocal(
-                  isSelected
-                      ? 'assets/images/bill/check.svg'
-                      : 'assets/images/bill/not_select.svg',
-                  width: 3.w,
-                  height: 3.h,
-                ),
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              width: double.maxFinite,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              margin: EdgeInsets.only(top: 10),
+              child: Row(
+                children: [
+                  ImageUtils.fromLocal(
+                    isSelected
+                        ? 'assets/images/bill/check.svg'
+                        : 'assets/images/bill/not_select.svg',
+                    width: 2.5.w,
+                    height: 2.5.h,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(right: 2.w),
+                    child: Text(
+                      date == PaymentDate.today ? intl.todayPay : intl.newDate,
+                      softWrap: false,
+                      style: typography.caption!.copyWith(
+                          color: isSelected
+                              ? AppColors.priceColor
+                              : AppColors.greyDate,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  )
+                ],
               ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  alignment: Alignment.center,
-                  width: double.maxFinite,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      /*itemMonth(package),*/
-                      Expanded(
+            ),
+            Space(height: 1.h),
+            Container(
+              alignment: Alignment.center,
+              width: double.maxFinite,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              margin: EdgeInsets.only(top: 10),
+              child: date == PaymentDate.today
+                  ? Text(
+                      formatTodayDate(),
+                      softWrap: false,
+                      style: typography.caption!.copyWith(
+                          color: AppColors.greyDate,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w400),
+                    )
+                  : StreamBuilder<String>(
+                      stream: bloc.selectedDate,
+                      builder: (context, selectedDate) {
+                        return Text(
+                          (selectedDate.hasData
+                              ? formatCustomDate(selectedDate.requireData)
+                              : intl.selectNewDate),
+                          softWrap: false,
+                          style: typography.caption!.copyWith(
+                              color: AppColors.redDate,
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400),
+                        );
+                      }),
+            ),
+            Space(height: 1.h),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void selectDate() {
+    DialogUtils.showBottomSheetPage(
+        context: context,
+        child: SingleChildScrollView(
+          child: Container(
+            height: 60.h,
+            padding: EdgeInsets.all(5.w),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    closeDialog(),
+                    Expanded(
                         flex: 2,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          margin: EdgeInsets.only(top: 10),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                date == PaymentDate.today
-                                    ? intl.todayPay
-                                    : intl.newDate,
-                                softWrap: false,
-                                style: typography.caption!.copyWith(
-                                    color: isSelected
-                                        ? AppColors.priceColor
-                                        : Colors.black,
-                                fontSize: 10.sp),
-                              ),
-                            ],
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 4.h),
+                          child: Center(
+                            child: Text(
+                              intl.selectPaymentDate,
+                              softWrap: false,
+                              style: typography.caption!.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700),
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
+                        ))
+                  ],
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      intl.enterPaymentDate,
+                      softWrap: false,
+                      style: typography.caption!
+                          .copyWith(color: Colors.black, fontSize: 10.sp),
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  flex: 3,
+                  child: Center(
+                    child: CustomDate(
+                      function: (value) {
+                        debugPrint('date selected = > $value');
+                        bloc.setSelectedDate = value;
+                      },
+                      datetime: DateTime.parse(Jalali.now()
+                              .toDateTime()
+                              .toString()
+                              .substring(0, 10))
+                          .toString()
+                          .substring(0, 10),
+                      maxYear: Jalali.now().year,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                      child: SubmitButton(
+                    label: intl.submitDate,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    size: Size(80.w, 6.h),
+                  )),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+
+  Widget closeDialog() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topRight,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
           ),
         ),
       ),
     );
+  }
+
+  String formatTodayDate() {
+    final f = jalali.formatter;
+    return '${f.dd} ${f.mN} ${f.yyyy}';
+  }
+
+  String formatCustomDate(String date) {
+    Jalali jalali = Jalali.fromDateTime(DateTime.parse(date));
+    final f = jalali.formatter;
+    return '${f.dd} ${f.mN} ${f.yyyy}';
   }
 
   @override

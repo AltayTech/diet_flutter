@@ -20,12 +20,11 @@ enum PaymentDate {
   customDate
 }
 
-
 class PaymentBloc {
   PaymentBloc() {
     _waiting.safeValue = false;
     _discountLoading.value = false;
-    _selectedDate.value = PaymentDate.today;
+    _selectedDateType.value = PaymentDate.today;
   }
 
   final _repository = Repository.getInstance();
@@ -45,7 +44,8 @@ class PaymentBloc {
   final _wrongDisCode = BehaviorSubject<bool>();
   final _discountLoading = BehaviorSubject<bool>();
   final _usedDiscount = BehaviorSubject<bool>();
-  final _selectedDate = BehaviorSubject<PaymentDate>();
+  final _selectedDateType = BehaviorSubject<PaymentDate>();
+  final _selectedDate = BehaviorSubject<String>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
   final _onlinePayment = LiveEvent();
@@ -90,9 +90,13 @@ class PaymentBloc {
 
   Stream get onlinePayment => _onlinePayment.stream;
 
-  Stream<PaymentDate> get selectedDate => _selectedDate.stream;
+  Stream<PaymentDate> get selectedDateType => _selectedDateType.stream;
 
-  set SetSelectedDate(PaymentDate date) => _selectedDate.value = date;
+  Stream<String> get selectedDate => _selectedDate.stream;
+
+  set setSelectedDateType(PaymentDate date) => _selectedDateType.value = date;
+
+  set setSelectedDate(String date) => _selectedDate.value = date;
 
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
@@ -242,6 +246,7 @@ class PaymentBloc {
     _wrongDisCode.close();
     _waiting.close();
     _onlinePayment.close();
+    _selectedDateType.close();
     _selectedDate.close();
   }
 }

@@ -50,7 +50,7 @@ class myDate extends ResourcefulState<CustomDate> {
       maxValue: yearsList![yearsList!.length - 1],
       value: birthYear,
       type: DateType.Year,
-      height: 15.h,
+      height: 22.h,
       onClick: Click,
       list: yearsList,
       verticalSliderType: VerticalSliderType.Number,
@@ -62,7 +62,7 @@ class myDate extends ResourcefulState<CustomDate> {
       maxValue: 12,
       value: birthMonth,
       type: DateType.Month,
-      height: 15.h,
+      height: 22.h,
       onClick: Click,
       list: CustomDate.monthsList,
       verticalSliderType: VerticalSliderType.String,
@@ -74,7 +74,7 @@ class myDate extends ResourcefulState<CustomDate> {
       maxValue: daysList![daysList!.length - 1],
       value: birthday,
       type: DateType.Day,
-      height: 15.h,
+      height: 22.h,
       onClick: Click,
       list: daysList,
       verticalSliderType: VerticalSliderType.Number,
@@ -116,7 +116,7 @@ class myDate extends ResourcefulState<CustomDate> {
               color: AppColors.background,
               borderRadius: BorderRadius.circular(10),
             ),
-            height: 15.h,
+            height: 22.h,
             alignment: Alignment.center,
             child: Center(
               child: LayoutBuilder(
@@ -132,9 +132,9 @@ class myDate extends ResourcefulState<CustomDate> {
             right: 12,
             child: Center(
               child: SvgPicture.asset(
-                'assets/images/diet/list_arrow.svg',
-                width: 4.w,
-                height: 4.w,
+                'assets/images/diet/list_arrow_orange.svg',
+                width: 3.w,
+                height: 3.w,
               ),
             ),
           ),
@@ -206,11 +206,11 @@ class myDate extends ResourcefulState<CustomDate> {
         Row(
           textDirection: context.textDirectionOfLocaleInversed,
           children: [
-            birthDatePopupTitleBox('${intl.year} :', 2),
+            birthDatePopupTitleBox('${intl.year}', 2),
             SizedBox(width: 3.w),
-            birthDatePopupTitleBox('${intl.month} :', 3),
+            birthDatePopupTitleBox('${intl.month}', 3),
             SizedBox(width: 3.w),
-            birthDatePopupTitleBox('${intl.day} :', 2),
+            birthDatePopupTitleBox('${intl.day}', 2),
           ],
         ),
         SizedBox(height: 1.h),

@@ -87,7 +87,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
       child: StreamBuilder(
         stream: bloc.waiting,
         builder: (_, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.hasData && snapshot.data == false) {
+          if (snapshot.hasData && !snapshot.data!) {
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -109,9 +109,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   Widget registerPaymentInfo() {
     return Center(
       child: SubmitButton(
-        label: showUserInfo
-            ? intl.submitOfflinePayment
-            : intl.deposited,
+        label: intl.submitOfflinePayment,
         onTap: () {
           showUserInfo
               ? (invoice.cardOwner.isNullOrEmpty ||
@@ -125,48 +123,6 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           ;
         },
         size: Size(80.w, 6.h),
-      ),
-    );
-  }
-
-  Widget amountDescription(LatestInvoiceData data) {
-    return Container(
-      decoration: AppDecorations.boxMild.copyWith(
-        color: AppColors.primary.withOpacity(0.3),
-      ),
-      height: 10.h,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            decoration: AppDecorations.boxMild.copyWith(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.only(
-                bottomRight: AppRadius.radiusMild,
-                topRight: AppRadius.radiusMild,
-              ),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
-            child: ImageUtils.fromLocal(
-              'assets/images/bill/idea.svg',
-              width: 8.w,
-              height: 8.w,
-            ),
-          ),
-          Space(width: 2.w),
-          Expanded(
-            child: Center(
-              child: Text(
-                intl.depositTheAmount(data.amount!.toInt().toString()),
-                style: typography.caption?.apply(
-                  color: AppColors.primary,
-                ),
-                softWrap: true,
-                overflow: TextOverflow.visible,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

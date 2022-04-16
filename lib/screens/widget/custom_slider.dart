@@ -20,18 +20,18 @@ class MySlider extends StatefulWidget {
     required this.verticalSliderType,
 //        @required this.itemExtent
   })  : scrollController = new ScrollController(
-          initialScrollOffset: (value - minValue) * height / 3,
+          initialScrollOffset: (value - minValue) * height / 5,
         ),
-        super(key: key){
-    list= list?.map((item) => item ).toList();
+        super(key: key) {
+    list = list?.map((item) => item).toList();
   }
 
-   int minValue;
-   int maxValue;
+  int minValue;
+  int maxValue;
   int value;
-   VerticalSliderType verticalSliderType;
+  VerticalSliderType verticalSliderType;
   double height;
- late ScrollController scrollController;
+  late ScrollController scrollController;
   Function? onClick;
   List? list;
   DateType type;
@@ -41,15 +41,14 @@ class MySlider extends StatefulWidget {
 }
 
 class _MySliderState extends ResourcefulState<MySlider> {
-  double get itemExtent => widget.height / 3;
+  double get itemExtent => widget.height / 5;
 
-  int _indexToValue(int index) => widget.minValue + (index - 1);
-
+  int _indexToValue(int index) => widget.minValue + (index - 2);
 
   @override
   build(BuildContext context) {
     super.build(context);
-    int itemCount = (widget.maxValue - widget.minValue) + 3;
+    int itemCount = (widget.maxValue - widget.minValue) + 5;
     return NotificationListener(
       onNotification: _onNotification,
       child: new ListView.builder(
@@ -61,11 +60,14 @@ class _MySliderState extends ResourcefulState<MySlider> {
         itemBuilder: (BuildContext context, int index) {
           int itemValue = _indexToValue(index);
           String? itemValueString;
-          bool isExtra = index == 0 || index == itemCount - 1;
+          bool isExtra = index == 0 ||
+              index == 1 ||
+              index == itemCount - 1 ||
+              index == itemCount - 2;
           if (widget.verticalSliderType == VerticalSliderType.String &&
               !isExtra) {
             // int i = list.indexWhere((element) => element )
-            itemValueString = widget.list![index - 1];
+            itemValueString = widget.list![index - 2];
           }
           // Fimber.d('value ${widget.value} / $itemValue}');
           return isExtra
@@ -91,7 +93,10 @@ class _MySliderState extends ResourcefulState<MySlider> {
   TextStyle _getTextStyle(int itemValue, int value) {
     //Fimber.d('style $itemValue/ $value');
     return itemValue == value
-        ? Theme.of(context).textTheme.caption!.copyWith(fontWeight: FontWeight.w600)
+        ? Theme.of(context)
+            .textTheme
+            .caption!
+            .copyWith(fontWeight: FontWeight.w600)
         : Theme.of(context).textTheme.overline!;
   }
 

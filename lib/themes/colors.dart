@@ -64,6 +64,8 @@ class AppColors {
   static const pregnantPink = Color(0xffFE92A3);
   static const chartBorder = Color.fromARGB(255, 255, 87, 87);
   static const pinkPass = Color(0xffFFE2E2);
+  static const redDate = Color(0xffFF5757);
+  static const greyDate = Color(0xff454545);
   static var colorPackages = [
     {
       'barColor': Color.fromARGB(255, 249, 203, 202),

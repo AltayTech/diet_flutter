@@ -36,6 +36,7 @@ class _CardInfoWidgetState extends ResourcefulState<CardInfoWidget> {
   late PaymentBloc bloc;
 
   TextEditingController _cardOwnerNameController = TextEditingController();
+  TextEditingController _cardNumberController = TextEditingController();
 
   @override
   void initState() {
@@ -45,7 +46,7 @@ class _CardInfoWidgetState extends ResourcefulState<CardInfoWidget> {
   @override
   void dispose() {
     bloc.dispose();
-    _cardOwnerNameController.dispose();
+    _cardNumberController.dispose();
     super.dispose();
   }
 
@@ -115,7 +116,14 @@ class _CardInfoWidgetState extends ResourcefulState<CardInfoWidget> {
               Space(height: 2.h),
               Container(
                   margin: EdgeInsets.only(right: 2.w, left: 2.w),
-                  child: cardLastNumbers(widthSpace: 80.w, context: context)),
+                  child: Directionality(
+                      textDirection: context.textDirectionOfLocaleInversed,
+                      child: cardLastNumbers(
+                        widthSpace: 80.w,
+                        context: context,
+                        textController: _cardNumberController,
+                        onDone: (val) {},
+                      ))),
               Space(height: 2.h),
             ],
           ),

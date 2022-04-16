@@ -650,5 +650,9 @@
   "lastFourDigitsCardNumber": "4 رقم آخر شماره کارت",
   "todayPay": "امروز واریز کردم",
   "newDate": "تاریخ جدید",
+  "selectPaymentDate": "انتخاب تاریخ واریز",
+  "selectNewDate": "انتخاب تاریخ جدید",
+  "enterPaymentDate": "تاریخی که واریز خود را انجام داده اید را وارد نمایید",
+  "submitDate": "ثبت تاریخ",
   "understand": "متوجه شدم"
 }
