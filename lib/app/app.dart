@@ -18,6 +18,7 @@ import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/daily_message.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/payment/bill.dart';
+import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
 import 'package:behandam/screens/payment/success.dart';
@@ -314,8 +315,10 @@ final navigator = VxNavigator(
     Routes.psychologyReservedMeeting: (_, __) =>
         MaterialPage(child: routePage(PsychologyReservedMeetingScreen())),
     Routes.resetPasswordProfile: (_, __) => MaterialPage(child: routePage(ResetPasswordProfile())),
-    RegExp(r"\/(reg|list|renew|revive)(\/payment\/online\/fail)"): (_, params) =>
-        MaterialPage(child: routePage(PaymentFailScreen()), arguments: params),
+    RegExp(r"\/(reg|list|renew|revive|shop)(\/payment\/online\/fail)"): (path, params) =>
+        MaterialPage(
+            child: routePage(PaymentFailScreen()),
+            arguments: path.path.contains("shop") ? ProductType.SHOP : ProductType.PACKAGE),
     RegExp(r"\/(reg|list|renew|revive)(\/payment\/card\/reject)"): (_, __) =>
         MaterialPage(child: routePage(PaymentFailScreen())),
     RegExp(r"\/(reg|renew|revive)(\/activity)"): (_, __) =>
@@ -344,8 +347,7 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(Block())),
     RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),
-    RegExp(r"\/list\/preg\/block"): (_, __) =>
-        MaterialPage(child: routePage(BlockPregnancy())),
+    RegExp(r"\/list\/preg\/block"): (_, __) => MaterialPage(child: routePage(BlockPregnancy())),
     Routes.shopCategory: (_, param) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: param),
     Routes.shopOrders: (_, __) => MaterialPage(child: routePage(OrdersPage())),
@@ -365,7 +367,7 @@ final navigator = VxNavigator(
     Routes.selectPackageSubscription: (_, __) =>
         MaterialPage(child: routePage(SelectPackageSubscriptionScreen())),
     Routes.billSubscription: (_, params) =>
-        MaterialPage(child: routePage(BillPaymentScreen()),arguments: params),
+        MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

@@ -83,6 +83,7 @@ abstract class Routes {
   static const shopProduct = '/shop/product';
   static const shopBill = '/shop/payment/bill';
   static const shopPaymentOnlineSuccess = '/shop/payment/online/success';
+  static const shopPaymentOnlineFail = '/shop/payment/online/fail';
   static const dailyMessage = '/dailyMessage';
   static const selectPackageSubscription = '/subscription/select-package';
   static const billSubscription = '/subscription/bill';
