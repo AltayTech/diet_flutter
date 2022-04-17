@@ -9,8 +9,6 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/gender_switch.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logifan/widgets/space.dart';
@@ -34,9 +32,9 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
-  final _text = TextEditingController();
+
   var args;
-  bool _validate = false;
+
   String? firstName;
   String? lastName;
   String? _password;
@@ -279,46 +277,26 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
           SubmitButton(
               label: intl.register,
               size: Size(100.w, 8.h),
-              onTap: () {
-                // setState(() {
-                // _text.text.isEmpty ? _validate = true : _validate = false;
-                // });
-                if (firstName != null && lastName != null) {
-                  Register register = Register();
-                  register.firstName = firstName;
-                  register.lastName = lastName;
-                  register.mobile = args['mobile'];
-                  register.password = _password;
-                  register.gender = switchValue;
-                  register.verifyCode = args['code'];
-                  register.countryId = args['id'];
-                  register.appId = '0';
-                  authBloc.registerMethod(register);
-                } else
-                  Utils.getSnackbarMessage(context, intl.fillAllField);
-              }),
+              onTap: clickSubmit),
         ],
       ),
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
+  void clickSubmit(){
+      if (firstName != null && lastName != null) {
+        Register register = Register();
+        register.firstName = firstName;
+        register.lastName = lastName;
+        register.mobile = args['mobile'];
+        register.password = _password;
+        register.gender = switchValue;
+        register.verifyCode = args['code'];
+        register.countryId = args['id'];
+        register.appId = '0';
+        authBloc.registerMethod(register);
+      } else
+        Utils.getSnackbarMessage(context, intl.fillAllField);
 
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
   }
 }

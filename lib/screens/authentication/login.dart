@@ -1,11 +1,9 @@
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
-import 'package:behandam/screens/authentication/auth.dart';
-import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
@@ -13,15 +11,10 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import 'package:behandam/screens/utility/arc.dart';
-
 import '../../routes.dart';
-
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -54,9 +47,11 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
-        if(event.toString().contains(Routes.auth.substring(1)))
-          VxNavigator.of(context).push(Uri.parse('/$event'), params: {"mobile": args['mobile'], 'countryId': args['countryId']});
-        else VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
+        if (event.toString().contains(Routes.auth.substring(1)))
+          VxNavigator.of(context).push(Uri.parse('/$event'),
+              params: {"mobile": args['mobile'], 'countryId': args['countryId']});
+        else
+          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
     });
     authBloc.showServerError.listen((event) {
@@ -66,6 +61,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   }
 
   bool isInit = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -87,8 +83,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             builder: (context, snapshot) {
               if (snapshot.data == false && !check) {
                 return NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                     return <Widget>[
                       SliverAppBar(
                         backgroundColor: AppColors.arcColor,
@@ -114,9 +109,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 );
               } else {
                 check = false;
-                return Center(
-                    child: Container(
-                        width: 15.w, height: 15.w, child: Progress()));
+                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
               }
             }),
       ),
@@ -167,8 +160,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -176,16 +168,15 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               )),
           SizedBox(height: 2.h),
           Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                color: AppColors.arcColor),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
             child: TextField(
               obscureText: !_obscureText,
               controller: _text,
               textDirection: TextDirection.ltr,
               decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.penColor)),
+                focusedBorder:
+                    OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -204,27 +195,19 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                     });
                   },
                 ),
-                labelStyle:
-                    TextStyle(color: AppColors.penColor, fontSize: 18.0),
+                labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0),
                 // errorText: _validate ? intl.fillAllField : null
               ),
+              onSubmitted: (String) {
+                clicButton();
+              },
               onChanged: (txt) {
                 _password = txt;
               },
             ),
           ),
           SizedBox(height: 10.h),
-          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), () {
-            DialogUtils.showDialogProgress(context: context);
-            if (_password.length > 0) {
-              User user = User();
-              user.mobile = args['mobile'];
-              user.password = _password;
-              authBloc.passwordMethod(user);
-            }
-            else
-              Navigator.pop(context);
-          }),
+          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), clicButton),
           SizedBox(height: 10.h),
           InkWell(
             child: Text(
@@ -254,7 +237,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(intl.changePassword,style: typography.bodyText2),
+            Text(intl.changePassword, style: typography.bodyText2),
             Container(
               width: 70.w,
               child: RichText(
@@ -264,8 +247,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   style: TextStyle(fontSize: 14.sp, color: AppColors.penColor),
                   children: <TextSpan>[
                     TextSpan(
-                        text: '${args['mobile']}',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                        text: '${args['mobile']}', style: TextStyle(fontWeight: FontWeight.bold)),
                     TextSpan(text: intl.textChangePass2),
                   ],
                 ),
@@ -285,12 +267,11 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                   ),
                   child:
-                  Text(intl.no, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
+                      Text(intl.no, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
                 ),
                 ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.btnColor),
+                        backgroundColor: MaterialStateProperty.all(AppColors.btnColor),
                         fixedSize: MaterialStateProperty.all(Size(10.0, 20.0))),
                     child: Text(
                       intl.yes,
@@ -311,22 +292,14 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+  void clicButton() {
+    DialogUtils.showDialogProgress(context: context);
+    if (_password.length > 0) {
+      User user = User();
+      user.mobile = args['mobile'];
+      user.password = _password;
+      authBloc.passwordMethod(user);
+    } else
+      Navigator.pop(context);
   }
 }
