@@ -15,6 +15,7 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,22 +36,13 @@ class PaymentDateWidget extends StatefulWidget {
 class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
   late PaymentBloc bloc;
 
-  TextEditingController _cardOwnerNameController = TextEditingController();
-
-  late Jalali jalali;
-
   @override
   void initState() {
     super.initState();
-
-    jalali = Jalali.fromDateTime(
-        DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10)));
   }
 
   @override
   void dispose() {
-    bloc.dispose();
-    _cardOwnerNameController.dispose();
     super.dispose();
   }
 
@@ -90,8 +82,8 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
                 margin: EdgeInsets.only(right: 2.w, left: 2.w),
                 child: StreamBuilder<PaymentDate?>(
                     stream: bloc.selectedDateType,
-                    builder: (context, selectedDate) {
-                      if (selectedDate.hasData)
+                    builder: (context, selectedDateType) {
+                      if (selectedDateType.hasData)
                         return Container(
                           width: double.maxFinite,
                           child: Row(
@@ -100,13 +92,14 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
                               children: [
                                 Expanded(
                                   child: paymentDateItem(
-                                      selectedDate.data! == PaymentDate.today,
+                                      selectedDateType.data! ==
+                                          PaymentDate.today,
                                       PaymentDate.today),
                                 ),
                                 Space(width: 3.w),
                                 Expanded(
                                   child: paymentDateItem(
-                                      selectedDate.data! ==
+                                      selectedDateType.data! ==
                                           PaymentDate.customDate,
                                       PaymentDate.customDate),
                                 )
@@ -127,6 +120,10 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
     return InkWell(
       onTap: () {
         bloc.setSelectedDateType = date;
+
+        if (date == PaymentDate.today)
+          bloc.setSelectedDate = DateTimeUtils.formatTodayDate();
+
         if (date == PaymentDate.customDate) selectDate();
       },
       child: Container(
@@ -181,7 +178,7 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
               margin: EdgeInsets.only(top: 10),
               child: date == PaymentDate.today
                   ? Text(
-                      formatTodayDate(),
+                      DateTimeUtils.formatTodayDate(),
                       softWrap: false,
                       style: typography.caption!.copyWith(
                           color: AppColors.greyDate,
@@ -192,8 +189,9 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
                       stream: bloc.selectedDate,
                       builder: (context, selectedDate) {
                         return Text(
-                          (selectedDate.hasData
-                              ? formatCustomDate(selectedDate.requireData)
+                          (selectedDate.hasData && date == PaymentDate.customDate
+                              ? DateTimeUtils.formatCustomDate(
+                                  selectedDate.requireData)
                               : intl.selectNewDate),
                           softWrap: false,
                           style: typography.caption!.copyWith(
@@ -256,6 +254,11 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
                       function: (value) {
                         debugPrint('date selected = > $value');
                         bloc.setSelectedDate = value;
+
+                        bloc.invoice!.payedAt =
+                            DateTimeUtils.jalaliToGregorian(value);
+                        debugPrint(
+                            'date selected = > ${bloc.invoice!.payedAt}');
                       },
                       datetime: DateTime.parse(Jalali.now()
                               .toDateTime()
@@ -301,17 +304,6 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
         ),
       ),
     );
-  }
-
-  String formatTodayDate() {
-    final f = jalali.formatter;
-    return '${f.dd} ${f.mN} ${f.yyyy}';
-  }
-
-  String formatCustomDate(String date) {
-    Jalali jalali = Jalali.fromDateTime(DateTime.parse(date));
-    final f = jalali.formatter;
-    return '${f.dd} ${f.mN} ${f.yyyy}';
   }
 
   @override

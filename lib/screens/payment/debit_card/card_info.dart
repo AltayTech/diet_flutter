@@ -45,8 +45,6 @@ class _CardInfoWidgetState extends ResourcefulState<CardInfoWidget> {
 
   @override
   void dispose() {
-    bloc.dispose();
-    _cardNumberController.dispose();
     super.dispose();
   }
 
@@ -99,8 +97,8 @@ class _CardInfoWidgetState extends ResourcefulState<CardInfoWidget> {
                     contentPadding: EdgeInsets.all(12),
                   ),
                   style: TextStyle(color: AppColors.penColor, fontSize: 10.sp),
-                  onChanged: (txt) {
-                    //_password = txt;
+                  onChanged: (val) {
+                    bloc.invoice!.cardOwner = val;
                   },
                 ),
               ),
@@ -122,7 +120,9 @@ class _CardInfoWidgetState extends ResourcefulState<CardInfoWidget> {
                         widthSpace: 80.w,
                         context: context,
                         textController: _cardNumberController,
-                        onDone: (val) {},
+                        onDone: (val) {
+                          bloc.invoice!.cardNum = val;
+                        },
                       ))),
               Space(height: 2.h),
             ],

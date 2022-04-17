@@ -25,6 +25,8 @@ class PaymentBloc {
     _waiting.safeValue = false;
     _discountLoading.value = false;
     _selectedDateType.value = PaymentDate.today;
+
+    _invoice = LatestInvoiceData();
   }
 
   final _repository = Repository.getInstance();
@@ -47,6 +49,7 @@ class PaymentBloc {
   final _selectedDateType = BehaviorSubject<PaymentDate>();
   final _selectedDate = BehaviorSubject<String>();
   final _navigateTo = LiveEvent();
+  final _popLoading = LiveEvent();
   final _showServerError = LiveEvent();
   final _onlinePayment = LiveEvent();
 
@@ -86,6 +89,8 @@ class PaymentBloc {
 
   Stream get navigateTo => _navigateTo.stream;
 
+  Stream get popLoading => _popLoading.stream;
+
   Stream get showServerError => _showServerError.stream;
 
   Stream get onlinePayment => _onlinePayment.stream;
@@ -98,19 +103,20 @@ class PaymentBloc {
 
   set setSelectedDate(String date) => _selectedDate.value = date;
 
+  set setInvoice(LatestInvoiceData invoice) => _invoice = invoice;
+
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
   }
 
   void newPayment(LatestInvoiceData newInvoice) {
-    _waiting.safeValue = true;
     _repository.newPayment(newInvoice).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
               '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
       MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
       _navigateTo.fire(value.next);
-    }).whenComplete(() => _waiting.safeValue = false);
+    }).whenComplete(() => _popLoading.fire(true));
   }
 
   void getPackagePayment() {
@@ -186,6 +192,7 @@ class PaymentBloc {
     _waiting.safeValue = true;
     _repository.latestInvoice().then((value) {
       _invoice = value.data;
+      _invoice!.payedAt = DateTime.now().toString().substring(0, 10);
       _path = value.next!;
     }).whenComplete(() => _waiting.safeValue = false);
   }
@@ -238,6 +245,7 @@ class PaymentBloc {
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
+    _popLoading.close();
     _discountLoading.close();
     _cardToCard.close();
     _online.close();
