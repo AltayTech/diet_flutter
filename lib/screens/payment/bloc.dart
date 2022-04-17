@@ -7,13 +7,19 @@ import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/utils/device.dart';
-import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/bool.dart';
+import 'package:behandam/extensions/stream.dart';
+import 'package:behandam/utils/device.dart';
+import 'package:flutter/foundation.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../routes.dart';
-import 'package:behandam/extensions/stream.dart';
+
+enum ProductType {
+  SHOP,
+  PACKAGE,
+}
+
 class PaymentBloc {
   PaymentBloc() {
     _waiting.safeValue = false;
@@ -37,6 +43,7 @@ class PaymentBloc {
   final _wrongDisCode = BehaviorSubject<bool>();
   final _discountLoading = BehaviorSubject<bool>();
   final _usedDiscount = BehaviorSubject<bool>();
+  final _productType = BehaviorSubject<ProductType>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
   final _onlinePayment = LiveEvent();
@@ -81,6 +88,8 @@ class PaymentBloc {
 
   Stream get onlinePayment => _onlinePayment.stream;
 
+  Stream<ProductType> get productType => _productType.stream;
+
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
   }
@@ -107,19 +116,21 @@ class PaymentBloc {
   }
 
   void selectUserPayment() {
-    if (!isUsedDiscount &&
-        (discountCode != null && discountCode!.trim().isNotEmpty)) {
+    if (!isUsedDiscount && (discountCode != null && discountCode!.trim().isNotEmpty)) {
       _showServerError.fireMessage('error');
     } else {
       Payment payment = new Payment();
-      payment.originId = Device.get().isIos ? 2 : 3;
-      payment.coupon = discountCode;
-      payment.paymentTypeId =
-          (discountInfo != null && discountInfo!.finalPrice == 0)
+      payment.originId = kIsWeb
+          ? 0
+          : Device.get().isIos
               ? 2
-              : isOnline
-                  ? 0
-                  : 1;
+              : 3;
+      payment.coupon = discountCode;
+      payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
+          ? 2
+          : isOnline
+              ? 0
+              : 1;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       });
@@ -197,8 +208,7 @@ class PaymentBloc {
   }
 
   void setShowInformation() {
-    _showInformation.value =
-        _showInformation.valueOrNull == null ? true : !_showInformation.value;
+    _showInformation.value = _showInformation.valueOrNull == null ? true : !_showInformation.value;
   }
 
   void shopLastInvoice() {
@@ -211,7 +221,7 @@ class PaymentBloc {
           !value.requireData.resolved.isNullOrFalse) {
         _navigateTo.fire(Routes.shopOrders);
         _productId = value.requireData.productId;
-       // debugPrint('shop last invoice $productId / ${value.requireData.productId}');
+        // debugPrint('shop last invoice $productId / ${value.requireData.productId}');
       } else
         _navigateTo.fire(Routes.shopHome);
     }).whenComplete(() => _waiting.safeValue = false);
@@ -229,5 +239,14 @@ class PaymentBloc {
     _wrongDisCode.close();
     _waiting.close();
     _onlinePayment.close();
+    _productType.close();
+  }
+
+  void setProductType(ProductType productType) {
+    _productType.safeValue = productType;
+    if (_productType.value == ProductType.SHOP)
+      shopLastInvoice();
+    else
+      getLastInvoice();
   }
 }
