@@ -573,7 +573,7 @@
   "productPriceWithOff": "قیمت تخفیف خورده",
   "expand": "مشاهده کامل",
   "collapse": "بازگشت",
-  "clickHereToUseProduct": "برای استفاده از محصول روی دکمه کلیک کنید",
+  "clickHereToUseProduct": "برای استفاده از محصول، روی دکمه کلیک کنید",
   "viewProduct": "مشاهده محصول",
   "enterNewWeight": "وزن جدیدت رو وارد کن",
   "weighEnterCallText": "در صورت نیاز به مشاوره تلفنی توسط کارشناسان ما میتونی از قسمت زیر بله رو انتخاب کنی تا در اولین فرصت با شما تماس بگیریم",
@@ -644,5 +644,6 @@
     }
   },
   "noTicketAvailable": "پیام وجود ندارد",
+  "backToShop": "بازگشت به فروشگاه",
   "understand": "متوجه شدم"
 }

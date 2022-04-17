@@ -1,5 +1,4 @@
 import 'dart:async';
-import "package:universal_html/html.dart" as html;
 import 'dart:io';
 
 import 'package:behandam/data/entity/payment/payment.dart';
@@ -7,10 +6,12 @@ import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/bool.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:behandam/extensions/stream.dart';
+import "package:universal_html/html.dart" as html;
+
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
@@ -38,8 +39,9 @@ class ProductBloc {
 
   final _loadingMoreProducts = BehaviorSubject<bool>();
   final _selectedProduct = BehaviorSubject<int>();
-  final _navigateToVerify = LiveEvent();
+  final _navigateToRoute = LiveEvent();
   final _onlinePayment = LiveEvent();
+  final _popLoading = LiveEvent();
   final _showServerError = LiveEvent();
   final _wrongDisCode = BehaviorSubject<bool>();
   final _discountLoading = BehaviorSubject<bool>();
@@ -70,7 +72,9 @@ class ProductBloc {
 
   Stream<TypeMediaShop> get typeMediaShop => _typeMediaShop.stream;
 
-  Stream get navigateToVerify => _navigateToVerify.stream;
+  Stream get navigateToRoute => _navigateToRoute.stream;
+
+  Stream get popLoading => _popLoading.stream;
 
   Stream get onlinePayment => _onlinePayment.stream;
 
@@ -158,7 +162,7 @@ class ProductBloc {
 
   void downloadFile(Lessons value) async {
     if (kIsWeb) {
-     /* html.AnchorElement anchorElement = new html.AnchorElement(href: value.video!);
+      /* html.AnchorElement anchorElement = new html.AnchorElement(href: value.video!);
       anchorElement.download = value.video!;
       anchorElement.click();*/
       html.window.open(value.video!, 'new tab');
@@ -183,8 +187,6 @@ class ProductBloc {
   }
 
   void onlinePaymentClick(int productId) {
-    _loadingMoreProducts.value = true;
-    //ToDo get selected product from bloc not from ui
     Payment shopPayment = Payment();
     shopPayment.originId = kIsWeb ? 5 : 6;
     shopPayment.paymentTypeId = 0;
@@ -193,7 +195,7 @@ class ProductBloc {
     _repository.shopOnlinePayment(shopPayment).then((value) {
       if (value.data?.url != null && value.data!.url!.isNotEmpty) _checkLatestInvoice = true;
       _onlinePayment.fire(value.data?.url ?? null);
-    }).whenComplete(() => _loadingMoreProducts.safeValue = false);
+    }).whenComplete(() => _popLoading.fire(false));
   }
 
   void mustCheckLastInvoice() {
@@ -208,9 +210,9 @@ class ProductBloc {
       if (value.data?.refId != null &&
           !value.requireData.success.isNullOrFalse &&
           !value.requireData.resolved.isNullOrFalse) {
-        _navigateToVerify.fire(true);
+        _navigateToRoute.fire(true);
       } else
-        _navigateToVerify.fire(false);
+        _navigateToRoute.fire(false);
     }).whenComplete(() => _loadingMoreProducts.value = false);
     // }
   }
@@ -246,7 +248,7 @@ class ProductBloc {
   void dispose() {
     _IsBought.close();
     _showServerError.close();
-    _navigateToVerify.close();
+    _navigateToRoute.close();
     _onlinePayment.close();
     _loadingMoreProducts.close();
     _typeMediaShop.close();
@@ -254,5 +256,6 @@ class ProductBloc {
     _wrongDisCode.close();
     _discountLoading.close();
     _product.close();
+    _popLoading.close();
   }
 }

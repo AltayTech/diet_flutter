@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/shop/product_bloc.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -35,20 +36,24 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
     bloc = ProductBloc();
-    bloc.navigateToVerify.listen((event) {
+    bloc.navigateToRoute.listen((event) {
       // Navigator.of(context).pop();
       if (event) {
         MemoryApp.analytics!.logEvent(name: "shop_payment_success");
         VxNavigator.of(context)
-            .clearAndPush(Uri(path: Routes.shopPaymentOnlineSuccess), params: "shop");
+            .clearAndPush(Uri(path: Routes.shopPaymentOnlineSuccess), params: ProductType.SHOP);
       } else
-        VxNavigator.of(context).popToRoot();
+        VxNavigator.of(context)
+            .push(Uri(path: Routes.shopPaymentOnlineFail), params: ProductType.SHOP);
     });
     bloc.onlinePayment.listen((event) {
       if (event != null) {
         bloc.mustCheckLastInvoice();
         IntentUtils.launchURL(event);
       }
+    });
+    bloc.popLoading.listen((event) {
+      Navigator.of(context).pop();
     });
   }
 
