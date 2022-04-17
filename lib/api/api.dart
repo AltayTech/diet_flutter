@@ -26,6 +26,7 @@ import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
@@ -45,7 +46,6 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/daily_message.dart';
 import '../data/entity/payment/payment.dart';
 part 'api.g.dart';
 
@@ -328,5 +328,8 @@ abstract class RestClient {
 
   @GET("/template/{id}?need-log=1")
   NetworkResult<TempTicket> getDailyMessage(@Path('id') int id);
+
+  @GET("/target-weight")
+  NetworkResult<TargetWeight> targetWeight();
 }
 

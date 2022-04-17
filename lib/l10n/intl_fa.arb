@@ -645,5 +645,22 @@
   },
   "noTicketAvailable": "پیام وجود ندارد",
   "backToShop": "بازگشت به فروشگاه",
+  "setGoalWeight": "تعیین وزن هدف",
+  "wantToStayAtWeight": "بله میخواهم در وزن {weight} کیلوگرم بمانم",
+  "@wantToStayAtWeight": {
+    "placeholders": {
+      "weight": {
+        "type": "int"
+      }
+    }
+  },
+  "wantToBackAtWeight": "خیر میخواهم به وزن {weight} کیلوگرم برگردم",
+  "@wantToBackAtWeight": {
+    "placeholders": {
+      "weight": {
+        "type": "int"
+      }
+    }
+  },
   "understand": "متوجه شدم"
 }
