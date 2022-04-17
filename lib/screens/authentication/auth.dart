@@ -14,7 +14,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -117,7 +116,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
       overflow: Overflow.visible,
       children: [
         SizedBox(
-            height: 40.h,child: MyArc(diameter: 100.w,)),
+            height: 40.h,
+            child: MyArc(
+              diameter: 100.w,
+            )),
         Positioned(
           top: 2.h,
           right: 0.0,
@@ -188,6 +190,9 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                             color: AppColors.penColor,
                             fontSize: 16.0,
                             fontWeight: FontWeight.w600)),
+                    onSubmitted: (String) {
+                      click(_selectedLocation);
+                    },
                     onChanged: (txt) {
                       phoneNumber = txt;
                     },
@@ -295,22 +300,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 intl.registerOrLogin,
                 Size(100.w, 8.h),
                 () {
-                  if (snapshot.requireData.code == '98') {
-                    while (phoneNumber!.startsWith('0')) {
-                      phoneNumber = phoneNumber!.replaceFirst(RegExp(r'0'), '');
-                    }
-                    if ((phoneNumber!.length) != 10) {
-                      Utils.getSnackbarMessage(context, intl.errorMobileCondition);
-                      return;
-                    }
-                  } else if ((snapshot.requireData.code!.length + phoneNumber!.length) < 7 ||
-                      (snapshot.requireData.code!.length + phoneNumber!.length) > 15) {
-                    Utils.getSnackbarMessage(context, intl.errorMobileCondition);
-                    return;
-                  }
-                  number = snapshot.requireData.code! + phoneNumber!;
-                  DialogUtils.showDialogProgress(context: context);
-                  authBloc.loginMethod(number);
+                  click(snapshot.requireData);
                 },
               );
             },
@@ -318,6 +308,25 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
         ),
       ],
     );
+  }
+
+  void click(Country countryCode) {
+    if (countryCode.code == '98') {
+      while (phoneNumber!.startsWith('0')) {
+        phoneNumber = phoneNumber!.replaceFirst(RegExp(r'0'), '');
+      }
+      if ((phoneNumber!.length) != 10) {
+        Utils.getSnackbarMessage(context, intl.errorMobileCondition);
+        return;
+      }
+    } else if ((countryCode.code!.length + phoneNumber!.length) < 7 ||
+        (countryCode.code!.length + phoneNumber!.length) > 15) {
+      Utils.getSnackbarMessage(context, intl.errorMobileCondition);
+      return;
+    }
+    number = countryCode.code! + phoneNumber!;
+    DialogUtils.showDialogProgress(context: context);
+    authBloc.loginMethod(number);
   }
 
   @override
