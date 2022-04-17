@@ -28,28 +28,21 @@ class PaymentSuccessScreen extends StatefulWidget {
 
 class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> {
   late PaymentBloc bloc;
-  late String paymentType;
-
+  bool isInit = false;
   @override
   void initState() {
     super.initState();
-    bloc = PaymentBloc();
-    // bloc.getLastInvoice();
   }
-
-  bool isInit = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
-      paymentType = ModalRoute.of(context)!.settings.arguments as String? ?? "diet";
-      // debugPrint('payment type ${paymentType}');
-      if (paymentType == "shop")
-        bloc.shopLastInvoice();
-      else
-        bloc.getLastInvoice();
+      bloc = PaymentBloc();
+      var paymentType =
+          ModalRoute.of(context)!.settings.arguments as ProductType? ?? ProductType.PACKAGE;
+      bloc.setProductType(paymentType);
     }
   }
 
@@ -78,7 +71,15 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                 },
               ),
             ),
-            BottomNav(currentTab: paymentType == "shop" ? BottomNavItem.SHOP : BottomNavItem.DIET),
+            StreamBuilder<ProductType>(
+              stream: bloc.productType,
+              initialData: ProductType.PACKAGE,
+              builder: (context, type) {
+                return BottomNav(
+                    currentTab:
+                        type == ProductType.PACKAGE ? BottomNavItem.SHOP : BottomNavItem.DIET);
+              },
+            )
           ],
         ),
       ),
@@ -207,54 +208,69 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                   stream: bloc.showInformation,
                 ),
                 Space(height: 3.h),
-                if (paymentType == "diet")
-                  Text(
-                    intl.useFromList,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(color: AppColors.labelTextColor),
-                  ),
-                if (paymentType == "diet") Space(height: 3.h),
-                paymentType == "shop"
-                    ? Container(
-                        decoration: AppDecorations.boxMild.copyWith(
-                          color: AppColors.box,
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                        child: Column(
+                StreamBuilder<ProductType>(
+                    stream: bloc.productType,
+                    builder: (context, type) {
+                      if (type == ProductType.PACKAGE)
+                        return Column(
                           children: [
                             Text(
-                              intl.clickHereToUseProduct,
+                              intl.useFromList,
                               softWrap: true,
                               textAlign: TextAlign.center,
-                              style: typography.caption?.apply(color: AppColors.labelColor),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .copyWith(color: AppColors.labelTextColor),
                             ),
-                            Space(height: 2.h),
-                            SubmitButton(
-                                label: intl.viewProduct,
-                                onTap: () {
-                                  MemoryApp.analytics!
-                                      .logEvent(name: "total_shop_payment_online_success");
-                                  context.vxNav.clearAndPushAll([
-                                    Uri.parse(Routes.shopHome),
-                                    Uri.parse(Routes.shopOrders),
-                                    Uri.parse('${Routes.shopProduct}/${bloc.productId}')
-                                  ]);
-                                }),
+                            Space(height: 3.h)
                           ],
-                        ),
-                      )
-                    : SubmitButton(
-                        label: intl.confirmContinue,
-                        onTap: () {
-                          MemoryApp.analytics!.logEvent(name: "total_payment_success");
-                          MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
-                          VxNavigator.of(context).clearAndPush(Uri.parse('/${bloc.path}'));
-                        },
-                      ),
+                        );
+                      else
+                        return Space();
+                    }),
+                StreamBuilder<ProductType>(
+                    stream: bloc.productType,
+                    builder: (context, type) {
+                      if (type == ProductType.SHOP)
+                        return Container(
+                          decoration: AppDecorations.boxMild.copyWith(
+                            color: AppColors.box,
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                          child: Column(
+                            children: [
+                              Text(
+                                intl.clickHereToUseProduct,
+                                softWrap: true,
+                                textAlign: TextAlign.center,
+                                style: typography.caption?.apply(color: AppColors.labelColor),
+                              ),
+                              Space(height: 2.h),
+                              SubmitButton(
+                                  label: intl.viewProduct,
+                                  onTap: () {
+                                    MemoryApp.analytics!
+                                        .logEvent(name: "total_shop_payment_online_success");
+                                    context.vxNav.clearAndPushAll([
+                                      Uri.parse(Routes.shopHome),
+                                      Uri.parse(Routes.shopOrders),
+                                      Uri.parse('${Routes.shopProduct}/${bloc.productId}')
+                                    ]);
+                                  }),
+                            ],
+                          ),
+                        );
+                      else
+                        return SubmitButton(
+                          label: intl.confirmContinue,
+                          onTap: () {
+                            MemoryApp.analytics!.logEvent(name: "total_payment_success");
+                            MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
+                            VxNavigator.of(context).clearAndPush(Uri.parse('/${bloc.path}'));
+                          },
+                        );
+                    }),
               ],
             ),
           ),
