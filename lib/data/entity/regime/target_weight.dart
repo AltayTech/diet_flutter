@@ -9,11 +9,11 @@ class TargetWeight {
   @JsonKey(name: "bmi_diff")
   double? bmiDiff;
   @JsonKey(name: "body_status")
-  BodyStatus? bodyStatus;
+  BodyStatusTarget? bodyStatus;
   @JsonKey(name: "target_weight")
-  int? targetWeight;
+  double? targetWeight;
   @JsonKey(name: "weight")
-  int? weight;
+  double? weight;
 
   TargetWeight();
 
@@ -21,8 +21,8 @@ class TargetWeight {
 }
 
 @JsonSerializable(createToJson: false)
-class BodyStatus {
-  BodyStatus(this.title, this.description);
+class BodyStatusTarget {
+  BodyStatusTarget(this.title, this.description);
 
   @JsonKey(name: 'title')
   final String? title;
@@ -30,6 +30,6 @@ class BodyStatus {
   @JsonKey(name: 'description')
   final String? description;
 
-  factory BodyStatus.fromJson(Map<String, dynamic> json) =>
-      _$BodyStatusFromJson(json);
+  factory BodyStatusTarget.fromJson(Map<String, dynamic> json) =>
+      _$BodyStatusTargetFromJson(json);
 }

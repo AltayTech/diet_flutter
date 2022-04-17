@@ -22,7 +22,7 @@ import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
-import 'package:behandam/data/entity/regime/body_status.dart' as body;
+import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
@@ -46,7 +46,6 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/daily_message.dart';
 import '../data/entity/payment/payment.dart';
 part 'api.g.dart';
 
@@ -99,7 +98,7 @@ abstract class RestClient {
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
 
   @GET("/body-status")
-  NetworkResult<body.BodyStatus> getStatus();
+  NetworkResult<BodyStatus> getStatus();
 
   @GET("/user/menu?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);

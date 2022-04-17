@@ -5,7 +5,6 @@ import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/extensions/stream.dart';
-import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -35,14 +34,20 @@ class TargetWeightBloc {
 
   void _targetWeight() {
     _loadingContent.safeValue = true;
-    _repository.targetWeight().then((value) {
-      _targetWeightData.value = value.data!;
-      if (_targetWeightData.value.askToChangeTargetWeight!) {
-        _physicalInfo();
-      }
-      _path = value.next;
-      debugPrint('repository ${_targetWeightData.value}');
-    }).whenComplete(() => _loadingContent.safeValue = false);
+    _repository
+        .targetWeight()
+        .then((value) {
+          _targetWeightData.value = value.data!;
+          if (_targetWeightData.value.askToChangeTargetWeight!) {
+            _physicalInfo();
+          }
+          _path = value.next;
+          debugPrint('repository ${_targetWeightData.value}');
+        })
+        .catchError((onError) {
+      debugPrint('repository err ${onError}');
+    })
+        .whenComplete(() => _loadingContent.safeValue = false);
   }
 
   void _physicalInfo() {
@@ -56,7 +61,7 @@ class TargetWeightBloc {
     _loadingContent.safeValue = true;
     _repository.visit(_physicalInfoData!).then((value) {
       _navigateTo.fire(value.next);
-    }).catchError((err){
+    }).catchError((err) {
       _showServerError.fire(true);
     }).whenComplete(() => _loadingContent.safeValue = false);
   }

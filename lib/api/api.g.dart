@@ -255,7 +255,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<body.BodyStatus>> getStatus() async {
+  Future<NetworkResponse<BodyStatus>> getStatus() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -266,9 +266,9 @@ class _RestClient implements RestClient {
                 .compose(_dio.options, '/body-status',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<body.BodyStatus>.fromJson(
+    final value = NetworkResponse<BodyStatus>.fromJson(
       _result.data!,
-      (json) => body.BodyStatus.fromJson(json as Map<String, dynamic>),
+      (json) => BodyStatus.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

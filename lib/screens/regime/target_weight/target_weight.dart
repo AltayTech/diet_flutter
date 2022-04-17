@@ -149,14 +149,14 @@ class _TargetWeightScreenState extends ResourcefulState<TargetWeightScreen> {
             children: [
               Center(
                 child: SubmitButton(
-                  label: intl.wantToStayAtWeight(targetWeight.weight!),
+                  label: intl.wantToStayAtWeight(targetWeight.weight!.toInt()),
                   onTap: () => bloc.sendVisit(),
                 ),
               ),
               Space(height: 2.h),
               Center(
                 child: SubmitButton(
-                  label: intl.wantToBackAtWeight(targetWeight.targetWeight!),
+                  label: intl.wantToBackAtWeight(targetWeight.targetWeight!.toInt()),
                   onTap: () => context.vxNav.push(Uri(
                       path:
                           '/${navigator.currentConfiguration!.path.substring(1).split('/').first}/sick/select')),
