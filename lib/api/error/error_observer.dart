@@ -29,26 +29,27 @@ class DioErrorObserver {
   }
 
   void retryForMaintenance() {
-    _listeners.forEach((element) {
+    for (var element in _listeners) {
       element.onRetryAfterMaintenance();
-    });
+    }
   }
 
   void retryForInternetConnectivity() {
-    _listeners.forEach((element) {
+    for (var element in _listeners) {
       element.onRetryAfterNoInternet();
-    });
+    }
   }
 
+
   void showMessage(String message) {
-    _listeners.forEach((element) {
+    for (var element in _listeners) {
       element.onShowMessage(message);
-    });
+    }
   }
 
   void retryForLoadingPage() {
-    _listeners.forEach((element) {
+    for (var element in _listeners) {
       element.onRetryLoadingPage();
-    });
+    }
   }
 }

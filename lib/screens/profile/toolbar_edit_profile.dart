@@ -52,7 +52,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
               right: 0,
               left: 0,
               child: GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                 child: Container(
                   height: 16.h,
                   child: Stack(
