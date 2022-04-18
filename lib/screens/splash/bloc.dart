@@ -76,8 +76,8 @@ class SplashBloc {
       MemoryApp.analytics!
           .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
     }).whenComplete(() {
-      _waiting.safeValue = false;
       getVersionApp();
+      _waiting.safeValue = false;
     });
     }else {
       getVersionApp();

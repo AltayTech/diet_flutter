@@ -58,7 +58,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
     super.build(context);
     return TicketProvider(bloc,
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
             appBar: Toolbar(titleBar: intl.ticket),
             backgroundColor: AppColors.surface,
