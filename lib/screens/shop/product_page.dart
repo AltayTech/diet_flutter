@@ -11,10 +11,8 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_video.dart';
-import 'package:behandam/widget/web_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:expandable/expandable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -463,10 +461,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 Space(height: 2.h),
                 AspectRatio(
                   aspectRatio: 16 / 9,
-                  child:  kIsWeb
-                      ? WebVideoElement(
-                      lessons.typeMediaShop == TypeMediaShop.play ? lessons.path! : lessons.video!)
-                      : CustomVideo(
+                  child:   CustomVideo(
                     url: lessons.typeMediaShop == TypeMediaShop.play ? lessons.path : lessons.video,
                     image: null,
                     isFile: lessons.typeMediaShop == TypeMediaShop.play ? true : null,
