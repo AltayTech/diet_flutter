@@ -12,6 +12,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
 import 'provider.dart';
 import 'week_day.dart';
@@ -50,19 +51,21 @@ class _WeekListState extends ResourcefulState<WeekList> {
         debugPrint('snapshot ${snapshot.data?.length} / ');
         return Container(
           height: 13.h,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (_, index) {
-              return Row(
-                children: [
-                  if (index == 0) Space(width: 3.w),
-                  weekItem(index, snapshot.requireData!),
-                  if (index == snapshot.requireData!.length - 1) Space(width: 3.w),
-                ],
-              );
-            },
-            separatorBuilder: (_, index) => Space(width: 2.w),
-            itemCount: snapshot.requireData!.length,
+          child: TouchMouseScrollable(
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, index) {
+                return Row(
+                  children: [
+                    if (index == 0) Space(width: 3.w),
+                    weekItem(index, snapshot.requireData!),
+                    if (index == snapshot.requireData!.length - 1) Space(width: 3.w),
+                  ],
+                );
+              },
+              separatorBuilder: (_, index) => Space(width: 2.w),
+              itemCount: snapshot.requireData!.length,
+            ),
           ),
         );
       },
