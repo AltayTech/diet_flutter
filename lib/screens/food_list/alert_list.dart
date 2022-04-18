@@ -68,7 +68,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
       stream: bloc.loadingContent,
       builder: (_, AsyncSnapshot<bool> snapshot) {
         return Container(
-          height: MediaQuery.of(context).size.height,
+          height: 100.h,
           child: Column(
             children: [
               Expanded(
@@ -82,7 +82,6 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
                             showToolbar: false,
                             isClickable: false,
                           ),
-                          //appbarStackBox(),
                         ],
                       ),
                       Space(height: 7.h),
