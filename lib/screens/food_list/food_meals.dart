@@ -171,7 +171,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
       builder: (_, AsyncSnapshot<WeekDay> snapshot) {
-        if (snapshot.hasData && isToday(snapshot.requireData))
+        if (snapshot.hasData && (isToday(snapshot.requireData) || isAfterToday(snapshot.requireData)) )
           return GestureDetector(
             onTap: () => manipulateFoodDialog(meal),
             child: Container(
@@ -201,6 +201,10 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
             weekDay.gregorianDate.toString().substring(0, 10);
   }
 
+  bool isAfterToday(WeekDay day) {
+    return day.gregorianDate.isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));
+  }
+  
   void manipulateFoodDialog(Meals meal) {
     DialogUtils.showDialogPage(
       context: context,

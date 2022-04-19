@@ -246,7 +246,7 @@ class _RepositoryImpl extends Repository {
   late MemoryApp _cache;
 
   static const receiveTimeout = 3 * 60 * 1000;
-  static const connectTimeout = 5 * 1000;
+  static const connectTimeout = 15 * 1000;
   static const sendTimeout = 3 * 60 * 1000;
 
   _RepositoryImpl() {
