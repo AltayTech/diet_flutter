@@ -38,6 +38,7 @@ class PaymentBloc {
   Price? _discountInfo;
   LatestInvoiceData? _invoice;
   bool _checkLatestInvoice = false;
+  String? _date;
 
   final _waiting = BehaviorSubject<bool>();
   final _showInformation = BehaviorSubject<bool>();
@@ -52,6 +53,8 @@ class PaymentBloc {
   final _popLoading = LiveEvent();
   final _showServerError = LiveEvent();
   final _onlinePayment = LiveEvent();
+
+  String? get date => _date;
 
   String? get path => _path;
 
@@ -104,6 +107,8 @@ class PaymentBloc {
   set setSelectedDate(String date) => _selectedDate.value = date;
 
   set setInvoice(LatestInvoiceData invoice) => _invoice = invoice;
+
+  set setDate(String date) => _date = date;
 
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;

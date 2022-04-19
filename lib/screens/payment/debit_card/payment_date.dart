@@ -253,12 +253,8 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
                     child: CustomDate(
                       function: (value) {
                         debugPrint('date selected = > $value');
-                        bloc.setSelectedDate = value;
 
-                        bloc.invoice!.payedAt =
-                            DateTimeUtils.jalaliToGregorian(value);
-                        debugPrint(
-                            'date selected = > ${bloc.invoice!.payedAt}');
+                        bloc.setDate = value;
                       },
                       datetime: DateTime.parse(Jalali.now()
                               .toDateTime()
@@ -275,7 +271,17 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
                       child: SubmitButton(
                     label: intl.submitDate,
                     onTap: () {
-                      Navigator.of(context).pop();
+                      if (bloc.date != null) {
+                        bloc.setSelectedDate = bloc.date!;
+
+                        bloc.invoice!.payedAt =
+                            DateTimeUtils.jalaliToGregorian(bloc.date!);
+
+                        debugPrint(
+                            'date selected = > ${bloc.invoice!.payedAt}');
+
+                        Navigator.of(context).pop();
+                      }
                     },
                     size: Size(80.w, 6.h),
                   )),
