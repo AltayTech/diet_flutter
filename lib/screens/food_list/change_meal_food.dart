@@ -282,9 +282,7 @@ class _ChangeMealFoodPageState extends ResourcefulState<ChangeMealFoodPage>
             Space(height: 1.h),
             GestureDetector(
               onTap: () {
-                VxNavigator.of(context)
-                    .waitAndPush(Uri(path: Routes.listFood), params: meal)
-                    .then((value) => bloc.onMealFood(value, meal!.id));
+
               },
               child: Container(
                 decoration: AppDecorations.boxMedium.copyWith(

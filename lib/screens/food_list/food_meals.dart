@@ -269,7 +269,11 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                   onTap: () {
                     Navigator.of(context).pop();
                     VxNavigator.of(context)
-                        .push(Uri(path: Routes.replaceFood), params: {'meal': meal, 'bloc': bloc});
+                        .waitAndPush(Uri(path: Routes.listFood), params: meal)
+                        .then((value) {
+                      bloc.onMealFood(value, meal.id);
+
+                    });
                   },
                   label: intl.manipulateFood,
                 ),

@@ -182,7 +182,6 @@ class FoodListBloc {
   void onRefresh({bool invalidate = false}) {
     _loadingContent.safeValue = true;
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
-      debugPrint('food list ${value.data}');
       _foodList.value = value.data;
       _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
       if (_foodList.value?.meals != null)
@@ -203,6 +202,7 @@ class FoodListBloc {
     debugPrint(
         'newfood ${_foodList.valueOrNull?.meals?[index!].title} / ${_foodList.valueOrNull
             ?.meals?[index!].newFood?.toJson()}');
+    onReplacingFood(mealId);
   }
 
   onDailyMenu() {
@@ -239,8 +239,8 @@ class FoodListBloc {
     _repository.dailyMenu(requestData).then((value) {
       if (value.data != null && value.requireData) {
         onRefresh(invalidate: true);
-      }
-    }).whenComplete(() => _loadingContent.safeValue = false);
+      }else _loadingContent.safeValue = false;
+    });
     makingFoodEmpty(mealId);
   }
 

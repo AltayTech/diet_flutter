@@ -283,8 +283,6 @@ final navigator = VxNavigator(
     RegExp(r"\/ticket\/details"): (uri, __) => MaterialPage(
         child: routePage(TicketDetails()),
         arguments: int.parse(uri.queryParameters['ticketId'].toString())),
-    Routes.replaceFood: (_, param) =>
-        MaterialPage(child: routePage(ChangeMealFoodPage()), arguments: param),
     Routes.calendar: (_, __) => MaterialPage(child: routePage(CalendarPage())),
     RegExp(r"\/(reg|renew|revive)(\/diet\/type)"): (_, __) =>
         MaterialPage(child: routePage(RegimeTypeScreen())),
