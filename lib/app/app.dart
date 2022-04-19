@@ -14,7 +14,6 @@ import 'package:behandam/screens/daily_menu/daily_menu.dart';
 import 'package:behandam/screens/daily_menu/list_food.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/alert_list.dart';
-import 'package:behandam/screens/food_list/change_meal_food.dart';
 import 'package:behandam/screens/food_list/daily_message.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/payment/bill.dart';
@@ -283,8 +282,6 @@ final navigator = VxNavigator(
     RegExp(r"\/ticket\/details"): (uri, __) => MaterialPage(
         child: routePage(TicketDetails()),
         arguments: int.parse(uri.queryParameters['ticketId'].toString())),
-    Routes.replaceFood: (_, param) =>
-        MaterialPage(child: routePage(ChangeMealFoodPage()), arguments: param),
     Routes.calendar: (_, __) => MaterialPage(child: routePage(CalendarPage())),
     RegExp(r"\/(reg|renew|revive)(\/diet\/type)"): (_, __) =>
         MaterialPage(child: routePage(RegimeTypeScreen())),
