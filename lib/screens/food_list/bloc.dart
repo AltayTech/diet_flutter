@@ -24,7 +24,7 @@ class FoodListBloc {
     else if (_date.valueOrNull == null && MemoryApp.selectedDate != null)
       _date.value = MemoryApp.selectedDate!;
     debugPrint('bloc foodlist ${_date.value} / ${MemoryApp.selectedDate}');
-    _loadContent(invalidate: true, fillFood: fillFood);
+    loadContent(invalidate: true, fillFood: fillFood);
   }
 
   FoodListBloc.fillWeek() {
@@ -73,7 +73,7 @@ class FoodListBloc {
 
   int? adviceId;
 
-  void _loadContent({bool invalidate = false, bool fillFood = true}) {
+  void loadContent({bool invalidate = false, bool fillFood = true}) {
     _loadingContent.safeValue = true;
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
       if (value.data?.menu != null) {
