@@ -16,7 +16,6 @@ import '../../base/repository.dart';
 
 class AuthenticationBloc {
   AuthenticationBloc() {
-    fetchCountries();
     _waiting.safeValue = false;
   }
 
@@ -24,6 +23,7 @@ class AuthenticationBloc {
 
   final _waiting = BehaviorSubject<bool>();
   final _countries = BehaviorSubject<List<Country>>();
+  final _filterListCountry = BehaviorSubject<List<Country>>();
   final _selectedCountry = BehaviorSubject<Country>();
   final _navigateToVerify = LiveEvent();
   final _navigateTo = LiveEvent();
@@ -34,11 +34,15 @@ class AuthenticationBloc {
       return _countries.value;
     else
       return _countries.value
-          .where((element) => element.name!.contains(_search!) || element.code!.contains(_search!))
+          .where((element) =>
+              element.name!.contains(_search!) ||
+              element.code!.contains(_search!))
           .toList();
   }
 
   Stream get countriesStream => _countries.stream;
+
+  Stream<List<Country>> get filterListCountry => _filterListCountry.stream;
 
   Stream<Country> get selectedCountry => _selectedCountry.stream;
 
@@ -57,6 +61,7 @@ class AuthenticationBloc {
       _repository.country().then((value) {
         MemoryApp.countries = value.data!;
         _countries.value = value.data!;
+        _filterListCountry.value = value.data!;
         value.data!.forEach((element) {
           if (element.code == "98") {
             _selectedCountry.value = element;
@@ -87,7 +92,8 @@ class AuthenticationBloc {
   void passwordMethod(User user) {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      debugPrint('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      debugPrint(
+          'pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       checkFcm();
       _repository
           .getUser()
@@ -175,11 +181,20 @@ class AuthenticationBloc {
     _search = search;
   }
 
+  void searchCountry(String text) {
+    // search = text;
+    _filterListCountry.value = _countries.value
+        .where((country) =>
+            country.name!.toLowerCase().contains(text.toLowerCase()) ||
+            country.code!.contains(text))
+        .toList();
+  }
+
   void checkFcm() async {
     String fcm = await AppSharedPreferences.fcmToken;
     bool sendFcm = await AppSharedPreferences.sendFcmToken;
     if (fcm != 'null' && !sendFcm)
-      _repository.addFcmToken(fcm).then((value)async{
+      _repository.addFcmToken(fcm).then((value) async {
         await AppSharedPreferences.setSendFcmToken(true);
       });
   }
@@ -190,5 +205,6 @@ class AuthenticationBloc {
     _countries.close();
     _waiting.close();
     _navigateTo.close();
+    _filterListCountry.close();
   }
 }
