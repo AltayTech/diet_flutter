@@ -318,9 +318,13 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 label: Text(intl.search),
                 labelStyle: TextStyle(
                     color: AppColors.penColor,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w600),
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w400),
               ),
+              style: TextStyle(
+                  color: AppColors.penColor,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w400),
               onSubmitted: (String) {
                 click(_selectedLocation);
               },
