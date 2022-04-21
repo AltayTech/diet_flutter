@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:behandam/app/app.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -17,17 +18,25 @@ abstract class DialogUtils {
       context: context,
       isScrollControlled: isScrollControlled,
       isDismissible: isDismissible,
+      backgroundColor: Colors.transparent,
       enableDrag: enableDrag,
       builder: (context) {
         return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Wrap(children: [child]),
+          filter: ImageFilter.blur(),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40))),
+padding: EdgeInsets.all(16),
+              child: Wrap(children: [child])),
         );
       },
     );
   }
 
- /* static Future<T?> showDialogPage<T>({
+  /* static Future<T?> showDialogPage<T>({
     required BuildContext context,
     required Widget child,
     bool isDismissible = true,

@@ -363,7 +363,7 @@
       }
     }
   },
-  "share": "به اشتراک بگذار",
+  "share": "اشتراک گزاری",
   "copy": "کپی کن",
   "debitCardInfo": "شماره کارت {cardNumber} \n به نام {ownerName} \n مبلغ {amount} تومان",
   "@debitCardInfo": {
@@ -456,7 +456,7 @@
   "viewFoodList": "مشاهده لیست غذایی",
   "selectYourMenu": "لیست غذایی موردنظرتو انتخاب کن",
   "waitingForSuccessPayment": "منتظر تایید پرداخت باشید",
-  "paymentStatusForLastTime": "پرداخت شما بعد از 1 الی 2 ساعت آینده فعال خواهد شد",
+  "paymentStatusForLastTime": "کارشناسان ما درحال بررسی هستند\nپرداخت شما 1 الی 2 ساعت\nآینده تایید خواهد شد.",
   "statusBodyTermUser": "وضعیت جسمانی در دوره جاری",
   "remainingWeight": "وزن باقیمانده",
   "lostWeight": "وزن کم شده",
@@ -643,6 +643,18 @@
       }
     }
   },
+  "cardToCardDescription": "مبلغ موردنظر رو از طریق عابربانک یا اپلیکیشن های بانکی به شماره کارت زیر واریز کنید.",
+  "copyCardNumber": "کپی شماره کارت",
+  "enterDataAfterPayment": "پس از پرداخت، اطلاعات زیر رو تکمیل کنید",
+  "cardOwnerName": "نام و نام خانوادگی صاحب کارت",
+  "lastFourDigitsCardNumber": "4 رقم آخر شماره کارت",
+  "todayPay": "امروز واریز کردم",
+  "newDate": "تاریخ جدید",
+  "selectPaymentDate": "انتخاب تاریخ واریز",
+  "selectNewDate": "انتخاب تاریخ جدید",
+  "enterPaymentDate": "تاریخی که واریز خود را انجام داده اید را وارد نمایید",
+  "submitDate": "ثبت تاریخ",
+  "amountPaid": "مبلغ پرداختی",
   "noTicketAvailable": "پیام وجود ندارد",
   "backToShop": "بازگشت به فروشگاه",
   "setGoalWeight": "تعیین وزن هدف",

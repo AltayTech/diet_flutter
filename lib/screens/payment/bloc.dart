@@ -14,6 +14,13 @@ import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../routes.dart';
+import 'package:behandam/extensions/stream.dart';
+
+enum PaymentDate {
+  today,
+  customDate
+}
+
 
 enum ProductType {
   SHOP,
@@ -24,6 +31,9 @@ class PaymentBloc {
   PaymentBloc() {
     _waiting.safeValue = false;
     _discountLoading.value = false;
+    _selectedDateType.value = PaymentDate.today;
+
+    _invoice = LatestInvoiceData();
   }
 
   final _repository = Repository.getInstance();
@@ -35,6 +45,7 @@ class PaymentBloc {
   Price? _discountInfo;
   LatestInvoiceData? _invoice;
   bool _checkLatestInvoice = false;
+  String? _date;
 
   final _waiting = BehaviorSubject<bool>();
   final _showInformation = BehaviorSubject<bool>();
@@ -43,10 +54,15 @@ class PaymentBloc {
   final _wrongDisCode = BehaviorSubject<bool>();
   final _discountLoading = BehaviorSubject<bool>();
   final _usedDiscount = BehaviorSubject<bool>();
+  final _selectedDateType = BehaviorSubject<PaymentDate>();
+  final _selectedDate = BehaviorSubject<String>();
   final _productType = BehaviorSubject<ProductType>();
   final _navigateTo = LiveEvent();
+  final _popLoading = LiveEvent();
   final _showServerError = LiveEvent();
   final _onlinePayment = LiveEvent();
+
+  String? get date => _date;
 
   String? get path => _path;
 
@@ -84,25 +100,38 @@ class PaymentBloc {
 
   Stream get navigateTo => _navigateTo.stream;
 
+  Stream get popLoading => _popLoading.stream;
+
   Stream get showServerError => _showServerError.stream;
 
   Stream get onlinePayment => _onlinePayment.stream;
 
   Stream<ProductType> get productType => _productType.stream;
 
+  Stream<PaymentDate> get selectedDateType => _selectedDateType.stream;
+
+  Stream<String> get selectedDate => _selectedDate.stream;
+
+  set setSelectedDateType(PaymentDate date) => _selectedDateType.value = date;
+
+  set setSelectedDate(String date) => _selectedDate.value = date;
+
+  set setInvoice(LatestInvoiceData invoice) => _invoice = invoice;
+
+  set setDate(String date) => _date = date;
+
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
   }
 
   void newPayment(LatestInvoiceData newInvoice) {
-    _waiting.safeValue = true;
     _repository.newPayment(newInvoice).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
               '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
       MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
       _navigateTo.fire(value.next);
-    }).whenComplete(() => _waiting.safeValue = false);
+    }).whenComplete(() => _popLoading.fire(true));
   }
 
   void getPackagePayment() {
@@ -180,6 +209,7 @@ class PaymentBloc {
     _waiting.safeValue = true;
     _repository.latestInvoice().then((value) {
       _invoice = value.data;
+      _invoice!.payedAt = DateTime.now().toString().substring(0, 10);
       _path = value.next!;
     }).whenComplete(() => _waiting.safeValue = false);
   }
@@ -231,6 +261,7 @@ class PaymentBloc {
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
+    _popLoading.close();
     _discountLoading.close();
     _cardToCard.close();
     _online.close();
@@ -240,6 +271,8 @@ class PaymentBloc {
     _waiting.close();
     _onlinePayment.close();
     _productType.close();
+    _selectedDateType.close();
+    _selectedDate.close();
   }
 
   void setProductType(ProductType productType) {
