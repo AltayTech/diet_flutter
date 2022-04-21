@@ -40,7 +40,7 @@ class _EnableDiscountBoxWidget
           if (enterDiscount.hasData && enterDiscount.requireData)
             return DiscountWidget();
           return Container(
-            height: 12.h,
+            height: 10.h,
             decoration: AppDecorations.boxSmall.copyWith(
               color: Colors.white,
             ),

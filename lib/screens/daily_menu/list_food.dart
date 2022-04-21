@@ -98,6 +98,21 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
           padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
           child: Column(
             children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.2),
+                    borderRadius: AppBorderRadius.borderRadiusDefault),
+                padding: EdgeInsets.fromLTRB(3.w, 1.h, 3.w, 1.h),
+                child: Center(
+                  child: Text(
+                    intl.tryToAlternateOneMealDaily,
+                    style: typography.overline!.copyWith(color: AppColors.primary,fontWeight: FontWeight.w700),
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                ),
+              ),
+              Space(height: 1.h),
               TextField(
                 cursorColor: AppColors.iconsColor,
                 textAlign: TextAlign.start,
@@ -127,7 +142,6 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                 ),
                 onChanged: (value) => bloc.onSearchInputChanged(value),
               ),
-              Space(height: 2.h),
               tags(),
             ],
           ),
@@ -152,17 +166,22 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
         if (snapshot.error is NoResultFoundError) {
           return SearchNoResult(intl.foodNotFoundMessage);
         }
-        if (!snapshot.hasData || snapshot.hasError) {
+        if (!snapshot.hasData || snapshot.hasError || snapshot.data?.length == 0) {
           return EmptyBox();
         }
-        return Container(
-          height: 4.h,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (_, index) => tagItem(snapshot.data?[index], index),
-            separatorBuilder: (_, __) => Space(width: 2.w),
-            itemCount: snapshot.data?.length ?? 0,
-          ),
+        return Column(
+          children: [
+            Space(height: 2.h),
+            Container(
+              height: 4.h,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (_, index) => tagItem(snapshot.data?[index], index),
+                separatorBuilder: (_, __) => Space(width: 2.w),
+                itemCount: snapshot.data?.length ?? 0,
+              ),
+            ),
+          ],
         );
       },
     );

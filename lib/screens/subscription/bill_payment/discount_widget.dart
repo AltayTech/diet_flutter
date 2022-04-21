@@ -35,7 +35,7 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
       margin: EdgeInsets.only(top: 2.h, left: 4.w, right: 4.w),
       padding:
       EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
-      height: 12.h,
+      height: 10.h,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
