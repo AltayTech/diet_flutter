@@ -1,4 +1,4 @@
-import 'package:behandam/base/resourceful_state.dart';
+                                                            import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/enable_discount_box.dart';
@@ -8,8 +8,6 @@ import 'package:behandam/screens/subscription/bill_payment/purchased_subscriptio
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';

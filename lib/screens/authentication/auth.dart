@@ -72,11 +72,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   return TouchMouseScrollable(
                     child: SingleChildScrollView(
                       child: SizedBox(
-                        height: 100.h,
+                        height: 90.h,
                         child: Column(children: [
                           AuthHeader(
                             title: intl.behandamDrKermany,
-                            showLogo: false,
+                            showLogo: true,
                           ),
                           content(),
                           Container(
@@ -93,7 +93,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                             decoration: TextDecoration.underline),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Utils.launchURL(
+                                            Utils.launchURLWebView(
                                                 FlavorConfig.instance.variables['urlTerms']);
                                           }),
                                   ])),
@@ -298,8 +298,4 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     // TODO: implement onRetryLoadingPage
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

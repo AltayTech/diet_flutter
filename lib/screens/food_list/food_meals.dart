@@ -206,7 +206,12 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
   }
   
   void manipulateFoodDialog(Meals meal) {
-    DialogUtils.showDialogPage(
+    VxNavigator.of(context)
+        .waitAndPush(Uri(path: Routes.listFood), params: meal)
+        .then((value) {
+      bloc.onMealFood(value, meal.id);
+    });
+   /* DialogUtils.showDialogPage(
       context: context,
       isDismissible: true,
       child: Center(
@@ -295,7 +300,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           ),
         ),
       ),
-    );
+    );*/
   }
 
   Widget close() {
