@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:behandam/extensions/stream.dart';
+
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
@@ -7,6 +7,7 @@ import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -128,12 +129,10 @@ class AuthenticationBloc {
   }
 
   void sendCodeMethod(String mobile) {
-    _waiting.safeValue = true;
     _repository
         .verificationCode(mobile)
         .then((value) => _navigateToVerify.fire(value.next))
         .whenComplete(() {
-      _waiting.safeValue = false;
       MemoryApp.forgetPass = false;
     });
   }
@@ -179,7 +178,7 @@ class AuthenticationBloc {
     String fcm = await AppSharedPreferences.fcmToken;
     bool sendFcm = await AppSharedPreferences.sendFcmToken;
     if (fcm != 'null' && !sendFcm)
-      _repository.addFcmToken(fcm).then((value)async{
+      _repository.addFcmToken(fcm).then((value) async {
         await AppSharedPreferences.setSendFcmToken(true);
       });
   }

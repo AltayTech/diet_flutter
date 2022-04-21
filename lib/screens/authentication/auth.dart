@@ -1,15 +1,13 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
-import 'package:behandam/screens/utility/arc.dart';
+import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -76,7 +74,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       child: SizedBox(
                         height: 100.h,
                         child: Column(children: [
-                          header(),
+                          AuthHeader(
+                            title: intl.behandamDrKermany,
+                            showLogo: false,
+                          ),
                           content(),
                           Container(
                             child: Padding(
@@ -111,54 +112,6 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     );
   }
 
-  Widget header() {
-    return Stack(
-      overflow: Overflow.visible,
-      children: [
-        SizedBox(
-            height: 40.h,
-            child: MyArc(
-              diameter: 100.w,
-            )),
-        Positioned(
-          top: 2.h,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-              child: ImageUtils.fromLocal(
-            'assets/images/registry/app_logo.svg',
-            width: 15.w,
-            height: 15.w,
-          )),
-        ),
-        Positioned(
-          top: 11.h,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-              child: Text(intl.behandamDrKermany,
-                  style: TextStyle(
-                      color: AppColors.penColor,
-                      fontSize: 22.0,
-                      fontFamily: 'Iransans-Bold',
-                      fontWeight: FontWeight.w700))),
-        ),
-        Positioned(
-          top: 16.h,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-            child: ImageUtils.fromLocal(
-              'assets/images/registry/profile_logo.svg',
-              width: 25.w,
-              height: 25.w,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget content() {
     return Column(
       children: [
@@ -188,7 +141,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                         // errorText: _validate ? intl.fillAllField : null,
                         labelStyle: TextStyle(
                             color: AppColors.penColor,
-                            fontSize: 16.0,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w600)),
                     onSubmitted: (String) {
                       click(_selectedLocation);

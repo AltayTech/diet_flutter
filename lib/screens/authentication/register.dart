@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -80,30 +81,14 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             stream: authBloc.waiting,
             builder: (context, snapshot) {
               if (snapshot.data == false && !check) {
-                return NestedScrollView(
-                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverAppBar(
-                        backgroundColor: AppColors.arcColor,
-                        elevation: 0.0,
-                        leading: IconButton(
-                            icon: Icon(Icons.arrow_back_ios),
-                            color: Color(0xffb4babb),
-                            onPressed: () => VxNavigator.of(context).pop()),
-                        // floating: true,
-                        forceElevated: innerBoxIsScrolled,
-                      ),
-                    ];
-                  },
-                  body: TouchMouseScrollable(
+                return  TouchMouseScrollable(
                     child: SingleChildScrollView(
                       child: Column(children: [
-                        header(),
+                        AuthHeader(title: intl.register,),
                         Space(height: 80.0),
                         content(),
                       ]),
                     ),
-                  ),
                 );
               } else {
                 check = false;
@@ -112,38 +97,6 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             }));
   }
 
-  Widget header() {
-    return Stack(
-      overflow: Overflow.visible,
-      children: [
-        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
-        Positioned(
-          top: 0.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-              child: Text(intl.register,
-                  style: TextStyle(
-                      color: AppColors.penColor,
-                      fontSize: 22.0,
-                      fontFamily: 'Iransans-Bold',
-                      fontWeight: FontWeight.w700))),
-        ),
-        Positioned(
-          top: 60.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-            child: ImageUtils.fromLocal(
-              'assets/images/registry/profile_logo.svg',
-              width: 120.0,
-              height: 120.0,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget content() {
     return Padding(

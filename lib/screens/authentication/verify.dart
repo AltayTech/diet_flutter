@@ -4,6 +4,7 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -12,7 +13,6 @@ import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -111,74 +111,22 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
               stream: authBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
-                  return NestedScrollView(
-                    headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                      return <Widget>[
-                        SliverAppBar(
-                          backgroundColor: AppColors.arcColor,
-                          elevation: 0.0,
-                          leading: IconButton(
-                              icon: Icon(Icons.arrow_back_ios),
-                              color: Color(0xffb4babb),
-                              onPressed: () => Navigator.pop(context)),
-                          // floating: true,
-                          forceElevated: innerBoxIsScrolled,
-                        ),
-                      ];
-                    },
-                    body: TouchMouseScrollable(
+                  return TouchMouseScrollable(
                       child: SingleChildScrollView(
                         child: Column(children: [
-                          header(),
+                          AuthHeader(title: navigator.currentConfiguration!.path.contains('pass')
+                              ? intl.changePassword
+                              : intl.register,),
                           Space(height: 80.0),
                           content(),
                         ]),
                       ),
-                    ),
-                  );
+                    );
                 } else {
                   check = false;
                   return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
-    );
-  }
-
-  Widget header() {
-    return Stack(
-      // alignment: Alignment.center,
-      // fit: StackFit.loose,
-      overflow: Overflow.visible,
-      children: [
-        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
-        Positioned(
-          top: 0.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-              child: Text(
-                  navigator.currentConfiguration!.path.contains('pass')
-                      ? intl.changePassword
-                      : intl.register,
-                  style: TextStyle(
-                      color: AppColors.penColor,
-                      fontSize: 22.0,
-                      fontFamily: 'Iransans-Bold',
-                      fontWeight: FontWeight.w700))),
-        ),
-        Positioned(
-          top: 60.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-            child: ImageUtils.fromLocal(
-              'assets/images/registry/profile_logo.svg',
-              width: 120.0,
-              height: 120.0,
-            ),
-          ),
-        ),
-      ],
     );
   }
 

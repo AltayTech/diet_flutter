@@ -1,21 +1,14 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/screens/food_list/appbar_box_advice_video.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/change_menu.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
 import 'package:behandam/screens/food_list/food_meals.dart';
 import 'package:behandam/screens/food_list/provider.dart';
-import 'package:behandam/screens/food_list/week_day.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-import 'package:behandam/screens/widget/empty_box.dart';
-import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/screens/widget/submit_button.dart';
-import 'package:behandam/themes/shapes.dart';
+
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -150,24 +143,4 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
     return text;
   }*/
 
-
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }
