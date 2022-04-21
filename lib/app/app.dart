@@ -163,6 +163,12 @@ class _AppState extends State<App> {
           primaryColor: AppColors.primary,
           primaryColorDark: AppColors.primaryColorDark,
           scaffoldBackgroundColor: AppColors.scaffold,
+          snackBarTheme: SnackBarThemeData(
+              contentTextStyle: AppTypography(locale).caption.copyWith(color: Colors.white,),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.black54,
+              elevation: 0,
+              shape: AppShapes.rectangleDefault),
           textTheme: buildTextTheme(locale),
           appBarTheme: AppBarTheme(
             backgroundColor: AppColors.primary,
@@ -176,7 +182,6 @@ class _AppState extends State<App> {
         //navigatorObservers: [routeObserver],
         // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
         // routes: Routes.all,
-
         routeInformationParser: VxInformationParser(),
         backButtonDispatcher: RootBackButtonDispatcher(),
         routerDelegate: navigator);

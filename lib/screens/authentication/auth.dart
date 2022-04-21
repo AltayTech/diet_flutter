@@ -312,10 +312,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
 
   void click(Country countryCode) {
     if (countryCode.code == '98') {
-      while (phoneNumber!.startsWith('0')) {
+
+      while (phoneNumber!=null && phoneNumber!.startsWith('0')) {
         phoneNumber = phoneNumber!.replaceFirst(RegExp(r'0'), '');
       }
-      if ((phoneNumber!.length) != 10) {
+      if (phoneNumber==null || phoneNumber!.length != 10) {
         Utils.getSnackbarMessage(context, intl.errorMobileCondition);
         return;
       }
