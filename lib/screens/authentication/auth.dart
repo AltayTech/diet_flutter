@@ -24,6 +24,8 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends ResourcefulState<AuthScreen> {
   final _text = TextEditingController();
+  final _textCountryCode = TextEditingController();
+  final _textSearchCountryCode = TextEditingController();
   String dropdownValue = 'One';
   bool _validate = false;
   String? phoneNumber;
@@ -35,7 +37,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   @override
   void initState() {
     super.initState();
+
     authBloc = AuthenticationBloc();
+    authBloc.fetchCountries();
+
     listenBloc();
   }
 
@@ -48,8 +53,13 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
         );
       }
     });
+
     authBloc.showServerError.listen((event) {
       Navigator.pop(context);
+    });
+
+    authBloc.selectedCountry.listen((event) {
+      _textCountryCode.text = '+${event.code}';
     });
   }
 
@@ -81,16 +91,21 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                           content(),
                           Container(
                             child: Padding(
-                              padding: EdgeInsets.only(top: 8, left: 5.w, right: 5.w),
+                              padding: EdgeInsets.only(
+                                  top: 8, left: 5.w, right: 5.w),
                               child: RichText(
                                   textDirection: context.textDirectionOfLocale,
                                   textAlign: TextAlign.center,
                                   text: TextSpan(children: [
                                     TextSpan(
                                         text: intl.termsOfUseDescription,
-                                        style: Theme.of(context).textTheme.button!.copyWith(
-                                            color: AppColors.labelTextColor,
-                                            decoration: TextDecoration.underline),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .button!
+                                            .copyWith(
+                                                color: AppColors.labelTextColor,
+                                                decoration:
+                                                    TextDecoration.underline),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             Utils.launchURLWebView(
@@ -106,7 +121,9 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   );
                 } else {
                   check = false;
-                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+                  return Center(
+                      child: Container(
+                          width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -123,7 +140,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               Flexible(
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                      borderRadius: BorderRadius.circular(15.0),
+                      color: AppColors.arcColor),
                   child: TextField(
                     controller: _text,
                     textDirection: TextDirection.ltr,
@@ -153,87 +171,50 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 ),
               ),
               Container(
-                decoration: AppDecorations.boxMild.copyWith(
-                  color: AppColors.box,
-                ),
-                width: 25.w,
-                height: 8.h,
-                padding: EdgeInsets.all(3.w),
-                margin: EdgeInsets.only(right: 3.w),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: AppColors.arcColor),
+                width: 30.w,
+                margin: EdgeInsets.only(right: 2.w),
                 child: StreamBuilder(
                   stream: authBloc.selectedCountry,
                   builder: (_, AsyncSnapshot<Country> snapshot) {
                     if (snapshot.hasData) {
                       _selectedLocation = snapshot.requireData;
-                      return GestureDetector(
-                        onTap: () => DialogUtils.showBottomSheetPage(
-                          context: context,
-                          child: Container(
-                            height: 32.h,
-                            padding: EdgeInsets.all(5.w),
-                            alignment: Alignment.center,
-                            child: Column(
-                              children: [
-                                Space(height: 2.h),
-                                Expanded(
-                                  child: ScrollConfiguration(
-                                    behavior: MyCustomScrollBehavior(),
-                                    child: ListView.builder(
-                                      // shrinkWrap: true,
-                                      itemBuilder: (_, index) => GestureDetector(
-                                        onTap: () {
-                                          authBloc.setCountry(authBloc.countries[index]);
-                                          _selectedLocation = authBloc.countries[index];
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Container(
-                                          height: 5.h,
-                                          child: Directionality(
-                                            textDirection: TextDirection.ltr,
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  '+${authBloc.countries[index].code}',
-                                                  style: typography.caption,
-                                                ),
-                                                Space(width: 3.w),
-                                                Expanded(
-                                                    child: Text(
-                                                  authBloc.countries[index].name ?? '',
-                                                  style: typography.caption,
-                                                )),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      itemCount: authBloc.countries.length,
-                                    ),
-                                  ),
+                      return InkWell(
+                          onTap: () => countryDialog(),
+                          child: TextField(
+                            controller: _textCountryCode,
+                            textDirection: TextDirection.ltr,
+                            keyboardType: TextInputType.phone,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.penColor),
+                                  borderRadius: BorderRadius.circular(15.0)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              // enabledBorder: OutlineInputBorder(
+                              //   borderSide: BorderSide(color: Colors.grey)),
+                              // errorText: _validate ? intl.fillAllField : null,
+                              labelStyle: TextStyle(
+                                  color: AppColors.penColor,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.grey,
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                '+${snapshot.requireData.code}',
-                                style: typography.caption,
-                                textAlign: TextAlign.center,
-                                textDirection: TextDirection.ltr,
-                                overflow: TextOverflow.visible,
+                                onPressed: () => countryDialog(),
                               ),
                             ),
-                            Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.grey,
-                            ),
-                          ],
-                        ),
-                      );
+                            onSubmitted: (String) {
+                              click(_selectedLocation);
+                            },
+                          ));
                     }
                     return Progress();
                   },
@@ -260,6 +241,95 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  countryDialog() {
+    DialogUtils.showBottomSheetPage(
+      context: context,
+      child: Container(
+        height: 64.h,
+        padding: EdgeInsets.all(3.w),
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            TextField(
+              controller: _textSearchCountryCode,
+              textDirection: TextDirection.ltr,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.penColor),
+                    borderRadius: BorderRadius.circular(15.0)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                // enabledBorder: OutlineInputBorder(
+                //   borderSide: BorderSide(color: Colors.grey)),
+                // errorText: _validate ? intl.fillAllField : null,
+                label: Text(intl.search),
+                labelStyle: TextStyle(
+                    color: AppColors.penColor,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w400),
+              ),
+              style: TextStyle(
+                  color: AppColors.penColor,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w400),
+              onSubmitted: (String) {
+                click(_selectedLocation);
+              },
+              onChanged: authBloc.searchCountry,
+            ),
+            Space(height: 2.h),
+            StreamBuilder<List<Country>>(
+                stream: authBloc.filterListCountry,
+                builder: (context, filterListCountry) {
+                  if (filterListCountry.hasData)
+                    return Expanded(
+                      child: ScrollConfiguration(
+                        behavior: MyCustomScrollBehavior(),
+                        child: ListView.builder(
+                          // shrinkWrap: true,
+                          itemBuilder: (_, index) => GestureDetector(
+                            onTap: () {
+                              authBloc
+                                  .setCountry(filterListCountry.data![index]);
+                              _selectedLocation =
+                                  filterListCountry.data![index];
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              height: 5.h,
+                              child: Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '+${filterListCountry.data![index].code ?? ''}',
+                                      style: typography.caption,
+                                    ),
+                                    Space(width: 3.w),
+                                    Expanded(
+                                        child: Text(
+                                      filterListCountry.data![index].name ?? '',
+                                      style: typography.caption,
+                                    )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          itemCount: filterListCountry.data!.length,
+                        ),
+                      ),
+                    );
+                  return Center(child: Progress());
+                }),
+          ],
+        ),
+      ),
     );
   }
 
