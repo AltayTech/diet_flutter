@@ -172,28 +172,28 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
   InputDecoration textFieldDecoration() {
     return InputDecoration(
       filled: true,
-      fillColor: Colors.white,
-      contentPadding: EdgeInsets.only(left: 1.w),
+      fillColor: AppColors.grey,
+      contentPadding: EdgeInsets.only(right: 3.w),
       hintStyle: Theme.of(context).textTheme.overline,
       hintText: intl.hintDiscountCode,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(50.0)),
         borderSide: BorderSide(
-          color: Colors.white,
+          color: AppColors.grey,
           width: 0.5,
         ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(50.0)),
         borderSide: BorderSide(
-          color: Colors.white,
+          color: AppColors.grey,
           width: 0.5,
         ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(50.0)),
         borderSide: BorderSide(
-          color: Colors.white,
+          color: AppColors.grey,
           width: 0.5,
         ),
       ),
