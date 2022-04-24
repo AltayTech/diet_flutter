@@ -66,6 +66,7 @@ class AppColors {
   static const pinkPass = Color(0xffFFE2E2);
   static const redDate = Color(0xffFF5757);
   static const greyDate = Color(0xff454545);
+  static const alertCallTextColor = Color(0xff5282a5);
   static var colorPackages = [
     {
       'barColor': Color.fromARGB(255, 249, 203, 202),

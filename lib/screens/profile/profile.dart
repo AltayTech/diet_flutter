@@ -71,7 +71,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
     return ProfileProvider(profileBloc,
         child: SafeArea(
           child: Scaffold(
-            appBar: Toolbar(titleBar: intl.profile),
+            appBar: Toolbar(titleBar: intl.profile, elevationValue: 0),
             body: body(),
           ),
         ));

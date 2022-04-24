@@ -97,7 +97,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                           children: [
                             rulers(snapshot.requireData),
                             Space(height: 2.h),
-                            if (navigator.currentConfiguration!.path == 'list${Routes.weightEnter}')
+                            if (navigator.currentConfiguration!.path == '/list${Routes.weightEnter}')
                               callBox(snapshot.requireData),
                             if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
                               birthDayBox(snapshot.requireData),
@@ -341,14 +341,14 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
       children: [
         Alert(
           text: intl.weighEnterCallText,
-          boxColor: AppColors.blueRuler.withOpacity(0.5),
+          boxColor: AppColors.blueRuler.withOpacity(0.2),
           iconPath: 'assets/images/diet/call-center.svg',
         ),
         Space(height: 2.h),
         Text(
           intl.shouldWeCallYou,
           style: typography.caption?.apply(
-            fontWeightDelta: 1,
+            fontWeightDelta: 1
           ),
           textAlign: TextAlign.center,
         ),
