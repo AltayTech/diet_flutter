@@ -321,7 +321,8 @@ Widget textInput(
     TextAlign? textAlign,
     bool? endCursorPosition,
     TextEditingController? textController,
-    List<TextInputFormatter>? formatters}) {
+    List<TextInputFormatter>? formatters,
+    IconData? icon}) {
   TextEditingController controller = TextEditingController();
   controller.text = value ?? '';
   //controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
@@ -336,6 +337,7 @@ Widget textInput(
       decoration: inputDecoration.copyWith(
         labelText: label,
         labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.labelColor),
+        prefixIcon: icon != null ? Icon(icon) : null
       ),
       keyboardType: textInputType,
       textDirection: textDirection,
