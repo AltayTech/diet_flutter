@@ -23,7 +23,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
-class ProfileBloc {;
+class ProfileBloc {
   ProfileBloc() {}
 
   final _repository = Repository.getInstance();
