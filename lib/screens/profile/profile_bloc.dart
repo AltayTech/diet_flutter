@@ -11,6 +11,7 @@ import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -18,13 +19,11 @@ import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:behandam/extensions/stream.dart';
+
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
-class ProfileBloc {
-  AuthenticationBloc? loginRegisterBloc;
-
+class ProfileBloc {;
   ProfileBloc() {}
 
   final _repository = Repository.getInstance();
@@ -79,10 +78,16 @@ class ProfileBloc {
   bool? get isProgressNetwork => _progressNetwork.value;
 
   void getInformation() {
-    if (loginRegisterBloc == null) {
-      loginRegisterBloc = AuthenticationBloc();
+    if (MemoryApp.countries == null) {
+      fetchCountries();
     }
     fetchUserInformation();
+  }
+
+  void fetchCountries() {
+    _repository.country().then((value) {
+      MemoryApp.countries = value.data!;
+    });
   }
 
   void fetchUserInformation() async {
@@ -100,17 +105,15 @@ class ProfileBloc {
         _progressNetwork.safeValue = false;
       });
     } else {
-      loginRegisterBloc!.countriesStream.listen((event) {
-        _userInformation = MemoryApp.userInformation!;
-        _userInformationStream.safeValue = _userInformation;
-        if (MemoryApp.cityProvinceModel == null)
-          getProvinces();
-        else {
-          cityProvinceModel = MemoryApp.cityProvinceModel!;
-          _cityProvinceModelStream.safeValue = cityProvinceModel;
-        }
-        _progressNetwork.safeValue = false;
-      });
+      _userInformation = MemoryApp.userInformation!;
+      _userInformationStream.safeValue = _userInformation;
+      if (MemoryApp.cityProvinceModel == null)
+        getProvinces();
+      else {
+        cityProvinceModel = MemoryApp.cityProvinceModel!;
+        _cityProvinceModelStream.safeValue = cityProvinceModel;
+      }
+      _progressNetwork.safeValue = false;
     }
     getUnreadInbox();
     getTermPackage();
@@ -154,14 +157,14 @@ class ProfileBloc {
 
   void getTermPackage() {
     _repository.getTermPackage().then((value) {
-       _showRefund.safeValue = value.data!.showRefundLink!;
+      _showRefund.safeValue = value.data!.showRefundLink!;
       if (value.data != null &&
           value.data?.term != null &&
           DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0 &&
           !_showPdf.isClosed)
         _showPdf.safeValue = true;
       else {
-         _showPdf.safeValue = false;
+        _showPdf.safeValue = false;
       }
     }).whenComplete(() {});
   }
@@ -171,7 +174,6 @@ class ProfileBloc {
     _progressNetwork.close();
     _showProgressItem.close();
     _userInformationStream.close();
-    loginRegisterBloc!.dispose();
     _cityProvinceModelStream.close();
     _showProgressUploadImage.close();
     _showRefund.close();
@@ -208,12 +210,12 @@ class ProfileBloc {
   }
 
   dynamic findCountryName() {
-    print("countris = > ${loginRegisterBloc!.countries.length}");
-    var item = loginRegisterBloc!.countries.firstWhere(
+
+    var item = MemoryApp.countries?.firstWhere(
       (element) => element.id == userInfo.countryId,
       orElse: () => Country(),
     );
-    countryName = item.name ?? '';
+    countryName = item?.name ?? '';
     return item;
   }
 
