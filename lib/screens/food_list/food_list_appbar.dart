@@ -158,7 +158,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 3.w),
                   child: Divider(
-                    thickness: 0.3,
+                    thickness: 0.1,
                     color: AppColors.surface,
                     height: 3.h,
                   ),
