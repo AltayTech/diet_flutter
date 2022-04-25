@@ -13,6 +13,7 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -104,14 +105,14 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                           children: [
                             snapshotFoodList.data?.dietType?.alias == RegimeAlias.Pregnancy
                                 ? item(ChangeMenuType.DailyMenu, loadingSnapshot.requireData,
-                                    snapshot.requireData, Icons.menu)
+                                    snapshot.requireData, "assets/images/foodlist/menu.svg")
                                 : Expanded(
                                     flex: 1,
                                     child: item(
                                         ChangeMenuType.DailyMenu,
                                         loadingSnapshot.requireData,
                                         snapshot.requireData,
-                                        Icons.menu),
+                                        "assets/images/foodlist/menu.svg"),
                                   ),
                             if (snapshotFoodList.data?.dietType?.alias != RegimeAlias.Pregnancy &&
                                 snapshotFoodList.data?.menu?.theme != TypeTheme.FASTING &&
@@ -124,7 +125,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                                         : ChangeMenuType.Fasting,
                                     loadingSnapshot.requireData,
                                     snapshot.requireData,
-                                    Icons.menu),
+                                    "assets/images/foodlist/ramadan/waning_moon.svg"),
                               ),
                             if (snapshotFoodList.data?.menu?.theme == TypeTheme.FASTING ||
                                 snapshotFoodList.data?.menu?.theme == TypeTheme.FASTING2)
@@ -136,7 +137,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
                                         : ChangeMenuType.CancelFastTrackDisable,
                                     loadingSnapshot.requireData,
                                     snapshot.requireData,
-                                    Icons.close_rounded),
+                                    "assets/images/cancel_circle.svg"),
                               ),
                           ],
                         ),
@@ -159,7 +160,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
             DateTime.now().toString().substring(0, 10);
   }
 
-  Widget item(ChangeMenuType type, bool isLoading, WeekDay weekDay, IconData icon) {
+  Widget item(ChangeMenuType type, bool isLoading, WeekDay weekDay, String icon) {
     if (type == ChangeMenuType.Original || type == ChangeMenuType.CancelFastTrack)
       fastBloc = FastBloc();
     return Padding(
@@ -187,9 +188,9 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
+              ImageUtils.fromLocal(
                 icon,
-                size: 6.w,
+                width: 6.w,
                 color: type == ChangeMenuType.CancelFastTrackDisable
                     ? Color.fromRGBO(172, 172, 172, 1.0)
                     : null,

@@ -124,7 +124,8 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
         ),
         Positioned(
           bottom: 16.0,
-          left: 16,
+          left:context.isRtl? 16:null,
+          right: context.isRtl?null:16,
           child: Center(
             child: InkWell(
               child: Container(
@@ -140,7 +141,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                       color: Color.fromARGB(255, 243, 243, 243),
                     ),
                     child: Text(
-                      'ویرایش',
+                      intl.edit,
                       textAlign: TextAlign.right,
                       textDirection: TextDirection.rtl,
                       style: TextStyle(

@@ -125,9 +125,9 @@ flutter:
     - assets/images/vitrin/
     - assets/images/foodlist/archive/
     - assets/images/foodlist/advice/
-    - assets/images/foodlist/advice/
     - assets/images/shop/
     - assets/images/foodlist/pregnancy/
+    - assets/images/foodlist/ramadan/
   fonts:
     - family: Iransans
       fonts:
@@ -150,3 +150,9 @@ flutter:
     - family: yekan_regular
       fonts:
         - asset: fonts/YekanBakhFaNumRegular.ttf
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto_05_Medium.ttf
+    - family: Roboto_regular
+      fonts:
+        - asset: fonts/Roboto_04_Regular.ttf

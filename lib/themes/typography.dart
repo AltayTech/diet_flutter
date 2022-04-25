@@ -105,6 +105,6 @@ class AppTypography {
     if (locale == AppLocale.fa || locale == AppLocale.ar) {
       return 'Iransans';
     }
-    return 'Iransans';
+    return 'Roboto';
   }
 }

@@ -180,7 +180,7 @@ Widget attachBox() {
   );
 }
 
-Widget optionUi(IconData icon, String text, int action, TextDirection textDirection) {
+Widget optionButtonUi(IconData icon, String text, int action, TextDirection textDirection) {
   return GestureDetector(
     onTap: () {
       if (action == 2) {
@@ -192,6 +192,7 @@ Widget optionUi(IconData icon, String text, int action, TextDirection textDirect
     child: Container(
 //        width: _widthSpace / 3.25,
       height: 6.h,
+      padding: EdgeInsets.only(left: 8, right: 8),
       decoration:
           BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30.0), boxShadow: [
         BoxShadow(
@@ -203,22 +204,26 @@ Widget optionUi(IconData icon, String text, int action, TextDirection textDirect
       child: Row(
         textDirection: textDirection,
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
-            text,
-            textAlign: TextAlign.end,
-            style: TextStyle(
-              fontSize: 4.5.w,
-              color: Color.fromARGB(255, 152, 152, 152),
+          Expanded(
+            flex: 0,
+            child: Icon(
+              icon,
+              color: Color.fromARGB(255, 255, 151, 156),
+              size: 5.w,
             ),
           ),
           Space(
             width: 1.w,
           ),
-          Icon(
-            icon,
-            color: Color.fromARGB(255, 255, 151, 156),
-            size: 7.w,
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 10.sp,
+              color: Color.fromARGB(255, 152, 152, 152),
+            ),
           ),
         ],
       ),
@@ -226,8 +231,8 @@ Widget optionUi(IconData icon, String text, int action, TextDirection textDirect
   );
 }
 
-Widget card(String bgAdrs, String iconAdrs, String text, Color textColor, Color shadow,
-    TextDirection textDirection) {
+Widget cardLeftOrRightColor(String bgAdrs, String iconAdrs, String text, Color textColor,
+    Color shadow, TextDirection textDirection, bool isRight) {
   return Container(
     width: 70.w,
     height: 10.h,
@@ -250,16 +255,17 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor, Color 
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: Container(
-                  width: 1.5.w,
-                  decoration: BoxDecoration(
-                      color: Color(0xff66D4C9),
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(12), topRight: Radius.circular(12))),
+              if (isRight)
+                Expanded(
+                  child: Container(
+                    width: 1.5.w,
+                    decoration: BoxDecoration(
+                        color: Color(0xff66D4C9),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(12), topRight: Radius.circular(12))),
+                  ),
+                  flex: 0,
                 ),
-                flex: 0,
-              ),
               Expanded(
                   flex: 1,
                   child: Padding(
@@ -268,6 +274,17 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor, Color 
                         "",
                         textAlign: TextAlign.right,
                       ))),
+              if (!isRight)
+                Expanded(
+                  child: Container(
+                    width: 1.5.w,
+                    decoration: BoxDecoration(
+                        color: Color(0xff66D4C9),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(12), topLeft: Radius.circular(12))),
+                  ),
+                  flex: 0,
+                ),
             ],
           ),
         ),
@@ -335,10 +352,9 @@ Widget textInput(
       controller: textController ?? controller,
       enabled: enable,
       decoration: inputDecoration.copyWith(
-        labelText: label,
-        labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.labelColor),
-        prefixIcon: icon != null ? Icon(icon) : null
-      ),
+          labelText: label,
+          labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.labelColor),
+          prefixIcon: icon != null ? Icon(icon) : null),
       keyboardType: textInputType,
       textDirection: textDirection,
       onChanged: (val) {
