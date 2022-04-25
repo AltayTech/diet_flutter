@@ -30,6 +30,7 @@ import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
+import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -331,5 +332,8 @@ abstract class RestClient {
 
   @GET("/target-weight")
   NetworkResult<TargetWeight> targetWeight();
+
+  @GET("/user/subscription/list")
+  NetworkResult<ListUserSubscriptionData> getUserSubscription();
 }
 

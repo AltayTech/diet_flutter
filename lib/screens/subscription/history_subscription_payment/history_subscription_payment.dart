@@ -24,6 +24,7 @@ class _HistorySubscriptionPaymentScreenState
     super.initState();
 
     bloc = HistorySubscriptionPaymentBloc();
+    bloc.getUserSubscriptions();
   }
 
   @override
@@ -36,7 +37,7 @@ class _HistorySubscriptionPaymentScreenState
   Widget body() {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: Toolbar(titleBar: intl.selectPackageToolbar),
+        appBar: Toolbar(titleBar: intl.showHistorySubscription),
         body: TouchMouseScrollable(
           child: SingleChildScrollView(
             child: Column(

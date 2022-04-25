@@ -87,6 +87,7 @@ abstract class Routes {
   static const dailyMessage = '/dailyMessage';
   static const selectPackageSubscription = '/subscription/select-package';
   static const billSubscription = '/subscription/bill';
+  static const billSubscriptionHistory = '/subscription/history';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),
