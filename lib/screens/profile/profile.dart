@@ -297,13 +297,14 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                 DialogUtils.showDialogProgress(context: context);
                 profileBloc.checkFitamin();
               },
-              child: card(
+              child: cardLeftOrRightColor(
                   'assets/images/profile/box_blue_bg.svg',
                   'assets/images/profile/fitamin.svg',
                   intl.mySportProgram,
                   Color(0xff66D4C9),
                   Color.fromARGB(255, 243, 233, 248),
-                  context.textDirectionOfLocale),
+                  context.textDirectionOfLocale,
+                  context.isRtl),
             ),
           ),
         if (profileBloc.userInfo != null &&

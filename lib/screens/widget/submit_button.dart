@@ -20,13 +20,9 @@ class SubmitButton extends StatefulWidget {
 }
 
 class _SubmitButtonState extends ResourcefulState<SubmitButton> {
-  late AppBloc appBloc;
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    appBloc = AppProvider.of(context);
-
     return widget.icon != null
         ? ElevatedButton.icon(
 
