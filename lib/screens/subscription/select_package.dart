@@ -4,9 +4,7 @@ import 'package:behandam/screens/subscription/card_package.dart';
 import 'package:behandam/screens/widget/box_end_date_subscription.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
 class SelectPackageSubscriptionScreen extends StatefulWidget {
@@ -75,7 +73,8 @@ class _SelectPackageSubscriptionScreenState
                     ),
                     margin: EdgeInsets.only(top: 2.h),
                     padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
-                    child:  BoxEndTimeSubscription(time: "121",mainAxisAlignment: MainAxisAlignment.center),
+                    child: BoxEndTimeSubscription(
+                        time: "121", mainAxisAlignment: MainAxisAlignment.center),
                   ),
                   Container(
                     width: 90.w,
@@ -83,13 +82,13 @@ class _SelectPackageSubscriptionScreenState
                       color: Colors.white,
                     ),
                     margin: EdgeInsets.only(top: 1.5.h),
-                    padding: EdgeInsets.only( top: 2.h),
+                    padding: EdgeInsets.only(top: 2.h),
                     child: ListView.builder(
                         physics: ClampingScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: 2,
                         itemBuilder: (BuildContext context, int index) =>
-                            CardPackage(index == 0 ? packageItem : packageItem2,true)),
+                            CardPackage(index == 0 ? packageItem : packageItem2, true)),
                   )
                 ])),
       ),

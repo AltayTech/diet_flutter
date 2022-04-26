@@ -7,9 +7,6 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:velocity_x/velocity_x.dart';
-
-import '../../../routes.dart';
 
 class PaymentTypeWidget extends StatefulWidget {
   PaymentTypeWidget({Key? key}) : super(key: key);
@@ -134,7 +131,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                flex: 0,
+                flex: 1,
                 child: ImageUtils.fromLocal(
                   isSelected
                       ? 'assets/images/bill/check.svg'
@@ -143,41 +140,21 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                   height: 3.h,
                 ),
               ),
+              Space(width: 1.w,),
               Expanded(
                 flex: 2,
                 child: Container(
-                  alignment: Alignment.center,
                   width: double.maxFinite,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      /*itemMonth(package),*/
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          margin: EdgeInsets.only(top: 10),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                type == PaymentType.online
-                                    ? intl.online
-                                    : intl.cardToCard,
-                                softWrap: false,
-                                style: typography.caption!.copyWith(
-                                    color: isSelected
-                                        ? AppColors.priceColor
-                                        : Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                  child:  Text(
+                    type == PaymentType.online
+                        ? intl.online
+                        : intl.cardToCard,
+                    softWrap: false,
+                    textAlign: TextAlign.start,
+                    style: typography.caption!.copyWith(
+                        color: isSelected
+                            ? AppColors.priceColor
+                            : Colors.black),
                   ),
                 ),
               ),
