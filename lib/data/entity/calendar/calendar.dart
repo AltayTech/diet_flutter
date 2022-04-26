@@ -1,4 +1,5 @@
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'calendar.g.dart';
@@ -248,6 +249,9 @@ class TermPackage {
   bool? showRefundLink;
   @JsonKey(name: 'can_refund')
   bool? canRefund;
+
+  @JsonKey(name: 'subscription_data')
+  SubscriptionTermData? subscriptionTermData;
 
   TermPackage();
 

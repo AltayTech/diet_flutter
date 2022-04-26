@@ -6,6 +6,7 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
+import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
@@ -38,6 +39,7 @@ class ProfileBloc {
   final _progressNetwork = BehaviorSubject<bool>();
   final _showProgressItem = BehaviorSubject<bool>();
   final _showProgressUploadImage = BehaviorSubject<bool>();
+  final _termPackage = BehaviorSubject<TermPackage>();
   final _inboxCount = BehaviorSubject<int>();
   final _userInformationStream = BehaviorSubject<UserInformation>();
   final _showRefund = BehaviorSubject<bool>();
@@ -74,6 +76,8 @@ class ProfileBloc {
   Stream<List<InboxItem>> get inboxStream => _inboxStream.stream;
 
   Stream<CityProvinceModel> get cityProvinceModelStream => _cityProvinceModelStream.stream;
+
+  Stream<TermPackage> get termPackage => _termPackage.stream;
 
   bool? get isProgressNetwork => _progressNetwork.value;
 
@@ -157,6 +161,7 @@ class ProfileBloc {
 
   void getTermPackage() {
     _repository.getTermPackage().then((value) {
+      _termPackage.safeValue = value.data!;
       _showRefund.safeValue = value.data!.showRefundLink!;
       if (value.data != null &&
           value.data?.term != null &&
@@ -180,6 +185,7 @@ class ProfileBloc {
     _showPdf.close();
     _inboxCount.close();
     _navigateTo.close();
+    _termPackage.close();
     //  _isPlay.close();
   }
 

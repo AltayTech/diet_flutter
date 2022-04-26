@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
@@ -140,23 +141,30 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        BoxEndTimeSubscription(
-                          time: "121",
-                          mainAxisAlignment: MainAxisAlignment.start,
-                        ),
-                        SubmitButton(
-                          onTap: () {
-                            VxNavigator.of(context).push(Uri.parse(Routes.selectPackageSubscription));
-                          },
-                          label: intl.reviveSubscription,
-                          size: Size(35.w,5.h),
-                        )
-                      ],
-                    ),
+                    child: StreamBuilder<TermPackage>(
+                        stream: profileBloc.termPackage,
+                        builder: (context, termPackage) {
+                          if (termPackage.hasData)
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                BoxEndTimeSubscription(
+                                  time: '${termPackage.data!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                ),
+                                SubmitButton(
+                                  onTap: () {
+                                    VxNavigator.of(context).push(Uri.parse(
+                                        Routes.selectPackageSubscription));
+                                  },
+                                  label: intl.reviveSubscription,
+                                  size: Size(35.w, 5.h),
+                                )
+                              ],
+                            );
+                          return Progress();
+                        }),
                   ),
                   Space(height: 2.h),
                   ToolsBox(),
@@ -186,7 +194,8 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                             return WidgetIconTextProgress(
                                 countShow: false,
                                 title: intl.requestBackPayment,
-                                listIcon: 'assets/images/diet/dollar_symbol.svg',
+                                listIcon:
+                                    'assets/images/diet/dollar_symbol.svg',
                                 index: 3);
                           else
                             return Container();
@@ -208,7 +217,8 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                             return WidgetIconTextProgress(
                                 countShow: false,
                                 title: intl.getPdfTerm,
-                                listIcon: 'assets/images/foodlist/share/downloadPdf.svg',
+                                listIcon:
+                                    'assets/images/foodlist/share/downloadPdf.svg',
                                 index: 2);
                           else
                             return Container();
@@ -231,7 +241,8 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                         ),
                       ],
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.max,
