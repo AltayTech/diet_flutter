@@ -183,37 +183,39 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       _selectedLocation = snapshot.requireData;
                       return InkWell(
                           onTap: () => countryDialog(),
-                          child: TextField(
-                            controller: _textCountryCode,
-                            textDirection: TextDirection.ltr,
-                            keyboardType: TextInputType.phone,
-                            readOnly: true,
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: AppColors.penColor),
-                                  borderRadius: BorderRadius.circular(15.0)),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              // enabledBorder: OutlineInputBorder(
-                              //   borderSide: BorderSide(color: Colors.grey)),
-                              // errorText: _validate ? intl.fillAllField : null,
-                              labelStyle: TextStyle(
-                                  color: AppColors.penColor,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Colors.grey,
+                          child: Container(
+                            child: TextField(
+                              controller: _textCountryCode,
+                              textDirection: TextDirection.ltr,
+                              keyboardType: TextInputType.phone,
+                              enabled: false,
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: AppColors.penColor),
+                                    borderRadius: BorderRadius.circular(15.0)),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
                                 ),
-                                onPressed: () => countryDialog(),
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderSide: BorderSide(color: Colors.grey)),
+                                // errorText: _validate ? intl.fillAllField : null,
+                                labelStyle: TextStyle(
+                                    color: AppColors.penColor,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () => countryDialog(),
+                                ),
                               ),
+                              onSubmitted: (String) {
+                                click(_selectedLocation);
+                              },
                             ),
-                            onSubmitted: (String) {
-                              click(_selectedLocation);
-                            },
                           ));
                     }
                     return Progress();

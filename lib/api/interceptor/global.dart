@@ -23,7 +23,7 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Charset'] = 'UTF-8';
     print('auth token $authToken');
     if (authToken != null && authToken.isNotEmpty) {
-      options.headers['authorization'] = 'Bearer ${'205|ZI6E2B6jrIhaZOMPTvtvu42gsHW97TNRXJ08daaQ'}';
+      options.headers['authorization'] = 'Bearer ${authToken}';
     }
 
     // options.headers['Fcm-Token'] = fcmToken;
