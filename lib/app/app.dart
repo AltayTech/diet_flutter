@@ -22,6 +22,7 @@ import 'package:behandam/screens/payment/debit_card/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
 import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/payment/wait.dart';
+import 'package:behandam/screens/privacy_policy/privacy_policy.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
@@ -371,6 +372,8 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(SelectPackageSubscriptionScreen())),
     Routes.billSubscription: (_, params) =>
         MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
+    Routes.privacyPolicy: (_, __) =>
+        MaterialPage(child: routePage(PrivacyPolicy())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/enable_discount_box.dart';
 import 'package:behandam/screens/subscription/bill_payment/payment_type.dart';
@@ -12,20 +13,21 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class CustomCheckBox extends StatefulWidget {
   String? title;
   bool? value;
   Function(bool?)? onChange;
 
-  CustomCheckBox({Key? key, this.title, this.value, this.onChange}) : super(key: key);
+  CustomCheckBox({Key? key, this.title, this.value, this.onChange})
+      : super(key: key);
 
   @override
   _CustomCheckBox createState() => _CustomCheckBox();
 }
 
 class _CustomCheckBox extends ResourcefulState<CustomCheckBox> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -41,7 +43,6 @@ class _CustomCheckBox extends ResourcefulState<CustomCheckBox> {
 
   Widget customCheckBox(String? title, bool? value, Function(bool?)? onChange) {
     return Container(
-      color: Colors.red,
       margin: EdgeInsets.all(2.w),
       height: 8.h,
       child: Row(
@@ -52,13 +53,22 @@ class _CustomCheckBox extends ResourcefulState<CustomCheckBox> {
             value: value ?? false,
             onChanged: onChange!,
           ),
-          Expanded(
-            child: Text(
-              title ?? '',
+          InkWell(
+              onTap: () => context.vxNav.push(Uri(path: Routes.privacyPolicy)),
+              child: Text(
+                '${intl.privacyPolicy} ',
+                textAlign: TextAlign.end,
+                textDirection: context.textDirectionOfLocale,
+                style: typography.caption!.copyWith(
+                    color: AppColors.priceGreenColor,
+                    fontSize: 10.sp,
+                    decoration: TextDecoration.underline),
+              )),
+          Text(intl.kermanyRegimeConfirm,
+              textAlign: TextAlign.end,
               textDirection: context.textDirectionOfLocale,
-              style: typography.caption!.copyWith(fontSize: 10.sp),
-            ),
-          ),
+              style: typography.caption!
+                  .copyWith(color: Colors.black, fontSize: 10.sp))
         ],
       ),
     );
