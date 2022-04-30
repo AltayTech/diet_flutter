@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -14,7 +15,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -86,14 +86,40 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                 text: TextSpan(children: [
                                   TextSpan(
                                       text: intl.termsOfUseDescription,
-                                      style: Theme.of(context).textTheme.button!.copyWith(
-                                          color: AppColors.labelTextColor,
+                                      style: Theme.of(context).textTheme.overline!.copyWith(
+                                          color: Colors.lightBlue,
+                                          fontSize: 9.sp,
                                           decoration: TextDecoration.underline),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
                                           Utils.launchURL(
                                               FlavorConfig.instance.variables['urlTerms']);
                                         }),
+                                  TextSpan(
+                                    text: " ${intl.and} ",
+                                    style: Theme.of(context).textTheme.overline!.copyWith(
+                                          color: AppColors.labelTextColor,
+                                        fontSize: 9.sp
+                                        ),
+                                  ),
+                                  TextSpan(
+                                      text: intl.privacyPolicy,
+                                      style: Theme.of(context).textTheme.overline!.copyWith(
+                                          color: Colors.lightBlue,
+                                          fontSize: 9.sp,
+                                          decoration: TextDecoration.underline),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          VxNavigator.of(context)
+                                              .push(Uri.parse(Routes.privacyApp));
+                                        }),
+                                  TextSpan(
+                                    text: " ${intl.iAccept} ",
+                                    style: Theme.of(context).textTheme.overline!.copyWith(
+                                      color: AppColors.labelTextColor,
+                                      fontSize: 9.sp
+                                    ),
+                                  ),
                                 ])),
                           ),
                         ),
@@ -130,7 +156,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
           right: 0.0,
           left: 0.0,
           child: Center(
-              child: Text('به اندام دکتر کرمانی',
+              child: Text(intl.appNameSplash,
                   style: TextStyle(
                       color: AppColors.penColor,
                       fontSize: 22.0,

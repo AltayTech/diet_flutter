@@ -31,5 +31,6 @@
     "confirmNewPassword": "fix your new password",
     "notEqualPassword": "password repetition does't equal",
     "fillAllField": "fill all fields",
+    "privacyPolicy": "privacy policy",
     "minimumPasswordLength": "password must have 4 digits"
 }

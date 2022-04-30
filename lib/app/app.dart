@@ -22,6 +22,7 @@ import 'package:behandam/screens/payment/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
 import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/payment/wait.dart';
+import 'package:behandam/screens/privacy_policy/privacy_policy.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
@@ -69,10 +70,8 @@ import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
-
 import 'package:velocity_x/velocity_x.dart';
 
 import '../screens/authentication/auth.dart';
@@ -88,6 +87,7 @@ class _AppState extends State<App> {
   late String token;
   static late double webMaxWidth = 500;
   static late double webMaxHeight = 700;
+
   @override
   void initState() {
     super.initState();
@@ -96,10 +96,11 @@ class _AppState extends State<App> {
 
     navigator.addListener(() {
       debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
-      if(navigator.currentConfiguration!.path=="/"){
+      if (navigator.currentConfiguration!.path == "/") {
         navigator.routeManager.replace(Uri.parse(Routes.splash));
-      }else if(DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)){
-        navigator.routeManager.replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
+      } else if (DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)) {
+        navigator.routeManager
+            .replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
       }
       if (MemoryApp.analytics != null)
         MemoryApp.analytics!
@@ -123,6 +124,7 @@ class _AppState extends State<App> {
       },
     );
   }
+
   Widget appProvider(BoxConstraints constraints) {
     return AppProvider(
       bloc,
@@ -135,6 +137,7 @@ class _AppState extends State<App> {
       ),
     );
   }
+
   Widget app(Locale locale) {
     return MaterialApp.router(
         useInheritedMediaQuery: true,
@@ -149,8 +152,7 @@ class _AppState extends State<App> {
               primary: AppColors.primary,
               onPrimary: AppColors.onPrimary,
               onSurface: AppColors.onSurface,
-              shape:
-              RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
+              shape: RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
             ),
           ),
           primaryColor: AppColors.primary,
@@ -172,21 +174,22 @@ class _AppState extends State<App> {
 
         routeInformationParser: VxInformationParser(),
         backButtonDispatcher: RootBackButtonDispatcher(),
-        routerDelegate: navigator);;
+        routerDelegate: navigator);
+    ;
   }
+
   Widget webFrame(Locale locale, BoxConstraints constraints) {
     return FlutterWebFrame(
       builder: (context) => app(locale),
       maximumSize: Size(
-        constraints.maxWidth < webMaxWidth
-            ? constraints.maxWidth
-            : webMaxWidth,
+        constraints.maxWidth < webMaxWidth ? constraints.maxWidth : webMaxWidth,
         webMaxHeight,
       ),
       enabled: kIsWeb,
       backgroundColor: AppColors.primary.withOpacity(0.1),
     );
   }
+
   TextTheme buildTextTheme(Locale locale) {
     final appTypography = AppTypography(locale);
     return TextTheme(
@@ -237,8 +240,7 @@ class MyObs extends VxObserver {
   }
 
   @override
-  void didPop(Route route, Route? previousRoute) {
-  }
+  void didPop(Route route, Route? previousRoute) {}
 }
 
 final navigator = VxNavigator(
@@ -352,7 +354,9 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
     Routes.targetWeight: (_, __) => MaterialPage(child: routePage(Block())),
-    Routes.dailyMessage: (_, param) => MaterialPage(child: routePage(DailyMessage()), arguments: param),
+    Routes.dailyMessage: (_, param) =>
+        MaterialPage(child: routePage(DailyMessage()), arguments: param),
+    Routes.privacyApp: (_, __) => MaterialPage(child: routePage(PrivacyPolicy())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

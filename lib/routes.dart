@@ -83,6 +83,7 @@ abstract class Routes {
   static const shopBill = '/shop/payment/bill';
   static const shopPaymentOnlineSuccess = '/shop/payment/online/success';
   static const dailyMessage = '/dailyMessage';
+  static const privacyApp = '/privacy-policy';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),
