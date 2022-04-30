@@ -244,7 +244,7 @@ class _InboxList extends ResourcefulState<InboxList> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    profileBloc.getInbox();
   }
 
   @override
