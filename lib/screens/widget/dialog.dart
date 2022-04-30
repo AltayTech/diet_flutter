@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:behandam/app/app.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -85,6 +86,7 @@ padding: EdgeInsets.all(16),
     required BuildContext context,
     bool isDismissible = false,
   }) {
+    MemoryApp.isShowDialog=true;
     return showDialog(
       context: context,
       barrierDismissible: isDismissible,

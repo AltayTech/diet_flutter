@@ -21,6 +21,10 @@ class ErrorHandlerInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     if (err.error is SocketException) {
+      if (err.requestOptions.method.contains("GET")) {
+        _isSendData = false;
+      } else
+        _isSendData = true;
       _handleNoInternetError();
       return super.onError(err, handler);
     }
@@ -66,7 +70,9 @@ class ErrorHandlerInterceptor extends Interceptor {
 
   FirebaseCrashlytics get _crashlytics => FirebaseCrashlytics.instance;
 
-
+  bool _isNetworkAlertShown = false;
+  bool _isSendData = false;
+  bool _isMaintenanceAlertShown = false;
 
   void _showToastIfNotRelease(DioError err) async {
     final packageInfo = await PackageInfo.fromPlatform();
@@ -83,14 +89,14 @@ class ErrorHandlerInterceptor extends Interceptor {
       message = intl.serverInternalError;
     }
     // print('ttt ${err.response.toString()}');
-try {
-  if (message == null && err.response?.data != null && err.response?.data != '') {
-    message = NetworkResponse<dynamic>.fromJson(
-        err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
-        .error!
-        .message;
-  }
-}catch(e){}
+    try {
+      if (message == null && err.response?.data != null && err.response?.data != '') {
+        message = NetworkResponse<dynamic>.fromJson(
+                err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
+            .error!
+            .message;
+      }
+    } catch (e) {}
     message ??= intl.httpErrorWithCode(err.response?.statusCode.toString() ?? 'Unknown');
 
     //Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
@@ -102,7 +108,7 @@ try {
   }
 
   void _handleUnauthorizedError(DioError err) async {
-    if(navigator.currentConfiguration!.path!=Routes.login &&
+    if (navigator.currentConfiguration!.path != Routes.login &&
         navigator.currentConfiguration!.path != Routes.refundVerify &&
         navigator.currentConfiguration!.path != Routes.authVerify &&
         navigator.currentConfiguration!.path != Routes.passVerify) {
@@ -112,7 +118,6 @@ try {
       _showToast(err);
     }
   }
-
 
   void _submitNonFatalReport(DioError err, [String? message]) {
     final headers = Map.of(err.requestOptions.headers);
@@ -130,7 +135,7 @@ try {
     if (_context == null) {
       return;
     }
-     await DialogUtils.showDialogPage(
+    await DialogUtils.showDialogPage(
       context: _context!,
       isDismissible: false,
       child: MaintenancePage(),
@@ -140,15 +145,15 @@ try {
   }
 
   void _handleNoInternetError() async {
-    if (_context == null) {
+    if (_context == null || MemoryApp.isNetworkAlertShown) {
       return;
     }
-    if(!MemoryApp.isShowDialog) {
-      MemoryApp.isShowDialog=true;
-      await DialogUtils.showDialogPage(context: _context!, child: NetworkAlertPage());
+    MemoryApp.isNetworkAlertShown = true;
+    await DialogUtils.showDialogPage(context: _context!, child: NetworkAlertPage());
+    MemoryApp.isNetworkAlertShown = false;
+    if (_isSendData)
       dioErrorObserver.retryForInternetConnectivity();
+    else
       dioErrorObserver.retryForLoadingPage();
-    }
-
   }
 }

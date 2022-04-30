@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/toolbar_edit_profile.dart';
@@ -103,17 +104,15 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
 
   @override
   void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+    profileBloc.edit(context);
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
+  void onRetryAfterNoInternet() {}
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    profileBloc.getInformation();
   }
 
   @override
