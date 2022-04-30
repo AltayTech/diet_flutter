@@ -13,7 +13,6 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:flutter/cupertino.dart';
@@ -210,7 +209,6 @@ class ProfileBloc {
   }
 
   dynamic findCountryName() {
-
     var item = MemoryApp.countries?.firstWhere(
       (element) => element.id == userInfo.countryId,
       orElse: () => Country(),
@@ -336,7 +334,7 @@ class ProfileBloc {
       Utils.getSnackbarMessage(context, value.message!);
       Navigator.of(context).pop();
     }).whenComplete(() {
-      Navigator.of(context).pop();
+      if (!MemoryApp.isNetworkAlertShown) Navigator.of(context).pop();
     });
   }
 

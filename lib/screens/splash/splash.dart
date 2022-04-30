@@ -202,7 +202,6 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
 
   @override
   void onRetryLoadingPage() {
-    MemoryApp.isShowDialog = false;
     bloc.onRetryLoadingPage();
   }
 }

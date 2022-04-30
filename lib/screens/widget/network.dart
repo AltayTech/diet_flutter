@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
@@ -60,7 +61,13 @@ class _NetworkAlertState extends ResourcefulState<NetworkAlertPage> {
       padding: EdgeInsets.zero,
       color: AppColors.primary,
       minWidth: double.infinity,
-      onPressed: () => Navigator.pop(context),
+      onPressed: () {
+        Navigator.pop(context);
+        if (MemoryApp.isShowDialog) {
+          MemoryApp.isShowDialog = false;
+          Navigator.pop(context);
+        }
+      },
       shape: AppShapes.rectangleMedium,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.1.h),
@@ -85,25 +92,5 @@ class _NetworkAlertState extends ResourcefulState<NetworkAlertPage> {
         ),
       ),
     );
-  }
-
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
   }
 }
