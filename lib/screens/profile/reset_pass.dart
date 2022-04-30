@@ -7,7 +7,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ResetPasswordProfile extends StatefulWidget {
@@ -143,23 +142,7 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
                         ),
                         SizedBox(height: 20.0),
                         button(AppColors.btnColor, intl.setNewPassword,
-                            Size(100.w, 8.h), () {
-                          if (_password1 != _password2)
-                            Utils.getSnackbarMessage(
-                                context, intl.notEqualPassword);
-                          else if (_password1 == null || _password2 == null)
-                            Utils.getSnackbarMessage(
-                                context, intl.fillAllField);
-                          else if (_password1!.length < 4)
-                            Utils.getSnackbarMessage(
-                                context, intl.minimumPasswordLength);
-                          else if (_password1 == _password2) {
-                            Reset pass = Reset();
-                            pass.password = _password1;
-                            DialogUtils.showDialogProgress(context: context);
-                            profileBloc.resetPasswordMethod(pass);
-                          }
-                        }),
+                            Size(100.w, 8.h), checkPassword),
                       ],
                     ),
                   )
@@ -217,23 +200,27 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void checkPassword(){
+      if (_password1 != _password2)
+        Utils.getSnackbarMessage(
+            context, intl.notEqualPassword);
+      else if (_password1 == null || _password2 == null)
+        Utils.getSnackbarMessage(
+            context, intl.fillAllField);
+      else if (_password1!.length < 4)
+        Utils.getSnackbarMessage(
+            context, intl.minimumPasswordLength);
+      else if (_password1 == _password2) {
+        Reset pass = Reset();
+        pass.password = _password1;
+        DialogUtils.showDialogProgress(context: context);
+        profileBloc.resetPasswordMethod(pass);
+      }
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    checkPassword();
   }
 
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }
