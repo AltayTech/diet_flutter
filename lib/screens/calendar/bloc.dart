@@ -10,7 +10,7 @@ class CalendarBloc {
       _startDate.value = DateTime.now().subtract(Duration(days: 100)).toString().substring(0, 10);
     if (_endDate.valueOrNull == null)
       _endDate.value = DateTime.now().add(Duration(days: 100)).toString().substring(0, 10);
-    _loadContent();
+    loadContent();
   }
 
   final _repository = Repository.getInstance();
@@ -30,7 +30,7 @@ class CalendarBloc {
   //
   Stream<CalendarData?> get calendar => _calendar.stream;
 
-  void _loadContent() {
+  void loadContent() {
     _loadingContent.safeValue = true;
     _repository.calendar(_startDate.value, _endDate.value).then((value) {
       _calendar.value = value.requireData;

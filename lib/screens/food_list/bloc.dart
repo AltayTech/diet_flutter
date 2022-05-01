@@ -18,7 +18,9 @@ import 'package:shamsi_date/shamsi_date.dart';
 import 'week_day.dart';
 import 'package:behandam/extensions/stream.dart';
 class FoodListBloc {
-  FoodListBloc(bool fillFood) {
+  FoodListBloc();
+
+  void getFoodMenu({required bool fillFood}){
     if (_date.valueOrNull == null && MemoryApp.selectedDate == null)
       _date.value = DateTime.now().toString().substring(0, 10);
     else if (_date.valueOrNull == null && MemoryApp.selectedDate != null)
@@ -37,6 +39,7 @@ class FoodListBloc {
 
   final _showServerError = LiveEvent();
   final _navigateTo = LiveEvent();
+  final _popLoading = LiveEvent();
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _foodList = BehaviorSubject<FoodListData?>();
@@ -55,6 +58,8 @@ class FoodListBloc {
   Stream get showServerError => _showServerError.stream;
 
   Stream get navigateTo => _navigateTo.stream;
+
+  Stream get popLoading => _popLoading.stream;
 
   Stream<FoodListData?> get foodList => _foodList.stream;
 
@@ -205,8 +210,7 @@ class FoodListBloc {
     onReplacingFood(mealId);
   }
 
-  onDailyMenu() {
-    _loadingContent.safeValue = true;
+ void onDailyMenu() {
     List<DailyFood> foods = [];
     int day = _weekDays.value!
         .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
@@ -221,9 +225,10 @@ class FoodListBloc {
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
     _repository.dailyMenu(requestData).then((value) {
       if (value.data != null && value.requireData) {
+        _popLoading.fire(false);
         onRefresh(invalidate: true);
       }
-    }).whenComplete(() => _loadingContent.safeValue = false);
+    });
   }
 
   void onReplacingFood(int mealId) {
@@ -293,6 +298,7 @@ class FoodListBloc {
     _loadingContent.close();
     _foodList.close();
     _navigateTo.close();
+    _popLoading.close();
     _date.close();
     _weekDays.close();
     _selectedWeekDay.close();

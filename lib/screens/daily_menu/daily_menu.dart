@@ -2,11 +2,13 @@ import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/food_list/week_day.dart';
 import 'package:behandam/screens/food_list/week_list.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/food_list_curve.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
@@ -53,6 +55,9 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
     if (!isInitial) {
       bloc = ModalRoute.of(context)?.settings.arguments as FoodListBloc;
       isInitial = true;
+      bloc.popLoading.listen((event) {
+        VxNavigator.of(context).pop();
+      });
     }
   }
 
@@ -317,8 +322,8 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
               }
             });
             if (isValid) {
+              DialogUtils.showDialogProgress(context: context);
               bloc.onDailyMenu();
-              VxNavigator.of(context).pop();
             } else {
               Utils.getSnackbarMessage(context, intl.selectFoodForAllMeals);
             }
@@ -343,22 +348,12 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    bloc.onDailyMenu();
   }
 
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
   }
 }

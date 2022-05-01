@@ -28,6 +28,7 @@ class TicketBloc {
   ImagePicker? _picker;
   final _repository = Repository.getInstance();
   final _showServerError = LiveEvent();
+  final _showMessage = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
   final _supportItemSelected = BehaviorSubject<bool>();
   late SendTicket sendTicketMessage;
@@ -45,6 +46,7 @@ class TicketBloc {
   TicketModel? _ticketDetails;
 
   Stream get showServerError => _showServerError.stream;
+  Stream get showMessage => _showMessage.stream;
 
   Stream<bool> get progressNetwork => _progressNetwork.stream;
 
@@ -77,6 +79,8 @@ class TicketBloc {
   TicketModel? get ticketDetails => _ticketDetails;
 
   bool get isFileAudio => _isShowFileAudio.stream.valueOrNull ?? false;
+
+  TypeTicket get typeTicketValue => _typeTicket.value;
 
   int minute = 0;
   int start = 0;
@@ -457,6 +461,8 @@ class TicketBloc {
       _isShowImage.value = false;
     }
   }
+
+
 
   void dispose() {
     _showServerError.close();

@@ -1552,12 +1552,22 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    switch (bloc.typeTicketValue) {
+      case TypeTicket.MESSAGE:
+        bloc.sendTicketTextDetail();
+        break;
+      case TypeTicket.RECORD:
+        bloc.sendTicketFileDetail();
+        break;
+      case TypeTicket.IMAGE:
+        bloc.sendTicketTextDetail();
+        break;
+    }
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.getDetailTicket(args);
   }
 
   @override
