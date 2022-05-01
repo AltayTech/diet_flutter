@@ -18,6 +18,8 @@ import '../../base/repository.dart';
 class AuthenticationBloc {
   AuthenticationBloc() {
     _waiting.safeValue = false;
+    _obscureTextPass.safeValue = false;
+    _obscureTextConfirmPass.safeValue = false;
   }
 
   final _repository = Repository.getInstance();
@@ -26,6 +28,8 @@ class AuthenticationBloc {
   final _countries = BehaviorSubject<List<Country>>();
   final _filterListCountry = BehaviorSubject<List<Country>>();
   final _selectedCountry = BehaviorSubject<Country>();
+  final _obscureTextPass = BehaviorSubject<bool>();
+  final _obscureTextConfirmPass = BehaviorSubject<bool>();
   final _navigateToVerify = LiveEvent();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
@@ -35,9 +39,7 @@ class AuthenticationBloc {
       return _countries.value;
     else
       return _countries.value
-          .where((element) =>
-              element.name!.contains(_search!) ||
-              element.code!.contains(_search!))
+          .where((element) => element.name!.contains(_search!) || element.code!.contains(_search!))
           .toList();
   }
 
@@ -48,6 +50,10 @@ class AuthenticationBloc {
   Stream<Country> get selectedCountry => _selectedCountry.stream;
 
   Stream<bool> get waiting => _waiting.stream;
+
+  Stream<bool> get obscureTextPass => _obscureTextPass.stream;
+
+  Stream<bool> get obscureTextConfirmPass => _obscureTextConfirmPass.stream;
 
   Stream get navigateToVerify => _navigateToVerify.stream;
 
@@ -73,14 +79,14 @@ class AuthenticationBloc {
       _countries.value = MemoryApp.countries!;
       _countries.value.forEach((element) {
         if (element.code == "98") {
-          _selectedCountry.value = element;
+          _selectedCountry.safeValue = element;
         }
       });
     }
   }
 
   void setCountry(Country value) {
-    _selectedCountry.value = value;
+    _selectedCountry.safeValue = value;
   }
 
   void loginMethod(String phoneNumber) {
@@ -93,8 +99,7 @@ class AuthenticationBloc {
   void passwordMethod(User user) {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      debugPrint(
-          'pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      debugPrint('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       checkFcm();
       _repository
           .getUser()
@@ -198,6 +203,14 @@ class AuthenticationBloc {
       });
   }
 
+  void setObscureTextPass() {
+    _obscureTextPass.safeValue = !_obscureTextPass.value;
+  }
+
+  void setObscureTextConfirmPass() {
+    _obscureTextConfirmPass.safeValue = !_obscureTextConfirmPass.value;
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateToVerify.close();
@@ -205,5 +218,7 @@ class AuthenticationBloc {
     _waiting.close();
     _navigateTo.close();
     _filterListCountry.close();
+    _obscureTextPass.close();
+    _obscureTextConfirmPass.close();
   }
 }

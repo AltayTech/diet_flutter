@@ -7,8 +7,6 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -23,8 +21,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
   String? _password1;
   String? _password2;
   late AuthenticationBloc authBloc;
-  bool _obscureText1 = false;
-  bool _obscureText2 = false;
+
   bool check = false;
 
   @override
@@ -133,69 +130,75 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
         children: <Widget>[
           Container(
             height: 60.0,
-            child: TextField(
-              obscureText: !_obscureText1,
-              textDirection: TextDirection.ltr,
-              decoration: InputDecoration(
-                  focusedBorder:
-                      OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.penColor),
-                      borderRadius: BorderRadius.circular(15.0)),
-                  labelText: intl.enterNewPassword,
-                  // errorText: _validate ? intl.fillAllField : null,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureText1 ? Icons.visibility : Icons.visibility_off,
-                      color: AppColors.penColor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText1 = !_obscureText1;
-                      });
-                    },
-                  ),
-                  labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
-              onChanged: (txt) {
-                _password1 = txt;
-              },
+            child: StreamBuilder<bool>(
+              stream: authBloc.obscureTextPass,
+              builder: (context, obscureTextPass) {
+                return TextField(
+                  obscureText: !obscureTextPass.requireData,
+                  textDirection: TextDirection.ltr,
+                  decoration: InputDecoration(
+                      focusedBorder:
+                          OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.penColor),
+                          borderRadius: BorderRadius.circular(15.0)),
+                      labelText: intl.enterNewPassword,
+                      // errorText: _validate ? intl.fillAllField : null,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          obscureTextPass.requireData ? Icons.visibility : Icons.visibility_off,
+                          color: AppColors.penColor,
+                        ),
+                        onPressed: () {
+                         authBloc.setObscureTextPass();
+                        },
+                      ),
+                      labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
+                  onChanged: (txt) {
+                    _password1 = txt;
+                  },
+                );
+              }
             ),
           ),
           SizedBox(height: 20.0),
           Container(
             height: 60.0,
-            child: TextField(
-              obscureText: !_obscureText2,
-              textDirection: TextDirection.ltr,
-              decoration: InputDecoration(
-                  focusedBorder:
-                      OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.penColor),
-                      borderRadius: BorderRadius.circular(15.0)),
-                  labelText: intl.repeatNewPassword,
-                  // errorText: _validate ? intl.fillAllField : null,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureText2 ? Icons.visibility : Icons.visibility_off,
-                      color: AppColors.penColor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText2 = !_obscureText2;
-                      });
-                    },
-                  ),
-                  labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
-              onChanged: (txt) {
-                _password2 = txt;
-              },
+            child: StreamBuilder<bool>(
+              stream: authBloc.obscureTextConfirmPass,
+              builder: (context, obscureTextConfirmPass) {
+                return TextField(
+                  obscureText: !obscureTextConfirmPass.requireData,
+                  textDirection: TextDirection.ltr,
+                  decoration: InputDecoration(
+                      focusedBorder:
+                          OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.penColor),
+                          borderRadius: BorderRadius.circular(15.0)),
+                      labelText: intl.repeatNewPassword,
+                      // errorText: _validate ? intl.fillAllField : null,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          obscureTextConfirmPass.requireData ? Icons.visibility : Icons.visibility_off,
+                          color: AppColors.penColor,
+                        ),
+                        onPressed: () {
+                         authBloc.setObscureTextConfirmPass();
+                        },
+                      ),
+                      labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
+                  onChanged: (txt) {
+                    _password2 = txt;
+                  },
+                );
+              }
             ),
           ),
           SizedBox(height: 20.0),

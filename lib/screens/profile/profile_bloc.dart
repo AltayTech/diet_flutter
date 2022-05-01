@@ -23,7 +23,10 @@ import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
 class ProfileBloc {
-  ProfileBloc() {}
+  ProfileBloc() {
+    _obscureTextPass.safeValue=false;
+    _obscureTextConfirmPass.safeValue=false;
+  }
 
   final _repository = Repository.getInstance();
   ImagePicker? _picker;
@@ -32,8 +35,6 @@ class ProfileBloc {
   late String countryName;
 
   late UserInformation _userInformation;
-  final _showServerError = LiveEvent();
-  final _navigateTo = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
   final _showProgressItem = BehaviorSubject<bool>();
   final _showProgressUploadImage = BehaviorSubject<bool>();
@@ -43,7 +44,12 @@ class ProfileBloc {
   final _showPdf = BehaviorSubject<bool>();
   final _inboxStream = BehaviorSubject<List<InboxItem>>();
   final _cityProvinceModelStream = BehaviorSubject<CityProvinceModel>();
+  final _obscureTextPass = BehaviorSubject<bool>();
+  final _obscureTextConfirmPass = BehaviorSubject<bool>();
+
   final _navigateToVerify = LiveEvent();
+  final _showServerError = LiveEvent();
+  final _navigateTo = LiveEvent();
   String? _url;
 
   String? get url => _url;
@@ -73,6 +79,10 @@ class ProfileBloc {
   Stream<List<InboxItem>> get inboxStream => _inboxStream.stream;
 
   Stream<CityProvinceModel> get cityProvinceModelStream => _cityProvinceModelStream.stream;
+
+  Stream<bool> get obscureTextPass => _obscureTextPass.stream;
+
+  Stream<bool> get obscureTextConfirmPass => _obscureTextConfirmPass.stream;
 
   bool? get isProgressNetwork => _progressNetwork.value;
 
@@ -179,6 +189,8 @@ class ProfileBloc {
     _showPdf.close();
     _inboxCount.close();
     _navigateTo.close();
+    _obscureTextPass.close();
+    _obscureTextConfirmPass.close();
     //  _isPlay.close();
   }
 
@@ -354,8 +366,25 @@ class ProfileBloc {
 
   void logOut() {
     _repository.logout().whenComplete(() {
+      sendAnalytic();
       AppSharedPreferences.logout();
       navigator.routeManager.clearAndPush(Uri.parse(Routes.auth));
     });
+  }
+
+  void sendAnalytic(){
+    try {
+      MemoryApp.analytics?.logEvent(name: "click_logout_button");
+    }catch(e){
+
+    }
+  }
+
+  void setObscureTextPass() {
+    _obscureTextPass.safeValue = !_obscureTextPass.value;
+  }
+
+  void setObscureTextConfirmPass() {
+    _obscureTextConfirmPass.safeValue = !_obscureTextConfirmPass.value;
   }
 }
