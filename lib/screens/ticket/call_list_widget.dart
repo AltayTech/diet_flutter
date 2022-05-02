@@ -25,7 +25,7 @@ class CallListWidget extends StatefulWidget {
 class CallListWidgetState extends ResourcefulState<CallListWidget> {
   late CallBloc callBloc;
   late List<String> calles;
-
+  bool isSendRequestReserve=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -168,7 +168,7 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
                           } else
                             return MaterialButton(
                               onPressed: () {
-                                updateDialog();
+                                reserveDialog();
                               },
                               padding: EdgeInsets.zero,
                               child: Container(
@@ -228,7 +228,7 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
     );
   }
 
-  void updateDialog() {
+  void reserveDialog() {
     DialogUtils.showDialogPage(
         context: context,
         isDismissible: true,
@@ -276,6 +276,7 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
                             ),
                             onPressed: () {
                               Navigator.of(context).pop();
+                              isSendRequestReserve=true;
                               callBloc.sendCallRequest();
                             },
                             color: Colors.white,
@@ -360,6 +361,7 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
                             ),
                             onPressed: () {
                               Navigator.of(context).pop();
+                              isSendRequestReserve=false;
                               callBloc.deleteCallRequest();
                             },
                             color: Colors.white,
@@ -397,24 +399,13 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
       ),
     );
   }
-
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
+  
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+   if(isSendRequestReserve){
+     callBloc.sendCallRequest();
+   }else  callBloc.deleteCallRequest();
   }
 
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

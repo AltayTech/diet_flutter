@@ -27,6 +27,7 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
     // TODO: implement initState
     super.initState();
     callBloc = CallBloc();
+    callBloc.getCalls();
   }
 
   @override
@@ -175,7 +176,7 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    callBloc.getCalls();
   }
 
   @override
