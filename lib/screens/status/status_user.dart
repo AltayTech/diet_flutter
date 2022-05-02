@@ -257,23 +257,12 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    bloc.dispose();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.getVisitUser();
   }
 
-  @override
-  void onShowMessage(String value) {}
 }

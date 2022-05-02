@@ -520,24 +520,10 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
     bloc.setProduct(product!);
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }
 
 enum TimeScoreType {
