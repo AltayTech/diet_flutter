@@ -531,7 +531,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.setProduct(product!);
   }
 
   @override

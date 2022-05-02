@@ -28,6 +28,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
   void initState() {
     super.initState();
     ordersBloc = OrdersBloc();
+    ordersBloc.getOrders();
     listenBloc();
   }
 
@@ -40,62 +41,65 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    ordersBloc.getOrders();
     return SafeArea(
         child: Scaffold(
       appBar: Toolbar(
         titleBar: intl.myProduct,
       ),
-      body: TouchMouseScrollable(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: StreamBuilder(
-                  stream: ordersBloc.orders,
-                  builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
-                    if (snapshot.hasData) if (snapshot.requireData.length > 0) {
-                      return Column(
-                        children: [
-                          ...snapshot.data!
-                              .map((order) => Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10.0)),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [firstTile(order), secondTile(order)],
-                                    ),
-                                  ))
-                              .toList(),
-                        ],
-                      );
-                    } else {
-                      return SizedBox(
-                          height: 100.h,
-                          child: Center(
-                              child: EmptyBox(
-                            child: Text(
-                              intl.emptyProduct,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .copyWith(color: AppColors.labelTextColor),
-                            ),
-                            predicate: false,
-                          )));
-                    }
-                    else
-                      return Progress();
-                  },
-                ),
+      body: body(),
+    ));
+  }
+
+  Widget body(){
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: StreamBuilder(
+                stream: ordersBloc.orders,
+                builder: (context, AsyncSnapshot<List<ShopProduct>> snapshot) {
+                  if (snapshot.hasData) if (snapshot.requireData.length > 0) {
+                    return Column(
+                      children: [
+                        ...snapshot.data!
+                            .map((order) => Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [firstTile(order), secondTile(order)],
+                          ),
+                        ))
+                            .toList(),
+                      ],
+                    );
+                  } else {
+                    return SizedBox(
+                        height: 100.h,
+                        child: Center(
+                            child: EmptyBox(
+                              child: Text(
+                                intl.emptyProduct,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(color: AppColors.labelTextColor),
+                              ),
+                              predicate: false,
+                            )));
+                  }
+                  else
+                    return Progress();
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    ));
+    );
   }
 
   Widget firstTile(ShopProduct product) {
@@ -164,22 +168,8 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    ordersBloc.getOrders();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

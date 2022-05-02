@@ -33,6 +33,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
     // TODO: implement initState
     super.initState();
     bloc = ShopHomeBloc();
+    bloc.loadContent();
     listenBloc();
   }
 
@@ -413,22 +414,13 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
     // TODO: implement onRetryAfterNoInternet
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

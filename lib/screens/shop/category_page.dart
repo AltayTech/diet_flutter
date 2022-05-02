@@ -249,7 +249,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    categoryBloc.getCategory(args!);
   }
 
   @override
