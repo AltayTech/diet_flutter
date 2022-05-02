@@ -422,5 +422,4 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
   void onRetryLoadingPage() {
     bloc.loadContent();
   }
-
 }

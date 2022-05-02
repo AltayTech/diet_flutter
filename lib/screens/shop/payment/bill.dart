@@ -523,7 +523,6 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
   void onRetryLoadingPage() {
     bloc.setProduct(product!);
   }
-
 }
 
 enum TimeScoreType {

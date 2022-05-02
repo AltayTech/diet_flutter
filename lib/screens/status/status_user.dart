@@ -36,21 +36,25 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
       bloc,
       child: Scaffold(
         appBar: Toolbar(titleBar: intl.statusBodyTermUser),
-        body: Container(
-          width: 100.w,
-          height: 100.h,
-          child: Stack(
-            children: [
-              content(),
-              Positioned(
-                bottom: 0,
-                child: BottomNav(
-                  currentTab: BottomNavItem.STATUS,
-                ),
-              )
-            ],
-          ),
-        ),
+        body: body(),
+      ),
+    );
+  }
+
+  Widget body() {
+    return Container(
+      width: 100.w,
+      height: 100.h,
+      child: Stack(
+        children: [
+          content(),
+          Positioned(
+            bottom: 0,
+            child: BottomNav(
+              currentTab: BottomNavItem.STATUS,
+            ),
+          )
+        ],
       ),
     );
   }
@@ -264,5 +268,4 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   void onRetryLoadingPage() {
     bloc.getVisitUser();
   }
-
 }

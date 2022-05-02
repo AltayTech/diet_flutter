@@ -50,7 +50,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
     ));
   }
 
-  Widget body(){
+  Widget body() {
     return TouchMouseScrollable(
       child: SingleChildScrollView(
         child: Column(
@@ -66,13 +66,13 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
                       children: [
                         ...snapshot.data!
                             .map((order) => Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [firstTile(order), secondTile(order)],
-                          ),
-                        ))
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0)),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [firstTile(order), secondTile(order)],
+                                  ),
+                                ))
                             .toList(),
                       ],
                     );
@@ -81,15 +81,15 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
                         height: 100.h,
                         child: Center(
                             child: EmptyBox(
-                              child: Text(
-                                intl.emptyProduct,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1!
-                                    .copyWith(color: AppColors.labelTextColor),
-                              ),
-                              predicate: false,
-                            )));
+                          child: Text(
+                            intl.emptyProduct,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(color: AppColors.labelTextColor),
+                          ),
+                          predicate: false,
+                        )));
                   }
                   else
                     return Progress();
@@ -171,5 +171,4 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
   void onRetryLoadingPage() {
     ordersBloc.getOrders();
   }
-
 }
