@@ -1,7 +1,8 @@
-import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'call_item.g.dart';
+
+enum UiCallType { None, Reserve, Reserved, Done }
 
 @JsonSerializable()
 class Call {
@@ -35,7 +36,19 @@ class CallItem {
   @JsonKey(name: "is_reserve")
   bool? isReserve;
 
+  UiCallType get callType => getCallType();
 
+  UiCallType getCallType() {
+    if (isReserve == null && !done!) {
+      return UiCallType.Reserved;
+    } else if (isReserve != null && isReserve!) {
+      return UiCallType.Reserve;
+    } else if (isReserve == null && done!) {
+      return UiCallType.Done;
+    } else {
+      return UiCallType.None;
+    }
+  }
 
   CallItem();
 
@@ -43,4 +56,3 @@ class CallItem {
 
   Map<String, dynamic> toJson() => _$CallItemToJson(this);
 }
-

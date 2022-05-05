@@ -40,78 +40,7 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
           body: StreamBuilder(
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data == false) {
-                return TouchMouseScrollable(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      child: Column(children: [
-                        Padding(
-                          child: Text(
-                            intl.descriptionCallService,
-                            textDirection: context.textDirectionOfLocale,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                          padding: EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 16),
-                        ),
-                        Padding(
-                          child: Row(
-                            textDirection: context.textDirectionOfLocale,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${intl.callNumber} : ',
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.caption,
-                                textDirection: context.textDirectionOfLocale,
-                              ),
-                              Text(
-                                MemoryApp.userInformation?.callNumber ??
-                                    MemoryApp.userInformation!.mobile!,
-                                textAlign: TextAlign.center,
-                                textDirection: context.textDirectionOfLocale,
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                              Space(width: 2.5.w),
-                              MaterialButton(
-                                child: Text(
-                                  intl.edit,
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.caption,
-                                  textDirection: context.textDirectionOfLocale,
-                                ),
-                                onPressed: () {
-                                  VxNavigator.of(context).push(Uri.parse(Routes.editProfile));
-                                },
-                                padding: EdgeInsets.only(top: 1.w, bottom: 1.w),
-                                color: Color.fromARGB(255, 245, 245, 245),
-                                elevation: 0,
-                                focusColor: Color.fromARGB(255, 245, 245, 245),
-                                focusElevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                    side: BorderSide(
-                                        color: Theme.of(context).primaryColor, width: 2.0)),
-                              ),
-                            ],
-                          ),
-                          padding: EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 16),
-                        ),
-                        StreamBuilder(
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData && snapshot.data == false) {
-                              return CallListWidget();
-                            } else {
-                              return noAccessCall();
-                            }
-                          },
-                          stream: callBloc.notFoundCall,
-                        ),
-                      ]),
-                      padding: EdgeInsets.only(top: 2.h, bottom: 2.h),
-                    ),
-                  ),
-                );
+                return content();
               } else
                 return SpinKitCircle(
                   size: 7.w,
@@ -121,6 +50,79 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
             stream: callBloc.progressNetwork,
           ),
         ));
+  }
+
+  Widget content() {
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: Padding(
+          child: Column(children: [
+            Padding(
+              child: Text(
+                intl.descriptionCallService,
+                textDirection: context.textDirectionOfLocale,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption,
+              ),
+              padding: EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 16),
+            ),
+            Padding(
+              child: Row(
+                textDirection: context.textDirectionOfLocale,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '${intl.callNumber} : ',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.caption,
+                    textDirection: context.textDirectionOfLocale,
+                  ),
+                  Text(
+                    MemoryApp.userInformation?.callNumber ?? MemoryApp.userInformation!.mobile!,
+                    textAlign: TextAlign.center,
+                    textDirection: context.textDirectionOfLocale,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  Space(width: 2.5.w),
+                  MaterialButton(
+                    child: Text(
+                      intl.edit,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.caption,
+                      textDirection: context.textDirectionOfLocale,
+                    ),
+                    onPressed: () {
+                      VxNavigator.of(context).push(Uri.parse(Routes.editProfile));
+                    },
+                    padding: EdgeInsets.only(top: 1.w, bottom: 1.w),
+                    color: Color.fromARGB(255, 245, 245, 245),
+                    elevation: 0,
+                    focusColor: Color.fromARGB(255, 245, 245, 245),
+                    focusElevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                        side: BorderSide(color: Theme.of(context).primaryColor, width: 2.0)),
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 16),
+            ),
+            StreamBuilder(
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data == false) {
+                  return CallListWidget();
+                } else {
+                  return noAccessCall();
+                }
+              },
+              stream: callBloc.notFoundCall,
+            ),
+          ]),
+          padding: EdgeInsets.only(top: 2.h, bottom: 2.h),
+        ),
+      ),
+    );
   }
 
   Widget noAccessCall() {
@@ -165,22 +167,7 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
     callBloc.getCalls();
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
   }
 }
