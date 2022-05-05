@@ -23,6 +23,8 @@ class AuthenticationBloc {
   final _repository = Repository.getInstance();
 
   final _waiting = BehaviorSubject<bool>();
+  final _flag = BehaviorSubject<bool>();
+  final _start = BehaviorSubject<int>();
   final _countries = BehaviorSubject<List<Country>>();
   final _filterListCountry = BehaviorSubject<List<Country>>();
   final _selectedCountry = BehaviorSubject<Country>();
@@ -36,8 +38,8 @@ class AuthenticationBloc {
     else
       return _countries.value
           .where((element) =>
-      element.name!.contains(_search!) ||
-          element.code!.contains(_search!))
+              element.name!.contains(_search!) ||
+              element.code!.contains(_search!))
           .toList();
   }
 
@@ -49,13 +51,44 @@ class AuthenticationBloc {
 
   Stream<bool> get waiting => _waiting.stream;
 
+  Stream<bool> get flag => _flag.stream;
+
+  Stream<int> get start => _start.stream;
+
   Stream get navigateToVerify => _navigateToVerify.stream;
 
   Stream get navigateTo => _navigateTo.stream;
 
   Stream get showServerError => _showServerError.stream;
 
+  bool get isTrySendCode => _isTrySendCode!;
+
+  set setTrySendCode(bool isTrySendCode) => _isTrySendCode = isTrySendCode;
+
+  set setFlag(bool flag) => _flag.value = flag;
+
   String? _search;
+
+  bool? _isTrySendCode;
+
+  late Timer _timer;
+
+  void startTimer() {
+    _start.value = 120;
+
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start.value == 0) {
+          _flag.value = true;
+          timer.cancel();
+        } else {
+          _start.value--;
+        }
+      },
+    );
+  }
 
   void fetchCountries() {
     if (MemoryApp.countries == null) {
@@ -186,8 +219,8 @@ class AuthenticationBloc {
     // search = text;
     _filterListCountry.value = _countries.value
         .where((country) =>
-    country.name!.toLowerCase().contains(text.toLowerCase()) ||
-        country.code!.contains(text))
+            country.name!.toLowerCase().contains(text.toLowerCase()) ||
+            country.code!.contains(text))
         .toList();
   }
 
@@ -207,5 +240,8 @@ class AuthenticationBloc {
     _waiting.close();
     _navigateTo.close();
     _filterListCountry.close();
+    _timer.cancel();
+    _flag.close();
+    _start.close();
   }
 }
