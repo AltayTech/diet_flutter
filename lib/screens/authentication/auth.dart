@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -108,8 +109,9 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                                     TextDecoration.underline),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Utils.launchURLWebView(
-                                                FlavorConfig.instance.variables['urlTerms']);
+                                            Utils.launchURLWebView(FlavorConfig
+                                                .instance
+                                                .variables['urlTerms']);
                                           }),
                                   ])),
                             ),
@@ -335,11 +337,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
 
   void click(Country countryCode) {
     if (countryCode.code == '98') {
-
-      while (phoneNumber!=null && phoneNumber!.startsWith('0')) {
+      while (phoneNumber != null && phoneNumber!.startsWith('0')) {
         phoneNumber = phoneNumber!.replaceFirst(RegExp(r'0'), '');
       }
-      if (phoneNumber==null || phoneNumber!.length != 10) {
+      if (phoneNumber == null || phoneNumber!.length != 10) {
         Utils.getSnackbarMessage(context, intl.errorMobileCondition);
         return;
       }
@@ -366,6 +367,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
+    authBloc.fetchCountries();
+    click(_selectedLocation);
   }
-
 }

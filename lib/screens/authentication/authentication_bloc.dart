@@ -36,8 +36,8 @@ class AuthenticationBloc {
     else
       return _countries.value
           .where((element) =>
-              element.name!.contains(_search!) ||
-              element.code!.contains(_search!))
+      element.name!.contains(_search!) ||
+          element.code!.contains(_search!))
           .toList();
   }
 
@@ -87,7 +87,9 @@ class AuthenticationBloc {
     _repository.status(phoneNumber).then((value) {
       _navigateToVerify.fire(value.next);
       debugPrint('value: ${value.data!.isExist}');
-    }).whenComplete(() => _showServerError.fire(false));
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
+    });
   }
 
   void passwordMethod(User user) {
@@ -184,8 +186,8 @@ class AuthenticationBloc {
     // search = text;
     _filterListCountry.value = _countries.value
         .where((country) =>
-            country.name!.toLowerCase().contains(text.toLowerCase()) ||
-            country.code!.contains(text))
+    country.name!.toLowerCase().contains(text.toLowerCase()) ||
+        country.code!.contains(text))
         .toList();
   }
 
