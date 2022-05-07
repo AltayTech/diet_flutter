@@ -4,6 +4,7 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -27,7 +28,8 @@ class VerifyScreen extends StatefulWidget {
   _VerifyScreenState createState() => _VerifyScreenState();
 }
 
-class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFill {
+class _VerifyScreenState extends ResourcefulState<VerifyScreen>
+    with CodeAutoFill {
   late AuthenticationBloc authBloc;
   late TextEditingController textEditingController = TextEditingController();
   var args;
@@ -36,36 +38,14 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   String? thirdP;
   String? fourthP;
   String? codeVerify;
-  late Timer _timer;
-  int _start = 120;
-  bool flag = false;
+
   final focus = FocusNode();
   bool check = false;
   bool isRequest = false;
   bool isAutoVerify = false;
 
-  void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (_start == 0) {
-          setState(() {
-            flag = true;
-            timer.cancel();
-          });
-        } else {
-          setState(() {
-            _start--;
-          });
-        }
-      },
-    );
-  }
-
   @override
   void dispose() {
-    _timer.cancel();
     authBloc.dispose();
     if (!kIsWeb) unregisterListener();
     super.dispose();
@@ -75,8 +55,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   void initState() {
     super.initState();
     listenSms();
-    startTimer();
     authBloc = AuthenticationBloc();
+    authBloc.startTimer();
     listenBloc();
   }
 
@@ -90,7 +70,11 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
         debugPrint('verifiy ${navigator.currentConfiguration!.path} / $event');
         context.vxNav.replace(
           Uri(path: '/$event'),
-          params: {"mobile": args['mobile'], "code": codeVerify, 'id': args['countryId']},
+          params: {
+            "mobile": args['mobile'],
+            "code": codeVerify,
+            'id': args['countryId']
+          },
         );
       }
     });
@@ -112,19 +96,24 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
                   return TouchMouseScrollable(
-                      child: SingleChildScrollView(
-                        child: Column(children: [
-                          AuthHeader(title: navigator.currentConfiguration!.path.contains('pass')
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        AuthHeader(
+                          title: navigator.currentConfiguration!.path
+                                  .contains('pass')
                               ? intl.changePassword
-                              : intl.register,),
-                          Space(height: 80.0),
-                          content(),
-                        ]),
-                      ),
-                    );
+                              : intl.register,
+                        ),
+                        Space(height: 80.0),
+                        content(),
+                      ]),
+                    ),
+                  );
                 } else {
                   check = false;
-                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+                  return Center(
+                      child: Container(
+                          width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -139,7 +128,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -171,6 +161,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                         MemoryApp.analytics!.logEvent(name: "ManualVerifyCode");
                       }
                       authBloc.verifyMethod(verification);
+
+                      authBloc.setTrySendCode = false;
                     }
                   }
                 },
@@ -181,24 +173,40 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
           ),
           Space(height: 8.h),
           Container(
-              child: flag
-                  ? InkWell(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.reset_tv, color: AppColors.penColor),
-                          Space(width: 2.w),
-                          Text(intl.notSend, style: TextStyle(fontSize: 14.0)),
-                        ],
-                      ),
-                      onTap: () => setState(() {
+              child: StreamBuilder<bool>(
+                  stream: authBloc.flag,
+                  builder: (context, flag) {
+                    if (flag.hasData && flag.requireData)
+                      return InkWell(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.reset_tv, color: AppColors.penColor),
+                              Space(width: 2.w),
+                              Text(intl.notSend,
+                                  style: TextStyle(fontSize: 14.0)),
+                            ],
+                          ),
+                          onTap: () {
                             authBloc.tryCodeMethod(args['mobile']);
-                            flag = false;
-                            _start = 120;
-                            startTimer();
-                          }))
-                  : Text(intl.sendAgain + '${DateTimeUtils.timerFormat(_start)}',
-                      style: TextStyle(fontSize: 14.0))),
+                            authBloc.setTrySendCode = true;
+
+                            authBloc.setFlag = false;
+                            authBloc.startTimer();
+                          });
+                    else
+                      return StreamBuilder<int>(
+                          stream: authBloc.start,
+                          builder: (context, start) {
+                            if (start.hasData)
+                              return Text(
+                                  intl.sendAgain +
+                                      '${DateTimeUtils.timerFormat(start.requireData)}',
+                                  style: TextStyle(fontSize: 14.0));
+                            else
+                              return Text('');
+                          });
+                  })),
           Space(height: 8.h),
           button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
             VerificationCode verification = VerificationCode();
@@ -208,6 +216,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
               verification.resetPass = true;
             debugPrint('query verify ${verification.toJson()}');
             authBloc.verifyMethod(verification);
+
+            authBloc.setTrySendCode = false;
           }),
           Space(height: 5.h),
         ],
@@ -216,23 +226,25 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
     // TODO: implement onRetryAfterNoInternet
-  }
+    if (authBloc.isTrySendCode) {
+      authBloc.tryCodeMethod(args['mobile']);
+      authBloc.setFlag = false;
+      authBloc.setTrySendCode = true;
+    } else {
+      DialogUtils.showDialogProgress(context: context);
 
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
+      VerificationCode verification = VerificationCode();
+      verification.mobile = args['mobile'];
+      verification.verifyCode = codeVerify;
+      if (navigator.currentConfiguration!.path.contains('pass'))
+        verification.resetPass = true;
+      debugPrint('query verify ${verification.toJson()}');
+      authBloc.verifyMethod(verification);
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+      authBloc.setTrySendCode = false;
+    }
   }
 
   @override

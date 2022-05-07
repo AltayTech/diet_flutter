@@ -25,6 +25,8 @@ class AuthenticationBloc {
   final _repository = Repository.getInstance();
 
   final _waiting = BehaviorSubject<bool>();
+  final _flag = BehaviorSubject<bool>();
+  final _start = BehaviorSubject<int>();
   final _countries = BehaviorSubject<List<Country>>();
   final _filterListCountry = BehaviorSubject<List<Country>>();
   final _selectedCountry = BehaviorSubject<Country>();
@@ -55,13 +57,44 @@ class AuthenticationBloc {
 
   Stream<bool> get obscureTextConfirmPass => _obscureTextConfirmPass.stream;
 
+  Stream<bool> get flag => _flag.stream;
+
+  Stream<int> get start => _start.stream;
+
   Stream get navigateToVerify => _navigateToVerify.stream;
 
   Stream get navigateTo => _navigateTo.stream;
 
   Stream get showServerError => _showServerError.stream;
 
+  bool get isTrySendCode => _isTrySendCode!;
+
+  set setTrySendCode(bool isTrySendCode) => _isTrySendCode = isTrySendCode;
+
+  set setFlag(bool flag) => _flag.value = flag;
+
   String? _search;
+
+  bool? _isTrySendCode;
+
+  late Timer _timer;
+
+  void startTimer() {
+    _start.value = 120;
+
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start.value == 0) {
+          _flag.value = true;
+          timer.cancel();
+        } else {
+          _start.value--;
+        }
+      },
+    );
+  }
 
   void fetchCountries() {
     if (MemoryApp.countries == null) {
@@ -93,7 +126,9 @@ class AuthenticationBloc {
     _repository.status(phoneNumber).then((value) {
       _navigateToVerify.fire(value.next);
       debugPrint('value: ${value.data!.isExist}');
-    }).whenComplete(() => _showServerError.fire(false));
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
+    });
   }
 
   void passwordMethod(User user) {
@@ -105,11 +140,13 @@ class AuthenticationBloc {
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)
           .whenComplete(() {
-        _showServerError.fire(false);
-        _navigateToVerify.fire(value.next);
+        if (!MemoryApp.isNetworkAlertShown) {
+          _showServerError.fire(false);
+          _navigateToVerify.fire(value.next);
+        }
       });
     }).catchError((onError) {
-      _showServerError.fire(false);
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
   }
 
@@ -127,12 +164,11 @@ class AuthenticationBloc {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.analytics!.logEvent(name: "register_success");
       checkFcm();
-      _repository
-          .getUser()
-          .then((value) => MemoryApp.userInformation = value.data)
-          .whenComplete(() {
-        _waiting.safeValue = false;
+      _repository.getUser().then((value) {
+        MemoryApp.userInformation = value.data;
         _navigateToVerify.fire(value.next);
+      }).whenComplete(() {
+        _waiting.safeValue = false;
       });
     }).catchError((onError) {
       _showServerError.fire(false);
@@ -158,7 +194,7 @@ class AuthenticationBloc {
         await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
       _navigateToVerify.fire(value.next);
     }).whenComplete(() {
-      _showServerError.fire(true);
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
     });
   }
 
@@ -218,6 +254,9 @@ class AuthenticationBloc {
     _waiting.close();
     _navigateTo.close();
     _filterListCountry.close();
+    _timer.cancel();
+    _flag.close();
+    _start.close();
     _obscureTextPass.close();
     _obscureTextConfirmPass.close();
   }
