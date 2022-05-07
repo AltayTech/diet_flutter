@@ -138,6 +138,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
           padding: const EdgeInsets.all(20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
+            textDirection: TextDirection.rtl,
             children: [
               Flexible(
                 child: Container(

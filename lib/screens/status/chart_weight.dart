@@ -57,16 +57,27 @@ class ChartWeightState extends ResourcefulState<ChartWeight> {
                       Expanded(
                         flex: 1,
                         child: Row(children: [
-                          Text( intl.dateStart,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .overline!
-                                  .copyWith(color: AppColors.colorTextApp, fontWeight: FontWeight.bold)),
-                          Text( DateTimeUtils.gregorianToJalali(widget.term.startedAt),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .overline!
-                                  .copyWith(color: AppColors.greenRuler, fontWeight: FontWeight.bold)),
+                          Expanded(
+                          flex: 1,
+                          child: FittedBox(
+                            fit: context.isRtl?BoxFit.none:BoxFit.fitWidth,
+                            child: Text( intl.dateStart,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .overline!
+                                    .copyWith(color: AppColors.colorTextApp, fontWeight: FontWeight.bold)),
+                          )),
+                          Expanded(
+                            flex: 1,
+                            child: FittedBox(
+                              fit: context.isRtl?BoxFit.none:BoxFit.fitWidth,
+                              child: Text( DateTimeUtils.gregorianToJalali(widget.term.startedAt),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .overline!
+                                      .copyWith(color: AppColors.greenRuler, fontWeight: FontWeight.bold)),
+                            ),
+                          ),
                         ],),
                       ),
                       Expanded(
@@ -75,16 +86,26 @@ class ChartWeightState extends ResourcefulState<ChartWeight> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text( intl.dateEnd,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .overline!
-                                    .copyWith(color: AppColors.colorTextApp, fontWeight: FontWeight.bold)),
-                            Text( DateTimeUtils.gregorianToJalali(widget.term.expiredAt),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .overline!
-                                    .copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                          Expanded(
+                          flex: 1,
+                          child: FittedBox(
+                            fit: context.isRtl?BoxFit.none:BoxFit.fitWidth,
+                              child: Text( intl.dateEnd,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .overline!
+                                      .copyWith(color: AppColors.colorTextApp, fontWeight: FontWeight.bold)),
+                            )),
+                            Expanded(
+                              flex: 1,
+                              child: FittedBox(
+                                fit: context.isRtl?BoxFit.none:BoxFit.fitWidth,
+                                child:Text( DateTimeUtils.gregorianToJalali(widget.term.expiredAt),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .overline!
+                                      .copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                            )),
                           ],
                         ),
                       ),

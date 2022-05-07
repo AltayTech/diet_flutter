@@ -91,10 +91,11 @@ class _WeekListState extends ResourcefulState<WeekList> {
                   Column(
                     children: [
                       Text(
-                        weekDays[index]!.jalaliDate.formatter.wN,
+                        context.isRtl ? weekDays[index]!.jalaliDate.formatter.wN:  weekDays[index]!.jalaliDate.toGregorian().formatter.wN,
                         textAlign: TextAlign.center,
-                        style: typography.caption?.apply(
+                        style: typography.caption?.copyWith(
                           color: AppColors.surface,
+                          fontSize: context.isRtl ? null:9.sp
                         ),
                       ),
                       Space(height: 1.h),
@@ -143,7 +144,7 @@ class _WeekListState extends ResourcefulState<WeekList> {
                               padding: EdgeInsets.all(2.w),
                               child: Center(
                                 child: Text(
-                                  weekDays[index]!.jalaliDate.day.toString(),
+                                 weekDays[index]!.jalaliDate.day.toString() ,
                                   textAlign: TextAlign.center,
                                   style: typography.caption?.apply(
                                     color:

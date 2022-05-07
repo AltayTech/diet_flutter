@@ -124,8 +124,7 @@ class WidgetIconTextProgressState extends ResourcefulState<WidgetIconTextProgres
           Expanded(
             child: Text(
               widget.title,
-              textAlign: TextAlign.right,
-              textDirection: TextDirection.rtl,
+              textAlign: TextAlign.start,
               style: TextStyle(
                 fontSize: 12.sp,
                 color: Color.fromARGB(255, 114, 114, 114),

@@ -11,15 +11,14 @@ import 'package:velocity_x/velocity_x.dart';
 class CardPackage extends StatefulWidget {
   PackageItem packageItem;
   bool isSelected;
-  CardPackage(this.packageItem,this.isSelected);
+
+  CardPackage(this.packageItem, this.isSelected);
 
   @override
   _CardPackageState createState() => _CardPackageState();
 }
 
 class _CardPackageState extends ResourcefulState<CardPackage> {
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -39,8 +38,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
         borderRadius: BorderRadius.circular(20.0),
         child: InkWell(
           onTap: () {
-            if(widget.isSelected)
-            DialogUtils.showBottomSheetPage(context: context, child: bottomSheet());
+            if (widget.isSelected)
+              DialogUtils.showBottomSheetPage(context: context, child: bottomSheet());
           },
           child: Container(
             padding: EdgeInsets.only(right: 3.w),
@@ -92,10 +91,10 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                 softWrap: true,
                                 maxLines: 2,
                                 textDirection: context.textDirectionOfLocale,
-                                style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                                  letterSpacing: -0.2,
-                                  fontSize: 12.sp
-                                    ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(letterSpacing: -0.2, fontSize: 12.sp),
                               ),
                               if (pack.services != null && pack.services!.length > 0)
                                 ...pack.services!.map(
@@ -140,7 +139,11 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                         ),
                                   ),
                                 ),
-                              if (pack.price!.finalPrice != null) Expanded(child: Space(),flex: 1,),
+                              if (pack.price!.finalPrice != null)
+                                Expanded(
+                                  child: Space(),
+                                  flex: 1,
+                                ),
                               if (pack.price?.price != null)
                                 Directionality(
                                   textDirection: context.textDirectionOfLocale,
@@ -150,13 +153,12 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                         : '',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
-                                      color:Colors.grey[500],
+                                      color: Colors.grey[500],
                                       fontFamily: 'Iransans-light',
                                       fontSize: 9.sp,
                                       fontWeight: FontWeight.w400,
                                       decoration: TextDecoration.lineThrough,
-                                      decorationThickness:
-                                      0.7.w,
+                                      decorationThickness: 0.7.w,
                                       decorationColor: Color.fromARGB(255, 150, 150, 150),
                                     ),
                                   ),
@@ -183,8 +185,11 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
       children: <Widget>[
         Expanded(
             child: Text(text,
-                textAlign: TextAlign.start, style: Theme.of(context).textTheme.overline!.copyWith(letterSpacing: -0.2,
-                    fontSize: 9.sp))),
+                textAlign: TextAlign.start,
+                style: Theme.of(context)
+                    .textTheme
+                    .overline!
+                    .copyWith(letterSpacing: -0.2, fontSize: 9.sp))),
         Space(width: 1.w),
         CircleAvatar(
           backgroundColor: color,
@@ -206,7 +211,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 1.h),
-            Text(widget.packageItem.name ?? 'package name',
+            Text(
+              widget.packageItem.name ?? 'package name',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,
@@ -215,12 +221,10 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
             ),
             Space(height: 1.h),
             Text(
-              widget.packageItem.price != null &&
-                  widget.packageItem.price!.finalPrice != 0
+              widget.packageItem.price != null && widget.packageItem.price!.finalPrice != 0
                   ? '${widget.packageItem.price!.finalPrice.toString().seRagham()} ${intl.toman}'
                   : intl.free,
               textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,
               style: TextStyle(
                 color: Color.fromRGBO(74, 202, 150, 1),
                 fontWeight: FontWeight.bold,
@@ -234,7 +238,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                 height: 7.h,
                 onPressed: () {
                   Navigator.pop(context);
-                VxNavigator.of(context).push(Uri.parse(Routes.billSubscription),params: widget.packageItem);
+                  VxNavigator.of(context)
+                      .push(Uri.parse(Routes.billSubscription), params: widget.packageItem);
                 },
                 shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(30.0),
