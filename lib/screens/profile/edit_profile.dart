@@ -1,5 +1,4 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/toolbar_edit_profile.dart';
@@ -7,9 +6,7 @@ import 'package:behandam/screens/profile/user_box.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -102,13 +99,11 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    profileBloc.edit(context);
-  }
 
   @override
-  void onRetryAfterNoInternet() {}
+  void onRetryAfterNoInternet() {
+    profileBloc.edit(context);
+  }
 
   @override
   void onRetryLoadingPage() {

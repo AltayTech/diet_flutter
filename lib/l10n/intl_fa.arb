@@ -122,7 +122,7 @@
   "confirmNewPassword": "رمز عبور جدیدتو تعیین کن",
   "notEqualPassword": "تکرار رمز عبور یکسان نیست",
   "fillAllField": "پر کردن تمامی فیلدها الزامی است",
-  "minimumPasswordLength": "رمز عبور باید حداقل چهار رقم باشد",
+  "minimumPasswordLength": "رمز عبور نباید کمتر از 4 کاراکتر باشد",
   "regimeReceive": "دریافت رژیم",
   "selectYourRegime": "رژیم مورد نظرتو انتخاب کن",
   "whichRegime": "کدام رژیم مناسب من است؟",
