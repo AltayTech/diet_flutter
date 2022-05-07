@@ -135,11 +135,13 @@ class AuthenticationBloc {
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)
           .whenComplete(() {
-        _showServerError.fire(false);
-        _navigateToVerify.fire(value.next);
+        if (!MemoryApp.isNetworkAlertShown) {
+          _showServerError.fire(false);
+          _navigateToVerify.fire(value.next);
+        }
       });
     }).catchError((onError) {
-      _showServerError.fire(false);
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
   }
 
@@ -157,12 +159,11 @@ class AuthenticationBloc {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.analytics!.logEvent(name: "register_success");
       checkFcm();
-      _repository
-          .getUser()
-          .then((value) => MemoryApp.userInformation = value.data)
-          .whenComplete(() {
-        _waiting.safeValue = false;
+      _repository.getUser().then((value) {
+        MemoryApp.userInformation = value.data;
         _navigateToVerify.fire(value.next);
+      }).whenComplete(() {
+        _waiting.safeValue = false;
       });
     }).catchError((onError) {
       _showServerError.fire(false);
@@ -188,7 +189,7 @@ class AuthenticationBloc {
         await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
       _navigateToVerify.fire(value.next);
     }).whenComplete(() {
-      _showServerError.fire(true);
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
     });
   }
 

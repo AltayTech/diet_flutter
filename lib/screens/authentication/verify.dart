@@ -226,13 +226,15 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
     if (authBloc.isTrySendCode) {
       authBloc.tryCodeMethod(args['mobile']);
       authBloc.setFlag = false;
       authBloc.setTrySendCode = true;
     } else {
+      DialogUtils.showDialogProgress(context: context);
+
       VerificationCode verification = VerificationCode();
       verification.mobile = args['mobile'];
       verification.verifyCode = codeVerify;
@@ -243,21 +245,6 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
 
       authBloc.setTrySendCode = false;
     }
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
   }
 
   @override

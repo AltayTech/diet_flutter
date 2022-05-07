@@ -50,8 +50,10 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       if (!event.toString().isEmptyOrNull) {
         check = true;
         if (event.toString().contains(Routes.auth.substring(1)))
-          VxNavigator.of(context).push(Uri.parse('/$event'),
-              params: {"mobile": args['mobile'], 'countryId': args['countryId']});
+          VxNavigator.of(context).push(Uri.parse('/$event'), params: {
+            "mobile": args['mobile'],
+            'countryId': args['countryId']
+          });
         else
           VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
@@ -94,20 +96,23 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               if (snapshot.data == false && !check) {
                 return TouchMouseScrollable(
                     child: SingleChildScrollView(
-                      child: Column(children: [
-                          AuthHeader(title: intl.login,),
-                        content(),
-                      ]),
-                    ));
+                  child: Column(children: [
+                    AuthHeader(
+                      title: intl.login,
+                    ),
+                    content(),
+                  ]),
+                ));
               } else {
                 check = false;
-                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+                return Center(
+                    child: Container(
+                        width: 15.w, height: 15.w, child: Progress()));
               }
             }),
       ),
     );
   }
-
 
   Widget content() {
     return Padding(
@@ -118,7 +123,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -127,37 +133,40 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           Space(height: 2.h),
           Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                borderRadius: BorderRadius.circular(15.0),
+                color: AppColors.arcColor),
             child: TextField(
               controller: _text,
               textDirection: TextDirection.ltr,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.penColor),
-                      borderRadius: BorderRadius.circular(15.0)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  // enabledBorder: OutlineInputBorder(
-                  //   borderSide: BorderSide(color: Colors.grey)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.penColor),
+                    borderRadius: BorderRadius.circular(15.0)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                // enabledBorder: OutlineInputBorder(
+                //   borderSide: BorderSide(color: Colors.grey)),
                 labelText: intl.password,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
-                      color: AppColors.penColor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    color: AppColors.penColor,
                   ),
-                  // errorText: _validate ? intl.fillAllField : null,
-                labelStyle: TextStyle(color: AppColors.penColor, fontSize: 12.sp),),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                ),
+                // errorText: _validate ? intl.fillAllField : null,
+                labelStyle:
+                    TextStyle(color: AppColors.penColor, fontSize: 12.sp),
+              ),
               obscureText: !_obscureText,
               onSubmitted: (String) {
-                clicButton();
+                clickButton();
               },
               onChanged: (txt) {
                 _password = txt;
@@ -165,7 +174,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             ),
           ),
           SizedBox(height: 8.h),
-          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), clicButton),
+          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), clickButton),
           SizedBox(height: 8.h),
           InkWell(
             child: Text(
@@ -205,7 +214,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   style: TextStyle(fontSize: 14.sp, color: AppColors.penColor),
                   children: <TextSpan>[
                     TextSpan(
-                        text: '${args['mobile']}', style: TextStyle(fontWeight: FontWeight.bold)),
+                        text: '${args['mobile']}',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     TextSpan(text: intl.textChangePass2),
                   ],
                 ),
@@ -220,16 +230,19 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(Size(8.w, 5.h)),
                     backgroundColor: MaterialStateProperty.all(Colors.white),
-                    foregroundColor: MaterialStateProperty.all(AppColors.penColor),
-                    shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+                    foregroundColor:
+                        MaterialStateProperty.all(AppColors.penColor),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0))),
                   ),
-                  child:
-                      Text(intl.no, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
+                  child: Text(intl.no,
+                      style: TextStyle(
+                          color: AppColors.penColor, fontSize: 16.sp)),
                 ),
                 ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(AppColors.btnColor),
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.btnColor),
                         fixedSize: MaterialStateProperty.all(Size(10.0, 20.0))),
                     child: Text(
                       intl.yes,
@@ -240,6 +253,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       DialogUtils.showDialogProgress(context: context);
                       MemoryApp.forgetPass = true;
                       authBloc.sendCodeMethod(args['mobile']);
+                      authBloc.setTrySendCode = true;
                       // context.vxNav.push(Uri.parse(Routes.resetCode), params: args);
                     })
               ],
@@ -250,14 +264,26 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     );
   }
 
-  void clicButton() {
+  void clickButton() {
     if (_password.length > 0) {
       User user = User();
       user.mobile = args['mobile'];
       user.password = _password;
       DialogUtils.showDialogProgress(context: context);
       authBloc.passwordMethod(user);
+
+      authBloc.setTrySendCode = false;
     } else
       Utils.getSnackbarMessage(context, intl.pleaseEnterPassword);
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+    if (authBloc.isTrySendCode) {
+      authBloc.sendCodeMethod(args['mobile']);
+    } else {
+      clickButton();
+    }
   }
 }
