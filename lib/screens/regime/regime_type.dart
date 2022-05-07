@@ -9,7 +9,6 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -28,6 +27,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
   Key? key;
   Color? colorType;
   bool disableClick = false;
+  late RegimeType _dietSelected;
 
   @override
   void initState() {
@@ -131,10 +131,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
                                 InkWell(
                                   onTap: snapshot.data![index].isActiveItem
                                       ? () {
-                                          snapshot.data![index].dietId =
-                                              int.parse(snapshot.data![index].id!);
-                                          DialogUtils.showDialogProgress(context: context);
-                                          regimeBloc.pathMethod(snapshot.data![index]);
+                                          clickItemList(snapshot.data![index]);
                                         }
                                       : () {
                                           Utils.getSnackbarMessage(context, intl.comingSoon);
@@ -181,21 +178,20 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
     super.dispose();
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void clickItemList(RegimeType dietType) {
+    _dietSelected = dietType;
+    dietType.dietId = int.parse(dietType.id!);
+    DialogUtils.showDialogProgress(context: context);
+    regimeBloc.pathMethod(dietType);
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    clickItemList(_dietSelected);
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    regimeBloc.regimeTypeMethod();
   }
-
-  @override
-  void onShowMessage(String value) {}
 }
