@@ -316,22 +316,8 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-
-  }
-
-  @override
   void onRetryLoadingPage() {
     profileBloc.getInformation();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }
