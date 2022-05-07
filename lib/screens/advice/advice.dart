@@ -47,6 +47,7 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
   void initState() {
     super.initState();
     bloc = AdviceBloc();
+    bloc.loadContent();
   }
 
   @override
@@ -223,22 +224,8 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

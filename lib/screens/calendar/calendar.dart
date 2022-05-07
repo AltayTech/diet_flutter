@@ -898,7 +898,7 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
   @override

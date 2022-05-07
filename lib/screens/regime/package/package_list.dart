@@ -79,7 +79,8 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
               Space(height: 1.h),
               Center(
                 child: GestureDetector(
-                  onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.helpType), params: HelpPage.packageType),
+                  onTap: () => VxNavigator.of(context)
+                      .push(Uri.parse(Routes.helpType), params: HelpPage.packageType),
                   child: Text(
                     intl.differentPackages,
                     style: Theme.of(context)
@@ -91,7 +92,8 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
               ),
               Space(height: 1.h),
               GestureDetector(
-                onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.helpType), params: HelpPage.packageType),
+                onTap: () => VxNavigator.of(context)
+                    .push(Uri.parse(Routes.helpType), params: HelpPage.packageType),
                 child: Center(
                   child: ImageUtils.fromLocal(
                     'assets/images/diet/guide_icon.svg',
@@ -118,7 +120,7 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
               child: ListView.builder(
                   physics: ClampingScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: bloc.list!.length,
+                  itemCount: bloc.list?.length ?? 0,
                   itemBuilder: (BuildContext context, int index) => CardPackage(bloc.list![index])),
             );
           } else {
@@ -151,6 +153,7 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

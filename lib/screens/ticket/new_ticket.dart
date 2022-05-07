@@ -88,8 +88,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                         Space(height: 2.h),
                         StreamBuilder(
                           builder: (context, snapshot) {
-                            if (snapshot.data != null &&
-                                snapshot.data == false) {
+                            if (snapshot.data != null && snapshot.data == false) {
                               return Wrap(
                                 spacing: 3.w,
                                 runSpacing: 1.h,
@@ -99,29 +98,24 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                 alignment: WrapAlignment.center,
                                 runAlignment: WrapAlignment.start,
                                 children: [
-                                  ...bloc.SupportItems.map(
-                                      (item) => itemWithTick(
-                                          child: illItem(
-                                              support: item,
-                                              showPastMeal: () => () {
-                                                    for (SupportItem s
-                                                        in bloc.SupportItems)
-                                                      s.selected = false;
-                                                    item.selected = true;
-                                                    bloc.sendTicketMessage
-                                                        .departmentId = item.id;
-                                                    bloc.setSupportItemSelected();
-                                                  }),
-                                          selectSupport: () => () {
-                                                for (SupportItem s
-                                                    in bloc.SupportItems)
+                                  ...bloc.SupportItems.map((item) => itemWithTick(
+                                      child: illItem(
+                                          support: item,
+                                          showPastMeal: () => () {
+                                                for (SupportItem s in bloc.SupportItems)
                                                   s.selected = false;
                                                 item.selected = true;
-                                                bloc.sendTicketMessage
-                                                    .departmentId = item.id;
+                                                bloc.sendTicketMessage.departmentId = item.id;
                                                 bloc.setSupportItemSelected();
-                                              },
-                                          support: item)).toList()
+                                              }),
+                                      selectSupport: () => () {
+                                            for (SupportItem s in bloc.SupportItems)
+                                              s.selected = false;
+                                            item.selected = true;
+                                            bloc.sendTicketMessage.departmentId = item.id;
+                                            bloc.setSupportItemSelected();
+                                          },
+                                      support: item)).toList()
                                 ],
                               );
                             } else {
@@ -167,8 +161,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                     enable: !(snapshot.data ?? false),
                                     maxLine: true,
                                     ctx: context,
-                                    textDirection:
-                                        context.textDirectionOfLocale,
+                                    textDirection: context.textDirectionOfLocale,
                                     icon: Icons.keyboard);
                               },
                               stream: bloc.isShowRecorder,
@@ -180,40 +173,11 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                         StreamBuilder(
                             stream: bloc.isShowProgressItem,
                             builder: (context, snapshot) {
-                              if (snapshot.data == null ||
-                                  snapshot.data == false)
+                              if (snapshot.data == null || snapshot.data == false)
                                 return Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 12, right: 12),
+                                    padding: EdgeInsets.only(left: 12, right: 12),
                                     child: SubmitButton(
-                                      onTap: () {
-                                        if (bloc.sendTicketMessage.title !=
-                                                null &&
-                                            bloc.sendTicketMessage.title!
-                                                    .length >
-                                                0) {
-                                          if (bloc.sendTicketMessage
-                                                  .departmentId !=
-                                              null) {
-                                            if (bloc.sendTicketMessage.body !=
-                                                    null &&
-                                                bloc.sendTicketMessage.body!
-                                                        .length >
-                                                    0) {
-                                              bloc.sendTicketText();
-                                            } else if (bloc.isFileAudio) {
-                                              bloc.sendTicketFile();
-                                            } else
-                                              Utils.getSnackbarMessage(context,
-                                                  intl.errorBodyTicket);
-                                          } else {
-                                            Utils.getSnackbarMessage(
-                                                context, intl.errorDepartment);
-                                          }
-                                        } else
-                                          Utils.getSnackbarMessage(
-                                              context, intl.errorTitleTicket);
-                                      },
+                                      onTap: checkTypeTicketForSend,
                                       label: intl.sendMessage,
                                     ));
                               else {
@@ -235,10 +199,24 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
         ));
   }
 
+  void checkTypeTicketForSend() {
+    if (bloc.sendTicketMessage.title != null && bloc.sendTicketMessage.title!.length > 0) {
+      if (bloc.sendTicketMessage.departmentId != null) {
+        if (bloc.sendTicketMessage.body != null && bloc.sendTicketMessage.body!.length > 0) {
+          bloc.sendTicketText();
+        } else if (bloc.isFileAudio) {
+          bloc.sendTicketFile();
+        } else
+          Utils.getSnackbarMessage(context, intl.errorBodyTicket);
+      } else {
+        Utils.getSnackbarMessage(context, intl.errorDepartment);
+      }
+    } else
+      Utils.getSnackbarMessage(context, intl.errorTitleTicket);
+  }
+
   Widget itemWithTick(
-      {required Widget child,
-      required SupportItem support,
-      required Function selectSupport}) {
+      {required Widget child, required SupportItem support, required Function selectSupport}) {
     return Container(
       height: 10.h,
       width: 25.w,
@@ -322,8 +300,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
     );
   }
 
-  Widget illItem(
-      {required SupportItem support, required Function showPastMeal}) {
+  Widget illItem({required SupportItem support, required Function showPastMeal}) {
     return GestureDetector(
       onTap: showPastMeal(),
       child: Stack(
@@ -367,8 +344,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                 child: Text(
                   support.ticketName != null && support.ticketName!.length > 0
                       ? support.ticketName!
-                      : support.displayName != null &&
-                              support.displayName!.length > 0
+                      : support.displayName != null && support.displayName!.length > 0
                           ? support.displayName!
                           : support.name!,
                   textAlign: TextAlign.center,
@@ -389,12 +365,12 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    checkTypeTicketForSend();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.getSupportList();
   }
 
   @override

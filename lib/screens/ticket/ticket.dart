@@ -26,15 +26,10 @@ class _TicketState extends ResourcefulState<Ticket> {
   late TicketBloc ticketBloc;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    ticketBloc.getTickets();
-  }
-
-  @override
   void initState() {
     super.initState();
     ticketBloc = TicketBloc();
+    ticketBloc.getTickets();
   }
 
   @override
@@ -165,22 +160,8 @@ class _TicketState extends ResourcefulState<Ticket> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    ticketBloc.getTickets();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

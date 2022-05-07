@@ -157,7 +157,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 labelStyle: TextStyle(color: AppColors.penColor, fontSize: 12.sp),),
               obscureText: !_obscureText,
               onSubmitted: (String) {
-                clicButton();
+                clickButton();
               },
               onChanged: (txt) {
                 _password = txt;
@@ -165,7 +165,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             ),
           ),
           SizedBox(height: 8.h),
-          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), clicButton),
+          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), clickButton),
           SizedBox(height: 8.h),
           InkWell(
             child: Text(
@@ -250,7 +250,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     );
   }
 
-  void clicButton() {
+  void clickButton() {
     if (_password.length > 0) {
       User user = User();
       user.mobile = args['mobile'];

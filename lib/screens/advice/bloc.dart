@@ -7,9 +7,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/stream.dart';
 
 class AdviceBloc {
-  AdviceBloc() {
-    _loadContent();
-  }
+  AdviceBloc() ;
+
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _advices = BehaviorSubject<AdviceData>();
@@ -25,7 +24,7 @@ class AdviceBloc {
   //
   // Stream<FastMenuRequestData> get fast => _fast.stream;
 
-  void _loadContent() {
+  void loadContent() {
     _loadingContent.safeValue = true;
     _repository.advice().then((value) {
       _advices.value = value.data!;
