@@ -41,7 +41,9 @@ class AuthenticationBloc {
       return _countries.value;
     else
       return _countries.value
-          .where((element) => element.name!.contains(_search!) || element.code!.contains(_search!))
+          .where((element) =>
+              element.name!.contains(_search!) ||
+              element.code!.contains(_search!))
           .toList();
   }
 
@@ -134,7 +136,8 @@ class AuthenticationBloc {
   void passwordMethod(User user) {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      debugPrint('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      debugPrint(
+          'pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       checkFcm();
       _repository
           .getUser()
@@ -152,10 +155,16 @@ class AuthenticationBloc {
 
   void resetPasswordMethod(Reset pass) {
     _waiting.safeValue = true;
-    _repository.reset(pass).then((value) async {
-      await AppSharedPreferences.setAuthToken(value.data!.token);
-      _navigateToVerify.fire(value.next);
-    }).whenComplete(() => _waiting.safeValue = false);
+    _repository
+        .reset(pass)
+        .then((value) async {
+          await AppSharedPreferences.setAuthToken(value.data!.token);
+          _navigateToVerify.fire(value.next);
+        })
+        .whenComplete(() => _waiting.safeValue = false)
+        .catchError((onError) {
+          if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
+        });
   }
 
   void registerMethod(Register register) {
@@ -171,7 +180,7 @@ class AuthenticationBloc {
         _waiting.safeValue = false;
       });
     }).catchError((onError) {
-      _showServerError.fire(false);
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
   }
 

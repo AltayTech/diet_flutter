@@ -8,8 +8,10 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class PasswordResetScreen extends StatefulWidget {
   @override
@@ -75,7 +77,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
                     child: SingleChildScrollView(
                       child: Column(children: [
                         header(),
-                        SizedBox(height: 80.0),
+                        Space(height: 10.h),
                         content(),
                       ]),
                     ),
@@ -107,14 +109,14 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
                   textAlign: TextAlign.center)),
         ),
         Positioned(
-          top: 60.0,
+          top: 10.h,
           right: 0.0,
           left: 0.0,
           child: Center(
             child: ImageUtils.fromLocal(
               'assets/images/registry/pass_logo.svg',
-              width: 120.0,
-              height: 120.0,
+              width: 15.w,
+              height: 15.h,
             ),
           ),
         ),
@@ -124,12 +126,12 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
 
   Widget content() {
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+      padding: EdgeInsets.only(left: 8.w, right: 8.w),
       child: Column(
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            height: 60.0,
+            height: 10.h,
             child: StreamBuilder<bool>(
               stream: authBloc.obscureTextPass,
               builder: (context, obscureTextPass) {
@@ -158,15 +160,15 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
                       ),
                       labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
                   onChanged: (txt) {
-                    _password1 = txt;
+                    _password1 = txt.toEnglishDigit();
                   },
                 );
               }
             ),
           ),
-          SizedBox(height: 20.0),
+          Space(height: 3.h),
           Container(
-            height: 60.0,
+            height: 10.h,
             child: StreamBuilder<bool>(
               stream: authBloc.obscureTextConfirmPass,
               builder: (context, obscureTextConfirmPass) {
@@ -195,13 +197,13 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
                       ),
                       labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
                   onChanged: (txt) {
-                    _password2 = txt;
+                    _password2 = txt.toEnglishDigit();
                   },
                 );
               }
             ),
           ),
-          SizedBox(height: 20.0),
+          Space(height: 3.h),
           button(AppColors.btnColor, intl.setNewPassword, Size(100.w, 8.h), () {
             if (_password1 != _password2)
               Utils.getSnackbarMessage(context, intl.notEqualPassword);
@@ -221,22 +223,10 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
     // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    Reset pass = Reset();
+    pass.password = _password1;
+    authBloc.resetPasswordMethod(pass);
   }
 }
