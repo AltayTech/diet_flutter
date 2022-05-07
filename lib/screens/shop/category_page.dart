@@ -62,7 +62,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(isInit){
+    if (isInit) {
       args = ModalRoute.of(context)!.settings.arguments as String;
       categoryBloc.getCategory(args!);
       isInit = false;
@@ -249,7 +249,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    categoryBloc.getCategory(args!);
   }
 
   @override

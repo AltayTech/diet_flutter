@@ -36,21 +36,25 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
       bloc,
       child: Scaffold(
         appBar: Toolbar(titleBar: intl.statusBodyTermUser),
-        body: Container(
-          width: 100.w,
-          height: 100.h,
-          child: Stack(
-            children: [
-              content(),
-              Positioned(
-                bottom: 0,
-                child: BottomNav(
-                  currentTab: BottomNavItem.STATUS,
-                ),
-              )
-            ],
-          ),
-        ),
+        body: body(),
+      ),
+    );
+  }
+
+  Widget body() {
+    return Container(
+      width: 100.w,
+      height: 100.h,
+      child: Stack(
+        children: [
+          content(),
+          Positioned(
+            bottom: 0,
+            child: BottomNav(
+              currentTab: BottomNavItem.STATUS,
+            ),
+          )
+        ],
       ),
     );
   }
@@ -257,23 +261,11 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    bloc.dispose();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.getVisitUser();
   }
-
-  @override
-  void onShowMessage(String value) {}
 }

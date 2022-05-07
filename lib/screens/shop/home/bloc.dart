@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 class ShopHomeBloc {
   ShopHomeBloc() {
-    _loadContent();
+
   }
 
   final _repository = Repository.getInstance();
@@ -22,7 +22,7 @@ class ShopHomeBloc {
 
   List<ShopItem>? get list => _list;
 
-  void _loadContent() {
+  void loadContent() {
     _loadingContent.safeValue = true;
     _repository.getHomeShop().then((value) {
       _list = value.data!.items!;

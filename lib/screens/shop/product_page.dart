@@ -487,10 +487,6 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     super.dispose();
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
 
   @override
   void onRetryAfterNoInternet() {
@@ -499,11 +495,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    productBloc.getProduct(int.parse(args!));
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }
