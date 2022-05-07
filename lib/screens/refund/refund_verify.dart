@@ -9,8 +9,8 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:flutter/material.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class RefundVerifyScreen extends StatefulWidget {
@@ -60,14 +60,14 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
       body: StreamBuilder(
           stream: null,
           builder: (context, snapshot) {
-            bloc.date = DateTimeUtils.gregorianToJalali(
+            bloc.setDate(DateTimeUtils.gregorianToJalali(
                 DateTime.parse(MemoryApp.termPackage!.term!.startedAt.replaceAll(RegExp('-'), ''))
                     .add(Duration(days: MemoryApp.termPackage?.package!.refundDeadline ?? 0))
-                    .toString());
+                    .toString()));
             bloc.setCanRefund(MemoryApp.termPackage!.canRefund ?? false);
             if (MemoryApp.refundItem!.items!.isEmpty) {
               if (bloc.canRefundValue) {
-                bloc.message = intl.descriptionRefund(bloc.date!);
+                bloc.message = intl.descriptionRefund(bloc.date);
                 ;
               }
             } else {
@@ -107,7 +107,7 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
                               text: TextSpan(children: [
                                 TextSpan(
                                     text:
-                                    '${MemoryApp.userInformation?.firstName ?? intl.user} ${intl.babe}',
+                                        '${MemoryApp.userInformation?.firstName ?? intl.user} ${intl.babe}',
                                     // text: 'کاربر عزیز',
                                     style: Theme.of(context).textTheme.caption),
                                 TextSpan(
@@ -172,8 +172,7 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
                                 DialogUtils.showDialogProgress(context: context);
                                 bloc.verify();
                               } else {
-                                Utils.getSnackbarMessage(
-                                    context, 'رمز عبور نباید کمتر از 4 کاراکتر باشد');
+                                Utils.getSnackbarMessage(context, intl.minimumPasswordLength);
                               }
                             },
                             label: intl.acceptRefundPayment,
@@ -209,23 +208,16 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
     ));
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    DialogUtils.showDialogProgress(context: context);
+    bloc.verify();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.getTermPackage();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }
