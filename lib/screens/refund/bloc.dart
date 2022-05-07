@@ -10,15 +10,17 @@ import 'package:rxdart/rxdart.dart';
 class RefundBloc {
   RefundBloc() {
     _waiting.safeValue = false;
+    _showPass.safeValue=false;
   }
 
   final _repository = Repository.getInstance();
 
   late String _path;
 
-  final _cardNumber =BehaviorSubject<String?>();
+  final _cardNumber = BehaviorSubject<String?>();
   final _waiting = BehaviorSubject<bool>();
   final _canRefund = BehaviorSubject<bool>();
+  final _showPass = BehaviorSubject<bool>();
   final _serverError = LiveEvent();
   final _navigateTo = LiveEvent();
 
@@ -35,6 +37,9 @@ class RefundBloc {
   Stream get navigateTo => _navigateTo.stream;
 
   Stream<String?> get cardNumber => _cardNumber.stream;
+
+  Stream<bool> get showPass => _showPass.stream;
+
   String? get cardNumberValue => _cardNumber.stream.valueOrNull;
 
   String? _date;
@@ -42,12 +47,15 @@ class RefundBloc {
   String? password;
   String? cardOwner;
 
+  void setShowPassword(bool value){
+    _showPass.safeValue=value;
+  }
 
   void setDate(String date) {
     _date = date;
   }
 
-  String  get date => _date ?? '';
+  String get date => _date ?? '';
 
   void getTermPackage() {
     if (MemoryApp.termPackage == null) {
@@ -98,8 +106,8 @@ class RefundBloc {
     });
   }
 
-  void setCardNumber(String cardNumber){
-    _cardNumber.safeValue=cardNumber;
+  void setCardNumber(String cardNumber) {
+    _cardNumber.safeValue = cardNumber;
   }
 
   void dispose() {
@@ -108,5 +116,6 @@ class RefundBloc {
     _navigateTo.close();
     _canRefund.close();
     _cardNumber.close();
+    _showPass.close();
   }
 }

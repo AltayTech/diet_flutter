@@ -4,6 +4,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/refund/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
@@ -22,7 +23,6 @@ class RefundVerifyScreen extends StatefulWidget {
 
 class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
   late RefundBloc bloc;
-  bool _showPass = false;
 
   @override
   void initState() {
@@ -124,47 +124,55 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
                                     style: Theme.of(context).textTheme.caption)
                               ])),
                           SizedBox(height: 5.h),
-                          Container(
-                              height: 9.h,
-                              child: Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: TextFormField(
-                                  initialValue: bloc.password,
-                                  decoration: inputDecoration.copyWith(
-                                    labelText: intl.password,
-                                    labelStyle: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1!
-                                        .copyWith(color: AppColors.labelColor),
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        if (_showPass) {
-                                          setState(() => _showPass = false);
-                                        } else {
-                                          setState(() => _showPass = true);
-                                        }
-                                      },
-                                      icon: _showPass
-                                          ? Icon(Icons.visibility)
-                                          : Icon(Icons.visibility_off),
-                                      color: Color.fromARGB(255, 205, 202, 202),
-                                      iconSize: 20.0,
-                                    ),
-                                  ),
-                                  obscureText: _showPass ? false : true,
-                                  keyboardType: TextInputType.text,
-                                  onChanged: (val) {
-                                    setState(() => bloc.password = val);
-                                  },
-                                  onSaved: (val) => bloc.password = val,
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 160, 158, 158),
-                                    fontSize: 16.0,
-                                  ),
-                                  validator: (val) => val!.length < 4 ? intl.validationPass : null,
-                                ),
-                              )),
+                          StreamBuilder<bool>(
+                              stream: bloc.showPass,
+                              builder: (context, showPassword) {
+                                if (showPassword.hasData)
+                                  return Container(
+                                      height: 9.h,
+                                      child: Directionality(
+                                        textDirection: TextDirection.rtl,
+                                        child: TextFormField(
+                                          initialValue: bloc.password,
+                                          decoration: inputDecoration.copyWith(
+                                            labelText: intl.password,
+                                            labelStyle: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1!
+                                                .copyWith(color: AppColors.labelColor),
+                                            suffixIcon: IconButton(
+                                              onPressed: () {
+                                                if (showPassword.requireData) {
+                                                  bloc.setShowPassword(false);
+                                                } else {
+                                                  bloc.setShowPassword(true);
+                                                }
+                                              },
+                                              icon: showPassword.requireData
+                                                  ? Icon(Icons.visibility)
+                                                  : Icon(Icons.visibility_off),
+                                              color: Color.fromARGB(255, 205, 202, 202),
+                                              iconSize: 20.0,
+                                            ),
+                                          ),
+                                          obscureText: !showPassword.requireData,
+                                          keyboardType: TextInputType.text,
+                                          onChanged: (val) {
+                                            setState(() => bloc.password = val);
+                                          },
+                                          onSaved: (val) => bloc.password = val,
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(
+                                            color: Color.fromARGB(255, 160, 158, 158),
+                                            fontSize: 16.0,
+                                          ),
+                                          validator: (val) =>
+                                              val!.length < 4 ? intl.validationPass : null,
+                                        ),
+                                      ));
+                                else
+                                  return EmptyBox();
+                              }),
                           SizedBox(height: 2.h),
                           SubmitButton(
                             onTap: () {
@@ -208,7 +216,6 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
     ));
   }
 
-
   @override
   void onRetryAfterNoInternet() {
     DialogUtils.showDialogProgress(context: context);
@@ -219,5 +226,4 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
   void onRetryLoadingPage() {
     bloc.getTermPackage();
   }
-
 }
