@@ -232,7 +232,13 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
       authBloc.tryCodeMethod(args['mobile']);
       authBloc.setFlag = false;
       authBloc.setTrySendCode = true;
-    } else {
+    }
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+    if (!authBloc.isTrySendCode) {
       DialogUtils.showDialogProgress(context: context);
 
       VerificationCode verification = VerificationCode();

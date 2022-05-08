@@ -155,16 +155,10 @@ class AuthenticationBloc {
 
   void resetPasswordMethod(Reset pass) {
     _waiting.safeValue = true;
-    _repository
-        .reset(pass)
-        .then((value) async {
-          await AppSharedPreferences.setAuthToken(value.data!.token);
-          _navigateToVerify.fire(value.next);
-        })
-        .whenComplete(() => _waiting.safeValue = false)
-        .catchError((onError) {
-          if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
-        });
+    _repository.reset(pass).then((value) async {
+      await AppSharedPreferences.setAuthToken(value.data!.token);
+      _navigateToVerify.fire(value.next);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void registerMethod(Register register) {

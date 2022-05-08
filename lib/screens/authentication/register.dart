@@ -74,35 +74,37 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   Widget build(BuildContext context) {
     super.build(context);
     args = ModalRoute.of(context)!.settings.arguments;
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: StreamBuilder(
-            stream: authBloc.waiting,
-            builder: (context, snapshot) {
-              if (snapshot.data == false && !check) {
-                return TouchMouseScrollable(
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      AuthHeader(
-                        title: intl.register,
-                      ),
-                      Space(height: 80.0),
-                      content(),
-                    ]),
-                  ),
-                );
-              } else {
-                check = false;
-                return Center(
-                    child: Container(
-                        width: 15.w, height: 15.w, child: Progress()));
-              }
-            }));
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          body: StreamBuilder(
+              stream: authBloc.waiting,
+              builder: (context, snapshot) {
+                if (snapshot.data == false && !check) {
+                  return TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        AuthHeader(
+                          title: intl.register,
+                        ),
+                        Space(height: 3.h),
+                        content(),
+                      ]),
+                    ),
+                  );
+                } else {
+                  check = false;
+                  return Center(
+                      child: Container(
+                          width: 15.w, height: 15.w, child: Progress()));
+                }
+              })),
+    );
   }
 
   Widget content() {
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+      padding: EdgeInsets.all(8.w),
       child: Column(
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -115,9 +117,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               child: Text("+ ${args['mobile']}",
                   textDirection: TextDirection.ltr,
                   style: TextStyle(color: AppColors.penColor))),
-          SizedBox(height: 20.0),
+          Space(height: 3.h),
           Container(
-            height: 60.0,
+            height: 10.h,
             child: TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -136,9 +138,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   firstName = txt;
                 }),
           ),
-          SizedBox(height: 20.0),
+          Space(height: 3.h),
           Container(
-            height: 60.0,
+            height: 10.h,
             child: TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -157,9 +159,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   lastName = txt;
                 }),
           ),
-          SizedBox(height: 20.0),
+          Space(height: 3.h),
           Container(
-            height: 60.0,
+            height: 10.h,
             child: TextField(
               obscureText: !_obscureText,
               decoration: InputDecoration(
@@ -192,7 +194,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               },
             ),
           ),
-          SizedBox(height: 20.0),
+          Space(height: 3.h),
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -200,7 +202,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                 Text(intl.woman,
                     style:
                         TextStyle(fontSize: 14.0, color: AppColors.penColor)),
-                SizedBox(width: 10.0),
+                Space(width: 3.w),
                 ToggleSwitch(
                   minWidth: 90.0,
                   minHeight: 45.0,
@@ -232,14 +234,14 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                         : switchValue = false;
                   },
                 ),
-                SizedBox(width: 10.0),
+                Space(width: 3.w),
                 Text(intl.man,
                     style:
                         TextStyle(fontSize: 14.0, color: AppColors.penColor)),
               ],
             ),
           ),
-          SizedBox(height: 10.h),
+          Space(height: 3.h),
           SubmitButton(
               label: intl.register, size: Size(100.w, 8.h), onTap: clickSubmit),
         ],
