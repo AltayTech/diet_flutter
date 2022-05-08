@@ -61,8 +61,8 @@ class _NetworkAlertState extends ResourcefulState<NetworkAlertPage> {
       padding: EdgeInsets.zero,
       color: AppColors.primary,
       minWidth: double.infinity,
-      onPressed: () {
-        Navigator.pop(context);
+      onPressed: ()async {
+         Navigator.pop(context);
         if (MemoryApp.isShowDialog) {
           MemoryApp.isShowDialog = false;
           Navigator.pop(context);

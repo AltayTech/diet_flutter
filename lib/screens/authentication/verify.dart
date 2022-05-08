@@ -209,6 +209,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                   })),
           Space(height: 8.h),
           button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
+            DialogUtils.showDialogProgress(context: context);
             VerificationCode verification = VerificationCode();
             verification.mobile = args['mobile'];
             verification.verifyCode = codeVerify;
@@ -239,6 +240,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
     if (!authBloc.isTrySendCode) {
+      if(!MemoryApp.isShowDialog)
       DialogUtils.showDialogProgress(context: context);
 
       VerificationCode verification = VerificationCode();

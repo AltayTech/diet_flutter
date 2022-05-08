@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
+import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -54,33 +55,27 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
     args = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: AppColors.arcColor,
+          elevation: 0.0,
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Color(0xffb4babb),
+              onPressed: () => VxNavigator.of(context).pop()),
+        ),
         body: StreamBuilder(
             stream: authBloc.waiting,
             builder: (context, snapshot) {
               if (snapshot.data == false && !check) {
-                return NestedScrollView(
-                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverAppBar(
-                        backgroundColor: AppColors.arcColor,
-                        elevation: 0.0,
-                        leading: IconButton(
-                            icon: Icon(Icons.arrow_back_ios),
-                            color: Color(0xffb4babb),
-                            onPressed: () => VxNavigator.of(context).pop()),
-                        // floating: true,
-                        forceElevated: innerBoxIsScrolled,
-                      ),
-                    ];
-                  },
-                  body: TouchMouseScrollable(
+                return TouchMouseScrollable(
                     child: SingleChildScrollView(
                       child: Column(children: [
-                        header(),
+                        AuthHeader(
+                          title: intl.changePassword,
+                        ),
                         Space(height: 10.h),
                         content(),
                       ]),
-                    ),
                   ),
                 );
               } else {
@@ -88,40 +83,6 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
                 return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
               }
             }));
-  }
-
-  Widget header() {
-    return Stack(
-      overflow: Overflow.visible,
-      children: [
-        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
-        Positioned(
-          top: 0.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-              child: Text(intl.changePassword,
-                  style: TextStyle(
-                      color: AppColors.penColor,
-                      fontSize: 22.0,
-                      fontFamily: 'Iransans-Bold',
-                      fontWeight: FontWeight.w700),
-                  textAlign: TextAlign.center)),
-        ),
-        Positioned(
-          top: 10.h,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-            child: ImageUtils.fromLocal(
-              'assets/images/registry/pass_logo.svg',
-              width: 15.w,
-              height: 15.h,
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   Widget content() {
