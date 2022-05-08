@@ -45,8 +45,6 @@ dependencies:
   badges: ^2.0.1
   rolling_switch: ^0.0.2
   pin_code_fields: ^7.4.0
-  country_code_picker: ^2.0.2
-  country_currency_pickers: ^2.0.0
   cached_network_image: ^3.2.0
   dio: ^4.0.5
   persian_number_utility: ^1.1.0
