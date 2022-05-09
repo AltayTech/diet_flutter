@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
 import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
@@ -12,10 +13,8 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/bottom_triangle.dart';
 import 'package:behandam/widget/sickness_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -74,16 +73,12 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                 child: Text(
                                   intl.sicknessLabelUser,
                                   textDirection: context.textDirectionOfLocale,
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .caption,
+                                  style: Theme.of(context).textTheme.caption,
                                 ),
                               ),
                               Space(height: 2.h),
                               if (sicknessBloc.userSickness != null)
-                                ...sicknessBloc.userSickness!.sickness_categories!
-                                    .map((element) {
+                                ...sicknessBloc.userSickness!.sickness_categories!.map((element) {
                                   return _sicknessPartBox(element);
                                 }),
                               Space(height: 2.h),
@@ -94,8 +89,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                   textController: controller,
                                   value: sicknessBloc.userSickness!.sicknessNote,
                                   onChanged: (value) {
-                                    sicknessBloc.userSickness!.sicknessNote =
-                                        value;
+                                    sicknessBloc.userSickness!.sicknessNote = value;
                                   },
                                   enable: true,
                                   maxLine: true,
@@ -104,21 +98,14 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                   textDirection: context.textDirectionOfLocale),
                               Space(height: 4.h),
                               SubmitButton(
-                                onTap: () {
-                                  DialogUtils.showDialogProgress(
-                                      context: context);
-                                  sicknessBloc.sendSickness();
-                                },
+                                onTap: sendRequest,
                                 label: intl.confirmContinue,
                               ),
                               Space(height: 3.h),
                             ],
                           );
-                        }else {
-                          return SpinKitCircle(
-                            size: 7.w,
-                            color: AppColors.primary,
-                          );
+                        } else {
+                          return Progress();
                         }
                       }),
                 ),
@@ -231,26 +218,26 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             DialogUtils.showDialogPage(
                 context: context,
                 child: StreamBuilder(
-                  stream: sicknessBloc.waiting,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data == false) {
-                      return Center(
-                        child: Container(child: SicknessDialog(
-                          items: current,
-                          itemClick: this,
-                          sicknessType: SicknessType.NORMAL,
-                        ),
-                          height: 60.h,),
-                      );
-                    } else {
-                      return SpinKitCircle(
-                        size: 7.w,
-                        color: AppColors.primary,
-                      );
-                    }
-                  }
-                )
-            );
+                    stream: sicknessBloc.waiting,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data == false) {
+                        return Center(
+                          child: Container(
+                            child: SicknessDialog(
+                              items: current,
+                              itemClick: this,
+                              sicknessType: SicknessType.NORMAL,
+                            ),
+                            height: 60.h,
+                          ),
+                        );
+                      } else {
+                        return SpinKitCircle(
+                          size: 7.w,
+                          color: AppColors.primary,
+                        );
+                      }
+                    }));
           }
         }
       },
@@ -316,10 +303,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
       child: Text(
         title,
         textDirection: context.textDirectionOfLocale,
-        style: typography.caption?.apply(
-          fontWeightDelta: 1,
-          fontSizeDelta: 1
-        ),
+        style: typography.caption?.apply(fontWeightDelta: 1, fontSizeDelta: 1),
       ),
     );
   }
@@ -415,26 +399,20 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                       DialogUtils.showDialogPage(
                           context: context,
                           child: Center(
-                        child: StreamBuilder(
-                              stream: sicknessBloc.waiting,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData && snapshot.data == false) {
-                                  return
-                                    Container(child: SicknessDialog(
-                                      items: current,
-                                      itemClick: this,
-                                      sicknessType: SicknessType.NORMAL,
-                                    ));
-                                } else {
-                                  return SpinKitCircle(
-                                    size: 7.w,
-                                    color: AppColors.primary,
-                                  );
-                                }
-                              }
-                          )
-                      )
-                  );
+                              child: StreamBuilder(
+                                  stream: sicknessBloc.waiting,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData && snapshot.data == false) {
+                                      return Container(
+                                          child: SicknessDialog(
+                                        items: current,
+                                        itemClick: this,
+                                        sicknessType: SicknessType.NORMAL,
+                                      ));
+                                    } else {
+                                      return Progress();
+                                    }
+                                  })));
                     }
                   }
                 }),
@@ -465,24 +443,19 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void sendRequest() {
+    DialogUtils.showDialogProgress(context: context);
+    sicknessBloc.sendSickness();
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    sicknessBloc.getSickness();
   }
 
   @override
