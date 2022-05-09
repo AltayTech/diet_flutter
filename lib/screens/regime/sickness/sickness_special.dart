@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
 import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -81,7 +82,7 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
                             Space(height: 4.h),
                             SubmitButton(
                               onTap: sendRequest,
-                              label:intl.confirmContinue,
+                              label: intl.confirmContinue,
                             ),
                             Space(height: 2.h),
                           ],
@@ -124,8 +125,9 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
           } else {
             DialogUtils.showDialogPage(
                 context: context,
-                child:Center(
-              child: Container(child: SicknessDialog(
+                child: Center(
+                    child: Container(
+                        child: SicknessDialog(
                   items: null,
                   itemClick: this,
                   sicknessType: SicknessType.SPECIAL,
@@ -279,12 +281,13 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
                     } else {
                       DialogUtils.showDialogPage(
                           context: context,
-                          child:Center(
-                        child: Container(child: SicknessDialog(
+                          child: Center(
+                              child: Container(
+                                  child: SicknessDialog(
                             sicknessSpecial: sickness,
                             itemClick: this,
                             sicknessType: SicknessType.SPECIAL,
-                      ))));
+                          ))));
                     }
                   }
                 }),
@@ -315,8 +318,8 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
     );
   }
 
-  void sendRequest(){
-    DialogUtils.showDialogProgress(context: context);
+  void sendRequest() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     sicknessBloc.sendSicknessSpecial();
   }
 

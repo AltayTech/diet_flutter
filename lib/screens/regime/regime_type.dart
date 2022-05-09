@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
@@ -181,6 +182,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
   void clickItemList(RegimeType dietType) {
     _dietSelected = dietType;
     dietType.dietId = int.parse(dietType.id!);
+    if(!MemoryApp.isShowDialog)
     DialogUtils.showDialogProgress(context: context);
     regimeBloc.pathMethod(dietType);
   }

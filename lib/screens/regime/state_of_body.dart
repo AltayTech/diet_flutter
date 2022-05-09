@@ -2,6 +2,7 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/screens/regime/provider.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
@@ -400,6 +401,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   @override
   void onRetryAfterNoInternet() {
+    if(!MemoryApp.isShowDialog)
     DialogUtils.showDialogProgress(context: context);
     regimeBloc.sendRequest();
   }

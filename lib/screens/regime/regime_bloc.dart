@@ -104,8 +104,10 @@ class RegimeBloc {
       _path = value.next!;
       _navigateToVerify.fire(regime);
     }).whenComplete(() {
-      _showServerError.fire(true);
-      _waiting.safeValue = false;
+      if (!MemoryApp.isNetworkAlertShown) {
+        _showServerError.fire(true);
+        _waiting.safeValue = false;
+      }
     });
   }
 

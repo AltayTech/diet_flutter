@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
 import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -444,7 +445,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
   }
 
   void sendRequest() {
-    DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     sicknessBloc.sendSickness();
   }
 

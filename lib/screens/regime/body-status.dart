@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
@@ -547,7 +548,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     if (isPregnancy) {
       pregnancyWeekAlert();
     } else {
-      DialogUtils.showDialogProgress(context: context);
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
       regimeBloc.nextStep();
     }
   }

@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/menu/item.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -158,7 +159,7 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
 
   @override
   void onRetryAfterNoInternet() {
-    DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     bloc.term();
   }
 

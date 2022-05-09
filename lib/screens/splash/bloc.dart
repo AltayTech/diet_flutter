@@ -1,18 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:behandam/app/app.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
-import 'package:behandam/routes.dart';
+import 'package:behandam/extensions/stream.dart';
+import 'package:behandam/extensions/string.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:behandam/extensions/stream.dart';
-import 'package:behandam/extensions/string.dart';
 
 class SplashBloc {
   SplashBloc() {
@@ -67,21 +65,20 @@ class SplashBloc {
     if (MemoryApp.token.isNotNullAndEmpty) {
       checkFcm();
 
-    _repository.getUser().then((value) {
-      MemoryApp.userInformation = value.data;
-      MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
-      if (!kIsWeb)
-        FirebaseCrashlytics.instance
-            .setUserIdentifier(MemoryApp.userInformation!.userId.toString());
-      MemoryApp.analytics!
-          .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
-    }).whenComplete(() {
+      _repository.getUser().then((value) {
+        MemoryApp.userInformation = value.data;
+        MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
+        if (!kIsWeb)
+          FirebaseCrashlytics.instance
+              .setUserIdentifier(MemoryApp.userInformation!.userId.toString());
+        MemoryApp.analytics!
+            .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
+      }).whenComplete(() {
+        if (!MemoryApp.isNetworkAlertShown) getVersionApp();
+        _waiting.safeValue = false;
+      });
+    } else {
       getVersionApp();
-      _waiting.safeValue = false;
-    });
-    }else {
-      getVersionApp();
-
     }
   }
 
@@ -117,7 +114,8 @@ class SplashBloc {
         }).whenComplete(() {
           _waiting.safeValue = false;
         });
-      }else  _navigateTo.fire(true);
+      } else
+        _navigateTo.fire(true);
     } else {
       _navigateTo.fire(true);
     }
