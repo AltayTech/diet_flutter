@@ -10,10 +10,8 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/bottom_triangle.dart';
 import 'package:behandam/widget/sickness_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SicknessSpecialScreen extends StatefulWidget {
@@ -82,10 +80,7 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
                               }),
                             Space(height: 4.h),
                             SubmitButton(
-                              onTap: () {
-                                DialogUtils.showDialogProgress(context: context);
-                                sicknessBloc.sendSicknessSpecial();
-                              },
+                              onTap: sendRequest,
                               label:intl.confirmContinue,
                             ),
                             Space(height: 2.h),
@@ -320,24 +315,21 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void sendRequest(){
+    DialogUtils.showDialogProgress(context: context);
+    sicknessBloc.sendSicknessSpecial();
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    sicknessBloc.getSicknessSpecial();
   }
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
+
   @override
   click() {
     setState(() {});
