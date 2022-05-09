@@ -157,18 +157,14 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    DialogUtils.showDialogProgress(context: context);
+    bloc.term();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
   @override

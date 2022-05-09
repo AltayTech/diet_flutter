@@ -14,7 +14,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -148,8 +147,8 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
                                 onClick: () {
                                   if (!navigator.currentConfiguration!.path
                                       .contains(Routes.listMenuSelect)) {
-                                    DialogUtils.showDialogProgress(context: context);
-                                    bloc.onItemClick(menu);
+                                    bloc.menuSelected(menu);
+                                    sendRequest();
                                   } else
                                     dailyMenuDialog(menu);
                                 },
@@ -197,10 +196,10 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
               Container(
                 alignment: Alignment.center,
                 child: SubmitButton(
-                  onTap: () async {
+                  onTap: (){
                     Navigator.of(context).pop();
-                    DialogUtils.showDialogProgress(context: context);
-                    bloc.onItemClick(menu);
+                    bloc.menuSelected(menu);
+                    sendRequest();
                   },
                   label: intl.yesSaveList,
                 ),
@@ -242,6 +241,12 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
     );
   }
 
+  void sendRequest(){
+
+    DialogUtils.showDialogProgress(context: context);
+    bloc.onItemClick();
+  }
+
   @override
   void onRetryAfterMaintenance() {
     // TODO: implement onRetryAfterMaintenance
@@ -254,7 +259,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
   @override
