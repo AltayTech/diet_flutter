@@ -89,8 +89,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                       snapshot.data!.bmiStatus),
                                   GestureDetector(
                                     onTap: () {
-                                      DialogUtils.showDialogProgress(context: context);
-                                      regimeBloc.nextStep();
+                                      sendRequest(isPregnancy: snapshot.data!.isPregnancy == 1);
                                     },
                                     child: snapshot.data!.isPregnancy == 1
                                         ? ImageUtils.fromLocal(
@@ -108,12 +107,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                     SubmitButton(
                         label: intl.confirmContinue,
                         onTap: () {
-                          if (snapshot.data!.isPregnancy == 1) {
-                            pregnancyWeekAlert();
-                          } else {
-                            DialogUtils.showDialogProgress(context: context);
-                            regimeBloc.nextStep();
-                          }
+                          sendRequest(isPregnancy: snapshot.data!.isPregnancy == 1);
                         }),
                   ],
                 );
@@ -549,23 +543,23 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void sendRequest({required bool isPregnancy}) {
+    if (isPregnancy) {
+      pregnancyWeekAlert();
+    } else {
+      DialogUtils.showDialogProgress(context: context);
+      regimeBloc.nextStep();
+    }
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendRequest(isPregnancy: false);
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    regimeBloc.getStatus();
+    regimeBloc.physicalInfoData();
   }
 }
