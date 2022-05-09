@@ -114,18 +114,13 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                               SubmitButton(
                                 label: intl.confirmContinue,
                                 onTap: () {
-                                  DialogUtils.showDialogProgress(context: context);
+
                                   snapshot.requireData.weight = double.parse(
                                       '${snapshot.requireData.kilo}.${snapshot.requireData.gram}');
                                   debugPrint('body weight ${snapshot.requireData.weight}');
-                                  if (navigator.currentConfiguration!.path ==
-                                      '/list${Routes.weightEnter}')
-                                    regimeBloc.sendVisit(snapshot.requireData);
-                                  else if (navigator.currentConfiguration!.path ==
-                                      '/renew${Routes.weightEnter}')
-                                    regimeBloc.sendWeight(snapshot.requireData);
-                                  else
-                                    regimeBloc.sendInfo(snapshot.requireData);
+                                 regimeBloc.setPhysicalInfo(data: snapshot.requireData);
+                                  DialogUtils.showDialogProgress(context: context);
+                                  regimeBloc.sendRequest();
                                 },
                               ),
                             Space(height: 2.h),
@@ -404,22 +399,14 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    DialogUtils.showDialogProgress(context: context);
+    regimeBloc.sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    regimeBloc.physicalInfoData();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }
