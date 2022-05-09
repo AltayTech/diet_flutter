@@ -14,7 +14,7 @@ import 'package:behandam/extensions/stream.dart';
 
 class MenuSelectBloc {
   MenuSelectBloc() {
-    _loadContent();
+    loadContent();
   }
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
@@ -33,7 +33,7 @@ class MenuSelectBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void _loadContent() {
+  void loadContent() {
     _loadingContent.safeValue = true;
     _repository.menuType().then((value) {
       value.data?.items.let((it) {
@@ -42,13 +42,16 @@ class MenuSelectBloc {
       debugPrint('repository ${_menuTypes.value.length}');
     }).whenComplete(() => _loadingContent.safeValue = false);
   }
-  
-  void onItemClick(Menu menu){
-    _loadingContent.safeValue = true;
+
+  void menuSelected(Menu menu){
     _selectedMenu.value = menu;
+  }
+
+  void onItemClick(){
+    _loadingContent.safeValue = true;
     ConditionRequestData requestData = ConditionRequestData();
     requestData.isPreparedMenu = true;
-    requestData.menuId = menu.id;
+    requestData.menuId = _selectedMenu.value!.id;
     if(!navigator.currentConfiguration!.path.contains(Routes.listMenuSelect)) {
       _repository.setCondition(requestData).then((value) {
         debugPrint('condition menu ${value.next}');
