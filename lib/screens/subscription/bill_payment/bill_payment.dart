@@ -1,4 +1,4 @@
-                                                            import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/enable_discount_box.dart';
@@ -23,30 +23,26 @@ class BillPaymentScreen extends StatefulWidget {
 class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
   late BillPaymentBloc bloc;
   late PackageItem packageItem;
-  late bool isInit=false;
+  late bool isInit = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
   }
-
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    if(!isInit) {
-      packageItem = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as PackageItem;
-      isInit=true;
+    if (!isInit) {
+      packageItem = ModalRoute.of(context)!.settings.arguments as PackageItem;
+      isInit = true;
       bloc = BillPaymentBloc();
       bloc.setPackageItem(packageItem);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -81,7 +77,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
             stream: bloc.checkedRules,
             builder: (context, checkedRules) {
               if (checkedRules.hasData)
-                return Directionality(
+                return /*Directionality(
                   textDirection: context.textDirectionOfLocaleInversed,
                   child: CheckboxListTile(
                     title: Text(intl.ruleCheckBox,style: typography.caption!.copyWith(fontSize: 10.sp)),
@@ -94,12 +90,13 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
                       bloc.setCheckedRules = value!;
                     },
                   ),
-                );/*CustomCheckBox(
-                    title: intl.ruleCheckBox,
-                    value: checkedRules.requireData,
-                    onChange: (value) => bloc.setCheckedRules = value!);*/
+                );*/
+                    CustomCheckBox(
+                        //title: intl.ruleCheckBox,
+                        value: checkedRules.requireData,
+                        onChange: (value) => bloc.setCheckedRules = value!);
               return CustomCheckBox(
-                  title: intl.ruleCheckBox,
+                  //title: intl.ruleCheckBox,
                   value: false,
                   onChange: (value) => bloc.setCheckedRules = value!);
             }),
