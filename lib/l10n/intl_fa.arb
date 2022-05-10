@@ -591,7 +591,7 @@
   "dateStart": "شروع ترم: ",
   "dateEnd": "پایان ترم: ",
   "viewChart": "نمایش نمودار",
-  "termsOfUseDescription": "شرایط و قوانین استفاده",
+  "termsOfUseDescription": "شرایط استفاده از خدمات",
   "termsOfUse": "شرایط و قوانین استفاده",
   "link": "لینک ",
   "clickLink": "کلیک کنید",
@@ -629,7 +629,6 @@
   "paymentType": "نوع پرداخت",
   "confirmAndPay": "تایید و پرداخت",
   "kermanyRegimeConfirm": "برنامه غذایی دکتر کرمانی را می پذیرم",
-  "privacyPolicy": "قوانین و مقررات",
   "totalPrice": "مبلغ کل",
   "historySubscriptionPayment": "سوابق خرید اشتراک",
   "blockPregnancyToolbar": "توقف برنامه غذایی",
@@ -680,5 +679,7 @@
   "requestDate": "تاریخ درخواست",
   "showHistorySubscription": "مشاهده سوابق",
   "subscriptionPackageNotAvailable": "اشتراک وجود ندارد",
+  "privacyPolicy": "حریم خصوصی",
+  "iAccept": " را خوانده و میپذیرم.",
   "understand": "متوجه شدم"
 }

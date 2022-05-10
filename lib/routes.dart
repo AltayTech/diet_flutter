@@ -75,7 +75,6 @@ abstract class Routes {
   static const termsApp = '/terms';
   static const targetWeight = '/list/weight/target';
   static const listPregBloc = '/list/preg/bloc';
-  static const privacyPolicy = '/privacy-policy';
 
   // static const renewWeightEnter = '/renew/weight';
   static const refund = '/refund';
@@ -86,9 +85,11 @@ abstract class Routes {
   static const shopPaymentOnlineSuccess = '/shop/payment/online/success';
   static const shopPaymentOnlineFail = '/shop/payment/online/fail';
   static const dailyMessage = '/dailyMessage';
+  static const privacyApp = '/privacy-policy';
   static const selectPackageSubscription = '/subscription/select-package';
   static const billSubscription = '/subscription/bill';
   static const billSubscriptionHistory = '/subscription/history';
+
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

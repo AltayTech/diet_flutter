@@ -366,17 +366,16 @@ final navigator = VxNavigator(
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
-    Routes.targetWeight: (_, __) => MaterialPage(child: routePage(TargetWeightScreen())),
     Routes.dailyMessage: (_, param) =>
         MaterialPage(child: routePage(DailyMessage()), arguments: param),
+    Routes.privacyApp: (_, __) => MaterialPage(child: routePage(PrivacyPolicy())),
+    Routes.targetWeight: (_, __) => MaterialPage(child: routePage(TargetWeightScreen())),
     Routes.selectPackageSubscription: (_, __) =>
         MaterialPage(child: routePage(SelectPackageSubscriptionScreen())),
     Routes.billSubscription: (_, params) =>
         MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
     Routes.billSubscriptionHistory: (_, params) =>
         MaterialPage(child: routePage(HistorySubscriptionPaymentScreen()), arguments: params),
-    Routes.privacyPolicy: (_, __) =>
-        MaterialPage(child: routePage(PrivacyPolicy())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

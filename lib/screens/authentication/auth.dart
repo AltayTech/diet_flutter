@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -100,19 +101,39 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                   text: TextSpan(children: [
                                     TextSpan(
                                         text: intl.termsOfUseDescription,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .button!
-                                            .copyWith(
-                                                color: AppColors.labelTextColor,
-                                                decoration:
-                                                    TextDecoration.underline),
+                                        style: Theme.of(context).textTheme.overline!.copyWith(
+                                            color: Colors.lightBlue,
+                                            fontSize: 9.sp,
+                                            decoration: TextDecoration.underline),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Utils.launchURLWebView(FlavorConfig
-                                                .instance
-                                                .variables['urlTerms']);
+                                            Utils.launchURL(
+                                                FlavorConfig.instance.variables['urlTerms']);
                                           }),
+                                    TextSpan(
+                                      text: " ${intl.and} ",
+                                      style: Theme.of(context).textTheme.overline!.copyWith(
+                                        color: AppColors.labelTextColor,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                        text: intl.privacyPolicy,
+                                        style: Theme.of(context).textTheme.overline!.copyWith(
+                                            color: Colors.lightBlue,
+                                            fontSize: 9.sp,
+                                            decoration: TextDecoration.underline),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            VxNavigator.of(context)
+                                                .push(Uri.parse(Routes.privacyApp));
+                                          }),
+                                    TextSpan(
+                                      text: " ${intl.iAccept} ",
+                                      style: Theme.of(context).textTheme.overline!.copyWith(
+                                          color: AppColors.labelTextColor,
+                                          fontSize: 9.sp
+                                      ),
+                                    ),
                                   ])),
                             ),
                           ),
