@@ -9,11 +9,11 @@ import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/extensions/stream.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/utils/device.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../routes.dart';
 import 'package:behandam/extensions/stream.dart';
 
 enum PaymentDate {
@@ -128,7 +128,8 @@ class PaymentBloc {
     _repository.newPayment(newInvoice).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
-              '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
+          '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split(
+              "_")[0]}_payment_cart_record');
       MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
       _navigateTo.fire(value.next);
     }).whenComplete(() => _popLoading.fire(true));
@@ -151,15 +152,17 @@ class PaymentBloc {
       Payment payment = new Payment();
       payment.originId = kIsWeb
           ? 0
-          : Device.get().isIos
-              ? 2
-              : 3;
+          : Device
+          .get()
+          .isIos
+          ? 2
+          : 3;
       payment.coupon = discountCode;
       payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
           ? 2
           : isOnline
-              ? 0
-              : 1;
+          ? 0
+          : 1;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       });
@@ -277,6 +280,10 @@ class PaymentBloc {
 
   void setProductType(ProductType productType) {
     _productType.safeValue = productType;
+    sendRequest();
+  }
+
+  void sendRequest() {
     if (_productType.value == ProductType.SHOP)
       shopLastInvoice();
     else

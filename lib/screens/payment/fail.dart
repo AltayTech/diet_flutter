@@ -387,4 +387,11 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
     super.dispose();
   }
 
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+    super.onRetryLoadingPage();
+    bloc.sendRequest();
+  }
+
 }

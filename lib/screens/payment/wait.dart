@@ -245,12 +245,12 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
 
   @override
   void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+    bloc.checkLastInvoice();
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    bloc.checkLastInvoice();
   }
 
   @override
