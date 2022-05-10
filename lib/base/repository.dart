@@ -32,6 +32,7 @@ import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
+import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 
@@ -238,6 +239,8 @@ abstract class Repository {
   NetworkResult<TempTicket> getDailyMessage(int id);
 
   NetworkResult<TargetWeight> targetWeight();
+
+  NetworkResult<ListUserSubscriptionData> getUserSubscription();
 }
 
 class _RepositoryImpl extends Repository {
@@ -931,6 +934,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<TargetWeight> targetWeight() {
     var response = _apiClient.targetWeight();
+    return response;
+  }
+
+  @override
+  NetworkResult<ListUserSubscriptionData> getUserSubscription() {
+    var response = _apiClient.getUserSubscription();
     return response;
   }
 }

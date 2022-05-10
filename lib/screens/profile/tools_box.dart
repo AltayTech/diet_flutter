@@ -19,7 +19,7 @@ class ToolsBoxState extends ResourcefulState<ToolsBox> {
   Widget body() {
     return Column(
       children: [
-        optionButtonUi(Icons.list_alt_outlined, intl.historySubscriptionPayment, 0,context.textDirectionOfLocale),
+        optionButtonUi(Icons.list_alt_outlined, intl.historySubscriptionPayment, 1,context.textDirectionOfLocale),
         Space(height: 2.h),
         Flexible(
           flex: 0,

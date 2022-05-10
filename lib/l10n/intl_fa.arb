@@ -676,5 +676,7 @@
   },
   "pleaseEnterPassword": "لطفا رمز عبور را وارد کنید",
   "search": "جستجو",
+  "requestDate": "تاریخ درخواست",
+  "showHistorySubscription": "مشاهده سوابق",
   "understand": "متوجه شدم"
 }

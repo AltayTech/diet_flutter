@@ -1,14 +1,18 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/bloc.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/provider.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../routes.dart';
@@ -40,19 +44,27 @@ class _ListHistorySubscriptionPaymentWidget
   }
 
   Widget listHistorySubscriptionPaymentWidget() {
-    return ListView.builder(
-      itemCount: 2,
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      physics: NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.only(bottom: 8, top: 8),
-      itemBuilder: (context, i) {
-        return historySubscriptionPaymentWidgetItem();
-      },
-    );
+    return StreamBuilder<bool>(
+        stream: bloc.progressNetwork,
+        builder: (context, progressNetwork) {
+          if (progressNetwork.hasData && !progressNetwork.requireData)
+            return ListView.builder(
+              itemCount: 2,
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.only(bottom: 8, top: 8),
+              itemBuilder: (context, i) {
+                return historySubscriptionPaymentWidgetItem(
+                    bloc.subscriptions![i]);
+              },
+            );
+          return Center(child: Progress());
+        });
   }
 
-  Widget historySubscriptionPaymentWidgetItem() {
+  Widget historySubscriptionPaymentWidgetItem(
+      SubscriptionsItems subscriptionsItem) {
     return Container(
       width: double.maxFinite,
       alignment: Alignment.center,
@@ -72,7 +84,7 @@ class _ListHistorySubscriptionPaymentWidget
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 margin: EdgeInsets.only(top: 10),
                 child: Text(
-                  'خرید اشتراک 30 روزه + ورزش',
+                  subscriptionsItem.packageName!,
                   softWrap: false,
                   style: typography.caption!
                       .copyWith(color: Colors.black, fontSize: 10.sp),
@@ -89,7 +101,7 @@ class _ListHistorySubscriptionPaymentWidget
               children: [
                 Expanded(
                   child: Text(
-                    'تاریخ درخواست:',
+                    '${intl.requestDate}:',
                     softWrap: false,
                     textAlign: TextAlign.start,
                     style: typography.caption!
@@ -98,7 +110,7 @@ class _ListHistorySubscriptionPaymentWidget
                 ),
                 Expanded(
                   child: Text(
-                    '08:12 1400/03/04',
+                    '${subscriptionsItem.createdAt!.split("T")[1].substring(0, 5)} ${DateTimeUtils.formatCustomDate(subscriptionsItem.createdAt!.split("T")[0])}',
                     softWrap: false,
                     textAlign: TextAlign.end,
                     style: typography.caption!
@@ -117,7 +129,7 @@ class _ListHistorySubscriptionPaymentWidget
               children: [
                 Expanded(
                   child: Text(
-                    'مبلغ پرداختی:',
+                    '${intl.amountPaid}:',
                     softWrap: false,
                     textAlign: TextAlign.start,
                     style: typography.caption!
@@ -127,12 +139,18 @@ class _ListHistorySubscriptionPaymentWidget
                 Expanded(
                     child: Text.rich(
                         TextSpan(
-                            text: '80.000',
+                            text: subscriptionsItem.payAmount != null &&
+                                    subscriptionsItem.payAmount != 0
+                                ? '${subscriptionsItem.payAmount.toString().seRagham()}'
+                                : intl.free,
                             style: typography.caption!
                                 .copyWith(color: Colors.black),
                             children: <InlineSpan>[
                               TextSpan(
-                                text: 'تومان',
+                                text: subscriptionsItem.payAmount != null &&
+                                        subscriptionsItem.payAmount != 0
+                                    ? intl.toman
+                                    : '',
                                 style: typography.caption!.copyWith(
                                     color: Colors.black, fontSize: 8.sp),
                               )

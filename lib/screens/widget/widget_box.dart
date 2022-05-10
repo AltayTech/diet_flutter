@@ -185,6 +185,8 @@ Widget optionButtonUi(IconData icon, String text, int action, TextDirection text
     onTap: () {
       if (action == 2) {
         navigator.routeManager.push(Uri.parse(Routes.editProfile));
+      } else if (action == 1) {
+        navigator.routeManager.push(Uri.parse(Routes.billSubscriptionHistory));
       } else if (action == 0) {
         navigator.routeManager.push(Uri.parse(Routes.resetCode));
       }
