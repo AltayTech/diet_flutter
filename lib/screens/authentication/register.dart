@@ -33,7 +33,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
-
   var args;
 
   String? firstName;
@@ -75,32 +74,37 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   Widget build(BuildContext context) {
     super.build(context);
     args = ModalRoute.of(context)!.settings.arguments;
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: StreamBuilder(
-            stream: authBloc.waiting,
-            builder: (context, snapshot) {
-              if (snapshot.data == false && !check) {
-                return  TouchMouseScrollable(
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          body: StreamBuilder(
+              stream: authBloc.waiting,
+              builder: (context, snapshot) {
+                if (snapshot.data == false && !check) {
+                  return TouchMouseScrollable(
                     child: SingleChildScrollView(
                       child: Column(children: [
-                        AuthHeader(title: intl.register,),
-                        Space(height: 80.0),
+                        AuthHeader(
+                          title: intl.register,
+                        ),
+                        Space(height: 3.h),
                         content(),
                       ]),
                     ),
-                );
-              } else {
-                check = false;
-                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
-              }
-            }));
+                  );
+                } else {
+                  check = false;
+                  return Center(
+                      child: Container(
+                          width: 15.w, height: 15.w, child: Progress()));
+                }
+              })),
+    );
   }
-
 
   Widget content() {
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+      padding: EdgeInsets.all(8.w),
       child: Column(
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -108,12 +112,14 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: AppColors.arcColor),
               child: Text("+ ${args['mobile']}",
-                  textDirection: TextDirection.ltr, style: TextStyle(color: AppColors.penColor))),
-          SizedBox(height: 20.0),
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(color: AppColors.penColor))),
+          Space(height: 3.h),
           Container(
-            height: 60.0,
+            height: 10.h,
             child: TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -123,7 +129,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                         borderSide: BorderSide(color: AppColors.penColor),
                         borderRadius: BorderRadius.circular(15.0)),
                     labelText: intl.name,
-                    labelStyle: TextStyle(color: AppColors.penColor, fontSize: 16.0),
+                    labelStyle:
+                        TextStyle(color: AppColors.penColor, fontSize: 16.0),
                     // errorText:
                     // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
@@ -131,9 +138,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   firstName = txt;
                 }),
           ),
-          SizedBox(height: 20.0),
+          Space(height: 3.h),
           Container(
-            height: 60.0,
+            height: 10.h,
             child: TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -143,7 +150,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                         borderSide: BorderSide(color: AppColors.penColor),
                         borderRadius: BorderRadius.circular(15.0)),
                     labelText: intl.lastName,
-                    labelStyle: TextStyle(color: AppColors.penColor, fontSize: 16.0),
+                    labelStyle:
+                        TextStyle(color: AppColors.penColor, fontSize: 16.0),
                     // errorText:
                     // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
@@ -151,14 +159,14 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   lastName = txt;
                 }),
           ),
-          SizedBox(height: 20.0),
+          Space(height: 3.h),
           Container(
-            height: 60.0,
+            height: 10.h,
             child: TextField(
               obscureText: !_obscureText,
               decoration: InputDecoration(
-                  focusedBorder:
-                      OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.penColor)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -179,19 +187,22 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                       });
                     },
                   ),
-                  labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
+                  labelStyle:
+                      TextStyle(color: AppColors.penColor, fontSize: 18.0)),
               onChanged: (txt) {
                 _password = txt;
               },
             ),
           ),
-          SizedBox(height: 20.0),
+          Space(height: 3.h),
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(intl.woman, style: TextStyle(fontSize: 14.0, color: AppColors.penColor)),
-                SizedBox(width: 10.0),
+                Text(intl.woman,
+                    style:
+                        TextStyle(fontSize: 14.0, color: AppColors.penColor)),
+                Space(width: 3.w),
                 ToggleSwitch(
                   minWidth: 90.0,
                   minHeight: 45.0,
@@ -218,38 +229,45 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   curve: Curves.bounceInOut,
                   // animate must be set to true when using custom curve
                   onToggle: (index) {
-                    index == gender.man.index ? switchValue = true : switchValue = false;
+                    index == gender.man.index
+                        ? switchValue = true
+                        : switchValue = false;
                   },
                 ),
-                SizedBox(width: 10.0),
-                Text(intl.man, style: TextStyle(fontSize: 14.0, color: AppColors.penColor)),
+                Space(width: 3.w),
+                Text(intl.man,
+                    style:
+                        TextStyle(fontSize: 14.0, color: AppColors.penColor)),
               ],
             ),
           ),
-          SizedBox(height: 10.h),
+          Space(height: 3.h),
           SubmitButton(
-              label: intl.register,
-              size: Size(100.w, 8.h),
-              onTap: clickSubmit),
+              label: intl.register, size: Size(100.w, 8.h), onTap: clickSubmit),
         ],
       ),
     );
   }
 
-  void clickSubmit(){
-      if (firstName != null && lastName != null) {
-        Register register = Register();
-        register.firstName = firstName;
-        register.lastName = lastName;
-        register.mobile = args['mobile'];
-        register.password = _password;
-        register.gender = switchValue;
-        register.verifyCode = args['code'];
-        register.countryId = args['id'];
-        register.appId = '0';
-        authBloc.registerMethod(register);
-      } else
-        Utils.getSnackbarMessage(context, intl.fillAllField);
+  void clickSubmit() {
+    if (firstName != null && lastName != null) {
+      Register register = Register();
+      register.firstName = firstName;
+      register.lastName = lastName;
+      register.mobile = args['mobile'];
+      register.password = _password;
+      register.gender = switchValue;
+      register.verifyCode = args['code'];
+      register.countryId = args['id'];
+      register.appId = '0';
+      authBloc.registerMethod(register);
+    } else
+      Utils.getSnackbarMessage(context, intl.fillAllField);
+  }
 
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+    clickSubmit();
   }
 }

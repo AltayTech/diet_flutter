@@ -41,7 +41,9 @@ class AuthenticationBloc {
       return _countries.value;
     else
       return _countries.value
-          .where((element) => element.name!.contains(_search!) || element.code!.contains(_search!))
+          .where((element) =>
+              element.name!.contains(_search!) ||
+              element.code!.contains(_search!))
           .toList();
   }
 
@@ -134,7 +136,8 @@ class AuthenticationBloc {
   void passwordMethod(User user) {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      debugPrint('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      debugPrint(
+          'pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       checkFcm();
       _repository
           .getUser()
@@ -171,7 +174,7 @@ class AuthenticationBloc {
         _waiting.safeValue = false;
       });
     }).catchError((onError) {
-      _showServerError.fire(false);
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
   }
 
@@ -181,6 +184,8 @@ class AuthenticationBloc {
         .then((value) => _navigateToVerify.fire(value.next))
         .whenComplete(() {
       MemoryApp.forgetPass = false;
+    }).catchError((onError){
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
   }
 
@@ -192,9 +197,11 @@ class AuthenticationBloc {
     _repository.verify(verify).then((value) async {
       if (value.data!.token != null)
         await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
+      _showServerError.fire(true);
       _navigateToVerify.fire(value.next);
-    }).whenComplete(() {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
+    }).catchError((onError){
+      if (!MemoryApp.isNetworkAlertShown)
+        _showServerError.fire(true);
     });
   }
 
@@ -254,6 +261,7 @@ class AuthenticationBloc {
     _waiting.close();
     _navigateTo.close();
     _filterListCountry.close();
+    if(_timer.isActive)
     _timer.cancel();
     _flag.close();
     _start.close();
