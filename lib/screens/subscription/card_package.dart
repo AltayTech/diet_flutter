@@ -123,14 +123,13 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             textDirection: context.textDirectionOfLocaleInversed,
                             children: [
-                              if (pack.price?.finalPrice != null &&
-                                  pack.price?.finalPrice != pack.price?.price)
+                              if (pack.price?.amount != null)
                                 Directionality(
                                   textDirection: context.textDirectionOfLocale,
                                   child: Text(
-                                    pack.price?.finalPrice != null &&
-                                            int.parse(pack.price!.finalPrice.toString()) != 0
-                                        ? '${int.parse(pack.price!.finalPrice.toString()).toString().seRagham()} ${intl.toman}'
+                                    pack.price?.saleAmount != null &&
+                                            int.parse(pack.price!.saleAmount.toString()) != 0
+                                        ? '${int.parse(pack.price!.saleAmount.toString()).toString().seRagham()} ${intl.toman}'
                                         : intl.free,
                                     // '${int.parse(pack['price']['final_price'].toString())} تومان',
                                     textAlign: TextAlign.start,
@@ -139,17 +138,14 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                         ),
                                   ),
                                 ),
-                              if (pack.price!.finalPrice != null)
-                                Expanded(
-                                  child: Space(),
-                                  flex: 1,
-                                ),
-                              if (pack.price?.price != null)
+                              if (pack.price!.saleAmount != null) Expanded(child: Space(),flex: 1,),
+                              if (pack.price?.saleAmount != null &&
+                                  pack.price?.saleAmount != pack.price?.amount)
                                 Directionality(
                                   textDirection: context.textDirectionOfLocale,
                                   child: Text(
-                                    pack.price?.price != null
-                                        ? '${pack.price!.price.toString().seRagham()} ${intl.toman}'
+                                    pack.price?.amount != null
+                                        ? '${pack.price!.amount.toString().seRagham()} ${intl.toman}'
                                         : '',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
@@ -221,8 +217,9 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
             ),
             Space(height: 1.h),
             Text(
-              widget.packageItem.price != null && widget.packageItem.price!.finalPrice != 0
-                  ? '${widget.packageItem.price!.finalPrice.toString().seRagham()} ${intl.toman}'
+              widget.packageItem.price != null &&
+                  widget.packageItem.price!.saleAmount != 0
+                  ? '${widget.packageItem.price!.saleAmount.toString().seRagham()} ${intl.toman}'
                   : intl.free,
               textAlign: TextAlign.center,
               style: TextStyle(

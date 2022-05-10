@@ -139,7 +139,7 @@ class PaymentBloc {
     _waiting.safeValue = true;
     _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
-      _packageItem!.price!.totalPrice = _packageItem!.price!.finalPrice;
+      _packageItem!.price!.totalPrice = _packageItem!.price!.saleAmount;
     }).whenComplete(() {
       _waiting.safeValue = false;
     });

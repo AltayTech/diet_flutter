@@ -13,7 +13,7 @@ PackageItem _$PackageItemFromJson(Map<String, dynamic> json) => PackageItem()
   ..id = json['id'] as int?
   ..price = json['price'] == null
       ? null
-      : Price.fromJson(json['price'] as Map<String, dynamic>)
+      : PackagePrice.fromJson(json['price'] as Map<String, dynamic>)
   ..name = json['name'] as String?
   ..services = (json['services'] as List<dynamic>?)
       ?.map((e) => ServicePackage.fromJson(e as Map<String, dynamic>))
@@ -32,6 +32,22 @@ Map<String, dynamic> _$PackageItemToJson(PackageItem instance) =>
       'package_id': instance.package_id,
       'refund_deadline': instance.refundDeadline,
       'index': instance.index,
+    };
+
+PackagePrice _$PackagePriceFromJson(Map<String, dynamic> json) => PackagePrice()
+  ..id = json['id'] as int?
+  ..priceableId = json['priceable_id'] as int?
+  ..amount = json['amount'] as int?
+  ..saleAmount = json['sale_amount'] as int?
+  ..totalPrice = json['totalPrice'] as int?;
+
+Map<String, dynamic> _$PackagePriceToJson(PackagePrice instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'priceable_id': instance.priceableId,
+      'amount': instance.amount,
+      'sale_amount': instance.saleAmount,
+      'totalPrice': instance.totalPrice,
     };
 
 Price _$PriceFromJson(Map<String, dynamic> json) => Price()

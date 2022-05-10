@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/regime/package/card_package.dart';
@@ -31,7 +32,12 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
     super.initState();
 
     bloc = PackageBloc();
-    bloc.getPackage();
+    if (navigator.currentConfiguration!.path == '/reg${Routes.renewBlock}')
+      //renew
+      bloc.getPackage(1);
+    else
+      //register
+      bloc.getPackage(0);
     listenBloc();
   }
 
@@ -79,21 +85,22 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
               Space(height: 1.h),
               Center(
                 child: GestureDetector(
-                  onTap: () => VxNavigator.of(context)
-                      .push(Uri.parse(Routes.helpType), params: HelpPage.packageType),
+                  onTap: () => VxNavigator.of(context).push(
+                      Uri.parse(Routes.helpType),
+                      params: HelpPage.packageType),
                   child: Text(
                     intl.differentPackages,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(fontWeight: FontWeight.bold, color: AppColors.labelTextColor),
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.labelTextColor),
                   ),
                 ),
               ),
               Space(height: 1.h),
               GestureDetector(
-                onTap: () => VxNavigator.of(context)
-                    .push(Uri.parse(Routes.helpType), params: HelpPage.packageType),
+                onTap: () => VxNavigator.of(context).push(
+                    Uri.parse(Routes.helpType),
+                    params: HelpPage.packageType),
                 child: Center(
                   child: ImageUtils.fromLocal(
                     'assets/images/diet/guide_icon.svg',
@@ -120,8 +127,9 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
               child: ListView.builder(
                   physics: ClampingScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: bloc.list?.length ?? 0,
-                  itemBuilder: (BuildContext context, int index) => CardPackage(bloc.list![index])),
+                  itemCount: bloc.list!.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      CardPackage(bloc.list![index])),
             );
           } else {
             return Center(

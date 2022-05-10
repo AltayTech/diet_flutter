@@ -33,9 +33,9 @@ class PackageBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void getPackage() {
+  void getPackage(int type) {
     _waiting.safeValue = true;
-    _repository.getPackagesList().then((value) {
+    _repository.getPackagesList(type).then((value) {
       _list = value.data!.items;
       for (int i = 0; i < _list!.length; i++) {
         _list![i].index = i;

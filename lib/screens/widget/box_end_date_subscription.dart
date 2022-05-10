@@ -3,11 +3,13 @@ import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:logifan/widgets/space.dart';
-class BoxEndTimeSubscription extends StatelessWidget{
 
+class BoxEndTimeSubscription extends StatelessWidget {
   late String time;
   late MainAxisAlignment mainAxisAlignment;
-  BoxEndTimeSubscription({required this.time,required this.mainAxisAlignment});
+
+  BoxEndTimeSubscription({required this.time, required this.mainAxisAlignment});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -29,9 +31,12 @@ class BoxEndTimeSubscription extends StatelessWidget{
                 text: time,
                 children: [
                   TextSpan(
-                    text: ' روز',
-                    style: context.typography.titleMedium!
-                        .copyWith(fontWeight: FontWeight.w700, fontSize: 14.sp, letterSpacing: -0.8,),
+                    text: ' ${context.intl.day}',
+                    style: context.typography.titleMedium!.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14.sp,
+                      letterSpacing: -0.8,
+                    ),
                   )
                 ],
                 style: context.typography.bodyText1!.copyWith(
@@ -53,5 +58,4 @@ class BoxEndTimeSubscription extends StatelessWidget{
       ],
     );
   }
-
 }

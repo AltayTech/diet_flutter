@@ -267,7 +267,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
             ),
             child: Column(
               children: <Widget>[
-                _rowItems(bloc.packageItem!.price!.price.toString(), bloc.packageItem!.name!),
+                _rowItems(bloc.packageItem!.price!.amount.toString(), bloc.packageItem!.name!),
                 Divider(),
                 _rowItems(bloc.packageItem!.price!.priceDiscount.toString(), intl.discount),
                 StreamBuilder(
