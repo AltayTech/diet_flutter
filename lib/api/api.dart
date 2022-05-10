@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:behandam/data/entity/filter/filter.dart';
 import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/refund.dart';
@@ -205,8 +206,8 @@ abstract class RestClient {
   @GET("/user-recommend")
   NetworkResult<AdviceData> advice();
 
-  @GET("/package")
-  NetworkResult<PackageItem> getPackages();
+  @GET("/package?type={type}")
+  NetworkResult<PackageItem> getPackages(@Path('type') int type);
 
   @GET("/user/package")
   NetworkResult<PackageItem> getPackageUser();

@@ -125,14 +125,14 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             textDirection: context.textDirectionOfLocaleInversed,
                             children: [
-                              if (pack.price?.finalPrice != null &&
-                                  pack.price?.finalPrice != pack.price?.price)
+                              if (pack.price?.saleAmount != null &&
+                                  pack.price?.saleAmount != pack.price?.amount)
                                 Directionality(
                                   textDirection: context.textDirectionOfLocale,
                                   child: Text(
-                                    pack.price?.finalPrice != null &&
-                                            int.parse(pack.price!.finalPrice.toString()) != 0
-                                        ? '${int.parse(pack.price!.finalPrice.toString()).toString().seRagham()} ${intl.toman}'
+                                    pack.price?.saleAmount != null &&
+                                            int.parse(pack.price!.saleAmount.toString()) != 0
+                                        ? '${int.parse(pack.price!.saleAmount.toString()).toString().seRagham()} ${intl.toman}'
                                         : intl.free,
                                     // '${int.parse(pack['price']['final_price'].toString())} تومان',
                                     textAlign: TextAlign.start,
@@ -141,31 +141,31 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                         ),
                                   ),
                                 ),
-                              if (pack.price!.finalPrice != null) SizedBox(width: 3.w),
-                              if (pack.price?.price != null)
+                              if (pack.price!.saleAmount != null) SizedBox(width: 3.w),
+                              if (pack.price?.amount != null)
                                 Directionality(
                                   textDirection: context.textDirectionOfLocale,
                                   child: Text(
-                                    pack.price?.price != null
-                                        ? pack.price?.finalPrice != pack.price?.price
-                                            ? pack.price!.price.toString().seRagham()
-                                            : '${pack.price!.price.toString().seRagham()} ${intl.toman}'
+                                    pack.price?.amount != null
+                                        ? pack.price?.saleAmount != pack.price?.amount
+                                            ? pack.price!.amount.toString().seRagham()
+                                            : '${pack.price!.amount.toString().seRagham()} ${intl.toman}'
                                         : '',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
-                                      color: pack.price?.finalPrice != pack.price?.price
+                                      color: pack.price?.saleAmount != pack.price?.amount
                                           ? Colors.grey[500]
                                           : pack.priceColor,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
-                                      decoration: pack.price?.finalPrice != pack.price?.price
+                                      decoration: pack.price?.saleAmount != pack.price?.amount
                                           ? TextDecoration.lineThrough
                                           : null,
                                       decorationThickness:
-                                          pack.price?.finalPrice != pack.price?.price
+                                          pack.price?.saleAmount != pack.price?.amount
                                               ? 0.7.w
                                               : null,
-                                      decorationColor: pack.price?.finalPrice != pack.price?.price
+                                      decorationColor: pack.price?.saleAmount != pack.price?.amount
                                           ? Color.fromARGB(255, 150, 150, 150)
                                           : null,
                                     ),
@@ -227,8 +227,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
             Text(
               bloc.package != null &&
                       bloc.package.price != null &&
-                      bloc.package.price!.finalPrice != 0
-                  ? '${bloc.package.price!.finalPrice.toString().seRagham()} ${intl.toman}'
+                      bloc.package.price!.saleAmount != 0
+                  ? '${bloc.package.price!.saleAmount.toString().seRagham()} ${intl.toman}'
                   : intl.free,
               textAlign: TextAlign.center,
               textDirection: TextDirection.rtl,

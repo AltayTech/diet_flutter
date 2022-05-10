@@ -6,6 +6,7 @@ import 'package:behandam/api/interceptor/logger.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
+import 'package:behandam/data/entity/filter/filter.dart';
 import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
@@ -154,7 +155,7 @@ abstract class Repository {
 
   NetworkResult<AdviceData> advice();
 
-  NetworkResult<PackageItem> getPackagesList();
+  NetworkResult<PackageItem> getPackagesList(int type);
 
   NetworkResult setCondition(ConditionRequestData requestData);
 
@@ -639,8 +640,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<PackageItem> getPackagesList() {
-    var response = _apiClient.getPackages();
+  NetworkResult<PackageItem> getPackagesList(int type) {
+    var response = _apiClient.getPackages(type);
     return response;
   }
 
