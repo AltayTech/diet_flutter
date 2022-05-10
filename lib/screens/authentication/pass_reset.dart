@@ -94,6 +94,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
           Container(
             height: 10.h,
             child: StreamBuilder<bool>(
+              initialData: false,
               stream: authBloc.obscureTextPass,
               builder: (context, obscureTextPass) {
                 return TextField(
@@ -131,6 +132,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
           Container(
             height: 10.h,
             child: StreamBuilder<bool>(
+              initialData: false,
               stream: authBloc.obscureTextConfirmPass,
               builder: (context, obscureTextConfirmPass) {
                 return TextField(
