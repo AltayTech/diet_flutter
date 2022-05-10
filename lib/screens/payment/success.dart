@@ -29,6 +29,7 @@ class PaymentSuccessScreen extends StatefulWidget {
 class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> {
   late PaymentBloc bloc;
   bool isInit = false;
+
   @override
   void initState() {
     super.initState();
@@ -313,20 +314,12 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
     // TODO: implement onRetryAfterNoInternet
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.sendRequest();
   }
-
-  @override
-  void onShowMessage(String value) {}
 }
