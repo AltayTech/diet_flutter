@@ -48,17 +48,30 @@ class _ListHistorySubscriptionPaymentWidget
         stream: bloc.progressNetwork,
         builder: (context, progressNetwork) {
           if (progressNetwork.hasData && !progressNetwork.requireData)
-            return ListView.builder(
-              itemCount: 2,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.only(bottom: 8, top: 8),
-              itemBuilder: (context, i) {
-                return historySubscriptionPaymentWidgetItem(
-                    bloc.subscriptions![i]);
-              },
-            );
+            return bloc.subscriptions != null && bloc.subscriptions!.length > 0
+                ? ListView.builder(
+                    itemCount: 2,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    physics: NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(bottom: 8, top: 8),
+                    itemBuilder: (context, i) {
+                      return historySubscriptionPaymentWidgetItem(
+                          bloc.subscriptions![i]);
+                    },
+                  )
+                : Container(
+                    margin:
+                        EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.w),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    height: 10.h,
+                    child: Center(
+                        child: Text(intl.subscriptionPackageNotAvailable,
+                            style: typography.caption)),
+                  );
           return Center(child: Progress());
         });
   }

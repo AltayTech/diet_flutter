@@ -134,11 +134,7 @@ class _SelectPackageSubscriptionScreenState
   @override
   void dispose() {
     super.dispose();
-  }
-
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+    bloc.dispose();
   }
 
   @override
@@ -149,8 +145,7 @@ class _SelectPackageSubscriptionScreenState
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
+    // subscription package list type is 2
+    bloc.getPackageSubscriptionList(2);
   }
-
-  @override
-  void onShowMessage(String value) {}
 }
