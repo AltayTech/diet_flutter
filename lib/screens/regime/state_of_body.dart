@@ -44,12 +44,14 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   void listenBloc() {
     regimeBloc.navigateToVerify.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       VxNavigator.of(context).push(
         Uri.parse('/$event'),
       );
     });
     regimeBloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
   }

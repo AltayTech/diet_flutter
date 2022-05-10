@@ -96,6 +96,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                 textDirection: context.textDirectionOfLocale,
                                 style: Theme.of(context).textTheme.subtitle1!.copyWith(
                                       fontWeight: FontWeight.bold,
+                                  fontSize: 12.sp
                                     ),
                               ),
                               if (pack.services != null && pack.services!.length > 0)

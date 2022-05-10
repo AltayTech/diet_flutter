@@ -44,6 +44,7 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
 
   void initListener() {
     bloc.navigateTo.listen((event) {
+      MemoryApp.isShowDialog = false;
       if ('/$event' == Routes.listView)
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       else

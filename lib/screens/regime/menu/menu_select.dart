@@ -46,6 +46,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
 
   void initListener() {
     bloc.navigateTo.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       if ('/$event' == Routes.listView)
         context.vxNav.clearAndPush(Uri.parse('/$event'));

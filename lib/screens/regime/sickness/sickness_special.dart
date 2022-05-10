@@ -37,6 +37,7 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
 
   void listenBloc() {
     sicknessBloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
     sicknessBloc.navigateTo.listen((event) {

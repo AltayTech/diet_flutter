@@ -41,6 +41,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
 
   void listenBloc() {
     regimeBloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
 

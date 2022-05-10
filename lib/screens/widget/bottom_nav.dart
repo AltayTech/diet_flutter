@@ -6,7 +6,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 enum BottomNavItem { PROFILE, SUPPORT, DIET, SHOP, STATUS }
 
@@ -56,7 +55,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
             break;
           case BottomNavItem.SHOP:
             if (widget.currentTab != BottomNavItem.SHOP)
-              navigator.routeManager.clearAndPush(Uri.parse(Routes.vitrin));
+              navigator.routeManager.clearAndPush(Uri.parse(Routes.shopHome));
             break;
           case BottomNavItem.STATUS:
             if (widget.currentTab != BottomNavItem.STATUS)
@@ -133,7 +132,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
         Expanded(
             flex: 1,
             child: item(
-                'assets/images/tab/tools_menu_icon.svg', BottomNavItem.SHOP, intl.vitrin, context)),
+                'assets/images/tab/menu_shop.svg', BottomNavItem.SHOP, intl.shopMenu, context)),
         Expanded(
             flex: 1,
             child: item(
