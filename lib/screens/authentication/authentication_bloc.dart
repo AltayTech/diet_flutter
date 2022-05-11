@@ -41,9 +41,7 @@ class AuthenticationBloc {
       return _countries.value;
     else
       return _countries.value
-          .where((element) =>
-              element.name!.contains(_search!) ||
-              element.code!.contains(_search!))
+          .where((element) => element.name!.contains(_search!) || element.code!.contains(_search!))
           .toList();
   }
 
@@ -79,7 +77,7 @@ class AuthenticationBloc {
 
   bool? _isTrySendCode;
 
-  late Timer _timer;
+  Timer? _timer;
 
   void startTimer() {
     _start.value = 120;
@@ -136,8 +134,7 @@ class AuthenticationBloc {
   void passwordMethod(User user) {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      debugPrint(
-          'pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      debugPrint('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       checkFcm();
       _repository
           .getUser()
@@ -184,7 +181,7 @@ class AuthenticationBloc {
         .then((value) => _navigateToVerify.fire(value.next))
         .whenComplete(() {
       MemoryApp.forgetPass = false;
-    }).catchError((onError){
+    }).catchError((onError) {
       if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
   }
@@ -199,9 +196,8 @@ class AuthenticationBloc {
         await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
       _showServerError.fire(true);
       _navigateToVerify.fire(value.next);
-    }).catchError((onError){
-      if (!MemoryApp.isNetworkAlertShown)
-        _showServerError.fire(true);
+    }).catchError((onError) {
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
     });
   }
 
@@ -261,11 +257,10 @@ class AuthenticationBloc {
     _waiting.close();
     _navigateTo.close();
     _filterListCountry.close();
-    if(_timer.isActive)
-    _timer.cancel();
+    if (_timer != null) _timer!.cancel();
     _flag.close();
     _start.close();
     _obscureTextPass.close();
-    _obscureTextConfirmPass.close();
+    if (_obscureTextConfirmPass.isClosed) _obscureTextConfirmPass.close();
   }
 }

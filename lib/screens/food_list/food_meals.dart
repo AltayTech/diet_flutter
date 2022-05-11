@@ -42,12 +42,13 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     return StreamBuilder(
         stream: bloc.foodList,
         builder: (_, AsyncSnapshot<FoodListData?> snapshot) {
-          if (snapshot.error is NoResultFoundError) {
+          if (snapshot.error is NoResultFoundError ) {
             return SearchNoResult(intl.foodNotFoundMessage);
           }
           if (!snapshot.hasData || snapshot.hasError) {
             return EmptyBox();
           }
+
           return Column(
             children: [
               ...snapshot.requireData!.meals!.map((meal) => mealItem(meal)).toList(),
