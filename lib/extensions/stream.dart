@@ -20,17 +20,7 @@ extension StreamExtensions<T> on Stream<T> {
 
 extension BehaviorSubjectExtensions<T> on BehaviorSubject<T> {
   /// Set debounce on stream controller
-  void debounceOn({
-    required Function() action,
-    int? durationMillis,
-  }) async {
-    final time = Duration(milliseconds: durationMillis ?? await AppSharedPreferences.inputDebounce);
-    stream.debounceTime(time).listen((event) {
-      if ((event as String).length >= 2) {
-        action.call();
-      }
-    });
-  }
+
 
   /// Add value to the stream only when it is not closed, otherwise do nothing
   set safeValue(T newValue) => isClosed == false ? add(newValue) : doNothing();

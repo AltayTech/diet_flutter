@@ -79,7 +79,7 @@ class _WeekListState extends ResourcefulState<WeekList> {
         if (snapshot.hasData) {
           return GestureDetector(
             onTap: () {
-              if (widget.isClickable)
+              if (widget.isClickable && weekDays[index]!.clickable!)
                 bloc.changeDateWithString(
                     weekDays[index]!.gregorianDate.toString().substring(0, 10));
             },
@@ -91,11 +91,15 @@ class _WeekListState extends ResourcefulState<WeekList> {
                   Column(
                     children: [
                       Text(
-                        context.isRtl ? weekDays[index]!.jalaliDate.formatter.wN:  weekDays[index]!.jalaliDate.toGregorian().formatter.wN,
+                        context.isRtl
+                            ? weekDays[index]!.jalaliDate.formatter.wN
+                            : weekDays[index]!.jalaliDate.toGregorian().formatter.wN,
                         textAlign: TextAlign.center,
                         style: typography.caption?.copyWith(
-                          color: AppColors.surface,
-                          fontSize: context.isRtl ? null:9.sp
+                          color: weekDays[index]!.clickable!
+                              ? AppColors.surface
+                              : AppColors.surface.withOpacity(0.4),
+                          fontSize: context.isRtl ? null : 9.sp,
                         ),
                       ),
                       Space(height: 1.h),
@@ -144,13 +148,15 @@ class _WeekListState extends ResourcefulState<WeekList> {
                               padding: EdgeInsets.all(2.w),
                               child: Center(
                                 child: Text(
-                                 weekDays[index]!.jalaliDate.day.toString() ,
+                                  weekDays[index]!.jalaliDate.day.toString(),
                                   textAlign: TextAlign.center,
                                   style: typography.caption?.apply(
                                     color:
                                         isEqualToSelectedDay(weekDays, index, snapshot.requireData)
                                             ? AppColors.primary
-                                            : AppColors.surface,
+                                            : weekDays[index]!.clickable!
+                                                ? AppColors.surface
+                                                : AppColors.surface.withOpacity(0.4),
                                   ),
                                 ),
                               ),
@@ -211,5 +217,4 @@ class _WeekListState extends ResourcefulState<WeekList> {
     return weekDays[index]!.gregorianDate ==
         weekDays.firstWhere((element) => element == weekday)!.gregorianDate;
   }
-
 }

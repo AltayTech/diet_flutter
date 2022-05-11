@@ -681,5 +681,6 @@
   "subscriptionPackageNotAvailable": "اشتراک وجود ندارد",
   "privacyPolicy": "حریم خصوصی",
   "iAccept": " را خوانده و میپذیرم.",
+  "listEndMessage": "لیست غذایی شما به پایان رسیده است",
   "understand": "متوجه شدم"
 }
