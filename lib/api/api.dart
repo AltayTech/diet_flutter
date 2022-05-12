@@ -215,7 +215,7 @@ abstract class RestClient {
   @POST("/check-coupon")
   NetworkResult<Price?> checkCoupon(@Body() Price price);
 
-  @POST("/payment")
+  @POST("/payment/reserve-packages")
   NetworkResult<Payment> selectPayment(@Body() Payment payment);
 
   @GET("/next-step")

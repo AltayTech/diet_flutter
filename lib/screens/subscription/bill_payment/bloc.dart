@@ -3,6 +3,8 @@ import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/utils/device.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/stream.dart';
 
@@ -63,7 +65,7 @@ class BillPaymentBloc {
 
   bool get isWrongDisCode => _wrongDisCode.valueOrNull ?? false;
 
-  bool get isOnline => _online.valueOrNull ?? true;
+  PaymentType get isOnline => _selectedPayment.value!;
 
   Price? get discountInfo => _discountInfo;
 
@@ -126,18 +128,31 @@ class BillPaymentBloc {
       _showServerError.fireMessage('error');
     } else {
       Payment payment = new Payment();
+      payment.originId = kIsWeb
+          ? 0
+          : Device
+          .get()
+          .isIos
+          ? 2
+          : 3;
       payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
           ? 2
-          : isOnline
+          : isOnline == PaymentType.online
           ? 0
           : 1;
-      payment.packageType = packageItem!.price!.type!;
       payment.coupon = discountCode;
       payment.packageId = packageItem!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       });
     }
+  }
+
+  void checkOnlinePayment() {
+    _repository.latestInvoice().then((value) {
+      _onlinePayment.fire(value.data!.success);
+      _path = value.next ?? '';
+    });
   }
 
   void mustCheckLastInvoice() {

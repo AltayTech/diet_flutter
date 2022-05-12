@@ -28,7 +28,8 @@ class BillPaymentScreen extends StatefulWidget {
   _BillPaymentScreenState createState() => _BillPaymentScreenState();
 }
 
-class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
+class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
+    with WidgetsBindingObserver {
   late BillPaymentBloc bloc;
   late bool isInit = false;
 
@@ -36,6 +37,14 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && bloc.checkLatestInvoice) {
+      bloc.checkOnlinePayment();
+    }
   }
 
   @override
@@ -45,7 +54,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
     if (!isInit) {
       bloc = BillPaymentBloc();
 
-      bloc.setPackageItem = ModalRoute.of(context)!.settings.arguments as PackageItem;
+      bloc.setPackageItem =
+          ModalRoute.of(context)!.settings.arguments as PackageItem;
       bloc.getPackage(bloc.packageItem!.price!.type!);
 
       listenBloc();
@@ -56,11 +66,12 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
 
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
-      debugPrint('listen online payment ${navigator.currentConfiguration?.path}');
+      debugPrint(
+          'listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event)
-        VxNavigator.of(context).clearAndPush(Uri.parse("/${bloc.path}"));
+        VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
       else if (event != null && !event)
-        VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
+        VxNavigator.of(context).push(Uri.parse(Routes.paymentFail));
       else
         Navigator.of(context).pop();
     });
@@ -79,7 +90,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
           context.vxNav.push(Uri.parse('/${(event).next}'));
         else
           context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
-      } else if (bloc.isOnline) {
+      } else if (bloc.isOnline == PaymentType.online) {
+        Navigator.of(context).pop();
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
         bloc.mustCheckLastInvoice();
         Utils.launchURL(result!.url!);
@@ -119,45 +131,38 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen> {
   Widget rulesAndPaymentBtn() {
     return Container(
       margin: EdgeInsets.all(2.w),
-      child: Column(children: [
-        StreamBuilder<bool>(
-            stream: bloc.checkedRules,
-            builder: (context, checkedRules) {
-              if (checkedRules.hasData)
-                return /*Directionality(
-                  textDirection: context.textDirectionOfLocaleInversed,
-                  child: CheckboxListTile(
-                    title: Text(intl.ruleCheckBox,style: typography.caption!.copyWith(fontSize: 10.sp)),
-                    autofocus: false,
-                    activeColor: AppColors.priceGreenColor,
-                    checkColor: Colors.white,
-                    selected: checkedRules.requireData,
+      child: StreamBuilder<bool>(
+          initialData: false,
+          stream: bloc.checkedRules,
+          builder: (context, checkedRules) {
+            return Column(
+              children: [
+                CustomCheckBox(
+                    //title: intl.ruleCheckBox,
                     value: checkedRules.requireData,
-                    onChanged: (value) {
-                      bloc.setCheckedRules = value!;
-                    },
-                  ),
-                );*/
-                    CustomCheckBox(
-                        //title: intl.ruleCheckBox,
-                        value: checkedRules.requireData,
-                        onChange: (value) => bloc.setCheckedRules = value!);
-              return CustomCheckBox(
-                  //title: intl.ruleCheckBox,
-                  value: false,
-                  onChange: (value) => bloc.setCheckedRules = value!);
-            }),
-        SubmitButton(label: intl.confirmAndPay, onTap: () {
-          DialogUtils.showDialogProgress(context: context);
-          bloc.selectUserPayment();
-        })
-      ]),
+                    onChange: (value) => bloc.setCheckedRules = value!),
+                SubmitButton(
+                    label: intl.confirmAndPay,
+                    onTap: () {
+                      if (checkedRules.requireData) {
+                        DialogUtils.showDialogProgress(context: context);
+                        bloc.selectUserPayment();
+                      } else {
+                        Utils.getSnackbarMessage(
+                            context, intl.checkTermsAndConditions);
+                      }
+                    })
+              ],
+            );
+          }),
     );
   }
 
   @override
   void dispose() {
     super.dispose();
+
+    WidgetsBinding.instance!.addObserver(this);
 
     bloc.dispose();
   }

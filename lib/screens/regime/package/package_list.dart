@@ -34,12 +34,13 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
     super.initState();
 
     bloc = PackageBloc();
-    if (navigator.currentConfiguration!.path == '/reg${Routes.renewBlock}') {
+    if (navigator.currentConfiguration!.path == '${Routes.renewBlock}' ||
+        navigator.currentConfiguration!.path == '${Routes.reviveBlock}') {
       //renew
       packageType = 1;
       bloc.getPackage(packageType!);
-    }
-    else {
+    } else {
+      // reg
       packageType = 0;
       bloc.getPackage(packageType!);
     }
@@ -49,7 +50,8 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
   void listenBloc() {
     bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
-      context.vxNav.push(Uri.parse('/${event["url"]}'), params: event["params"]);
+      context.vxNav
+          .push(Uri.parse('/${event["url"]}'), params: event["params"]);
     });
   }
 

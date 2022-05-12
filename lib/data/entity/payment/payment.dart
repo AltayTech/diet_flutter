@@ -17,9 +17,6 @@ class Payment {
   @JsonKey(name: "package_id")
   int? packageId;
 
-  @JsonKey(name: "type")
-  int? packageType;
-
   @JsonKey(name: "id")
   int? id;
 

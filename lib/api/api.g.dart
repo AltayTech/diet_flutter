@@ -980,7 +980,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Payment>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/payment',
+                .compose(_dio.options, '/payment/reserve-packages',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<Payment>.fromJson(
