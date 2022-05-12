@@ -1,5 +1,6 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
 import 'package:behandam/screens/food_list/provider.dart';
@@ -40,6 +41,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
       context.vxNav.push(Uri.parse('/$event'));
     });
     bloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
   }
@@ -189,9 +191,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
                     SubmitButton(
                       label: isToday(snapshot.requireData!) ? intl.showAdvices : intl.goToToday,
                       size: Size(40.w, 5.h),
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                   ],
                 );

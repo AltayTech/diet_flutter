@@ -11,7 +11,7 @@ import 'package:behandam/extensions/stream.dart';
 
 class DietHistoryBloc {
   DietHistoryBloc() {
-    _loadContent();
+    loadContent();
   }
 
   final _repository = Repository.getInstance();
@@ -32,7 +32,7 @@ class DietHistoryBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void _loadContent() {
+  void loadContent() {
     _loadingContent.safeValue = true;
     _repository.dietHistory().then((value) {
       _dietHistory.value = value.requireData;

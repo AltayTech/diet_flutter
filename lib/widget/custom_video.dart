@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:behandam/app/app.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/fake_ui.dart'
     if (dart.library.html) 'package:behandam/utils/real_ui.dart' as ui;
@@ -14,10 +16,6 @@ import 'package:video_player/video_player.dart';
 
 abstract class CallBackListener {
   void notifyChange();
-}
-
-abstract class ClickItem {
-  void Click();
 }
 
 class CustomVideo extends StatefulWidget {
@@ -53,7 +51,7 @@ class CustomVideo extends StatefulWidget {
   MyWidgetPlayer createState() => MyWidgetPlayer(click, image, title, url, isLooping, isFile);
 }
 
-class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
+class MyWidgetPlayer extends State<CustomVideo> {
   Function? click;
   String? title;
   String? image;
@@ -115,7 +113,11 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
             widget.onCompletion!();
             showBottomSheet = false;
           }
-
+          if (_controller.value.isPlaying) {
+            MemoryApp.analytics!.logEvent(
+                name: "play_video",
+                parameters: {'page': '${navigator.currentConfiguration!.path}', 'url': '$url'});
+          }
           setState(() => {});
         }
       });
@@ -175,7 +177,4 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
         ),
       );
   }
-
-  @override
-  void Click() {}
 }

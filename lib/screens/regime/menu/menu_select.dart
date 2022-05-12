@@ -250,13 +250,8 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendRequest();
   }
 
   @override
@@ -264,8 +259,4 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
     bloc.loadContent();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

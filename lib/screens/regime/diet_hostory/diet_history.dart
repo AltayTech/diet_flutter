@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/diet_hostory/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -27,6 +28,7 @@ class _DietHistoryPageState extends ResourcefulState<DietHistoryPage> {
     super.initState();
     bloc = DietHistoryBloc();
     bloc.navigateTo.listen((event) {
+      MemoryApp.isShowDialog=false;
       Navigator.of(context).pop();
       context.vxNav.push(Uri.parse('/$event'));
     });
@@ -70,14 +72,7 @@ class _DietHistoryPageState extends ResourcefulState<DietHistoryPage> {
                       Center(
                         child: SubmitButton(
                             label: intl.nextStage,
-                            onTap: () {
-                              if(bloc.selectedDietHistoryValue!=null) {
-                                DialogUtils.showDialogProgress(context: context);
-                                bloc.condition();
-                              }else{
-                                Utils.getSnackbarMessage(context, intl.errorSelectedItem);
-                              }
-                            }),
+                            onTap: sendRequest),
                       ),
                     ],
                   );
@@ -149,23 +144,22 @@ class _DietHistoryPageState extends ResourcefulState<DietHistoryPage> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+void sendRequest() {
+  if(bloc.selectedDietHistoryValue!=null) {
+    if(!MemoryApp.isShowDialog)
+    DialogUtils.showDialogProgress(context: context);
+    bloc.condition();
+  }else{
+    Utils.getSnackbarMessage(context, intl.errorSelectedItem);
   }
-
+}
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+   bloc.loadContent();
   }
 }

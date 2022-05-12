@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/goal/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -28,6 +29,7 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
     super.initState();
     bloc = DietGoalBloc();
     bloc.navigateTo.listen((event) {
+      MemoryApp.isShowDialog=false;
       Navigator.of(context).pop();
       context.vxNav.push(Uri.parse('/$event'));
     });
@@ -68,16 +70,7 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
                         Space(height: 2.h),
                         ...snapshot.requireData.items.map((history) => item(history)).toList(),
                         Center(
-                          child: SubmitButton(
-                              label: intl.nextStage,
-                              onTap: () {
-                                if (bloc.selectedGoalValue != null) {
-                                  DialogUtils.showDialogProgress(context: context);
-                                  bloc.condition();
-                                } else {
-                                  Utils.getSnackbarMessage(context, intl.errorSelectedItem);
-                                }
-                              }),
+                          child: SubmitButton(label: intl.nextStage, onTap: sendData),
                         ),
                       ],
                     );
@@ -148,19 +141,23 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void sendData() {
+    if (bloc.selectedGoalValue != null) {
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+      bloc.condition();
+    } else {
+      Utils.getSnackbarMessage(context, intl.errorSelectedItem);
+    }
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendData();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
   @override
