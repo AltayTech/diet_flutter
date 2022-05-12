@@ -56,7 +56,7 @@ class _CustomCheckBox extends ResourcefulState<CustomCheckBox> {
           InkWell(
               onTap: () => context.vxNav.push(Uri(path: Routes.privacyApp)),
               child: Text(
-                '${intl.privacyPolicy} ',
+                '${intl.termsAndConditions} ',
                 textAlign: TextAlign.end,
                 textDirection: context.textDirectionOfLocale,
                 style: typography.caption!.copyWith(

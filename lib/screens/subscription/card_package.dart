@@ -10,9 +10,8 @@ import 'package:velocity_x/velocity_x.dart';
 
 class CardPackage extends StatefulWidget {
   PackageItem packageItem;
-  bool isSelected;
 
-  CardPackage(this.packageItem, this.isSelected);
+  CardPackage(this.packageItem);
 
   @override
   _CardPackageState createState() => _CardPackageState();
@@ -38,8 +37,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
         borderRadius: BorderRadius.circular(20.0),
         child: InkWell(
           onTap: () {
-            if (widget.isSelected)
-              DialogUtils.showBottomSheetPage(context: context, child: bottomSheet());
+            DialogUtils.showBottomSheetPage(context: context, child: bottomSheet());
           },
           child: Container(
             padding: EdgeInsets.only(right: 3.w),
@@ -208,7 +206,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
           children: <Widget>[
             SizedBox(height: 1.h),
             Text(
-              widget.packageItem.name ?? 'package name',
+              widget.packageItem.name ?? '',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,

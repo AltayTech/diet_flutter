@@ -209,8 +209,8 @@ abstract class RestClient {
   @GET("/package?type={type}")
   NetworkResult<PackageItem> getPackages(@Path('type') int type);
 
-  @GET("/user/package")
-  NetworkResult<PackageItem> getPackageUser();
+  @GET("/user/package?type={type}")
+  NetworkResult<PackageItem> getPackageUser(@Path('type') int type);
 
   @POST("/check-coupon")
   NetworkResult<Price?> checkCoupon(@Body() Price price);

@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/subscription/card_package.dart';
 import 'package:behandam/screens/subscription/select_package/bloc.dart';
 import 'package:behandam/screens/widget/box_end_date_subscription.dart';
@@ -90,7 +91,7 @@ class _SelectPackageSubscriptionScreenState
                     padding: EdgeInsets.only(
                         left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
                     child: BoxEndTimeSubscription(
-                        time: "121",
+                        time: '${MemoryApp.termPackage!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
                         mainAxisAlignment: MainAxisAlignment.center),
                   ),
                   Container(
@@ -114,7 +115,7 @@ class _SelectPackageSubscriptionScreenState
                                     itemBuilder:
                                         (BuildContext context, int index) =>
                                             CardPackage(
-                                                bloc.packageList![index], true))
+                                                bloc.packageList![index]))
                                 : Container(
                                     height: 20.h,
                                     child: Center(

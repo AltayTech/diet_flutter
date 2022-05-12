@@ -41,7 +41,6 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
         borderRadius: BorderRadius.circular(20.0),
         child: InkWell(
           onTap: () {
-            bloc.selectPackage(pack);
             DialogUtils.showBottomSheetPage(context: context, child: bottomSheet());
           },
           child: Container(
@@ -74,8 +73,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                 padding: EdgeInsets.only(left: 2.w),
                                 child: ImageUtils.fromLocal(
                                   'assets/images/diet/diet.svg',
-                                  width: 26.w,
-                                  height: 26.w,
+                                  width: 24.w,
+                                  height: 24.w,
                                 ),
                               ),
                               Space(height: 1.h),
@@ -94,14 +93,14 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                 softWrap: true,
                                 maxLines: 2,
                                 textDirection: context.textDirectionOfLocale,
-                                style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                  fontSize: 12.sp
-                                    ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(letterSpacing: -0.2, fontSize: 12.sp),
                               ),
                               if (pack.services != null && pack.services!.length > 0)
                                 ...pack.services!.map(
-                                    (product) => _itemOption(product.name ?? '', pack.barColor)),
+                                        (product) => _itemOption(product.name ?? '', pack.barColor)),
                             ],
                           )),
                     ],
@@ -115,7 +114,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                       bottom: 2.w,
                     ),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 247, 247, 247),
+                      color: Color(0xffF7F7F7),
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     child: Row(
@@ -126,49 +125,39 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             textDirection: context.textDirectionOfLocaleInversed,
                             children: [
-                              if (pack.price?.saleAmount != null &&
-                                  pack.price?.saleAmount != pack.price?.amount)
+                              if (pack.price?.amount != null)
                                 Directionality(
                                   textDirection: context.textDirectionOfLocale,
                                   child: Text(
                                     pack.price?.saleAmount != null &&
-                                            int.parse(pack.price!.saleAmount.toString()) != 0
+                                        int.parse(pack.price!.saleAmount.toString()) != 0
                                         ? '${int.parse(pack.price!.saleAmount.toString()).toString().seRagham()} ${intl.toman}'
                                         : intl.free,
                                     // '${int.parse(pack['price']['final_price'].toString())} تومان',
                                     textAlign: TextAlign.start,
                                     style: Theme.of(context).textTheme.caption!.copyWith(
-                                          color: pack.priceColor,
-                                        ),
+                                      color: pack.priceColor,
+                                    ),
                                   ),
                                 ),
-                              if (pack.price!.saleAmount != null) SizedBox(width: 3.w),
-                              if (pack.price?.amount != null)
+                              if (pack.price!.saleAmount != null) Expanded(child: Space(),flex: 1,),
+                              if (pack.price?.saleAmount != null &&
+                                  pack.price?.saleAmount != pack.price?.amount)
                                 Directionality(
                                   textDirection: context.textDirectionOfLocale,
                                   child: Text(
                                     pack.price?.amount != null
-                                        ? pack.price?.saleAmount != pack.price?.amount
-                                            ? pack.price!.amount.toString().seRagham()
-                                            : '${pack.price!.amount.toString().seRagham()} ${intl.toman}'
+                                        ? '${pack.price!.amount.toString().seRagham()} ${intl.toman}'
                                         : '',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
-                                      color: pack.price?.saleAmount != pack.price?.amount
-                                          ? Colors.grey[500]
-                                          : pack.priceColor,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: pack.price?.saleAmount != pack.price?.amount
-                                          ? TextDecoration.lineThrough
-                                          : null,
-                                      decorationThickness:
-                                          pack.price?.saleAmount != pack.price?.amount
-                                              ? 0.7.w
-                                              : null,
-                                      decorationColor: pack.price?.saleAmount != pack.price?.amount
-                                          ? Color.fromARGB(255, 150, 150, 150)
-                                          : null,
+                                      color: Colors.grey[500],
+                                      fontFamily: 'Iransans-light',
+                                      fontSize: 9.sp,
+                                      fontWeight: FontWeight.w400,
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationThickness: 0.7.w,
+                                      decorationColor: Color.fromARGB(255, 150, 150, 150),
                                     ),
                                   ),
                                 ),
@@ -194,7 +183,11 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
       children: <Widget>[
         Expanded(
             child: Text(text,
-                textAlign: TextAlign.start, style: Theme.of(context).textTheme.overline)),
+                textAlign: TextAlign.start,
+                style: Theme.of(context)
+                    .textTheme
+                    .overline!
+                    .copyWith(letterSpacing: -0.2, fontSize: 9.sp))),
         Space(width: 1.w),
         CircleAvatar(
           backgroundColor: color,
@@ -217,7 +210,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
           children: <Widget>[
             SizedBox(height: 1.h),
             Text(
-              bloc.package.name ?? 'package name',
+              widget.packageItem.name ?? '',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,
@@ -226,10 +219,10 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
             ),
             Space(height: 1.h),
             Text(
-              bloc.package != null &&
-                      bloc.package.price != null &&
-                      bloc.package.price!.saleAmount != 0
-                  ? '${bloc.package.price!.saleAmount.toString().seRagham()} ${intl.toman}'
+              widget.packageItem != null &&
+                  widget.packageItem.price != null &&
+                      widget.packageItem.price!.saleAmount != 0
+                  ? '${widget.packageItem.price!.saleAmount.toString().seRagham()} ${intl.toman}'
                   : intl.free,
               textAlign: TextAlign.center,
               textDirection: TextDirection.rtl,
@@ -247,6 +240,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                 onPressed: () {
                   Navigator.pop(context);
                   DialogUtils.showDialogProgress(context: context);
+                  bloc.selectPackage(widget.packageItem);
                   bloc.sendPackage();
                 },
                 shape: new RoundedRectangleBorder(

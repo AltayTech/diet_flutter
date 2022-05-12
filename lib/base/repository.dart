@@ -159,7 +159,7 @@ abstract class Repository {
 
   NetworkResult setCondition(ConditionRequestData requestData);
 
-  NetworkResult<PackageItem> getPackagePayment();
+  NetworkResult<PackageItem> getPackagePayment(int type);
 
   NetworkResult<Price?> checkCoupon(Price price);
 
@@ -668,8 +668,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<PackageItem> getPackagePayment() {
-    var response = _apiClient.getPackageUser();
+  NetworkResult<PackageItem> getPackagePayment(int type) {
+    var response = _apiClient.getPackageUser(type);
     return response;
   }
 

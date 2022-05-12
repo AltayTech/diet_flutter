@@ -232,12 +232,6 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
   }
 
   @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
-  }
-
-  @override
   void onRetryAfterMaintenance() {
     // TODO: implement onRetryAfterMaintenance
   }

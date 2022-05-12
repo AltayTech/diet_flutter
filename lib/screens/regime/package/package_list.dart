@@ -26,25 +26,30 @@ class PackageListScreen extends StatefulWidget {
 class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
   late PackageBloc bloc;
 
+  int? packageType;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     bloc = PackageBloc();
-    if (navigator.currentConfiguration!.path == '/reg${Routes.renewBlock}')
+    if (navigator.currentConfiguration!.path == '/reg${Routes.renewBlock}') {
       //renew
-      bloc.getPackage(1);
-    else
-      //register
-      bloc.getPackage(0);
+      packageType = 1;
+      bloc.getPackage(packageType!);
+    }
+    else {
+      packageType = 0;
+      bloc.getPackage(packageType!);
+    }
     listenBloc();
   }
 
   void listenBloc() {
     bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
-      context.vxNav.push(Uri.parse('/$event'));
+      context.vxNav.push(Uri.parse('/${event["url"]}'), params: event["params"]);
     });
   }
 

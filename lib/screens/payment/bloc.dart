@@ -135,9 +135,9 @@ class PaymentBloc {
     }).whenComplete(() => _popLoading.fire(true));
   }
 
-  void getPackagePayment() {
+  void getPackagePayment(int type) {
     _waiting.safeValue = true;
-    _repository.getPackagePayment().then((value) {
+    _repository.getPackagePayment(type).then((value) {
       _packageItem = value.data;
       _packageItem!.price!.totalPrice = _packageItem!.price!.saleAmount;
     }).whenComplete(() {
@@ -163,6 +163,8 @@ class PaymentBloc {
           : isOnline
           ? 0
           : 1;
+      payment.packageType = packageItem!.price!.type!;
+      payment.packageId = packageItem!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       });

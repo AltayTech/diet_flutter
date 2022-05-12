@@ -170,6 +170,7 @@ class ProfileBloc {
 
   void getTermPackage() {
     _repository.getTermPackage().then((value) {
+      MemoryApp.termPackage = value.data!;
       _termPackage.safeValue = value.data!;
       _showRefund.safeValue = value.data!.showRefundLink!;
       if (value.data != null &&

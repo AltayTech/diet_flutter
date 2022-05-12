@@ -6,6 +6,7 @@ import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/stream.dart';
+
 class PackageBloc {
   PackageBloc() {
     _waiting.safeValue = false;
@@ -53,7 +54,7 @@ class PackageBloc {
     ConditionRequestData requestData = ConditionRequestData();
     requestData.packageId = _packageSelected.id;
     _repository.setCondition(requestData).then((value) {
-      _navigateTo.fire(value.next);
+      _navigateTo.fire({'url': value.next, 'params': _packageSelected});
     });
   }
 

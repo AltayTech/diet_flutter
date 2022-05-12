@@ -47,6 +47,8 @@ class PackagePrice {
   int? amount;
   @JsonKey(name: "sale_amount")
   int? saleAmount;
+  @JsonKey(name: "type")
+  int? type;
 
   int? totalPrice;
 
