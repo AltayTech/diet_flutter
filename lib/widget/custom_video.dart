@@ -62,6 +62,7 @@ class MyWidgetPlayer extends State<CustomVideo> {
   late VideoPlayerController _controller;
   double? aspect;
   var playerWidget;
+  bool logEvent = false;
   ChewieController? chewieController;
   bool _initializeVideoPlayerFuture = false, showBottomSheet = true;
 
@@ -75,7 +76,7 @@ class MyWidgetPlayer extends State<CustomVideo> {
     kIsWeb ? webPlayer() : setData();
   }
 
-  webPlayer() {
+  void webPlayer() {
     widget.src = widget.url;
     String? URL = widget.src! + '#t=${widget.startAt}';
     // Do not remove the below comment - Fix for missing ui.platformViewRegistry in dart.ui
@@ -97,7 +98,7 @@ class MyWidgetPlayer extends State<CustomVideo> {
     });
   }
 
-  Future<void> setData() async {
+  void setData() async {
     try {
       if (url == null) {
         _controller = VideoPlayerController.asset('assets/video.mp4');
@@ -113,12 +114,22 @@ class MyWidgetPlayer extends State<CustomVideo> {
             widget.onCompletion!();
             showBottomSheet = false;
           }
-          if (_controller.value.isPlaying) {
+          setState(() => {});
+        }
+        if (_controller.value.isPlaying && !logEvent) {
+          logEvent = true;
+          try {
             MemoryApp.analytics!.logEvent(
                 name: "play_video",
-                parameters: {'page': '${navigator.currentConfiguration!.path}', 'url': '$url'});
-          }
-          setState(() => {});
+                parameters: {'page': '${navigator.currentConfiguration!.path}'});
+          } catch (e) {}
+        } else if (!_controller.value.isPlaying && logEvent) {
+          logEvent = false;
+          try {
+            MemoryApp.analytics!.logEvent(
+                name: "stop_video",
+                parameters: {'page': '${navigator.currentConfiguration!.path}'});
+          } catch (e) {}
         }
       });
 
@@ -131,6 +142,7 @@ class MyWidgetPlayer extends State<CustomVideo> {
         looping: this.isLooping!,
         showControlsOnInitialize: true,
       );
+
       if (chewieController != null && chewieController!.videoPlayerController.value.isInitialized) {
         setState(() {
           _initializeVideoPlayerFuture = true;
