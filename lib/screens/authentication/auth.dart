@@ -1,19 +1,18 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -93,8 +92,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                           content(),
                           Container(
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 8, left: 5.w, right: 5.w),
+                              padding: EdgeInsets.only(top: 8, left: 5.w, right: 5.w),
                               child: RichText(
                                   textDirection: context.textDirectionOfLocale,
                                   textAlign: TextAlign.center,
@@ -113,8 +111,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                     TextSpan(
                                       text: " ${intl.and} ",
                                       style: Theme.of(context).textTheme.overline!.copyWith(
-                                        color: AppColors.labelTextColor,
-                                      ),
+                                            color: AppColors.labelTextColor,
+                                          ),
                                     ),
                                     TextSpan(
                                         text: intl.privacyPolicy,
@@ -130,9 +128,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                     TextSpan(
                                       text: " ${intl.iAccept} ",
                                       style: Theme.of(context).textTheme.overline!.copyWith(
-                                          color: AppColors.labelTextColor,
-                                          fontSize: 9.sp
-                                      ),
+                                          color: AppColors.labelTextColor, fontSize: 9.sp),
                                     ),
                                   ])),
                             ),
@@ -144,9 +140,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   );
                 } else {
                   check = false;
-                  return Center(
-                      child: Container(
-                          width: 15.w, height: 15.w, child: Progress()));
+                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -164,8 +158,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               Flexible(
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: AppColors.arcColor),
+                      borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
                   child: TextField(
                     controller: _text,
                     textDirection: TextDirection.ltr,
@@ -196,8 +189,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: AppColors.arcColor),
+                    borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
                 width: 30.w,
                 margin: EdgeInsets.only(right: 2.w),
                 child: StreamBuilder(
@@ -215,8 +207,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                               enabled: false,
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: AppColors.penColor),
+                                    borderSide: BorderSide(color: AppColors.penColor),
                                     borderRadius: BorderRadius.circular(15.0)),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15.0),
@@ -295,14 +286,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 // errorText: _validate ? intl.fillAllField : null,
                 label: Text(intl.search),
                 labelStyle: TextStyle(
-                    color: AppColors.penColor,
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w400),
+                    color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
               ),
               style: TextStyle(
-                  color: AppColors.penColor,
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w400),
+                  color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
               onSubmitted: (String) {
                 click(_selectedLocation);
               },
@@ -320,10 +307,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                           // shrinkWrap: true,
                           itemBuilder: (_, index) => GestureDetector(
                             onTap: () {
-                              authBloc
-                                  .setCountry(filterListCountry.data![index]);
-                              _selectedLocation =
-                                  filterListCountry.data![index];
+                              authBloc.setCountry(filterListCountry.data![index]);
+                              _selectedLocation = filterListCountry.data![index];
                               Navigator.of(context).pop();
                             },
                             child: Container(
@@ -375,7 +360,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     }
     number = countryCode.code! + phoneNumber!;
     DialogUtils.showDialogProgress(context: context);
-    authBloc.loginMethod(number);
+    authBloc.loginMethod(number.toEnglishDigit());
   }
 
   @override
