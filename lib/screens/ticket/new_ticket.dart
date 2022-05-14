@@ -8,8 +8,8 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/bottom_triangle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
@@ -61,14 +61,13 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
             appBar: Toolbar(titleBar: intl.ticket),
-            backgroundColor: AppColors.surface,
+            backgroundColor: AppColors.newBackground,
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Column(children: [
                   Container(
                     transform: Matrix4.translationValues(0.0, -10.0, 0.0),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(16),
                         topRight: Radius.circular(16),
@@ -90,7 +89,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                           builder: (context, snapshot) {
                             if (snapshot.data != null && snapshot.data == false) {
                               return Wrap(
-                                spacing: 3.w,
+                                spacing: 2.w,
                                 runSpacing: 1.h,
                                 textDirection: context.textDirectionOfLocale,
                                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -98,24 +97,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                 alignment: WrapAlignment.center,
                                 runAlignment: WrapAlignment.start,
                                 children: [
-                                  ...bloc.SupportItems.map((item) => itemWithTick(
-                                      child: illItem(
-                                          support: item,
-                                          showPastMeal: () => () {
-                                                for (SupportItem s in bloc.SupportItems)
-                                                  s.selected = false;
-                                                item.selected = true;
-                                                bloc.sendTicketMessage.departmentId = item.id;
-                                                bloc.setSupportItemSelected();
-                                              }),
-                                      selectSupport: () => () {
-                                            for (SupportItem s in bloc.SupportItems)
-                                              s.selected = false;
-                                            item.selected = true;
-                                            bloc.sendTicketMessage.departmentId = item.id;
-                                            bloc.setSupportItemSelected();
-                                          },
-                                      support: item)).toList()
+                                  ...bloc.SupportItems.map((item) => supportTypeItem(item)).toList()
                                 ],
                               );
                             } else {
@@ -133,6 +115,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                         textInput(
                             height: 9.h,
                             label: intl.subject,
+                            bgColor: Colors.white,
                             value: bloc.sendTicketMessage.title ?? '',
                             textController: ticketTitleController,
                             validation: (validation) {},
@@ -155,6 +138,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                     label: intl.lableTextMessage,
                                     textController: ticketDescController,
                                     validation: (validation) {},
+                                    bgColor: Colors.white,
                                     onChanged: (onChanged) {
                                       bloc.sendTicketMessage.body = onChanged;
                                     },
@@ -162,14 +146,14 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                                     maxLine: true,
                                     ctx: context,
                                     textDirection: context.textDirectionOfLocale,
-                                    icon: Icons.keyboard);
+                                );
                               },
                               stream: bloc.isShowRecorder,
                             ),
                           ),
                         ),
                         TicketTypeButton(),
-                        Space(height: 2.h),
+                        Space(height: 3.h),
                         StreamBuilder(
                             stream: bloc.isShowProgressItem,
                             builder: (context, snapshot) {
@@ -215,147 +199,63 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
       Utils.getSnackbarMessage(context, intl.errorTitleTicket);
   }
 
-  Widget itemWithTick(
-      {required Widget child, required SupportItem support, required Function selectSupport}) {
-    return Container(
-      height: 10.h,
-      width: 25.w,
-      child: Stack(
-        children: <Widget>[
-          // Container(child: child),
-          Positioned(
-            bottom: 4,
-            right: 10,
-            left: 10,
+  Widget supportTypeItem(SupportItem supportItem) {
+    return StreamBuilder<bool>(
+        stream: bloc.supportItemSelected,
+        builder: (context, snapshot) {
+          return InkWell(
+            onTap: () {
+              for (SupportItem s in bloc.SupportItems) s.selected = false;
+              supportItem.selected = true;
+              bloc.sendTicketMessage.departmentId = supportItem.id;
+              bloc.setSupportItemSelected();
+            },
             child: Container(
-              width: 10.w,
-              height: 8.h,
-              padding: EdgeInsets.all(1.w),
+              alignment: Alignment.center,
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.colorSelectDepartmentTicket,
-                    blurRadius: 3.0,
-                    spreadRadius: 2.0,
+                color: Colors.white,
+                border: supportItem.isSelected ? Border.all(color: AppColors.primary) : null,
+                borderRadius: AppBorderRadius.borderRadiusExtraLarge,
+              ),
+              constraints: BoxConstraints(minHeight: 6.h, maxWidth: 43.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  supportItem.isSelected
+                      ? ImageUtils.fromString(
+                          """<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="8.99976" cy="9" r="9" fill="#1ABC9C" />
+                  <path
+                  d="M12.848 4.17668C12.9324 4.15083 13.0318 4.17265 13.0956 4.23481C13.5696 4.70928 14.0439 5.18328 14.5181 5.65752C14.6137 5.74861 14.6168 5.9199 14.5212 6.01195C11.9344 8.59783 9.34897 11.1849 6.7619 13.7705C6.65799 13.8683 6.47698 13.8472 6.39157 13.735C5.33611 12.6785 4.27993 11.6226 3.22375 10.5667C3.12838 10.4744 3.13171 10.304 3.2266 10.2127C3.70178 9.73799 4.1765 9.26304 4.65121 8.78809C4.74325 8.69937 4.90363 8.69889 4.99662 8.78691C5.47299 9.26233 5.94865 9.73894 6.42479 10.2148C6.51494 10.3043 6.67412 10.3045 6.76475 10.2155C8.73002 8.25028 10.6953 6.28477 12.6606 4.31974C12.717 4.26541 12.7678 4.19614 12.848 4.17668Z"
+                  fill="white" />
+                  </svg>
+                      """
+                              .replaceAll('#1ABC9C', "#ff5757"),
+                          width: 3.w,
+                          height: 3.h,
+                        )
+                      : ImageUtils.fromLocal(
+                          "assets/images/bill/not_select.svg",
+                          width: 3.w,
+                          height: 3.h,
+                        ),
+                  Space(
+                    width: 2.w,
+                  ),
+                  Text(
+                    supportItem.displayName ?? "",
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: typography.caption,
                   ),
                 ],
               ),
             ),
-          ),
-          Positioned(
-            top: 4,
-            bottom: 20,
-            right: 0,
-            left: 0,
-            child: GestureDetector(
-              onTap: selectSupport(),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.shadowColor,
-                      blurRadius: 3.0,
-                      spreadRadius: 2.0,
-                    ),
-                  ],
-                ),
-                child: child,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 4,
-            right: 3,
-            left: 3,
-            child: GestureDetector(
-              onTap: selectSupport(),
-              child: StreamBuilder(
-                  stream: bloc.supportItemSelected,
-                  builder: (context, snapshot) {
-                    return CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 4.w,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 1.w),
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ImageUtils.fromLocal(
-                            'assets/images/bill/tick.svg',
-                            width: 4.w,
-                            height: 4.w,
-                            color: support.isSelected
-                                ? AppColors.primaryVariantLight
-                                : AppColors.colorSelectDepartmentTicket,
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget illItem({required SupportItem support, required Function showPastMeal}) {
-    return GestureDetector(
-      onTap: showPastMeal(),
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 0,
-            right: 0,
-            left: 0,
-            bottom: 0,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: StreamBuilder(
-                  stream: bloc.supportItemSelected,
-                  builder: (context, snapshot) {
-                    return Container(
-                      color: support.isSelected
-                          ? AppColors.colorSelectDepartmentTicket
-                          : Colors.grey[100],
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: ClipPath(
-                        clipper: BottomTriangle(),
-                        child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          color: Colors.white,
-                        ),
-                      ),
-                    );
-                  }),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: FittedBox(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 3.w,
-                  vertical: 3.w,
-                ),
-                child: Text(
-                  support.ticketName != null && support.ticketName!.length > 0
-                      ? support.ticketName!
-                      : support.displayName != null && support.displayName!.length > 0
-                          ? support.displayName!
-                          : support.name!,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 
   @override

@@ -178,6 +178,58 @@ abstract class ImageUtils {
     );
   }
 
+  static Widget fromString(
+      String assetName, {
+        double? width,
+        double? height,
+        Color? color,
+        BoxDecoration? decoration,
+        EdgeInsets? padding,
+        EdgeInsets? margin,
+        String? placeholder,
+        bool isCircle = false,
+        BoxFit fit = BoxFit.contain,
+        bool backOffSizing = true,
+      }) {
+
+    double? measuredHeight = height ?? (backOffSizing ? width : null);
+    double? measuredWidth = width ?? (backOffSizing ? height : null);
+    Widget image;
+      image = SvgPicture.string(
+        assetName,
+        height: measuredHeight,
+        width: measuredWidth,
+        color: color,
+        fit: fit,
+        /* errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            placeholder ?? "assets/images/registry/app_logo.svg",
+            width: measuredWidth,
+            height: measuredHeight,
+            color: color,
+            fit: fit,
+          );
+        },*/
+        placeholderBuilder: (context) {
+          return placeholder != null
+              ? SvgPicture.asset(
+            placeholder,
+            width: measuredWidth,
+            height: measuredHeight,
+            color: color,
+            fit: fit,
+          )
+              : Space(width: measuredWidth, height: measuredHeight);
+        },
+      );
+    return Container(
+      padding: padding,
+      margin: margin,
+      decoration: isCircle == true ? AppDecorations.circle : decoration,
+      child: image,
+    );
+  }
+
   static DecorationImage decorationImage(
     String assetName, {
     BoxFit fit = BoxFit.cover,
