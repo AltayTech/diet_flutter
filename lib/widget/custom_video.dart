@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:behandam/app/app.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/fake_ui.dart'
     if (dart.library.html) 'package:behandam/utils/real_ui.dart' as ui;
@@ -14,10 +16,6 @@ import 'package:video_player/video_player.dart';
 
 abstract class CallBackListener {
   void notifyChange();
-}
-
-abstract class ClickItem {
-  void Click();
 }
 
 class CustomVideo extends StatefulWidget {
@@ -53,7 +51,7 @@ class CustomVideo extends StatefulWidget {
   MyWidgetPlayer createState() => MyWidgetPlayer(click, image, title, url, isLooping, isFile);
 }
 
-class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
+class MyWidgetPlayer extends State<CustomVideo> {
   Function? click;
   String? title;
   String? image;
@@ -64,6 +62,7 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
   late VideoPlayerController _controller;
   double? aspect;
   var playerWidget;
+  bool logEvent = false;
   ChewieController? chewieController;
   bool _initializeVideoPlayerFuture = false, showBottomSheet = true;
 
@@ -77,7 +76,7 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
     kIsWeb ? webPlayer() : setData();
   }
 
-  webPlayer() {
+  void webPlayer() {
     widget.src = widget.url;
     String? URL = widget.src! + '#t=${widget.startAt}';
     // Do not remove the below comment - Fix for missing ui.platformViewRegistry in dart.ui
@@ -99,7 +98,7 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
     });
   }
 
-  Future<void> setData() async {
+  void setData() async {
     try {
       if (url == null) {
         _controller = VideoPlayerController.asset('assets/video.mp4');
@@ -115,8 +114,22 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
             widget.onCompletion!();
             showBottomSheet = false;
           }
-
           setState(() => {});
+        }
+        if (_controller.value.isPlaying && !logEvent) {
+          logEvent = true;
+          try {
+            MemoryApp.analytics!.logEvent(
+                name: "play_video",
+                parameters: {'page': '${navigator.currentConfiguration!.path}'});
+          } catch (e) {}
+        } else if (!_controller.value.isPlaying && logEvent) {
+          logEvent = false;
+          try {
+            MemoryApp.analytics!.logEvent(
+                name: "stop_video",
+                parameters: {'page': '${navigator.currentConfiguration!.path}'});
+          } catch (e) {}
         }
       });
 
@@ -129,6 +142,7 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
         looping: this.isLooping!,
         showControlsOnInitialize: true,
       );
+
       if (chewieController != null && chewieController!.videoPlayerController.value.isInitialized) {
         setState(() {
           _initializeVideoPlayerFuture = true;
@@ -175,7 +189,4 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
         ),
       );
   }
-
-  @override
-  void Click() {}
 }

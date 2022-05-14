@@ -11,7 +11,7 @@ import 'package:behandam/extensions/stream.dart';
 
 class ActivityBloc {
   ActivityBloc(){
-    _loadContent();
+    loadContent();
   }
 
   final _repository = Repository.getInstance();
@@ -32,7 +32,7 @@ class ActivityBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void _loadContent() {
+  void loadContent() {
     _loadingContent.safeValue = true;
     _repository.activityLevel().then((value) {
       _activityLevel.value = value.requireData;

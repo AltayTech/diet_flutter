@@ -10,7 +10,7 @@ import 'package:behandam/extensions/stream.dart';
 
 class DietGoalBloc {
   DietGoalBloc() {
-    _loadContent();
+    loadContent();
   }
 
   final _repository = Repository.getInstance();
@@ -31,7 +31,7 @@ class DietGoalBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void _loadContent() {
+  void loadContent() {
     _loadingContent.safeValue = true;
     _repository.dietGoals().then((value) {
       _dietGoals.value = value.requireData;
