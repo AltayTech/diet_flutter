@@ -141,7 +141,7 @@ class FoodListBloc {
     data.add(WeekDay(
         gregorianDate: gregorianDate,
         jalaliDate: jalaliDate,
-        clickable: _foodList.valueOrNull!=null,
+        clickable: _foodList.valueOrNull != null,
         isSelected: gregorianDate.toString().substring(0, 10) == _date.value));
     debugPrint('date2 $gregorianDate / $jalaliDate');
     for (int i = 1; i < 7; i++) {
@@ -149,9 +149,12 @@ class FoodListBloc {
         WeekDay(
             gregorianDate: gregorianDate.add(Duration(days: i)),
             jalaliDate: gregorianDate.add(Duration(days: i)).toJalali(),
-            clickable: _foodList.valueOrNull!=null? gregorianDate
-                .add(Duration(days: i))
-                .isBefore(DateTime.parse(_foodList.value!.menu!.expiredAt!)) : false,
+            clickable: _foodList.valueOrNull != null
+                ? gregorianDate
+                        .add(Duration(days: i))
+                        .compareTo(DateTime.parse(_foodList.value!.menu!.expiredAt!)) <=
+                    0
+                : false,
             isSelected:
                 gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value),
       );

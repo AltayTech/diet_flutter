@@ -1,11 +1,14 @@
 import 'dart:core';
 
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/ticket/ticket_bloc.dart';
 import 'package:behandam/screens/ticket/ticket_item.dart';
 import 'package:behandam/screens/ticket/ticket_provider.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -24,12 +27,14 @@ class _TicketState extends ResourcefulState<Ticket> {
   bool showOpenDialog = false;
 
   late TicketBloc ticketBloc;
+  ScrollController _scrollControllerStatus = ScrollController();
 
   @override
   void initState() {
     super.initState();
     ticketBloc = TicketBloc();
     ticketBloc.getTickets();
+    // _scrollControllerStatus.animateTo(0, duration: duration, curve: curve)
   }
 
   @override
@@ -43,26 +48,24 @@ class _TicketState extends ResourcefulState<Ticket> {
     super.build(context);
     return TicketProvider(ticketBloc,
         child: Scaffold(
-          backgroundColor: Color.fromARGB(255, 245, 245, 245),
+          backgroundColor: AppColors.newBackground,
           body: TouchMouseScrollable(
             child: SingleChildScrollView(
               child: Container(
-                color: Color.fromARGB(255, 245, 245, 245),
+                margin: EdgeInsets.only(top: 16),
                 padding: EdgeInsets.only(
                   left: 4.w,
                   right: 4.w,
-                  top: 2.h,
                   bottom: 5.h,
+                ),
+                decoration: AppDecorations.boxSmall.copyWith(
+                  color: Colors.white,
                 ),
                 child: Column(
                   textDirection: context.textDirectionOfLocale,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 245, 245, 245),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 4.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -70,15 +73,14 @@ class _TicketState extends ResourcefulState<Ticket> {
                         children: <Widget>[
                           Space(height: 3.h),
                           GestureDetector(
-                            onTap: () => VxNavigator.of(context)
-                                .push(Uri.parse(Routes.newTicketMessage)),
+                            onTap: () =>
+                                VxNavigator.of(context).push(Uri.parse(Routes.newTicketMessage)),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: AppColors.primary,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 1.w, vertical: 1.h),
+                              padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
                               child: Row(
                                 children: [
                                   Container(
@@ -100,46 +102,106 @@ class _TicketState extends ResourcefulState<Ticket> {
                                     child: Text(
                                       intl.newTicket,
                                       textAlign: TextAlign.start,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 2.w),
-                                    child: ImageUtils.fromLocal(
-                                      'assets/images/ticket/new_ticket.svg',
-                                      width: 7.w,
-                                      height: 7.w,
-                                      fit: BoxFit.fill,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1!
+                                          .copyWith(color: Colors.white),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                          SizedBox(height: 3.h),
+                          Space(height: 3.h),
                         ],
                       ),
                     ),
                     StreamBuilder(
                       builder: (context, snapshot) {
+                        WidgetsBinding.instance!.addPostFrameCallback(
+                            (_) => Future.delayed(Duration(milliseconds: 500), _scrollToEnd));
                         if (snapshot.data != null && snapshot.data == false) {
-                          return Container(
-                            child: Column(
-                              children: [
-                                if (ticketBloc.listTickets.length > 0)
-                                  ...ticketBloc.listTickets
-                                      .map((message) => TicketItemWidget(
-                                            ticketItem: message,
-                                          ))
-                                      .toList()
+                          return StreamBuilder<List<TicketItem>>(
+                              stream: ticketBloc.tickets,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData && ticketBloc.tempListTickets.length > 0)
+                                  return Container(
+                                    child: Column(
+                                      children: [
+                                        if (ticketBloc.tempListTickets.length > 0)
+                                          SizedBox(
+                                            height: 5.h,
+                                            width: 100.w,
+                                            child: StreamBuilder<int>(
+                                                stream: ticketBloc.indexSelectedStatus,
+                                                builder: (context, indexSelected) {
+                                                  if (indexSelected.hasData)
+                                                    return ListView.builder(
+                                                      itemBuilder: (context, index) {
+                                                        String ticketStatus = findTicketStatus(
+                                                            TicketStatus.values[index]);
+                                                        return Padding(
+                                                          padding: const EdgeInsets.only(
+                                                              left: 4.0, right: 4),
+                                                          child: InkWell(
+                                                              onTap: () {
+                                                                ticketBloc
+                                                                    .setIndexSelectedStatus(index);
+                                                              },
+                                                              child: Container(
+                                                                constraints:
+                                                                    BoxConstraints(minWidth: 25.w),
+                                                                padding: EdgeInsets.only(
+                                                                    left: 8, right: 8),
+                                                                child: Center(
+                                                                    child: Text(
+                                                                  ticketStatus,
+                                                                  style: typography.caption!
+                                                                      .copyWith(
+                                                                          color: (index ==
+                                                                                  indexSelected
+                                                                                      .requireData)
+                                                                              ? AppColors.primary
+                                                                              : null),
+                                                                )),
+                                                                decoration: AppDecorations
+                                                                    .boxExtraLarge
+                                                                    .copyWith(
+                                                                  border: Border.all(
+                                                                    color: (index ==
+                                                                            indexSelected
+                                                                                .requireData)
+                                                                        ? AppColors.primary
+                                                                        : AppColors.labelColor,
+                                                                    width: 1.0,
+                                                                  ),
+                                                                ),
+                                                              )),
+                                                        );
+                                                      },
+                                                      shrinkWrap: true,
+                                                      controller: _scrollControllerStatus,
+                                                      reverse: true,
+                                                      itemCount: TicketStatus.values.length,
+                                                      scrollDirection: Axis.horizontal,
+                                                    );
+                                                  else
+                                                    return EmptyBox();
+                                                }),
+                                          ),
+                                        Space(height: 1.h),
+                                        if (snapshot.requireData.length > 0)
+                                          ...snapshot.requireData
+                                              .map((message) => TicketItemWidget(
+                                                    ticketItem: message,
+                                                  ))
+                                              .toList()
+                                      ],
+                                    ),
+                                  );
                                 else
-                                  Text(intl.noTicketAvailable,
-                                      style: typography.caption)
-                              ],
-                            ),
-                          );
+                                  return Text(intl.noTicketAvailable, style: typography.caption);
+                              });
                         } else {
                           return Center(
                             child: SpinKitCircle(
@@ -159,9 +221,40 @@ class _TicketState extends ResourcefulState<Ticket> {
         ));
   }
 
+  String findTicketStatus(TicketStatus status) {
+    print('status = > ${status.index}');
+    switch (status) {
+      case TicketStatus.Resolved:
+        return intl.resolved;
+      case TicketStatus.Closed:
+        return intl.closed;
+      case TicketStatus.PendingAdminResponse:
+        return intl.pendingAdminResponse;
+      case TicketStatus.PendingUserResponse:
+        return intl.pendingUserResponse;
+      case TicketStatus.OnHold:
+        return intl.onHold;
+      case TicketStatus.GlobalIssue:
+        return intl.globalIssue;
+
+      case TicketStatus.ALL:
+        return intl.all;
+        break;
+    }
+  }
+
+  void _scrollToEnd() {
+    if (_scrollControllerStatus.hasClients) {
+      _scrollControllerStatus.animateTo(
+        _scrollControllerStatus.position.maxScrollExtent,
+        duration: Duration(seconds: 1),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
   @override
   void onRetryLoadingPage() {
     ticketBloc.getTickets();
   }
-
 }

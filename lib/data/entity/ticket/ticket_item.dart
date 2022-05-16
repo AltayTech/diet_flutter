@@ -15,7 +15,9 @@ enum TicketStatus {
   @JsonValue(4)
   Resolved,
   @JsonValue(5)
-  Closed
+  Closed,
+  @JsonValue(6)
+  ALL
 }
 enum TypeTicketItem {
   @JsonValue(0)
