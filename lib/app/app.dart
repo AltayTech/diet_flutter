@@ -328,7 +328,7 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(PaymentFailScreen())),
     RegExp(r"\/(reg|renew|revive)(\/activity)"): (_, __) =>
         MaterialPage(child: routePage(ActivityLevelPage())),
-    RegExp(r"\/(reg|list|renew|revive)(\/payment\/card\/wait)"): (_, __) =>
+    RegExp(r"\/(subscription|reg|list|renew|revive)(\/payment\/card\/wait)"): (_, __) =>
         MaterialPage(child: routePage(PaymentWaitScreen())),
     Routes.dietHistory: (_, __) => MaterialPage(child: routePage(DietHistoryPage())),
     Routes.dietGoal: (_, __) => MaterialPage(child: routePage(DietGoalPage())),

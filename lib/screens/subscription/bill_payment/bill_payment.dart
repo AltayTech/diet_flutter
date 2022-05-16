@@ -56,7 +56,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
 
       bloc.setPackageItem =
           ModalRoute.of(context)!.settings.arguments as PackageItem;
-      bloc.getPackage(bloc.packageItem!.price!.type!);
+      bloc.getPackage();
 
       listenBloc();
 
@@ -70,8 +70,16 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
           'listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event)
         VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
-      else if (event != null && !event)
-        VxNavigator.of(context).push(Uri.parse(Routes.paymentFail));
+      else if (event != null && !event) if (bloc.packageItem!.price!.type! ==
+          2) {
+        VxNavigator.of(context).clearAndPushAll(
+            [Uri.parse(Routes.profile), Uri.parse(Routes.paymentFail)]);
+      } else {
+        VxNavigator.of(context).clearAndPushAll([
+          Uri.parse('/reg${Routes.regimeType}'),
+          Uri.parse(Routes.paymentFail)
+        ]);
+      }
       else
         Navigator.of(context).pop();
     });
@@ -81,15 +89,20 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
       Utils.getSnackbarMessage(context, intl.offError);
     });
 
+    bloc.popDialog.listen((event) {
+      Navigator.of(context).pop();
+    });
+
     bloc.navigateTo.listen((event) {
       debugPrint('listen navigate ${event.next}');
       Payment? result = (event as NetworkResponse<Payment>).data;
-      if ((event).next != null) {
+      if (bloc.isOnline == PaymentType.cardToCard) {
         Navigator.of(context).pop();
-        if (event.next!.contains('card'))
+        context.vxNav.push(Uri.parse(Routes.cardToCard));
+        /*if (event.next!.contains('card'))
           context.vxNav.push(Uri.parse('/${(event).next}'));
         else
-          context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
+          context.vxNav.clearAndPush(Uri(path: '/${event.next}'));*/
       } else if (bloc.isOnline == PaymentType.online) {
         Navigator.of(context).pop();
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
@@ -130,32 +143,35 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
 
   Widget rulesAndPaymentBtn() {
     return Container(
-      margin: EdgeInsets.all(2.w),
-      child: StreamBuilder<bool>(
-          initialData: false,
-          stream: bloc.checkedRules,
-          builder: (context, checkedRules) {
-            return Column(
-              children: [
-                CustomCheckBox(
-                    //title: intl.ruleCheckBox,
-                    value: checkedRules.requireData,
-                    onChange: (value) => bloc.setCheckedRules = value!),
-                SubmitButton(
-                    label: intl.confirmAndPay,
-                    onTap: () {
-                      if (checkedRules.requireData) {
-                        DialogUtils.showDialogProgress(context: context);
-                        bloc.selectUserPayment();
-                      } else {
-                        Utils.getSnackbarMessage(
-                            context, intl.checkTermsAndConditions);
-                      }
-                    })
-              ],
-            );
-          }),
-    );
+        margin: EdgeInsets.all(2.w),
+        child: StreamBuilder<bool>(
+            initialData: false,
+            stream: bloc.checkedRules,
+            builder: (context, checkedRules) {
+              return Column(
+                children: [
+                  CustomCheckBox(
+                      //title: intl.ruleCheckBox,
+                      value: checkedRules.requireData,
+                      onChange: (value) => bloc.setCheckedRules = value!),
+                  SubmitButton(
+                      label: intl.confirmAndPay,
+                      onTap: () {
+                        if (checkedRules.requireData) {
+                          DialogUtils.showDialogProgress(context: context);
+                          if (navigator.currentConfiguration!.path
+                              .contains('subscription'))
+                            bloc.selectUserPaymentSubscription();
+                          else
+                            bloc.selectUserPayment();
+                        } else {
+                          Utils.getSnackbarMessage(
+                              context, intl.checkTermsAndConditions);
+                        }
+                      })
+                ],
+              );
+            }));
   }
 
   @override

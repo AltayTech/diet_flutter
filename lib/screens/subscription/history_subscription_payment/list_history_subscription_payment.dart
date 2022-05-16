@@ -50,7 +50,7 @@ class _ListHistorySubscriptionPaymentWidget
           if (progressNetwork.hasData && !progressNetwork.requireData)
             return bloc.subscriptions != null && bloc.subscriptions!.length > 0
                 ? ListView.builder(
-                    itemCount: 2,
+                    itemCount: bloc.subscriptions!.length,
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     physics: NeverScrollableScrollPhysics(),

@@ -32,8 +32,7 @@ class _SelectPackageSubscriptionScreenState
     super.initState();
 
     bloc = SelectPackageSubscriptionBloc();
-    // subscription package list type is 2
-    bloc.getPackageSubscriptionList(2);
+    bloc.getPackageSubscriptionList();
 
     packageItem = PackageItem();
     packageItem.index = 0;
@@ -146,7 +145,6 @@ class _SelectPackageSubscriptionScreenState
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
-    // subscription package list type is 2
-    bloc.getPackageSubscriptionList(2);
+    bloc.getPackageSubscriptionList();
   }
 }

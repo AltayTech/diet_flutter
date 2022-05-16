@@ -11,7 +11,6 @@ import 'package:behandam/extensions/stream.dart';
 enum PaymentType { online, cardToCard }
 
 class BillPaymentBloc {
-
   BillPaymentBloc() {
     _discountLoading.value = false;
     _enterDiscount.value = false;
@@ -35,9 +34,10 @@ class BillPaymentBloc {
   final _usedDiscount = BehaviorSubject<bool>();
   final _online = BehaviorSubject<bool>();
   final _enterDiscount = BehaviorSubject<bool>();
-  final _selectedPayment = BehaviorSubject<PaymentType?>();
+  final _selectedPayment = BehaviorSubject<PaymentType>();
   final _checkedRules = BehaviorSubject<bool>();
   final _navigateTo = LiveEvent();
+  final _popDialog = LiveEvent();
   final _showServerError = LiveEvent();
   final _onlinePayment = LiveEvent();
 
@@ -51,11 +51,13 @@ class BillPaymentBloc {
 
   Stream<bool> get enterDiscount => _enterDiscount.stream;
 
-  Stream<PaymentType?> get selectedPayment => _selectedPayment.stream;
+  Stream<PaymentType> get selectedPayment => _selectedPayment.stream;
 
   Stream<bool> get checkedRules => _checkedRules.stream;
 
   Stream get navigateTo => _navigateTo.stream;
+
+  Stream get popDialog => _popDialog.stream;
 
   Stream get showServerError => _showServerError.stream;
 
@@ -65,7 +67,7 @@ class BillPaymentBloc {
 
   bool get isWrongDisCode => _wrongDisCode.valueOrNull ?? false;
 
-  PaymentType get isOnline => _selectedPayment.value!;
+  PaymentType get isOnline => _selectedPayment.value;
 
   Price? get discountInfo => _discountInfo;
 
@@ -111,9 +113,9 @@ class BillPaymentBloc {
     });
   }
 
-  void getPackage(int type) {
+  void getPackage() {
     _waiting.safeValue = true;
-    _repository.getPackagesList(type).then((value) {
+    _repository.getPackagesList().then((value) {
       _list = value.data!.items;
       for (int i = 0; i < _list!.length; i++) {
         _list![i].index = i;
@@ -124,25 +126,45 @@ class BillPaymentBloc {
   }
 
   void selectUserPayment() {
-    if (!isUsedDiscount && (discountCode != null && discountCode!.trim().isNotEmpty)) {
+    if (!isUsedDiscount &&
+        (discountCode != null && discountCode!.trim().isNotEmpty)) {
       _showServerError.fireMessage('error');
     } else {
       Payment payment = new Payment();
       payment.originId = kIsWeb
           ? 0
-          : Device
-          .get()
-          .isIos
-          ? 2
-          : 3;
-      payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
+          : Device.get().isIos
+              ? 2
+              : 3;
+      payment.paymentTypeId =
+          (discountInfo != null && discountInfo!.finalPrice == 0)
+              ? 2
+              : isOnline == PaymentType.online
+                  ? 0
+                  : 1;
+      payment.coupon = discountCode;
+      payment.packageId = packageItem!.id!;
+      _repository.setPaymentType(payment).then((value) {
+        _navigateTo.fire(value);
+      });
+    }
+  }
+
+  void selectUserPaymentSubscription() {
+    if (!isUsedDiscount &&
+        (discountCode != null && discountCode!.trim().isNotEmpty)) {
+      _showServerError.fireMessage('error');
+    } else {
+      Payment payment = new Payment();
+      payment.paymentTypeId =
+      (discountInfo != null && discountInfo!.finalPrice == 0)
           ? 2
           : isOnline == PaymentType.online
           ? 0
           : 1;
       payment.coupon = discountCode;
       payment.packageId = packageItem!.id!;
-      _repository.setPaymentType(payment).then((value) {
+      _repository.setPaymentTypeReservePackage(payment).then((value) {
         _navigateTo.fire(value);
       });
     }
@@ -170,5 +192,6 @@ class BillPaymentBloc {
     _showServerError.close();
     _navigateTo.close();
     _onlinePayment.close();
+    _popDialog.close();
   }
 }

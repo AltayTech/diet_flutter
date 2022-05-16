@@ -190,8 +190,7 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
                       builder: (context, selectedDate) {
                         return Text(
                           (selectedDate.hasData && date == PaymentDate.customDate
-                              ? DateTimeUtils.formatCustomDate(
-                                  selectedDate.requireData)
+                              ? DateTimeUtils.formatCustomDate(bloc.date!)
                               : intl.selectNewDate),
                           softWrap: false,
                           style: typography.caption!.copyWith(

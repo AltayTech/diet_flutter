@@ -64,10 +64,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!isInitial) {
-      packageType = ModalRoute.of(context)?.settings.arguments as int;
-
       bloc = PaymentBloc();
-      bloc.getPackagePayment(packageType!);
+      bloc.getPackagePayment();
 
       listenBloc();
 

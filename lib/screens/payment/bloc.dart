@@ -135,9 +135,9 @@ class PaymentBloc {
     }).whenComplete(() => _popLoading.fire(true));
   }
 
-  void getPackagePayment(int type) {
+  void getPackagePayment() {
     _waiting.safeValue = true;
-    _repository.getPackagePayment(type).then((value) {
+    _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
       _packageItem!.price!.totalPrice = _packageItem!.price!.saleAmount;
     }).whenComplete(() {

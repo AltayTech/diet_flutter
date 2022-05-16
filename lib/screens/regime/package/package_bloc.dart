@@ -9,7 +9,7 @@ import 'package:behandam/extensions/stream.dart';
 
 class PackageBloc {
   PackageBloc() {
-    _waiting.safeValue = false;
+
   }
 
   final _repository = Repository.getInstance();
@@ -34,9 +34,9 @@ class PackageBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void getPackage(int type) {
+  void getPackage() {
     _waiting.safeValue = true;
-    _repository.getPackagesList(type).then((value) {
+    _repository.getPackagesList().then((value) {
       _list = value.data!.items;
       for (int i = 0; i < _list!.length; i++) {
         _list![i].index = i;

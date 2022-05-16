@@ -18,10 +18,10 @@ class SelectPackageSubscriptionBloc {
 
   List<PackageItem>? get packageList => _list;
 
-  void getPackageSubscriptionList(int type) {
+  void getPackageSubscriptionList() {
     _progressNetwork.safeValue = true;
 
-    _repository.getPackagesList(type).then((value) {
+    _repository.getPackagesList().then((value) {
       _list = value.data!.items;
       for (int i = 0; i < _list!.length; i++) {
         _list![i].index = i;

@@ -1,7 +1,10 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -62,10 +65,7 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                     if (snapshot.hasData && snapshot.data == false) {
                       return content();
                     } else {
-                      return SpinKitCircle(
-                        size: 7.w,
-                        color: AppColors.primary,
-                      );
+                      return Progress();
                     }
                   },
                 ),
@@ -129,13 +129,14 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                       intl.amountPaid,
                       textAlign: TextAlign.center,
                       softWrap: true,
-                      style:
-                          typography.caption!.copyWith(color: AppColors.greyDate),
+                      style: typography.caption!
+                          .copyWith(color: AppColors.greyDate),
                     ),
                     Text.rich(
                         TextSpan(
                             text: bloc.invoice?.amount != null &&
-                                    bloc.invoice!.amount.toString().length > 0 &&
+                                    bloc.invoice!.amount.toString().length >
+                                        0 &&
                                     bloc.invoice!.amount! > 0
                                 ? double.parse(bloc.invoice!.amount.toString())
                                     .toStringAsFixed(0)
@@ -182,7 +183,8 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                             intl.paymentStatusForLastTime,
                             textAlign: TextAlign.center,
                             softWrap: true,
-                            style: typography.caption!.copyWith(fontSize: 10.sp),
+                            style:
+                                typography.caption!.copyWith(fontSize: 10.sp),
                           ),
                         ],
                       ),
@@ -192,17 +194,29 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                 ),
               ),
               Space(height: 2.h),
-              SubmitButton(
-                onTap: () {
-                  bloc.checkLastInvoice();
-                },
-                icon: Icon(
-                  Icons.refresh,
-                  size: 7.w,
-                  color: Colors.white,
-                ),
-                label: intl.checkPayment,
-              ),
+              navigator.currentConfiguration!.path.contains('subscription')
+                  ? SubmitButton(
+                      onTap: () {
+                        context.vxNav.clearAndPush(Uri.parse(Routes.profile));
+                      },
+                      icon: Icon(
+                        Icons.refresh,
+                        size: 7.w,
+                        color: Colors.white,
+                      ),
+                      label: intl.backProfile,
+                    )
+                  : SubmitButton(
+                      onTap: () {
+                        bloc.checkLastInvoice();
+                      },
+                      icon: Icon(
+                        Icons.refresh,
+                        size: 7.w,
+                        color: Colors.white,
+                      ),
+                      label: intl.checkPayment,
+                    ),
             ],
           ),
         ),

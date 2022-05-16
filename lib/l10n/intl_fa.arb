@@ -552,6 +552,7 @@
   "cardNumberOwner": "شماره کارت بالا به نام چه کسی است؟",
   "validationCardNumber": "شماره کارت نباید کمتر از 16 کاراکتر باشد",
   "back": "بازگشت",
+  "backProfile": "بازگشت به پروفایل",
   "successRequest": "درخواست شما با موفقیت ثبت شد",
   "descriptionRefund": " حداکثر زمان ثبت درخواست بازگشت وجه برای شما تاریخ {date}  بوده است. در صورتی که از هریک خدمات ما نارضایتی دارید می توانید با شماره 02532143، تماس گرفته و موارد نارضایتی خود را به کارشناسان ما اعلام بفرمایید. هدف ما جلب رضایت حداکثری شماست",
   "@descriptionRefund": {
@@ -679,6 +680,7 @@
   "requestDate": "تاریخ درخواست",
   "showHistorySubscription": "مشاهده سوابق",
   "subscriptionPackageNotAvailable": "اشتراک وجود ندارد",
+  "packageNotAvailable": "پکیج وجود ندارد",
   "privacyPolicy": "حریم خصوصی",
   "termsAndConditions": "قوانین و مقررات",
   "checkTermsAndConditions": "قوانین و مقررات را تایید نکرده اید",
