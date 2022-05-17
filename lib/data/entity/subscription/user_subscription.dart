@@ -5,17 +5,16 @@ part 'user_subscription.g.dart';
 
 @JsonSerializable(createToJson: false)
 class ListUserSubscriptionData {
-  ListUserSubscriptionData(
-      this.count,
-      this.items,
-      this.sums,
-      );
+  ListUserSubscriptionData();
 
   @JsonKey(name: 'count')
   int? count;
 
   @JsonKey(name: 'items')
-  List<SubscriptionsItems>? items;
+  ListUserSubscriptionData? items;
+
+  @JsonKey(name: 'subscription_list')
+  List<SubscriptionsItems>? subscriptionList;
 
   @JsonKey(name: 'sums')
   int? sums;
@@ -32,7 +31,7 @@ class SubscriptionsItems {
       this.isActive,
       this.createdAt,
       this.packageName,
-      this.payAmount
+      this.paymentAmount
       );
 
   @JsonKey(name: 'package_id')
@@ -50,8 +49,8 @@ class SubscriptionsItems {
   @JsonKey(name: 'package_name')
   String? packageName;
 
-  @JsonKey(name: 'pay_amount')
-  int? payAmount;
+  @JsonKey(name: 'payment_amount')
+  int? paymentAmount;
 
   factory SubscriptionsItems.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionsItemsFromJson(json);

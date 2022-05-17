@@ -67,7 +67,7 @@ class _SelectPackageSubscriptionScreenState
     super.build(context);
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: Toolbar(titleBar: intl.selectPackageToolbar),
+        appBar: Toolbar(titleBar: intl.reviveSubscription),
         body: body());
   }
 

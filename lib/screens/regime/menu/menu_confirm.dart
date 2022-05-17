@@ -24,6 +24,8 @@ class MenuConfirmPage extends StatefulWidget {
 
 class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
   late MenuSelectBloc bloc;
+  late Menu listMenu;
+
   bool isInit = false;
 
   @override
@@ -31,15 +33,19 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
-      bloc = ModalRoute.of(context)!.settings.arguments as MenuSelectBloc;
+
+      listMenu = ModalRoute.of(context)!.settings.arguments as Menu;
+
+      bloc = MenuSelectBloc();
+      bloc.menuSelected(listMenu);
+
+      initListener();
     }
   }
 
   @override
   void initState() {
     super.initState();
-    bloc = MenuSelectBloc();
-    initListener();
   }
 
   void initListener() {
@@ -49,6 +55,10 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       else
         context.vxNav.push(Uri.parse('/$event'), params: bloc);
+    });
+
+    bloc.popDialog.listen((event) {
+      context.vxNav.pop();
     });
   }
 
@@ -156,6 +166,13 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    bloc.dispose();
   }
 
   @override

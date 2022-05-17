@@ -17,6 +17,8 @@ class PackageItem {
   String? name;
   @JsonKey(name: "services")
   List<ServicePackage>? services;
+  @JsonKey(name: "media")
+  String? media;
 
   @JsonKey(name: "package_id")
   int? package_id;

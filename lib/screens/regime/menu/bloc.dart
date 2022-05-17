@@ -16,12 +16,14 @@ class MenuSelectBloc {
   MenuSelectBloc() {
     loadContent();
   }
+
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _menuTypes = BehaviorSubject<List<MenuType>>();
   final _selectedMenu = BehaviorSubject<Menu?>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
+  final _popDialog = LiveEvent();
 
   Stream<bool> get loadingContent => _loadingContent.stream;
 
@@ -31,7 +33,7 @@ class MenuSelectBloc {
 
   Stream get navigateTo => _navigateTo.stream;
 
-  Stream get showServerError => _showServerError.stream;
+  Stream get popDialog => _popDialog.stream;
 
   void loadContent() {
     _loadingContent.safeValue = true;
@@ -43,41 +45,39 @@ class MenuSelectBloc {
     }).whenComplete(() => _loadingContent.safeValue = false);
   }
 
-  void menuSelected(Menu menu){
+  void menuSelected(Menu menu) {
     _selectedMenu.value = menu;
   }
 
-  void onItemClick(){
-    _loadingContent.safeValue = true;
+  void onItemClick() {
     ConditionRequestData requestData = ConditionRequestData();
     requestData.isPreparedMenu = true;
     requestData.menuId = _selectedMenu.value!.id;
-    if(!navigator.currentConfiguration!.path.contains(Routes.listMenuSelect)) {
+    if (!navigator.currentConfiguration!.path.contains(Routes.listMenuSelect)) {
       _repository.setCondition(requestData).then((value) {
         debugPrint('condition menu ${value.next}');
-        _navigateTo.fire(value.next);
-      }).whenComplete(() => _loadingContent.safeValue = false);
-    }else {
+        _navigateTo.fire({'next': value.next, 'params': _selectedMenu.value});
+      }).whenComplete(() => _popDialog.fire(true));
+    } else {
       _repository.menuSelect(requestData).then((value) {
-        _navigateTo.fire(value.next);
-      }).whenComplete(() => _loadingContent.safeValue = false);
+        _navigateTo.fire({'next': value.next, 'params': _selectedMenu.value});
+      }).whenComplete(() => _popDialog.fire(true));
     }
   }
 
-  void term(){
-    _loadingContent.safeValue = true;
+  void term() {
     _repository.term().then((value) {
       debugPrint('condition menu ${value.next}');
       debugPrint("path:${value.next}");
       _navigateTo.fire(value.next);
-    }).whenComplete(() => _loadingContent.safeValue = false);
+    }).whenComplete(() => _popDialog.fire(true));
   }
 
   void dispose() {
     _loadingContent.close();
     _menuTypes.close();
     _navigateTo.close();
-    _showServerError.close();
+    _popDialog.close();
     _selectedMenu.close();
   }
 }

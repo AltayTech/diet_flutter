@@ -68,20 +68,25 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     bloc.onlinePayment.listen((event) {
       debugPrint(
           'listen online payment ${navigator.currentConfiguration?.path}');
-      if (event != null && event)
-        VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
-      else if (event != null && !event) if (bloc.packageItem!.price!.type! ==
-          2) {
-        VxNavigator.of(context).clearAndPushAll(
-            [Uri.parse(Routes.profile), Uri.parse(Routes.paymentFail)]);
+      if (event != null && event) {
+        if (navigator.currentConfiguration!.path.contains('subscription')) {
+          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.billSubscriptionHistory));
+        } else {
+          VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
+        }
       } else {
-        VxNavigator.of(context).clearAndPushAll([
-          Uri.parse('/reg${Routes.regimeType}'),
-          Uri.parse(Routes.paymentFail)
-        ]);
+        if (event != null && !event) if (bloc.packageItem!.price!.type! == 2) {
+          VxNavigator.of(context).clearAndPushAll(
+              [Uri.parse(Routes.profile), Uri.parse(Routes.paymentFail)]);
+        } else {
+          VxNavigator.of(context).clearAndPushAll([
+            Uri.parse('/reg${Routes.regimeType}'),
+            Uri.parse(Routes.paymentFail)
+          ]);
+        }
+        else
+          Navigator.of(context).pop();
       }
-      else
-        Navigator.of(context).pop();
     });
 
     bloc.showServerError.listen((event) {
@@ -125,7 +130,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   Widget body() {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: Toolbar(titleBar: intl.selectPackageToolbar),
+        appBar: Toolbar(titleBar: intl.newSubscription),
         body: TouchMouseScrollable(
           child: SingleChildScrollView(
             child: Column(
