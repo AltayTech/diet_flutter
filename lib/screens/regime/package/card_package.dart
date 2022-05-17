@@ -5,6 +5,7 @@ import 'package:behandam/screens/regime/package/package_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
@@ -41,7 +42,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
         borderRadius: BorderRadius.circular(20.0),
         child: InkWell(
           onTap: () {
-            DialogUtils.showBottomSheetPage(context: context, child: bottomSheet());
+            DialogUtils.showBottomSheetPage(
+                context: context, child: bottomSheet());
           },
           child: Container(
             padding: EdgeInsets.only(right: 3.w),
@@ -53,7 +55,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
               padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0), bottomLeft: Radius.circular(10.0)),
+                    topLeft: Radius.circular(10.0),
+                    bottomLeft: Radius.circular(10.0)),
                 color: Color.fromARGB(255, 240, 239, 238),
               ),
               child: Column(
@@ -71,11 +74,17 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(left: 2.w),
-                                child: ImageUtils.fromLocal(
-                                  'assets/images/diet/diet.svg',
-                                  width: 24.w,
-                                  height: 24.w,
-                                ),
+                                child: pack.media != null
+                                    ? ImageUtils.fromNetwork(
+                                        '${FlavorConfig.instance.variables['baseUrlFile']}/${pack.media!}',
+                                        width: 20.w,
+                                        height: 20.w,
+                                      )
+                                    : ImageUtils.fromLocal(
+                                        'assets/images/diet/diet.svg',
+                                        width: 20.w,
+                                        height: 20.w,
+                                      ),
                               ),
                               Space(height: 1.h),
                             ],
@@ -85,7 +94,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.start,
-                            textDirection: context.textDirectionOfLocaleInversed,
+                            textDirection:
+                                context.textDirectionOfLocaleInversed,
                             children: <Widget>[
                               Text(
                                 pack.name ?? '',
@@ -96,11 +106,13 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle1!
-                                    .copyWith(letterSpacing: -0.2, fontSize: 12.sp),
+                                    .copyWith(
+                                        letterSpacing: -0.2, fontSize: 12.sp),
                               ),
-                              if (pack.services != null && pack.services!.length > 0)
-                                ...pack.services!.map(
-                                        (product) => _itemOption(product.name ?? '', pack.barColor)),
+                              if (pack.services != null &&
+                                  pack.services!.length > 0)
+                                ...pack.services!.map((product) => _itemOption(
+                                    product.name ?? '', pack.barColor)),
                             ],
                           )),
                     ],
@@ -123,24 +135,34 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            textDirection: context.textDirectionOfLocaleInversed,
+                            textDirection:
+                                context.textDirectionOfLocaleInversed,
                             children: [
                               if (pack.price?.amount != null)
                                 Directionality(
                                   textDirection: context.textDirectionOfLocale,
                                   child: Text(
                                     pack.price?.saleAmount != null &&
-                                        int.parse(pack.price!.saleAmount.toString()) != 0
+                                            int.parse(pack.price!.saleAmount
+                                                    .toString()) !=
+                                                0
                                         ? '${int.parse(pack.price!.saleAmount.toString()).toString().seRagham()} ${intl.toman}'
                                         : intl.free,
                                     // '${int.parse(pack['price']['final_price'].toString())} تومان',
                                     textAlign: TextAlign.start,
-                                    style: Theme.of(context).textTheme.caption!.copyWith(
-                                      color: pack.priceColor,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(
+                                          color: pack.priceColor,
+                                        ),
                                   ),
                                 ),
-                              if (pack.price!.saleAmount != null) Expanded(child: Space(),flex: 1,),
+                              if (pack.price!.saleAmount != null)
+                                Expanded(
+                                  child: Space(),
+                                  flex: 1,
+                                ),
                               if (pack.price?.saleAmount != null &&
                                   pack.price?.saleAmount != pack.price?.amount)
                                 Directionality(
@@ -157,7 +179,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                       fontWeight: FontWeight.w400,
                                       decoration: TextDecoration.lineThrough,
                                       decorationThickness: 0.7.w,
-                                      decorationColor: Color.fromARGB(255, 150, 150, 150),
+                                      decorationColor:
+                                          Color.fromARGB(255, 150, 150, 150),
                                     ),
                                   ),
                                 ),
@@ -220,7 +243,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
             Space(height: 1.h),
             Text(
               widget.packageItem != null &&
-                  widget.packageItem.price != null &&
+                      widget.packageItem.price != null &&
                       widget.packageItem.price!.saleAmount != 0
                   ? '${widget.packageItem.price!.saleAmount.toString().seRagham()} ${intl.toman}'
                   : intl.free,

@@ -156,6 +156,11 @@ class BillPaymentBloc {
       _showServerError.fireMessage('error');
     } else {
       Payment payment = new Payment();
+      payment.originId = kIsWeb
+          ? 0
+          : Device.get().isIos
+          ? 2
+          : 3;
       payment.paymentTypeId =
       (discountInfo != null && discountInfo!.finalPrice == 0)
           ? 2

@@ -152,16 +152,16 @@ class _ListHistorySubscriptionPaymentWidget
                 Expanded(
                     child: Text.rich(
                         TextSpan(
-                            text: subscriptionsItem.payAmount != null &&
-                                    subscriptionsItem.payAmount != 0
-                                ? '${subscriptionsItem.payAmount.toString().seRagham()}'
+                            text: subscriptionsItem.paymentAmount != null &&
+                                    subscriptionsItem.paymentAmount != 0
+                                ? '${subscriptionsItem.paymentAmount.toString().seRagham()}'
                                 : intl.free,
                             style: typography.caption!
                                 .copyWith(color: Colors.black),
                             children: <InlineSpan>[
                               TextSpan(
-                                text: subscriptionsItem.payAmount != null &&
-                                        subscriptionsItem.payAmount != 0
+                                text: subscriptionsItem.paymentAmount != null &&
+                                        subscriptionsItem.paymentAmount != 0
                                     ? intl.toman
                                     : '',
                                 style: typography.caption!.copyWith(
