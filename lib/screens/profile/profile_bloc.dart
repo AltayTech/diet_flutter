@@ -7,6 +7,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
+import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
@@ -40,6 +41,7 @@ class ProfileBloc {
   final _showProgressItem = BehaviorSubject<bool>();
   final _showProgressUploadImage = BehaviorSubject<bool>();
   final _termPackage = BehaviorSubject<TermPackage>();
+  final _subscriptionPending = BehaviorSubject<SubscriptionPendingData?>();
   final _inboxCount = BehaviorSubject<int>();
   final _userInformationStream = BehaviorSubject<UserInformation>();
   final _showRefund = BehaviorSubject<bool>();
@@ -87,6 +89,7 @@ class ProfileBloc {
   Stream<bool> get obscureTextConfirmPass => _obscureTextConfirmPass.stream;
 
   Stream<TermPackage> get termPackage => _termPackage.stream;
+  Stream<SubscriptionPendingData?> get subscriptionPending => _subscriptionPending.stream;
 
   bool? get isProgressNetwork => _progressNetwork.value;
 
@@ -172,6 +175,7 @@ class ProfileBloc {
     _repository.getTermPackage().then((value) {
       MemoryApp.termPackage = value.data!;
       _termPackage.safeValue = value.data!;
+      _subscriptionPending.safeValue=value.data?.subscriptionTermData?.pendingCardPayment;
       _showRefund.safeValue = value.data!.showRefundLink!;
       if (value.data != null &&
           value.data?.term != null &&
@@ -198,6 +202,7 @@ class ProfileBloc {
     _termPackage.close();
     _obscureTextPass.close();
     _obscureTextConfirmPass.close();
+    _subscriptionPending.close();
     //  _isPlay.close();
   }
 

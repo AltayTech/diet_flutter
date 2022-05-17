@@ -19,17 +19,24 @@ class ToolsBoxState extends ResourcefulState<ToolsBox> {
   Widget body() {
     return Column(
       children: [
-        optionButtonUi(Icons.list_alt_outlined, intl.historySubscriptionPayment, 1,context.textDirectionOfLocale),
+        optionButtonUi(Icons.list_alt_outlined, intl.historySubscriptionPayment, 1,
+            context.textDirectionOfLocale),
         Space(height: 2.h),
         Flexible(
           flex: 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Expanded(flex: 1, child: optionButtonUi(Icons.lock, intl.changePassword, 0,context.textDirectionOfLocale)),
+              Expanded(
+                  flex: 1,
+                  child: optionButtonUi(
+                      Icons.lock, intl.changePassword, 0, context.textDirectionOfLocale)),
               Space(width: 2.w),
 //                  _optionUi(Icons.add, 'افزایش موجودی', 1),
-              Expanded(flex: 1, child: optionButtonUi(Icons.edit, intl.editProfile, 2,context.textDirectionOfLocale)),
+              Expanded(
+                  flex: 1,
+                  child: optionButtonUi(
+                      Icons.edit, intl.editProfile, 2, context.textDirectionOfLocale)),
             ],
           ),
         ),
@@ -53,6 +60,7 @@ class ToolsBoxState extends ResourcefulState<ToolsBox> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

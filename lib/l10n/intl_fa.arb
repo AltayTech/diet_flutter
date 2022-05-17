@@ -685,5 +685,21 @@
   "termsAndConditions": "قوانین و مقررات",
   "checkTermsAndConditions": "قوانین و مقررات را تایید نکرده اید",
   "iAccept": " را خوانده و میپذیرم.",
+  "progressPayment": "درحال بررسی",
+  "statusPayment": "وضعیت پرداخت",
+  "descriptionStatusPaymentSubscription": "خرید پکیج {dietType} توسط شما در تاریخ {date} ثبت شد. پس از تایید پرداخت، مدت زمان اشتراک شما {days} روز افزایش خواهد یافت",
+  "@descriptionStatusPaymentSubscription": {
+    "placeholders": {
+      "dietType": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "understand": "متوجه شدم"
 }

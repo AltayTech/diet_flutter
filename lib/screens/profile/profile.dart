@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
+import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
@@ -11,12 +12,15 @@ import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/box_end_date_subscription.dart';
 import 'package:behandam/screens/widget/cross_item_profile.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/screens/widget/widget_icon_text_progress.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/date_time.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
@@ -150,13 +154,14 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 BoxEndTimeSubscription(
-                                  time: '${termPackage.data!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
+                                  time:
+                                      '${termPackage.data!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
                                   mainAxisAlignment: MainAxisAlignment.start,
                                 ),
                                 SubmitButton(
                                   onTap: () {
-                                    VxNavigator.of(context).push(Uri.parse(
-                                        Routes.selectPackageSubscription));
+                                    VxNavigator.of(context)
+                                        .push(Uri.parse(Routes.selectPackageSubscription));
                                   },
                                   label: intl.reviveSubscription,
                                   size: Size(35.w, 5.h),
@@ -165,6 +170,16 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                             );
                           return Progress();
                         }),
+                  ),
+                  Space(height: 1.h),
+                  StreamBuilder<SubscriptionPendingData?>(
+                    stream: profileBloc.subscriptionPending,
+                    builder: (context, subscriptionPending) {
+                      if (subscriptionPending.hasData && subscriptionPending.data != null)
+                        return pendingSubscriptionBox(subscriptionPending.requireData!);
+                      else
+                        return EmptyBox();
+                    },
                   ),
                   Space(height: 2.h),
                   ToolsBox(),
@@ -194,8 +209,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                             return WidgetIconTextProgress(
                                 countShow: false,
                                 title: intl.requestBackPayment,
-                                listIcon:
-                                    'assets/images/diet/dollar_symbol.svg',
+                                listIcon: 'assets/images/diet/dollar_symbol.svg',
                                 index: 3);
                           else
                             return Container();
@@ -217,8 +231,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                             return WidgetIconTextProgress(
                                 countShow: false,
                                 title: intl.getPdfTerm,
-                                listIcon:
-                                    'assets/images/foodlist/share/downloadPdf.svg',
+                                listIcon: 'assets/images/foodlist/share/downloadPdf.svg',
                                 index: 2);
                           else
                             return Container();
@@ -241,8 +254,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                         ),
                       ],
                     ),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
+                    padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.max,
@@ -326,6 +338,39 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
     );
   }
 
+  Widget pendingSubscriptionBox(SubscriptionPendingData subscriptionPendingData) {
+    return DottedBorder(
+      radius: Radius.circular(20),
+      borderType: BorderType.RRect,
+      color: AppColors.primary,
+      strokeCap: StrokeCap.round,
+      dashPattern: [6, 3, 2, 3],
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        child: Container(
+            width: double.maxFinite,
+            color: AppColors.primary.withOpacity(0.2),
+            alignment: Alignment.topCenter,
+            constraints: BoxConstraints(minHeight: 8.h),
+            padding: EdgeInsets.only(
+              bottom: 1.h,
+              top: 1.h,
+              left: 5.w,
+              right: 5.w,
+            ),
+            child: Text(
+              intl.descriptionStatusPaymentSubscription(
+                  subscriptionPendingData.packageName,
+                  '${DateTimeUtils.formatCustomDate(subscriptionPendingData.createdAt.split("T")[0])}',
+                  subscriptionPendingData.termDays),
+              softWrap: true,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.overline!.copyWith(fontWeight: FontWeight.w700),
+            )),
+      ),
+    );
+  }
+
   @override
   void onRetryAfterNoInternet() {
     profileBloc.getInformation();
@@ -335,5 +380,4 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   void onRetryLoadingPage() {
     profileBloc.getInformation();
   }
-
 }
