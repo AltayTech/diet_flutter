@@ -37,14 +37,13 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
   late PaymentBloc bloc;
   String? inputDiscountCode;
   String? messageError;
+  bool isInitial = false;
+  int? packageType;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
-    bloc = PaymentBloc();
-    bloc.getPackagePayment();
-    listenBloc();
   }
 
   @override
@@ -58,6 +57,19 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed && bloc.checkLatestInvoice) {
       bloc.checkOnlinePayment();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!isInitial) {
+      bloc = PaymentBloc();
+      bloc.getPackagePayment();
+
+      listenBloc();
+
+      isInitial = true;
     }
   }
 

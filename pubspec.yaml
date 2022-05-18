@@ -85,7 +85,7 @@ dependencies:
   universal_html: ^2.0.8
   touch_mouse_behavior: ^0.0.1
   webviewx: ^0.2.1
-
+  dotted_border: ^2.0.0+2
 
 
 dependency_overrides:

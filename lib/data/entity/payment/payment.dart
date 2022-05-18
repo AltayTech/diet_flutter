@@ -14,6 +14,9 @@ class Payment {
   @JsonKey(name: "product_id")
   int? productId;
 
+  @JsonKey(name: "package_id")
+  int? packageId;
+
   @JsonKey(name: "id")
   int? id;
 

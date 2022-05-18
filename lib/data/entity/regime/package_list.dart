@@ -17,6 +17,8 @@ class PackageItem {
   String? name;
   @JsonKey(name: "services")
   List<ServicePackage>? services;
+  @JsonKey(name: "media")
+  String? media;
 
   @JsonKey(name: "package_id")
   int? package_id;
@@ -47,6 +49,8 @@ class PackagePrice {
   int? amount;
   @JsonKey(name: "sale_amount")
   int? saleAmount;
+  @JsonKey(name: "type")
+  int? type;
 
   int? totalPrice;
 

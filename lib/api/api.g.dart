@@ -913,7 +913,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<PackageItem>> getPackages(type) async {
+  Future<NetworkResponse<PackageItem>> getPackages() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -921,7 +921,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<PackageItem>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/package?type=${type}',
+                .compose(_dio.options, '/package',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<PackageItem>.fromJson(
@@ -981,6 +981,26 @@ class _RestClient implements RestClient {
         _setStreamType<NetworkResponse<Payment>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/payment',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<Payment>.fromJson(
+      _result.data!,
+      (json) => Payment.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<Payment>> selectPaymentReservePackage(payment) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(payment.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<Payment>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/payment/reserve-packages',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<Payment>.fromJson(

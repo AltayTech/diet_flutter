@@ -155,7 +155,7 @@ abstract class Repository {
 
   NetworkResult<AdviceData> advice();
 
-  NetworkResult<PackageItem> getPackagesList(int type);
+  NetworkResult<PackageItem> getPackagesList();
 
   NetworkResult setCondition(ConditionRequestData requestData);
 
@@ -164,6 +164,8 @@ abstract class Repository {
   NetworkResult<Price?> checkCoupon(Price price);
 
   NetworkResult<Payment> setPaymentType(Payment payment);
+
+  NetworkResult<Payment> setPaymentTypeReservePackage(Payment payment);
 
   ImperativeNetworkResult nextStep();
 
@@ -640,8 +642,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<PackageItem> getPackagesList(int type) {
-    var response = _apiClient.getPackages(type);
+  NetworkResult<PackageItem> getPackagesList() {
+    var response = _apiClient.getPackages();
     return response;
   }
 
@@ -682,6 +684,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Payment> setPaymentType(Payment payment) {
     var response = _apiClient.selectPayment(payment);
+    return response;
+  }
+
+  @override
+  NetworkResult<Payment> setPaymentTypeReservePackage(Payment payment) {
+    var response = _apiClient.selectPaymentReservePackage(payment);
     return response;
   }
 

@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/themes/colors.dart';
@@ -18,6 +19,8 @@ class PaymentTypeWidget extends StatefulWidget {
 class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
   late BillPaymentBloc bloc;
 
+  late PackageItem packageItem;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -29,6 +32,8 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
     super.build(context);
 
     bloc = BillPaymentProvider.of(context);
+
+    packageItem = bloc.packageItem!;
 
     return paymentTypeWidget();
   }
@@ -140,21 +145,20 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                   height: 3.h,
                 ),
               ),
-              Space(width: 1.w,),
+              Space(
+                width: 1.w,
+              ),
               Expanded(
                 flex: 2,
                 child: Container(
                   width: double.maxFinite,
-                  child:  Text(
-                    type == PaymentType.online
-                        ? intl.online
-                        : intl.cardToCard,
+                  child: Text(
+                    type == PaymentType.online ? intl.online : intl.cardToCard,
                     softWrap: false,
                     textAlign: TextAlign.start,
                     style: typography.caption!.copyWith(
-                        color: isSelected
-                            ? AppColors.priceColor
-                            : Colors.black),
+                        color:
+                            isSelected ? AppColors.priceColor : Colors.black),
                   ),
                 ),
               ),
@@ -183,7 +187,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
             children: [
               Expanded(
                 child: Text(
-                  'پکیج سه ماه کاهش وزن',
+                  packageItem.name!,
                   softWrap: false,
                   textAlign: TextAlign.start,
                   style: typography.caption!.copyWith(
@@ -192,42 +196,84 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
               ),
               Expanded(
                 child: Text(
-                 '330.000 تومان',
+                  '${packageItem.price!.amount} ${intl.toman}',
                   softWrap: false,
                   textAlign: TextAlign.end,
-                  style: typography.caption!.copyWith(
-                      color: AppColors.priceGreyColor),
+                  style: typography.caption!
+                      .copyWith(color: AppColors.priceGreyColor),
                 ),
               ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(top: 1.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    intl.discount,
-                    softWrap: false,
-                    textAlign: TextAlign.start,
-                    style: typography.caption!.copyWith(
-                        color: AppColors.priceDiscountColor, fontSize: 10.sp),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    '30.000 تومان',
-                    softWrap: false,
-                    textAlign: TextAlign.end,
-                    style: typography.caption!.copyWith(
-                        color: AppColors.priceDiscountColor),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          StreamBuilder<bool>(
+              initialData: false,
+              stream: bloc.usedDiscount,
+              builder: (context, usedDiscount) {
+                if (usedDiscount.requireData)
+                  return Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            intl.discount,
+                            softWrap: false,
+                            textAlign: TextAlign.start,
+                            style: typography.caption!.copyWith(
+                                color: AppColors.priceDiscountColor,
+                                fontSize: 10.sp),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            '${bloc.discountInfo!.discount} ${intl.toman}',
+                            softWrap: false,
+                            textAlign: TextAlign.end,
+                            style: typography.caption!
+                                .copyWith(color: AppColors.priceDiscountColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                else if (!usedDiscount.requireData &&
+                    packageItem.price!.totalPrice == null &&
+                    packageItem.price!.saleAmount !=
+                        packageItem.price!.amount &&
+                    packageItem.price!.saleAmount != 0 &&
+                    packageItem.price!.amount != 0)
+                  return Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            intl.discount,
+                            softWrap: false,
+                            textAlign: TextAlign.start,
+                            style: typography.caption!.copyWith(
+                                color: AppColors.priceDiscountColor,
+                                fontSize: 10.sp),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            '${packageItem.price!.amount! - packageItem.price!.saleAmount!} ${intl.toman}',
+                            softWrap: false,
+                            textAlign: TextAlign.end,
+                            style: typography.caption!
+                                .copyWith(color: AppColors.priceDiscountColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                return Container();
+              }),
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -244,19 +290,25 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                     intl.totalPrice,
                     softWrap: false,
                     textAlign: TextAlign.start,
-                    style: typography.caption!.copyWith(
-                        color: Colors.black),
+                    style: typography.caption!.copyWith(color: Colors.black),
                   ),
                 ),
-                Expanded(
-                  child: Text(
-                    '300.000 تومان',
-                    softWrap: false,
-                    textAlign: TextAlign.end,
-                    style: typography.caption!.copyWith(
-                        color: AppColors.priceGreenColor),
-                  ),
-                ),
+                StreamBuilder<bool>(
+                    initialData: false,
+                    stream: bloc.usedDiscount,
+                    builder: (context, usedDiscount) {
+                      return Expanded(
+                        child: Text(
+                          usedDiscount.requireData
+                              ? '${packageItem.price!.totalPrice} ${intl.toman}'
+                              : '${packageItem.price!.saleAmount} ${intl.toman}',
+                          softWrap: false,
+                          textAlign: TextAlign.end,
+                          style: typography.caption!
+                              .copyWith(color: AppColors.priceGreenColor),
+                        ),
+                      );
+                    }),
               ],
             ),
           )

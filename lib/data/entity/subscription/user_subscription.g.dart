@@ -8,13 +8,16 @@ part of 'user_subscription.dart';
 
 ListUserSubscriptionData _$ListUserSubscriptionDataFromJson(
         Map<String, dynamic> json) =>
-    ListUserSubscriptionData(
-      json['count'] as int?,
-      (json['items'] as List<dynamic>?)
+    ListUserSubscriptionData()
+      ..count = json['count'] as int?
+      ..subscriptionList = (json['subscription_list'] as List<dynamic>?)
           ?.map((e) => SubscriptionsItems.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      json['sums'] as int?,
-    );
+          .toList()
+      ..pendingCardPayment = json['pending_card_payment'] == null
+          ? null
+          : SubscriptionPendingData.fromJson(
+              json['pending_card_payment'] as Map<String, dynamic>)
+      ..sums = json['sums'] as int?;
 
 SubscriptionsItems _$SubscriptionsItemsFromJson(Map<String, dynamic> json) =>
     SubscriptionsItems(
@@ -23,7 +26,7 @@ SubscriptionsItems _$SubscriptionsItemsFromJson(Map<String, dynamic> json) =>
       json['is_active'] as int?,
       json['created_at'] as String?,
       json['package_name'] as String?,
-      json['pay_amount'] as int?,
+      json['payment_amount'] as int?,
     );
 
 Map<String, dynamic> _$SubscriptionsItemsToJson(SubscriptionsItems instance) =>
@@ -33,5 +36,5 @@ Map<String, dynamic> _$SubscriptionsItemsToJson(SubscriptionsItems instance) =>
       'is_active': instance.isActive,
       'created_at': instance.createdAt,
       'package_name': instance.packageName,
-      'pay_amount': instance.payAmount,
+      'payment_amount': instance.paymentAmount,
     };

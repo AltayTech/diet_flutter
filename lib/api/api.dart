@@ -206,8 +206,8 @@ abstract class RestClient {
   @GET("/user-recommend")
   NetworkResult<AdviceData> advice();
 
-  @GET("/package?type={type}")
-  NetworkResult<PackageItem> getPackages(@Path('type') int type);
+  @GET("/package")
+  NetworkResult<PackageItem> getPackages();
 
   @GET("/user/package")
   NetworkResult<PackageItem> getPackageUser();
@@ -217,6 +217,9 @@ abstract class RestClient {
 
   @POST("/payment")
   NetworkResult<Payment> selectPayment(@Body() Payment payment);
+
+  @POST("/payment/reserve-packages")
+  NetworkResult<Payment> selectPaymentReservePackage(@Body() Payment payment);
 
   @GET("/next-step")
   ImperativeNetworkResult nextStep();

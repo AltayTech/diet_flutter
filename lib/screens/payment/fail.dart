@@ -365,7 +365,8 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
             )),
         onPressed: () {
           MemoryApp.analytics!.logEvent(name: "total_payment_fail");
-          context.vxNav.push(Uri.parse('/${bloc.path ?? ''}'));
+          //context.vxNav.push(Uri.parse('/${bloc.path ?? ''}'));
+          context.vxNav.pop();
         },
         icon: Icon(
           Icons.refresh,
@@ -373,7 +374,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
           color: AppColors.primary,
         ),
         label: Text(
-          intl.retryPayment,
+          intl.back,
           textAlign: TextAlign.start,
           style: Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary),
         ),

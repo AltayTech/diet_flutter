@@ -163,6 +163,7 @@ class PaymentBloc {
           : isOnline
           ? 0
           : 1;
+      payment.packageId = packageItem!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       });

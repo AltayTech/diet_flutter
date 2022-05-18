@@ -552,6 +552,7 @@
   "cardNumberOwner": "شماره کارت بالا به نام چه کسی است؟",
   "validationCardNumber": "شماره کارت نباید کمتر از 16 کاراکتر باشد",
   "back": "بازگشت",
+  "backProfile": "بازگشت به پروفایل",
   "successRequest": "درخواست شما با موفقیت ثبت شد",
   "descriptionRefund": " حداکثر زمان ثبت درخواست بازگشت وجه برای شما تاریخ {date}  بوده است. در صورتی که از هریک خدمات ما نارضایتی دارید می توانید با شماره 02532143، تماس گرفته و موارد نارضایتی خود را به کارشناسان ما اعلام بفرمایید. هدف ما جلب رضایت حداکثری شماست",
   "@descriptionRefund": {
@@ -623,7 +624,7 @@
   "endYourTermDiet": "تا پایان دوره رژیم شما",
   "reviveSubscription": "تمدید اشتراک",
   "newSubscription": "خرید اشتراک",
-  "purchasedSubscription": "اشتراک خریداری شده",
+  "purchasedSubscription": "اشتراک انتخاب شده",
   "enterCode": "وارد کردن",
   "haveDiscountCode": "کد تخفیف داری؟",
   "paymentType": "نوع پرداخت",
@@ -679,7 +680,10 @@
   "requestDate": "تاریخ درخواست",
   "showHistorySubscription": "مشاهده سوابق",
   "subscriptionPackageNotAvailable": "اشتراک وجود ندارد",
+  "packageNotAvailable": "پکیج وجود ندارد",
   "privacyPolicy": "حریم خصوصی",
+  "termsAndConditions": "قوانین و مقررات",
+  "checkTermsAndConditions": "قوانین و مقررات را تایید نکرده اید",
   "iAccept": " را خوانده و میپذیرم.",
   "listEndMessage": "لیست غذایی شما به پایان رسیده است",
   "resolved": "حل شده",
@@ -689,5 +693,21 @@
   "onHold": "در حال بررسی",
   "globalIssue": "مشکل سراسری",
   "all": "همه",
+  "progressPayment": "درحال بررسی",
+  "statusPayment": "وضعیت پرداخت",
+  "descriptionStatusPaymentSubscription": "خرید پکیج {dietType} توسط شما در تاریخ {date} ثبت شد. پس از تایید پرداخت، مدت زمان اشتراک شما {days} روز افزایش خواهد یافت",
+  "@descriptionStatusPaymentSubscription": {
+    "placeholders": {
+      "dietType": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "understand": "متوجه شدم"
 }

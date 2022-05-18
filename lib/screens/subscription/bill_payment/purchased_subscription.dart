@@ -68,7 +68,7 @@ class _PurchasedSubscriptionWidget extends ResourcefulState<PurchasedSubscriptio
               Space(
                 width: 2.w,
               ),
-              CardPackage(bloc.packageItem!, false)
+              CardPackage(bloc.packageItem!)
             ]));
   }
 

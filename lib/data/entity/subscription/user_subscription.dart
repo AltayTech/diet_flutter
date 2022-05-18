@@ -1,21 +1,21 @@
 
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'user_subscription.g.dart';
 
 @JsonSerializable(createToJson: false)
 class ListUserSubscriptionData {
-  ListUserSubscriptionData(
-      this.count,
-      this.items,
-      this.sums,
-      );
+  ListUserSubscriptionData();
 
   @JsonKey(name: 'count')
   int? count;
 
-  @JsonKey(name: 'items')
-  List<SubscriptionsItems>? items;
+  @JsonKey(name: 'subscription_list')
+  List<SubscriptionsItems>? subscriptionList;
+
+  @JsonKey(name: 'pending_card_payment')
+  SubscriptionPendingData? pendingCardPayment;
 
   @JsonKey(name: 'sums')
   int? sums;
@@ -32,7 +32,7 @@ class SubscriptionsItems {
       this.isActive,
       this.createdAt,
       this.packageName,
-      this.payAmount
+      this.paymentAmount
       );
 
   @JsonKey(name: 'package_id')
@@ -50,8 +50,8 @@ class SubscriptionsItems {
   @JsonKey(name: 'package_name')
   String? packageName;
 
-  @JsonKey(name: 'pay_amount')
-  int? payAmount;
+  @JsonKey(name: 'payment_amount')
+  int? paymentAmount;
 
   factory SubscriptionsItems.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionsItemsFromJson(json);
