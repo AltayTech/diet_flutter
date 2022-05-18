@@ -179,7 +179,7 @@ class _TicketState extends ResourcefulState<Ticket> {
             if (indexSelected.hasData)
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  return textFilterItem(index, (index == indexSelected.requireData));
+                  return filterItem(index, (index == indexSelected.requireData));
                 },
                 shrinkWrap: true,
                 controller: _scrollControllerStatus,
@@ -193,7 +193,7 @@ class _TicketState extends ResourcefulState<Ticket> {
     );
   }
 
-  Widget textFilterItem(int index, bool selected) {
+  Widget filterItem(int index, bool selected) {
     String ticketStatus = getLabelTicketStatus(TicketStatus.values[index]);
     return Padding(
       padding: const EdgeInsets.only(left: 4.0, right: 4),
