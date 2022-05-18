@@ -49,176 +49,175 @@ class _TicketState extends ResourcefulState<Ticket> {
     return TicketProvider(ticketBloc,
         child: Scaffold(
           backgroundColor: AppColors.newBackground,
-          body: TouchMouseScrollable(
-            child: SingleChildScrollView(
-              child: Container(
-                margin: EdgeInsets.only(top: 16),
-                padding: EdgeInsets.only(
-                  left: 4.w,
-                  right: 4.w,
-                  bottom: 5.h,
+          body: body(),
+        ));
+  }
+
+  Widget body() {
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.only(top: 16),
+          padding: EdgeInsets.only(
+            left: 4.w,
+            right: 4.w,
+            bottom: 5.h,
+          ),
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: Colors.white,
+          ),
+          child: content(),
+        ),
+      ),
+    );
+  }
+
+  Widget content() {
+    return Column(
+      textDirection: context.textDirectionOfLocale,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Space(height: 3.h),
+              newTicketButton(),
+              Space(height: 3.h),
+            ],
+          ),
+        ),
+        StreamBuilder(
+          builder: (context, snapshot) {
+            WidgetsBinding.instance!.addPostFrameCallback(
+                (_) => Future.delayed(Duration(milliseconds: 500), _scrollToEnd));
+            if (snapshot.data != null && snapshot.data == false) {
+              return StreamBuilder<List<TicketItem>>(
+                  stream: ticketBloc.tickets,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && ticketBloc.tempListTickets.length > 0)
+                      return Container(
+                        child: Column(
+                          children: [
+                            if (ticketBloc.tempListTickets.length > 0) listFilter(),
+                            Space(height: 1.h),
+                            if (snapshot.requireData.length > 0)
+                              ...snapshot.requireData
+                                  .map((message) => TicketItemWidget(
+                                        ticketItem: message,
+                                      ))
+                                  .toList()
+                          ],
+                        ),
+                      );
+                    else
+                      return Text(intl.noTicketAvailable, style: typography.caption);
+                  });
+            } else {
+              return Center(
+                child: SpinKitCircle(
+                  size: 5.h,
+                  color: AppColors.primary,
                 ),
-                decoration: AppDecorations.boxSmall.copyWith(
-                  color: Colors.white,
-                ),
-                child: Column(
-                  textDirection: context.textDirectionOfLocale,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Space(height: 3.h),
-                          GestureDetector(
-                            onTap: () =>
-                                VxNavigator.of(context).push(Uri.parse(Routes.newTicketMessage)),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(3.w),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: ImageUtils.fromLocal(
-                                      'assets/images/foodlist/plus.svg',
-                                      width: 3.w,
-                                      height: 3.w,
-                                      fit: BoxFit.fill,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  Expanded(
-                                    child: Text(
-                                      intl.newTicket,
-                                      textAlign: TextAlign.start,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1!
-                                          .copyWith(color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Space(height: 3.h),
-                        ],
-                      ),
-                    ),
-                    StreamBuilder(
-                      builder: (context, snapshot) {
-                        WidgetsBinding.instance!.addPostFrameCallback(
-                            (_) => Future.delayed(Duration(milliseconds: 500), _scrollToEnd));
-                        if (snapshot.data != null && snapshot.data == false) {
-                          return StreamBuilder<List<TicketItem>>(
-                              stream: ticketBloc.tickets,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData && ticketBloc.tempListTickets.length > 0)
-                                  return Container(
-                                    child: Column(
-                                      children: [
-                                        if (ticketBloc.tempListTickets.length > 0)
-                                          SizedBox(
-                                            height: 5.h,
-                                            width: 100.w,
-                                            child: StreamBuilder<int>(
-                                                stream: ticketBloc.indexSelectedStatus,
-                                                builder: (context, indexSelected) {
-                                                  if (indexSelected.hasData)
-                                                    return ListView.builder(
-                                                      itemBuilder: (context, index) {
-                                                        String ticketStatus = findTicketStatus(
-                                                            TicketStatus.values[index]);
-                                                        return Padding(
-                                                          padding: const EdgeInsets.only(
-                                                              left: 4.0, right: 4),
-                                                          child: InkWell(
-                                                              onTap: () {
-                                                                ticketBloc
-                                                                    .setIndexSelectedStatus(index);
-                                                              },
-                                                              child: Container(
-                                                                constraints:
-                                                                    BoxConstraints(minWidth: 25.w),
-                                                                padding: EdgeInsets.only(
-                                                                    left: 8, right: 8),
-                                                                child: Center(
-                                                                    child: Text(
-                                                                  ticketStatus,
-                                                                  style: typography.caption!
-                                                                      .copyWith(
-                                                                          color: (index ==
-                                                                                  indexSelected
-                                                                                      .requireData)
-                                                                              ? AppColors.primary
-                                                                              : null),
-                                                                )),
-                                                                decoration: AppDecorations
-                                                                    .boxExtraLarge
-                                                                    .copyWith(
-                                                                  border: Border.all(
-                                                                    color: (index ==
-                                                                            indexSelected
-                                                                                .requireData)
-                                                                        ? AppColors.primary
-                                                                        : AppColors.labelColor,
-                                                                    width: 1.0,
-                                                                  ),
-                                                                ),
-                                                              )),
-                                                        );
-                                                      },
-                                                      shrinkWrap: true,
-                                                      controller: _scrollControllerStatus,
-                                                      reverse: true,
-                                                      itemCount: TicketStatus.values.length,
-                                                      scrollDirection: Axis.horizontal,
-                                                    );
-                                                  else
-                                                    return EmptyBox();
-                                                }),
-                                          ),
-                                        Space(height: 1.h),
-                                        if (snapshot.requireData.length > 0)
-                                          ...snapshot.requireData
-                                              .map((message) => TicketItemWidget(
-                                                    ticketItem: message,
-                                                  ))
-                                              .toList()
-                                      ],
-                                    ),
-                                  );
-                                else
-                                  return Text(intl.noTicketAvailable, style: typography.caption);
-                              });
-                        } else {
-                          return Center(
-                            child: SpinKitCircle(
-                              size: 5.h,
-                              color: AppColors.primary,
-                            ),
-                          );
-                        }
-                      },
-                      stream: ticketBloc.progressNetwork,
-                    )
-                  ],
-                ),
+              );
+            }
+          },
+          stream: ticketBloc.progressNetwork,
+        )
+      ],
+    );
+  }
+
+  Widget newTicketButton() {
+    return GestureDetector(
+      onTap: () => VxNavigator.of(context).push(Uri.parse(Routes.newTicketMessage)),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.primary,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(3.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: ImageUtils.fromLocal(
+                'assets/images/foodlist/plus.svg',
+                width: 3.w,
+                height: 3.w,
+                fit: BoxFit.fill,
+                color: AppColors.primary,
               ),
             ),
-          ),
-        ));
+            SizedBox(width: 2.w),
+            Expanded(
+              child: Text(
+                intl.newTicket,
+                textAlign: TextAlign.start,
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget listFilter() {
+    return SizedBox(
+      height: 5.h,
+      width: 100.w,
+      child: StreamBuilder<int>(
+          stream: ticketBloc.indexSelectedStatus,
+          builder: (context, indexSelected) {
+            if (indexSelected.hasData)
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  String ticketStatus = findTicketStatus(TicketStatus.values[index]);
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 4.0, right: 4),
+                    child: InkWell(
+                        onTap: () {
+                          ticketBloc.setIndexSelectedStatus(index);
+                        },
+                        child: Container(
+                          constraints: BoxConstraints(minWidth: 25.w),
+                          padding: EdgeInsets.only(left: 8, right: 8),
+                          child: Center(
+                              child: Text(
+                            ticketStatus,
+                            style: typography.caption!.copyWith(
+                                color: (index == indexSelected.requireData)
+                                    ? AppColors.primary
+                                    : null),
+                          )),
+                          decoration: AppDecorations.boxExtraLarge.copyWith(
+                            border: Border.all(
+                              color: (index == indexSelected.requireData)
+                                  ? AppColors.primary
+                                  : AppColors.labelColor,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                  );
+                },
+                shrinkWrap: true,
+                controller: _scrollControllerStatus,
+                reverse: true,
+                itemCount: TicketStatus.values.length,
+                scrollDirection: Axis.horizontal,
+              );
+            else
+              return EmptyBox();
+          }),
+    );
   }
 
   String findTicketStatus(TicketStatus status) {
