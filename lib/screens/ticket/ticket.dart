@@ -179,34 +179,7 @@ class _TicketState extends ResourcefulState<Ticket> {
             if (indexSelected.hasData)
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  String ticketStatus = getLabelTicketStatus(TicketStatus.values[index]);
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 4.0, right: 4),
-                    child: InkWell(
-                        onTap: () {
-                          ticketBloc.setIndexSelectedStatus(index);
-                        },
-                        child: Container(
-                          constraints: BoxConstraints(minWidth: 25.w),
-                          padding: EdgeInsets.only(left: 8, right: 8),
-                          child: Center(
-                              child: Text(
-                            ticketStatus,
-                            style: typography.caption!.copyWith(
-                                color: (index == indexSelected.requireData)
-                                    ? AppColors.primary
-                                    : null),
-                          )),
-                          decoration: AppDecorations.boxExtraLarge.copyWith(
-                            border: Border.all(
-                              color: (index == indexSelected.requireData)
-                                  ? AppColors.primary
-                                  : AppColors.labelColor,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
-                  );
+                  return textFilterItem(index, (index == indexSelected.requireData));
                 },
                 shrinkWrap: true,
                 controller: _scrollControllerStatus,
@@ -217,6 +190,32 @@ class _TicketState extends ResourcefulState<Ticket> {
             else
               return EmptyBox();
           }),
+    );
+  }
+
+  Widget textFilterItem(int index, bool selected) {
+    String ticketStatus = getLabelTicketStatus(TicketStatus.values[index]);
+    return Padding(
+      padding: const EdgeInsets.only(left: 4.0, right: 4),
+      child: InkWell(
+          onTap: () {
+            ticketBloc.setIndexSelectedStatus(index);
+          },
+          child: Container(
+            constraints: BoxConstraints(minWidth: 25.w),
+            padding: EdgeInsets.only(left: 8, right: 8),
+            child: Center(
+                child: Text(
+              ticketStatus,
+              style: typography.caption!.copyWith(color: selected ? AppColors.primary : null),
+            )),
+            decoration: AppDecorations.boxExtraLarge.copyWith(
+              border: Border.all(
+                color: selected ? AppColors.primary : AppColors.labelColor,
+                width: 1.0,
+              ),
+            ),
+          )),
     );
   }
 
