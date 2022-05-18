@@ -89,6 +89,7 @@ class ProfileBloc {
   Stream<bool> get obscureTextConfirmPass => _obscureTextConfirmPass.stream;
 
   Stream<TermPackage> get termPackage => _termPackage.stream;
+
   Stream<SubscriptionPendingData?> get subscriptionPending => _subscriptionPending.stream;
 
   bool? get isProgressNetwork => _progressNetwork.value;

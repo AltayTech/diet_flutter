@@ -158,14 +158,23 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                                       '${termPackage.data!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
                                   mainAxisAlignment: MainAxisAlignment.start,
                                 ),
-                                SubmitButton(
-                                  onTap: () {
-                                    VxNavigator.of(context)
-                                        .push(Uri.parse(Routes.selectPackageSubscription));
+                                StreamBuilder<SubscriptionPendingData?>(
+                                  stream: profileBloc.subscriptionPending,
+                                  builder: (context, subscriptionPending) {
+                                    if (subscriptionPending.hasData &&
+                                        subscriptionPending.data == null)
+                                      return SubmitButton(
+                                        onTap: () {
+                                          VxNavigator.of(context)
+                                              .push(Uri.parse(Routes.selectPackageSubscription));
+                                        },
+                                        label: intl.reviveSubscription,
+                                        size: Size(35.w, 5.h),
+                                      );
+                                    else
+                                      return EmptyBox();
                                   },
-                                  label: intl.reviveSubscription,
-                                  size: Size(35.w, 5.h),
-                                )
+                                ),
                               ],
                             );
                           return Progress();
@@ -358,16 +367,22 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
               left: 5.w,
               right: 5.w,
             ),
-            child: Text(
-              intl.descriptionStatusPaymentSubscription(
-                  subscriptionPendingData.packageName,
-                  '${DateTimeUtils.formatCustomDate(subscriptionPendingData.createdAt.split("T")[0])}',
-                  subscriptionPendingData.termDays),
-              softWrap: true,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.overline!.copyWith(fontWeight: FontWeight.w700),
-            )),
+            child: descriptionStatusPaymentSubscription(
+                subscriptionPendingData: subscriptionPendingData)),
       ),
+    );
+  }
+
+  Widget descriptionStatusPaymentSubscription(
+      {required SubscriptionPendingData subscriptionPendingData}) {
+    return Text(
+      intl.descriptionStatusPaymentSubscription(
+          subscriptionPendingData.packageName,
+          '${DateTimeUtils.formatCustomDate(subscriptionPendingData.createdAt.split("T")[0])}',
+          subscriptionPendingData.termDays),
+      softWrap: true,
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.overline!.copyWith(fontWeight: FontWeight.w700),
     );
   }
 

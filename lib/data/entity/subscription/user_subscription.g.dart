@@ -13,6 +13,10 @@ ListUserSubscriptionData _$ListUserSubscriptionDataFromJson(
       ..subscriptionList = (json['subscription_list'] as List<dynamic>?)
           ?.map((e) => SubscriptionsItems.fromJson(e as Map<String, dynamic>))
           .toList()
+      ..pendingCardPayment = json['pending_card_payment'] == null
+          ? null
+          : SubscriptionPendingData.fromJson(
+              json['pending_card_payment'] as Map<String, dynamic>)
       ..sums = json['sums'] as int?;
 
 SubscriptionsItems _$SubscriptionsItemsFromJson(Map<String, dynamic> json) =>

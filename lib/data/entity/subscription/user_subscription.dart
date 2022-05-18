@@ -1,5 +1,6 @@
 
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'user_subscription.g.dart';
 
@@ -12,6 +13,9 @@ class ListUserSubscriptionData {
 
   @JsonKey(name: 'subscription_list')
   List<SubscriptionsItems>? subscriptionList;
+
+  @JsonKey(name: 'pending_card_payment')
+  SubscriptionPendingData? pendingCardPayment;
 
   @JsonKey(name: 'sums')
   int? sums;

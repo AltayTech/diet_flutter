@@ -1,21 +1,15 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
-import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
-import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/bloc.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/provider.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:behandam/utils/image.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
-import 'package:velocity_x/velocity_x.dart';
-
-import '../../../routes.dart';
 
 class ListHistorySubscriptionPaymentWidget extends StatefulWidget {
   ListHistorySubscriptionPaymentWidget({Key? key}) : super(key: key);
@@ -56,28 +50,25 @@ class _ListHistorySubscriptionPaymentWidget
                     physics: NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.only(bottom: 8, top: 8),
                     itemBuilder: (context, i) {
-                      return historySubscriptionPaymentWidgetItem(
-                          bloc.subscriptions![i]);
+                      return historySubscriptionPaymentWidgetItem(bloc.subscriptions![i]);
                     },
                   )
                 : Container(
-                    margin:
-                        EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.w),
+                    margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.w),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     height: 10.h,
                     child: Center(
-                        child: Text(intl.subscriptionPackageNotAvailable,
-                            style: typography.caption)),
+                        child:
+                            Text(intl.subscriptionPackageNotAvailable, style: typography.caption)),
                   );
           return Center(child: Progress());
         });
   }
 
-  Widget historySubscriptionPaymentWidgetItem(
-      SubscriptionsItems subscriptionsItem) {
+  Widget historySubscriptionPaymentWidgetItem(SubscriptionsItems subscriptionsItem) {
     return Container(
       width: double.maxFinite,
       alignment: Alignment.center,
@@ -97,10 +88,9 @@ class _ListHistorySubscriptionPaymentWidget
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 margin: EdgeInsets.only(top: 10),
                 child: Text(
-                  subscriptionsItem.packageName!,
+                  subscriptionsItem.packageName ?? "",
                   softWrap: false,
-                  style: typography.caption!
-                      .copyWith(color: Colors.black, fontSize: 10.sp),
+                  style: typography.caption!.copyWith(color: Colors.black, fontSize: 10.sp),
                 ),
               ),
             ],
@@ -117,8 +107,7 @@ class _ListHistorySubscriptionPaymentWidget
                     '${intl.requestDate}:',
                     softWrap: false,
                     textAlign: TextAlign.start,
-                    style: typography.caption!
-                        .copyWith(color: Colors.black, fontSize: 8.sp),
+                    style: typography.caption!.copyWith(color: Colors.black, fontSize: 8.sp),
                   ),
                 ),
                 Expanded(
@@ -126,8 +115,7 @@ class _ListHistorySubscriptionPaymentWidget
                     '${subscriptionsItem.createdAt!.split("T")[1].substring(0, 5)} ${DateTimeUtils.formatCustomDate(subscriptionsItem.createdAt!.split("T")[0])}',
                     softWrap: false,
                     textAlign: TextAlign.end,
-                    style: typography.caption!
-                        .copyWith(color: Colors.black, fontSize: 8.sp),
+                    style: typography.caption!.copyWith(color: Colors.black, fontSize: 8.sp),
                   ),
                 )
               ],
@@ -145,8 +133,7 @@ class _ListHistorySubscriptionPaymentWidget
                     '${intl.amountPaid}:',
                     softWrap: false,
                     textAlign: TextAlign.start,
-                    style: typography.caption!
-                        .copyWith(color: Colors.black, fontSize: 8.sp),
+                    style: typography.caption!.copyWith(color: Colors.black, fontSize: 8.sp),
                   ),
                 ),
                 Expanded(
@@ -156,16 +143,15 @@ class _ListHistorySubscriptionPaymentWidget
                                     subscriptionsItem.paymentAmount != 0
                                 ? '${subscriptionsItem.paymentAmount.toString().seRagham()}'
                                 : intl.free,
-                            style: typography.caption!
-                                .copyWith(color: Colors.black),
+                            style: typography.caption!.copyWith(color: Colors.black),
                             children: <InlineSpan>[
                               TextSpan(
                                 text: subscriptionsItem.paymentAmount != null &&
                                         subscriptionsItem.paymentAmount != 0
                                     ? intl.toman
                                     : '',
-                                style: typography.caption!.copyWith(
-                                    color: Colors.black, fontSize: 8.sp),
+                                style: typography.caption!
+                                    .copyWith(color: Colors.black, fontSize: 8.sp),
                               )
                             ]),
                         textAlign: TextAlign.end))
@@ -176,6 +162,8 @@ class _ListHistorySubscriptionPaymentWidget
       ),
     );
   }
+
+
 
   @override
   void onRetryAfterMaintenance() {
