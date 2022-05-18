@@ -179,7 +179,7 @@ class _TicketState extends ResourcefulState<Ticket> {
             if (indexSelected.hasData)
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  String ticketStatus = findTicketStatus(TicketStatus.values[index]);
+                  String ticketStatus = getLabelTicketStatus(TicketStatus.values[index]);
                   return Padding(
                     padding: const EdgeInsets.only(left: 4.0, right: 4),
                     child: InkWell(
@@ -220,7 +220,7 @@ class _TicketState extends ResourcefulState<Ticket> {
     );
   }
 
-  String findTicketStatus(TicketStatus status) {
+  String getLabelTicketStatus(TicketStatus status) {
     print('status = > ${status.index}');
     switch (status) {
       case TicketStatus.Resolved:
