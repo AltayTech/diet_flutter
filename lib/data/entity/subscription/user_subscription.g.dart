@@ -10,10 +10,6 @@ ListUserSubscriptionData _$ListUserSubscriptionDataFromJson(
         Map<String, dynamic> json) =>
     ListUserSubscriptionData()
       ..count = json['count'] as int?
-      ..items = json['items'] == null
-          ? null
-          : ListUserSubscriptionData.fromJson(
-              json['items'] as Map<String, dynamic>)
       ..subscriptionList = (json['subscription_list'] as List<dynamic>?)
           ?.map((e) => SubscriptionsItems.fromJson(e as Map<String, dynamic>))
           .toList()

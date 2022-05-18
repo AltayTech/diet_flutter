@@ -19,7 +19,7 @@ class HistorySubscriptionPaymentBloc {
     _progressNetwork.value = true;
 
     _repository.getUserSubscription().then((value) {
-      subscriptions = value.data!.items!.subscriptionList;
+      subscriptions = value.data!.subscriptionList;
       print('subscriptions => ${subscriptions}');
     }).whenComplete(() {
       _progressNetwork.value = false;

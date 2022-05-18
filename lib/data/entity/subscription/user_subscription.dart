@@ -10,9 +10,6 @@ class ListUserSubscriptionData {
   @JsonKey(name: 'count')
   int? count;
 
-  @JsonKey(name: 'items')
-  ListUserSubscriptionData? items;
-
   @JsonKey(name: 'subscription_list')
   List<SubscriptionsItems>? subscriptionList;
 
