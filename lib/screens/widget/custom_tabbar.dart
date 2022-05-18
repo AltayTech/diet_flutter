@@ -27,7 +27,10 @@ class _CustomTabBarState extends ResourcefulState<CustomTabBar> {
   Widget build(BuildContext context) {
     super.build(context);
     return Container(
-      color: widget.color,
+      decoration:  BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        color: widget.color,
+      ),
       child: DefaultTabController(
         length: widget.listItem.length,
         child: TabBar(

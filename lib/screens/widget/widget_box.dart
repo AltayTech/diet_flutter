@@ -1,6 +1,7 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
@@ -196,7 +197,7 @@ Widget optionButtonUi(IconData icon, String text, int action, TextDirection text
       height: 6.h,
       padding: EdgeInsets.only(left: 8, right: 8),
       decoration:
-          BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30.0), boxShadow: [
+      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30.0), boxShadow: [
         BoxShadow(
             color: Color.fromARGB(255, 248, 233, 233),
             blurRadius: 3.0,
@@ -325,57 +326,64 @@ Widget cardLeftOrRightColor(String bgAdrs, String iconAdrs, String text, Color t
   );
 }
 
-Widget textInput(
-    {required double height,
-    TextInputType? textInputType,
-    required Function validation,
-    required Function onChanged,
-    String? value,
-    String? label,
-    required bool enable,
-    required bool maxLine,
-    required BuildContext ctx,
-    TextInputAction? action,
-    required TextDirection textDirection,
-    TextAlign? textAlign,
-    bool? endCursorPosition,
-    TextEditingController? textController,
-    List<TextInputFormatter>? formatters,
-    IconData? icon}) {
+Widget textInput({required double height,
+  TextInputType? textInputType,
+  required Function validation,
+  required Function onChanged,
+  String? value,
+  String? label,
+  Color? bgColor,
+  required bool enable,
+  required bool maxLine,
+  required BuildContext ctx,
+  TextInputAction? action,
+  required TextDirection textDirection,
+  TextAlign? textAlign,
+  bool? endCursorPosition,
+  TextEditingController? textController,
+  List<TextInputFormatter>? formatters,
+  IconData? icon}) {
   TextEditingController controller = TextEditingController();
   controller.text = value ?? '';
   //controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
   return Container(
     height: height,
     child: TextFormField(
-      inputFormatters: formatters != null ? formatters : null,
-      textInputAction: action,
-      maxLines: maxLine ? 4 : 1,
-      controller: textController ?? controller,
-      enabled: enable,
-      decoration: inputDecoration.copyWith(
-          labelText: label,
-          labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.labelColor),
-          prefixIcon: icon != null ? Icon(icon) : null),
-      keyboardType: textInputType,
-      textDirection: textDirection,
-      onChanged: (val) {
-        if (textController != null) {
-          TextSelection previousSelection = textController.selection;
-          onChanged(val);
-          textController.text = val;
-          textController.selection = previousSelection;
-        } else {
-          TextSelection previousSelection = controller.selection;
-          controller.text = onChanged(val);
-          controller.selection = previousSelection;
-        }
-      },
-      style: Theme.of(ctx).textTheme.bodyText1,
-      // textAlign: TextAlign.start,
-      validator: (val) => validation(val),
-    ),
-  );
+        inputFormatters: formatters != null ? formatters : null,
+        textInputAction: action,
+        maxLines: maxLine ? 4 : 1,
+        controller: textController ?? controller,
+        enabled: enable,
+        decoration: inputDecoration
+            .copyWith(
+            labelText: label,
+            fillColor: bgColor,
+            labelStyle: Theme.of(ctx)
+            .textTheme
+            .subtitle1!
+            .copyWith(color: AppColors.labelColor),
+        prefixIcon: icon != null ? Icon(icon) : null),
+    keyboardType: textInputType,
+    textDirection: textDirection,
+    onChanged: (val) {
+      if (textController != null) {
+        TextSelection previousSelection = textController.selection;
+        onChanged(val);
+        textController.text = val;
+        textController.selection = previousSelection;
+      } else {
+        TextSelection previousSelection = controller.selection;
+        controller.text = onChanged(val);
+        controller.selection = previousSelection;
+      }
+    },
+    style: Theme
+        .of(ctx)
+        .textTheme
+        .bodyText1,
+    // textAlign: TextAlign.start,
+    validator: (val) => validation(val),
+  ),);
 }
 
 void launchURL(String url) async {

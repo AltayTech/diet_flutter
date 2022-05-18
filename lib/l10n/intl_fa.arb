@@ -238,7 +238,7 @@
   "endRecord": "پایان ضبط",
   "startRecord": "شروع ضبط",
   "soundMessage": "پیام صوتی",
-  "lableTextMessage": "متن خود را اینجا وارد کنید",
+  "lableTextMessage": "سوالت رو اینجا برامون بنویس...",
   "errorDepartment": "لطفا دپارتمان مورد نظر خود را انتخاب کنید",
   "errorFillItem": "تمامی اطلاعات خواسته شده را وارد کنید",
   "closedTicket": "این تیکت بسته شده است. در صورت پاسخ به آن مجددا باز خواهد شد.",
@@ -682,5 +682,12 @@
   "privacyPolicy": "حریم خصوصی",
   "iAccept": " را خوانده و میپذیرم.",
   "listEndMessage": "لیست غذایی شما به پایان رسیده است",
+  "resolved": "حل شده",
+  "closed": "بسته شده",
+  "pendingAdminResponse": "در انتظار پاسخ",
+  "pendingUserResponse": "پیام جدید",
+  "onHold": "در حال بررسی",
+  "globalIssue": "مشکل سراسری",
+  "all": "همه",
   "understand": "متوجه شدم"
 }
