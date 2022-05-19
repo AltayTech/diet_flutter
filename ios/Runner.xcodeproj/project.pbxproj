@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14539970B6D3A22725A67745 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2CE3C70B593FAF34ECBB200 /* Pods_Runner.framework */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		24FA41B3276F1FB700B7EB18 /* config in Resources */ = {isa = PBXBuildFile; fileRef = 24FA41B2276F1FB600B7EB18 /* config */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
@@ -14,7 +15,6 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		C5ED7FC5EF852C1B79EA0FFB /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75BDF52BA30799D945CE0DAE /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,24 +31,24 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		006319FB63D1AD340D481B19 /* Pods-Runner.profile-debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-debug.xcconfig"; sourceTree = "<group>"; };
+		0DFC21FED9054DC2697326CC /* Pods-Runner.release-stage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-stage.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-stage.xcconfig"; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
-		15A59C6D6846AE2FFABBF7EB /* Pods-Runner.debug-iapps.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-iapps.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-iapps.xcconfig"; sourceTree = "<group>"; };
+		152B0622F33B9B3D58FCCAB1 /* Pods-Runner.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"; sourceTree = "<group>"; };
+		15C079E9C7D8D1CE5B78E42E /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
+		1E9417E454E68ABF4CF2516A /* Pods-Runner.profile-stage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-stage.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-stage.xcconfig"; sourceTree = "<group>"; };
+		2061BEA5C91721662EF94F58 /* Pods-Runner.debug-iapps.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-iapps.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-iapps.xcconfig"; sourceTree = "<group>"; };
 		24FA41B2276F1FB600B7EB18 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
-		37ACEC59BF0555D7F31164D5 /* Pods-Runner.debug-stage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-stage.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-stage.xcconfig"; sourceTree = "<group>"; };
-		38FB718C6BF76F6E5BF86238 /* Pods-Runner.release-debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-debug.xcconfig"; sourceTree = "<group>"; };
+		2D7706330532E2FC59B0AA84 /* Pods-Runner.debug-debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-debug.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		3C75C73B0B592067DF896AAD /* Pods-Runner.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-dev.xcconfig"; sourceTree = "<group>"; };
-		67C18BEDC5CFF4AC8C65EEEE /* Pods-Runner.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"; sourceTree = "<group>"; };
-		7115F677D902696EFE77345C /* Pods-Runner.release-iapps.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-iapps.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-iapps.xcconfig"; sourceTree = "<group>"; };
+		42C539ECC30C3AD3188A8485 /* Pods-Runner.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-dev.xcconfig"; sourceTree = "<group>"; };
+		44E7DC0649DE32FBE07EF881 /* Pods-Runner.profile-iapps.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-iapps.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-iapps.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		75BDF52BA30799D945CE0DAE /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		8246B3DF5B52C538EE91A4E7 /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
-		87A7707CF46341BCC5951D04 /* Pods-Runner.profile-stage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-stage.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-stage.xcconfig"; sourceTree = "<group>"; };
-		96A3FE0C5068601EEEDEF80F /* Pods-Runner.release-stage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-stage.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-stage.xcconfig"; sourceTree = "<group>"; };
+		8015478A48ABB09D360C3C6D /* Pods-Runner.profile-debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-debug.xcconfig"; sourceTree = "<group>"; };
+		8884C240945DBAC8FB0147E0 /* Pods-Runner.debug-stage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-stage.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-stage.xcconfig"; sourceTree = "<group>"; };
+		8D723D5CACC9DDE059145FB1 /* Pods-Runner.release-iapps.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-iapps.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-iapps.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,8 +56,8 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D85C7C5938D38DBF638064CD /* Pods-Runner.debug-debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-debug.xcconfig"; sourceTree = "<group>"; };
-		E93E6E8CCE8545C4766D7531 /* Pods-Runner.profile-iapps.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-iapps.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-iapps.xcconfig"; sourceTree = "<group>"; };
+		A2CE3C70B593FAF34ECBB200 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6FE59DF19CC7C3DD75593EF /* Pods-Runner.release-debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,21 +65,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5ED7FC5EF852C1B79EA0FFB /* Pods_Runner.framework in Frameworks */,
+				14539970B6D3A22725A67745 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		81170C0D46AF072E63E8D060 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				75BDF52BA30799D945CE0DAE /* Pods_Runner.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,7 +91,7 @@
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
 				EC8045A6886EFCA5897DE0A5 /* Pods */,
-				81170C0D46AF072E63E8D060 /* Frameworks */,
+				EA4FC21924BF8CE028C7DE3E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -126,21 +118,29 @@
 			path = Runner;
 			sourceTree = "<group>";
 		};
+		EA4FC21924BF8CE028C7DE3E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A2CE3C70B593FAF34ECBB200 /* Pods_Runner.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EC8045A6886EFCA5897DE0A5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				15A59C6D6846AE2FFABBF7EB /* Pods-Runner.debug-iapps.xcconfig */,
-				37ACEC59BF0555D7F31164D5 /* Pods-Runner.debug-stage.xcconfig */,
-				8246B3DF5B52C538EE91A4E7 /* Pods-Runner.debug-dev.xcconfig */,
-				D85C7C5938D38DBF638064CD /* Pods-Runner.debug-debug.xcconfig */,
-				7115F677D902696EFE77345C /* Pods-Runner.release-iapps.xcconfig */,
-				96A3FE0C5068601EEEDEF80F /* Pods-Runner.release-stage.xcconfig */,
-				67C18BEDC5CFF4AC8C65EEEE /* Pods-Runner.release-dev.xcconfig */,
-				38FB718C6BF76F6E5BF86238 /* Pods-Runner.release-debug.xcconfig */,
-				E93E6E8CCE8545C4766D7531 /* Pods-Runner.profile-iapps.xcconfig */,
-				87A7707CF46341BCC5951D04 /* Pods-Runner.profile-stage.xcconfig */,
-				3C75C73B0B592067DF896AAD /* Pods-Runner.profile-dev.xcconfig */,
-				006319FB63D1AD340D481B19 /* Pods-Runner.profile-debug.xcconfig */,
+				2061BEA5C91721662EF94F58 /* Pods-Runner.debug-iapps.xcconfig */,
+				8884C240945DBAC8FB0147E0 /* Pods-Runner.debug-stage.xcconfig */,
+				15C079E9C7D8D1CE5B78E42E /* Pods-Runner.debug-dev.xcconfig */,
+				2D7706330532E2FC59B0AA84 /* Pods-Runner.debug-debug.xcconfig */,
+				8D723D5CACC9DDE059145FB1 /* Pods-Runner.release-iapps.xcconfig */,
+				0DFC21FED9054DC2697326CC /* Pods-Runner.release-stage.xcconfig */,
+				152B0622F33B9B3D58FCCAB1 /* Pods-Runner.release-dev.xcconfig */,
+				D6FE59DF19CC7C3DD75593EF /* Pods-Runner.release-debug.xcconfig */,
+				44E7DC0649DE32FBE07EF881 /* Pods-Runner.profile-iapps.xcconfig */,
+				1E9417E454E68ABF4CF2516A /* Pods-Runner.profile-stage.xcconfig */,
+				42C539ECC30C3AD3188A8485 /* Pods-Runner.profile-dev.xcconfig */,
+				8015478A48ABB09D360C3C6D /* Pods-Runner.profile-debug.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -152,7 +152,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
-				6257E30B51AA49D3EE97E82E /* [CP] Check Pods Manifest.lock */,
+				5AB766ED4E0826953A5DFD48 /* [CP] Check Pods Manifest.lock */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
@@ -160,7 +160,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
-				CAAACD4115C76FF256811555 /* [CP] Embed Pods Frameworks */,
+				99FEEE06C8961186A4936707 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -252,7 +252,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
 		};
-		6257E30B51AA49D3EE97E82E /* [CP] Check Pods Manifest.lock */ = {
+		5AB766ED4E0826953A5DFD48 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -288,7 +288,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
 		};
-		CAAACD4115C76FF256811555 /* [CP] Embed Pods Frameworks */ = {
+		99FEEE06C8961186A4936707 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -373,7 +373,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -386,6 +386,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -395,10 +396,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -410,7 +412,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -461,11 +463,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -491,8 +491,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kermany.behandam-iapps";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Profile-iapps";
@@ -531,7 +534,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -550,6 +553,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Debug-debug";
@@ -558,10 +563,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام دیباگ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -573,7 +579,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -624,11 +630,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -652,11 +656,14 @@
 					"-framework",
 					"\"webview_flutter_wkwebview\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.debug;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.debugapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Debug-debug";
@@ -695,7 +702,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -714,6 +721,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Debug-dev";
@@ -722,10 +731,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام دولوپ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -737,7 +747,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -788,11 +798,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -818,9 +826,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Debug-dev";
@@ -859,7 +870,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -878,6 +889,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Debug-stage";
@@ -886,10 +899,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام استیج";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -901,7 +915,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -952,11 +966,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -982,9 +994,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.stage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Debug-stage";
@@ -1023,7 +1038,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1036,6 +1051,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1047,10 +1063,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام دیباگ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1062,7 +1079,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -1113,11 +1130,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -1141,10 +1156,13 @@
 					"-framework",
 					"\"webview_flutter_wkwebview\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.debug;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.debugapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Release-debug";
@@ -1183,7 +1201,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1196,6 +1214,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1207,10 +1226,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام دولوپ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1222,7 +1242,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -1273,11 +1293,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -1303,8 +1321,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Release-dev";
@@ -1343,7 +1364,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1356,6 +1377,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1367,10 +1389,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام استیج";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1382,7 +1405,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -1433,11 +1456,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -1463,8 +1484,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.stage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Release-stage";
@@ -1503,7 +1527,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1516,6 +1540,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1525,10 +1550,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام دیباگ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1540,7 +1566,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -1591,11 +1617,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -1619,10 +1643,13 @@
 					"-framework",
 					"\"webview_flutter_wkwebview\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.debug;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.debugapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Profile-debug";
@@ -1661,7 +1688,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1674,6 +1701,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1683,10 +1711,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام دولوپ";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1698,7 +1727,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -1749,11 +1778,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -1779,8 +1806,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Profile-dev";
@@ -1819,7 +1849,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1832,6 +1862,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1841,10 +1872,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام استیج";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1856,7 +1888,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -1907,11 +1939,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -1937,8 +1967,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.stage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Profile-stage";
@@ -1977,7 +2010,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1996,6 +2029,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Debug-iapps";
@@ -2034,7 +2069,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "armv7 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2047,6 +2082,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2058,10 +2094,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2073,7 +2110,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -2124,11 +2161,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -2154,9 +2189,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kermany.behandam-iapps";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Debug-iapps";
@@ -2165,10 +2203,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				APP_DISPLAY_NAME = "به اندام";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 357;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2180,7 +2219,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lstdc++",
@@ -2231,11 +2270,9 @@
 					"-framework",
 					"\"flutter_sound_core\"",
 					"-framework",
-					"\"flutter_sound_lite\"",
+					"\"toast\"",
 					"-framework",
-					"\"fluttertoast\"",
-					"-framework",
-					"\"image_picker\"",
+					"\"image_picker_ios\"",
 					"-framework",
 					"\"libwebp\"",
 					"-framework",
@@ -2261,8 +2298,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kermany.behandam-iapps";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Release-iapps";
@@ -2287,7 +2327,7 @@
 				24FA41C0276F20DF00B7EB18 /* Profile-debug */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-iapps";
+			defaultConfigurationName = "Debug-debug";
 		};
 		97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */ = {
 			isa = XCConfigurationList;
@@ -2306,7 +2346,7 @@
 				24FA41C1276F20DF00B7EB18 /* Profile-debug */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-iapps";
+			defaultConfigurationName = "Debug-debug";
 		};
 /* End XCConfigurationList section */
 	};
