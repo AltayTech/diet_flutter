@@ -205,7 +205,12 @@ class FoodListBloc {
       setTheme();
     }).whenComplete(() => _loadingContent.safeValue = false);
   }
-
+  void onMealFoodDaily(ListFood newFood, int mealId) {
+    debugPrint('newfood1 ${newFood.toJson()}');
+    final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
+    // _foodList.valueOrNull?.meals[index!].food = newFood;
+    _foodList.valueOrNull?.meals?[index!].newFood = newFood;
+  }
   void onMealFood(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
     final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
@@ -231,10 +236,9 @@ class FoodListBloc {
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
     _repository.dailyMenu(requestData).then((value) {
       if (value.data != null && value.requireData) {
-        _popLoading.fire(false);
         onRefresh(invalidate: true);
       }
-    });
+    }).whenComplete(() =>  _popLoading.fire(false));
   }
 
   void onReplacingFood(int mealId) {

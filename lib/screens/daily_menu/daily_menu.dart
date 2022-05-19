@@ -218,7 +218,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
                                 .waitAndPush(Uri(path: Routes.listFood), params: meal)
                                 .then((value) {
                               debugPrint('returen ${value}');
-                              bloc.onMealFood(value, meal.id);
+                              bloc.onMealFoodDaily(value, meal.id);
                             });
                           },
                           child: Container(

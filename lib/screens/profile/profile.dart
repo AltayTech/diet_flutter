@@ -161,8 +161,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                                 StreamBuilder<SubscriptionPendingData?>(
                                   stream: profileBloc.subscriptionPending,
                                   builder: (context, subscriptionPending) {
-                                    if (subscriptionPending.hasData &&
-                                        subscriptionPending.data == null)
+                                    if (subscriptionPending.data == null)
                                       return SubmitButton(
                                         onTap: () {
                                           VxNavigator.of(context)
