@@ -159,6 +159,8 @@ abstract class Repository {
 
   NetworkResult setCondition(ConditionRequestData requestData);
 
+  NetworkResult setUserReservePackage(ConditionRequestData requestData);
+
   NetworkResult<PackageItem> getPackagePayment();
 
   NetworkResult<Price?> checkCoupon(Price price);
@@ -649,6 +651,28 @@ class _RepositoryImpl extends Repository {
 
   @override
   NetworkResult setCondition(ConditionRequestData requestData) {
+    Map<String, dynamic> body = {
+      if (requestData.packageId != null) 'package_id': requestData.packageId,
+      if (requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
+      if (requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
+      if (requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
+      if (requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
+      if (requestData.isPreparedMenu != null) 'is_prepared_menu': requestData.isPreparedMenu,
+      if (requestData.menuId != null) 'menu_id': requestData.menuId,
+    };
+    debugPrint('bloc condition2 $body');
+    var response;
+    try {
+      response = _apiClient.setCondition(body);
+      debugPrint('condition ${response.toString()}');
+    } catch (e) {
+      debugPrint('condition error ${e}');
+    }
+    return response;
+  }
+
+  @override
+  NetworkResult setUserReservePackage(ConditionRequestData requestData) {
     Map<String, dynamic> body = {
       if (requestData.packageId != null) 'package_id': requestData.packageId,
       if (requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,

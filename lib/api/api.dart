@@ -96,6 +96,9 @@ abstract class RestClient {
   @PATCH("/condition")
   NetworkResult<dynamic> setCondition(@Body() Map<String, dynamic> requestData);
 
+  @PATCH("/user/reserve-package")
+  NetworkResult<dynamic> setUserReservePackage(@Body() Map<String, dynamic> requestData);
+
   @PATCH("/physical-info")
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
 

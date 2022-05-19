@@ -38,6 +38,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
+
+    bloc = BillPaymentBloc();
+    bloc.getPackagePayment();
+
+    listenBloc();
   }
 
   @override
@@ -52,14 +57,6 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (!isInit) {
-      bloc = BillPaymentBloc();
-
-      bloc.setPackageItem =
-          ModalRoute.of(context)!.settings.arguments as PackageItem;
-      bloc.getPackage();
-
-      listenBloc();
-
       isInit = true;
     }
   }
@@ -201,6 +198,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
+    bloc.getPackagePayment();
   }
 
   @override

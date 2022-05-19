@@ -113,6 +113,15 @@ class BillPaymentBloc {
     });
   }
 
+  void getPackagePayment() {
+    _waiting.safeValue = true;
+    _repository.getPackagePayment().then((value) {
+      _packageItem = value.data;
+    }).whenComplete(() {
+      _waiting.safeValue = false;
+    });
+  }
+
   void getPackage() {
     _waiting.safeValue = true;
     _repository.getPackagesList().then((value) {

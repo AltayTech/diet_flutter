@@ -1,4 +1,6 @@
+import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
+import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/memory_cache.dart';
@@ -9,14 +11,22 @@ class SelectPackageSubscriptionBloc {
   SelectPackageSubscriptionBloc() {}
 
   List<PackageItem>? _list;
+  PackageItem? _packageItem;
 
   final _repository = Repository.getInstance();
 
   final _progressNetwork = BehaviorSubject<bool>();
+  final _navigateTo = LiveEvent();
 
   Stream<bool> get progressNetwork => _progressNetwork.stream;
 
+  Stream get navigateTo => _navigateTo.stream;
+
   List<PackageItem>? get packageList => _list;
+
+  PackageItem get packageItem => _packageItem!;
+
+  set setPackageItem(PackageItem packageItem) => _packageItem = packageItem;
 
   void getPackageSubscriptionList() {
     _progressNetwork.safeValue = true;
@@ -31,7 +41,16 @@ class SelectPackageSubscriptionBloc {
     });
   }
 
+  void sendPackage() {
+    ConditionRequestData requestData = ConditionRequestData();
+    requestData.packageId = _packageItem!.id;
+    _repository.setUserReservePackage(requestData).then((value) {
+      _navigateTo.fire(value.next);
+    });
+  }
+
   void dispose() {
     _progressNetwork.close();
+    _navigateTo.close();
   }
 }

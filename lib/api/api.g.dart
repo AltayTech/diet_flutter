@@ -235,6 +235,26 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<dynamic>> setUserReservePackage(requestData) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(requestData);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<dynamic>>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/reserve-package',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<PhysicalInfoData>> sendInfo(info) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

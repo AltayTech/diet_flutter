@@ -1,6 +1,8 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/subscription/select_package/bloc.dart';
+import 'package:behandam/screens/subscription/select_package/provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,8 @@ class CardPackage extends StatefulWidget {
 }
 
 class _CardPackageState extends ResourcefulState<CardPackage> {
+  late SelectPackageSubscriptionBloc bloc;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,6 +32,9 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    bloc = SelectPackageSubscriptionProvider.of(context);
+
     return _card(widget.packageItem);
   }
 
@@ -256,9 +263,12 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                 height: 7.h,
                 onPressed: () {
                   Navigator.pop(context);
-                  VxNavigator.of(context).push(
-                      Uri.parse(Routes.billSubscription),
-                      params: widget.packageItem);
+
+                  bloc.setPackageItem = widget.packageItem;
+                  bloc.sendPackage();
+
+                  VxNavigator.of(context)
+                      .push(Uri.parse(Routes.billSubscription));
                 },
                 shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(30.0),
