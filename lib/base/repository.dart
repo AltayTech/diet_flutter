@@ -163,6 +163,8 @@ abstract class Repository {
 
   NetworkResult<PackageItem> getPackagePayment();
 
+  NetworkResult<PackageItem> getReservePackageUser();
+
   NetworkResult<Price?> checkCoupon(Price price);
 
   NetworkResult<Payment> setPaymentType(Payment payment);
@@ -675,6 +677,7 @@ class _RepositoryImpl extends Repository {
   NetworkResult setUserReservePackage(ConditionRequestData requestData) {
     Map<String, dynamic> body = {
       if (requestData.packageId != null) 'package_id': requestData.packageId,
+      if (requestData.reservePackageId != null) 'reserve_package_id': requestData.reservePackageId,
       if (requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
       if (requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
       if (requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
@@ -685,7 +688,7 @@ class _RepositoryImpl extends Repository {
     debugPrint('bloc condition2 $body');
     var response;
     try {
-      response = _apiClient.setCondition(body);
+      response = _apiClient.setUserReservePackage(body);
       debugPrint('condition ${response.toString()}');
     } catch (e) {
       debugPrint('condition error ${e}');
@@ -696,6 +699,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<PackageItem> getPackagePayment() {
     var response = _apiClient.getPackageUser();
+    return response;
+  }
+
+  @override
+  NetworkResult<PackageItem> getReservePackageUser() {
+    var response = _apiClient.getReservePackageUser();
     return response;
   }
 

@@ -98,6 +98,7 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     bloc = AppBloc();
+    bloc.changeTheme(ThemeAppColor.DEFAULT);
     getToken();
 
     navigator.addListener(() {
@@ -346,7 +347,7 @@ final navigator = VxNavigator(
     Routes.listWeightAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.renewAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.reviveAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
-    RegExp(r"\/(reg|list|renew|revive|shop)(\/payment\/online\/success)"): (_, param) =>
+    RegExp(r"\/(reg|list|renew|revive|shop|subscription)(\/payment\/online\/success)"): (_, param) =>
         MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
     RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),
@@ -372,8 +373,8 @@ final navigator = VxNavigator(
     Routes.targetWeight: (_, __) => MaterialPage(child: routePage(TargetWeightScreen())),
     Routes.selectPackageSubscription: (_, __) =>
         MaterialPage(child: routePage(SelectPackageSubscriptionScreen())),
-    Routes.billSubscription: (_, params) =>
-        MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
+    Routes.billSubscription: (_, __) =>
+        MaterialPage(child: routePage(BillPaymentScreen())),
     Routes.billSubscriptionHistory: (_, params) =>
         MaterialPage(child: routePage(HistorySubscriptionPaymentScreen()), arguments: params),
   },

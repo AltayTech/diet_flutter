@@ -19,6 +19,17 @@ class AppBloc {
   void changeTheme(ThemeAppColor themeAppColor){
     AppColors(themeAppColor: themeAppColor);
 
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: AppColors.primaryColorDark,
+      // status bar color
+      statusBarBrightness: Brightness.dark,
+      //status bar brigtness
+      statusBarIconBrightness: Brightness.light,
+      //status barIcon Brightness
+      systemNavigationBarDividerColor: Colors.transparent,
+      //Navigation bar divider color
+      systemNavigationBarIconBrightness: Brightness.light, //navigation bar icon
+    ));
   }
 
   TextTheme buildTextTheme(Locale locale) {

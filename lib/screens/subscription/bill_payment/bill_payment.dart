@@ -12,6 +12,7 @@ import 'package:behandam/screens/subscription/bill_payment/payment_type.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/screens/subscription/bill_payment/purchased_subscription.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -40,7 +41,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     WidgetsBinding.instance!.addObserver(this);
 
     bloc = BillPaymentBloc();
-    bloc.getPackagePayment();
+    if (navigator.currentConfiguration!.path.contains('subscription')) {
+      bloc.getReservePackagePayment();
+    } else {
+      bloc.getPackagePayment();
+    }
 
     listenBloc();
   }
@@ -67,7 +72,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
           'listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event) {
         if (navigator.currentConfiguration!.path.contains('subscription')) {
-          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.billSubscriptionHistory));
+          VxNavigator.of(context).clearAndPushAll([
+            Uri.parse(Routes.profile),
+            Uri.parse(Routes.billSubscriptionHistory),
+            Uri(path: '/${event.next}')
+          ]);
         } else {
           VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
         }
@@ -98,13 +107,21 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     bloc.navigateTo.listen((event) {
       debugPrint('listen navigate ${event.next}');
       Payment? result = (event as NetworkResponse<Payment>).data;
-      if (bloc.isOnline == PaymentType.cardToCard) {
+      if (event.next != null) {
         Navigator.of(context).pop();
-        context.vxNav.push(Uri.parse(Routes.cardToCard));
-        /*if (event.next!.contains('card'))
-          context.vxNav.push(Uri.parse('/${(event).next}'));
-        else
-          context.vxNav.clearAndPush(Uri(path: '/${event.next}'));*/
+        if (bloc.isOnline == PaymentType.cardToCard) {
+          context.vxNav.push(Uri.parse(Routes.cardToCard));
+        } else {
+          if (navigator.currentConfiguration!.path.contains('subscription')) {
+            VxNavigator.of(context).clearAndPushAll([
+              Uri.parse(Routes.profile),
+              Uri.parse(Routes.billSubscriptionHistory),
+              Uri(path: '/${event.next}')
+            ]);
+          } else {
+            context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
+          }
+        }
       } else if (bloc.isOnline == PaymentType.online) {
         Navigator.of(context).pop();
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
@@ -128,19 +145,27 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: Toolbar(titleBar: intl.newSubscription),
-        body: TouchMouseScrollable(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                PurchasedSubscriptionWidget(),
-                Space(height: 1.h),
-                EnableDiscountBoxWidget(),
-                PaymentTypeWidget(),
-                rulesAndPaymentBtn()
-              ],
-            ),
-          ),
-        ));
+        body: StreamBuilder<bool>(
+            stream: bloc.waiting,
+            builder: (context, waiting) {
+              if (waiting.hasData &&
+                  !waiting.requireData &&
+                  bloc.packageItem != null)
+                return TouchMouseScrollable(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        PurchasedSubscriptionWidget(),
+                        Space(height: 1.h),
+                        EnableDiscountBoxWidget(),
+                        PaymentTypeWidget(),
+                        rulesAndPaymentBtn()
+                      ],
+                    ),
+                  ),
+                );
+              return Progress();
+            }));
   }
 
   Widget rulesAndPaymentBtn() {

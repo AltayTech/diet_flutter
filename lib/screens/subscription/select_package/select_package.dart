@@ -3,6 +3,7 @@ import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/subscription/card_package.dart';
 import 'package:behandam/screens/subscription/select_package/bloc.dart';
+import 'package:behandam/screens/subscription/select_package/provider.dart';
 import 'package:behandam/screens/widget/box_end_date_subscription.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -65,10 +66,11 @@ class _SelectPackageSubscriptionScreenState
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: Toolbar(titleBar: intl.reviveSubscription),
-        body: body());
+    return SelectPackageSubscriptionProvider(bloc,
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: Toolbar(titleBar: intl.reviveSubscription),
+            body: body()));
   }
 
   Widget body() {
@@ -90,7 +92,8 @@ class _SelectPackageSubscriptionScreenState
                     padding: EdgeInsets.only(
                         left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
                     child: BoxEndTimeSubscription(
-                        time: '${MemoryApp.termPackage!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
+                        time:
+                            '${MemoryApp.termPackage!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
                         mainAxisAlignment: MainAxisAlignment.center),
                   ),
                   Container(
@@ -111,10 +114,9 @@ class _SelectPackageSubscriptionScreenState
                                     physics: ClampingScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: bloc.packageList!.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) =>
-                                            CardPackage(
-                                                bloc.packageList![index]))
+                                    itemBuilder: (BuildContext context,
+                                            int index) =>
+                                        CardPackage(bloc.packageList![index]))
                                 : Container(
                                     height: 20.h,
                                     child: Center(

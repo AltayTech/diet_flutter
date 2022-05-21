@@ -117,6 +117,17 @@ class BillPaymentBloc {
     _waiting.safeValue = true;
     _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
+      _packageItem!.index = 0;
+    }).whenComplete(() {
+      _waiting.safeValue = false;
+    });
+  }
+
+  void getReservePackagePayment() {
+    _waiting.safeValue = true;
+    _repository.getReservePackageUser().then((value) {
+      _packageItem = value.data;
+      _packageItem!.index = 0;
     }).whenComplete(() {
       _waiting.safeValue = false;
     });

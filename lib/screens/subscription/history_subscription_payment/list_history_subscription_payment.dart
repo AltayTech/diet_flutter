@@ -112,7 +112,7 @@ class _ListHistorySubscriptionPaymentWidget
                 ),
                 Expanded(
                   child: Text(
-                    '${subscriptionsItem.createdAt!.split("T")[1].substring(0, 5)} ${DateTimeUtils.formatCustomDate(subscriptionsItem.createdAt!.split("T")[0])}',
+                    '${DateTimeUtils.getTime(subscriptionsItem.createdAt!)} ${DateTimeUtils.formatCustomDate(subscriptionsItem.createdAt!.split("T")[0])}',
                     softWrap: false,
                     textAlign: TextAlign.end,
                     style: typography.caption!.copyWith(color: Colors.black, fontSize: 8.sp),

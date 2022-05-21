@@ -215,13 +215,16 @@ abstract class RestClient {
   @GET("/user/package")
   NetworkResult<PackageItem> getPackageUser();
 
+  @GET("/user/reserve-package")
+  NetworkResult<PackageItem> getReservePackageUser();
+
   @POST("/check-coupon")
   NetworkResult<Price?> checkCoupon(@Body() Price price);
 
   @POST("/payment")
   NetworkResult<Payment> selectPayment(@Body() Payment payment);
 
-  @POST("/payment/reserve-packages")
+  @POST("/user/reserve-packages")
   NetworkResult<Payment> selectPaymentReservePackage(@Body() Payment payment);
 
   @GET("/next-step")

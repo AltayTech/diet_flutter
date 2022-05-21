@@ -27,13 +27,13 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    bloc = SelectPackageSubscriptionBloc();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    bloc = SelectPackageSubscriptionProvider.of(context);
 
     return _card(widget.packageItem);
   }

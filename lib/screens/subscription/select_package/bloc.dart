@@ -43,7 +43,7 @@ class SelectPackageSubscriptionBloc {
 
   void sendPackage() {
     ConditionRequestData requestData = ConditionRequestData();
-    requestData.packageId = _packageItem!.id;
+    requestData.reservePackageId = _packageItem!.id;
     _repository.setUserReservePackage(requestData).then((value) {
       _navigateTo.fire(value.next);
     });

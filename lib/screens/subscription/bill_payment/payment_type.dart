@@ -300,7 +300,10 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                       return Expanded(
                         child: Text(
                           usedDiscount.requireData
-                              ? '${packageItem.price!.totalPrice} ${intl.toman}'
+                              ? packageItem.price!.totalPrice != 0 &&
+                                      packageItem.price!.totalPrice != null
+                                  ? '${packageItem.price!.totalPrice} ${intl.toman}'
+                                  : intl.free
                               : '${packageItem.price!.saleAmount} ${intl.toman}',
                           softWrap: false,
                           textAlign: TextAlign.end,
