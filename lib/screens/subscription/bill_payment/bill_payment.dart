@@ -3,7 +3,6 @@ import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
-import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
@@ -15,7 +14,6 @@ import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
-import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/custom_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -68,8 +66,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
 
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
-      debugPrint(
-          'listen online payment ${navigator.currentConfiguration?.path}');
+      debugPrint('listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event) {
         if (navigator.currentConfiguration!.path.contains('subscription')) {
           VxNavigator.of(context).clearAndPushAll([
@@ -82,13 +79,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
         }
       } else {
         if (event != null && !event) if (bloc.packageItem!.price!.type! == 2) {
-          VxNavigator.of(context).clearAndPushAll(
-              [Uri.parse(Routes.profile), Uri.parse(Routes.paymentFail)]);
+          VxNavigator.of(context)
+              .clearAndPushAll([Uri.parse(Routes.profile), Uri.parse(Routes.paymentFail)]);
         } else {
-          VxNavigator.of(context).clearAndPushAll([
-            Uri.parse('/reg${Routes.regimeType}'),
-            Uri.parse(Routes.paymentFail)
-          ]);
+          VxNavigator.of(context).clearAndPushAll(
+              [Uri.parse('/reg${Routes.regimeType}'), Uri.parse(Routes.paymentFail)]);
         }
         else
           Navigator.of(context).pop();
@@ -144,13 +139,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   Widget body() {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: Toolbar(titleBar: intl.newSubscription),
+        appBar: Toolbar(titleBar: intl.paymentFinalBill),
         body: StreamBuilder<bool>(
             stream: bloc.waiting,
             builder: (context, waiting) {
-              if (waiting.hasData &&
-                  !waiting.requireData &&
-                  bloc.packageItem != null)
+              if (waiting.hasData && !waiting.requireData && bloc.packageItem != null)
                 return TouchMouseScrollable(
                   child: SingleChildScrollView(
                     child: Column(
@@ -186,14 +179,12 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
                       onTap: () {
                         if (checkedRules.requireData) {
                           DialogUtils.showDialogProgress(context: context);
-                          if (navigator.currentConfiguration!.path
-                              .contains('subscription'))
+                          if (navigator.currentConfiguration!.path.contains('subscription'))
                             bloc.selectUserPaymentSubscription();
                           else
                             bloc.selectUserPayment();
                         } else {
-                          Utils.getSnackbarMessage(
-                              context, intl.checkTermsAndConditions);
+                          Utils.getSnackbarMessage(context, intl.checkTermsAndConditions);
                         }
                       })
                 ],
