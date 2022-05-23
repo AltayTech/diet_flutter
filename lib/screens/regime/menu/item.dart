@@ -15,7 +15,7 @@ class MenuItem extends StatelessWidget {
     Key? key,
     required this.onClick,
     required this.menu,
-  }) : super(key: key);
+  }): super(key: key);
 
   final Function onClick;
   final Menu menu;

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:behandam/data/entity/psychology/plan.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:rxdart/rxdart.dart';
 

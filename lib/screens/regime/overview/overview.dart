@@ -1,10 +1,7 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
-import 'package:behandam/screens/regime/diet_hostory/bloc.dart';
 import 'package:behandam/screens/regime/overview/bloc.dart';
-import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -12,7 +9,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:velocity_x/src/extensions/context_ext.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../routes.dart';

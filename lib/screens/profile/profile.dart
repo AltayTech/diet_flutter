@@ -318,8 +318,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   Widget fitaminBanner() {
     return Column(
       children: [
-        if (profileBloc.userInfo != null &&
-            profileBloc.userInfo.hasFitaminService != null &&
+        if (profileBloc.userInfo.hasFitaminService != null &&
             profileBloc.userInfo.hasFitaminService!)
           Container(
             width: 70.w,
@@ -338,8 +337,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                   context.isRtl),
             ),
           ),
-        if (profileBloc.userInfo != null &&
-            (profileBloc.userInfo.hasFitaminService != null &&
+        if ((profileBloc.userInfo.hasFitaminService != null &&
                 profileBloc.userInfo.hasFitaminService!))
           Space(height: 3.h),
       ],

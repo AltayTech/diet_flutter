@@ -11,7 +11,6 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:shamsi_date/shamsi_date.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class PsychologyCalenderScreen extends StatefulWidget {
@@ -136,7 +135,7 @@ class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalender
                                                                 date.date!),
                                                             style: TextStyle(fontSize: 8.sp))),
                                                     Text(
-                                                        date == null || date.jDate == null
+                                                        date.jDate == null
                                                             ? ''
                                                             : date.jDate
                                                                 .toString()

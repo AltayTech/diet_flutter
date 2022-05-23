@@ -6,10 +6,8 @@ import 'package:behandam/screens/ticket/ticket_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class TicketItemWidget extends StatefulWidget {
@@ -81,7 +79,7 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
                           onPressed: () {
                             Navigator.of(context).pop(true);
                           },
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                         Space(width: 2.w),
                         MaterialButton(

@@ -9,9 +9,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class ToolbarEditProfile extends StatefulWidget {
   ToolbarEditProfile();

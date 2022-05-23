@@ -2,7 +2,6 @@ import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';

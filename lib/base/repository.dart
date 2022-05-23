@@ -6,7 +6,6 @@ import 'package:behandam/api/interceptor/logger.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
-import 'package:behandam/data/entity/filter/filter.dart';
 import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
@@ -55,7 +54,6 @@ import '../data/entity/auth/sign_in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/daily_message.dart';
 import 'network_response.dart';
 
 enum FoodDietPdf { TERM, WEEK }

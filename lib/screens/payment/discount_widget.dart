@@ -4,7 +4,6 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:persian_number_utility/src/extensions.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 import 'bloc.dart';
 import 'provider.dart';

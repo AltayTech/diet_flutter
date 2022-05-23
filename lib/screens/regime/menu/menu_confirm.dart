@@ -1,7 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/regime/menu/item.dart';
+import 'package:behandam/screens/regime/menu/item.dart' as menuItem;
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -123,7 +123,7 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
               child: Column(
                 children: [
                   Space(height: 2.h),
-                  MenuItem(
+                  menuItem.MenuItem(
                     menu: snapshot.requireData!,
                     onClick: () {},
                   ),

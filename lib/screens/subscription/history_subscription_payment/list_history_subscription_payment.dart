@@ -1,13 +1,9 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/bloc.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/provider.dart';
 import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 

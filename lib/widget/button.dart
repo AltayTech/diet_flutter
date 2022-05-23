@@ -1,4 +1,3 @@
-import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 Widget button(Color btnColor,String txt,Size size,Function press){
