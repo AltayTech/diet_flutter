@@ -14,13 +14,7 @@ import 'package:behandam/utils/device.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:behandam/extensions/stream.dart';
-
-enum PaymentDate {
-  today,
-  customDate
-}
-
+enum PaymentDate { today, customDate }
 
 enum ProductType {
   SHOP,
@@ -29,7 +23,7 @@ enum ProductType {
 
 class PaymentBloc {
   PaymentBloc() {
-    _waiting.safeValue = false;
+    _waiting.safeValue = true;
     _discountLoading.value = false;
     _selectedDateType.value = PaymentDate.today;
 
@@ -128,8 +122,7 @@ class PaymentBloc {
     _repository.newPayment(newInvoice).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
-          '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split(
-              "_")[0]}_payment_cart_record');
+              '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
       MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
       _navigateTo.fire(value.next);
     }).whenComplete(() => _popLoading.fire(true));
@@ -152,17 +145,15 @@ class PaymentBloc {
       Payment payment = new Payment();
       payment.originId = kIsWeb
           ? 0
-          : Device
-          .get()
-          .isIos
-          ? 2
-          : 3;
+          : Device.get().isIos
+              ? 2
+              : 3;
       payment.coupon = discountCode;
       payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
           ? 2
           : isOnline
-          ? 0
-          : 1;
+              ? 0
+              : 1;
       payment.packageId = packageItem!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);

@@ -78,6 +78,8 @@ class MenuItem extends StatelessWidget {
                           style: typography.caption?.apply(
                             fontSizeDelta: -2,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.start,
                           softWrap: true,
                         ),

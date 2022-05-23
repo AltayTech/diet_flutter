@@ -102,7 +102,7 @@ class _AppState extends State<App> {
     getToken();
 
     navigator.addListener(() {
-      debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
+    //  debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
       if (navigator.currentConfiguration!.path == "/") {
         navigator.routeManager.replace(Uri.parse(Routes.splash));
       } else if (DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)) {

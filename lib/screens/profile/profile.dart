@@ -176,7 +176,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                                 ),
                               ],
                             );
-                          return Progress();
+                          return EmptyBox();
                         }),
                   ),
                   Space(height: 1.h),

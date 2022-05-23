@@ -7,6 +7,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/payment/discount_widget.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -120,10 +121,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
             if (snapshot.hasData && snapshot.data == false) {
               return content();
             } else {
-              return SpinKitCircle(
-                size: 7.w,
-                color: AppColors.primary,
-              );
+              return Progress();
             }
           },
         ),

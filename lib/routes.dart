@@ -86,8 +86,8 @@ abstract class Routes {
   static const shopPaymentOnlineFail = '/shop/payment/online/fail';
   static const dailyMessage = '/dailyMessage';
   static const privacyApp = '/privacy-policy';
-  static const selectPackageSubscription = '/subscription/select-package';
-  static const billSubscription = '/subscription/bill';
+  static const selectPackageSubscription = '/subscription';
+  static const billSubscription = '/subscription/payment/bill';
   static const billSubscriptionHistory = '/subscription/history';
 
   /// All available routes to Navigator

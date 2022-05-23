@@ -102,6 +102,9 @@ class BillPaymentBloc {
       _discountInfo = value.data;
       _packageItem!.price!.totalPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
+     if( _discountInfo!.finalPrice==0){
+       onPaymentTap = PaymentType.online;
+     }
       _online.value = true;
       MemoryApp.analytics!.logEvent(name: "discount_code_success");
     }).catchError((err) {
