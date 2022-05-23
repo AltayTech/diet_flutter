@@ -82,8 +82,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
           VxNavigator.of(context)
               .clearAndPushAll([Uri.parse(Routes.profile), Uri.parse(Routes.paymentFail)]);
         } else {
-          VxNavigator.of(context).clearAndPushAll(
-              [Uri.parse('/reg${Routes.regimeType}'), Uri.parse(Routes.paymentFail)]);
+          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
         }
         else
           Navigator.of(context).pop();
