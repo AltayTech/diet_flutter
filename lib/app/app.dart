@@ -98,10 +98,10 @@ class _AppState extends State<App> {
     super.initState();
     bloc = AppBloc();
     bloc.changeTheme(ThemeAppColor.DEFAULT);
-    getToken();
+    setTokenToMemoryApp();
 
     navigator.addListener(() {
-    //  debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
+      //  debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
       if (navigator.currentConfiguration!.path == "/") {
         navigator.routeManager.replace(Uri.parse(Routes.splash));
       } else if (DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)) {
@@ -114,7 +114,7 @@ class _AppState extends State<App> {
     });
   }
 
-  getToken() async {
+  void setTokenToMemoryApp() async {
     MemoryApp.token = await AppSharedPreferences.authToken;
     debugPrint('init token ${MemoryApp.token}');
   }
@@ -166,7 +166,9 @@ class _AppState extends State<App> {
           primaryColorDark: AppColors.primaryColorDark,
           scaffoldBackgroundColor: AppColors.scaffold,
           snackBarTheme: SnackBarThemeData(
-              contentTextStyle: AppTypography(locale).caption.copyWith(color: Colors.white,),
+              contentTextStyle: AppTypography(locale).caption.copyWith(
+                    color: Colors.white,
+                  ),
               behavior: SnackBarBehavior.floating,
               backgroundColor: Colors.black54,
               elevation: 0,
@@ -346,8 +348,8 @@ final navigator = VxNavigator(
     Routes.listWeightAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.renewAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.reviveAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
-    RegExp(r"\/(reg|list|renew|revive|shop|subscription)(\/payment\/online\/success)"): (_, param) =>
-        MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
+    RegExp(r"\/(reg|list|renew|revive|shop|subscription)(\/payment\/online\/success)"):
+        (_, param) => MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
     RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),
     RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) =>
@@ -372,8 +374,7 @@ final navigator = VxNavigator(
     Routes.targetWeight: (_, __) => MaterialPage(child: routePage(TargetWeightScreen())),
     Routes.selectPackageSubscription: (_, __) =>
         MaterialPage(child: routePage(SelectPackageSubscriptionScreen())),
-    Routes.billSubscription: (_, __) =>
-        MaterialPage(child: routePage(BillPaymentScreen())),
+    Routes.billSubscription: (_, __) => MaterialPage(child: routePage(BillPaymentScreen())),
     Routes.billSubscriptionHistory: (_, params) =>
         MaterialPage(child: routePage(HistorySubscriptionPaymentScreen()), arguments: params),
   },

@@ -223,7 +223,7 @@ abstract class RestClient {
   @POST("/payment")
   NetworkResult<Payment> selectPayment(@Body() Payment payment);
 
-  @POST("/user/reserve-packages")
+  @POST("/user/reserve-package")
   NetworkResult<Payment> selectPaymentReservePackage(@Body() Payment payment);
 
   @GET("/next-step")
@@ -342,7 +342,7 @@ abstract class RestClient {
   @GET("/target-weight")
   NetworkResult<TargetWeight> targetWeight();
 
-  @GET("/user/subscription/list")
+  @GET("/user/subscription/history")
   NetworkResult<ListUserSubscriptionData> getUserSubscription();
 }
 

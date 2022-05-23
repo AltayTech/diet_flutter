@@ -1,14 +1,16 @@
+import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
-import 'package:behandam/extensions/build_context.dart';
 import 'package:logifan/widgets/space.dart';
 
 class BoxEndTimeSubscription extends StatelessWidget {
   late String time;
+  late bool isExpired;
   late MainAxisAlignment mainAxisAlignment;
 
-  BoxEndTimeSubscription({required this.time, required this.mainAxisAlignment});
+  BoxEndTimeSubscription(
+      {required this.time, required this.mainAxisAlignment, required this.isExpired});
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +19,18 @@ class BoxEndTimeSubscription extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       textDirection: context.textDirectionOfLocale,
       children: [
-        ImageUtils.fromLocal("assets/images/subscription.svg",
-            width: 11.w, height: 11.w),
+        ImageUtils.fromLocal("assets/images/subscription.svg", width: 11.w, height: 11.w),
         Space(
           width: 3.w,
         ),
+        if(!isExpired)
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichText(
               textDirection: context.textDirectionOfLocale,
               text: TextSpan(
-                text: time,
+                text:  time ,
                 children: [
                   TextSpan(
                     text: ' ${context.intl.day}',
@@ -39,14 +41,12 @@ class BoxEndTimeSubscription extends StatelessWidget {
                     ),
                   )
                 ],
-                style: context.typography.bodyText1!.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'yekan',
-                    fontSize: 18.sp),
+                style: context.typography.bodyText1!
+                    .copyWith(fontWeight: FontWeight.w700, fontFamily: 'yekan', fontSize: 18.sp),
               ),
             ),
             Text(
-              context.intl.endYourTermDiet,
+               context.intl.endYourTermDiet ,
               style: context.typography.labelSmall!.copyWith(
                   fontWeight: FontWeight.w400,
                   fontFamily: 'Iransans-light',
@@ -54,7 +54,18 @@ class BoxEndTimeSubscription extends StatelessWidget {
                   color: Color(0xff212121)),
             ),
           ],
-        )
+        ),
+        if(isExpired)
+          Center(
+            child: Text(
+              context.intl.expireTerm ,
+              style: context.typography.labelSmall!.copyWith(
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Iransans-light',
+                  letterSpacing: -0.5,
+                  color: Color(0xff212121)),
+            ),
+          ),
       ],
     );
   }

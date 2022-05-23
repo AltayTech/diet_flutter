@@ -92,6 +92,9 @@ class _SelectPackageSubscriptionScreenState
                     child: BoxEndTimeSubscription(
                         time:
                             '${MemoryApp.termPackage!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
+                        isExpired:
+                        MemoryApp.termPackage!.subscriptionTermData!.currentSubscriptionRemainingDays! ==
+                            0,
                         mainAxisAlignment: MainAxisAlignment.center),
                   ),
                   Container(

@@ -1039,7 +1039,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Payment>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/user/reserve-packages',
+                .compose(_dio.options, '/user/reserve-package',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<Payment>.fromJson(
@@ -1777,7 +1777,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ListUserSubscriptionData>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/user/subscription/list',
+                .compose(_dio.options, '/user/subscription/history',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<ListUserSubscriptionData>.fromJson(

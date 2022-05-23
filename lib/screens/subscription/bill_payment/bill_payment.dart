@@ -104,18 +104,16 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
       Payment? result = (event as NetworkResponse<Payment>).data;
       if (event.next != null) {
         Navigator.of(context).pop();
-        if (bloc.isOnline == PaymentType.cardToCard) {
+        if (navigator.currentConfiguration!.path.contains('subscription')) {
+          VxNavigator.of(context).clearAndPushAll([
+            Uri.parse(Routes.profile),
+            Uri.parse(Routes.billSubscriptionHistory),
+            Uri(path: '/${event.next}')
+          ]);
+        }else if (bloc.isOnline == PaymentType.cardToCard) {
           context.vxNav.push(Uri.parse(Routes.cardToCard));
         } else {
-          if (navigator.currentConfiguration!.path.contains('subscription')) {
-            VxNavigator.of(context).clearAndPushAll([
-              Uri.parse(Routes.profile),
-              Uri.parse(Routes.billSubscriptionHistory),
-              Uri(path: '/${event.next}')
-            ]);
-          } else {
             context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
-          }
         }
       } else if (bloc.isOnline == PaymentType.cardToCard) {
         Navigator.of(context).pop();

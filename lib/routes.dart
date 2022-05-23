@@ -89,7 +89,7 @@ abstract class Routes {
   static const selectPackageSubscription = '/subscription';
   static const billSubscription = '/subscription/payment/bill';
   static const billSubscriptionHistory = '/subscription/history';
-
+  static const cardToCardSubscription = '/subscription/payment/card';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

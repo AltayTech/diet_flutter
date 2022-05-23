@@ -143,42 +143,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 textDirection: context.textDirectionOfLocale,
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: StreamBuilder<TermPackage>(
-                        stream: profileBloc.termPackage,
-                        builder: (context, termPackage) {
-                          if (termPackage.hasData)
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                BoxEndTimeSubscription(
-                                  time:
-                                      '${termPackage.data!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                ),
-                                StreamBuilder<SubscriptionPendingData?>(
-                                  stream: profileBloc.subscriptionPending,
-                                  builder: (context, subscriptionPending) {
-                                    if (subscriptionPending.data == null)
-                                      return SubmitButton(
-                                        onTap: () {
-                                          VxNavigator.of(context)
-                                              .push(Uri.parse(Routes.selectPackageSubscription));
-                                        },
-                                        label: intl.reviveSubscription,
-                                        size: Size(35.w, 5.h),
-                                      );
-                                    else
-                                      return EmptyBox();
-                                  },
-                                ),
-                              ],
-                            );
-                          return EmptyBox();
-                        }),
-                  ),
+                  subscriptionBox(),
                   Space(height: 1.h),
                   StreamBuilder<SubscriptionPendingData?>(
                     stream: profileBloc.subscriptionPending,
@@ -338,7 +303,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
             ),
           ),
         if ((profileBloc.userInfo.hasFitaminService != null &&
-                profileBloc.userInfo.hasFitaminService!))
+            profileBloc.userInfo.hasFitaminService!))
           Space(height: 3.h),
       ],
     );
@@ -380,6 +345,58 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
       softWrap: true,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.overline!.copyWith(fontWeight: FontWeight.w700),
+    );
+  }
+
+  Widget subscriptionBox() {
+    return Container(
+      alignment: Alignment.center,
+      child: StreamBuilder<TermPackage>(
+          stream: profileBloc.termPackage,
+          builder: (context, termPackage) {
+            if (termPackage.hasData)
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  BoxEndTimeSubscription(
+                    time:
+                        '${termPackage.data!.subscriptionTermData!.currentSubscriptionRemainingDays! + termPackage.data!.subscriptionTermData!.reservedSubscriptionsDuration!}',
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    isExpired:
+                        termPackage.data!.subscriptionTermData!.currentSubscriptionRemainingDays! ==
+                            0,
+                  ),
+                  StreamBuilder<SubscriptionPendingData?>(
+                    stream: profileBloc.subscriptionPending,
+                    builder: (context, subscriptionPending) {
+                      if (subscriptionPending.data == null)
+                        return termPackage
+                                    .data!.subscriptionTermData!.currentSubscriptionRemainingDays! >
+                                0
+                            ? SubmitButton(
+                                onTap: () {
+                                  VxNavigator.of(context)
+                                      .push(Uri.parse(Routes.selectPackageSubscription));
+                                },
+                                label: intl.reviveSubscription,
+                                size: Size(35.w, 5.h),
+                              )
+                            : SubmitButton(
+                                onTap: () {
+                                  VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
+                                },
+                                label: intl.newSubscription,
+                                size: Size(35.w, 5.h),
+                              );
+                      else
+                        return EmptyBox();
+                    },
+                  ),
+                ],
+              );
+            return Progress();
+          }),
     );
   }
 
