@@ -122,6 +122,9 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
             context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
           }
         }
+      } else if (bloc.isOnline == PaymentType.cardToCard) {
+        Navigator.of(context).pop();
+        context.vxNav.push(Uri.parse(Routes.cardToCard));
       } else if (bloc.isOnline == PaymentType.online) {
         Navigator.of(context).pop();
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
