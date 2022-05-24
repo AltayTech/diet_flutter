@@ -5,6 +5,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/enable_discount_box.dart';
 import 'package:behandam/screens/subscription/bill_payment/payment_type.dart';
@@ -30,7 +31,6 @@ class BillPaymentScreen extends StatefulWidget {
 class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     with WidgetsBindingObserver {
   late BillPaymentBloc bloc;
-  late bool isInit = false;
 
   @override
   void initState() {
@@ -59,28 +59,31 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    if (!isInit) {
-      isInit = true;
-    }
   }
 
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
       debugPrint('listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event) {
+        MemoryApp.isShowDialog = false;
         if (navigator.currentConfiguration!.path.contains('subscription')) {
           VxNavigator.of(context).clearAndPushAll([
             Uri.parse(Routes.profile),
             Uri.parse(Routes.billSubscriptionHistory),
-            Uri(path: '/${event.next}')
+            Uri.parse(Routes.subscriptionPaymentOnlineSuccess)
           ]);
+          eventBus.fire(true);
         } else {
-          VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
+          VxNavigator.of(context).clearAndPush(Uri.parse("/${bloc.path}"));
         }
       } else {
+        MemoryApp.isShowDialog = false;
         if (event != null && !event) if (bloc.packageItem!.price!.type! == 2) {
-          VxNavigator.of(context)
-              .clearAndPushAll([Uri.parse(Routes.profile), Uri.parse(Routes.paymentFail)]);
+          VxNavigator.of(context).clearAndPushAll([
+            Uri.parse(Routes.profile),
+            Uri.parse(Routes.billSubscriptionHistory),
+            Uri.parse(Routes.subscriptionPaymentOnlineFail)
+          ]);
         } else {
           VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
         }
@@ -90,11 +93,13 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     });
 
     bloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, intl.offError);
     });
 
     bloc.popDialog.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
 
@@ -102,28 +107,24 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
       debugPrint('listen navigate ${event.next}');
       Payment? result = (event as NetworkResponse<Payment>).data;
       if (event.next != null) {
-        Navigator.of(context).pop();
         if (navigator.currentConfiguration!.path.contains('subscription')) {
           VxNavigator.of(context).clearAndPushAll([
             Uri.parse(Routes.profile),
             Uri.parse(Routes.billSubscriptionHistory),
-            Uri(path: '/${event.next}')
+            Uri.parse(Routes.cardToCardSubscription),
           ]);
-        }else if (bloc.isOnline == PaymentType.cardToCard) {
+        } else if (bloc.isOnline == PaymentType.cardToCard) {
           context.vxNav.push(Uri.parse(Routes.cardToCard));
         } else {
-            context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
+          context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
         }
       } else if (bloc.isOnline == PaymentType.cardToCard) {
-        Navigator.of(context).pop();
         context.vxNav.push(Uri.parse(Routes.cardToCard));
       } else if (bloc.isOnline == PaymentType.online) {
-        Navigator.of(context).pop();
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
         bloc.mustCheckLastInvoice();
         Utils.launchURL(result!.url!);
       } else {
-        Navigator.of(context).pop();
         Utils.getSnackbarMessage(context, event.message!);
       }
     });

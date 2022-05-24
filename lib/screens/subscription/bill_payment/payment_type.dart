@@ -67,9 +67,8 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                             initialData: false,
                             stream: bloc.usedDiscount,
                             builder: (context, usedDiscount) {
-                              if (
-                                  (bloc.packageItem!.price?.totalPrice == null ||
-                                      bloc.packageItem!.price!.totalPrice! > 0))
+                              if ((bloc.packageItem!.price?.totalPrice == null ||
+                                  bloc.packageItem!.price!.totalPrice! > 0))
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -195,20 +194,30 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
+                flex: 2,
                 child: Text(
                   packageItem.name!,
-                  softWrap: false,
+                  softWrap: true,
                   textAlign: TextAlign.start,
                   style: typography.caption!
                       .copyWith(color: AppColors.priceGreyColor, fontSize: 10.sp),
                 ),
               ),
               Expanded(
-                child: Text(
-                  '${packageItem.price!.amount} ${intl.toman}',
-                  softWrap: false,
-                  textAlign: TextAlign.end,
-                  style: typography.caption!.copyWith(color: AppColors.priceGreyColor),
+                flex: 1,
+                child: RichText(
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  text: TextSpan(
+                    text: '${packageItem.price!.amount} ',
+                    children: [
+                      TextSpan(
+                        text: intl.toman,
+                        style: typography.overline!.copyWith(color: AppColors.priceGreyColor,fontSize: 9.sp),
+                      ),
+                    ],
+                    style: typography.caption!.copyWith(color: AppColors.priceGreyColor,fontWeight: FontWeight.w700),
+                  ),
                 ),
               ),
             ],

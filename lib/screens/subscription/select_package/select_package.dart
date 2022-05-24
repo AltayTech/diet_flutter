@@ -15,8 +15,7 @@ class SelectPackageSubscriptionScreen extends StatefulWidget {
   const SelectPackageSubscriptionScreen({Key? key}) : super(key: key);
 
   @override
-  _SelectPackageSubscriptionScreenState createState() =>
-      _SelectPackageSubscriptionScreenState();
+  _SelectPackageSubscriptionScreenState createState() => _SelectPackageSubscriptionScreenState();
 }
 
 class _SelectPackageSubscriptionScreenState
@@ -41,10 +40,7 @@ class _SelectPackageSubscriptionScreenState
       ..amount = 100000
       ..saleAmount = 56000
       ..priceableId = 12;
-    packageItem.services = [
-      ServicePackage()..name = 'رژیم',
-      ServicePackage()..name = 'پشتیبانی'
-    ];
+    packageItem.services = [ServicePackage()..name = 'رژیم', ServicePackage()..name = 'پشتیبانی'];
     packageItem2 = PackageItem();
     packageItem2 = PackageItem();
     packageItem2.index = 1;
@@ -87,13 +83,13 @@ class _SelectPackageSubscriptionScreenState
                       color: Colors.white,
                     ),
                     margin: EdgeInsets.only(top: 2.h),
-                    padding: EdgeInsets.only(
-                        left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
+                    padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
                     child: BoxEndTimeSubscription(
                         time:
-                            '${MemoryApp.termPackage!.subscriptionTermData!.currentSubscriptionRemainingDays!}',
-                        isExpired:
-                        MemoryApp.termPackage!.subscriptionTermData!.currentSubscriptionRemainingDays! ==
+                            '${MemoryApp.termPackage!.subscriptionTermData!.currentSubscriptionRemainingDays!
+                                + MemoryApp.termPackage!.subscriptionTermData!.reservedSubscriptionsDuration!}',
+                        isExpired: MemoryApp.termPackage!.subscriptionTermData!
+                                .currentSubscriptionRemainingDays! ==
                             0,
                         mainAxisAlignment: MainAxisAlignment.center),
                   ),
@@ -107,22 +103,18 @@ class _SelectPackageSubscriptionScreenState
                     child: StreamBuilder<bool>(
                         stream: bloc.progressNetwork,
                         builder: (context, progressNetwork) {
-                          if (progressNetwork.hasData &&
-                              !progressNetwork.requireData)
-                            return bloc.packageList != null &&
-                                    bloc.packageList!.length > 0
+                          if (progressNetwork.hasData && !progressNetwork.requireData)
+                            return bloc.packageList != null && bloc.packageList!.length > 0
                                 ? ListView.builder(
                                     physics: ClampingScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: bloc.packageList!.length,
-                                    itemBuilder: (BuildContext context,
-                                            int index) =>
+                                    itemBuilder: (BuildContext context, int index) =>
                                         CardPackage(bloc.packageList![index]))
                                 : Container(
                                     height: 20.h,
                                     child: Center(
-                                        child: Text(
-                                            intl.subscriptionPackageNotAvailable,
+                                        child: Text(intl.subscriptionPackageNotAvailable,
                                             style: typography.caption)),
                                   );
 

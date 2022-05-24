@@ -1,7 +1,9 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card/card_info.dart';
 import 'package:behandam/screens/payment/debit_card/card_owner_box.dart';
@@ -38,13 +40,14 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   void listenBloc() {
     bloc.navigateTo.listen((event) {
       if (navigator.currentConfiguration!.path.contains('subscription')) {
-        VxNavigator.of(context).clearAndPush(Uri.parse('/subscription/payment/card/wait'));
+        VxNavigator.of(context).push(Uri.parse(Routes.subscriptionPaymentCardWait));
       } else {
         VxNavigator.of(context).clearAndPush(Uri.parse('/$event'));
       }
     });
 
     bloc.popLoading.listen((event) {
+      MemoryApp.isShowDialog=false;
       VxNavigator.of(context).pop();
     });
 

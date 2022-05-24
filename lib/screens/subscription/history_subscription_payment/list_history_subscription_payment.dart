@@ -75,21 +75,17 @@ class _ListHistorySubscriptionPaymentWidget
       ),
       constraints: BoxConstraints(minHeight: 8.h),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                margin: EdgeInsets.only(top: 10),
-                child: Text(
-                  subscriptionsItem.packageName ?? "",
-                  softWrap: false,
-                  style: typography.caption!.copyWith(color: Colors.black, fontSize: 10.sp),
-                ),
-              ),
-            ],
+          Padding(
+            padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+            child: Text(
+              subscriptionsItem.packageName ?? "",
+              softWrap: true,
+              maxLines: 2,
+              textAlign: TextAlign.start,
+              style: typography.caption!.copyWith(color: Colors.black, fontSize: 10.sp),
+            ),
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -158,8 +154,6 @@ class _ListHistorySubscriptionPaymentWidget
       ),
     );
   }
-
-
 
   @override
   void onRetryAfterMaintenance() {

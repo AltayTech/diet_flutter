@@ -322,11 +322,11 @@ final navigator = VxNavigator(
     Routes.psychologyReservedMeeting: (_, __) =>
         MaterialPage(child: routePage(PsychologyReservedMeetingScreen())),
     Routes.resetPasswordProfile: (_, __) => MaterialPage(child: routePage(ResetPasswordProfile())),
-    RegExp(r"\/(reg|list|renew|revive|shop)(\/payment\/online\/fail)"): (path, params) =>
-        MaterialPage(
+    RegExp(r"\/(reg|list|renew|revive|shop|subscription)(\/payment\/online\/fail)"):
+        (path, params) => MaterialPage(
             child: routePage(PaymentFailScreen()),
             arguments: path.path.contains("shop") ? ProductType.SHOP : ProductType.PACKAGE),
-    RegExp(r"\/(reg|list|renew|revive)(\/payment\/card\/reject)"): (_, __) =>
+    RegExp(r"\/(reg|list|renew|revive|subscription)(\/payment\/card\/reject)"): (_, __) =>
         MaterialPage(child: routePage(PaymentFailScreen())),
     RegExp(r"\/(reg|renew|revive)(\/activity)"): (_, __) =>
         MaterialPage(child: routePage(ActivityLevelPage())),

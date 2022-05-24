@@ -169,6 +169,8 @@ class BillPaymentBloc {
       payment.packageId = packageItem!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
+      }).whenComplete(() {
+        _popDialog.fire(false);
       });
     }
   }
@@ -194,7 +196,7 @@ class BillPaymentBloc {
       payment.packageId = packageItem!.id!;
       _repository.setPaymentTypeReservePackage(payment).then((value) {
         _navigateTo.fire(value);
-      });
+      }).whenComplete(() =>  _popDialog.fire(false));
     }
   }
 

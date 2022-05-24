@@ -88,7 +88,7 @@ abstract class Repository {
 
   NetworkResult<Help> helpBodyState(int id);
 
-  NetworkResult<UserInformation> getUser();
+  NetworkResult<UserInformation> getUser({bool invalidate = false});
 
   NetworkResult<Media> getPdfUrl(FoodDietPdf foodDietPdf);
 

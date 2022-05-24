@@ -21,12 +21,15 @@ import 'package:behandam/screens/widget/widget_icon_text_progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+EventBus eventBus = EventBus();
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen();
@@ -43,6 +46,10 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
     super.initState();
     profileBloc = ProfileBloc();
     profileBloc.getInformation();
+
+    eventBus.on<bool>().listen((event) {
+      profileBloc.fetchUserInformation(true);
+    });
     listenBloc();
   }
 
@@ -67,6 +74,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   @override
   void dispose() {
     profileBloc.dispose();
+    eventBus.destroy();
     super.dispose();
   }
 
