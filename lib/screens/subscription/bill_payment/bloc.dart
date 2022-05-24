@@ -102,9 +102,9 @@ class BillPaymentBloc {
       _discountInfo = value.data;
       _packageItem!.price!.totalPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
-     if( _discountInfo!.finalPrice==0){
-       onPaymentTap = PaymentType.online;
-     }
+      if (_discountInfo!.finalPrice == 0) {
+        onPaymentTap = PaymentType.online;
+      }
       _online.value = true;
       MemoryApp.analytics!.logEvent(name: "discount_code_success");
     }).catchError((err) {
@@ -182,14 +182,14 @@ class BillPaymentBloc {
       payment.originId = kIsWeb
           ? 0
           : Device.get().isIos
-          ? 2
-          : 3;
+              ? 2
+              : 3;
       payment.paymentTypeId =
-      (discountInfo != null && discountInfo!.finalPrice == 0)
-          ? 2
-          : isOnline == PaymentType.online
-          ? 0
-          : 1;
+          (discountInfo != null && discountInfo!.finalPrice == 0)
+              ? 2
+              : isOnline == PaymentType.online
+                  ? 0
+                  : 1;
       payment.coupon = discountCode;
       payment.packageId = packageItem!.id!;
       _repository.setPaymentTypeReservePackage(payment).then((value) {

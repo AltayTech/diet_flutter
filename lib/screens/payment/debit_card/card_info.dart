@@ -8,6 +8,7 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CardInfoWidget extends StatefulWidget {
   const CardInfoWidget({Key? key}) : super(key: key);
@@ -105,7 +106,7 @@ class _CardInfoWidgetState extends ResourcefulState<CardInfoWidget> {
                         context: context,
                         textController: _cardNumberController,
                         onDone: (val) {
-                          bloc.invoice!.cardNum = val;
+                          bloc.invoice!.cardNum = val.toString().toEnglishDigit();
                         },
                       ))),
               Space(height: 2.h),
