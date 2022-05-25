@@ -1,6 +1,8 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/psychology/calender.dart';
 import 'package:behandam/data/entity/psychology/plan.dart';
+import 'package:behandam/extensions/list.dart';
 import 'package:behandam/screens/psychology/calender_bloc.dart';
 import 'package:behandam/screens/psychology/show_adviser.dart';
 import 'package:behandam/screens/psychology/show_modal.dart';
@@ -94,77 +96,90 @@ class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalender
                                 },
                               );
                             })),
-                    StreamBuilder(
-                        stream: calenderBloc.data,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) print(snapshot.error);
+                    StreamBuilder<bool>(
+                        stream: calenderBloc.waiting,
+                        builder: (context, waiting) {
+                          if (waiting.hasData && waiting.data == false)
+                            return Container(
+                              child: StreamBuilder<CalenderOutput>(
+                                  stream: calenderBloc.data,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) print(snapshot.error);
 
-                          if (snapshot.hasData)
-                            return SizedBox(
-                              height: 250,
-                              child: GridView.count(
-                                  primary: false,
-                                  padding: const EdgeInsets.all(20),
-                                  crossAxisSpacing: 2,
-                                  mainAxisSpacing: 2,
-                                  crossAxisCount: 4,
-                                  children: [
-                                    ...calenderBloc.dates!
-                                        .map(
-                                          (date) => InkWell(
-                                            onTap: () => setState(() {
-                                              if (date.expertPlanning!.isNotEmpty) {
-                                                calenderBloc.giveInfo(date.jDate!);
-                                              } else if (date.expertPlanning == null ||
-                                                  date.expertPlanning!.isEmpty) {
-                                                calenderBloc.flag1 = false;
-                                                calenderBloc.flag2 = true;
-                                              }
-                                            }),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  color: AppColors.penColor.withOpacity(0.1)),
-                                              padding: const EdgeInsets.all(8),
-                                              child: Center(
-                                                child: Column(
-                                                  children: [
-                                                    Center(
-                                                        child: Text(
-                                                            DateTimeUtils.dateToNamesOfDay(
-                                                                date.date!),
-                                                            style: TextStyle(fontSize: 8.sp))),
-                                                    Text(
-                                                        date.jDate == null
-                                                            ? ''
-                                                            : date.jDate
-                                                                .toString()
-                                                                .substring(8, 10),
-                                                        style: TextStyle(
-                                                            fontSize: 10.sp, color: Colors.black)),
-                                                    SizedBox(height: 4.0),
-                                                    Icon(Icons.circle,
-                                                        size: date.expertPlanning == null ||
-                                                                date.expertPlanning!.isEmpty
-                                                            ? 8.0
-                                                            : 0.0,
-                                                        color: AppColors.redBar)
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                  ]),
+                                    if (snapshot.hasData &&
+                                        snapshot.data!.dates.isNotNullOrNotEmpty) {
+                                      return SizedBox(
+                                        height: 250,
+                                        child: GridView.count(
+                                            primary: false,
+                                            padding: const EdgeInsets.all(20),
+                                            crossAxisSpacing: 2,
+                                            mainAxisSpacing: 2,
+                                            crossAxisCount: 4,
+                                            children: [
+                                              ...calenderBloc.dates!
+                                                  .map(
+                                                    (date) => InkWell(
+                                                      onTap: () => setState(() {
+                                                        if (date.expertPlanning!.isNotEmpty) {
+                                                          calenderBloc.giveInfo(date.jDate!);
+                                                        } else if (date.expertPlanning == null ||
+                                                            date.expertPlanning!.isEmpty) {
+                                                          calenderBloc.flag1 = false;
+                                                          calenderBloc.flag2 = true;
+                                                        }
+                                                      }),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(10),
+                                                            color: AppColors.penColor
+                                                                .withOpacity(0.1)),
+                                                        padding: const EdgeInsets.all(8),
+                                                        child: Center(
+                                                          child: Column(
+                                                            children: [
+                                                              Center(
+                                                                  child: Text(
+                                                                      DateTimeUtils
+                                                                          .dateToNamesOfDay(
+                                                                              date.date!),
+                                                                      style: TextStyle(
+                                                                          fontSize: 8.sp))),
+                                                              Text(
+                                                                  date.jDate == null
+                                                                      ? ''
+                                                                      : date.jDate
+                                                                          .toString()
+                                                                          .substring(8, 10),
+                                                                  style: TextStyle(
+                                                                      fontSize: 10.sp,
+                                                                      color: Colors.black)),
+                                                              SizedBox(height: 4.0),
+                                                              Icon(Icons.circle,
+                                                                  size:
+                                                                      date.expertPlanning == null ||
+                                                                              date.expertPlanning!
+                                                                                  .isEmpty
+                                                                          ? 8.0
+                                                                          : 0.0,
+                                                                  color: AppColors.redBar)
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ]),
+                                      );
+                                    } else
+                                      return Center(
+                                          child: Text(
+                                              "زمان خالی برای رزرو روانشناس برای این هفته وجود ندارد"));
+                                  }),
                             );
                           else
-                            return Center(
-                                child: Container(
-                                    width: 15.w,
-                                    height: 15.w,
-                                    child: CircularProgressIndicator(
-                                        color: Colors.grey, strokeWidth: 1.0)));
+                            return Center(child: Progress());
                         }),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,

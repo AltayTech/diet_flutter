@@ -309,7 +309,7 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
     RegExp(r"\/(reg|renew|revive)(\/payment\/card\/confirm)"): (_, __) =>
         MaterialPage(child: routePage(PaymentSuccessScreen())),
-    RegExp(r"\/(reg|renew|revive)(\/payment\/card)"): (_, __) =>
+    RegExp(r"\/(reg|renew|revive|subscription)(\/payment\/card)"): (_, __) =>
         MaterialPage(child: routePage(DebitCardPage())),
     Routes.vitrin: (_, __) => MaterialPage(child: routePage(VitrinScreen())),
     Routes.psychologyIntro: (_, __) => MaterialPage(child: routePage(PsychologyIntroScreen())),

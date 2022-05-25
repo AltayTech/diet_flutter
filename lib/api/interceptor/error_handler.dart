@@ -22,9 +22,9 @@ class ErrorHandlerInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) {
     if (err.error is SocketException) {
       if (err.requestOptions.method.contains("GET")) {
-        _isSendData = false;
+        _isTypeRequestGet = false;
       } else
-        _isSendData = true;
+        _isTypeRequestGet = true;
       _handleNoInternetError();
       return super.onError(err, handler);
     }
@@ -71,7 +71,7 @@ class ErrorHandlerInterceptor extends Interceptor {
   FirebaseCrashlytics get _crashlytics => FirebaseCrashlytics.instance;
 
   bool _isNetworkAlertShown = false;
-  bool _isSendData = false;
+  bool _isTypeRequestGet = false;
   bool _isMaintenanceAlertShown = false;
 
   void _showToastIfNotRelease(DioError err) async {
@@ -151,7 +151,7 @@ class ErrorHandlerInterceptor extends Interceptor {
     MemoryApp.isNetworkAlertShown = true;
     await DialogUtils.showDialogPage(context: _context!, child: NetworkAlertPage());
     MemoryApp.isNetworkAlertShown = false;
-    if (_isSendData)
+    if (_isTypeRequestGet)
       dioErrorObserver.retryForInternetConnectivity();
     else
       dioErrorObserver.retryForLoadingPage();
