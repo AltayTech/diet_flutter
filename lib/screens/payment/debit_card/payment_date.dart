@@ -108,8 +108,7 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
         if (date == PaymentDate.today) {
           bloc.setSelectedDate = DateTimeUtils.formatTodayDate();
           bloc.invoice!.payedAt = DateTime.now().toString().substring(0, 10);
-        }
-        if (date == PaymentDate.customDate) {
+        } else {
           selectDate();
         }
       },
