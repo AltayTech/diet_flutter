@@ -283,7 +283,7 @@ final navigator = VxNavigator(
     Routes.showInbox: (_, param) =>
         MaterialPage(child: routePage(ShowInboxItem()), arguments: param),
     Routes.ticketMessage: (_, param) =>
-        MaterialPage(child: routePage(TicketTab()), name: 'message'),
+        VxRoutePage(child: routePage(TicketTab()), pageName: 'message'),
     Routes.ticketCall: (_, param) => VxRoutePage(child: routePage(TicketTab()), pageName: 'call'),
     Routes.helpType: (_, param) =>
         MaterialPage(child: routePage(HelpTypeScreen()), arguments: param),

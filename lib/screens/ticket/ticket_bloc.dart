@@ -104,11 +104,11 @@ class TicketBloc {
   Timer? _timer;
 
   void setSupportItemSelected() {
-    _supportItemSelected.value = true;
+    _supportItemSelected.safeValue = true;
   }
 
   void getTickets() {
-    _progressNetwork.value = true;
+    _progressNetwork.safeValue = true;
     _repository.getTickets().then((value) {
       print('value ==> ${value.data?.items?.reversed.toList()[0].toJson()}');
       _tempListTickets.addAll(value.data!.items!);
@@ -116,7 +116,7 @@ class TicketBloc {
     }).catchError((onError) {
       print('onError ==> ${onError.toString()}');
     }).whenComplete(() {
-      _progressNetwork.value = false;
+      _progressNetwork.safeValue = false;
     });
   }
 
@@ -141,8 +141,8 @@ class TicketBloc {
   }
 
   void changeType(TypeTicket typeTicket) {
-    _typeTicket.value = typeTicket;
-    _isShowRecorder.value = false;
+    _typeTicket.safeValue = typeTicket;
+    _isShowRecorder.safeValue = false;
 
     if (_isRecording.valueOrNull != null && _isRecording.value == true) {
       _isRecording.value = false;
@@ -152,21 +152,21 @@ class TicketBloc {
   }
 
   void showShowSendButton(bool show) {
-    _isShowSendButton.value = show;
+    _isShowSendButton.safeValue = show;
   }
 
   void recording() {
-    _isShowRecorder.value = !(_isShowRecorder.valueOrNull ?? true);
+    _isShowRecorder.safeValue = !(_isShowRecorder.valueOrNull ?? true);
   }
 
   void getSupportList() {
-    _progressNetwork.value = true;
+    _progressNetwork.safeValue = true;
     _repository.getDepartmentItems().then((value) {
-      _SupportItems.value = value.data!.items;
+      _SupportItems.safeValue = value.data!.items;
     }).catchError((onError) {
       print('onError ==> ${onError.toString()}');
     }).whenComplete(() {
-      _progressNetwork.value = false;
+      _progressNetwork.safeValue = false;
     });
   }
 
@@ -186,7 +186,7 @@ class TicketBloc {
   void record() async {
     if (_isRecording.valueOrNull != null && _isRecording.value) {
       print('recording = > stop');
-      _isRecording.value = false;
+      _isRecording.safeValue = false;
       if (_timer != null) _timer!.cancel();
       stopRecorder(true);
     } else {
@@ -242,7 +242,7 @@ class TicketBloc {
       } else
         start += 1;
 
-      _showTime.value = "${NumberFormat('00').format(minute)}:${NumberFormat('00').format(start)}";
+      _showTime.safeValue = "${NumberFormat('00').format(minute)}:${NumberFormat('00').format(start)}";
       print('time');
     });
   }
@@ -251,16 +251,16 @@ class TicketBloc {
     _timer?.cancel();
     if (outputFile != null && await outputFile!.exists()) await outputFile!.delete();
     deleteImage();
-    _isShowFileAudio.value = false;
-    _isShowImage.value = false;
-    _isRecording.value = false;
+    _isShowFileAudio.safeValue = false;
+    _isShowImage.safeValue = false;
+    _isRecording.safeValue = false;
     minute = 0;
     start = 0;
-    _showTime.value = "${NumberFormat('00').format(minute)}:${NumberFormat('00').format(start)}";
+    _showTime.safeValue = "${NumberFormat('00').format(minute)}:${NumberFormat('00').format(start)}";
   }
 
   void sendTicketText() {
-    _showProgressItem.value = true;
+    _showProgressItem.safeValue = true;
     if (_isShowImage.valueOrNull != null && _isShowImage.value == true) {
       sendTicketMessage.isVoice = false;
       _repository.sendTicketFile(sendTicketMessage, imageFile!).then((value) {
