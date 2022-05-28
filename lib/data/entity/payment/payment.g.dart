@@ -11,6 +11,9 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) => Payment()
   ..paymentTypeId = json['payment_type_id'] as int?
   ..originId = json['origin_id'] as int?
   ..productId = json['product_id'] as int?
+  ..payedAt = json['payed_at'] as String?
+  ..cardOwner = json['card_owner'] as String?
+  ..cardNum = json['card_number'] as String?
   ..packageId = json['package_id'] as int?
   ..id = json['id'] as int?
   ..amount = json['amount'] as int?
@@ -22,6 +25,9 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'payment_type_id': instance.paymentTypeId,
       'origin_id': instance.originId,
       'product_id': instance.productId,
+      'payed_at': instance.payedAt,
+      'card_owner': instance.cardOwner,
+      'card_number': instance.cardNum,
       'package_id': instance.packageId,
       'id': instance.id,
       'amount': instance.amount,

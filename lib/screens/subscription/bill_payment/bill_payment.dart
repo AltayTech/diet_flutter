@@ -63,7 +63,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
 
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
-      debugPrint('listen online payment ${navigator.currentConfiguration?.path}');
+      debugPrint(
+          'listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event) {
         MemoryApp.isShowDialog = false;
         if (navigator.currentConfiguration!.path.contains('subscription')) {
@@ -113,7 +114,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
           Uri.parse(Routes.cardToCardSubscription),
         ]);
       } else if (event.next != null) {
-          context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
+        context.vxNav.push(Uri(path: '/${event.next}'));
       } else if (bloc.isOnline == PaymentType.cardToCard) {
         context.vxNav.push(Uri.parse(Routes.cardToCard));
       } else if (bloc.isOnline == PaymentType.online) {
@@ -140,7 +141,9 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
         body: StreamBuilder<bool>(
             stream: bloc.waiting,
             builder: (context, waiting) {
-              if (waiting.hasData && !waiting.requireData && bloc.packageItem != null)
+              if (waiting.hasData &&
+                  !waiting.requireData &&
+                  bloc.packageItem != null)
                 return TouchMouseScrollable(
                   child: SingleChildScrollView(
                     child: Column(
@@ -175,18 +178,28 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
                       label: intl.confirmAndPay,
                       onTap: () {
                         if (checkedRules.requireData) {
-                          DialogUtils.showDialogProgress(context: context);
-                          if (navigator.currentConfiguration!.path.contains('subscription'))
-                            bloc.selectUserPaymentSubscription();
-                          else
-                            bloc.selectUserPayment();
+                          next();
                         } else {
-                          Utils.getSnackbarMessage(context, intl.checkTermsAndConditions);
+                          Utils.getSnackbarMessage(
+                              context, intl.checkTermsAndConditions);
                         }
                       })
                 ],
               );
             }));
+  }
+
+  void next() {
+    DialogUtils.showDialogProgress(context: context);
+    if (navigator.currentConfiguration!.path.contains('subscription') &&
+        bloc.isOnline != PaymentType.cardToCard) {
+      bloc.selectUserPaymentSubscription();
+    } else if (navigator.currentConfiguration!.path.contains('subscription') &&
+        bloc.isOnline == PaymentType.cardToCard) {
+      VxNavigator.of(context).push(Uri.parse(Routes.cardToCardSubscription), params: bloc.packageItem);
+    } else {
+      bloc.selectUserPayment();
+    }
   }
 
   @override

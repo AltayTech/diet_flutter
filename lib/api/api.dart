@@ -229,6 +229,9 @@ abstract class RestClient {
   @GET("/next-step")
   ImperativeNetworkResult nextStep();
 
+  @GET("/bank-account/active-card")
+  NetworkResult<LatestInvoiceData> bankAccountActiveCard();
+
   @GET("/latest-invoice")
   NetworkResult<LatestInvoiceData> latestInvoice();
 

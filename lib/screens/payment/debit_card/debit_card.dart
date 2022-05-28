@@ -1,6 +1,7 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/routes.dart';
@@ -28,26 +29,48 @@ class DebitCardPage extends StatefulWidget {
 class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   late PaymentBloc bloc;
 
+  bool isInit = false;
+
   @override
   void initState() {
     super.initState();
-    bloc = PaymentBloc();
-    bloc.getLastInvoice();
+  }
 
-    listenBloc();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!isInit) {
+      isInit = true;
+
+      bloc = PaymentBloc();
+
+      if (navigator.currentConfiguration!.path.contains('subscription')) {
+        bloc.setPackage = ModalRoute
+            .of(context)!
+            .settings
+            .arguments as PackageItem;
+        // call new service
+        bloc.getBankAccountActiveCard();
+      } else {
+        bloc.getLastInvoice();
+      }
+
+      listenBloc();
+    }
   }
 
   void listenBloc() {
     bloc.navigateTo.listen((event) {
       if (navigator.currentConfiguration!.path.contains('subscription')) {
-        VxNavigator.of(context).push(Uri.parse(Routes.subscriptionPaymentCardWait));
+        VxNavigator.of(context)
+            .push(Uri.parse(Routes.subscriptionPaymentCardWait));
       } else {
         VxNavigator.of(context).clearAndPush(Uri.parse('/$event'));
       }
     });
 
     bloc.popLoading.listen((event) {
-      MemoryApp.isShowDialog=false;
+      MemoryApp.isShowDialog = false;
       VxNavigator.of(context).pop();
     });
 
@@ -60,8 +83,9 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
   @override
   void dispose() {
-    bloc.dispose();
     super.dispose();
+
+    bloc.dispose();
   }
 
   @override
@@ -89,15 +113,17 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
         stream: bloc.waiting,
         builder: (_, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData && !snapshot.data!) {
-            return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              CardOwnerBoxWidget(),
-              Space(height: 4.h),
-              CardInfoWidget(),
-              Space(height: 2.h),
-              PaymentDateWidget(),
-              Space(height: 2.h),
-              registerPaymentInfo()
-            ]);
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CardOwnerBoxWidget(),
+                  Space(height: 4.h),
+                  CardInfoWidget(),
+                  Space(height: 2.h),
+                  PaymentDateWidget(),
+                  Space(height: 2.h),
+                  registerPaymentInfo()
+                ]);
           }
           return Center(child: Progress());
         },
@@ -114,7 +140,11 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
               !bloc.invoice!.cardNum.isNullOrEmpty &&
               !bloc.invoice!.payedAt.isNullOrEmpty) {
             DialogUtils.showDialogProgress(context: context);
-            bloc.newPayment(bloc.invoice!);
+            if (navigator.currentConfiguration!.path.contains('subscription')) {
+              bloc.userPaymentCardToCardSubscription(bloc.invoice!);
+            } else {
+              bloc.newPayment(bloc.invoice!);
+            }
           } else
             Utils.getSnackbarMessage(context, intl.fillAllField);
         },

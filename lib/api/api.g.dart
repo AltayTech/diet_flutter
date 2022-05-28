@@ -1069,6 +1069,25 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<LatestInvoiceData>> bankAccountActiveCard() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<LatestInvoiceData>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/bank-account/active-card',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<LatestInvoiceData>.fromJson(
+      _result.data!,
+      (json) => LatestInvoiceData.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<LatestInvoiceData>> latestInvoice() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

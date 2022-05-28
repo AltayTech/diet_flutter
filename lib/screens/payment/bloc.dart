@@ -114,6 +114,8 @@ class PaymentBloc {
 
   set setDate(String date) => _date = date;
 
+  set setPackage(PackageItem package) => _packageItem = package;
+
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
   }
@@ -157,7 +159,30 @@ class PaymentBloc {
       payment.packageId = packageItem!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
-      });
+      }).whenComplete(() => _popLoading.fire(true));
+    }
+  }
+
+  void userPaymentCardToCardSubscription(LatestInvoiceData newInvoice) {
+    if (!isUsedDiscount &&
+        (discountCode != null && discountCode!.trim().isNotEmpty)) {
+      _showServerError.fireMessage('error');
+    } else {
+      Payment payment = new Payment();
+      payment.originId = kIsWeb
+          ? 0
+          : Device.get().isIos
+          ? 2
+          : 3;
+      payment.paymentTypeId = 1;
+      payment.coupon = discountCode;
+      payment.packageId = packageItem!.id!;
+      payment.cardOwner = newInvoice.cardOwner;
+      payment.cardNum = newInvoice.cardNum;
+      payment.payedAt = newInvoice.payedAt;
+      _repository.setPaymentTypeReservePackage(payment).then((value) {
+        _navigateTo.fire(value);
+      }).whenComplete(() => _popLoading.fire(true));
     }
   }
 
@@ -206,6 +231,14 @@ class PaymentBloc {
       _invoice = value.data;
       _invoice!.payedAt = DateTime.now().toString().substring(0, 10);
       _path = value.next!;
+    }).whenComplete(() => _waiting.safeValue = false);
+  }
+
+  void getBankAccountActiveCard() {
+    _waiting.safeValue = true;
+    _repository.bankAccountActiveCard().then((value) {
+      _invoice = value.data;
+      _invoice!.payedAt = DateTime.now().toString().substring(0, 10);
     }).whenComplete(() => _waiting.safeValue = false);
   }
 

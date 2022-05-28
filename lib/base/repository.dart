@@ -171,6 +171,8 @@ abstract class Repository {
 
   ImperativeNetworkResult nextStep();
 
+  NetworkResult<LatestInvoiceData> bankAccountActiveCard();
+
   NetworkResult<LatestInvoiceData> latestInvoice();
 
   NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData);
@@ -727,6 +729,13 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult nextStep() {
     var response = _apiClient.nextStep();
+    return response;
+  }
+
+  @override
+  NetworkResult<LatestInvoiceData> bankAccountActiveCard() {
+    var response = _apiClient.bankAccountActiveCard();
+    debugPrint('advice repo ${response}');
     return response;
   }
 
