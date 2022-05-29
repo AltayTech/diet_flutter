@@ -45,10 +45,8 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
       bloc = PaymentBloc();
 
       if (navigator.currentConfiguration!.path.contains('subscription')) {
-        bloc.setPackage = ModalRoute
-            .of(context)!
-            .settings
-            .arguments as PackageItem;
+        bloc.setPackage =
+            ModalRoute.of(context)!.settings.arguments as PackageItem;
         // call new service
         bloc.getBankAccountActiveCard();
       } else {
@@ -62,8 +60,10 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   void listenBloc() {
     bloc.navigateTo.listen((event) {
       if (navigator.currentConfiguration!.path.contains('subscription')) {
-        VxNavigator.of(context)
-            .push(Uri.parse(Routes.subscriptionPaymentCardWait));
+        VxNavigator.of(context).clearAndPushAll([
+          Uri.parse(Routes.profile),
+          Uri.parse(Routes.subscriptionPaymentCardWait)
+        ]);
       } else {
         VxNavigator.of(context).clearAndPush(Uri.parse('/$event'));
       }
@@ -71,7 +71,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
     bloc.popLoading.listen((event) {
       MemoryApp.isShowDialog = false;
-      VxNavigator.of(context).pop();
+      Navigator.of(context).pop();
     });
 
     bloc.selectedDateType.listen((event) {

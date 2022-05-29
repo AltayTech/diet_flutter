@@ -63,7 +63,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
       }
     });
     authBloc.showServerError.listen((event) {
-      VxNavigator.of(context).pop();
+      Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
   }

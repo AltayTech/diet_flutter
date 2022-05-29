@@ -57,7 +57,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       }
     });
     authBloc.showServerError.listen((event) {
-      VxNavigator.of(context).pop();
+      Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
   }

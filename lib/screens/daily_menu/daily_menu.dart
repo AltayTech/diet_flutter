@@ -55,7 +55,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
       bloc = ModalRoute.of(context)?.settings.arguments as FoodListBloc;
       isInitial = true;
       bloc.popLoading.listen((event) {
-        VxNavigator.of(context).pop();
+        Navigator.of(context).pop();
       });
     }
   }
