@@ -247,7 +247,6 @@ abstract class RestClient {
   @GET("/psychology/latest-invoice")
   NetworkResult<LatestInvoiceData> getInvoice();
 
-
   @GET("/activity-level")
   NetworkResult<ActivityLevelData> activityLevel();
 

@@ -79,16 +79,17 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
         }
       } else {
         MemoryApp.isShowDialog = false;
-        if (event != null && !event) if (bloc.packageItem!.price!.type! == 2) {
-          VxNavigator.of(context).clearAndPushAll([
-            Uri.parse(Routes.profile),
-            Uri.parse(Routes.billSubscriptionHistory),
-            Uri.parse(Routes.subscriptionPaymentOnlineFail)
-          ]);
-        } else {
-          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
-        }
-        else
+        if (event != null && !event) {
+          if (bloc.packageItem!.price!.type! == 2) {
+            VxNavigator.of(context).clearAndPushAll([
+              Uri.parse(Routes.profile),
+              Uri.parse(Routes.billSubscriptionHistory),
+              Uri.parse(Routes.subscriptionPaymentOnlineFail)
+            ]);
+          } else {
+            VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
+          }
+        } else
           Navigator.of(context).pop();
       }
     });
@@ -223,8 +224,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-    bloc.getPackagePayment();
+    if (navigator.currentConfiguration!.path.contains('subscription')) {
+      bloc.getReservePackagePayment();
+    } else {
+      bloc.getPackagePayment();
+    }
   }
 
   @override
