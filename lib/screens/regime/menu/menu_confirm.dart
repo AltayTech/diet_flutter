@@ -183,7 +183,6 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
 
   @override
   void onRetryLoadingPage() {
-    bloc.loadContent();
   }
 
   @override

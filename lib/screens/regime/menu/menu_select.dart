@@ -36,6 +36,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
   void initState() {
     super.initState();
     bloc = MenuSelectBloc();
+    bloc.loadContent();
     initListener();
   }
 

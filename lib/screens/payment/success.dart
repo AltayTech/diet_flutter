@@ -278,8 +278,6 @@ class _PaymentSuccessScreenState
                           onTap: () {
                             MemoryApp.analytics!
                                 .logEvent(name: "total_payment_success");
-                            MemoryApp.analytics!
-                                .logEvent(name: "total_payment_online_success");
 
                             if (navigator.currentConfiguration!.path
                                 .contains('subscription')) {
