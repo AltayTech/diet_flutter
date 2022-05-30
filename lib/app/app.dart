@@ -325,7 +325,7 @@ final navigator = VxNavigator(
     RegExp(r"\/(reg|list|renew|revive|shop|subscription)(\/payment\/online\/fail)"):
         (path, params) => MaterialPage(
             child: routePage(PaymentFailScreen()),
-            arguments: path.path.contains("shop") ? ProductType.SHOP : ProductType.PACKAGE),
+            arguments: path.path.contains("shop") ? ProductType.SHOP : ProductType.DIET),
     RegExp(r"\/(reg|list|renew|revive|subscription)(\/payment\/card\/reject)"): (_, __) =>
         MaterialPage(child: routePage(PaymentFailScreen())),
     RegExp(r"\/(reg|renew|revive)(\/activity)"): (_, __) =>

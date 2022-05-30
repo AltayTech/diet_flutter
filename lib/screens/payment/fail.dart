@@ -35,11 +35,10 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (!isInit) {
-      bloc = PaymentBloc();
       isInit = true;
-      var paymentType =
-          ModalRoute.of(context)!.settings.arguments as ProductType? ?? ProductType.PACKAGE;
-      bloc.setProductType(paymentType);
+
+      bloc = PaymentBloc();
+      bloc.setProductType();
     }
   }
 
@@ -109,13 +108,13 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
                 Space(
                   height: 2.h,
                 ),
-                if (type == ProductType.PACKAGE) noteInvoiceReject(),
+                if (type == ProductType.DIET) noteInvoiceReject(),
                 Space(height: 1.h),
                 buttonShowInformation(),
                 Space(height: 2.h),
                 informationInvoice(),
                 Space(height: 3.h),
-                if (type == ProductType.PACKAGE) buttonRetryPayment() else buttonBackToShop(),
+                if (type == ProductType.DIET) buttonRetryPayment() else buttonBackToShop(),
                 Space(height: 3.h),
               ],
             ),

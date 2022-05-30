@@ -41,11 +41,9 @@ class _PaymentSuccessScreenState
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
+
       bloc = PaymentBloc();
-      var paymentType =
-          ModalRoute.of(context)!.settings.arguments as ProductType? ??
-              ProductType.PACKAGE;
-      bloc.setProductType(paymentType);
+      bloc.setProductType();
     }
   }
 
@@ -76,10 +74,10 @@ class _PaymentSuccessScreenState
             ),
             StreamBuilder<ProductType>(
               stream: bloc.productType,
-              initialData: ProductType.PACKAGE,
+              initialData: ProductType.DIET,
               builder: (context, type) {
                 return BottomNav(
-                    currentTab: type == ProductType.PACKAGE
+                    currentTab: type == ProductType.DIET
                         ? BottomNavItem.SHOP
                         : BottomNavItem.DIET);
               },
@@ -220,7 +218,7 @@ class _PaymentSuccessScreenState
                 StreamBuilder<ProductType>(
                     stream: bloc.productType,
                     builder: (context, type) {
-                      if (type == ProductType.PACKAGE)
+                      if (type == ProductType.DIET)
                         return Column(
                           children: [
                             Text(
@@ -241,7 +239,7 @@ class _PaymentSuccessScreenState
                 StreamBuilder<ProductType>(
                     stream: bloc.productType,
                     builder: (context, type) {
-                      if (type == ProductType.SHOP)
+                      if (type.requireData == ProductType.SHOP) {
                         return Container(
                           decoration: AppDecorations.boxMild.copyWith(
                             color: AppColors.box,
@@ -274,7 +272,7 @@ class _PaymentSuccessScreenState
                             ],
                           ),
                         );
-                      else
+                      } else {
                         return SubmitButton(
                           label: intl.confirmContinue,
                           onTap: () {
@@ -292,6 +290,7 @@ class _PaymentSuccessScreenState
                             }
                           },
                         );
+                      }
                     }),
               ],
             ),

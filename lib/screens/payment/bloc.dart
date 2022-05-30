@@ -16,10 +16,7 @@ import 'package:rxdart/rxdart.dart';
 
 enum PaymentDate { today, customDate }
 
-enum ProductType {
-  SHOP,
-  PACKAGE,
-}
+enum ProductType { SHOP, DIET, SUBSCRIPTION }
 
 class PaymentBloc {
   PaymentBloc() {
@@ -141,7 +138,8 @@ class PaymentBloc {
   }
 
   void selectUserPayment() {
-    if (!isUsedDiscount && (discountCode != null && discountCode!.trim().isNotEmpty)) {
+    if (!isUsedDiscount &&
+        (discountCode != null && discountCode!.trim().isNotEmpty)) {
       _showServerError.fireMessage('error');
     } else {
       Payment payment = new Payment();
@@ -151,11 +149,12 @@ class PaymentBloc {
               ? 2
               : 3;
       payment.coupon = discountCode;
-      payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
-          ? 2
-          : isOnline
-              ? 0
-              : 1;
+      payment.paymentTypeId =
+          (discountInfo != null && discountInfo!.finalPrice == 0)
+              ? 2
+              : isOnline
+                  ? 0
+                  : 1;
       payment.packageId = packageItem!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
@@ -172,8 +171,8 @@ class PaymentBloc {
       payment.originId = kIsWeb
           ? 0
           : Device.get().isIos
-          ? 2
-          : 3;
+              ? 2
+              : 3;
       payment.paymentTypeId = 1;
       payment.coupon = discountCode;
       payment.packageId = packageItem!.id!;
@@ -266,7 +265,8 @@ class PaymentBloc {
   }
 
   void setShowInformation() {
-    _showInformation.value = _showInformation.valueOrNull == null ? true : !_showInformation.value;
+    _showInformation.value =
+        _showInformation.valueOrNull == null ? true : !_showInformation.value;
   }
 
   void shopLastInvoice() {
@@ -286,6 +286,25 @@ class PaymentBloc {
     // }
   }
 
+  void setProductType() {
+    if (navigator.currentConfiguration!.path.contains('shop')) {
+      _productType.safeValue = ProductType.SHOP;
+    } else if (navigator.currentConfiguration!.path.contains('subscription')) {
+      _productType.safeValue = ProductType.SUBSCRIPTION;
+    } else {
+      _productType.safeValue = ProductType.DIET;
+    }
+
+    sendRequest();
+  }
+
+  void sendRequest() {
+    if (_productType.value == ProductType.SHOP)
+      shopLastInvoice();
+    else
+      getLastInvoice();
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
@@ -301,17 +320,5 @@ class PaymentBloc {
     _productType.close();
     _selectedDateType.close();
     _selectedDate.close();
-  }
-
-  void setProductType(ProductType productType) {
-    _productType.safeValue = productType;
-    sendRequest();
-  }
-
-  void sendRequest() {
-    if (_productType.value == ProductType.SHOP)
-      shopLastInvoice();
-    else
-      getLastInvoice();
   }
 }
