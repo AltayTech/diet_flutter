@@ -46,7 +46,10 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
       if (navigator.currentConfiguration!.path.contains('subscription')) {
         bloc.setPackage =
-            ModalRoute.of(context)!.settings.arguments as PackageItem;
+        ModalRoute
+            .of(context)!
+            .settings
+            .arguments as PackageItem;
         // call new service
         bloc.getBankAccountActiveCard();
       } else {
@@ -139,14 +142,20 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           if (!bloc.invoice!.cardOwner.isNullOrEmpty &&
               !bloc.invoice!.cardNum.isNullOrEmpty &&
               !bloc.invoice!.payedAt.isNullOrEmpty) {
-            DialogUtils.showDialogProgress(context: context);
-            if (navigator.currentConfiguration!.path.contains('subscription')) {
-              bloc.userPaymentCardToCardSubscription(bloc.invoice!);
+            if ( bloc.invoice!.cardNum!.length == 4) {
+              DialogUtils.showDialogProgress(context: context);
+              if (navigator.currentConfiguration!.path.contains(
+                  'subscription')) {
+                bloc.userPaymentCardToCardSubscription(bloc.invoice!);
+              } else {
+                bloc.newPayment(bloc.invoice!);
+              }
             } else {
-              bloc.newPayment(bloc.invoice!);
+              Utils.getSnackbarMessage(context, intl.lastFourDigitsCardNumberIncorrect);
             }
-          } else
+          } else {
             Utils.getSnackbarMessage(context, intl.fillAllField);
+          }
         },
         size: Size(80.w, 6.h),
       ),

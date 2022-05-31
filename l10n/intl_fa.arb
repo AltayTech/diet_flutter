@@ -649,6 +649,7 @@
   "enterDataAfterPayment": "پس از پرداخت، اطلاعات زیر رو تکمیل کنید",
   "cardOwnerName": "نام و نام خانوادگی صاحب کارت",
   "lastFourDigitsCardNumber": "4 رقم آخر شماره کارت",
+  "lastFourDigitsCardNumberIncorrect": "4 رقم آخر شماره کارت صحیح نیست",
   "todayPay": "امروز واریز کردم",
   "newDate": "تاریخ جدید",
   "selectPaymentDate": "انتخاب تاریخ واریز",

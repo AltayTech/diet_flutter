@@ -181,7 +181,7 @@ class _PaymentDateWidgetState extends ResourcefulState<PaymentDateWidget> {
                           softWrap: false,
                           style: typography.caption!.copyWith(
                               color: AppColors.redDate,
-                              fontSize: 10.sp,
+                              fontSize: 9.5.sp,
                               fontWeight: FontWeight.w400),
                         );
                       }),
