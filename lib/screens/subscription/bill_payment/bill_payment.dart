@@ -108,20 +108,22 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     bloc.navigateTo.listen((event) {
       debugPrint('listen navigate ${event.next}');
       Payment? result = (event as NetworkResponse<Payment>).data;
-      if (navigator.currentConfiguration!.path.contains('subscription')) {
-        VxNavigator.of(context).clearAndPushAll([
-          Uri.parse(Routes.profile),
-          Uri.parse(Routes.billSubscriptionHistory),
-          Uri.parse(Routes.cardToCardSubscription),
-        ]);
-      } else if (event.next != null) {
-        context.vxNav.push(Uri(path: '/${event.next}'));
-      } else if (bloc.isOnline == PaymentType.cardToCard) {
-        context.vxNav.push(Uri.parse(Routes.cardToCard));
-      } else if (bloc.isOnline == PaymentType.online) {
+      if (bloc.isOnline == PaymentType.online) {
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
         bloc.mustCheckLastInvoice();
         Utils.launchURL(result!.url!);
+      } else if (bloc.isOnline == PaymentType.cardToCard) {
+        if (navigator.currentConfiguration!.path.contains('subscription')) {
+          VxNavigator.of(context).clearAndPushAll([
+            Uri.parse(Routes.profile),
+            Uri.parse(Routes.billSubscriptionHistory),
+            Uri.parse(Routes.cardToCardSubscription),
+          ]);
+        } else {
+          context.vxNav.push(Uri.parse(Routes.cardToCard));
+        }
+      } else if (event.next != null) {
+        context.vxNav.push(Uri(path: '/${event.next}'));
       } else {
         Utils.getSnackbarMessage(context, event.message!);
       }
@@ -197,7 +199,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
       bloc.selectUserPaymentSubscription();
     } else if (navigator.currentConfiguration!.path.contains('subscription') &&
         bloc.isOnline == PaymentType.cardToCard) {
-      VxNavigator.of(context).push(Uri.parse(Routes.cardToCardSubscription), params: bloc.packageItem);
+      VxNavigator.of(context).push(Uri.parse(Routes.cardToCardSubscription),
+          params: bloc.packageItem);
     } else {
       bloc.selectUserPayment();
     }
