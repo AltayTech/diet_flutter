@@ -85,12 +85,7 @@ class _SelectPackageSubscriptionScreenState
                     margin: EdgeInsets.only(top: 2.h),
                     padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
                     child: BoxEndTimeSubscription(
-                        time:
-                            '${MemoryApp.termPackage!.subscriptionTermData!.currentSubscriptionRemainingDays!
-                                + MemoryApp.termPackage!.subscriptionTermData!.reservedSubscriptionsDuration!}',
-                        isExpired: MemoryApp.termPackage!.subscriptionTermData!
-                                .currentSubscriptionRemainingDays! ==
-                            0,
+                      termPackage: MemoryApp.termPackage!,
                         mainAxisAlignment: MainAxisAlignment.center),
                   ),
                   Container(

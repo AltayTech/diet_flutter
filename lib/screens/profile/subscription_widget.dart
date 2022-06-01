@@ -104,13 +104,7 @@ class _SubscriptionWidgetState extends ResourcefulState<SubscriptionWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   BoxEndTimeSubscription(
-                    time:
-                        '${termPackage.data!.subscriptionTermData!.currentSubscriptionRemainingDays! + termPackage.data!.subscriptionTermData!.reservedSubscriptionsDuration!}',
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    isExpired:
-                        termPackage.data!.subscriptionTermData!.currentSubscriptionRemainingDays! ==
-                            0,
-                  ),
+                      mainAxisAlignment: MainAxisAlignment.start, termPackage: termPackage.data!),
                   buttonSubscription(termPackage.data),
                 ],
               );

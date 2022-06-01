@@ -114,7 +114,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
                 Space(height: 2.h),
                 informationInvoice(),
                 Space(height: 3.h),
-                if (type == ProductType.DIET) buttonRetryPayment() else buttonBackToShop(),
+                if (type != ProductType.SHOP) buttonRetryPayment() else buttonBackToShop(),
                 Space(height: 3.h),
               ],
             ),
