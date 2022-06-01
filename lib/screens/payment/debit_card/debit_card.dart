@@ -45,11 +45,11 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
       bloc = PaymentBloc();
 
       if (navigator.currentConfiguration!.path.contains('subscription')) {
-        bloc.setPackage =
-        ModalRoute
-            .of(context)!
-            .settings
-            .arguments as PackageItem;
+        var arg = ModalRoute.of(context)!.settings.arguments as Map;
+        bloc.setPackage = arg['package'] as PackageItem;
+
+        bloc.discountCode = arg['discountCode'] as String?;
+        if (bloc.discountCode != null) bloc.changeUseDiscount();
         // call new service
         bloc.getBankAccountActiveCard();
       } else {
@@ -63,10 +63,8 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   void listenBloc() {
     bloc.navigateTo.listen((event) {
       if (navigator.currentConfiguration!.path.contains('subscription')) {
-        VxNavigator.of(context).clearAndPushAll([
-          Uri.parse(Routes.profile),
-          Uri.parse(Routes.subscriptionPaymentCardWait)
-        ]);
+        VxNavigator.of(context).clearAndPushAll(
+            [Uri.parse(Routes.profile), Uri.parse(Routes.subscriptionPaymentCardWait)]);
       } else {
         VxNavigator.of(context).clearAndPush(Uri.parse('/$event'));
       }
@@ -116,17 +114,15 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
         stream: bloc.waiting,
         builder: (_, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData && !snapshot.data!) {
-            return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CardOwnerBoxWidget(),
-                  Space(height: 4.h),
-                  CardInfoWidget(),
-                  Space(height: 2.h),
-                  PaymentDateWidget(),
-                  Space(height: 2.h),
-                  registerPaymentInfo()
-                ]);
+            return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              CardOwnerBoxWidget(),
+              Space(height: 4.h),
+              CardInfoWidget(),
+              Space(height: 2.h),
+              PaymentDateWidget(),
+              Space(height: 2.h),
+              registerPaymentInfo()
+            ]);
           }
           return Center(child: Progress());
         },
@@ -142,10 +138,9 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
           if (!bloc.invoice!.cardOwner.isNullOrEmpty &&
               !bloc.invoice!.cardNum.isNullOrEmpty &&
               !bloc.invoice!.payedAt.isNullOrEmpty) {
-            if ( bloc.invoice!.cardNum!.length == 4) {
+            if (bloc.invoice!.cardNum!.length == 4) {
               DialogUtils.showDialogProgress(context: context);
-              if (navigator.currentConfiguration!.path.contains(
-                  'subscription')) {
+              if (navigator.currentConfiguration!.path.contains('subscription')) {
                 bloc.userPaymentCardToCardSubscription(bloc.invoice!);
               } else {
                 bloc.newPayment(bloc.invoice!);

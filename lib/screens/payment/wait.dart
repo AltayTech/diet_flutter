@@ -65,7 +65,8 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                   },
                 ),
               ),
-              BottomNav(currentTab: BottomNavItem.DIET),
+              if (!navigator.currentConfiguration!.path.contains('subscription'))
+                BottomNav(currentTab: BottomNavItem.DIET),
             ],
           ),
         ));
@@ -105,8 +106,7 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                           intl.paymentWaitLabel,
                           textAlign: TextAlign.center,
                           softWrap: true,
-                          style: typography.caption!
-                              .copyWith(color: AppColors.primaryVariantLight),
+                          style: typography.caption!.copyWith(color: AppColors.primaryVariantLight),
                         ),
                         SizedBox(width: 3.w),
                         ImageUtils.fromLocal(
@@ -124,32 +124,27 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                       intl.amountPaid,
                       textAlign: TextAlign.center,
                       softWrap: true,
-                      style: typography.caption!
-                          .copyWith(color: AppColors.greyDate),
+                      style: typography.caption!.copyWith(color: AppColors.greyDate),
                     ),
                     Text.rich(
                         TextSpan(
                             text: bloc.invoice?.amount != null &&
-                                    bloc.invoice!.amount.toString().length >
-                                        0 &&
+                                    bloc.invoice!.amount.toString().length > 0 &&
                                     bloc.invoice!.amount! > 0
                                 ? double.parse(bloc.invoice!.amount.toString())
                                     .toStringAsFixed(0)
                                     .seRagham()
                                 : intl.free,
-                            style: typography.headline5!
-                                .copyWith(color: AppColors.priceGreenColor),
+                            style: typography.headline5!.copyWith(color: AppColors.priceGreenColor),
                             children: <InlineSpan>[
                               TextSpan(
                                 text: bloc.invoice?.amount != null &&
-                                        bloc.invoice!.amount.toString().length >
-                                            0 &&
+                                        bloc.invoice!.amount.toString().length > 0 &&
                                         bloc.invoice!.amount! > 0
                                     ? ' ' + intl.toman
                                     : '',
-                                style: typography.caption!.copyWith(
-                                    color: AppColors.priceGreenColor,
-                                    fontSize: 10.sp),
+                                style: typography.caption!
+                                    .copyWith(color: AppColors.priceGreenColor, fontSize: 10.sp),
                               )
                             ]),
                         textAlign: TextAlign.center),
@@ -170,16 +165,14 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
                             intl.waitingForSuccessPayment,
                             softWrap: true,
                             textAlign: TextAlign.center,
-                            style: typography.caption!
-                                .copyWith(color: AppColors.redDate),
+                            style: typography.caption!.copyWith(color: AppColors.redDate),
                           ),
                           Space(height: 2.h),
                           Text(
                             intl.paymentStatusForLastTime,
                             textAlign: TextAlign.center,
                             softWrap: true,
-                            style:
-                                typography.caption!.copyWith(fontSize: 10.sp),
+                            style: typography.caption!.copyWith(fontSize: 10.sp),
                           ),
                         ],
                       ),
@@ -225,13 +218,11 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
       children: [
         Expanded(
           child: Text(
-            show
-                ? (value!.contains(intl.free) ? value : '$value ${intl.toman}')
-                : value ?? '',
+            show ? (value!.contains(intl.free) ? value : '$value ${intl.toman}') : value ?? '',
             textDirection: context.textDirectionOfLocale,
             textAlign: TextAlign.start,
-            style: typography.caption!.copyWith(
-                fontWeight: FontWeight.bold, color: AppColors.labelTextColor),
+            style: typography.caption!
+                .copyWith(fontWeight: FontWeight.bold, color: AppColors.labelTextColor),
           ),
         ),
         Expanded(
