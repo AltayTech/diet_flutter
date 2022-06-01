@@ -155,7 +155,7 @@ class RegimeBloc {
   void sendRequest() {
     if (navigator.currentConfiguration!.path == '/list${Routes.weightEnter}')
       sendVisit(_physicalInfoData);
-    else if (navigator.currentConfiguration!.path == '/renew${Routes.weightEnter}')
+    else if (navigator.currentConfiguration!.path == '/renew/weight')
       sendWeight(_physicalInfoData);
     else
       sendInfo(_physicalInfoData);

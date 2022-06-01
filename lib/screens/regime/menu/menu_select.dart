@@ -4,7 +4,7 @@ import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/menu/bloc.dart';
-import 'package:behandam/screens/regime/menu/item.dart';
+import 'package:behandam/screens/regime/menu/item.dart' as menuItem;
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -36,6 +36,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
   void initState() {
     super.initState();
     bloc = MenuSelectBloc();
+    bloc.loadContent();
     initListener();
   }
 
@@ -129,7 +130,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
   }
 
   Widget menuTypeBox(MenuType menuType) {
-    return menuType.menus != null && menuType.menus.length > 0
+    return menuType.menus.length > 0
         ? Container(
             margin: EdgeInsets.only(bottom: 2.h),
             child: Column(
@@ -148,7 +149,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
                     children: [
                       Space(height: 2.h),
                       ...menuType.menus
-                          .map((menu) => MenuItem(
+                          .map((menu) => menuItem.MenuItem(
                                 menu: menu,
                                 onClick: () {
                                   if (!navigator.currentConfiguration!.path

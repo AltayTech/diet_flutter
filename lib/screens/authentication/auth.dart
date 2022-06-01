@@ -10,7 +10,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -105,8 +104,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                             decoration: TextDecoration.underline),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Utils.launchURL(
-                                                FlavorConfig.instance.variables['urlTerms']);
+                                            VxNavigator.of(context)
+                                                .push(Uri.parse(Routes.termsApp));
                                           }),
                                     TextSpan(
                                       text: " ${intl.and} ",

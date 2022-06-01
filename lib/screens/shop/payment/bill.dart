@@ -40,11 +40,14 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
       // Navigator.of(context).pop();
       if (event) {
         MemoryApp.analytics!.logEvent(name: "shop_payment_success");
+        VxNavigator.of(context).popToRoot();
         VxNavigator.of(context)
             .clearAndPush(Uri(path: Routes.shopPaymentOnlineSuccess), params: ProductType.SHOP);
-      } else
+      } else {
+        VxNavigator.of(context).popToRoot();
         VxNavigator.of(context)
             .push(Uri(path: Routes.shopPaymentOnlineFail), params: ProductType.SHOP);
+      }
     });
     bloc.onlinePayment.listen((event) {
       if (event != null) {

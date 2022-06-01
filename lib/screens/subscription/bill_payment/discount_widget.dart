@@ -5,7 +5,6 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:persian_number_utility/src/extensions.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 import 'bloc.dart';
 import 'provider.dart';
@@ -32,7 +31,7 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
       decoration: AppDecorations.boxSmall.copyWith(
         color: Colors.white,
       ),
-      margin: EdgeInsets.only(top: 2.h, left: 4.w, right: 4.w),
+      margin: EdgeInsets.only(top: 1.h, left: 4.w, right: 4.w),
       padding:
       EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
       height: 10.h,

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:behandam/data/entity/filter/filter.dart';
 import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/refund.dart';
@@ -215,17 +214,23 @@ abstract class RestClient {
   @GET("/user/package")
   NetworkResult<PackageItem> getPackageUser();
 
+  @GET("/user/reserve-package")
+  NetworkResult<PackageItem> getReservePackageUser();
+
   @POST("/check-coupon")
   NetworkResult<Price?> checkCoupon(@Body() Price price);
 
   @POST("/payment")
   NetworkResult<Payment> selectPayment(@Body() Payment payment);
 
-  @POST("/payment/reserve-packages")
+  @POST("/user/reserve-package")
   NetworkResult<Payment> selectPaymentReservePackage(@Body() Payment payment);
 
   @GET("/next-step")
   ImperativeNetworkResult nextStep();
+
+  @GET("/bank-account/active-card")
+  NetworkResult<LatestInvoiceData> bankAccountActiveCard();
 
   @GET("/latest-invoice")
   NetworkResult<LatestInvoiceData> latestInvoice();
@@ -241,7 +246,6 @@ abstract class RestClient {
 
   @GET("/psychology/latest-invoice")
   NetworkResult<LatestInvoiceData> getInvoice();
-
 
   @GET("/activity-level")
   NetworkResult<ActivityLevelData> activityLevel();
@@ -340,7 +344,7 @@ abstract class RestClient {
   @GET("/target-weight")
   NetworkResult<TargetWeight> targetWeight();
 
-  @GET("/user/subscription/list")
+  @GET("/user/subscription/history")
   NetworkResult<ListUserSubscriptionData> getUserSubscription();
 }
 

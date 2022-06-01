@@ -11,6 +11,7 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -107,11 +108,14 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                         ),
                       ),
                     ),
-                    SubmitButton(
-                        label: intl.confirmContinue,
-                        onTap: () {
-                          sendRequest(isPregnancy: snapshot.data!.isPregnancy == 1);
-                        }),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 8),
+                      child: SubmitButton(
+                          label: intl.confirmContinue,
+                          onTap: () {
+                            sendRequest(isPregnancy: snapshot.data!.isPregnancy == 1);
+                          }),
+                    ),
                   ],
                 );
               } else

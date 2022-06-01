@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
@@ -7,7 +8,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
@@ -26,7 +26,8 @@ class PaymentSuccessScreen extends StatefulWidget {
   _PaymentSuccessScreenState createState() => _PaymentSuccessScreenState();
 }
 
-class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> {
+class _PaymentSuccessScreenState
+    extends ResourcefulState<PaymentSuccessScreen> {
   late PaymentBloc bloc;
   bool isInit = false;
 
@@ -40,10 +41,9 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
+
       bloc = PaymentBloc();
-      var paymentType =
-          ModalRoute.of(context)!.settings.arguments as ProductType? ?? ProductType.PACKAGE;
-      bloc.setProductType(paymentType);
+      bloc.setProductType();
     }
   }
 
@@ -74,11 +74,12 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
             ),
             StreamBuilder<ProductType>(
               stream: bloc.productType,
-              initialData: ProductType.PACKAGE,
+              initialData: ProductType.DIET,
               builder: (context, type) {
                 return BottomNav(
-                    currentTab:
-                        type == ProductType.PACKAGE ? BottomNavItem.SHOP : BottomNavItem.DIET);
+                    currentTab: type == ProductType.DIET
+                        ? BottomNavItem.SHOP
+                        : BottomNavItem.DIET);
               },
             )
           ],
@@ -185,21 +186,26 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                             item(intl.refId, bloc.invoice!.refId ?? '', false),
                             item(
                                 intl.paymentDate,
-                                bloc.invoice!.payedAt != null && bloc.invoice!.payedAt!.length > 0
-                                    ? DateTimeUtils.gregorianToJalaliYMD(bloc.invoice!.payedAt!)
+                                bloc.invoice!.payedAt != null &&
+                                        bloc.invoice!.payedAt!.length > 0
+                                    ? DateTimeUtils.gregorianToJalaliYMD(
+                                        bloc.invoice!.payedAt!)
                                     : '',
                                 false),
                             item(
                                 intl.amount,
                                 bloc.invoice!.amount != null &&
-                                        bloc.invoice!.amount.toString().length > 0 &&
+                                        bloc.invoice!.amount.toString().length >
+                                            0 &&
                                         bloc.invoice!.amount! > 0
-                                    ? double.parse(bloc.invoice!.amount.toString())
+                                    ? double.parse(
+                                            bloc.invoice!.amount.toString())
                                         .toStringAsFixed(0)
                                         .seRagham()
                                     : intl.free,
                                 true),
-                            item(intl.mobile, MemoryApp.userInformation?.mobile ?? '', false),
+                            item(intl.mobile,
+                                MemoryApp.userInformation?.mobile ?? '', false),
                           ],
                         ),
                       );
@@ -212,7 +218,7 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                 StreamBuilder<ProductType>(
                     stream: bloc.productType,
                     builder: (context, type) {
-                      if (type == ProductType.PACKAGE)
+                      if (type == ProductType.DIET)
                         return Column(
                           children: [
                             Text(
@@ -233,44 +239,56 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                 StreamBuilder<ProductType>(
                     stream: bloc.productType,
                     builder: (context, type) {
-                      if (type == ProductType.SHOP)
+                      if (type.requireData == ProductType.SHOP) {
                         return Container(
                           decoration: AppDecorations.boxMild.copyWith(
                             color: AppColors.box,
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.w, vertical: 2.h),
                           child: Column(
                             children: [
                               Text(
                                 intl.clickHereToUseProduct,
                                 softWrap: true,
                                 textAlign: TextAlign.center,
-                                style: typography.caption?.apply(color: AppColors.labelColor),
+                                style: typography.caption
+                                    ?.apply(color: AppColors.labelColor),
                               ),
                               Space(height: 2.h),
                               SubmitButton(
                                   label: intl.viewProduct,
                                   onTap: () {
-                                    MemoryApp.analytics!
-                                        .logEvent(name: "total_shop_payment_online_success");
+                                    MemoryApp.analytics!.logEvent(
+                                        name:
+                                            "total_shop_payment_online_success");
                                     context.vxNav.clearAndPushAll([
                                       Uri.parse(Routes.shopHome),
                                       Uri.parse(Routes.shopOrders),
-                                      Uri.parse('${Routes.shopProduct}/${bloc.productId}')
+                                      Uri.parse(
+                                          '${Routes.shopProduct}/${bloc.productId}')
                                     ]);
                                   }),
                             ],
                           ),
                         );
-                      else
+                      } else {
                         return SubmitButton(
                           label: intl.confirmContinue,
                           onTap: () {
-                            MemoryApp.analytics!.logEvent(name: "total_payment_success");
-                            MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
-                            VxNavigator.of(context).clearAndPush(Uri.parse('/${bloc.path}'));
+                            MemoryApp.analytics!
+                                .logEvent(name: "total_payment_success");
+
+                            if (navigator.currentConfiguration!.path
+                                .contains('subscription')) {
+                              VxNavigator.of(context).pop();
+                            } else {
+                              VxNavigator.of(context)
+                                  .clearAndPush(Uri.parse('/${bloc.path}'));
+                            }
                           },
                         );
+                      }
                     }),
               ],
             ),
@@ -286,13 +304,13 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
       children: [
         Expanded(
           child: Text(
-            show ? (value!.contains(intl.free) ? value : '$value ${intl.toman}') : value ?? '',
+            show
+                ? (value!.contains(intl.free) ? value : '$value ${intl.toman}')
+                : value ?? '',
             textDirection: context.textDirectionOfLocale,
             textAlign: TextAlign.start,
-            style: Theme.of(context)
-                .textTheme
-                .caption!
-                .copyWith(fontWeight: FontWeight.bold, color: AppColors.labelTextColor),
+            style: Theme.of(context).textTheme.caption!.copyWith(
+                fontWeight: FontWeight.bold, color: AppColors.labelTextColor),
           ),
         ),
         Expanded(

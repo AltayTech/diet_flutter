@@ -3,18 +3,18 @@ import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
-import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/enable_discount_box.dart';
 import 'package:behandam/screens/subscription/bill_payment/payment_type.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/screens/subscription/bill_payment/purchased_subscription.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
-import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/custom_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -31,7 +31,6 @@ class BillPaymentScreen extends StatefulWidget {
 class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     with WidgetsBindingObserver {
   late BillPaymentBloc bloc;
-  late bool isInit = false;
 
   @override
   void initState() {
@@ -40,7 +39,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
     WidgetsBinding.instance!.addObserver(this);
 
     bloc = BillPaymentBloc();
-    bloc.getPackagePayment();
+    if (navigator.currentConfiguration!.path.contains('subscription')) {
+      bloc.getReservePackagePayment();
+    } else {
+      bloc.getPackagePayment();
+    }
 
     listenBloc();
   }
@@ -56,9 +59,6 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    if (!isInit) {
-      isInit = true;
-    }
   }
 
   void listenBloc() {
@@ -66,52 +66,65 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
       debugPrint(
           'listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event) {
+        MemoryApp.isShowDialog = false;
         if (navigator.currentConfiguration!.path.contains('subscription')) {
-          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.billSubscriptionHistory));
+          VxNavigator.of(context).clearAndPushAll([
+            Uri.parse(Routes.profile),
+            Uri.parse(Routes.billSubscriptionHistory),
+            Uri.parse(Routes.subscriptionPaymentOnlineSuccess)
+          ]);
+          eventBus.fire(true);
         } else {
-          VxNavigator.of(context).push(Uri.parse("/${bloc.path}"));
+          VxNavigator.of(context).clearAndPush(Uri.parse("/${bloc.path}"));
         }
       } else {
-        if (event != null && !event) if (bloc.packageItem!.price!.type! == 2) {
-          VxNavigator.of(context).clearAndPushAll(
-              [Uri.parse(Routes.profile), Uri.parse(Routes.paymentFail)]);
-        } else {
-          VxNavigator.of(context).clearAndPushAll([
-            Uri.parse('/reg${Routes.regimeType}'),
-            Uri.parse(Routes.paymentFail)
-          ]);
-        }
-        else
+        MemoryApp.isShowDialog = false;
+        if (event != null && !event) {
+          if (bloc.packageItem!.price!.type! == 2) {
+            VxNavigator.of(context).clearAndPushAll([
+              Uri.parse(Routes.profile),
+              Uri.parse(Routes.billSubscriptionHistory),
+              Uri.parse(Routes.subscriptionPaymentOnlineFail)
+            ]);
+          } else {
+            VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
+          }
+        } else
           Navigator.of(context).pop();
       }
     });
 
     bloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, intl.offError);
     });
 
     bloc.popDialog.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
 
     bloc.navigateTo.listen((event) {
       debugPrint('listen navigate ${event.next}');
       Payment? result = (event as NetworkResponse<Payment>).data;
-      if (bloc.isOnline == PaymentType.cardToCard) {
-        Navigator.of(context).pop();
-        context.vxNav.push(Uri.parse(Routes.cardToCard));
-        /*if (event.next!.contains('card'))
-          context.vxNav.push(Uri.parse('/${(event).next}'));
-        else
-          context.vxNav.clearAndPush(Uri(path: '/${event.next}'));*/
-      } else if (bloc.isOnline == PaymentType.online) {
-        Navigator.of(context).pop();
+      if (bloc.isOnline == PaymentType.online) {
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
         bloc.mustCheckLastInvoice();
         Utils.launchURL(result!.url!);
+      } else if (bloc.isOnline == PaymentType.cardToCard) {
+        if (navigator.currentConfiguration!.path.contains('subscription')) {
+          VxNavigator.of(context).clearAndPushAll([
+            Uri.parse(Routes.profile),
+            Uri.parse(Routes.billSubscriptionHistory),
+            Uri.parse(Routes.cardToCardSubscription),
+          ]);
+        } else {
+          context.vxNav.push(Uri.parse(Routes.cardToCard));
+        }
+      } else if (event.next != null) {
+        context.vxNav.push(Uri(path: '/${event.next}'));
       } else {
-        Navigator.of(context).pop();
         Utils.getSnackbarMessage(context, event.message!);
       }
     });
@@ -127,20 +140,28 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   Widget body() {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: Toolbar(titleBar: intl.newSubscription),
-        body: TouchMouseScrollable(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                PurchasedSubscriptionWidget(),
-                Space(height: 1.h),
-                EnableDiscountBoxWidget(),
-                PaymentTypeWidget(),
-                rulesAndPaymentBtn()
-              ],
-            ),
-          ),
-        ));
+        appBar: Toolbar(titleBar: intl.paymentFinalBill),
+        body: StreamBuilder<bool>(
+            stream: bloc.waiting,
+            builder: (context, waiting) {
+              if (waiting.hasData &&
+                  !waiting.requireData &&
+                  bloc.packageItem != null)
+                return TouchMouseScrollable(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        PurchasedSubscriptionWidget(),
+                        Space(height: 1.h),
+                        EnableDiscountBoxWidget(),
+                        PaymentTypeWidget(),
+                        rulesAndPaymentBtn()
+                      ],
+                    ),
+                  ),
+                );
+              return Progress();
+            }));
   }
 
   Widget rulesAndPaymentBtn() {
@@ -160,12 +181,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
                       label: intl.confirmAndPay,
                       onTap: () {
                         if (checkedRules.requireData) {
-                          DialogUtils.showDialogProgress(context: context);
-                          if (navigator.currentConfiguration!.path
-                              .contains('subscription'))
-                            bloc.selectUserPaymentSubscription();
-                          else
-                            bloc.selectUserPayment();
+                          next();
                         } else {
                           Utils.getSnackbarMessage(
                               context, intl.checkTermsAndConditions);
@@ -174,6 +190,20 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
                 ],
               );
             }));
+  }
+
+  void next() {
+    DialogUtils.showDialogProgress(context: context);
+    if (navigator.currentConfiguration!.path.contains('subscription') &&
+        bloc.isOnline != PaymentType.cardToCard) {
+      bloc.selectUserPaymentSubscription();
+    } else if (navigator.currentConfiguration!.path.contains('subscription') &&
+        bloc.isOnline == PaymentType.cardToCard) {
+      VxNavigator.of(context).push(Uri.parse(Routes.cardToCardSubscription),
+          params: bloc.packageItem);
+    } else {
+      bloc.selectUserPayment();
+    }
   }
 
   @override
@@ -197,8 +227,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-    bloc.getPackagePayment();
+    if (navigator.currentConfiguration!.path.contains('subscription')) {
+      bloc.getReservePackagePayment();
+    } else {
+      bloc.getPackagePayment();
+    }
   }
 
   @override

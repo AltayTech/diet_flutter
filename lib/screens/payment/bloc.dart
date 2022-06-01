@@ -14,22 +14,13 @@ import 'package:behandam/utils/device.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:behandam/extensions/stream.dart';
+enum PaymentDate { today, customDate }
 
-enum PaymentDate {
-  today,
-  customDate
-}
-
-
-enum ProductType {
-  SHOP,
-  PACKAGE,
-}
+enum ProductType { SHOP, DIET, SUBSCRIPTION }
 
 class PaymentBloc {
   PaymentBloc() {
-    _waiting.safeValue = false;
+    _waiting.safeValue = true;
     _discountLoading.value = false;
     _selectedDateType.value = PaymentDate.today;
 
@@ -120,6 +111,8 @@ class PaymentBloc {
 
   set setDate(String date) => _date = date;
 
+  set setPackage(PackageItem package) => _packageItem = package;
+
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
   }
@@ -128,8 +121,7 @@ class PaymentBloc {
     _repository.newPayment(newInvoice).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
-          '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split(
-              "_")[0]}_payment_cart_record');
+              '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
       MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
       _navigateTo.fire(value.next);
     }).whenComplete(() => _popLoading.fire(true));
@@ -146,27 +138,50 @@ class PaymentBloc {
   }
 
   void selectUserPayment() {
-    if (!isUsedDiscount && (discountCode != null && discountCode!.trim().isNotEmpty)) {
+    if (!isUsedDiscount &&
+        (discountCode != null && discountCode!.trim().isNotEmpty)) {
       _showServerError.fireMessage('error');
     } else {
       Payment payment = new Payment();
       payment.originId = kIsWeb
           ? 0
-          : Device
-          .get()
-          .isIos
-          ? 2
-          : 3;
+          : Device.get().isIos
+              ? 2
+              : 3;
       payment.coupon = discountCode;
-      payment.paymentTypeId = (discountInfo != null && discountInfo!.finalPrice == 0)
-          ? 2
-          : isOnline
-          ? 0
-          : 1;
+      payment.paymentTypeId =
+          (discountInfo != null && discountInfo!.finalPrice == 0)
+              ? 2
+              : isOnline
+                  ? 0
+                  : 1;
       payment.packageId = packageItem!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
-      });
+      }).whenComplete(() => _popLoading.fire(true));
+    }
+  }
+
+  void userPaymentCardToCardSubscription(LatestInvoiceData newInvoice) {
+    if (!isUsedDiscount &&
+        (discountCode != null && discountCode!.trim().isNotEmpty)) {
+      _showServerError.fireMessage('error');
+    } else {
+      Payment payment = new Payment();
+      payment.originId = kIsWeb
+          ? 0
+          : Device.get().isIos
+              ? 2
+              : 3;
+      payment.paymentTypeId = 1;
+      payment.coupon = discountCode;
+      payment.packageId = packageItem!.id!;
+      payment.cardOwner = newInvoice.cardOwner;
+      payment.cardNum = newInvoice.cardNum;
+      payment.payedAt = newInvoice.payedAt;
+      _repository.setPaymentTypeReservePackage(payment).then((value) {
+        _navigateTo.fire(value);
+      }).whenComplete(() => _popLoading.fire(true));
     }
   }
 
@@ -218,6 +233,14 @@ class PaymentBloc {
     }).whenComplete(() => _waiting.safeValue = false);
   }
 
+  void getBankAccountActiveCard() {
+    _waiting.safeValue = true;
+    _repository.bankAccountActiveCard().then((value) {
+      _invoice = value.data;
+      _invoice!.payedAt = DateTime.now().toString().substring(0, 10);
+    }).whenComplete(() => _waiting.safeValue = false);
+  }
+
   void checkLastInvoice() {
     _waiting.safeValue = true;
     _repository.latestInvoice().then((value) {
@@ -242,7 +265,8 @@ class PaymentBloc {
   }
 
   void setShowInformation() {
-    _showInformation.value = _showInformation.valueOrNull == null ? true : !_showInformation.value;
+    _showInformation.value =
+        _showInformation.valueOrNull == null ? true : !_showInformation.value;
   }
 
   void shopLastInvoice() {
@@ -262,6 +286,25 @@ class PaymentBloc {
     // }
   }
 
+  void setProductType() {
+    if (navigator.currentConfiguration!.path.contains('shop')) {
+      _productType.safeValue = ProductType.SHOP;
+    } else if (navigator.currentConfiguration!.path.contains('subscription')) {
+      _productType.safeValue = ProductType.SUBSCRIPTION;
+    } else {
+      _productType.safeValue = ProductType.DIET;
+    }
+
+    sendRequest();
+  }
+
+  void sendRequest() {
+    if (_productType.value == ProductType.SHOP)
+      shopLastInvoice();
+    else
+      getLastInvoice();
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
@@ -277,17 +320,5 @@ class PaymentBloc {
     _productType.close();
     _selectedDateType.close();
     _selectedDate.close();
-  }
-
-  void setProductType(ProductType productType) {
-    _productType.safeValue = productType;
-    sendRequest();
-  }
-
-  void sendRequest() {
-    if (_productType.value == ProductType.SHOP)
-      shopLastInvoice();
-    else
-      getLastInvoice();
   }
 }

@@ -1,5 +1,4 @@
 
-import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'list_food.g.dart';
 

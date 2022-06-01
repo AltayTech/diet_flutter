@@ -85,7 +85,7 @@ abstract class DateTimeUtils {
   }
 
   static String timerFormat(int time){
-    int min=(time/60).toInt();
+    int min=time~/60;
     int second=time%60;
     return '$min:$second';
   }

@@ -1,13 +1,9 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/bloc.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/provider.dart';
 import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -79,21 +75,17 @@ class _ListHistorySubscriptionPaymentWidget
       ),
       constraints: BoxConstraints(minHeight: 8.h),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                margin: EdgeInsets.only(top: 10),
-                child: Text(
-                  subscriptionsItem.packageName ?? "",
-                  softWrap: false,
-                  style: typography.caption!.copyWith(color: Colors.black, fontSize: 10.sp),
-                ),
-              ),
-            ],
+          Padding(
+            padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+            child: Text(
+              subscriptionsItem.packageName ?? "",
+              softWrap: true,
+              maxLines: 2,
+              textAlign: TextAlign.start,
+              style: typography.caption!.copyWith(color: Colors.black, fontSize: 10.sp),
+            ),
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -112,7 +104,7 @@ class _ListHistorySubscriptionPaymentWidget
                 ),
                 Expanded(
                   child: Text(
-                    '${subscriptionsItem.createdAt!.split("T")[1].substring(0, 5)} ${DateTimeUtils.formatCustomDate(subscriptionsItem.createdAt!.split("T")[0])}',
+                    '${DateTimeUtils.getTime(subscriptionsItem.createdAt!)} ${DateTimeUtils.formatCustomDate(subscriptionsItem.createdAt!.split("T")[0])}',
                     softWrap: false,
                     textAlign: TextAlign.end,
                     style: typography.caption!.copyWith(color: Colors.black, fontSize: 8.sp),
@@ -162,8 +154,6 @@ class _ListHistorySubscriptionPaymentWidget
       ),
     );
   }
-
-
 
   @override
   void onRetryAfterMaintenance() {

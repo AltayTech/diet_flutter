@@ -4,12 +4,10 @@ import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
-import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -59,7 +57,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       }
     });
     authBloc.showServerError.listen((event) {
-      VxNavigator.of(context).pop();
+      Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
   }

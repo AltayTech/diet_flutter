@@ -12,6 +12,9 @@ class ConditionRequestData {
   @JsonKey(name: "package_id")
   int? packageId;
 
+  @JsonKey(name: "reserve_package_id")
+  int? reservePackageId;
+
   @JsonKey(name: "diet_history_id")
   int? dietHistoryId;
 

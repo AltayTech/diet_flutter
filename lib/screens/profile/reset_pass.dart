@@ -41,7 +41,7 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.redBar,
-        body: Stack(overflow: Overflow.visible, children: [
+        body: Stack(clipBehavior: Clip.none, children: [
           Positioned(
             top: 20.h,
             right: 0,

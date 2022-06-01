@@ -1,28 +1,21 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/payment/latest_invoice.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card/card_info.dart';
 import 'package:behandam/screens/payment/debit_card/card_owner_box.dart';
 import 'package:behandam/screens/payment/debit_card/payment_date.dart';
 import 'package:behandam/screens/payment/provider.dart';
-import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
-import 'package:behandam/screens/widget/widget_box.dart';
-import 'package:behandam/themes/colors.dart';
-import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -36,27 +29,52 @@ class DebitCardPage extends StatefulWidget {
 class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   late PaymentBloc bloc;
 
+  bool isInit = false;
+
   @override
   void initState() {
     super.initState();
-    bloc = PaymentBloc();
-    bloc.getLastInvoice();
+  }
 
-    listenBloc();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!isInit) {
+      isInit = true;
+
+      bloc = PaymentBloc();
+
+      if (navigator.currentConfiguration!.path.contains('subscription')) {
+        bloc.setPackage =
+        ModalRoute
+            .of(context)!
+            .settings
+            .arguments as PackageItem;
+        // call new service
+        bloc.getBankAccountActiveCard();
+      } else {
+        bloc.getLastInvoice();
+      }
+
+      listenBloc();
+    }
   }
 
   void listenBloc() {
     bloc.navigateTo.listen((event) {
       if (navigator.currentConfiguration!.path.contains('subscription')) {
-        VxNavigator.of(context)
-            .clearAndPush(Uri.parse('/subscription/payment/card/wait'));
+        VxNavigator.of(context).clearAndPushAll([
+          Uri.parse(Routes.profile),
+          Uri.parse(Routes.subscriptionPaymentCardWait)
+        ]);
       } else {
         VxNavigator.of(context).clearAndPush(Uri.parse('/$event'));
       }
     });
 
     bloc.popLoading.listen((event) {
-      VxNavigator.of(context).pop();
+      MemoryApp.isShowDialog = false;
+      Navigator.of(context).pop();
     });
 
     bloc.selectedDateType.listen((event) {
@@ -68,8 +86,9 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
   @override
   void dispose() {
-    bloc.dispose();
     super.dispose();
+
+    bloc.dispose();
   }
 
   @override
@@ -120,11 +139,22 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
       child: SubmitButton(
         label: intl.submitOfflinePayment,
         onTap: () {
-          if (!bloc.invoice!.cardOwner.isNullOrEmpty ||
-              !bloc.invoice!.cardNum.isNullOrEmpty ||
+          if (!bloc.invoice!.cardOwner.isNullOrEmpty &&
+              !bloc.invoice!.cardNum.isNullOrEmpty &&
               !bloc.invoice!.payedAt.isNullOrEmpty) {
-            DialogUtils.showDialogProgress(context: context);
-            bloc.newPayment(bloc.invoice!);
+            if ( bloc.invoice!.cardNum!.length == 4) {
+              DialogUtils.showDialogProgress(context: context);
+              if (navigator.currentConfiguration!.path.contains(
+                  'subscription')) {
+                bloc.userPaymentCardToCardSubscription(bloc.invoice!);
+              } else {
+                bloc.newPayment(bloc.invoice!);
+              }
+            } else {
+              Utils.getSnackbarMessage(context, intl.lastFourDigitsCardNumberIncorrect);
+            }
+          } else {
+            Utils.getSnackbarMessage(context, intl.fillAllField);
           }
         },
         size: Size(80.w, 6.h),

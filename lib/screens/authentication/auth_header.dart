@@ -17,8 +17,7 @@ class AuthHeader extends StatelessWidget {
 
   Widget header() {
     return Stack(
-      overflow: Overflow.visible,
-      children: [
+      clipBehavior: Clip.none, children: [
         SizedBox(
             height: showLogo ? 40.h : 25.h,
             child: MyArc(

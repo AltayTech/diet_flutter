@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/screens/regime/provider.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
@@ -10,16 +9,9 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/themes/sizes.dart';
-import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 enum RulerType { Weight, Normal, Pregnancy }
 

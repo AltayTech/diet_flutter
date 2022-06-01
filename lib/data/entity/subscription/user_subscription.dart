@@ -1,5 +1,4 @@
 
-import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'user_subscription.g.dart';

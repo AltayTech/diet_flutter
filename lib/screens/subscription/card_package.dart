@@ -2,7 +2,6 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/subscription/select_package/bloc.dart';
-import 'package:behandam/screens/subscription/select_package/provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
@@ -27,13 +26,13 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    bloc = SelectPackageSubscriptionBloc();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    bloc = SelectPackageSubscriptionProvider.of(context);
 
     return _card(widget.packageItem);
   }

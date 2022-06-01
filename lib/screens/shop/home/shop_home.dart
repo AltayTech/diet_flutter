@@ -223,20 +223,15 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                     .userOrderDate !=
                                                 null)
                                               ClipRect(
-                                                child: Banner(
-                                                  message: intl.buyThisCourse,
-                                                  location: BannerLocation.topEnd,
-                                                  color: AppColors.primary,
-                                                  child: AspectRatio(
-                                                    aspectRatio: 16 / 9,
-                                                    child: ImageUtils.fromNetwork(
-                                                        FlavorConfig.instance
-                                                                .variables['baseUrlFileShop'] +
-                                                            bloc.list![index].category!.products![i]
-                                                                .productThambnail,
-                                                        decoration: AppDecorations.boxMild,
-                                                        fit: BoxFit.fill),
-                                                  ),
+                                                child: AspectRatio(
+                                                  aspectRatio: 16 / 9,
+                                                  child: ImageUtils.fromNetwork(
+                                                      FlavorConfig.instance
+                                                          .variables['baseUrlFileShop'] +
+                                                          bloc.list![index].category!.products![i]
+                                                              .productThambnail,
+                                                      decoration: AppDecorations.boxMild,
+                                                      fit: BoxFit.fill),
                                                 ),
                                               ),
                                             if (bloc.list![index].category!.products![i]

@@ -1,6 +1,5 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/data/sharedpreferences.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import '../routes.dart';
 
@@ -91,5 +90,6 @@ abstract class DeepLinkUtils {
       // case Routes.foodListing:
       //   return FoodListingArgs.fromParams(queryParams);
     }
+    return null;
   }
 }

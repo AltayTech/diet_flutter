@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 

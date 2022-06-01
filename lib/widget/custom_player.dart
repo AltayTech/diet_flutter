@@ -244,15 +244,13 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     cancelPlayerSubscriptions();
     _playerSubscription = _myPlayer!.onProgress!.listen((e) {
       setState(() {
-        if (e != null) {
-          maxDuration = e.duration.inMilliseconds.toDouble();
-          if (maxDuration <= 0) maxDuration = 0.0;
-          _position = e.position;
-          _duration = e.duration;
-          sliderCurrentPosition = e.position.inMilliseconds.toDouble();
-          if (sliderCurrentPosition < 0.0) {
-            sliderCurrentPosition = 0.0;
-          }
+        maxDuration = e.duration.inMilliseconds.toDouble();
+        if (maxDuration <= 0) maxDuration = 0.0;
+        _position = e.position;
+        _duration = e.duration;
+        sliderCurrentPosition = e.position.inMilliseconds.toDouble();
+        if (sliderCurrentPosition < 0.0) {
+          sliderCurrentPosition = 0.0;
         }
       });
     });
@@ -362,7 +360,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
       _addListeners();
       setState(() {});
      // Fimber.d('<--- startPlayer');
-    } on Exception catch (err) {
+    } on Exception {
      // Fimber.d('error: $err');
     }
   }
@@ -379,7 +377,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
       var contents = await file.readAsBytes();
      // Fimber.d('The file is ${contents.length} bytes long.');
       return contents;
-    } on Exception catch (e) {
+    } on Exception {
      // Fimber.d("error Exception",ex: e);
       return null;
     }
@@ -396,7 +394,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
         _playerSubscription = null;
       }
       onStartPlayerPressed();
-    } on Exception catch (err) {
+    } on Exception {
      // Fimber.d('error: $err');
     }
     setState(() {
@@ -467,6 +465,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     } else {
       return null;
     }
+    return null;
   }
 
   void Function()? onPauseResumePlayerPressed() {
@@ -474,6 +473,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     if (_myPlayer!.isPaused || _myPlayer!.isPlaying) {
       pauseResumePlayer();
     }
+    return null;
   }
 
   StreamSubscription? _playerSubscription;

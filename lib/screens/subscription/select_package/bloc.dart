@@ -2,8 +2,6 @@ import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
-import 'package:behandam/data/entity/subscription/user_subscription.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/stream.dart';
 
@@ -43,7 +41,7 @@ class SelectPackageSubscriptionBloc {
 
   void sendPackage() {
     ConditionRequestData requestData = ConditionRequestData();
-    requestData.packageId = _packageItem!.id;
+    requestData.reservePackageId = _packageItem!.id;
     _repository.setUserReservePackage(requestData).then((value) {
       _navigateTo.fire(value.next);
     });

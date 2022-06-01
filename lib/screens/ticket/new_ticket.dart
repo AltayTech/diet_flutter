@@ -38,7 +38,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
   void listen() {
     bloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
-      VxNavigator.of(context).pop();
+      Navigator.of(context).pop();
     });
   }
 

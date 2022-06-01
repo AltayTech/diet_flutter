@@ -1,17 +1,11 @@
-import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
-import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
-import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:velocity_x/velocity_x.dart';
 
-import '../../../routes.dart';
 
 class BlockPregnancy extends StatefulWidget {
   const BlockPregnancy({Key? key}) : super(key: key);

@@ -14,7 +14,6 @@ import 'package:behandam/extensions/stream.dart';
 
 class MenuSelectBloc {
   MenuSelectBloc() {
-    loadContent();
   }
 
   final _repository = Repository.getInstance();

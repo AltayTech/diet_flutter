@@ -1,17 +1,13 @@
-import 'dart:async';
 
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/routes.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
-import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
 import 'package:flutter/foundation.dart';

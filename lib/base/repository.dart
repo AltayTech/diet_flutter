@@ -6,7 +6,6 @@ import 'package:behandam/api/interceptor/logger.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
-import 'package:behandam/data/entity/filter/filter.dart';
 import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
@@ -55,7 +54,6 @@ import '../data/entity/auth/sign_in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/daily_message.dart';
 import 'network_response.dart';
 
 enum FoodDietPdf { TERM, WEEK }
@@ -90,7 +88,7 @@ abstract class Repository {
 
   NetworkResult<Help> helpBodyState(int id);
 
-  NetworkResult<UserInformation> getUser();
+  NetworkResult<UserInformation> getUser({bool invalidate = false});
 
   NetworkResult<Media> getPdfUrl(FoodDietPdf foodDietPdf);
 
@@ -163,6 +161,8 @@ abstract class Repository {
 
   NetworkResult<PackageItem> getPackagePayment();
 
+  NetworkResult<PackageItem> getReservePackageUser();
+
   NetworkResult<Price?> checkCoupon(Price price);
 
   NetworkResult<Payment> setPaymentType(Payment payment);
@@ -170,6 +170,8 @@ abstract class Repository {
   NetworkResult<Payment> setPaymentTypeReservePackage(Payment payment);
 
   ImperativeNetworkResult nextStep();
+
+  NetworkResult<LatestInvoiceData> bankAccountActiveCard();
 
   NetworkResult<LatestInvoiceData> latestInvoice();
 
@@ -675,6 +677,7 @@ class _RepositoryImpl extends Repository {
   NetworkResult setUserReservePackage(ConditionRequestData requestData) {
     Map<String, dynamic> body = {
       if (requestData.packageId != null) 'package_id': requestData.packageId,
+      if (requestData.reservePackageId != null) 'reserve_package_id': requestData.reservePackageId,
       if (requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
       if (requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
       if (requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
@@ -685,7 +688,7 @@ class _RepositoryImpl extends Repository {
     debugPrint('bloc condition2 $body');
     var response;
     try {
-      response = _apiClient.setCondition(body);
+      response = _apiClient.setUserReservePackage(body);
       debugPrint('condition ${response.toString()}');
     } catch (e) {
       debugPrint('condition error ${e}');
@@ -696,6 +699,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<PackageItem> getPackagePayment() {
     var response = _apiClient.getPackageUser();
+    return response;
+  }
+
+  @override
+  NetworkResult<PackageItem> getReservePackageUser() {
+    var response = _apiClient.getReservePackageUser();
     return response;
   }
 
@@ -720,6 +729,13 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult nextStep() {
     var response = _apiClient.nextStep();
+    return response;
+  }
+
+  @override
+  NetworkResult<LatestInvoiceData> bankAccountActiveCard() {
+    var response = _apiClient.bankAccountActiveCard();
+    debugPrint('advice repo ${response}');
     return response;
   }
 

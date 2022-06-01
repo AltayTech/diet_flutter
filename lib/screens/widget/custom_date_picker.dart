@@ -251,7 +251,7 @@ class myDate extends ResourcefulState<CustomDate> {
       Jalali jalali;
       try {
         jalali = new Jalali(birthYear, birthMonth, birthday);
-      } on DateException catch (e) {
+      } on DateException {
         jalali = new Jalali(birthYear, birthMonth, 1);
         birthday = jalali.monthLength;
         jalali = new Jalali(birthYear, birthMonth, birthday);

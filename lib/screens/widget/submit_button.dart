@@ -1,5 +1,3 @@
-import 'package:behandam/app/bloc.dart';
-import 'package:behandam/app/provider.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';

@@ -3,9 +3,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
-import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/gender_switch.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +53,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
       }
     });
     authBloc.showServerError.listen((event) {
-      VxNavigator.of(context).pop();
+      Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
   }

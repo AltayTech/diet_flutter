@@ -16,7 +16,6 @@ import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/alert_list.dart';
 import 'package:behandam/screens/food_list/daily_message.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
-import 'package:behandam/screens/payment/bill.dart';
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
@@ -98,10 +97,11 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     bloc = AppBloc();
-    getToken();
+    bloc.changeTheme(ThemeAppColor.DEFAULT);
+    setTokenToMemoryApp();
 
     navigator.addListener(() {
-      debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
+      //  debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
       if (navigator.currentConfiguration!.path == "/") {
         navigator.routeManager.replace(Uri.parse(Routes.splash));
       } else if (DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)) {
@@ -114,7 +114,7 @@ class _AppState extends State<App> {
     });
   }
 
-  getToken() async {
+  void setTokenToMemoryApp() async {
     MemoryApp.token = await AppSharedPreferences.authToken;
     debugPrint('init token ${MemoryApp.token}');
   }
@@ -166,7 +166,9 @@ class _AppState extends State<App> {
           primaryColorDark: AppColors.primaryColorDark,
           scaffoldBackgroundColor: AppColors.scaffold,
           snackBarTheme: SnackBarThemeData(
-              contentTextStyle: AppTypography(locale).caption.copyWith(color: Colors.white,),
+              contentTextStyle: AppTypography(locale).caption.copyWith(
+                    color: Colors.white,
+                  ),
               behavior: SnackBarBehavior.floating,
               backgroundColor: Colors.black54,
               elevation: 0,
@@ -281,7 +283,7 @@ final navigator = VxNavigator(
     Routes.showInbox: (_, param) =>
         MaterialPage(child: routePage(ShowInboxItem()), arguments: param),
     Routes.ticketMessage: (_, param) =>
-        MaterialPage(child: routePage(TicketTab()), name: 'message'),
+        VxRoutePage(child: routePage(TicketTab()), pageName: 'message'),
     Routes.ticketCall: (_, param) => VxRoutePage(child: routePage(TicketTab()), pageName: 'call'),
     Routes.helpType: (_, param) =>
         MaterialPage(child: routePage(HelpTypeScreen()), arguments: param),
@@ -307,8 +309,8 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
     RegExp(r"\/(reg|renew|revive)(\/payment\/card\/confirm)"): (_, __) =>
         MaterialPage(child: routePage(PaymentSuccessScreen())),
-    RegExp(r"\/(reg|renew|revive)(\/payment\/card)"): (_, __) =>
-        MaterialPage(child: routePage(DebitCardPage())),
+    RegExp(r"\/(reg|renew|revive|subscription)(\/payment\/card)"): (_, params) =>
+        MaterialPage(child: routePage(DebitCardPage()), arguments: params),
     Routes.vitrin: (_, __) => MaterialPage(child: routePage(VitrinScreen())),
     Routes.psychologyIntro: (_, __) => MaterialPage(child: routePage(PsychologyIntroScreen())),
     Routes.psychologyCalender: (_, params) =>
@@ -320,11 +322,11 @@ final navigator = VxNavigator(
     Routes.psychologyReservedMeeting: (_, __) =>
         MaterialPage(child: routePage(PsychologyReservedMeetingScreen())),
     Routes.resetPasswordProfile: (_, __) => MaterialPage(child: routePage(ResetPasswordProfile())),
-    RegExp(r"\/(reg|list|renew|revive|shop)(\/payment\/online\/fail)"): (path, params) =>
-        MaterialPage(
+    RegExp(r"\/(reg|list|renew|revive|shop|subscription)(\/payment\/online\/fail)"):
+        (path, params) => MaterialPage(
             child: routePage(PaymentFailScreen()),
-            arguments: path.path.contains("shop") ? ProductType.SHOP : ProductType.PACKAGE),
-    RegExp(r"\/(reg|list|renew|revive)(\/payment\/card\/reject)"): (_, __) =>
+            arguments: path.path.contains("shop") ? ProductType.SHOP : ProductType.DIET),
+    RegExp(r"\/(reg|list|renew|revive|subscription)(\/payment\/card\/reject)"): (_, __) =>
         MaterialPage(child: routePage(PaymentFailScreen())),
     RegExp(r"\/(reg|renew|revive)(\/activity)"): (_, __) =>
         MaterialPage(child: routePage(ActivityLevelPage())),
@@ -346,8 +348,8 @@ final navigator = VxNavigator(
     Routes.listWeightAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.renewAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.reviveAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
-    RegExp(r"\/(reg|list|renew|revive|shop)(\/payment\/online\/success)"): (_, param) =>
-        MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
+    RegExp(r"\/(reg|list|renew|revive|shop|subscription)(\/payment\/online\/success)"):
+        (_, param) => MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
     RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),
     RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) =>
@@ -372,8 +374,7 @@ final navigator = VxNavigator(
     Routes.targetWeight: (_, __) => MaterialPage(child: routePage(TargetWeightScreen())),
     Routes.selectPackageSubscription: (_, __) =>
         MaterialPage(child: routePage(SelectPackageSubscriptionScreen())),
-    Routes.billSubscription: (_, params) =>
-        MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
+    Routes.billSubscription: (_, __) => MaterialPage(child: routePage(BillPaymentScreen())),
     Routes.billSubscriptionHistory: (_, params) =>
         MaterialPage(child: routePage(HistorySubscriptionPaymentScreen()), arguments: params),
   },

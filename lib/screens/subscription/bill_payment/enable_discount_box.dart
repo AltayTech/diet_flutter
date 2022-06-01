@@ -3,7 +3,6 @@ import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/discount_widget.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 
@@ -44,7 +43,7 @@ class _EnableDiscountBoxWidget
             decoration: AppDecorations.boxSmall.copyWith(
               color: Colors.white,
             ),
-            margin: EdgeInsets.only(top: 2.h, left: 4.w, right: 4.w),
+            margin: EdgeInsets.only(top: 1.h, left: 4.w, right: 4.w),
             padding:
                 EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
             child: Row(

@@ -9,7 +9,7 @@ abstract class Routes {
   static const register = '/auth/register';
   static const passVerify = '/auth/pass/verify';
   static const authVerify = '/auth/verify';
-  static const resetCode = '/resetCode';
+  static const resetCode = '/profile/password';
   static const resetPass = '/auth/pass/reset';
   static const regimeType = '/diet/type';
   static const helpType = '/help';
@@ -86,10 +86,13 @@ abstract class Routes {
   static const shopPaymentOnlineFail = '/shop/payment/online/fail';
   static const dailyMessage = '/dailyMessage';
   static const privacyApp = '/privacy-policy';
-  static const selectPackageSubscription = '/subscription/select-package';
-  static const billSubscription = '/subscription/bill';
+  static const selectPackageSubscription = '/subscription';
+  static const billSubscription = '/subscription/payment/bill';
   static const billSubscriptionHistory = '/subscription/history';
-
+  static const cardToCardSubscription = '/subscription/payment/card';
+  static const subscriptionPaymentOnlineSuccess = '/subscription/payment/online/success';
+  static const subscriptionPaymentOnlineFail = '/subscription/payment/online/fail';
+  static const subscriptionPaymentCardWait = '/subscription/payment/card/wait';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 class CardPackage extends StatefulWidget {
   PackageItem packageItem;
@@ -242,8 +241,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
             ),
             Space(height: 1.h),
             Text(
-              widget.packageItem != null &&
-                      widget.packageItem.price != null &&
+              widget.packageItem.price != null &&
                       widget.packageItem.price!.saleAmount != 0
                   ? '${widget.packageItem.price!.saleAmount.toString().seRagham()} ${intl.toman}'
                   : intl.free,

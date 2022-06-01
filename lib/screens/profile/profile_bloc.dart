@@ -98,7 +98,7 @@ class ProfileBloc {
     if (MemoryApp.countries == null) {
       fetchCountries();
     }
-    fetchUserInformation();
+    fetchUserInformation(true);
   }
 
   void fetchCountries() {
@@ -107,10 +107,10 @@ class ProfileBloc {
     });
   }
 
-  void fetchUserInformation() async {
+  void fetchUserInformation(bool invalidate) async {
     _progressNetwork.safeValue = true;
     if (MemoryApp.userInformation == null) {
-      _repository.getUser().then((value) {
+      _repository.getUser(invalidate: invalidate).then((value) {
         debugPrint('value ==> ${value.data!.firstName}');
         _userInformation = value.data!;
         MemoryApp.userInformation = _userInformation;

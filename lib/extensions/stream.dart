@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:behandam/base/first_class_functions.dart';
-import 'package:behandam/data/sharedpreferences.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 

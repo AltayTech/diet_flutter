@@ -2,10 +2,10 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 
@@ -49,8 +49,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
               color: Colors.white,
             ),
             margin: EdgeInsets.only(top: 2.h, left: 4.w, right: 4.w),
-            padding:
-                EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
+            padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               textDirection: context.textDirectionOfLocale,
@@ -60,48 +59,61 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
+                    padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 2.h, bottom: 2.h),
-                          child: Text(
-                            intl.paymentType,
-                            style: typography.subtitle1!.copyWith(
-                                fontWeight: FontWeight.bold, fontSize: 12.sp),
-                          ),
-                        ),
-                        Space(height: 1.h),
-                        StreamBuilder<PaymentType?>(
-                            stream: bloc.selectedPayment,
-                            builder: (context, selectedPayment) {
-                              if (selectedPayment.hasData)
-                                return Container(
-                                  width: double.maxFinite,
-                                  child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          child: paymentItem(
-                                              selectedPayment.data! ==
-                                                  PaymentType.cardToCard,
-                                              PaymentType.cardToCard),
-                                        ),
-                                        Space(width: 3.w),
-                                        Expanded(
-                                          child: paymentItem(
-                                              selectedPayment.data! ==
-                                                  PaymentType.online,
-                                              PaymentType.online),
-                                        )
-                                      ]),
+                        StreamBuilder<bool>(
+                            initialData: false,
+                            stream: bloc.usedDiscount,
+                            builder: (context, usedDiscount) {
+                              if ((bloc.packageItem!.price?.totalPrice == null ||
+                                  bloc.packageItem!.price!.totalPrice! > 0))
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(top: 2.h, bottom: 2.h),
+                                      child: Text(
+                                        intl.paymentType,
+                                        style: typography.subtitle1!
+                                            .copyWith(fontWeight: FontWeight.bold, fontSize: 12.sp),
+                                      ),
+                                    ),
+                                    Space(height: 1.h),
+                                    Container(
+                                      child: StreamBuilder<PaymentType?>(
+                                          stream: bloc.selectedPayment,
+                                          builder: (context, selectedPayment) {
+                                            if (selectedPayment.hasData)
+                                              return Container(
+                                                width: double.maxFinite,
+                                                child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: paymentItem(
+                                                            selectedPayment.data! ==
+                                                                PaymentType.cardToCard,
+                                                            PaymentType.cardToCard),
+                                                      ),
+                                                      Space(width: 3.w),
+                                                      Expanded(
+                                                        child: paymentItem(
+                                                            selectedPayment.data! ==
+                                                                PaymentType.online,
+                                                            PaymentType.online),
+                                                      )
+                                                    ]),
+                                              );
+                                            return Container();
+                                          }),
+                                    )
+                                  ],
                                 );
-                              return Container();
+                              else
+                                return EmptyBox();
                             }),
                         showSubscriptionInfo()
                       ],
@@ -122,9 +134,8 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
-          border: isSelected
-              ? Border.all(color: AppColors.priceColor)
-              : Border.all(color: Colors.grey),
+          border:
+              isSelected ? Border.all(color: AppColors.priceColor) : Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(10),
         ),
         constraints: BoxConstraints(minHeight: 8.h),
@@ -138,9 +149,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
               Expanded(
                 flex: 1,
                 child: ImageUtils.fromLocal(
-                  isSelected
-                      ? 'assets/images/bill/check.svg'
-                      : 'assets/images/bill/not_select.svg',
+                  isSelected ? 'assets/images/bill/check.svg' : 'assets/images/bill/not_select.svg',
                   width: 3.w,
                   height: 3.h,
                 ),
@@ -156,9 +165,8 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                     type == PaymentType.online ? intl.online : intl.cardToCard,
                     softWrap: false,
                     textAlign: TextAlign.start,
-                    style: typography.caption!.copyWith(
-                        color:
-                            isSelected ? AppColors.priceColor : Colors.black),
+                    style: typography.caption!
+                        .copyWith(color: isSelected ? AppColors.priceColor : Colors.black),
                   ),
                 ),
               ),
@@ -186,25 +194,64 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
+                flex: 2,
                 child: Text(
                   packageItem.name!,
-                  softWrap: false,
+                  softWrap: true,
                   textAlign: TextAlign.start,
-                  style: typography.caption!.copyWith(
-                      color: AppColors.priceGreyColor, fontSize: 10.sp),
+                  style: typography.caption!
+                      .copyWith(color: AppColors.priceGreyColor, fontSize: 10.sp),
                 ),
               ),
               Expanded(
-                child: Text(
-                  '${packageItem.price!.amount} ${intl.toman}',
-                  softWrap: false,
-                  textAlign: TextAlign.end,
-                  style: typography.caption!
-                      .copyWith(color: AppColors.priceGreyColor),
+                flex: 1,
+                child: RichText(
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  text: TextSpan(
+                    text: '${packageItem.price!.amount} ',
+                    children: [
+                      TextSpan(
+                        text: intl.toman,
+                        style: typography.overline!.copyWith(color: AppColors.priceGreyColor,fontSize: 9.sp),
+                      ),
+                    ],
+                    style: typography.caption!.copyWith(color: AppColors.priceGreyColor,fontWeight: FontWeight.w700),
+                  ),
                 ),
               ),
             ],
           ),
+          if (packageItem.price!.totalPrice == null &&
+              packageItem.price!.saleAmount != packageItem.price!.amount &&
+              packageItem.price!.saleAmount != 0 &&
+              packageItem.price!.amount != 0)
+            Container(
+              margin: EdgeInsets.only(top: 1.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      intl.discount,
+                      softWrap: false,
+                      textAlign: TextAlign.start,
+                      style: typography.caption!
+                          .copyWith(color: AppColors.priceDiscountColor, fontSize: 10.sp),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      '${packageItem.price!.amount! - packageItem.price!.saleAmount!} ${intl.toman}',
+                      softWrap: false,
+                      textAlign: TextAlign.end,
+                      style: typography.caption!.copyWith(color: AppColors.priceDiscountColor),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           StreamBuilder<bool>(
               initialData: false,
               stream: bloc.usedDiscount,
@@ -218,12 +265,11 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                       children: [
                         Expanded(
                           child: Text(
-                            intl.discount,
+                            intl.discountForYou,
                             softWrap: false,
                             textAlign: TextAlign.start,
-                            style: typography.caption!.copyWith(
-                                color: AppColors.priceDiscountColor,
-                                fontSize: 10.sp),
+                            style: typography.caption!
+                                .copyWith(color: AppColors.priceDiscountColor, fontSize: 10.sp),
                           ),
                         ),
                         Expanded(
@@ -231,42 +277,8 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                             '${bloc.discountInfo!.discount} ${intl.toman}',
                             softWrap: false,
                             textAlign: TextAlign.end,
-                            style: typography.caption!
-                                .copyWith(color: AppColors.priceDiscountColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                else if (!usedDiscount.requireData &&
-                    packageItem.price!.totalPrice == null &&
-                    packageItem.price!.saleAmount !=
-                        packageItem.price!.amount &&
-                    packageItem.price!.saleAmount != 0 &&
-                    packageItem.price!.amount != 0)
-                  return Container(
-                    margin: EdgeInsets.only(top: 1.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            intl.discount,
-                            softWrap: false,
-                            textAlign: TextAlign.start,
-                            style: typography.caption!.copyWith(
-                                color: AppColors.priceDiscountColor,
-                                fontSize: 10.sp),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            '${packageItem.price!.amount! - packageItem.price!.saleAmount!} ${intl.toman}',
-                            softWrap: false,
-                            textAlign: TextAlign.end,
-                            style: typography.caption!
-                                .copyWith(color: AppColors.priceDiscountColor),
+                            style:
+                                typography.caption!.copyWith(color: AppColors.priceDiscountColor),
                           ),
                         ),
                       ],
@@ -300,12 +312,14 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                       return Expanded(
                         child: Text(
                           usedDiscount.requireData
-                              ? '${packageItem.price!.totalPrice} ${intl.toman}'
+                              ? packageItem.price!.totalPrice != 0 &&
+                                      packageItem.price!.totalPrice != null
+                                  ? '${packageItem.price!.totalPrice} ${intl.toman}'
+                                  : intl.free
                               : '${packageItem.price!.saleAmount} ${intl.toman}',
                           softWrap: false,
                           textAlign: TextAlign.end,
-                          style: typography.caption!
-                              .copyWith(color: AppColors.priceGreenColor),
+                          style: typography.caption!.copyWith(color: AppColors.priceGreenColor),
                         ),
                       );
                     }),

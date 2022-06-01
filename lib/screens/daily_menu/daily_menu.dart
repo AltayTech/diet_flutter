@@ -2,7 +2,6 @@ import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
@@ -56,7 +55,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
       bloc = ModalRoute.of(context)?.settings.arguments as FoodListBloc;
       isInitial = true;
       bloc.popLoading.listen((event) {
-        VxNavigator.of(context).pop();
+        Navigator.of(context).pop();
       });
     }
   }

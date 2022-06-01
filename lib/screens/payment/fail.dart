@@ -1,5 +1,7 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/pay_diamond.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -33,11 +35,10 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (!isInit) {
-      bloc = PaymentBloc();
       isInit = true;
-      var paymentType =
-          ModalRoute.of(context)!.settings.arguments as ProductType? ?? ProductType.PACKAGE;
-      bloc.setProductType(paymentType);
+
+      bloc = PaymentBloc();
+      bloc.setProductType();
     }
   }
 
@@ -57,10 +58,11 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
                         if (type.data != null)
                           return Column(children: [
                             Expanded(child: content(type.data!)),
-                            BottomNav(
-                                currentTab: type == ProductType.SHOP
-                                    ? BottomNavItem.SHOP
-                                    : BottomNavItem.DIET)
+                            if (!navigator.currentConfiguration!.path.contains("subscription"))
+                              BottomNav(
+                                  currentTab: type == ProductType.SHOP
+                                      ? BottomNavItem.SHOP
+                                      : BottomNavItem.DIET)
                           ]);
                         else
                           return Space();
@@ -106,13 +108,13 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
                 Space(
                   height: 2.h,
                 ),
-                if (type == ProductType.PACKAGE) noteInvoiceReject(),
+                if (type == ProductType.DIET) noteInvoiceReject(),
                 Space(height: 1.h),
                 buttonShowInformation(),
                 Space(height: 2.h),
                 informationInvoice(),
                 Space(height: 3.h),
-                if (type == ProductType.PACKAGE) buttonRetryPayment() else buttonBackToShop(),
+                if (type != ProductType.SHOP) buttonRetryPayment() else buttonBackToShop(),
                 Space(height: 3.h),
               ],
             ),
@@ -364,9 +366,14 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
               width: 0.25.w,
             )),
         onPressed: () {
-          MemoryApp.analytics!.logEvent(name: "total_payment_fail");
-          //context.vxNav.push(Uri.parse('/${bloc.path ?? ''}'));
-          context.vxNav.pop();
+          if (navigator.currentConfiguration!.path.contains("subscription") ||
+              navigator.currentConfiguration!.path.contains("shop")) {
+            MemoryApp.analytics!.logEvent(name: "total_payment_fail");
+            //context.vxNav.push(Uri.parse('/${bloc.path ?? ''}'));
+            context.vxNav.pop();
+          } else {
+            context.vxNav.clearAndPush(Uri.parse(Routes.listView));
+          }
         },
         icon: Icon(
           Icons.refresh,
@@ -394,5 +401,4 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
     super.onRetryLoadingPage();
     bloc.sendRequest();
   }
-
 }

@@ -1,6 +1,4 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
