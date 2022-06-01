@@ -38,8 +38,7 @@ class _BlockState extends ResourcefulState<Block> {
                   shape: AppShapes.rectangleMild,
                   elevation: 2,
                   child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: content(),
                   ),
                 ),
@@ -105,7 +104,9 @@ class _BlockState extends ResourcefulState<Block> {
         Space(width: 3.w),
         Expanded(
           child: Text(
-            intl.blockText,
+            navigator.currentConfiguration!.path.contains('sick')
+                ? intl.blockSickText
+                : intl.blockText,
             style: typography.caption,
             softWrap: true,
             textAlign: TextAlign.start,
@@ -128,8 +129,7 @@ class _BlockState extends ResourcefulState<Block> {
                 decoration: BoxDecoration(
                   color: AppColors.box,
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(70.0),
-                      topRight: Radius.circular(70.0)),
+                      topLeft: Radius.circular(70.0), topRight: Radius.circular(70.0)),
                 ),
               ),
             ),
@@ -190,14 +190,18 @@ class _BlockState extends ResourcefulState<Block> {
                 child: SubmitButton(
                   label: intl.editPhysicalInfo,
                   onTap: () {
-                    if (navigator.currentConfiguration!.path ==
-                            Routes.listBlock ||
-                        navigator.currentConfiguration!.path ==
-                            Routes.renewBlock)
-                      VxNavigator.of(context)
-                          .push(Uri(path: '/${navigator.currentConfiguration!.path.substring(1).split('/').first}${Routes.weightEnter}'));
+                    if (navigator.currentConfiguration!.path == Routes.listBlock)
+                      VxNavigator.of(context).push(Uri(
+                          path:
+                              '/${navigator.currentConfiguration!.path.substring(1).split('/').first}${Routes.weightEnter}'));
+                    else if (navigator.currentConfiguration!.path == Routes.renewBlock)
+                      VxNavigator.of(context).push(Uri(
+                          path:
+                              '/${navigator.currentConfiguration!.path.substring(1).split('/').first}/weight'));
                     else
-                      VxNavigator.of(context).push(Uri(path: Routes.bodyState));
+                      VxNavigator.of(context).push(Uri(
+                          path:
+                              '/${navigator.currentConfiguration!.path.substring(1).split('/').first}/size'));
                   },
                 ),
               ),

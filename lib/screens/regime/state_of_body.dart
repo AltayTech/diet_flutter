@@ -100,32 +100,23 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                           children: [
                             rulers(snapshot.requireData),
                             Space(height: 2.h),
-                            if (navigator.currentConfiguration!.path == '/list${Routes.weightEnter}')
+                            if (navigator.currentConfiguration!.path ==
+                                '/list${Routes.weightEnter}')
                               callBox(snapshot.requireData),
                             if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
                               birthDayBox(snapshot.requireData),
                             Space(height: 2.h),
-                            /*if (!snapshot.requireData.isForbidden.isNullOrFalse)
-                              Alert(
-                                text: snapshot.requireData.mustGetNotrica.isNullOrFalse
-                                    ? intl.itIsNotPossible
-                                    : intl.userNotricaRegime,
-                                boxColor: AppColors.warning,
-                                iconPath: 'assets/images/diet/exclamation.svg',
-                              )
-                            else*/
-                              SubmitButton(
-                                label: intl.confirmContinue,
-                                onTap: () {
-
-                                  snapshot.requireData.weight = double.parse(
-                                      '${snapshot.requireData.kilo}.${snapshot.requireData.gram}');
-                                  debugPrint('body weight ${snapshot.requireData.weight}');
-                                 regimeBloc.setPhysicalInfo(data: snapshot.requireData);
-                                  DialogUtils.showDialogProgress(context: context);
-                                  regimeBloc.sendRequest();
-                                },
-                              ),
+                            SubmitButton(
+                              label: intl.confirmContinue,
+                              onTap: () {
+                                snapshot.requireData.weight = double.parse(
+                                    '${snapshot.requireData.kilo}.${snapshot.requireData.gram}');
+                                debugPrint('body weight ${snapshot.requireData.weight}');
+                                regimeBloc.setPhysicalInfo(data: snapshot.requireData);
+                                DialogUtils.showDialogProgress(context: context);
+                                regimeBloc.sendRequest();
+                              },
+                            ),
                             Space(height: 2.h),
                           ],
                         );
@@ -167,7 +158,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             physicalInfo.weight = double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
           },
         ),
-        if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
+        if (!navigator.currentConfiguration!.path.contains('weight'))
           CustomRuler(
             rulerType: RulerType.Normal,
             value: physicalInfo.height!,
@@ -181,7 +172,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             iconPath: 'assets/images/diet/height_icon.svg',
             onClick: (val) => physicalInfo.height = val,
           ),
-        if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
+        if (!navigator.currentConfiguration!.path.contains('weight'))
           CustomRuler(
             rulerType: RulerType.Normal,
             value: physicalInfo.wrist!,
@@ -195,7 +186,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             iconPath: 'assets/images/diet/wrist_icon.svg',
             onClick: (val) => physicalInfo.wrist = val,
           ),
-        if (physicalInfo.dietTypeAlias == RegimeAlias.Pregnancy)
+        if (physicalInfo.dietTypeAlias == RegimeAlias.Pregnancy &&
+            !navigator.currentConfiguration!.path.contains('enter'))
           CustomRuler(
             rulerType: RulerType.Pregnancy,
             value: physicalInfo.pregnancyWeek!,
@@ -345,9 +337,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
         Space(height: 2.h),
         Text(
           intl.shouldWeCallYou,
-          style: typography.caption?.apply(
-            fontWeightDelta: 1
-          ),
+          style: typography.caption?.apply(fontWeightDelta: 1),
           textAlign: TextAlign.center,
         ),
         Row(
@@ -403,8 +393,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   @override
   void onRetryAfterNoInternet() {
-    if(!MemoryApp.isShowDialog)
-    DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     regimeBloc.sendRequest();
   }
 
@@ -412,5 +401,4 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
   void onRetryLoadingPage() {
     regimeBloc.physicalInfoData();
   }
-
 }
