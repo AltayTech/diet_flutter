@@ -445,7 +445,7 @@
   "whatIsYourGoal": "هدفت از رژیم گرفتن چیه؟",
   "paymentFail": "پرداخت ناموفق",
   "paymentFailLabel": "پرداخت شما ناموفق بود",
-  "failForAdmin": "پرداخت شما توسط پشتیبانی رد شده است",
+  "failForAdmin": "پرداخت توسط شما رد شده است",
   "offError": "ابتدا کد تخفیف خود را ثبت کنید",
   "paymentWait": "بررسی پرداخت کارت به کارت",
   "paymentWaitLabel": "پرداخت شما با موفقیت ثبت شد",
