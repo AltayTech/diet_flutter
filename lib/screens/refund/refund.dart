@@ -45,12 +45,14 @@ class _RefundScreenState extends ResourcefulState<RefundScreen> {
       body: StreamBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data == false) {
-            bloc.setDate(DateTimeUtils.gregorianToJalali(
-                DateTime.parse(MemoryApp.termPackage!.term!.startedAt.replaceAll(RegExp('-'), ''))
-                    .add(Duration(days: MemoryApp.termPackage?.package!.refundDeadline ?? 0))
-                    .toString()));
+            bloc.setDate(DateTimeUtils.gregorianToJalali(DateTime.parse(
+                    MemoryApp.termPackage!.term!.startedAt
+                        .replaceAll(RegExp('-'), ''))
+                .add(Duration(
+                    days: MemoryApp.termPackage?.package!.refundDeadline ?? 0))
+                .toString()));
             bloc.setCanRefund(MemoryApp.termPackage!.canRefund ?? false);
-            if (MemoryApp.refundItem!.items!.isEmpty) {
+            if (MemoryApp.refundItem == null || MemoryApp.refundItem!.items!.isEmpty) {
               if (!bloc.canRefundValue) {
                 bloc.message = intl.descriptionRefund(bloc.date);
               } else
@@ -116,7 +118,8 @@ class _RefundScreenState extends ResourcefulState<RefundScreen> {
                     SizedBox(height: 5.h),
                     SubmitButton(
                       onTap: () {
-                        VxNavigator.of(context).push(Uri.parse(Routes.refundVerify));
+                        VxNavigator.of(context)
+                            .push(Uri.parse(Routes.refundVerify));
                       },
                       label: intl.acceptRefundPayment,
                     ),
@@ -137,7 +140,8 @@ class _RefundScreenState extends ResourcefulState<RefundScreen> {
         textDirection: context.textDirectionOfLocale,
         text: TextSpan(children: [
           TextSpan(
-            text: '${MemoryApp.userInformation?.firstName ?? intl.user} ${intl.babe}،',
+            text:
+                '${MemoryApp.userInformation?.firstName ?? intl.user} ${intl.babe}،',
             style: Theme.of(context).textTheme.caption,
           ),
           TextSpan(
@@ -152,7 +156,8 @@ class _RefundScreenState extends ResourcefulState<RefundScreen> {
                 .copyWith(color: Colors.redAccent, fontWeight: FontWeight.w600),
           ),
           TextSpan(
-              text: intl.requestRefundPaymentLabel, style: Theme.of(context).textTheme.caption!)
+              text: intl.requestRefundPaymentLabel,
+              style: Theme.of(context).textTheme.caption!)
         ]));
   }
 
