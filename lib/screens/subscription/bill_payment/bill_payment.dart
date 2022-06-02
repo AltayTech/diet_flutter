@@ -51,6 +51,10 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed && bloc.checkLatestInvoice) {
+      if (mounted) {
+        DialogUtils.showDialogProgress(context: context);
+      }
+
       bloc.checkOnlinePayment();
     }
   }
