@@ -8,7 +8,7 @@ import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
-import 'package:behandam/utils/card_formatter.dart';
+import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
@@ -132,7 +132,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                                   initialValue: snapshot.data,
                                   decoration: inputDecoration.copyWith(
                                     labelText: '',
-                                    hintText: intl.cardNumber,
+                                    hintText: 'IR00 0000 0000 0000 0000 0000 00',
                                     hintStyle: Theme.of(context)
                                         .textTheme
                                         .overline!
@@ -144,8 +144,9 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                                   ),
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly,
-                                    new LengthLimitingTextInputFormatter(16),
-                                    new CardNumberInputFormatter()
+                                    new LengthLimitingTextInputFormatter(24),
+                                    TextInputMask(mask: 'IR99 9999 9999 9999 9999 9999 99',
+                                      )
                                   ],
                                   keyboardType: TextInputType.phone,
                                   onChanged: (val) {

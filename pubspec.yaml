@@ -85,6 +85,7 @@ dependencies:
   webviewx: ^0.2.1
   dotted_border: ^2.0.0+2
   event_bus: ^2.0.0
+  easy_mask: ^2.0.1
 
 
 dependency_overrides:

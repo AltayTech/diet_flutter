@@ -548,9 +548,9 @@
   "acceptRefundPayment": "ثبت درخواست بازگشت وجه",
   "pleaseFillInformation": "لطفا اطلاعات زیر را با دقت کامل کنید",
   "pleaseFillAllParams": "لطفا تمامی گزینه ها را پر کنید",
-  "cardNumberFull": "16 رقم کامل شماره کارت شما",
+  "cardNumberFull": "شماره شبای کارت بانکی",
   "cardNumber": "شماره کارت",
-  "cardNumberOwner": "شماره کارت بالا به نام چه کسی است؟",
+  "cardNumberOwner": "شماره شبای بالا به نام چه کسی است؟",
   "validationCardNumber": "شماره کارت نباید کمتر از 16 کاراکتر باشد",
   "back": "بازگشت",
   "backProfile": "بازگشت به پروفایل",
@@ -714,5 +714,6 @@
   "expireTerm": "دوره رژیم شما به پایان رسید",
   "noAdviceVideo": "ویدیویی برای نمایش وجود ندارد",
   "notActiveTerm": "شما اشتراک فعالی ندارید",
+  "shebaNumber": "شماره شبا",
   "understand": "متوجه شدم"
 }
