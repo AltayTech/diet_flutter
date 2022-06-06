@@ -9,6 +9,8 @@ import 'package:behandam/screens/food_list/food_meals.dart';
 import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -38,8 +40,8 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   void initListener() {
     bloc.showServerError.listen((event) {
       if (event.contains('payment/bill')) {
-        context.vxNav
-            .clearAndPush(Uri.parse('/${event.toString().split('/')[0]}${Routes.regimeType}'));
+        context.vxNav.clearAndPush(Uri.parse(
+            '/${event.toString().split('/')[0]}${Routes.regimeType}'));
       } else if (!Routes.listView.contains(event)) {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       } else
@@ -62,70 +64,86 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
     return FoodListProvider(
       bloc,
-      child: Scaffold(
-        body: SafeArea(child: body()),
-      ),
+      child: body(),
     );
   }
 
   Widget body() {
     return StreamBuilder(
       stream: bloc.loadingContent,
+      initialData: true,
       builder: (_, AsyncSnapshot<bool> snapshot) {
-        return Container(
-          height: 100.h,
-          child: Column(
-            children: [
-              Expanded(
-                child: TouchMouseScrollable(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                            FoodListAppbar(),
-                            AppbarBoxAdviceVideo(),
-                          ],
-                        ),
-                        Space(height: 2.h),
-                        ChangeMenu(),
-                        Space(height: 2.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 3.w),
-                          child: FoodMeals(),
-                        ),
-                        Space(
-                          height: 1.h,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 3.w),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                            child: InkWell(
-                                onTap: () {
-                                  DialogUtils.showDialogProgress(context: context);
-                                  bloc.checkFitamin();
-                                  // _launchURL(vitrinBloc.url);
-                                },
-                                child: ImageUtils.fromLocal(
-                                  MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
-                                      ? 'assets/images/vitrin/fitamin_banner.png'
-                                      : 'assets/images/vitrin/fitamin_banner_02.png',
-                                )),
+        if (snapshot.hasData && !snapshot.requireData)
+          return Scaffold(
+            body: SafeArea(
+              child: Container(
+                height: 100.h,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: TouchMouseScrollable(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Stack(
+                                children: [
+                                  FoodListAppbar(),
+                                  AppbarBoxAdviceVideo(),
+                                ],
+                              ),
+                              Space(height: 2.h),
+                              ChangeMenu(),
+                              Space(height: 2.h),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                                child: FoodMeals(),
+                              ),
+                              Space(
+                                height: 1.h,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                                child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16.0)),
+                                  child: InkWell(
+                                      onTap: () {
+                                        DialogUtils.showDialogProgress(
+                                            context: context);
+                                        bloc.checkFitamin();
+                                        // _launchURL(vitrinBloc.url);
+                                      },
+                                      child: ImageUtils.fromLocal(
+                                        MemoryApp.userInformation!
+                                                .hasFitaminService.isNullOrFalse
+                                            ? 'assets/images/vitrin/fitamin_banner.png'
+                                            : 'assets/images/vitrin/fitamin_banner_02.png',
+                                      )),
+                                ),
+                              ),
+                              Space(
+                                height: 2.h,
+                              ),
+                            ],
                           ),
                         ),
-                        Space(
-                          height: 2.h,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    BottomNav(currentTab: BottomNavItem.DIET),
+                  ],
                 ),
               ),
-              BottomNav(currentTab: BottomNavItem.DIET),
-            ],
-          ),
-        );
+            ),
+          );
+        return Scaffold(
+            appBar: Toolbar(titleBar: intl.foodList),
+            body: SafeArea(
+                child: Container(
+                    height: 100.h,
+                    child: Column(children: [
+                      Expanded(child: Center(child: Progress())),
+                      BottomNav(currentTab: BottomNavItem.DIET)
+                    ]))));
       },
     );
   }
@@ -136,5 +154,4 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
     super.onRetryLoadingPage();
     bloc.getFoodMenu(fillFood: true);
   }
-
 }
