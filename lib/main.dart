@@ -14,7 +14,8 @@ Future<void> main() async {
       "urlPrivacy": "https://behandam.kermany.com/#/article/5901",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
-      'isProduction': true
+      'isProduction': true,
+      'isCafeBazaar':false
     },
   );
   await entryPoint();

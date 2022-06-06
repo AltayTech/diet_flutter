@@ -36,7 +36,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     bloc = BillPaymentBloc();
     if (navigator.currentConfiguration!.path.contains('subscription')) {
@@ -213,7 +213,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   void dispose() {
     super.dispose();
 
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     bloc.dispose();
   }

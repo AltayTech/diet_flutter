@@ -13,7 +13,6 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/utils/device.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:universal_html/html.dart';
 
 enum PaymentDate { today, customDate }
 

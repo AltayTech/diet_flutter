@@ -91,7 +91,7 @@ class _TicketState extends ResourcefulState<Ticket> {
         ),
         StreamBuilder(
           builder: (context, snapshot) {
-            WidgetsBinding.instance!.addPostFrameCallback(
+            WidgetsBinding.instance.addPostFrameCallback(
                 (_) => Future.delayed(Duration(milliseconds: 500), _scrollToEnd));
             if (snapshot.data != null && snapshot.data == false) {
               return StreamBuilder<List<TicketItem>>(

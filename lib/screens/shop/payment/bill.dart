@@ -34,7 +34,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     bloc = ProductBloc();
     bloc.navigateToRoute.listen((event) {
       // Navigator.of(context).pop();
