@@ -135,8 +135,11 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
                 context)),
         Expanded(
             flex: 1,
-            child: item(
-                'assets/images/tab/menu_shop.svg', BottomNavItem.SHOP, intl.shopMenu, context)),
+            child: !FlavorConfig.instance.variables['isCafeBazaar']
+                ? item(
+                    'assets/images/tab/menu_shop.svg', BottomNavItem.SHOP, intl.shopMenu, context)
+                : item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.SHOP, intl.vitrin,
+                    context)),
         Expanded(
             flex: 1,
             child: item(
