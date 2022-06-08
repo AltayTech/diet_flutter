@@ -6,13 +6,15 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
+import 'package:behandam/data/entity/calendar/calendar.dart';
+import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,9 +25,10 @@ import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
 class ProfileBloc {
-  AuthenticationBloc? loginRegisterBloc;
-
-  ProfileBloc() {}
+  ProfileBloc() {
+    _obscureTextPass.safeValue=false;
+    _obscureTextConfirmPass.safeValue=false;
+  }
 
   final _repository = Repository.getInstance();
   ImagePicker? _picker;
@@ -34,18 +37,23 @@ class ProfileBloc {
   late String countryName;
 
   late UserInformation _userInformation;
-  final _showServerError = LiveEvent();
-  final _navigateTo = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
   final _showProgressItem = BehaviorSubject<bool>();
   final _showProgressUploadImage = BehaviorSubject<bool>();
+  final _termPackage = BehaviorSubject<TermPackage>();
+  final _subscriptionPending = BehaviorSubject<SubscriptionPendingData?>();
   final _inboxCount = BehaviorSubject<int>();
   final _userInformationStream = BehaviorSubject<UserInformation>();
   final _showRefund = BehaviorSubject<bool>();
   final _showPdf = BehaviorSubject<bool>();
   final _inboxStream = BehaviorSubject<List<InboxItem>>();
   final _cityProvinceModelStream = BehaviorSubject<CityProvinceModel>();
+  final _obscureTextPass = BehaviorSubject<bool>();
+  final _obscureTextConfirmPass = BehaviorSubject<bool>();
+
   final _navigateToVerify = LiveEvent();
+  final _showServerError = LiveEvent();
+  final _navigateTo = LiveEvent();
   String? _url;
 
   String? get url => _url;
@@ -76,41 +84,53 @@ class ProfileBloc {
 
   Stream<CityProvinceModel> get cityProvinceModelStream => _cityProvinceModelStream.stream;
 
+  Stream<bool> get obscureTextPass => _obscureTextPass.stream;
+
+  Stream<bool> get obscureTextConfirmPass => _obscureTextConfirmPass.stream;
+
+  Stream<TermPackage> get termPackage => _termPackage.stream;
+
+  Stream<SubscriptionPendingData?> get subscriptionPending => _subscriptionPending.stream;
+
   bool? get isProgressNetwork => _progressNetwork.value;
 
   void getInformation() {
-    if (loginRegisterBloc == null) {
-      loginRegisterBloc = AuthenticationBloc();
+    if (MemoryApp.countries == null) {
+      fetchCountries();
     }
-    fetchUserInformation();
+    fetchUserInformation(true);
   }
 
-  void fetchUserInformation() async {
-    _progressNetwork.value = true;
+  void fetchCountries() {
+    _repository.country().then((value) {
+      MemoryApp.countries = value.data!;
+    });
+  }
+
+  void fetchUserInformation(bool invalidate) async {
+    _progressNetwork.safeValue = true;
     if (MemoryApp.userInformation == null) {
-      _repository.getUser().then((value) {
+      _repository.getUser(invalidate: invalidate).then((value) {
         debugPrint('value ==> ${value.data!.firstName}');
         _userInformation = value.data!;
         MemoryApp.userInformation = _userInformation;
         getProvinces();
-        _userInformationStream.value = value.data!;
+        _userInformationStream.safeValue = value.data!;
       }).catchError((onError) {
         debugPrint('onError ==> ${onError.toString()}');
       }).whenComplete(() {
-        _progressNetwork.value = false;
+        _progressNetwork.safeValue = false;
       });
     } else {
-      loginRegisterBloc!.countriesStream.listen((event) {
-        _userInformation = MemoryApp.userInformation!;
-        _userInformationStream.value = _userInformation;
-        if (MemoryApp.cityProvinceModel == null)
-          getProvinces();
-        else {
-          cityProvinceModel = MemoryApp.cityProvinceModel!;
-          _cityProvinceModelStream.value = cityProvinceModel;
-        }
-        _progressNetwork.value = false;
-      });
+      _userInformation = MemoryApp.userInformation!;
+      _userInformationStream.safeValue = _userInformation;
+      if (MemoryApp.cityProvinceModel == null)
+        getProvinces();
+      else {
+        cityProvinceModel = MemoryApp.cityProvinceModel!;
+        _cityProvinceModelStream.safeValue = cityProvinceModel;
+      }
+      _progressNetwork.safeValue = false;
     }
     getUnreadInbox();
     getTermPackage();
@@ -118,7 +138,7 @@ class ProfileBloc {
 
   void getUnreadInbox() {
     _repository.getUnreadInbox().then((value) {
-      _inboxCount.value = value.data!.count ?? 0;
+      _inboxCount.safeValue = value.data!.count ?? 0;
       MemoryApp.inboxCount = value.data!.count ?? 0;
     });
   }
@@ -126,7 +146,7 @@ class ProfileBloc {
   void getInbox() {
     _repository.getInbox().then((value) {
       print('data => ${value.data!.toJson()}');
-      _inboxStream.value = value.data!.items!;
+      _inboxStream.safeValue = value.data!.items!;
     }).onError((error, stackTrace) {
       print('data => ${error.toString()}');
     });
@@ -141,27 +161,30 @@ class ProfileBloc {
   }
 
   void getPdfMeal(FoodDietPdf type) {
-    _showProgressItem.value = true;
+    _showProgressItem.safeValue = true;
     _repository.getPdfUrl(type).then((value) {
       launchURL(value.data!.url!);
       // Share.share(value['data']['url'])
     }).catchError((onError) {
       _showServerError.fireMessage(onError);
     }).whenComplete(() {
-      _showProgressItem.value = false;
+      _showProgressItem.safeValue = false;
     });
   }
 
   void getTermPackage() {
     _repository.getTermPackage().then((value) {
-      if (!_showRefund.isClosed) _showRefund.value = value.data!.showRefundLink!;
+      MemoryApp.termPackage = value.data!;
+      _termPackage.safeValue = value.data!;
+      _subscriptionPending.safeValue=value.data?.subscriptionTermData?.pendingCardPayment;
+      _showRefund.safeValue = value.data!.showRefundLink!;
       if (value.data != null &&
           value.data?.term != null &&
           DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0 &&
           !_showPdf.isClosed)
-        _showPdf.value = true;
+        _showPdf.safeValue = true;
       else {
-        if (!_showPdf.isClosed) _showPdf.value = false;
+        _showPdf.safeValue = false;
       }
     }).whenComplete(() {});
   }
@@ -171,20 +194,23 @@ class ProfileBloc {
     _progressNetwork.close();
     _showProgressItem.close();
     _userInformationStream.close();
-    loginRegisterBloc!.dispose();
     _cityProvinceModelStream.close();
     _showProgressUploadImage.close();
     _showRefund.close();
     _showPdf.close();
     _inboxCount.close();
     _navigateTo.close();
+    _termPackage.close();
+    _obscureTextPass.close();
+    _obscureTextConfirmPass.close();
+    _subscriptionPending.close();
     //  _isPlay.close();
   }
 
   void getProvinces() {
     _repository.getProvinces().then((value) {
       cityProvinceModel = value.data!;
-      _cityProvinceModelStream.value = value.data!;
+      _cityProvinceModelStream.safeValue = value.data!;
       MemoryApp.cityProvinceModel = cityProvinceModel;
       changeProvinceCity();
     }).onError((error, stackTrace) {
@@ -208,12 +234,11 @@ class ProfileBloc {
   }
 
   dynamic findCountryName() {
-    print("countris = > ${loginRegisterBloc!.countries.length}");
-    var item = loginRegisterBloc!.countries.firstWhere(
+    var item = MemoryApp.countries?.firstWhere(
       (element) => element.id == userInfo.countryId,
       orElse: () => Country(),
     );
-    countryName = item.name ?? '';
+    countryName = item?.name ?? '';
     return item;
   }
 
@@ -260,7 +285,7 @@ class ProfileBloc {
     // Pick an image
     image = await _picker!.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      _showProgressUploadImage.value = true;
+      _showProgressUploadImage.safeValue = true;
       _repository
           .sendMedia(
               jsonEncode({
@@ -274,7 +299,7 @@ class ProfileBloc {
         if (userInfo.media == null) userInfo.media = Media();
         userInfo.media!.url = value.data!.url;
       }).whenComplete(() {
-        _showProgressUploadImage.value = false;
+        _showProgressUploadImage.safeValue = false;
       });
     }
   }
@@ -284,7 +309,7 @@ class ProfileBloc {
     // Pick an image
     image = await _picker!.pickImage(source: ImageSource.camera);
     if (image != null) {
-      _showProgressUploadImage.value = true;
+      _showProgressUploadImage.safeValue = true;
       _repository
           .sendMedia(
               jsonEncode({
@@ -298,7 +323,7 @@ class ProfileBloc {
         if (userInfo.media == null) userInfo.media = Media();
         userInfo.media!.url = value.data!.url;
       }).whenComplete(() {
-        _showProgressUploadImage.value = false;
+        _showProgressUploadImage.safeValue = false;
       });
     }
   }
@@ -334,7 +359,7 @@ class ProfileBloc {
       Utils.getSnackbarMessage(context, value.message!);
       Navigator.of(context).pop();
     }).whenComplete(() {
-      Navigator.of(context).pop();
+      if (!MemoryApp.isNetworkAlertShown) Navigator.of(context).pop();
     });
   }
 
@@ -354,8 +379,25 @@ class ProfileBloc {
 
   void logOut() {
     _repository.logout().whenComplete(() {
+      sendAnalytic();
       AppSharedPreferences.logout();
       navigator.routeManager.clearAndPush(Uri.parse(Routes.auth));
     });
+  }
+
+  void sendAnalytic(){
+    try {
+      MemoryApp.analytics?.logEvent(name: "click_logout_button");
+    }catch(e){
+
+    }
+  }
+
+  void setObscureTextPass() {
+    _obscureTextPass.safeValue = !_obscureTextPass.value;
+  }
+
+  void setObscureTextConfirmPass() {
+    _obscureTextConfirmPass.safeValue = !_obscureTextConfirmPass.value;
   }
 }

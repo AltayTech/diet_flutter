@@ -6,13 +6,27 @@ part 'payment.g.dart';
 class Payment {
   @JsonKey(name: "coupon")
   String? coupon;
+
   @JsonKey(name: "payment_type_id")
   int? paymentTypeId;
+
   @JsonKey(name: "origin_id")
   int? originId;
 
   @JsonKey(name: "product_id")
   int? productId;
+
+  @JsonKey(name: 'payed_at')
+  String? payedAt;
+
+  @JsonKey(name: 'card_owner')
+  String? cardOwner;
+
+  @JsonKey(name: 'card_number')
+  String? cardNum;
+
+  @JsonKey(name: "package_id")
+  int? packageId;
 
   @JsonKey(name: "id")
   int? id;
@@ -26,10 +40,10 @@ class Payment {
   @JsonKey(name: "url")
   String? url;
 
-
   Payment();
 
-  factory Payment.fromJson(Map<String, dynamic> json) => _$PaymentFromJson(json);
+  factory Payment.fromJson(Map<String, dynamic> json) =>
+      _$PaymentFromJson(json);
 
   Map<String, dynamic> toJson() => _$PaymentToJson(this);
 }

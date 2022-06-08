@@ -178,7 +178,7 @@ class Utils {
   }
 
   static Widget loading(double size) {
-    Size siz = WidgetsBinding.instance!.window.physicalSize;
+    Size siz = WidgetsBinding.instance.window.physicalSize;
     double width = siz.width;
     double height = siz.height/2;
     return Center(

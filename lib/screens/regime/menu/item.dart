@@ -15,7 +15,7 @@ class MenuItem extends StatelessWidget {
     Key? key,
     required this.onClick,
     required this.menu,
-  }) : super(key: key);
+  }): super(key: key);
 
   final Function onClick;
   final Menu menu;
@@ -78,6 +78,8 @@ class MenuItem extends StatelessWidget {
                           style: typography.caption?.apply(
                             fontSizeDelta: -2,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.start,
                           softWrap: true,
                         ),

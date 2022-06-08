@@ -9,6 +9,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
 class StatusUserScreen extends StatefulWidget {
   const StatusUserScreen({Key? key}) : super(key: key);
@@ -35,21 +36,25 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
       bloc,
       child: Scaffold(
         appBar: Toolbar(titleBar: intl.statusBodyTermUser),
-        body: Container(
-          width: 100.w,
-          height: 100.h,
-          child: Stack(
-            children: [
-              content(),
-              Positioned(
-                bottom: 0,
-                child: BottomNav(
-                  currentTab: BottomNavItem.STATUS,
-                ),
-              )
-            ],
-          ),
-        ),
+        body: body(),
+      ),
+    );
+  }
+
+  Widget body() {
+    return Container(
+      width: 100.w,
+      height: 100.h,
+      child: Stack(
+        children: [
+          content(),
+          Positioned(
+            bottom: 0,
+            child: BottomNav(
+              currentTab: BottomNavItem.STATUS,
+            ),
+          )
+        ],
       ),
     );
   }
@@ -57,105 +62,108 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   Widget content() {
     return Padding(
       padding: EdgeInsets.all(2.w),
-      child: SingleChildScrollView(
-        child: StreamBuilder(
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data == false) {
-              return Container(
-                constraints: BoxConstraints(minHeight: 110.h, minWidth: 100.w),
-                color: Color.fromRGBO(245, 245, 245, 1),
-                padding: EdgeInsets.fromLTRB(
-                  4.w,
-                  3.h,
-                  4.w,
-                  6.h,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  textDirection: context.textDirectionOfLocale,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: EdgeInsets.all(4.w),
-                      child: Column(
-                        children: [
-                          itemUi('', getDietTypeString(), intl.dietType),
-                          Space(height: 1.h),
-                          itemUi(
-                              intl.old,
-                              (bloc.visitItem?.physicalInfo?.age.toString() ?? intl.none),
-                              intl.age),
-                          Space(height: 1.h),
-                          itemUi(
-                              intl.centimeter,
-                              bloc.visitItem?.physicalInfo?.height.toString() ?? intl.none,
-                              intl.height),
-                          Space(height: 1.h),
-                          itemUi(
-                              intl.kiloGr,
-                              bloc.activeTerms?.firstWeight?.toStringAsFixed(1) ?? intl.none,
-                              intl.firstWeight),
-                          Space(height: 1.h),
-                          itemUi(
-                              intl.kiloGr,
-                              bloc.activeTerms?.lostWeight?.abs().toStringAsFixed(1) ?? intl.none,
-                              (bloc.activeTerms!=null && bloc.activeTerms!.lostWeight! > 0)
-                                  ? intl.addedWeight
-                                  : (bloc.activeTerms!=null && bloc.activeTerms!.lostWeight! == 0)
-                                      ? intl.noChangeWeight
-                                      : intl.lostWeight),
-                          Space(height: 1.h),
-                          itemUi(
-                              intl.kiloGr,
-                              bloc.visitItem?.weightDifference?.abs().toStringAsFixed(1) ??
-                                  intl.none,
-                              intl.remainingWeight),
-                          pregnancy(),
-                        ],
-                      ),
-                    ),
-                    Space(height: 2.h),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+      child: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: StreamBuilder(
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data == false) {
+                return Container(
+                  constraints: BoxConstraints(minHeight: 110.h, minWidth: 100.w),
+                  color: Color.fromRGBO(245, 245, 245, 1),
+                  padding: EdgeInsets.fromLTRB(
+                    4.w,
+                    3.h,
+                    4.w,
+                    6.h,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    textDirection: context.textDirectionOfLocale,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.all(4.w),
                         child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(intl.chartWeightName,
-                                style: Theme.of(context).textTheme.caption!.copyWith(
-                                    color: AppColors.colorTextApp, fontWeight: FontWeight.bold)),
-                            ...bloc.terms
-                                .map((e) => Padding(
-                                      padding: EdgeInsets.only(top: 1.h),
-                                      child: ChartWeight(e),
-                                    ))
-                                .toList(),
+                            itemUi('', getDietTypeString(), intl.dietType),
+                            Space(height: 1.h),
+                            itemUi(
+                                intl.old,
+                                (bloc.visitItem?.physicalInfo?.age.toString() ?? intl.none),
+                                intl.age),
+                            Space(height: 1.h),
+                            itemUi(
+                                intl.centimeter,
+                                bloc.visitItem?.physicalInfo?.height.toString() ?? intl.none,
+                                intl.height),
+                            Space(height: 1.h),
+                            itemUi(
+                                intl.kiloGr,
+                                bloc.activeTerms?.firstWeight?.toStringAsFixed(1) ?? intl.none,
+                                intl.firstWeight),
+                            Space(height: 1.h),
+                            itemUi(
+                                intl.kiloGr,
+                                bloc.activeTerms?.lostWeight?.abs().toStringAsFixed(1) ?? intl.none,
+                                (bloc.activeTerms != null && bloc.activeTerms!.lostWeight! > 0)
+                                    ? intl.addedWeight
+                                    : (bloc.activeTerms != null &&
+                                            bloc.activeTerms!.lostWeight! == 0)
+                                        ? intl.noChangeWeight
+                                        : intl.lostWeight),
+                            Space(height: 1.h),
+                            itemUi(
+                                intl.kiloGr,
+                                bloc.visitItem?.weightDifference?.abs().toStringAsFixed(1) ??
+                                    intl.none,
+                                intl.remainingWeight),
+                            pregnancy(),
                           ],
                         ),
                       ),
-                    ),
-                    Space(height: 2.h),
-                  ],
-                ),
-              );
-            } else
-              return Center(
-                child: SpinKitCircle(
-                  color: AppColors.primary,
-                  size: 7.w,
-                ),
-              );
-          },
-          stream: bloc.waiting,
+                      Space(height: 2.h),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(intl.chartWeightName,
+                                  style: Theme.of(context).textTheme.caption!.copyWith(
+                                      color: AppColors.colorTextApp, fontWeight: FontWeight.bold)),
+                              ...bloc.terms
+                                  .map((e) => Padding(
+                                        padding: EdgeInsets.only(top: 1.h),
+                                        child: ChartWeight(e),
+                                      ))
+                                  .toList(),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Space(height: 2.h),
+                    ],
+                  ),
+                );
+              } else
+                return Center(
+                  child: SpinKitCircle(
+                    color: AppColors.primary,
+                    size: 7.w,
+                  ),
+                );
+            },
+            stream: bloc.waiting,
+          ),
         ),
       ),
     );
@@ -253,23 +261,11 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    bloc.dispose();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.getVisitUser();
   }
-
-  @override
-  void onShowMessage(String value) {}
 }

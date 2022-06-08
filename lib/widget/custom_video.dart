@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:behandam/app/app.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/fake_ui.dart'
     if (dart.library.html) 'package:behandam/utils/real_ui.dart' as ui;
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:chewie/chewie.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -15,10 +16,6 @@ import 'package:video_player/video_player.dart';
 
 abstract class CallBackListener {
   void notifyChange();
-}
-
-abstract class ClickItem {
-  void Click();
 }
 
 class CustomVideo extends StatefulWidget {
@@ -54,7 +51,7 @@ class CustomVideo extends StatefulWidget {
   MyWidgetPlayer createState() => MyWidgetPlayer(click, image, title, url, isLooping, isFile);
 }
 
-class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
+class MyWidgetPlayer extends State<CustomVideo> {
   Function? click;
   String? title;
   String? image;
@@ -62,18 +59,13 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
   bool? isLooping;
   bool? isFile;
 
-  // Duration? _position;
-  // Duration? _duration;
-  // bool _isPlaying = false;
-  // bool _isEnd = false;
   late VideoPlayerController _controller;
   double? aspect;
   var playerWidget;
+  bool logEvent = false;
   ChewieController? chewieController;
   bool _initializeVideoPlayerFuture = false, showBottomSheet = true;
 
-  //double width;
-  // double height;
   MyWidgetPlayer(this.click, this.image, this.title, this.url, this.isLooping, this.isFile) {
     if (isLooping == null) this.isLooping = false;
   }
@@ -81,21 +73,15 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
   @override
   void initState() {
     super.initState();
-    kIsWeb
-        ? webPlayer()
-
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-
-        : setData();
+    kIsWeb ? webPlayer() : setData();
   }
 
-  webPlayer() {
+  void webPlayer() {
     widget.src = widget.url;
     String? URL = widget.src! + '#t=${widget.startAt}';
-// Do not remove the below comment - Fix for missing ui.platformViewRegistry in dart.ui
-// ignore: undefined_prefixed_name
+    // Do not remove the below comment - Fix for missing ui.platformViewRegistry in dart.ui
+    // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(widget.src!, (int viewId) {
-//https: //api.flutter.dev/flutter/dart-html/VideoElement-class.html
       final video = html.VideoElement()
         ..src = URL
         ..autoplay = widget.autoplay
@@ -105,14 +91,14 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
         ..style.height = '100%'
         ..style.width = '100%';
 
-// Allows Safari iOS to play the video inline
+      // Allows Safari iOS to play the video inline
       video.setAttribute('playsinline', 'true');
 
       return video;
     });
   }
 
-  Future<void> setData() async {
+  void setData() async {
     try {
       if (url == null) {
         _controller = VideoPlayerController.asset('assets/video.mp4');
@@ -128,8 +114,22 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
             widget.onCompletion!();
             showBottomSheet = false;
           }
-
           setState(() => {});
+        }
+        if (_controller.value.isPlaying && !logEvent) {
+          logEvent = true;
+          try {
+            MemoryApp.analytics!.logEvent(
+                name: "play_video",
+                parameters: {'page': '${navigator.currentConfiguration!.path}'});
+          } catch (e) {}
+        } else if (!_controller.value.isPlaying && logEvent) {
+          logEvent = false;
+          try {
+            MemoryApp.analytics!.logEvent(
+                name: "stop_video",
+                parameters: {'page': '${navigator.currentConfiguration!.path}'});
+          } catch (e) {}
         }
       });
 
@@ -142,18 +142,13 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
         looping: this.isLooping!,
         showControlsOnInitialize: true,
       );
+
       if (chewieController != null && chewieController!.videoPlayerController.value.isInitialized) {
         setState(() {
           _initializeVideoPlayerFuture = true;
-          //chewieController!.togglePause();
         });
       }
-/*      if(chewieController != null && chewieController!.videoPlayerController.value.isInitialized)
-        _initializeVideoPlayerFuture = Future.delayed(Duration(seconds: 1));*/
-
-    } catch (e) {
-      //Fimber.d("error video ${e.toString()}");
-    }
+    } catch (e) {}
   }
 
   @override
@@ -194,7 +189,4 @@ class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
         ),
       );
   }
-
-  @override
-  void Click() {}
 }

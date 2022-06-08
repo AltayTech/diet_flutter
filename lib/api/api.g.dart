@@ -6,6 +6,8 @@ part of 'api.dart';
 // RetrofitGenerator
 // **************************************************************************
 
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 class _RestClient implements RestClient {
   _RestClient(this._dio, {this.baseUrl});
 
@@ -26,10 +28,11 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<List<Country>>.fromJson(
-        _result.data!,
-        (json) => (json as List<dynamic>)
-            .map<Country>((i) => Country.fromJson(i as Map<String, dynamic>))
-            .toList());
+      _result.data!,
+      (json) => (json as List<dynamic>)
+          .map<Country>((i) => Country.fromJson(i as Map<String, dynamic>))
+          .toList(),
+    );
     return value;
   }
 
@@ -43,7 +46,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<CheckStatus>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/check-user-status?mobile=$mobile',
+                .compose(_dio.options, '/check-user-status?mobile=${mobile}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<CheckStatus>.fromJson(
@@ -83,7 +86,8 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<VerificationCode>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/send-verification-code?mobile=$mobile',
+                .compose(
+                    _dio.options, '/send-verification-code?mobile=${mobile}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<VerificationCode>.fromJson(
@@ -181,7 +185,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Help>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/page/$id',
+                .compose(_dio.options, '/page/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<Help>.fromJson(
@@ -200,7 +204,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Help>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/field/$id',
+                .compose(_dio.options, '/field/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<Help>.fromJson(
@@ -221,6 +225,26 @@ class _RestClient implements RestClient {
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/condition',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<dynamic>> setUserReservePackage(requestData) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(requestData);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<dynamic>>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/reserve-package',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<dynamic>.fromJson(
@@ -278,7 +302,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<FoodListData>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/user/menu?date=$date',
+                .compose(_dio.options, '/user/menu?date=${date}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<FoodListData>.fromJson(
@@ -479,11 +503,12 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<List<FastPatternData>>.fromJson(
-        _result.data!,
-        (json) => (json as List<dynamic>)
-            .map<FastPatternData>(
-                (i) => FastPatternData.fromJson(i as Map<String, dynamic>))
-            .toList());
+      _result.data!,
+      (json) => (json as List<dynamic>)
+          .map<FastPatternData>(
+              (i) => FastPatternData.fromJson(i as Map<String, dynamic>))
+          .toList(),
+    );
     return value;
   }
 
@@ -516,7 +541,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ListFoodData>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/food?filter=$filter',
+                .compose(_dio.options, '/food?filter=${filter}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<ListFoodData>.fromJson(
@@ -553,12 +578,12 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<CalendarData>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(
-                    _dio.options, '/calendar?start_date=$start&end_date=$end',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<NetworkResponse<CalendarData>>(Options(
+                method: 'GET', headers: _headers, extra: _extra)
+            .compose(
+                _dio.options, '/calendar?start_date=${start}&end_date=${end}',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<CalendarData>.fromJson(
       _result.data!,
       (json) => CalendarData.fromJson(json as Map<String, dynamic>),
@@ -702,7 +727,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<TicketModel>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/ticket/$id',
+                .compose(_dio.options, '/ticket/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<TicketModel>.fromJson(
@@ -759,7 +784,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'DELETE', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/calls/$id',
+                .compose(_dio.options, '/calls/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<dynamic>.fromJson(
@@ -781,7 +806,7 @@ class _RestClient implements RestClient {
         NetworkResponse<CalenderOutput>>(Options(
             method: 'GET', headers: _headers, extra: _extra)
         .compose(_dio.options,
-            '/psychology/v2/dates/list?start_date=$startDate&end_date=$endDate',
+            '/psychology/v2/dates/list?start_date=${startDate}&end_date=${endDate}',
             queryParameters: queryParameters, data: _data)
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<CalenderOutput>.fromJson(
@@ -946,6 +971,25 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<PackageItem>> getReservePackageUser() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<PackageItem>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/reserve-package',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<PackageItem>.fromJson(
+      _result.data!,
+      (json) => PackageItem.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<Price?>> checkCoupon(price) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -986,6 +1030,26 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<Payment>> selectPaymentReservePackage(payment) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(payment.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<Payment>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/reserve-package',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<Payment>.fromJson(
+      _result.data!,
+      (json) => Payment.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<dynamic>> nextStep() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1000,6 +1064,25 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<dynamic>.fromJson(
       _result.data!,
       (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<LatestInvoiceData>> bankAccountActiveCard() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<LatestInvoiceData>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/bank-account/active-card',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<LatestInvoiceData>.fromJson(
+      _result.data!,
+      (json) => LatestInvoiceData.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
@@ -1360,7 +1443,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ShopCategory>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/categories/$id',
+                .compose(_dio.options, '/categories/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<ShopCategory>.fromJson(
@@ -1398,7 +1481,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ShopProduct>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/products/$id',
+                .compose(_dio.options, '/products/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<ShopProduct>.fromJson(
@@ -1476,7 +1559,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/auth?password=$mobile',
+                .compose(_dio.options, '/auth?password=${mobile}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<dynamic>.fromJson(
@@ -1554,7 +1637,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ShopCategory>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/products?filter=$filter',
+                .compose(_dio.options, '/products?filter=${filter}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<ShopCategory>.fromJson(
@@ -1593,7 +1676,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Inbox>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/inbox/$id',
+                .compose(_dio.options, '/inbox/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<Inbox>.fromJson(
@@ -1656,11 +1739,12 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<List<ArticleVideo>>.fromJson(
-        _result.data!,
-        (json) => (json as List<dynamic>)
-            .map<ArticleVideo>(
-                (i) => ArticleVideo.fromJson(i as Map<String, dynamic>))
-            .toList());
+      _result.data!,
+      (json) => (json as List<dynamic>)
+          .map<ArticleVideo>(
+              (i) => ArticleVideo.fromJson(i as Map<String, dynamic>))
+          .toList(),
+    );
     return value;
   }
 
@@ -1673,12 +1757,51 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<TempTicket>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/template/$id?need-log=1',
+                .compose(_dio.options, '/template/${id}?need-log=1',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<TempTicket>.fromJson(
       _result.data!,
       (json) => TempTicket.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<TargetWeight>> targetWeight() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<TargetWeight>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/target-weight',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<TargetWeight>.fromJson(
+      _result.data!,
+      (json) => TargetWeight.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<ListUserSubscriptionData>>
+      getUserSubscription() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<ListUserSubscriptionData>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/subscription/history',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<ListUserSubscriptionData>.fromJson(
+      _result.data!,
+      (json) => ListUserSubscriptionData.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

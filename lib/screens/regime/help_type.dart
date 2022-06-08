@@ -10,7 +10,6 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 class HelpTypeScreen extends StatefulWidget {
   const HelpTypeScreen({Key? key}) : super(key: key);

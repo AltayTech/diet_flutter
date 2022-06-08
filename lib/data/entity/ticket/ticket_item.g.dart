@@ -57,6 +57,7 @@ const _$TicketStatusEnumMap = {
   TicketStatus.GlobalIssue: 3,
   TicketStatus.Resolved: 4,
   TicketStatus.Closed: 5,
+  TicketStatus.ALL: 6,
 };
 
 SupportModel _$SupportModelFromJson(Map<String, dynamic> json) => SupportModel()

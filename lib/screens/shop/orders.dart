@@ -11,6 +11,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -27,6 +28,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
   void initState() {
     super.initState();
     ordersBloc = OrdersBloc();
+    ordersBloc.getOrders();
     listenBloc();
   }
 
@@ -39,13 +41,18 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    ordersBloc.getOrders();
     return SafeArea(
         child: Scaffold(
       appBar: Toolbar(
         titleBar: intl.myProduct,
       ),
-      body: SingleChildScrollView(
+      body: body(),
+    ));
+  }
+
+  Widget body() {
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -92,7 +99,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
           ],
         ),
       ),
-    ));
+    );
   }
 
   Widget firstTile(ShopProduct product) {
@@ -161,22 +168,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    ordersBloc.getOrders();
   }
 }

@@ -6,9 +6,8 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 ///
 const int tSAMPLERATE = 8000;
@@ -102,7 +101,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
   @override
   void dispose() {
     // Be careful : you must `close` the audio session when you have finished with it.
-    _myPlayer!.closeAudioSession();
+    _myPlayer!.closePlayer();
     _myPlayer = null;
     super.dispose();
   }
@@ -196,14 +195,14 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
   }
 
   Future<void> _initializeExample(bool withUI) async {
-    await _myPlayer!.closeAudioSession();
+    await _myPlayer!.closePlayer();
     // _isAudioPlayer = withUI;
-    await _myPlayer!.openAudioSession(
-        withUI: withUI,
+    await _myPlayer!.openPlayer(
+        /*withUI: withUI,
         focus: AudioFocus.requestFocusAndStopOthers,
         category: SessionCategory.playAndRecord,
         mode: SessionMode.modeDefault,
-        device: AudioDevice.speaker);
+        device: AudioDevice.speaker*/);
     await _myPlayer!.setSubscriptionDuration(Duration(milliseconds: 10));
     // await initializeDateFormatting();
     //await setCodec(_codec);
@@ -211,11 +210,11 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
 
   Future<void> init() async {
     try {
-      await _myPlayer!.openAudioSession(
-          focus: AudioFocus.requestFocusAndStopOthers,
+      await _myPlayer!.openPlayer(
+          /*focus: AudioFocus.requestFocusAndStopOthers,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
-          device: AudioDevice.speaker);
+          device: AudioDevice.speaker*/);
       await _initializeExample(false);
     }catch(err){
 
@@ -245,15 +244,13 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     cancelPlayerSubscriptions();
     _playerSubscription = _myPlayer!.onProgress!.listen((e) {
       setState(() {
-        if (e != null) {
-          maxDuration = e.duration.inMilliseconds.toDouble();
-          if (maxDuration <= 0) maxDuration = 0.0;
-          _position = e.position;
-          _duration = e.duration;
-          sliderCurrentPosition = e.position.inMilliseconds.toDouble();
-          if (sliderCurrentPosition < 0.0) {
-            sliderCurrentPosition = 0.0;
-          }
+        maxDuration = e.duration.inMilliseconds.toDouble();
+        if (maxDuration <= 0) maxDuration = 0.0;
+        _position = e.position;
+        _duration = e.duration;
+        sliderCurrentPosition = e.position.inMilliseconds.toDouble();
+        if (sliderCurrentPosition < 0.0) {
+          sliderCurrentPosition = 0.0;
         }
       });
     });
@@ -363,7 +360,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
       _addListeners();
       setState(() {});
      // Fimber.d('<--- startPlayer');
-    } on Exception catch (err) {
+    } on Exception {
      // Fimber.d('error: $err');
     }
   }
@@ -380,7 +377,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
       var contents = await file.readAsBytes();
      // Fimber.d('The file is ${contents.length} bytes long.');
       return contents;
-    } on Exception catch (e) {
+    } on Exception {
      // Fimber.d("error Exception",ex: e);
       return null;
     }
@@ -397,7 +394,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
         _playerSubscription = null;
       }
       onStartPlayerPressed();
-    } on Exception catch (err) {
+    } on Exception {
      // Fimber.d('error: $err');
     }
     setState(() {
@@ -468,6 +465,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     } else {
       return null;
     }
+    return null;
   }
 
   void Function()? onPauseResumePlayerPressed() {
@@ -475,6 +473,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     if (_myPlayer!.isPaused || _myPlayer!.isPlaying) {
       pauseResumePlayer();
     }
+    return null;
   }
 
   StreamSubscription? _playerSubscription;

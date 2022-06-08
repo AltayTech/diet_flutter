@@ -26,6 +26,8 @@ class MemoryApp {
   static Jalali? day;
   static bool forgetPass = false;
   static bool needRoute = true;
+  static bool  isShowDialog = false;
+  static bool  isNetworkAlertShown = false;
   static FirebaseAnalytics? analytics;
   static List<String> fastingDates = [];
   List<ArticleVideo>? _articles;

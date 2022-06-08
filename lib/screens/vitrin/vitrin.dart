@@ -1,13 +1,12 @@
-import 'dart:async';
 
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/screens/vitrin/vitrin_bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
@@ -65,7 +64,6 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
             title: Text(intl.behandam, textAlign: TextAlign.center)),
         body: Container(
           height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
               Expanded(
@@ -121,10 +119,20 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                                 vitrinBloc.checkFitamin();
                                 // _launchURL(vitrinBloc.url);
                               },
-                              child: ImageUtils.fromLocal(
-                                  'assets/images/vitrin/fitamin_banner.png',
-                                  width: 100.w,
-                                  height: 15.h)),
+                              child: SizedBox(
+                                width: 90.w,
+                                child: ClipRRect(
+                                  borderRadius: AppBorderRadius.borderRadiusDefault,
+                                  child: AspectRatio(
+                                    aspectRatio: 30/10,
+                                    child: ImageUtils.fromLocal(
+                                        'assets/images/vitrin/fitamin_banner.png',
+                                        fit: BoxFit.fill,
+                                      width: 90.w,
+                                    ),
+                                  ),
+                                ),
+                              )),
                         ],
                       ),
                     ),
@@ -139,25 +147,5 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
   }
 }

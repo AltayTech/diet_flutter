@@ -1,0 +1,719 @@
+{
+  "appName": "به اندام",
+  "login": "ورود",
+  "register": "ثبت نام",
+  "mobileOrEmail": "شماره موبایل / ایمیل",
+  "password": "کلمه عبور",
+  "confirmPassword": "تکرار کلمه عبور",
+  "forgetPassword": "رمز عبورت رو فراموش کردی؟",
+  "farsi": "فارسی",
+  "english": "English",
+  "serverInternalError": "خطایی در ارتباط با سرور رخ داده، لطفا بعدا تلاش کنید",
+  "httpErrorWithCode": "خطای با کد {code} رخ داد، اگر مشکل برطرف نشد با پشتیبانی تماس بگیرید.",
+  "@httpErrorWithCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "profile": "پروفایل",
+  "editProfile": "ویرایش پروفایل",
+  "changePassword": "تغییر رمز عبور",
+  "exit": "خروج از حساب کاربری",
+  "requestBackPayment": "درخواست بازگشت وجه",
+  "getPdfTerm": "دریافت نسخه pdf دوره جاری",
+  "help": "راهنما",
+  "mySportProgram": "برنامه ورزشی من",
+  "contactMe": "تماس با ما",
+  "aboutMe": "درباره ما",
+  "name": "نام",
+  "lastName": "نام خانوادگی",
+  "email": "ایمیل",
+  "address": "آدرس",
+  "callNumber": "شماره تماس",
+  "whatsApp": "شماره واتساپ",
+  "skype": "شناسه اسکایپ",
+  "zipCode": "کدپستی",
+  "foodList": "لیست غذایی",
+  "noResultFound": "نتیجه ای یافت نشد",
+  "foodNotFoundMessage": "خوراکی مورد نظر شما در لیست یافت نشد",
+  "manipulateFood": "جایگزین غذا",
+  "recipe": "طرز تهیه {food}",
+  "@recipe": {
+    "placeholders": {
+      "food": {
+        "type": "String"
+      }
+    }
+  },
+  "iFastToday": "امروز روزه میگیرم",
+  "selectDailyMenu": "انتخاب روزمنو",
+  "todayAdvicesForYou": "برات کلی توصیه کاربردی داریم. حتما بخونشون!",
+  "viewingMenu": "در حال مشاهده لیست غذایی روز {date} هستی",
+  "@viewingMenu": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "showAdvices": "توصیه ها",
+  "goToToday": "برو به امروز",
+  "selectAllFoodYourself": "میخواهی همه ی غذاهای این روز رو خودت انتخاب کنی؟",
+  "yesGoToSelectFoodPage": "بله برو به صفحه انتخاب غذا",
+  "cancel": "انصراف",
+  "fastingModel": "الگوی روزه داری",
+  "convertToFast": "با این انتخاب وعده های تو به وعده های روزه داری تغییر میکنه",
+  "iFast": "روزه میگیرم",
+  "iRegret": "پشیمان شدم",
+  "alternating": "جایگزینی {meal}",
+  "@alternating": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "alternatingFoodLater": "بعدا جایگزین میکنم",
+  "selectDailyMenuFoods": "انتخاب غذاهای روزمنو",
+  "selectFood": "انتخاب خوراکی های {date}",
+  "@selectFood": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "notShowingPastMeals": "وعده هایی که زمان آنها گذشته است نمایش داده نمی شوند!",
+  "addFood": "افزودن غذا...",
+  "fastPatterns": "الگوهای روزه داری",
+  "selectFastPattern": "الگوی روزه داری موردنظرتو انتخاب کن",
+  "fast": "روزه داری",
+  "youSeeFastingPatterns": "الان در حال مشاهده وعده های روزه داری هستی",
+  "changePattern": "تغییر الگو",
+  "iDoNotFast": "روزه نمیگیرم",
+  "selectFoodIn": "انتخاب خوراکی در وعده {meal}",
+  "@selectFoodIn": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "whatFoodAreYouLookingFor": "دنبال چه خوراکی ای میگردی؟",
+  "country": "کشور",
+  "province": "استان",
+  "city": "شهر",
+  "textChangePass1": " برای تغییر رمز یک کد تایید به شماره ",
+  "textChangePass2": " ارسال میشه. بعدش میتونی رمزتو عوض کنی ",
+  "yes": "بله",
+  "no": "خیر",
+  "enterYourMobileNumber": "شماره موبایلت رو وارد کن",
+  "registerOrLogin": "ثبت نام و ورود",
+  "woman": "خانم",
+  "man": "آقا",
+  "enterNewPassword": "رمز عبور جدیدتو وارد کن",
+  "repeatNewPassword": "رمز عبور جدیدتو تکرار کن",
+  "setNewPassword": "ثبت رمز عبور جدید",
+  "smsCode": "کد پیامک شده رو اینجا وارد کن",
+  "notSend": "کد ارسال نشد، دوباره ارسال کن",
+  "sendAgain": " امکان ارسال مجدد بعد از : ",
+  "confirmNewPassword": "رمز عبور جدیدتو تعیین کن",
+  "notEqualPassword": "تکرار رمز عبور یکسان نیست",
+  "fillAllField": "پر کردن تمامی فیلدها الزامی است",
+  "minimumPasswordLength": "رمز عبور نباید کمتر از 4 کاراکتر باشد",
+  "regimeReceive": "دریافت رژیم",
+  "selectYourRegime": "رژیم مورد نظرتو انتخاب کن",
+  "whichRegime": "کدام رژیم مناسب من است؟",
+  "pickImage": "بازکردن عکس از:",
+  "selectGallery": "گالری",
+  "selectCamera": "دوربین",
+  "newTicket": "سوال جدید",
+  "addToList": "افزودن به لیست",
+  "saveDailyMenu": "ذخیره غذاهای روزمنو",
+  "and": "و",
+  "selectFoodForAllMeals": "برای تمام وعده ها غذا انتخاب کن",
+  "timeOfTheMeal": "زمان مناسب این وعده از ساعت {start} تا {end} میباشد.",
+  "@timeOfTheMeal": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "tryToAlternateOneMealDaily": "سعی کنید روزانه فقط یک وعده را جایگزین کنید",
+  "currentMeal": "وعده {meal} فعلی",
+  "@currentMeal": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "replacedMeal": "وعده {meal} جایگزین",
+  "@replacedMeal": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "replaceMeal": "وعده {meal} رو جایگزین کن",
+  "@replaceMeal": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "replaceFood": "جایگزین کن",
+  "calendar": "تقویم",
+  "saturday": "شنبه",
+  "sunday": "۱شنبه",
+  "monday": "۲شنبه",
+  "tuesday": "۳شنبه",
+  "wednesday": "۴شنبه",
+  "thursday": "۵شنبه",
+  "friday": "جمعه",
+  "termStart": "شروع دوره",
+  "termEnd": "پایان دوره",
+  "newTerm": "تمدید دوره",
+  "newList": "لیست جدید",
+  "visit": "اعلام وزن",
+  "visitDelay": "تاخیر در اعلام وزن",
+  "menuDelay": "تاخیر در انتخاب لیست",
+  "newMenu": "دریافت لیست جدید",
+  "termShouldBeRenewed": "{user} عزیز \n در زمان مشخص شده باید رژیمت رو تمدید کنی",
+  "@termShouldBeRenewed": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "listShouldBeRenewed": "{user} عزیز \n هنوز به زمان دریافت لیست جدید غذایی نرسیدی. ما روز دریافت لیست باخبرت میکنیم",
+  "@listShouldBeRenewed": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "visitShouldBeRenewed": "{user} عزیز \n هنوز به زمان اعلام وزن نرسیدی. ما روز اعلام وزن باخبرت میکنیم",
+  "@visitShouldBeRenewed": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "youDidNotGetNewMenu": "{user} عزیز \n در زمان مشخص شده لیست غذایی انتخاب نکردی!",
+  "@youDidNotGetNewMenu": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "youDidNotSubmitWeight": "{user} عزیز \n در زمان مشخص شده لیست غذایی انتخاب نکردی!",
+  "@youDidNotSubmitWeight": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "gotIt": "متوجه شدم",
+  "ticket": "پشتیبانی",
+  "status": "وضعیت",
+  "vitrin": "ویترین",
+  "diet": "رژیم",
+  "titleQuestionTicket": "سوالت مربوط به چه بخشیه؟",
+  "ok": "باشه",
+  "subject": "عنوان پیام",
+  "endRecord": "پایان ضبط",
+  "startRecord": "شروع ضبط",
+  "soundMessage": "پیام صوتی",
+  "lableTextMessage": "سوالت رو اینجا برامون بنویس...",
+  "errorDepartment": "لطفا دپارتمان مورد نظر خود را انتخاب کنید",
+  "errorFillItem": "تمامی اطلاعات خواسته شده را وارد کنید",
+  "closedTicket": "این تیکت بسته شده است. در صورت پاسخ به آن مجددا باز خواهد شد.",
+  "stateOfBody": "وضعیت جسمانی",
+  "enterYourState": "اطلاعات جسمانیت رو وارد کن",
+  "weight": "وزن",
+  "height": "قد",
+  "wrist": "دور مچ",
+  "birthday": "تاریخ تولد",
+  "confirmContinue": "تایید و ادامه",
+  "centimeter": "سانتی متر",
+  "kilo": "کیلو",
+  "kiloGr": "کیلوگرم",
+  "gr": "گرم",
+  "edit": "ویرایش",
+  "reserveCall": "رزرو تماس",
+  "accept": "تایید",
+  "cancelCall": "انصراف تماس",
+  "cancelCallRequest": "درخواست انصراف از تماس",
+  "cancelCallRequestForYou": "درخواست انصراف از تماس شما برای پشتیبان ارسال شود؟",
+  "callRequest": "درخواست تماس تلفنی",
+  "noAccessCallRequest": "شما مجوز ثبت تماس ندارید",
+  "addCallRequestForYou": "درخواست تماس شما برای پشتیبان ارسال شود؟",
+  "callDone": "مکالمه انجام شده است",
+  "callProgressLabel": "کارشناسان ما بزودی با شما تماس خواهند گرفت",
+  "callNumberIs": "تماس شماره ",
+  "callNumberOne": "تماس اول",
+  "callNumberTwo": "تماس دوم",
+  "callNumberThree": "تماس سوم",
+  "callNumberFour": "تماس چهارم",
+  "callNumberFive": "تماس پنجم",
+  "callNumberSix": "تماس ششم",
+  "callNumberSeven": "تماس هفتم",
+  "callNumberEight": "تماس هشتم",
+  "callNumberNine": "تماس نهم",
+  "callNumberTen": "تماس دهم",
+  "callNumberEleven": "تماس یازدهم",
+  "callNumberTwelve": "تماس دوازدهم",
+  "callNumberThirteen": "تماس سیزدهم",
+  "callNumberFourteen": "تماس چهاردهم",
+  "callNumberFifteen": "تماس چهاردهم",
+  "callNumberSixteen": "تماس شانزدهم",
+  "callNumberSeventeen": "تماس هفدهم",
+  "callNumberEighteen": "تماس هجدهم",
+  "callNumberNineteen": "تماس نوزدهم",
+  "callNumberTwenty": "تماس بیستم",
+  "descriptionCallService": "در صورت نیاز به مشاوره تلفنی توسط کارشناسان ما، می‌توانید در این بخش تماس رزرو کنید تا در اولین فرصت با شما تماس بگیریم",
+  "pregnancyWeek": "هفته بارداری",
+  "week": "هفته",
+  "multiBirth": "تعداد قل",
+  "multi": "قل",
+  "statusReport": "گزارش وضعیت جسمانی",
+  "firstStatusReport": "گزارش اولیه وضعیت جسمانی",
+  "day": "روز",
+  "appropriateWeight": "به وزن مناسب",
+  "untilReach": "تا رسیدن ",
+  "extraWeight": "اضافه وزن",
+  "lakeWeight": "کمبود وزن",
+  "yourAppropriateWeight": "وزن مناسب شما",
+  "bmi": "شاخص توده بدن",
+  "what": "چیه؟",
+  "itIsNotPossible": "ارائه رژیم برای شما امکان پذیر نمی باشد",
+  "itIsDeny": "افراد زیر ده سال ممانعت رژیم دارند",
+  "appropriateWeightPregnancy": "وزن مناسب برای وضع حمل",
+  "untilBeingMom": "تا مادر شدن فاصله داری",
+  "getWeight": "باید وزن اضافه کنی",
+  "comingSoon": "به زودی",
+  "sicknessLabelUser": "دچار چه عارضه یا بیماری هستی؟",
+  "sicknessDescriptionUser": "توضیحات بیشتر",
+  "sicknessSpecialLabelUser": "آیا دارای شرایط خاصی هستی؟",
+  "sicknessSpecial": "شرایط خاص",
+  "sickness": "عارضه یا بیماری",
+  "birthdateIsAMust": "تاریخ تولد الزامی است",
+  "advices": "توصیه ها",
+  "beAdvisedTo": "توصیه میشه:",
+  "forSomethingBeAdvisedTo": "برای \"{sickness}\" توصیه میشه:",
+  "@forSomethingBeAdvisedTo": {
+    "placeholders": {
+      "sickness": {
+        "type": "String"
+      }
+    }
+  },
+  "adminAdvice": "توصیه های کارشناس",
+  "dietAdvice": "توصیه های کلی",
+  "sicknessAdvice": "توصیه های بیماری",
+  "specialAdvice": "توصیه های خاص",
+  "selectPackage": "یک پکیج رو انتخاب کن",
+  "selectPackageToolbar": "انتخاب بسته",
+  "toman": "تـومان",
+  "free": "رایگان",
+  "differentPackages": "پکیج ها چه تفاوتی با هم دارن؟",
+  "paymentFinalBill": "فاکتور نهایی",
+  "totalPayment": "جمع کل",
+  "discount": "تخفیف",
+  "acceptCode": "ثبت کد",
+  "yourDiscount": "تومان تخفیف گرفتی",
+  "hintDiscountCode": "کد تخفیف خودتو وارد کن",
+  "typePaymentLabel": "نحوه پرداختت رو انتخاب کن",
+  "online": "آنلاین",
+  "onlinePayment": "پرداخت آنلاین",
+  "cardToCard": "کارت به کارت",
+  "cardToCardPayment": "پرداخت کارت به کارت",
+  "descriptionCardToCard": "انتقال از طریق عابربانک و اپ های بانکی",
+  "descriptionOnline": "کلیه بانک های متصل به شتاب",
+  "sendMessage": "ارسال پیام",
+  "acceptEdit": "ثبت تغییرات",
+  "paymentCardToCard": "پرداخت کارت به کارت",
+  "depositTheAmount": "مبلغ {amount} تومان از طریق عابربانک یا اپ های بانکی به شماره کارت زیر واریز کنید.",
+  "@depositTheAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "inNameOf": "به نام {name}",
+  "@inNameOf": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "share": "اشتراک گزاری",
+  "copy": "کپی کن",
+  "debitCardInfo": "شماره کارت {cardNumber} \n به نام {ownerName} \n مبلغ {amount} تومان",
+  "@debitCardInfo": {
+    "placeholders": {
+      "cardNumber": {
+        "type": "String"
+      },
+      "ownerName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "copied": "کپی شد",
+  "clickFollowingButtonAfterPayment": "بعد از واریز دکمه زیر رو بزنید",
+  "deposited": "واریز کردم",
+  "nowFillFollowingInformation": "حالا با دقت اطلاعات زیر رو پر کن",
+  "accountOwnerName": "نام صاحب حساب",
+  "fourLastNumberOfCard": "۴ رقم آخر شماره کارت",
+  "nameOfWhoPayed": "نام صاحب کارتی که با آن پرداخت رو انجام دادی",
+  "fourLastCardNumberOfWhoPayed": "۴ رقم آخر کارتی که با آن پرداخت رو انجام دادی",
+  "submitOfflinePayment": "ثبت اطلاعات پرداخت",
+  "paymentDate": "تاریخ پرداخت",
+  "psy": "مشاوره به اندام",
+  "whoNeedPsySession": "جلسات روانشناسی مناسب کیست؟",
+  "stepsOfPsy": "مراحل دریافت مشاوره به چه شکل است؟",
+  "sessionReserve": "رزرو جلسه روانشناسی",
+  "determineTime": "تعیین زمان مشاوره",
+  "reserve": "رزرو شده",
+  "previousDays": "روزهای قبل",
+  "laterDays": "روزهای بعد",
+  "seeTime": "برای مشاهده زمان های قابل رزرو، یک تاریخ از تقویم بالا انتخاب کنید",
+  "thereIsNotTime": "زمان های مشاوره این روز رزرو شده",
+  "min": "دقیقه",
+  "currency": "تومان",
+  "selectYourPhoneSession": "ساعت مشاوره تلفنی خود را انتخاب کنید:",
+  "sessionDuration": "مدت زمان مشاوره",
+  "time": "زمان",
+  "date": "تاریخ",
+  "price": "مبلغ",
+  "reserveThisTime": "همین ساعت رو رزرو کن",
+  "iDoNot": "نه نمیخوام",
+  "showFirstFreeTime": "اولین ساعت آزاد رو نشونم بده",
+  "term1": "با توجه به اینکه انتخاب تاریخ و ساعت مشاوره به انتخاب شما کاربر گرامی است لطفا در انتخاب زمان دقت فرمایید.",
+  "term2": "تاریخ و زمانی که شما برای مشاوره انتخاب می کنید مختص به شما بوده و از آنجایی که کاربر دیگری امکان رزرو همان زمان را نخواهد داشت در صورت عدم پاسخگویی مسئولیت آن بر عهده شما بوده و هزینه جلسه عودت داده نمی شود.",
+  "term3": "در صورت بروز مشکل و عدم پاسخگویی حتما حداقل یک تا دو روز قبل از مشاوره از طریق واحد پشتیبانی اطلاع داده شود.",
+  "term4": "تنها یک بار امکان جا به جایی جلسات وجود دارد. پس درخواست مجدد برای تغییر جلسه امکان پذیر نخواهد بود. ",
+  "term5": "ساعات پاسخگویی به سوالات درخواست های شما عزیزان از طریق پشتیبانی شنبه تا پنج شنبه از ساعت ۱۰ تا ۱۶ می باشد.",
+  "attention": " کاربر گرامی قبل از تایید نهایی وقت مشاوره و پرداخت متن را با دقت خوانده و توجه فرمایید",
+  "condition": "شرایط و قوانین",
+  "rulesConfirm": "تایید این قوانین به معنای موافقت با قوانین و سلب مسئولیت از تیم روانشناسی می باشد.",
+  "readRules": "قوانین را خوانده و موافقم",
+  "thanks": "با تشکر تیم روانشناسی مجموعه به اندام",
+  "factor": "فاکتور نهایی",
+  "sum": "جمع کل",
+  "cartPay": "پرداخت کارت به کارت",
+  "adviserName": "نام مشاور",
+  "off": "تخفیف",
+  "myMeeting": "جلسات مشاوره من",
+  "meetingWith": "جلسه مشاوره با :",
+  "hour": "ساعت",
+  "onlinePay": "پرداخت آنلاین",
+  "activityLevel": "فعالیت روزانه",
+  "paymentSuccess": "پرداخت موفق",
+  "paymentSuccessLabel": "پرداخت با موفقیت انجام شد",
+  "paymentInformation": "اطلاعات پرداخت",
+  "refId": "شماره پیگیری",
+  "amount": "مبلغ",
+  "mobile": "شماره موبایل",
+  "useFromList": "برای استفاده از برنامه غذایی، بقیه مراحل دریافت رژیم رو تکمیل کن",
+  "howMuchIsYourDailyActivity": "میزان فعالیت روزانه ات چقدره؟",
+  "nextStage": "مرحله بعدی",
+  "selectSomething": "یکی از موارد بالا رو انتخاب کن",
+  "dietHistory": "سابقه رژیم غذایی",
+  "haveYouEverBeenOnDiet": "سابقه رژیم غذایی داری؟",
+  "dietGoal": "هدف از رژیم",
+  "whatIsYourGoal": "هدفت از رژیم گرفتن چیه؟",
+  "paymentFail": "پرداخت ناموفق",
+  "paymentFailLabel": "پرداخت شما ناموفق بود",
+  "failForAdmin": "پرداخت توسط شما رد شده است",
+  "offError": "ابتدا کد تخفیف خود را ثبت کنید",
+  "paymentWait": "بررسی پرداخت کارت به کارت",
+  "paymentWaitLabel": "پرداخت شما با موفقیت ثبت شد",
+  "checkPayment": "بررسی مجدد پرداخت",
+  "retryPayment": "پرداخت مجدد",
+  "aGlanceToBodyState": "وضعیت جسمانی شما در یک نگاه",
+  "physicalActivity": "فعالیت فیزیکی",
+  "viewFoodList": "مشاهده لیست غذایی",
+  "selectYourMenu": "لیست غذایی موردنظرتو انتخاب کن",
+  "waitingForSuccessPayment": "منتظر تایید پرداخت باشید",
+  "paymentStatusForLastTime": "کارشناسان ما درحال بررسی هستند\nپرداخت شما 1 الی 2 ساعت\nآینده تایید خواهد شد.",
+  "statusBodyTermUser": "وضعیت جسمانی در دوره جاری",
+  "remainingWeight": "وزن باقیمانده",
+  "lostWeight": "وزن کم شده",
+  "addedWeight": "وزن اضافه شده",
+  "firstWeight": "وزن اولیه",
+  "none": "??",
+  "age": "سن",
+  "old": "سال",
+  "dietType": "نوع رژیم",
+  "weightLoss": "کاهش وزن",
+  "weightGain": "افزایش وزن",
+  "pregnancy": "بارداری",
+  "notrica": "نوتریکا",
+  "sport": "ورزشی",
+  "diabetes": "دیابت",
+  "ketogenic": "کتوژنیک",
+  "stabilization": "تثبیت وزن",
+  "noChangeWeight": "تغییری نداشته اید",
+  "pregnancyIdealWeight": "وزن مناسب هنگام زایمان",
+  "idealWeightBasedOnPervVisit": "وزن مناسب آخرین مراجعه",
+  "daysTillChildbirth": "تعداد روز باقیمانده تا وضع حمل",
+  "chartWeightName": "نمودار تغییر وزن",
+  "whichMenuList": "کدام لیست غذایی را انتخاب کنم؟",
+  "confirmMenuList": "تایید لیست غذایی",
+  "areYouSureAboutMenu": "برای انتخاب این لیست مطمئن هستی؟",
+  "yesWantThisMenu": "بله همین لیست رو میخوام",
+  "noWannaChange": "نه میخوام عوضش کنم",
+  "inbox": "صندوق پیام",
+  "notFoundInbox": "پیامی برای نمایش وجود ندارد",
+  "discountForYou": "تخفیف ویژه شما",
+  "totalAmount": "قابل پرداخت",
+  "newVisit": "اعلام وزن جدید",
+  "userNotricaRegime": "شما میتوانید از رژیم نوتریکا که مخصوص سنین ۱۰-۱۶ سال است استفاده کنید",
+  "getNewList": "دریافت لیست جدید",
+  "reviveDiet": "تمدید رژیم",
+  "continues": "ادامه",
+  "descriptionNewList": "زمان لیست غذاییت تموم شده و باید لیست جدید بگیری!",
+  "descriptionVisit": "باید وزن جدیدتو وارد کنی",
+  "descriptionRenew": "زمان رژیمت تموم شده! برای تمدید دوره رژیم دکمه زیر رو بزن",
+  "descriptionRevive": "خیلی وقته از رژیمت فاصله گرفتی! \nبرای تمدید دوره رژیم دکمه زیر رو بزن",
+  "yesSaveList": "این لیست را ذخیره کن",
+  "appNameSplash": "به اندام دکتر کرمانی",
+  "later": "بعدا",
+  "update": "بروزرسانی",
+  "version": "نسخه {versionName}",
+  "@version": {
+    "placeholders": {
+      "versionName": {
+        "type": "String"
+      }
+    }
+  },
+  "needInvestigation": "نیاز به بررسی",
+  "blockApology": "عذرخواهی ما را پذیرا باش و برای اطلاعات بیشتر و اطمینان خاطر منتظر تماس کارشناسان دکتر کرمانی باش.",
+  "blockText": "با توجه به وضعیت جسمانی و اطلاعاتی که وارد کردی امکان دریافت رژیم وجود نداره.",
+  "blockSickText": "با توجه به بیماریها و وجود حساسیت های بسیار امکان دریافت رژیم برات وجود نداره.",
+  "selectAnotherRegime": "انتخاب رژیم دیگر",
+  "editPhysicalInfo": "ویرایش اطلاعات جسمانی",
+  "editPhysicalStatus": "ویرایش وضعیت جسمانی",
+  "callRightNow": "همین الان تماس بگیر",
+  "phone": "025-32143",
+  "editSickness": "ویرایش بیماری ها",
+  "whichPackage": "کدام پکیج را انتخاب کنم؟",
+  "receiveList": "دریافت لیست غذایی",
+  "pdfTxt": "از این قسمت می توانید نسخه PDF لیست غذایی خود را جهت چاپ کردن یا ذخیره، دریافت کنید",
+  "receivePdf": "دریافت لیست هفته جاری",
+  "cancelPdf": "انصراف",
+  "behandam": "به اندام دکتر کرمانی",
+  "shop": "فروشگاه به اندام",
+  "buyCourse": "خرید این دوره",
+  "myProduct": "محصولات من",
+  "selectOneFreeFood": "یکی از آیتم های آزاد زیر رو انتخاب کن",
+  "view": "مشاهده",
+  "viewAll": "مشاهده همه",
+  "notRegister": "ثبت نشده",
+  "errorMobileCondition": "شماره خود را به درستی وارد کنید",
+  "month": "ماه",
+  "year": "سال",
+  "errorSelectedItem": "لطفا یک گزینه را انتخاب کنید",
+  "receiveTermPdf": "دریافت لیست دوره جاری",
+  "shopMenu": "فروشگاه",
+  "selectReplacedFood": "ابتدا غذای جایگزین رو انتخاب کن",
+  "refund": "بازگشت وجه",
+  "user": "کاربر",
+  "babe": "عزیز",
+  "dietDiscontent": "در صورت نارضایتی از رژیم میتوانید حداکثر تا تاریخ ",
+  "validationPass": "رمز عبور حداقل 4 کاراکتری وارد کن",
+  "requestRefundPaymentLabel": " درخواست بازگشت وجه ثبت کنید. پس از بررسی توسط کارشناسان ما مبلغ پرداختی به حساب شما بازگردانده خواهد شد.",
+  "acceptRefundPayment": "ثبت درخواست بازگشت وجه",
+  "pleaseFillInformation": "لطفا اطلاعات زیر را با دقت کامل کنید",
+  "pleaseFillAllParams": "لطفا تمامی گزینه ها را پر کنید",
+  "cardNumberFull": "شماره شبای کارت بانکی",
+  "cardNumber": "شماره کارت",
+  "cardNumberOwner": "شماره شبای بالا به نام چه کسی است؟",
+  "validationCardNumber": "شماره کارت نباید کمتر از 16 کاراکتر باشد",
+  "back": "بازگشت",
+  "backProfile": "بازگشت به پروفایل",
+  "successRequest": "درخواست شما با موفقیت ثبت شد",
+  "descriptionRefund": " حداکثر زمان ثبت درخواست بازگشت وجه برای شما تاریخ {date}  بوده است. در صورتی که از هریک خدمات ما نارضایتی دارید می توانید با شماره 02532143، تماس گرفته و موارد نارضایتی خود را به کارشناسان ما اعلام بفرمایید. هدف ما جلب رضایت حداکثری شماست",
+  "@descriptionRefund": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "test": "تست",
+  "person": "نفر",
+  "courseTime": "زمان دوره",
+  "buyThisCourse": "خریداری شده",
+  "aboutThis": "درباره این دوره",
+  "viewCompletely": "مشاهده کامل",
+  "viewAllCourse": "مشاهده تمام جلسات",
+  "downloadAll": "دانلود همه قسمت ها",
+  "productPrice": "قیمت محصول",
+  "productPriceWithOff": "قیمت تخفیف خورده",
+  "expand": "مشاهده کامل",
+  "collapse": "بازگشت",
+  "clickHereToUseProduct": "برای استفاده از محصول، روی دکمه کلیک کنید",
+  "viewProduct": "مشاهده محصول",
+  "enterNewWeight": "وزن جدیدت رو وارد کن",
+  "weighEnterCallText": "در صورت نیاز به مشاوره تلفنی توسط کارشناسان ما میتونی از قسمت زیر بله رو انتخاب کنی تا در اولین فرصت با شما تماس بگیریم",
+  "shouldWeCallYou": "با شما تماس بگیریم؟",
+  "exitAppAlert": "برای خروج بکبار دیگر ضربه بزنید",
+  "programNotFoundForOpen": "برنامه ای جهت بازکردن فایل پیدا نشد.",
+  "fileNotFound": "این فایل وجود ندارد",
+  "more": "بیشتر",
+  "emptyProduct": "محصولی برای نمایش وجود ندارد",
+  "offErrorResult": "کد تخفیف اشتباه است",
+  "errorDescriptionTicket": "لطفا متن تیکت را پر کنید",
+  "close": "بستن",
+  "newMessage": "پیام جدید",
+  "messageNotFound": "پیامی برای نمایش وجود ندارد",
+  "dateStart": "شروع ترم: ",
+  "dateEnd": "پایان ترم: ",
+  "viewChart": "نمایش نمودار",
+  "termsOfUseDescription": "شرایط استفاده از خدمات",
+  "termsOfUse": "شرایط و قوانین استفاده",
+  "link": "لینک ",
+  "clickLink": "کلیک کنید",
+  "selectedFile": "انتخاب فایل",
+  "errorBodyTicket": "متن پیام خود را وارد کنید",
+  "errorTitleTicket": "عنوان پیام خود را وارد کنید",
+  "message": "پیام",
+  "call": "تماس",
+  "cancelFasting": "لغو فستینگ",
+  "helpFasting": "راهنمای فستینگ",
+  "fastTrackModel": "الگوی فستینگ",
+  "cancelFastTrackModel": "در صورت لغو، برنامه غذایی شما در تاریخ {date} به حالت عادی برمی گردد و امکان برگشت مجدد به فستینگ برای این روز وجود ندارد.",
+  "@cancelFastTrackModel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "descriptionArticle": "پیشنهاد امروز دکتر برای شما:",
+  "dailyMessage": "پیام روزانه",
+  "showVideoButton": "مشاهده ویدیو",
+  "noInternetTitle": "قطع اتصال اینترنت",
+  "noInternetMessage": "مثل اینکه یه مشکلی پیش اومده\n از اتصال به اینترنت مطمئن شو",
+  "retry": "تلاش مجدد",
+  "checkYourConnection": "بررسی اتصال",
+  "maintenanceError": "کاربر گرامی! سرور در حال بروزرسانی است.\nاز صبر و شکیبایی شما متشکریم",
+  "behandamDrKermany": "به اندام دکتر کرمانی",
+  "endYourTermDiet": "تا پایان دوره رژیم شما",
+  "reviveSubscription": "تمدید اشتراک",
+  "newSubscription": "خرید اشتراک",
+  "purchasedSubscription": "اشتراک انتخاب شده",
+  "enterCode": "وارد کردن",
+  "haveDiscountCode": "کد تخفیف داری؟",
+  "paymentType": "نوع پرداخت",
+  "confirmAndPay": "تایید و پرداخت",
+  "kermanyRegimeConfirm": "برنامه غذایی دکتر کرمانی را می پذیرم",
+  "totalPrice": "مبلغ کل",
+  "historySubscriptionPayment": "سوابق خرید اشتراک",
+  "blockPregnancyToolbar": "توقف برنامه غذایی",
+  "blockPregnancyTitle": "برنامه غذایی شما متوقف شده",
+  "blockPregnancyText": "کاربر گرامی برنامه غذایی شما به علت ورود به هفته 39 بارداری متوقف میشود از این به بعد تا انتهای مدت زمان رژیم شما، کارشناسان ما به صورت تلفنی پیگیر روند سلامتی شما خواهند بود.\nبا آرزوی سلامتی برای شما",
+  "understandGoToNext": "متوجه شدم، برو به مرحله بعد",
+  "pregnancyWeekAlertDesc": "به اندامی عزیز با توجه به هفته بارداری وارد شده،ما میتوانیم تا {weekNumber} هفته دیگر به شما برنامه غذایی دهیم و پس از آن مشاورین ما صرفا به صورت تلفنی تا انتهای دوره رژیم پاسخگوی سوالات شما خواهند بود و لیست غذایی شما بسته خواهد شد.",
+  "@pregnancyWeekAlertDesc": {
+    "placeholders": {
+      "weekNumber": {
+        "type": "int"
+      }
+    }
+  },
+  "cardToCardDescription": "مبلغ موردنظر رو از طریق عابربانک یا اپلیکیشن های بانکی به شماره کارت زیر واریز کنید.",
+  "copyCardNumber": "کپی شماره کارت",
+  "enterDataAfterPayment": "پس از پرداخت، اطلاعات زیر رو تکمیل کنید",
+  "cardOwnerName": "نام و نام خانوادگی صاحب کارت",
+  "lastFourDigitsCardNumber": "4 رقم آخر شماره کارت",
+  "lastFourDigitsCardNumberIncorrect": "4 رقم آخر شماره کارت صحیح نیست",
+  "todayPay": "امروز واریز کردم",
+  "newDate": "تاریخ جدید",
+  "selectPaymentDate": "انتخاب تاریخ واریز",
+  "selectNewDate": "انتخاب تاریخ جدید",
+  "enterPaymentDate": "تاریخی که واریز خود را انجام داده اید را وارد نمایید",
+  "submitDate": "ثبت تاریخ",
+  "amountPaid": "مبلغ پرداختی",
+  "noTicketAvailable": "پیام وجود ندارد",
+  "backToShop": "بازگشت به فروشگاه",
+  "setGoalWeight": "تعیین وزن هدف",
+  "wantToStayAtWeight": "بله میخواهم در وزن {weight} کیلوگرم بمانم",
+  "@wantToStayAtWeight": {
+    "placeholders": {
+      "weight": {
+        "type": "int"
+      }
+    }
+  },
+  "wantToBackAtWeight": "خیر میخواهم به وزن {weight} کیلوگرم برگردم",
+  "@wantToBackAtWeight": {
+    "placeholders": {
+      "weight": {
+        "type": "int"
+      }
+    }
+  },
+  "pleaseEnterPassword": "لطفا رمز عبور را وارد کنید",
+  "search": "جستجو",
+  "requestDate": "تاریخ درخواست",
+  "showHistorySubscription": "مشاهده سوابق",
+  "subscriptionPackageNotAvailable": "اشتراک وجود ندارد",
+  "packageNotAvailable": "پکیج وجود ندارد",
+  "privacyPolicy": "حریم خصوصی",
+  "termsAndConditions": "قوانین و مقررات",
+  "checkTermsAndConditions": "قوانین و مقررات را تایید نکرده اید",
+  "iAccept": " را خوانده و میپذیرم.",
+  "listEndMessage": "لیست غذایی شما به پایان رسیده است",
+  "resolved": "حل شده",
+  "closed": "بسته شده",
+  "pendingAdminResponse": "در انتظار پاسخ",
+  "pendingUserResponse": "پیام جدید",
+  "onHold": "در حال بررسی",
+  "globalIssue": "مشکل سراسری",
+  "all": "همه",
+  "progressPayment": "درحال بررسی",
+  "statusPayment": "وضعیت پرداخت",
+  "descriptionStatusPaymentSubscription": "خرید پکیج {dietType} توسط شما در تاریخ {date} ثبت شد. پس از تایید پرداخت، مدت زمان اشتراک شما {days} روز افزایش خواهد یافت",
+  "@descriptionStatusPaymentSubscription": {
+    "placeholders": {
+      "dietType": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "expireTerm": "دوره رژیم شما به پایان رسید",
+  "noAdviceVideo": "ویدیویی برای نمایش وجود ندارد",
+  "notActiveTerm": "شما اشتراک فعالی ندارید",
+  "shebaNumber": "شماره شبا",
+  "understand": "متوجه شدم"
+}

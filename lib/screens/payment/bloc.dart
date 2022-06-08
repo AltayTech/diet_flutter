@@ -7,17 +7,24 @@ import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/utils/device.dart';
-import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/bool.dart';
+import 'package:behandam/extensions/stream.dart';
+import 'package:behandam/routes.dart';
+import 'package:behandam/utils/device.dart';
+import 'package:flutter/foundation.dart';
+import 'package:rxdart/rxdart.dart';
 
-import '../../routes.dart';
+enum PaymentDate { today, customDate }
+
+enum ProductType { SHOP, DIET, SUBSCRIPTION }
 
 class PaymentBloc {
   PaymentBloc() {
-    _waiting.value = false;
+    _waiting.safeValue = true;
     _discountLoading.value = false;
+    _selectedDateType.value = PaymentDate.today;
+
+    _invoice = LatestInvoiceData();
   }
 
   final _repository = Repository.getInstance();
@@ -29,6 +36,7 @@ class PaymentBloc {
   Price? _discountInfo;
   LatestInvoiceData? _invoice;
   bool _checkLatestInvoice = false;
+  String? _date;
 
   final _waiting = BehaviorSubject<bool>();
   final _showInformation = BehaviorSubject<bool>();
@@ -37,9 +45,15 @@ class PaymentBloc {
   final _wrongDisCode = BehaviorSubject<bool>();
   final _discountLoading = BehaviorSubject<bool>();
   final _usedDiscount = BehaviorSubject<bool>();
+  final _selectedDateType = BehaviorSubject<PaymentDate>();
+  final _selectedDate = BehaviorSubject<String>();
+  final _productType = BehaviorSubject<ProductType>();
   final _navigateTo = LiveEvent();
+  final _popLoading = LiveEvent();
   final _showServerError = LiveEvent();
   final _onlinePayment = LiveEvent();
+
+  String? get date => _date;
 
   String? get path => _path;
 
@@ -77,32 +91,49 @@ class PaymentBloc {
 
   Stream get navigateTo => _navigateTo.stream;
 
+  Stream get popLoading => _popLoading.stream;
+
   Stream get showServerError => _showServerError.stream;
 
   Stream get onlinePayment => _onlinePayment.stream;
+
+  Stream<ProductType> get productType => _productType.stream;
+
+  Stream<PaymentDate> get selectedDateType => _selectedDateType.stream;
+
+  Stream<String> get selectedDate => _selectedDate.stream;
+
+  set setSelectedDateType(PaymentDate date) => _selectedDateType.value = date;
+
+  set setSelectedDate(String date) => _selectedDate.value = date;
+
+  set setInvoice(LatestInvoiceData invoice) => _invoice = invoice;
+
+  set setDate(String date) => _date = date;
+
+  set setPackage(PackageItem package) => _packageItem = package;
 
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
   }
 
   void newPayment(LatestInvoiceData newInvoice) {
-    _waiting.value = true;
     _repository.newPayment(newInvoice).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
               '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
       MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
       _navigateTo.fire(value.next);
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _popLoading.fire(true));
   }
 
   void getPackagePayment() {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
-      _packageItem!.price!.totalPrice = _packageItem!.price!.finalPrice;
+      _packageItem!.price!.totalPrice = _packageItem!.price!.saleAmount;
     }).whenComplete(() {
-      _waiting.value = false;
+      _waiting.safeValue = false;
     });
   }
 
@@ -112,7 +143,11 @@ class PaymentBloc {
       _showServerError.fireMessage('error');
     } else {
       Payment payment = new Payment();
-      payment.originId = Device.get().isIos ? 2 : 3;
+      payment.originId = kIsWeb
+          ? 0
+          : Device.get().isIos
+              ? 2
+              : 3;
       payment.coupon = discountCode;
       payment.paymentTypeId =
           (discountInfo != null && discountInfo!.finalPrice == 0)
@@ -120,9 +155,33 @@ class PaymentBloc {
               : isOnline
                   ? 0
                   : 1;
+      payment.packageId = packageItem!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
-      });
+      }).whenComplete(() => _popLoading.fire(true));
+    }
+  }
+
+  void userPaymentCardToCardSubscription(LatestInvoiceData newInvoice) {
+    if (!isUsedDiscount &&
+        (discountCode != null && discountCode!.trim().isNotEmpty)) {
+      _showServerError.fireMessage('error');
+    } else {
+      Payment payment = new Payment();
+      payment.originId = kIsWeb
+          ? 0
+          : Device.get().isIos
+              ? 2
+              : 3;
+      payment.paymentTypeId = 1;
+      payment.coupon = discountCode;
+      payment.packageId = packageItem!.id!;
+      payment.cardOwner = newInvoice.cardOwner;
+      payment.cardNum = newInvoice.cardNum;
+      payment.payedAt = newInvoice.payedAt;
+      _repository.setPaymentTypeReservePackage(payment).then((value) {
+        _navigateTo.fire(value);
+      }).whenComplete(() => _popLoading.fire(true));
     }
   }
 
@@ -166,15 +225,24 @@ class PaymentBloc {
   }
 
   void getLastInvoice() {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.latestInvoice().then((value) {
       _invoice = value.data;
+      _invoice!.payedAt = DateTime.now().toString().substring(0, 10);
       _path = value.next!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
+  }
+
+  void getBankAccountActiveCard() {
+    _waiting.safeValue = true;
+    _repository.bankAccountActiveCard().then((value) {
+      _invoice = value.data;
+      _invoice!.payedAt = DateTime.now().toString().substring(0, 10);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void checkLastInvoice() {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.latestInvoice().then((value) {
       if (value.data?.refId != null &&
           value.data?.success != null &&
@@ -186,7 +254,7 @@ class PaymentBloc {
         _showServerError.fireMessage(value.data!.note!);
       }
       _invoice = value.data;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void checkOnlinePayment() {
@@ -203,7 +271,7 @@ class PaymentBloc {
 
   void shopLastInvoice() {
     // if(!_checkLatestInvoice.isNullOrFalse) {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.shopLastInvoice().then((value) {
       _invoice = value.data;
       if (value.data?.refId != null &&
@@ -211,16 +279,40 @@ class PaymentBloc {
           !value.requireData.resolved.isNullOrFalse) {
         _navigateTo.fire(Routes.shopOrders);
         _productId = value.requireData.productId;
-       // debugPrint('shop last invoice $productId / ${value.requireData.productId}');
+        // debugPrint('shop last invoice $productId / ${value.requireData.productId}');
       } else
         _navigateTo.fire(Routes.shopHome);
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
     // }
+  }
+
+  void setProductType() {
+    if (navigator.currentConfiguration!.path.contains('shop')) {
+      _productType.safeValue = ProductType.SHOP;
+    } else if (navigator.currentConfiguration!.path.contains('subscription')) {
+      _productType.safeValue = ProductType.SUBSCRIPTION;
+    } else {
+      _productType.safeValue = ProductType.DIET;
+    }
+
+    sendRequest();
+  }
+
+  void sendRequest() {
+    if (_productType.value == ProductType.SHOP)
+      shopLastInvoice();
+    else
+      getLastInvoice();
+  }
+
+  void changeUseDiscount() {
+    _usedDiscount.value = true;
   }
 
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
+    _popLoading.close();
     _discountLoading.close();
     _cardToCard.close();
     _online.close();
@@ -229,5 +321,8 @@ class PaymentBloc {
     _wrongDisCode.close();
     _waiting.close();
     _onlinePayment.close();
+    _productType.close();
+    _selectedDateType.close();
+    _selectedDate.close();
   }
 }

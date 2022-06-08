@@ -14,7 +14,6 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -82,65 +81,75 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () => DialogUtils.showDialogPage(
-                            context: context,
-                            child: Center(
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                                width: double.maxFinite,
-                                decoration: AppDecorations.boxLarge.copyWith(
-                                  color: AppColors.onPrimary,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      intl.receiveList,
-                                      style: TextStyle(fontWeight: FontWeight.w700),
-                                      textAlign: TextAlign.center,
-                                      textDirection: context.textDirectionOfLocale,
-                                    ),
-                                    SizedBox(height: 1.h),
-                                    Text(
-                                      intl.pdfTxt,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(color: AppColors.penColor),
-                                      textDirection: context.textDirectionOfLocale,
-                                    ),
-                                    SizedBox(height: 3.h),
-                                    SubmitButton(
-                                        label: intl.receivePdf,
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          DialogUtils.showDialogProgress(context: context);
-                                          bloc.getPdfMeal(FoodDietPdf.WEEK);
-                                        }),
-                                    SizedBox(height: 1.h),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      style: ButtonStyle(
-                                        fixedSize: MaterialStateProperty.all(Size(70.w, 5.h)),
-                                        backgroundColor: MaterialStateProperty.all(Colors.white),
+                      StreamBuilder<FoodListData?>(
+                          stream: bloc.foodList,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData)
+                              return InkWell(
+                                onTap: () => DialogUtils.showDialogPage(
+                                    context: context,
+                                    child: Center(
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                                        width: double.maxFinite,
+                                        decoration: AppDecorations.boxLarge.copyWith(
+                                          color: AppColors.onPrimary,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              intl.receiveList,
+                                              style: TextStyle(fontWeight: FontWeight.w700),
+                                              textAlign: TextAlign.center,
+                                              textDirection: context.textDirectionOfLocale,
+                                            ),
+                                            SizedBox(height: 1.h),
+                                            Text(
+                                              intl.pdfTxt,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(color: AppColors.penColor),
+                                              textDirection: context.textDirectionOfLocale,
+                                            ),
+                                            SizedBox(height: 3.h),
+                                            SubmitButton(
+                                                label: intl.receivePdf,
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  DialogUtils.showDialogProgress(context: context);
+                                                  bloc.getPdfMeal(FoodDietPdf.WEEK);
+                                                }),
+                                            SizedBox(height: 1.h),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              style: ButtonStyle(
+                                                fixedSize:
+                                                    MaterialStateProperty.all(Size(70.w, 5.h)),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(Colors.white),
+                                              ),
+                                              child: Text(intl.cancelPdf,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .button!
+                                                      .copyWith(color: AppColors.btnColor)),
+                                            ),
+                                            SizedBox(height: 1.h),
+                                          ],
+                                        ),
                                       ),
-                                      child: Text(intl.cancelPdf,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .button!
-                                              .copyWith(color: AppColors.btnColor)),
-                                    ),
-                                    SizedBox(height: 1.h),
-                                  ],
-                                ),
-                              ),
-                            )),
-                        child: ImageUtils.fromLocal('assets/images/foodlist/share/pdf.svg',
-                            width: 2.w, height: 4.h),
-                      )
+                                    )),
+                                child: ImageUtils.fromLocal('assets/images/foodlist/share/pdf.svg',
+                                    width: 2.w, height: 4.h),
+                              );
+                            else
+                              return Space();
+                          })
                     ],
                   ),
                 ),
@@ -148,7 +157,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 3.w),
                   child: Divider(
-                    thickness: 0.3,
+                    thickness: 0.1,
                     color: AppColors.surface,
                     height: 3.h,
                   ),
@@ -210,7 +219,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
     );
   }
 
-  Widget adviceButton(){
+  Widget adviceButton() {
     return GestureDetector(
       child: Container(
           decoration: AppDecorations.boxLarge.copyWith(
@@ -243,6 +252,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
       },
     );
   }
+
   Widget weekList() {
     return StreamBuilder(
       stream: bloc.weekDays,

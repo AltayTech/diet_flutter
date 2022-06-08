@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:behandam/base/repository.dart';
-import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:behandam/extensions/stream.dart';
 class StatusBloc {
   StatusBloc() {
-    _waiting.value = false;
+    _waiting.safeValue = true;
   }
 
   final _repository = Repository.getInstance();
@@ -34,7 +33,7 @@ class StatusBloc {
   Stream<bool> get showInformation => _showInformation.stream;
 
   void getVisitUser() {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.getVisits().then((value) {
       _visitItem = value.data;
       _terms = value.data?.terms;
@@ -55,7 +54,7 @@ class StatusBloc {
       _visitItem!.terms = [];
       _terms = [];
     }).whenComplete(() {
-      _waiting.value = false;
+      _waiting.safeValue = false;
     });
   }
 

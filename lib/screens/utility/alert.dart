@@ -3,7 +3,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -43,8 +42,9 @@ class Alert extends StatelessWidget {
               child: Center(
                 child: Text(
                   text,
-                  style: typography.caption?.apply(
-                    color: AppColors.primary,
+                  style: typography.caption?.copyWith(
+                    color: AppColors.alertCallTextColor,
+                    fontWeight: FontWeight.w700
                   ),
                   textAlign: TextAlign.center,
                 ),

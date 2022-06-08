@@ -3,31 +3,26 @@ import 'dart:async';
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
-import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shamsi_date/shamsi_date.dart';
-import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/extensions/object.dart';
-import 'package:behandam/extensions/string.dart';
-
+import 'package:behandam/extensions/stream.dart';
 
 class MenuSelectBloc {
   MenuSelectBloc() {
-    _loadContent();
   }
+
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _menuTypes = BehaviorSubject<List<MenuType>>();
   final _selectedMenu = BehaviorSubject<Menu?>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
+  final _popDialog = LiveEvent();
 
   Stream<bool> get loadingContent => _loadingContent.stream;
 
@@ -37,50 +32,51 @@ class MenuSelectBloc {
 
   Stream get navigateTo => _navigateTo.stream;
 
-  Stream get showServerError => _showServerError.stream;
+  Stream get popDialog => _popDialog.stream;
 
-  void _loadContent() {
-    _loadingContent.value = true;
+  void loadContent() {
+    _loadingContent.safeValue = true;
     _repository.menuType().then((value) {
       value.data?.items.let((it) {
         _menuTypes.value = it.map((e) => e).toList();
       });
       debugPrint('repository ${_menuTypes.value.length}');
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _loadingContent.safeValue = false);
   }
-  
-  void onItemClick(Menu menu){
-    _loadingContent.value = true;
+
+  void menuSelected(Menu menu) {
     _selectedMenu.value = menu;
+  }
+
+  void onItemClick() {
     ConditionRequestData requestData = ConditionRequestData();
     requestData.isPreparedMenu = true;
-    requestData.menuId = menu.id;
-    if(!navigator.currentConfiguration!.path.contains(Routes.listMenuSelect)) {
+    requestData.menuId = _selectedMenu.value!.id;
+    if (!navigator.currentConfiguration!.path.contains(Routes.listMenuSelect)) {
       _repository.setCondition(requestData).then((value) {
         debugPrint('condition menu ${value.next}');
-        _navigateTo.fire(value.next);
-      }).whenComplete(() => _loadingContent.value = false);
-    }else {
+        _navigateTo.fire({'next': value.next, 'params': _selectedMenu.value});
+      }).whenComplete(() => _popDialog.fire(true));
+    } else {
       _repository.menuSelect(requestData).then((value) {
-        _navigateTo.fire(value.next);
-      }).whenComplete(() => _loadingContent.value = false);
+        _navigateTo.fire({'next': value.next, 'params': _selectedMenu.value});
+      }).whenComplete(() => _popDialog.fire(true));
     }
   }
 
-  void term(){
-    _loadingContent.value = true;
+  void term() {
     _repository.term().then((value) {
       debugPrint('condition menu ${value.next}');
       debugPrint("path:${value.next}");
       _navigateTo.fire(value.next);
-    }).whenComplete(() => _loadingContent.value = false);
+    }).whenComplete(() => _popDialog.fire(true));
   }
 
   void dispose() {
     _loadingContent.close();
     _menuTypes.close();
     _navigateTo.close();
-    _showServerError.close();
+    _popDialog.close();
     _selectedMenu.close();
   }
 }

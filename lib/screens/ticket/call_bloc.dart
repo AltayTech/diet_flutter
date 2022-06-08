@@ -6,9 +6,7 @@ import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CallBloc {
-  CallBloc() {
-    getCalls();
-  }
+  CallBloc() ;
 
   final _repository = Repository.getInstance();
   final _showServerError = LiveEvent();
@@ -37,7 +35,7 @@ class CallBloc {
       _call = value.data;
       loadContent();
     }).whenComplete(() {
-      if (!_progressNetwork.isClosed) _progressNetwork.value = false;
+       _progressNetwork.value = false;
     });
   }
 

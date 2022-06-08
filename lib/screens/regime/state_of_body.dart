@@ -1,8 +1,8 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/screens/regime/provider.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
@@ -17,7 +17,6 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -45,13 +44,15 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   void listenBloc() {
     regimeBloc.navigateToVerify.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       VxNavigator.of(context).push(
         Uri.parse('/$event'),
       );
     });
     regimeBloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
+      MemoryApp.isShowDialog = false;
+      Navigator.of(context).pop();
     });
   }
 
@@ -69,8 +70,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
       regimeBloc,
       child: Scaffold(
         appBar: Toolbar(
-            titleBar: (navigator.currentConfiguration!.path
-                    .contains(Routes.weightEnter))
+            titleBar: (navigator.currentConfiguration!.path.contains(Routes.weightEnter))
                 ? intl.newVisit
                 : intl.stateOfBody),
         body: SingleChildScrollView(
@@ -84,8 +84,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    navigator.currentConfiguration!.path
-                            .contains(Routes.weightEnter)
+                    navigator.currentConfiguration!.path.contains(Routes.weightEnter)
                         ? intl.enterNewWeight
                         : intl.enterYourState,
                     textAlign: TextAlign.center,
@@ -95,49 +94,29 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                     stream: regimeBloc.physicalInfo,
                     builder: (_, AsyncSnapshot<PhysicalInfoData> snapshot) {
                       if (snapshot.hasData) {
-                        debugPrint(
-                            'builder ${snapshot.requireData.needToCall}');
+                        debugPrint('builder ${snapshot.requireData.needToCall}');
                         setData(snapshot.requireData);
                         return Column(
                           children: [
                             rulers(snapshot.requireData),
+                            Space(height: 2.h),
                             if (navigator.currentConfiguration!.path ==
-                                'list${Routes.weightEnter}')
+                                '/list${Routes.weightEnter}')
                               callBox(snapshot.requireData),
-                            if (!navigator.currentConfiguration!.path
-                                .contains(Routes.weightEnter))
+                            if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
                               birthDayBox(snapshot.requireData),
                             Space(height: 2.h),
-                            // if (!snapshot.requireData.isForbidden.isNullOrFalse)
-                            //   Alert(
-                            //     text: snapshot.requireData.mustGetNotrica
-                            //             .isNullOrFalse
-                            //         ? intl.itIsNotPossible
-                            //         : intl.userNotricaRegime,
-                            //     boxColor: AppColors.warning,
-                            //     iconPath: 'assets/images/diet/exclamation.svg',
-                            //   )
-                            // else
-                              SubmitButton(
-                                label: intl.confirmContinue,
-                                onTap: () {
-                                  DialogUtils.showDialogProgress(
-                                      context: context);
-                                  snapshot.requireData.weight = double.parse(
-                                      '${snapshot.requireData.kilo}.${snapshot.requireData.gram}');
-                                  debugPrint(
-                                      'body weight ${snapshot.requireData.weight}');
-                                  if (navigator.currentConfiguration!.path ==
-                                      '/list${Routes.weightEnter}')
-                                    regimeBloc.sendVisit(snapshot.requireData);
-                                  else if (navigator
-                                          .currentConfiguration!.path ==
-                                      '/renew${Routes.weightEnter}')
-                                    regimeBloc.sendWeight(snapshot.requireData);
-                                  else
-                                    regimeBloc.sendInfo(snapshot.requireData);
-                                },
-                              ),
+                            SubmitButton(
+                              label: intl.confirmContinue,
+                              onTap: () {
+                                snapshot.requireData.weight = double.parse(
+                                    '${snapshot.requireData.kilo}.${snapshot.requireData.gram}');
+                                debugPrint('body weight ${snapshot.requireData.weight}');
+                                regimeBloc.setPhysicalInfo(data: snapshot.requireData);
+                                DialogUtils.showDialogProgress(context: context);
+                                regimeBloc.sendRequest();
+                              },
+                            ),
                             Space(height: 2.h),
                           ],
                         );
@@ -167,21 +146,19 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
           unit: intl.kilo,
           secondUnit: intl.gr,
           color: AppColors.purpleRuler,
-          helpClick: () => DialogUtils.showDialogPage(
-              context: context, child: HelpDialog(helpId: 2)),
+          helpClick: () =>
+              DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 2)),
           iconPath: 'assets/images/diet/weight_icon.svg',
           onClick: (val) {
             physicalInfo.kilo = val;
-            physicalInfo.weight =
-                double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
+            physicalInfo.weight = double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
           },
           onClickSecond: (val) {
             physicalInfo.gram = val;
-            physicalInfo.weight =
-                double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
+            physicalInfo.weight = double.parse('${physicalInfo.kilo}.${physicalInfo.gram}');
           },
         ),
-        if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
+        if (!navigator.currentConfiguration!.path.contains('weight'))
           CustomRuler(
             rulerType: RulerType.Normal,
             value: physicalInfo.height!,
@@ -190,12 +167,12 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             heading: intl.height,
             unit: intl.centimeter,
             color: AppColors.pinkRuler,
-            helpClick: () => DialogUtils.showDialogPage(
-                context: context, child: HelpDialog(helpId: 3)),
+            helpClick: () =>
+                DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 3)),
             iconPath: 'assets/images/diet/height_icon.svg',
             onClick: (val) => physicalInfo.height = val,
           ),
-        if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
+        if (!navigator.currentConfiguration!.path.contains('weight'))
           CustomRuler(
             rulerType: RulerType.Normal,
             value: physicalInfo.wrist!,
@@ -204,12 +181,13 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             heading: intl.wrist,
             unit: intl.centimeter,
             color: AppColors.blueRuler,
-            helpClick: () => DialogUtils.showDialogPage(
-                context: context, child: HelpDialog(helpId: 4)),
+            helpClick: () =>
+                DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 4)),
             iconPath: 'assets/images/diet/wrist_icon.svg',
             onClick: (val) => physicalInfo.wrist = val,
           ),
-        if (physicalInfo.dietTypeAlias == RegimeAlias.Pregnancy)
+        if (physicalInfo.dietTypeAlias == RegimeAlias.Pregnancy &&
+            !navigator.currentConfiguration!.path.contains('enter'))
           CustomRuler(
             rulerType: RulerType.Pregnancy,
             value: physicalInfo.pregnancyWeek!,
@@ -219,8 +197,8 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             heading: intl.pregnancyWeek,
             unit: intl.week,
             color: AppColors.greenRuler,
-            helpClick: () => DialogUtils.showDialogPage(
-                context: context, child: HelpDialog(helpId: 6)),
+            helpClick: () =>
+                DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 6)),
             iconPath: 'assets/images/diet/pregnancy_icon.svg',
             onClick: (val) => setState(() {
               physicalInfo.pregnancyWeek = val;
@@ -235,8 +213,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                 physicalInfo.isForbidden = true;
               else
                 physicalInfo.isForbidden = false;
-              debugPrint(
-                  'pregnancy 2 ${physicalInfo.multiBirth} / ${physicalInfo.isForbidden}');
+              debugPrint('pregnancy 2 ${physicalInfo.multiBirth} / ${physicalInfo.isForbidden}');
               setState(() {});
             },
           ),
@@ -246,26 +223,23 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   void setData(PhysicalInfoData data) {
     data.kilo = int.parse(data.weight!.toString().split('.').first);
-    data.gram =
-        int.parse(data.weight!.toString().split('.').last.substring(0, 1));
+    data.gram = int.parse(data.weight!.toString().split('.').last.substring(0, 1));
     data.isForbidden = false;
     data.mustGetNotrica = false;
     if (data.needToCall == null) data.needToCall = false;
-    if (data.birthDate.isEmptyOrNull)
-      data.isForbidden = true;
+    if (data.birthDate.isEmptyOrNull) data.isForbidden = true;
     // else {
-      // if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays <
-      //     (365 * 16)) {
-      //   data.isForbidden = true;
-      //   if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays >
-      //       (365 * 10)) data.mustGetNotrica = true;
-        // debugPrint(
-        //     'date difference ${DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays}');
-      // }
+    // if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays <
+    //     (365 * 16)) {
+    //   data.isForbidden = true;
+    //   if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays >
+    //       (365 * 10)) data.mustGetNotrica = true;
+    // debugPrint(
+    //     'date difference ${DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays}');
+    // }
     // }
     if ((data.pregnancyWeek != null && data.pregnancyWeek! >= 35) ||
-        (data.multiBirth != null && data.multiBirth! >= 2))
-      data.isForbidden = true;
+        (data.multiBirth != null && data.multiBirth! >= 2)) data.isForbidden = true;
   }
 
   Widget birthDayBox(PhysicalInfoData physicalInfo) {
@@ -322,9 +296,7 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   String? birthdateFormatted(PhysicalInfoData physicalInfo) {
     if (!physicalInfo.birthDate.isEmptyOrNull) {
-      var formatter =
-          Jalali.fromDateTime(DateTime.parse(physicalInfo.birthDate!))
-              .formatter;
+      var formatter = Jalali.fromDateTime(DateTime.parse(physicalInfo.birthDate!)).formatter;
       return '${formatter.d} ${formatter.mN} ${formatter.yyyy}';
     }
     return null;
@@ -359,15 +331,13 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
       children: [
         Alert(
           text: intl.weighEnterCallText,
-          boxColor: AppColors.blueRuler.withOpacity(0.5),
+          boxColor: AppColors.blueRuler.withOpacity(0.2),
           iconPath: 'assets/images/diet/call-center.svg',
         ),
         Space(height: 2.h),
         Text(
           intl.shouldWeCallYou,
-          style: typography.caption?.apply(
-            fontWeightDelta: 1,
-          ),
+          style: typography.caption?.apply(fontWeightDelta: 1),
           textAlign: TextAlign.center,
         ),
         Row(
@@ -390,36 +360,30 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
     );
   }
 
-  Widget callButton(
-      String buttonLabel, Function onClick, PhysicalInfoData physicalInfo) {
-    debugPrint(
-        'call button ${buttonLabel == intl.no && physicalInfo.needToCall.isNullOrFalse}');
+  Widget callButton(String buttonLabel, Function onClick, PhysicalInfoData physicalInfo) {
+    debugPrint('call button ${buttonLabel == intl.no && physicalInfo.needToCall.isNullOrFalse}');
     return OutlinedButton(
       onPressed: () => onClick(),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all((buttonLabel == intl.yes &&
-                    !physicalInfo.needToCall.isNullOrFalse) ||
-                (buttonLabel == intl.no &&
-                    physicalInfo.needToCall.isNullOrFalse)
-            ? AppColors.primary
-            : AppColors.grey),
-        shadowColor: MaterialStateProperty.all((buttonLabel == intl.yes &&
-                    !physicalInfo.needToCall.isNullOrFalse) ||
-                (buttonLabel == intl.no &&
-                    physicalInfo.needToCall.isNullOrFalse)
-            ? AppColors.primary
-            : Colors.transparent),
+        backgroundColor: MaterialStateProperty.all(
+            (buttonLabel == intl.yes && !physicalInfo.needToCall.isNullOrFalse) ||
+                    (buttonLabel == intl.no && physicalInfo.needToCall.isNullOrFalse)
+                ? AppColors.primary
+                : AppColors.grey),
+        shadowColor: MaterialStateProperty.all(
+            (buttonLabel == intl.yes && !physicalInfo.needToCall.isNullOrFalse) ||
+                    (buttonLabel == intl.no && physicalInfo.needToCall.isNullOrFalse)
+                ? AppColors.primary
+                : Colors.transparent),
         foregroundColor: MaterialStateProperty.all(AppColors.onSurface),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: AppBorderRadius.borderRadiusLarge)),
+        shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusLarge)),
       ),
       child: Text(
         buttonLabel,
         style: typography.caption?.apply(
-          color: (buttonLabel == intl.yes &&
-                      !physicalInfo.needToCall.isNullOrFalse) ||
-                  (buttonLabel == intl.no &&
-                      physicalInfo.needToCall.isNullOrFalse)
+          color: (buttonLabel == intl.yes && !physicalInfo.needToCall.isNullOrFalse) ||
+                  (buttonLabel == intl.no && physicalInfo.needToCall.isNullOrFalse)
               ? AppColors.onPrimary
               : AppColors.labelColor,
         ),
@@ -428,22 +392,13 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    regimeBloc.sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    regimeBloc.physicalInfoData();
   }
 }

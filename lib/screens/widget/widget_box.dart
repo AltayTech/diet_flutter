@@ -2,16 +2,15 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void fieldFocusChange(
-    BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+void fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
   currentFocus.unfocus();
-  FocusScope.of(context).requestFocus(nextFocus);
+  FocusManager.instance.primaryFocus?.requestFocus(nextFocus);
 }
 
 const inputDecoration = InputDecoration(
@@ -31,7 +30,7 @@ const inputDecoration = InputDecoration(
       width: 1.0,
     ),
   ),
-  labelText: 'شماره موبایلت رو وارد کن',
+  labelText: '',
   labelStyle: TextStyle(
     color: Color.fromARGB(255, 195, 194, 194),
     fontSize: 18.0,
@@ -125,8 +124,7 @@ Widget attachBox() {
                     debugPrint('assistant clicked');
                     launchURL('http://support.kermany.com/');
                   },
-                  child: attachCard(
-                      'assets/images/profile/assistant.svg', 'دستیار'),
+                  child: attachCard('assets/images/profile/assistant.svg', 'دستیار'),
                 ),
               ),
               Container(
@@ -138,8 +136,7 @@ Widget attachBox() {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () => launchURL('https://kermany.com/'),
-                  child: attachCard(
-                      'assets/images/profile/magazine.svg', 'مجله دکتر کرمانی'),
+                  child: attachCard('assets/images/profile/magazine.svg', 'مجله دکتر کرمانی'),
                 ),
               ),
             ],
@@ -183,11 +180,13 @@ Widget attachBox() {
   );
 }
 
-Widget optionUi(IconData icon, String text, int action) {
+Widget optionButtonUi(IconData icon, String text, int action, TextDirection textDirection) {
   return GestureDetector(
     onTap: () {
       if (action == 2) {
         navigator.routeManager.push(Uri.parse(Routes.editProfile));
+      } else if (action == 1) {
+        navigator.routeManager.push(Uri.parse(Routes.billSubscriptionHistory));
       } else if (action == 0) {
         navigator.routeManager.push(Uri.parse(Routes.resetCode));
       }
@@ -195,34 +194,38 @@ Widget optionUi(IconData icon, String text, int action) {
     child: Container(
 //        width: _widthSpace / 3.25,
       height: 6.h,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30.0),
-          boxShadow: [
-            BoxShadow(
-                color: Color.fromARGB(255, 248, 233, 233),
-                blurRadius: 4.0,
-                spreadRadius: 3.0,
-                offset: Offset(0.0, 0.35.w)),
-          ]),
+      padding: EdgeInsets.only(left: 8, right: 8),
+      decoration:
+      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30.0), boxShadow: [
+        BoxShadow(
+            color: Color.fromARGB(255, 248, 233, 233),
+            blurRadius: 3.0,
+            spreadRadius: 2.5,
+            offset: Offset(0.0, 0.3.w)),
+      ]),
       child: Row(
+        textDirection: textDirection,
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
-            text,
-            textAlign: TextAlign.end,
-            style: TextStyle(
-              fontSize: 4.5.w,
-              color: Color.fromARGB(255, 152, 152, 152),
+          Expanded(
+            flex: 0,
+            child: Icon(
+              icon,
+              color: Color.fromARGB(255, 255, 151, 156),
+              size: 5.w,
             ),
           ),
           Space(
             width: 1.w,
           ),
-          Icon(
-            icon,
-            color: Color.fromARGB(255, 255, 151, 156),
-            size: 7.w,
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 10.sp,
+              color: Color.fromARGB(255, 152, 152, 152),
+            ),
           ),
         ],
       ),
@@ -230,8 +233,8 @@ Widget optionUi(IconData icon, String text, int action) {
   );
 }
 
-Widget card(String bgAdrs, String iconAdrs, String text, Color textColor,
-    Color shadow, TextDirection textDirection) {
+Widget cardLeftOrRightColor(String bgAdrs, String iconAdrs, String text, Color textColor,
+    Color shadow, TextDirection textDirection, bool isRight) {
   return Container(
     width: 70.w,
     height: 10.h,
@@ -250,22 +253,21 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor,
       textDirection: textDirection,
       children: <Widget>[
         Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12))),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: Container(
-                  width: 1.5.w,
-                  decoration: BoxDecoration(
-                      color: Color(0xff66D4C9),
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(12),
-                          topRight: Radius.circular(12))),
+              if (isRight)
+                Expanded(
+                  child: Container(
+                    width: 1.5.w,
+                    decoration: BoxDecoration(
+                        color: Color(0xff66D4C9),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(12), topRight: Radius.circular(12))),
+                  ),
+                  flex: 0,
                 ),
-                flex: 0,
-              ),
               Expanded(
                   flex: 1,
                   child: Padding(
@@ -274,6 +276,17 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor,
                         "",
                         textAlign: TextAlign.right,
                       ))),
+              if (!isRight)
+                Expanded(
+                  child: Container(
+                    width: 1.5.w,
+                    decoration: BoxDecoration(
+                        color: Color(0xff66D4C9),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(12), topLeft: Radius.circular(12))),
+                  ),
+                  flex: 0,
+                ),
             ],
           ),
         ),
@@ -312,61 +325,64 @@ Widget card(String bgAdrs, String iconAdrs, String text, Color textColor,
   );
 }
 
-Widget textInput(
-    {required double height,
-    TextInputType? textInputType,
-    required Function validation,
-    required Function onChanged,
-    String? value,
-    String? label,
-    required bool enable,
-    required bool maxLine,
-    required BuildContext ctx,
-    TextInputAction? action,
-    required TextDirection textDirection,
-    TextAlign? textAlign,
-      bool? endCursorPosition,
-    TextEditingController? textController,
-      List<TextInputFormatter>? formatters}) {
+Widget textInput({required double height,
+  TextInputType? textInputType,
+  required Function validation,
+  required Function onChanged,
+  String? value,
+  String? label,
+  Color? bgColor,
+  required bool enable,
+  required bool maxLine,
+  required BuildContext ctx,
+  TextInputAction? action,
+  required TextDirection textDirection,
+  TextAlign? textAlign,
+  bool? endCursorPosition,
+  TextEditingController? textController,
+  List<TextInputFormatter>? formatters,
+  IconData? icon}) {
   TextEditingController controller = TextEditingController();
   controller.text = value ?? '';
   //controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
   return Container(
     height: height,
     child: TextFormField(
-      inputFormatters: formatters != null
-          ? formatters
-          : null,
-      textInputAction: action,
-      maxLines: maxLine ? 4 : 1,
-      controller: textController ?? controller,
-      enabled: enable,
-      decoration: inputDecoration.copyWith(
-        labelText: label,
-        labelStyle: Theme.of(ctx)
+        inputFormatters: formatters != null ? formatters : null,
+        textInputAction: action,
+        maxLines: maxLine ? 4 : 1,
+        controller: textController ?? controller,
+        enabled: enable,
+        decoration: inputDecoration
+            .copyWith(
+            labelText: label,
+            fillColor: bgColor,
+            labelStyle: Theme.of(ctx)
             .textTheme
             .subtitle1!
             .copyWith(color: AppColors.labelColor),
-      ),
-      keyboardType: textInputType,
-      textDirection: textDirection,
-      onChanged: (val) {
-        if(textController!=null){
-          TextSelection previousSelection = textController.selection;
-          onChanged(val);
-          textController.text = val;
-          textController.selection = previousSelection;
-        }else {
-          TextSelection previousSelection = controller.selection;
-          controller.text = onChanged(val);
-          controller.selection = previousSelection;
-        }
-      },
-      style: Theme.of(ctx).textTheme.bodyText1,
-     // textAlign: TextAlign.start,
-      validator: (val) => validation(val),
-    ),
-  );
+        prefixIcon: icon != null ? Icon(icon) : null),
+    keyboardType: textInputType,
+    textDirection: textDirection,
+    onChanged: (val) {
+      if (textController != null) {
+        TextSelection previousSelection = textController.selection;
+        onChanged(val);
+        textController.text = val;
+        textController.selection = previousSelection;
+      } else {
+        TextSelection previousSelection = controller.selection;
+        controller.text = onChanged(val);
+        controller.selection = previousSelection;
+      }
+    },
+    style: Theme
+        .of(ctx)
+        .textTheme
+        .bodyText1,
+    // textAlign: TextAlign.start,
+    validator: (val) => validation(val),
+  ),);
 }
 
 void launchURL(String url) async {

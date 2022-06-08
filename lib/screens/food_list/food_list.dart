@@ -7,17 +7,12 @@ import 'package:behandam/screens/food_list/change_menu.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
 import 'package:behandam/screens/food_list/food_meals.dart';
 import 'package:behandam/screens/food_list/provider.dart';
-import 'package:behandam/screens/food_list/week_day.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-import 'package:behandam/screens/widget/empty_box.dart';
-import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/screens/widget/submit_button.dart';
-import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -35,7 +30,8 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   @override
   void initState() {
     super.initState();
-    bloc = FoodListBloc(true);
+    bloc = FoodListBloc();
+    bloc.getFoodMenu(fillFood: true);
     initListener();
   }
 
@@ -81,48 +77,48 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
           child: Column(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          FoodListAppbar(),
-                          AppbarBoxAdviceVideo(),
-                        ],
-                      ),
-                      Space(height: 2.h),
-                      ChangeMenu(),
-                      Space(height: 2.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        child: FoodMeals(),
-                      ),
-                      Space(
-                        height: 1.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                          child: InkWell(
-                              onTap: () {
-                                DialogUtils.showDialogProgress(context: context);
-                                bloc.checkFitamin();
-                                // _launchURL(vitrinBloc.url);
-                              },
-                              child: ImageUtils.fromLocal(
-                                // MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
-                                //     ? 'assets/images/vitrin/fitamin_banner.png'
-                                //     :
-                                'assets/images/vitrin/fitamin_banner_02.png',
-                              )
+                child: TouchMouseScrollable(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Stack(
+                          children: [
+                            FoodListAppbar(),
+                            AppbarBoxAdviceVideo(),
+                          ],
+                        ),
+                        Space(height: 2.h),
+                        ChangeMenu(),
+                        Space(height: 2.h),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.w),
+                          child: FoodMeals(),
+                        ),
+                        Space(
+                          height: 1.h,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.w),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                            child: InkWell(
+                                onTap: () {
+                                  DialogUtils.showDialogProgress(context: context);
+                                  bloc.checkFitamin();
+                                  // _launchURL(vitrinBloc.url);
+                                },
+                                child: ImageUtils.fromLocal(
+                                  MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
+                                      ? 'assets/images/vitrin/fitamin_banner.png'
+                                      : 'assets/images/vitrin/fitamin_banner_02.png',
+                                )),
                           ),
                         ),
-                      ),
-                      Space(
-                        height: 2.h,
-                      ),
-                    ],
+                        Space(
+                          height: 2.h,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -134,38 +130,11 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
     );
   }
 
-
-
-  /*String appbarStackBoxText(WeekDay weekday) {
-    String text = '';
-    if (isToday(weekday)) {
-      debugPrint('format ${weekday.jalaliDate.formatter.dd}');
-      text = intl.todayAdvicesForYou;
-    } else {
-      text = intl.viewingMenu(
-          '${weekday.jalaliDate.formatter.wN} ${weekday.jalaliDate.formatter.d} ${weekday.jalaliDate.formatter.mN}');
-    }
-    return text;
-  }*/
-
-
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
+    super.onRetryLoadingPage();
+    bloc.getFoodMenu(fillFood: true);
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

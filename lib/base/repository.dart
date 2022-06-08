@@ -18,7 +18,7 @@ import 'package:behandam/data/entity/psychology/calender.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
-import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/entity/regime/body_status.dart' as body;
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
@@ -28,9 +28,11 @@ import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
+import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 
@@ -52,7 +54,6 @@ import '../data/entity/auth/sign_in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/daily_message.dart';
 import 'network_response.dart';
 
 enum FoodDietPdf { TERM, WEEK }
@@ -87,7 +88,7 @@ abstract class Repository {
 
   NetworkResult<Help> helpBodyState(int id);
 
-  NetworkResult<UserInformation> getUser();
+  NetworkResult<UserInformation> getUser({bool invalidate = false});
 
   NetworkResult<Media> getPdfUrl(FoodDietPdf foodDietPdf);
 
@@ -138,7 +139,7 @@ abstract class Repository {
 
   NetworkResult<CalenderOutput> getCalendar(String? startDate, String? endDate);
 
-  NetworkResult<BodyStatus> getStatus();
+  NetworkResult<body.BodyStatus> getStatus();
 
   NetworkResult<PhysicalInfoData> physicalInfo();
 
@@ -156,13 +157,21 @@ abstract class Repository {
 
   NetworkResult setCondition(ConditionRequestData requestData);
 
+  NetworkResult setUserReservePackage(ConditionRequestData requestData);
+
   NetworkResult<PackageItem> getPackagePayment();
+
+  NetworkResult<PackageItem> getReservePackageUser();
 
   NetworkResult<Price?> checkCoupon(Price price);
 
   NetworkResult<Payment> setPaymentType(Payment payment);
 
+  NetworkResult<Payment> setPaymentTypeReservePackage(Payment payment);
+
   ImperativeNetworkResult nextStep();
+
+  NetworkResult<LatestInvoiceData> bankAccountActiveCard();
 
   NetworkResult<LatestInvoiceData> latestInvoice();
 
@@ -235,6 +244,10 @@ abstract class Repository {
   NetworkResult<List<ArticleVideo>> getArticles(TimeRequest articleVideo);
 
   NetworkResult<TempTicket> getDailyMessage(int id);
+
+  NetworkResult<TargetWeight> targetWeight();
+
+  NetworkResult<ListUserSubscriptionData> getUserSubscription();
 }
 
 class _RepositoryImpl extends Repository {
@@ -242,9 +255,9 @@ class _RepositoryImpl extends Repository {
   late RestClient _apiClient;
   late MemoryApp _cache;
 
-  static const receiveTimeout = 5 * 60 * 1000;
-  static const connectTimeout = 60 * 1000;
-  static const sendTimeout = 5 * 60 * 1000;
+  static const receiveTimeout = 3 * 60 * 1000;
+  static const connectTimeout = 15 * 1000;
+  static const sendTimeout = 3 * 60 * 1000;
 
   _RepositoryImpl() {
     _dio = Dio();
@@ -545,7 +558,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<BodyStatus> getStatus() {
+  NetworkResult<body.BodyStatus> getStatus() {
     var response = _apiClient.getStatus();
     return response;
   }
@@ -611,11 +624,14 @@ class _RepositoryImpl extends Repository {
           sicknessItem.children?.forEach((element) {
             debugPrint("${element.toJson()}");
           });
-
-          selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
+          Sickness sickness=Sickness();
+          sickness.id=sicknessItem.children!.singleWhere((child) => child.isSelected!).id;
+          selectedItems.add(sickness);
         } else {
-          selectedItems.add(sicknessItem);
-          debugPrint("${sicknessItem.toJson()}");
+          Sickness sickness=Sickness();
+          sickness.id=sicknessItem.id;
+          selectedItems.add(sickness);
+          debugPrint("${sickness.toJson()}");
         }
       }
     });
@@ -661,8 +677,37 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
+  NetworkResult setUserReservePackage(ConditionRequestData requestData) {
+    Map<String, dynamic> body = {
+      if (requestData.packageId != null) 'package_id': requestData.packageId,
+      if (requestData.reservePackageId != null) 'reserve_package_id': requestData.reservePackageId,
+      if (requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
+      if (requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
+      if (requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
+      if (requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
+      if (requestData.isPreparedMenu != null) 'is_prepared_menu': requestData.isPreparedMenu,
+      if (requestData.menuId != null) 'menu_id': requestData.menuId,
+    };
+    debugPrint('bloc condition2 $body');
+    var response;
+    try {
+      response = _apiClient.setUserReservePackage(body);
+      debugPrint('condition ${response.toString()}');
+    } catch (e) {
+      debugPrint('condition error ${e}');
+    }
+    return response;
+  }
+
+  @override
   NetworkResult<PackageItem> getPackagePayment() {
     var response = _apiClient.getPackageUser();
+    return response;
+  }
+
+  @override
+  NetworkResult<PackageItem> getReservePackageUser() {
+    var response = _apiClient.getReservePackageUser();
     return response;
   }
 
@@ -679,8 +724,21 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
+  NetworkResult<Payment> setPaymentTypeReservePackage(Payment payment) {
+    var response = _apiClient.selectPaymentReservePackage(payment);
+    return response;
+  }
+
+  @override
   ImperativeNetworkResult nextStep() {
     var response = _apiClient.nextStep();
+    return response;
+  }
+
+  @override
+  NetworkResult<LatestInvoiceData> bankAccountActiveCard() {
+    var response = _apiClient.bankAccountActiveCard();
+    debugPrint('advice repo ${response}');
     return response;
   }
 
@@ -922,6 +980,18 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<TempTicket> getDailyMessage(int id) {
     var response = _apiClient.getDailyMessage(id);
+    return response;
+  }
+
+  @override
+  NetworkResult<TargetWeight> targetWeight() {
+    var response = _apiClient.targetWeight();
+    return response;
+  }
+
+  @override
+  NetworkResult<ListUserSubscriptionData> getUserSubscription() {
+    var response = _apiClient.getUserSubscription();
     return response;
   }
 }

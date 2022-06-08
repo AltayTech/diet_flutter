@@ -85,9 +85,26 @@ abstract class DateTimeUtils {
   }
 
   static String timerFormat(int time){
-    int min=(time/60).toInt();
+    int min=time~/60;
     int second=time%60;
     return '$min:$second';
+  }
+
+  static String formatTodayDate() {
+    Jalali jalali = Jalali.fromDateTime(DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10)));
+    final f = jalali.formatter;
+    return '${f.dd} ${f.mN} ${f.yyyy}';
+  }
+
+  static String formatCustomDate(String date) {
+    Jalali jalali = Jalali.fromDateTime(DateTime.parse(date));
+    final f = jalali.formatter;
+    return '${f.dd} ${f.mN} ${f.yyyy}';
+  }
+
+  static String jalaliToGregorian(String date) {
+    Jalali jalali = Jalali.fromDateTime(DateTime.parse(date));
+    return DateTime.parse(jalali.toDateTime().toString().substring(0, 10)).toString().substring(0, 10);
   }
 }
 

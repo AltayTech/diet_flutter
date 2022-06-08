@@ -4,7 +4,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'activity_level.dart';
 import 'diet_goal.dart';
 import 'diet_history.dart';
-import 'regime_type.dart';
 part 'overview.g.dart';
 
 @JsonSerializable(createToJson: false)

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/themes/sizes.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 // import 'package:behandam/utils/image.dart';
 // import 'package:behandam/widgets/sized_box/space.dart';
 

@@ -26,9 +26,11 @@ import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
+import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -45,7 +47,6 @@ import '../data/entity/auth/reset.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/daily_message.dart';
 import '../data/entity/payment/payment.dart';
 part 'api.g.dart';
 
@@ -93,6 +94,9 @@ abstract class RestClient {
 
   @PATCH("/condition")
   NetworkResult<dynamic> setCondition(@Body() Map<String, dynamic> requestData);
+
+  @PATCH("/user/reserve-package")
+  NetworkResult<dynamic> setUserReservePackage(@Body() Map<String, dynamic> requestData);
 
   @PATCH("/physical-info")
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
@@ -210,14 +214,23 @@ abstract class RestClient {
   @GET("/user/package")
   NetworkResult<PackageItem> getPackageUser();
 
+  @GET("/user/reserve-package")
+  NetworkResult<PackageItem> getReservePackageUser();
+
   @POST("/check-coupon")
   NetworkResult<Price?> checkCoupon(@Body() Price price);
 
   @POST("/payment")
   NetworkResult<Payment> selectPayment(@Body() Payment payment);
 
+  @POST("/user/reserve-package")
+  NetworkResult<Payment> selectPaymentReservePackage(@Body() Payment payment);
+
   @GET("/next-step")
   ImperativeNetworkResult nextStep();
+
+  @GET("/bank-account/active-card")
+  NetworkResult<LatestInvoiceData> bankAccountActiveCard();
 
   @GET("/latest-invoice")
   NetworkResult<LatestInvoiceData> latestInvoice();
@@ -233,7 +246,6 @@ abstract class RestClient {
 
   @GET("/psychology/latest-invoice")
   NetworkResult<LatestInvoiceData> getInvoice();
-
 
   @GET("/activity-level")
   NetworkResult<ActivityLevelData> activityLevel();
@@ -328,5 +340,11 @@ abstract class RestClient {
 
   @GET("/template/{id}?need-log=1")
   NetworkResult<TempTicket> getDailyMessage(@Path('id') int id);
+
+  @GET("/target-weight")
+  NetworkResult<TargetWeight> targetWeight();
+
+  @GET("/user/subscription/history")
+  NetworkResult<ListUserSubscriptionData> getUserSubscription();
 }
 

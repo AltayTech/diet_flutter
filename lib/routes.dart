@@ -9,7 +9,7 @@ abstract class Routes {
   static const register = '/auth/register';
   static const passVerify = '/auth/pass/verify';
   static const authVerify = '/auth/verify';
-  static const resetCode = '/resetCode';
+  static const resetCode = '/profile/password';
   static const resetPass = '/auth/pass/reset';
   static const regimeType = '/diet/type';
   static const helpType = '/help';
@@ -74,6 +74,7 @@ abstract class Routes {
   static const shopHome = '/shop';
   static const termsApp = '/terms';
   static const targetWeight = '/list/weight/target';
+  static const listPregBloc = '/list/preg/bloc';
 
   // static const renewWeightEnter = '/renew/weight';
   static const refund = '/refund';
@@ -82,7 +83,16 @@ abstract class Routes {
   static const shopProduct = '/shop/product';
   static const shopBill = '/shop/payment/bill';
   static const shopPaymentOnlineSuccess = '/shop/payment/online/success';
+  static const shopPaymentOnlineFail = '/shop/payment/online/fail';
   static const dailyMessage = '/dailyMessage';
+  static const privacyApp = '/privacy-policy';
+  static const selectPackageSubscription = '/subscription';
+  static const billSubscription = '/subscription/payment/bill';
+  static const billSubscriptionHistory = '/subscription/history';
+  static const cardToCardSubscription = '/subscription/payment/card';
+  static const subscriptionPaymentOnlineSuccess = '/subscription/payment/online/success';
+  static const subscriptionPaymentOnlineFail = '/subscription/payment/online/fail';
+  static const subscriptionPaymentCardWait = '/subscription/payment/card/wait';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

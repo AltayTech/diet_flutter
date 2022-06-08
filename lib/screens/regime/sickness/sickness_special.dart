@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
 import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -10,10 +11,8 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/bottom_triangle.dart';
 import 'package:behandam/widget/sickness_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SicknessSpecialScreen extends StatefulWidget {
@@ -38,6 +37,7 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
 
   void listenBloc() {
     sicknessBloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
     sicknessBloc.navigateTo.listen((event) {
@@ -82,11 +82,8 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
                               }),
                             Space(height: 4.h),
                             SubmitButton(
-                              onTap: () {
-                                DialogUtils.showDialogProgress(context: context);
-                                sicknessBloc.sendSicknessSpecial();
-                              },
-                              label:intl.confirmContinue,
+                              onTap: sendRequest,
+                              label: intl.confirmContinue,
                             ),
                             Space(height: 2.h),
                           ],
@@ -129,8 +126,9 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
           } else {
             DialogUtils.showDialogPage(
                 context: context,
-                child:Center(
-              child: Container(child: SicknessDialog(
+                child: Center(
+                    child: Container(
+                        child: SicknessDialog(
                   items: null,
                   itemClick: this,
                   sicknessType: SicknessType.SPECIAL,
@@ -284,12 +282,13 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
                     } else {
                       DialogUtils.showDialogPage(
                           context: context,
-                          child:Center(
-                        child: Container(child: SicknessDialog(
+                          child: Center(
+                              child: Container(
+                                  child: SicknessDialog(
                             sicknessSpecial: sickness,
                             itemClick: this,
                             sicknessType: SicknessType.SPECIAL,
-                      ))));
+                          ))));
                     }
                   }
                 }),
@@ -320,24 +319,21 @@ class _SicknessSpecialScreenState extends ResourcefulState<SicknessSpecialScreen
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void sendRequest() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    sicknessBloc.sendSicknessSpecial();
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    sicknessBloc.getSicknessSpecial();
   }
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
+
   @override
   click() {
     setState(() {});

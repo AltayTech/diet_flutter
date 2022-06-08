@@ -5,13 +5,12 @@ import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
-import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -41,12 +40,13 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     return StreamBuilder(
         stream: bloc.foodList,
         builder: (_, AsyncSnapshot<FoodListData?> snapshot) {
-          if (snapshot.error is NoResultFoundError) {
+          if (snapshot.error is NoResultFoundError ) {
             return SearchNoResult(intl.foodNotFoundMessage);
           }
           if (!snapshot.hasData || snapshot.hasError) {
             return EmptyBox();
           }
+
           return Column(
             children: [
               ...snapshot.requireData!.meals!.map((meal) => mealItem(meal)).toList(),
@@ -170,7 +170,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
       builder: (_, AsyncSnapshot<WeekDay> snapshot) {
-        if (snapshot.hasData && isToday(snapshot.requireData))
+        if (snapshot.hasData && (isToday(snapshot.requireData) || isAfterToday(snapshot.requireData)) )
           return GestureDetector(
             onTap: () => manipulateFoodDialog(meal),
             child: Container(
@@ -200,8 +200,17 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
             weekDay.gregorianDate.toString().substring(0, 10);
   }
 
+  bool isAfterToday(WeekDay day) {
+    return day.gregorianDate.isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));
+  }
+  
   void manipulateFoodDialog(Meals meal) {
-    DialogUtils.showDialogPage(
+    VxNavigator.of(context)
+        .waitAndPush(Uri(path: Routes.listFood), params: meal)
+        .then((value) {
+      bloc.onMealFood(value, meal.id);
+    });
+   /* DialogUtils.showDialogPage(
       context: context,
       isDismissible: true,
       child: Center(
@@ -268,7 +277,11 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                   onTap: () {
                     Navigator.of(context).pop();
                     VxNavigator.of(context)
-                        .push(Uri(path: Routes.replaceFood), params: {'meal': meal, 'bloc': bloc});
+                        .waitAndPush(Uri(path: Routes.listFood), params: meal)
+                        .then((value) {
+                      bloc.onMealFood(value, meal.id);
+
+                    });
                   },
                   label: intl.manipulateFood,
                 ),
@@ -286,7 +299,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           ),
         ),
       ),
-    );
+    );*/
   }
 
   Widget close() {
@@ -430,26 +443,28 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           decoration: AppDecorations.boxLarge.copyWith(
             color: AppColors.onPrimary,
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                close(),
-                Text(
-                  intl.recipe(meal.food!.title ?? ''),
-                  style: typography.bodyText2,
-                  textAlign: TextAlign.center,
-                ),
-                Space(height: 2.h),
-                Text(
-                  meal.food!.description ?? '',
-                  style: typography.caption,
-                  textAlign: TextAlign.start,
-                  softWrap: true,
-                ),
-                Space(height: 2.h),
-              ],
+          child: TouchMouseScrollable(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  close(),
+                  Text(
+                    intl.recipe(meal.food!.title ?? ''),
+                    style: typography.bodyText2,
+                    textAlign: TextAlign.center,
+                  ),
+                  Space(height: 2.h),
+                  Text(
+                    meal.food!.description ?? '',
+                    style: typography.caption,
+                    textAlign: TextAlign.start,
+                    softWrap: true,
+                  ),
+                  Space(height: 2.h),
+                ],
+              ),
             ),
           ),
         ),

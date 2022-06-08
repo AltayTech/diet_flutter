@@ -46,7 +46,8 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
         ),
         Positioned(
           top: 5.5.h,
-          right: 21.w,
+          right: context.isRtl ? 21.w : null,
+          left: context.isRtl ? null : 21.w,
           child: Text(
             '${profileBloc.userInfo.fullName}',
             textAlign: TextAlign.center,
@@ -59,7 +60,8 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
         ),
         Positioned(
           top: 3.h,
-          right: 4.5.w,
+          right: context.isRtl ? 4.5.w : null,
+          left: context.isRtl ? null : 4.5.w,
           child: Center(
             child: Container(
               width: 15.w,
@@ -84,7 +86,8 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
         ),
         Positioned(
           top: 3.h,
-          right: 4.5.w,
+          right: context.isRtl ? 4.5.w : null,
+          left: context.isRtl ? null : 4.5.w,
           child: Center(
             child: Container(
               width: 15.w,
@@ -122,7 +125,8 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
         ),
         Positioned(
             top: 5.h,
-            left: 4.h,
+            left: context.isRtl ? 4.h : null,
+            right: context.isRtl ? null : 4.h,
             child: GestureDetector(
                 onTap: () {
                   VxNavigator.of(context).push(Uri.parse(Routes.inbox));

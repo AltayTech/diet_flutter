@@ -7,11 +7,10 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/extensions/bool.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class FastPatternPage extends StatefulWidget {
@@ -48,20 +47,22 @@ class _FastPatternPageState extends ResourcefulState<FastPatternPage> {
 
   Widget body(){
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          child: StreamBuilder(
-            stream: bloc.loadingContent,
-            builder: (_, AsyncSnapshot<bool> snapshot){
-              if (snapshot.error is NoResultFoundError) {
-                return SearchNoResult(intl.foodNotFoundMessage);
-              }
-              if(snapshot.hasData){
-                return content();
-              }
-              return Center(child: Progress());
-            },
+      child: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            child: StreamBuilder(
+              stream: bloc.loadingContent,
+              builder: (_, AsyncSnapshot<bool> snapshot){
+                if (snapshot.error is NoResultFoundError) {
+                  return SearchNoResult(intl.foodNotFoundMessage);
+                }
+                if(snapshot.hasData){
+                  return content();
+                }
+                return Center(child: Progress());
+              },
+            ),
           ),
         ),
       ),

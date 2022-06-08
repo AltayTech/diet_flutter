@@ -1,26 +1,20 @@
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/utility/modal.dart';
+import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
-import 'package:behandam/screens/authentication/auth.dart';
-import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import 'package:behandam/screens/utility/arc.dart';
-
 import '../../routes.dart';
-
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -53,18 +47,23 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
-        if(event.toString().contains(Routes.auth.substring(1)))
-          VxNavigator.of(context).push(Uri.parse('/$event'), params: {"mobile": args['mobile'], 'countryId': args['countryId']});
-        else VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
+        if (event.toString().contains(Routes.auth.substring(1)))
+          VxNavigator.of(context).push(Uri.parse('/$event'), params: {
+            "mobile": args['mobile'],
+            'countryId': args['countryId']
+          });
+        else
+          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
     });
     authBloc.showServerError.listen((event) {
-      VxNavigator.of(context).pop();
+      Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
   }
 
   bool isInit = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -81,34 +80,27 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: AppColors.arcColor,
+          elevation: 0.0,
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Color(0xffb4babb),
+              onPressed: () => VxNavigator.of(context).pop()),
+        ),
         body: StreamBuilder(
             stream: authBloc.waiting,
             builder: (context, snapshot) {
               if (snapshot.data == false && !check) {
-                return NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverAppBar(
-                        backgroundColor: AppColors.arcColor,
-                        elevation: 0.0,
-                        leading: IconButton(
-                            icon: Icon(Icons.arrow_back_ios),
-                            color: Color(0xffb4babb),
-                            onPressed: () => VxNavigator.of(context).pop()),
-                        // floating: true,
-                        forceElevated: innerBoxIsScrolled,
-                      ),
-                    ];
-                  },
-                  body: SingleChildScrollView(
-                    child: Column(children: [
-                      header(),
-                      SizedBox(height: 80.0),
-                      content(),
-                    ]),
-                  ),
-                );
+                return TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                  child: Column(children: [
+                    AuthHeader(
+                      title: intl.login,
+                    ),
+                    content(),
+                  ]),
+                ));
               } else {
                 check = false;
                 return Center(
@@ -117,41 +109,6 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               }
             }),
       ),
-    );
-  }
-
-  Widget header() {
-    return Stack(
-      // alignment: Alignment.center,
-      // fit: StackFit.loose,
-      overflow: Overflow.visible,
-      children: [
-        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
-        Positioned(
-          top: 0.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-              child: Text(intl.login,
-                  style: TextStyle(
-                      color: AppColors.penColor,
-                      fontSize: 22.0,
-                      fontFamily: 'Iransans-Bold',
-                      fontWeight: FontWeight.w700))),
-        ),
-        Positioned(
-          top: 60.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-            child: ImageUtils.fromLocal(
-              'assets/images/registry/profile_logo.svg',
-              width: 120.0,
-              height: 120.0,
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -171,24 +128,24 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 textDirection: TextDirection.ltr,
                 style: TextStyle(color: AppColors.penColor),
               )),
-          SizedBox(height: 2.h),
+          Space(height: 2.h),
           Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
                 color: AppColors.arcColor),
             child: TextField(
-              obscureText: !_obscureText,
               controller: _text,
               textDirection: TextDirection.ltr,
+              keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.penColor)),
+                    borderSide: BorderSide(color: AppColors.penColor),
+                    borderRadius: BorderRadius.circular(15.0)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.penColor),
-                    borderRadius: BorderRadius.circular(15.0)),
+                // enabledBorder: OutlineInputBorder(
+                //   borderSide: BorderSide(color: Colors.grey)),
                 labelText: intl.password,
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -201,28 +158,22 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                     });
                   },
                 ),
+                // errorText: _validate ? intl.fillAllField : null,
                 labelStyle:
-                    TextStyle(color: AppColors.penColor, fontSize: 18.0),
-                // errorText: _validate ? intl.fillAllField : null
+                    TextStyle(color: AppColors.penColor, fontSize: 12.sp),
               ),
+              obscureText: !_obscureText,
+              onSubmitted: (String) {
+                clickButton();
+              },
               onChanged: (txt) {
                 _password = txt;
               },
             ),
           ),
-          SizedBox(height: 10.h),
-          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), () {
-            DialogUtils.showDialogProgress(context: context);
-            if (_password.length > 0) {
-              User user = User();
-              user.mobile = args['mobile'];
-              user.password = _password;
-              authBloc.passwordMethod(user);
-            }
-            else
-              Navigator.pop(context);
-          }),
-          SizedBox(height: 10.h),
+          SizedBox(height: 8.h),
+          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), clickButton),
+          SizedBox(height: 8.h),
           InkWell(
             child: Text(
               intl.forgetPassword,
@@ -251,7 +202,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(intl.changePassword,style: typography.bodyText2),
+            Text(intl.changePassword, style: typography.bodyText2),
             Container(
               width: 70.w,
               child: RichText(
@@ -277,12 +228,14 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(Size(8.w, 5.h)),
                     backgroundColor: MaterialStateProperty.all(Colors.white),
-                    foregroundColor: MaterialStateProperty.all(AppColors.penColor),
-                    shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+                    foregroundColor:
+                        MaterialStateProperty.all(AppColors.penColor),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0))),
                   ),
-                  child:
-                  Text(intl.no, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
+                  child: Text(intl.no,
+                      style: TextStyle(
+                          color: AppColors.penColor, fontSize: 16.sp)),
                 ),
                 ElevatedButton(
                     style: ButtonStyle(
@@ -298,6 +251,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       DialogUtils.showDialogProgress(context: context);
                       MemoryApp.forgetPass = true;
                       authBloc.sendCodeMethod(args['mobile']);
+                      authBloc.setTrySendCode = true;
                       // context.vxNav.push(Uri.parse(Routes.resetCode), params: args);
                     })
               ],
@@ -308,22 +262,26 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void clickButton() {
+    if (_password.length > 0) {
+      User user = User();
+      user.mobile = args['mobile'];
+      user.password = _password;
+      DialogUtils.showDialogProgress(context: context);
+      authBloc.passwordMethod(user);
+
+      authBloc.setTrySendCode = false;
+    } else
+      Utils.getSnackbarMessage(context, intl.pleaseEnterPassword);
   }
 
   @override
   void onRetryAfterNoInternet() {
     // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    if (authBloc.isTrySendCode) {
+      authBloc.sendCodeMethod(args['mobile']);
+    } else {
+      clickButton();
+    }
   }
 }

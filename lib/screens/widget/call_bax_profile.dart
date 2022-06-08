@@ -3,7 +3,6 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CallBoxProfile extends StatefulWidget {
@@ -124,7 +123,8 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
         ),
         Positioned(
           bottom: 16.0,
-          left: 16,
+          left:context.isRtl? 16:null,
+          right: context.isRtl?null:16,
           child: Center(
             child: InkWell(
               child: Container(
@@ -140,7 +140,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                       color: Color.fromARGB(255, 243, 243, 243),
                     ),
                     child: Text(
-                      'ویرایش',
+                      intl.edit,
                       textAlign: TextAlign.right,
                       textDirection: TextDirection.rtl,
                       style: TextStyle(

@@ -1,5 +1,6 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
 import 'package:behandam/screens/food_list/provider.dart';
@@ -13,7 +14,6 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -41,6 +41,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
       context.vxNav.push(Uri.parse('/$event'));
     });
     bloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
   }
@@ -69,7 +70,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
       stream: bloc.loadingContent,
       builder: (_, AsyncSnapshot<bool> snapshot) {
         return Container(
-          height: MediaQuery.of(context).size.height,
+          height: 100.h,
           child: Column(
             children: [
               Expanded(
@@ -83,7 +84,6 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
                             showToolbar: false,
                             isClickable: false,
                           ),
-                          //appbarStackBox(),
                         ],
                       ),
                       Space(height: 7.h),
@@ -191,9 +191,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
                     SubmitButton(
                       label: isToday(snapshot.requireData!) ? intl.showAdvices : intl.goToToday,
                       size: Size(40.w, 5.h),
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                   ],
                 );

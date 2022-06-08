@@ -11,14 +11,13 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_video.dart';
-import 'package:behandam/widget/web_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:expandable/expandable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -68,29 +67,31 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                   appBar: Toolbar(
                     titleBar: productBloc.toolbar ?? intl.shop,
                   ),
-                  body: SingleChildScrollView(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                    Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: StreamBuilder(
-                            stream: productBloc.product,
-                            builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
-                              if (snapshot.hasData)
-                                return Container(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      firstSection(
-                                        snapshot.data!,
-                                      ),
-                                      secondSection(snapshot.data!),
-                                    ],
-                                  ),
-                                );
-                              else
-                                return Progress();
-                            }))
-                  ])));
+                  body: TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                      Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: StreamBuilder(
+                              stream: productBloc.product,
+                              builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
+                                if (snapshot.hasData)
+                                  return Container(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        firstSection(
+                                          snapshot.data!,
+                                        ),
+                                        secondSection(snapshot.data!),
+                                      ],
+                                    ),
+                                  );
+                                else
+                                  return Progress();
+                              }))
+                    ])),
+                  ));
             }));
   }
 
@@ -183,220 +184,223 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
   }
 
   Widget secondSection(ShopProduct shopProduct) {
-    return Card(
-      child: StreamBuilder(builder: (context, snapshot) {
-        return Padding(
-          padding: EdgeInsets.all(3.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ExpandableNotifier(
-                child: ExpandablePanel(
-                  collapsed: Html(
-                    data: shopProduct.shortDescription,
-                    style: {
-                      'p': Style(fontSize: FontSize.large, fontWeight: FontWeight.bold),
-                      'body': Style(fontSize: FontSize.large, fontWeight: FontWeight.w500)
-                    },
+    return Container(
+     constraints: BoxConstraints(minHeight: (productBloc.lessons!.length * 12.h)),
+      child: Card(
+        child: StreamBuilder(builder: (context, snapshot) {
+          return Padding(
+            padding: EdgeInsets.all(3.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ExpandableNotifier(
+                  child: ExpandablePanel(
+                    collapsed: Html(
+                      data: shopProduct.shortDescription,
+                      style: {
+                        'p': Style(fontSize: FontSize.large, fontWeight: FontWeight.bold),
+                        'body': Style(fontSize: FontSize.large, fontWeight: FontWeight.w500)
+                      },
+                    ),
+                    expanded: Html(
+                      data: '<body>${shopProduct.longDescription}</body>',
+                      style: {
+                        'p': Style(fontSize: FontSize.large, fontWeight: FontWeight.bold),
+                        'body': Style(fontSize: FontSize.large, fontWeight: FontWeight.w500)
+                      },
+                    ),
+                    controller: _controller,
                   ),
-                  expanded: Html(
-                    data: '<body>${shopProduct.longDescription}</body>',
-                    style: {
-                      'p': Style(fontSize: FontSize.large, fontWeight: FontWeight.bold),
-                      'body': Style(fontSize: FontSize.large, fontWeight: FontWeight.w500)
-                    },
+                  initialExpanded: true,
+                ),
+                GestureDetector(
+                  child: Text(
+                    _controller.expanded ? intl.close : intl.viewAll,
+                    style: Theme.of(context).textTheme.overline!.copyWith(color: AppColors.primary),
+                    textAlign: TextAlign.center,
                   ),
-                  controller: _controller,
+                  onTap: () {
+                    setState(() {
+                      _controller.toggle();
+                    });
+                  },
                 ),
-                initialExpanded: true,
-              ),
-              GestureDetector(
-                child: Text(
-                  _controller.expanded ? intl.close : intl.viewAll,
-                  style: Theme.of(context).textTheme.overline!.copyWith(color: AppColors.primary),
-                  textAlign: TextAlign.center,
-                ),
-                onTap: () {
-                  setState(() {
-                    _controller.toggle();
-                  });
-                },
-              ),
-              SizedBox(height: 2.h),
-              ...productBloc.lessons!
-                  .asMap()
-                  .map((index, value) => MapEntry(
-                      index,
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        color: AppColors.grey,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            4.w,
-                            3.w,
-                            4.w,
-                            3.w,
+                SizedBox(height: 2.h),
+                ...productBloc.lessons!
+                    .asMap()
+                    .map((index, value) => MapEntry(
+                        index,
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        value.lessonName!,
-                                        style: Theme.of(context).textTheme.subtitle2,
-                                      ),
-                                      Row(
-                                        textDirection: context.textDirectionOfLocale,
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          ImageUtils.fromLocal('assets/images/shop/time.svg',
-                                              color: Colors.black),
-                                          Space(
-                                            width: 1.w,
-                                          ),
-                                          Text(
-                                            '${value.minutes} ',
-                                            style: Theme.of(context).textTheme.overline,
-                                          ),
-                                          Space(
-                                            width: 1.w,
-                                          ),
-                                          Text(
-                                            intl.min,
-                                            style: Theme.of(context).textTheme.overline,
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  )),
-                              StreamBuilder(
-                                builder: (context, AsyncSnapshot<TypeMediaShop> snapshot) {
-                                  debugPrint('snapshot.data!= > ${value.toJson()}');
-                                  switch (value.typeMediaShop) {
-                                    case TypeMediaShop.lock:
-                                      return InkWell(
-                                        onTap: () async {},
-                                        child: Container(
-                                          width: 10.w,
-                                          height: 5.h,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.primary),
-                                              borderRadius: BorderRadius.circular(15.0)),
-                                          child: Center(
-                                            child: ImageUtils.fromLocal(
-                                                Utils.productIcon(value.typeMediaShop),
-                                                width: 5.w,
-                                                height: 3.h,
-                                                color: AppColors.primary),
-                                          ),
+                          color: AppColors.grey,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              4.w,
+                              3.w,
+                              4.w,
+                              3.w,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                    flex: 2,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          value.lessonName!,
+                                          style: Theme.of(context).textTheme.subtitle2,
                                         ),
-                                      );
-                                    case TypeMediaShop.play:
-                                      return InkWell(
-                                        onTap: () async {
-                                          dialogVideo(value);
-                                        },
-                                        child: Container(
-                                          width: 10.w,
-                                          height: 5.h,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.primary),
-                                              borderRadius: BorderRadius.circular(15.0)),
-                                          child: Center(
-                                            child: ImageUtils.fromLocal(
-                                                Utils.productIcon(TypeMediaShop.play),
-                                                width: 5.w,
-                                                height: 3.h,
-                                                color: AppColors.primary),
+                                        Row(
+                                          textDirection: context.textDirectionOfLocale,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            ImageUtils.fromLocal('assets/images/shop/time.svg',
+                                                color: Colors.black),
+                                            Space(
+                                              width: 1.w,
+                                            ),
+                                            Text(
+                                              '${value.minutes} ',
+                                              style: Theme.of(context).textTheme.overline,
+                                            ),
+                                            Space(
+                                              width: 1.w,
+                                            ),
+                                            Text(
+                                              intl.min,
+                                              style: Theme.of(context).textTheme.overline,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                                StreamBuilder(
+                                  builder: (context, AsyncSnapshot<TypeMediaShop> snapshot) {
+                                    debugPrint('snapshot.data!= > ${value.toJson()}');
+                                    switch (value.typeMediaShop) {
+                                      case TypeMediaShop.lock:
+                                        return InkWell(
+                                          onTap: () async {},
+                                          child: Container(
+                                            width: 10.w,
+                                            height: 5.h,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(color: AppColors.primary),
+                                                borderRadius: BorderRadius.circular(15.0)),
+                                            child: Center(
+                                              child: ImageUtils.fromLocal(
+                                                  Utils.productIcon(value.typeMediaShop),
+                                                  width: 5.w,
+                                                  height: 3.h,
+                                                  color: AppColors.primary),
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    case TypeMediaShop.downloadAndPlay:
-                                      return Expanded(
-                                          flex: 1,
-                                          child: Row(
-                                            textDirection: context.textDirectionOfLocale,
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
-                                                  dialogVideo(value);
-                                                },
-                                                child: Container(
-                                                  width: 10.w,
-                                                  height: 5.h,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(color: AppColors.primary),
-                                                      borderRadius: BorderRadius.circular(15.0)),
-                                                  child: Center(
-                                                    child: ImageUtils.fromLocal(
-                                                        Utils.productIcon(TypeMediaShop.play),
-                                                        width: 5.w,
-                                                        height: 3.h,
-                                                        color: AppColors.primary),
+                                        );
+                                      case TypeMediaShop.play:
+                                        return InkWell(
+                                          onTap: () async {
+                                            dialogVideo(value);
+                                          },
+                                          child: Container(
+                                            width: 10.w,
+                                            height: 5.h,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(color: AppColors.primary),
+                                                borderRadius: BorderRadius.circular(15.0)),
+                                            child: Center(
+                                              child: ImageUtils.fromLocal(
+                                                  Utils.productIcon(TypeMediaShop.play),
+                                                  width: 5.w,
+                                                  height: 3.h,
+                                                  color: AppColors.primary),
+                                            ),
+                                          ),
+                                        );
+                                      case TypeMediaShop.downloadAndPlay:
+                                        return Expanded(
+                                            flex: 1,
+                                            child: Row(
+                                              textDirection: context.textDirectionOfLocale,
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () async {
+                                                    dialogVideo(value);
+                                                  },
+                                                  child: Container(
+                                                    width: 10.w,
+                                                    height: 5.h,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(color: AppColors.primary),
+                                                        borderRadius: BorderRadius.circular(15.0)),
+                                                    child: Center(
+                                                      child: ImageUtils.fromLocal(
+                                                          Utils.productIcon(TypeMediaShop.play),
+                                                          width: 5.w,
+                                                          height: 3.h,
+                                                          color: AppColors.primary),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Space(
-                                                width: 2.w,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  productBloc.downloadFile(value);
-                                                },
-                                                child: Container(
-                                                  width: 10.w,
-                                                  height: 5.h,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(color: AppColors.primary),
-                                                      borderRadius: BorderRadius.circular(15.0)),
-                                                  child: Center(
-                                                    child: ImageUtils.fromLocal(
-                                                        Utils.productIcon(value.typeMediaShop),
-                                                        width: 5.w,
-                                                        height: 3.h,
-                                                        color: AppColors.primary),
-                                                  ),
+                                                Space(
+                                                  width: 2.w,
                                                 ),
-                                              )
-                                            ],
-                                          ));
+                                                InkWell(
+                                                  onTap: () {
+                                                    productBloc.downloadFile(value);
+                                                  },
+                                                  child: Container(
+                                                    width: 10.w,
+                                                    height: 5.h,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(color: AppColors.primary),
+                                                        borderRadius: BorderRadius.circular(15.0)),
+                                                    child: Center(
+                                                      child: ImageUtils.fromLocal(
+                                                          Utils.productIcon(value.typeMediaShop),
+                                                          width: 5.w,
+                                                          height: 3.h,
+                                                          color: AppColors.primary),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ));
 
-                                    default:
-                                      return Progress(
-                                        size: 3.w,
-                                      );
-                                  }
-                                  ;
-                                },
-                                stream: productBloc.typeMediaShop,
-                              )
-                            ],
+                                      default:
+                                        return Progress(
+                                          size: 3.w,
+                                        );
+                                    }
+                                    ;
+                                  },
+                                  stream: productBloc.typeMediaShop,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        // Container(
-                        //   decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.circular(15.0),
-                        //       border: Border.all(color: AppColors.redBar)
-                        //   ),
-                        //   child: ImageUtils.fromLocal(
-                        //       'assets/images/shop/download.png'),
-                        // ),
-                      )))
-                  .values
-                  .toList(),
-            ],
-          ),
-        );
-      }),
+                          // Container(
+                          //   decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(15.0),
+                          //       border: Border.all(color: AppColors.redBar)
+                          //   ),
+                          //   child: ImageUtils.fromLocal(
+                          //       'assets/images/shop/download.png'),
+                          // ),
+                        )))
+                    .values
+                    .toList(),
+              ],
+            ),
+          );
+        }),
+      ),
     );
   }
 
@@ -457,10 +461,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 Space(height: 2.h),
                 AspectRatio(
                   aspectRatio: 16 / 9,
-                  child:  kIsWeb
-                      ? WebVideoElement(
-                      lessons.typeMediaShop == TypeMediaShop.play ? lessons.path! : lessons.video!)
-                      : CustomVideo(
+                  child:   CustomVideo(
                     url: lessons.typeMediaShop == TypeMediaShop.play ? lessons.path : lessons.video,
                     image: null,
                     isFile: lessons.typeMediaShop == TypeMediaShop.play ? true : null,
@@ -486,10 +487,6 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     super.dispose();
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
 
   @override
   void onRetryAfterNoInternet() {
@@ -498,11 +495,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    productBloc.getProduct(int.parse(args!));
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

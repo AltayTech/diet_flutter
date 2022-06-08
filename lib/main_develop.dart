@@ -11,9 +11,11 @@ Future<void> main() async {
       "baseUrlFile": "https://develop.behaminplus.ir/helia-service",
       "baseUrlFileShop": "https://develop.behaminplus.ir/shop-service",
       "urlTerms": "https://kermany.com/terms/",
+      "urlPrivacy": "https://debug.behaminplus.ir/#/article/3248",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
-      'isProduction': false
+      'isProduction': false,
+      'isCafeBazaar':false
     },
   );
   await entryPoint();

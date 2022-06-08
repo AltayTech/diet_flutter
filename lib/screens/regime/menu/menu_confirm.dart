@@ -1,14 +1,15 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/screens/regime/menu/item.dart';
+import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/screens/regime/menu/item.dart' as menuItem;
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../routes.dart';
@@ -23,32 +24,41 @@ class MenuConfirmPage extends StatefulWidget {
 
 class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
   late MenuSelectBloc bloc;
-  bool isInit=false;
+  late Menu listMenu;
+
+  bool isInit = false;
+
   @override
   void didChangeDependencies() {
-
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
-      bloc = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as MenuSelectBloc;
+
+      listMenu = ModalRoute.of(context)!.settings.arguments as Menu;
+
+      bloc = MenuSelectBloc();
+      bloc.menuSelected(listMenu);
+
+      initListener();
     }
   }
+
   @override
   void initState() {
     super.initState();
-    bloc = MenuSelectBloc();
-    initListener();
   }
 
   void initListener() {
     bloc.navigateTo.listen((event) {
+      MemoryApp.isShowDialog = false;
       if ('/$event' == Routes.listView)
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       else
         context.vxNav.push(Uri.parse('/$event'), params: bloc);
+    });
+
+    bloc.popDialog.listen((event) {
+      context.vxNav.pop();
     });
   }
 
@@ -58,22 +68,24 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
 
     return Scaffold(
       appBar: Toolbar(titleBar: intl.confirmMenuList),
-      body: SingleChildScrollView(
-        child: Card(
-          shape: AppShapes.rectangleMedium,
-          elevation: 1,
-          margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-            child: content(),
+      body: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: Card(
+            shape: AppShapes.rectangleMedium,
+            elevation: 1,
+            margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+              child: content(),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget content(){
+  Widget content() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -96,7 +108,7 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
     );
   }
 
-  Widget menu(){
+  Widget menu() {
     return StreamBuilder(
       stream: bloc.selectedMenu,
       builder: (_, AsyncSnapshot<Menu?> snapshot) {
@@ -111,7 +123,7 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
               child: Column(
                 children: [
                   Space(height: 2.h),
-                  MenuItem(
+                  menuItem.MenuItem(
                     menu: snapshot.requireData!,
                     onClick: () {},
                   ),
@@ -124,7 +136,7 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
     );
   }
 
-  Widget buttons(){
+  Widget buttons() {
     return Column(
       children: [
         Center(
@@ -157,18 +169,20 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void dispose() {
+    super.dispose();
+
+    bloc.dispose();
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.term();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
   }
 
   @override

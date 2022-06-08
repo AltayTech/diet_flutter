@@ -1,20 +1,14 @@
-import 'package:badges/badges.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
-import 'package:behandam/screens/widget/custom_curve.dart';
 import 'package:behandam/screens/widget/my_drop_down.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
-import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class UserBox extends StatefulWidget {
   UserBox();
@@ -79,7 +73,9 @@ class UserBoxState extends ResourcefulState<UserBox> {
               ctx: context,
               enable: true,
               action: TextInputAction.next,
-              formatters: [FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),],
+              formatters: [
+                FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
+              ],
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -93,7 +89,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               enable: true,
               ctx: context,
               action: TextInputAction.next,
-              formatters:[],
+              formatters: [],
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -102,9 +98,9 @@ class UserBoxState extends ResourcefulState<UserBox> {
               textInputType: TextInputType.multiline,
               validation: (val) {},
               onChanged: (val) {
-                if(userInfo!.address==null)
-                  userInfo!.address=Address();
-                userInfo!.address!.address = val;},
+                if (userInfo!.address == null) userInfo!.address = Address();
+                userInfo!.address!.address = val;
+              },
               value: userInfo!.address?.address,
               label: intl.address,
               maxLine: true,
@@ -147,15 +143,16 @@ class UserBoxState extends ResourcefulState<UserBox> {
               validation: (val) {},
               enable: true,
               onChanged: (val) {
-
-                  userInfo!.socialMedia![2].pivot!.link = val ?? '';},
+                userInfo!.socialMedia![2].pivot!.link = val ?? '';
+              },
               value: userInfo!.skype,
               label: intl.skype,
               maxLine: false,
               ctx: context,
               action: TextInputAction.next,
-              formatters:
-                  [FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),],
+              formatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
+              ],
               textDirection: context.textDirectionOfLocale),
           Space(height: 3.h),
           textInput(
@@ -175,11 +172,9 @@ class UserBoxState extends ResourcefulState<UserBox> {
               textDirection: context.textDirectionOfLocale,
               child: MyDropdown(
                 value: profileBloc.findCountryName(),
-                alignment: context.isRtl
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
+                alignment: context.isRtl ? Alignment.centerRight : Alignment.centerLeft,
                 hint: intl.country,
-                list: profileBloc.loginRegisterBloc!.countries,
+                list: MemoryApp.countries ?? [],
                 onChange: (dynamic val) => setState(() {
                   profileBloc.userInfo.countryId = val.id;
                   if (profileBloc.countryName != 'Iran') {
@@ -196,8 +191,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
                 textDirection: TextDirection.rtl,
                 child: StreamBuilder(
                   stream: profileBloc.cityProvinceModelStream,
-                  builder:
-                      (context, AsyncSnapshot<CityProvinceModel> snapshot) {
+                  builder: (context, AsyncSnapshot<CityProvinceModel> snapshot) {
                     if (snapshot.data != null) {
                       return MyDropdown(
                         value: profileBloc.findProvincesName(),
@@ -225,8 +219,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               child: StreamBuilder(
                 stream: profileBloc.cityProvinceModelStream,
                 builder: (context, AsyncSnapshot<CityProvinceModel> snapshot) {
-                  if (snapshot.data != null &&
-                      profileBloc.userInfo.address != null) {
+                  if (snapshot.data != null && profileBloc.userInfo.address != null) {
                     return MyDropdown(
                       value: profileBloc.findCityName() ?? '',
                       alignment: Alignment.centerRight,
@@ -263,6 +256,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

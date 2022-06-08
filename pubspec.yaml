@@ -15,11 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 3.5.5+355
+version: 3.6.0+360
 
 environment:
-  sdk: ">=2.15.1 <3.0.0"
-
+  sdk: ">=2.16.0 <3.0.0"
 
 dependencies:
   logifan:
@@ -28,73 +27,76 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^0.22.0
+  flutter_svg: ^1.0.3
   intl: ^0.17.0
-  rxdart: ^0.27.2
+  rxdart: ^0.27.3
   shared_preferences: ^2.0.12
   fluttertoast: ^8.0.8
-  retrofit: ^2.1.0
   logger: ^1.1.0
-  json_annotation: ^4.3.0
+  json_annotation: ^4.4.0
   sizer: ^2.0.15
   flutter_flavor: ^3.0.1
-  velocity_x: ^3.3.0
-  device_info_plus: ^3.1.0
-  package_info_plus: ^1.3.0
-  url_launcher: ^6.0.12
+  velocity_x: ^3.4.0
+  device_info_plus: ^3.2.2
+  package_info_plus: ^1.4.0
+  url_launcher: ^6.0.20
   flutter_spinkit: ^5.1.0
   badges: ^2.0.1
   rolling_switch: ^0.0.2
-  pin_code_fields: ^7.3.0
-  country_code_picker: ^2.0.2
-  country_currency_pickers: ^2.0.0
-  cached_network_image: ^3.1.0
-  dio: ^4.0.1
+  pin_code_fields: ^7.4.0
+  cached_network_image: ^3.2.0
+  dio: ^4.0.5
   persian_number_utility: ^1.1.0
   shamsi_date: ^1.0.0
-  file_picker: ^4.2.0
-  image_picker: ^0.8.4+4
-  webview_flutter: ^2.3.0
-  flutter_sound_lite: ^8.5.0
+  file_picker: ^4.5.1
+  image_picker: ^0.8.5
+  flutter_sound: ^9.2.13
   permission_handler: ^8.2.6
-  app_settings: 4.1.1
+  app_settings: ^4.1.6
   path_provider: ^2.0.2
   open_file: ^3.2.1
-  flutter_html: ^2.2.1
+  flutter_html: ^3.0.0-alpha.3
   flutter_image_compress: ^1.1.0
   image: ^3.0.2
   persian_datetime_picker: ^2.3.0
-  chewie: ^1.2.2
-  video_player: ^2.2.7
-  syncfusion_flutter_sliders: ^19.3.54
-  share_plus: ^3.0.4
-  syncfusion_flutter_charts: ^19.3.55
+  chewie: ^1.3.3
+  video_player: ^2.4.2
+  syncfusion_flutter_sliders: ^20.1.58
+  share_plus: ^4.0.3
+  syncfusion_flutter_charts: ^20.1.58+1
   flutter_custom_tabs: ^1.0.3
-  firebase_core: ^1.10.5
-  firebase_analytics: ^9.0.3
-  firebase_crashlytics: ^2.4.3
-  firebase_messaging: ^11.1.0
+  firebase_core: ^1.17.1
+  firebase_analytics: ^9.1.9
+  firebase_crashlytics: ^2.8.1
+  firebase_messaging: ^11.4.1
   external_app_launcher: ^2.0.2
-  awesome_notifications: 0.0.6+12
+  awesome_notifications: ^0.0.6+12
   android_intent: ^2.0.2
-  device_apps: ^2.1.1
+  device_apps: ^2.2.0
   filesize: ^2.0.1
   open_store: ^0.2.4
-  carousel_slider: ^4.0.0
+  carousel_slider: ^4.1.1
   sms_autofill: ^2.2.0
   expand_widget: ^2.1.0
   expandable: ^5.0.1
-  flutter_web_frame: ^0.0.2
+  flutter_web_frame: ^0.0.3
   universal_html: ^2.0.8
-  flutter_math_fork: ^0.4.2+2
+  touch_mouse_behavior: ^0.0.1
+  webviewx: ^0.2.1
+  dotted_border: ^2.0.0+2
+  event_bus: ^2.0.0
+  easy_mask: ^2.0.1
+
 
 dependency_overrides:
   provider: ^6.0.2
+  retrofit: ^3.0.1+1
+  webview_flutter: ^3.0.4
 
 dev_dependencies:
-  json_serializable: ^6.0.1
-  retrofit_generator: ^2.1.0+1
-  build_runner: ^2.1.4
+  json_serializable: ^6.1.5
+  retrofit_generator: ^4.0.1
+  build_runner: ^2.1.8
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.4
@@ -123,8 +125,9 @@ flutter:
     - assets/images/vitrin/
     - assets/images/foodlist/archive/
     - assets/images/foodlist/advice/
-    - assets/images/foodlist/advice/
     - assets/images/shop/
+    - assets/images/foodlist/pregnancy/
+    - assets/images/foodlist/ramadan/
   fonts:
     - family: Iransans
       fonts:
@@ -135,3 +138,21 @@ flutter:
     - family: Iransans-Ultralight
       fonts:
         - asset: fonts/iransans_ultralight.ttf
+    - family: Iransans-light
+      fonts:
+        - asset: fonts/iransans_light.ttf
+    - family: yekan
+      fonts:
+        - asset: fonts/YekanBakhFaNumMedium.ttf
+    - family: yekan_bold
+      fonts:
+        - asset: fonts/YekanBakhFaNumBold.ttf
+    - family: yekan_regular
+      fonts:
+        - asset: fonts/YekanBakhFaNumRegular.ttf
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto_05_Medium.ttf
+    - family: Roboto_regular
+      fonts:
+        - asset: fonts/Roboto_04_Regular.ttf

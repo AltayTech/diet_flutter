@@ -1,16 +1,12 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/help.dart';
-import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 
 import 'progress.dart';
 

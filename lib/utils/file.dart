@@ -46,6 +46,7 @@ abstract class FileUtils {
         platformFile.size,
       );
     }
+    return null;
   }
 
   static Future<bool> exists(String fileName) async {

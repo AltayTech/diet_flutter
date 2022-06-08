@@ -5,12 +5,12 @@ import 'package:app_settings/app_settings.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
-import 'package:flutter_sound_lite/public/flutter_sound_recorder.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:image/image.dart' as Img;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -24,11 +24,13 @@ class TicketBloc {
   TicketBloc() {
     changeType(TypeTicket.MESSAGE);
     sendTicketMessage = new SendTicket();
+    _indexSelectedStatus.safeValue = 6;
   }
 
   ImagePicker? _picker;
   final _repository = Repository.getInstance();
   final _showServerError = LiveEvent();
+  final _showMessage = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
   final _supportItemSelected = BehaviorSubject<bool>();
   late SendTicket sendTicketMessage;
@@ -41,11 +43,15 @@ class TicketBloc {
   final _typeTicket = BehaviorSubject<TypeTicket>();
   final _SupportItems = BehaviorSubject<List<SupportItem>>();
   final _showProgressItem = BehaviorSubject<bool>();
+  final _indexSelectedStatus = BehaviorSubject<int>();
+  final _tickets = BehaviorSubject<List<TicketItem>>();
 
-  List<TicketItem> _listTickets = [];
+  List<TicketItem> _tempListTickets = [];
   TicketModel? _ticketDetails;
 
   Stream get showServerError => _showServerError.stream;
+
+  Stream get showMessage => _showMessage.stream;
 
   Stream<bool> get progressNetwork => _progressNetwork.stream;
 
@@ -69,15 +75,21 @@ class TicketBloc {
 
   Stream<bool> get isShowProgressItem => _showProgressItem.stream;
 
+  Stream<int> get indexSelectedStatus => _indexSelectedStatus.stream;
+
+  Stream<List<TicketItem>> get tickets => _tickets.stream;
+
   bool? get isProgressNetwork => _progressNetwork.value;
 
   String? get showTimeRecord => _showTime.valueOrNull ?? '';
 
-  List<TicketItem> get listTickets => _listTickets;
+  List<TicketItem> get tempListTickets => _tempListTickets;
 
   TicketModel? get ticketDetails => _ticketDetails;
 
   bool get isFileAudio => _isShowFileAudio.stream.valueOrNull ?? false;
+
+  TypeTicket get typeTicketValue => _typeTicket.value;
 
   int minute = 0;
   int start = 0;
@@ -92,38 +104,20 @@ class TicketBloc {
   Timer? _timer;
 
   void setSupportItemSelected() {
-    _supportItemSelected.value = true;
+    _supportItemSelected.safeValue = true;
   }
 
   void getTickets() {
-    _progressNetwork.value = true;
-
+    _progressNetwork.safeValue = true;
     _repository.getTickets().then((value) {
       print('value ==> ${value.data?.items?.reversed.toList()[0].toJson()}');
-      _listTickets = value.data!.items!;
+      _tempListTickets.addAll(value.data!.items!);
+      _tickets.safeValue = value.data!.items!;
     }).catchError((onError) {
       print('onError ==> ${onError.toString()}');
     }).whenComplete(() {
-      if (!_progressNetwork.isClosed) _progressNetwork.value = false;
+      _progressNetwork.safeValue = false;
     });
-  }
-
-  String findTicketStatus(TicketStatus status) {
-    print('status = > ${status.index}');
-    switch (status) {
-      case TicketStatus.Resolved:
-        return 'حل شده';
-      case TicketStatus.Closed:
-        return 'بسته شده';
-      case TicketStatus.PendingAdminResponse:
-        return 'در انتظار پاسخ';
-      case TicketStatus.PendingUserResponse:
-        return 'پیام جدید';
-      case TicketStatus.OnHold:
-        return 'در حال بررسی';
-      case TicketStatus.GlobalIssue:
-        return 'مشکل سراسری';
-    }
   }
 
   Color statusColor(TicketStatus status) {
@@ -140,12 +134,15 @@ class TicketBloc {
         return AppColors.statusTicketOnHold;
       case TicketStatus.GlobalIssue:
         return AppColors.statusTicketGlobalIssue;
+      case TicketStatus.ALL:
+        return AppColors.statusTicketGlobalIssue;
+        break;
     }
   }
 
   void changeType(TypeTicket typeTicket) {
-    _typeTicket.value = typeTicket;
-    _isShowRecorder.value = false;
+    _typeTicket.safeValue = typeTicket;
+    _isShowRecorder.safeValue = false;
 
     if (_isRecording.valueOrNull != null && _isRecording.value == true) {
       _isRecording.value = false;
@@ -155,21 +152,21 @@ class TicketBloc {
   }
 
   void showShowSendButton(bool show) {
-    _isShowSendButton.value = show;
+    _isShowSendButton.safeValue = show;
   }
 
   void recording() {
-    _isShowRecorder.value = !(_isShowRecorder.valueOrNull ?? true);
+    _isShowRecorder.safeValue = !(_isShowRecorder.valueOrNull ?? true);
   }
 
   void getSupportList() {
-    _progressNetwork.value = true;
+    _progressNetwork.safeValue = true;
     _repository.getDepartmentItems().then((value) {
-      _SupportItems.value = value.data!.items;
+      _SupportItems.safeValue = value.data!.items;
     }).catchError((onError) {
       print('onError ==> ${onError.toString()}');
     }).whenComplete(() {
-      _progressNetwork.value = false;
+      _progressNetwork.safeValue = false;
     });
   }
 
@@ -178,7 +175,7 @@ class TicketBloc {
     start = 0;
     if (_myRecorder == null) {
       _myRecorder = FlutterSoundRecorder();
-      _myRecorder!.openAudioSession().then((value) {
+      _myRecorder!.openRecorder().then((value) {
         _mRecorderIsInited = true;
       });
     }
@@ -189,7 +186,7 @@ class TicketBloc {
   void record() async {
     if (_isRecording.valueOrNull != null && _isRecording.value) {
       print('recording = > stop');
-      _isRecording.value = false;
+      _isRecording.safeValue = false;
       if (_timer != null) _timer!.cancel();
       stopRecorder(true);
     } else {
@@ -245,7 +242,7 @@ class TicketBloc {
       } else
         start += 1;
 
-      _showTime.value = "${NumberFormat('00').format(minute)}:${NumberFormat('00').format(start)}";
+      _showTime.safeValue = "${NumberFormat('00').format(minute)}:${NumberFormat('00').format(start)}";
       print('time');
     });
   }
@@ -254,16 +251,16 @@ class TicketBloc {
     _timer?.cancel();
     if (outputFile != null && await outputFile!.exists()) await outputFile!.delete();
     deleteImage();
-    _isShowFileAudio.value = false;
-    _isShowImage.value = false;
-    _isRecording.value = false;
+    _isShowFileAudio.safeValue = false;
+    _isShowImage.safeValue = false;
+    _isRecording.safeValue = false;
     minute = 0;
     start = 0;
-    _showTime.value = "${NumberFormat('00').format(minute)}:${NumberFormat('00').format(start)}";
+    _showTime.safeValue = "${NumberFormat('00').format(minute)}:${NumberFormat('00').format(start)}";
   }
 
   void sendTicketText() {
-    _showProgressItem.value = true;
+    _showProgressItem.safeValue = true;
     if (_isShowImage.valueOrNull != null && _isShowImage.value == true) {
       sendTicketMessage.isVoice = false;
       _repository.sendTicketFile(sendTicketMessage, imageFile!).then((value) {
@@ -372,14 +369,14 @@ class TicketBloc {
       List<TicketItem> list = [];
       _ticketDetails!.ticket!.messages!.forEach((ticket) {
         TicketItem? exists;
-        if(ticket.file==null && ticket.temp==null){
-          ticket.type=TypeTicketMessage.TEXT;
-        }else if(ticket.temp!=null){
-          ticket.type=TypeTicketMessage.TEMP;
-        }else if(ticket.isVoice==1){
-          ticket.type=TypeTicketMessage.VOICE;
-        }else{
-          ticket.type=TypeTicketMessage.TEXT_AND_ATTACHMENT;
+        if (ticket.file == null && ticket.temp == null) {
+          ticket.type = TypeTicketMessage.TEXT;
+        } else if (ticket.temp != null) {
+          ticket.type = TypeTicketMessage.TEMP;
+        } else if (ticket.isVoice == 1) {
+          ticket.type = TypeTicketMessage.VOICE;
+        } else {
+          ticket.type = TypeTicketMessage.TEXT_AND_ATTACHMENT;
         }
         if (list
             .where((element) => element.createdAt!.contains(ticket.createdAt!.substring(0, 10)))
@@ -457,6 +454,20 @@ class TicketBloc {
     } catch (e) {
       _isShowImage.value = false;
     }
+  }
+
+  void setIndexSelectedStatus(int index) {
+    _indexSelectedStatus.safeValue = index;
+    filterListTicket();
+  }
+
+  void filterListTicket() {
+    if (TicketStatus.values[_indexSelectedStatus.value] == TicketStatus.ALL) {
+      _tickets.safeValue = _tempListTickets;
+    } else
+      _tickets.safeValue = _tempListTickets
+          .where((element) => element.status == TicketStatus.values[_indexSelectedStatus.value])
+          .toList();
   }
 
   void dispose() {

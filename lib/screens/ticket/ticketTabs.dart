@@ -69,9 +69,8 @@ class TicketTabState extends ResourcefulState<TicketTab> with SingleTickerProvid
                 children: [
                   Expanded(
                     child: Container(
-                      height: 60,
-                      color: Colors.white,
-                      padding: EdgeInsets.all(8),
+                      height: 6.h,
+                      margin: EdgeInsets.only(left: 16,right: 16,top: 16),
                       child: CustomTabBar(Colors.white, _list, _controller),
                     ),
                     flex: 0,

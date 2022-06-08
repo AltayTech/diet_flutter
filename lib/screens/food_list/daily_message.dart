@@ -16,7 +16,7 @@ class DailyMessage extends StatefulWidget {
 
 class _DailyMessageState extends ResourcefulState<DailyMessage> {
   late DailyMessageBloc dailyMessageBloc;
-
+  bool isInit=false;
   @override
   initState(){
     super.initState();
@@ -26,8 +26,14 @@ class _DailyMessageState extends ResourcefulState<DailyMessage> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    final args = ModalRoute.of(context)!.settings.arguments as int;
-    dailyMessageBloc.getDailyMessage(args);
+    if(!isInit) {
+      isInit=true;
+      final args = ModalRoute
+          .of(context)!
+          .settings
+          .arguments as int;
+      dailyMessageBloc.getDailyMessage(args);
+    }
   }
 
   @override

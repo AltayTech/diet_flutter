@@ -10,10 +10,12 @@ Future<void> main() async {
       'baseUrl': 'https://behandam.kermany.com/behandam-diet/api',
       "baseUrlFile": "https://behandam.kermany.com/helia-service",
       "baseUrlFileShop": "https://behandam.kermany.com/shop-service",
-      "urlTerms": "https://kermany.com/terms/",
+      "urlTerms": "https://behandam.kermany.com/#/article/5918",
+      "urlPrivacy": "https://behandam.kermany.com/#/article/5901",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
-      'isProduction': false
+      'isProduction': true,
+      'isCafeBazaar':false
     },
   );
   await entryPoint();

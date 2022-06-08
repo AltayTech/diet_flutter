@@ -39,7 +39,7 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   void dispose() {
     _printEvent('dispose()');
     routeObserver.unsubscribe(this);
- //   if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.unsubscribe(this);
+    //   if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.unsubscribe(this);
     dioErrorObserver.unsubscribe(this);
     super.dispose();
   }
@@ -57,7 +57,7 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
     final route = ModalRoute.of(context);
     if (route is PageRoute) {
       routeObserver.subscribe(this, route);
-     // if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.subscribe(this, route);
+      // if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.subscribe(this, route);
     }
     super.didChangeDependencies();
   }
@@ -66,13 +66,6 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   void didUpdateWidget(covariant T oldWidget) {
     _printEvent('didUpdateWidget');
     super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  @mustCallSuper
-  void onResume() {
-    super.setState(() {});
-    _printEvent('onResume()');
   }
 
   /*@override
@@ -110,4 +103,16 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   void didPopNext() {
     _printEvent('didPopNext()');
   }
+
+  @override
+  void onRetryAfterMaintenance() {}
+
+  @override
+  void onRetryAfterNoInternet() {}
+
+  @override
+  void onRetryLoadingPage() {}
+
+  @override
+  void onShowMessage(String value) {}
 }

@@ -1,17 +1,16 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
-import 'package:behandam/routes.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/device.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class GlobalInterceptor extends Interceptor {
   @override
-  void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final authToken = await AppSharedPreferences.authToken;
     final packageInfo = await PackageInfo.fromPlatform();
     final languageCode = (await AppLocale.currentLocale).languageCode;
@@ -20,7 +19,7 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Accept'] = 'application/json';
     options.headers['Content-Type'] = 'application/json';
     options.headers['Accept-Language'] = languageCode;
-    options.headers['user-agent'] = await DeviceUtils.makeUserAgent();
+    if (!kIsWeb) options.headers['user-agent'] = await DeviceUtils.makeUserAgent();
     options.headers['Charset'] = 'UTF-8';
     print('auth token $authToken');
     if (authToken != null && authToken.isNotEmpty) {
@@ -40,7 +39,7 @@ class GlobalInterceptor extends Interceptor {
     options.headers['Time-Zone'] = DateTimeUtils.timezoneOffset;
     print(
         'global/ ${MemoryApp.forgetPass} / ${navigator.currentConfiguration?.path} / ${MemoryApp.token != null} / ${MemoryApp.token != 'null'}');
-    if(MemoryApp.needRoute){
+    if (MemoryApp.needRoute) {
       options.headers['x-route'] = MemoryApp.forgetPass
           ? '${navigator.currentConfiguration?.path.substring(1)}/forget'
           : navigator.currentConfiguration?.path.substring(1);

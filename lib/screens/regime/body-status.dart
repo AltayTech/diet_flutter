@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
@@ -8,11 +9,11 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class BodyStatusScreen extends StatefulWidget {
@@ -30,15 +31,18 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     super.initState();
     regimeBloc = RegimeBloc();
     regimeBloc.getStatus();
+    regimeBloc.physicalInfoData();
     listenBloc();
   }
 
   void listenBloc() {
     regimeBloc.navigateToVerify.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       context.vxNav.push(Uri.parse('/${event}'));
     });
     regimeBloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
@@ -56,56 +60,66 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: Toolbar(titleBar: intl.statusReport),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: StreamBuilder(
-                stream: regimeBloc.status,
-                builder: (context, AsyncSnapshot<BodyStatus> snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        snapshot.data!.isPregnancy == 1
-                            ? firstContainer(
-                                snapshot.data!.daysTillChildbirth,
-                                snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
-                                snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
-                                snapshot.data!.isPregnancy,
-                                snapshot.data!.bmiStatus)
-                            : firstContainer(
-                                snapshot.data!.dietDays,
-                                snapshot.data!.weightDifference!.toStringAsFixed(1),
-                                snapshot.data!.normalWeight!.toStringAsFixed(1),
-                                snapshot.data!.isPregnancy,
-                                snapshot.data!.bmiStatus),
-                        SizedBox(height: 2.h),
-                        secondContainer(
-                            snapshot.data!.bmi!.toStringAsFixed(0), snapshot.data!.bmiStatus),
-                        GestureDetector(
-                          onTap: () {
-                            DialogUtils.showDialogProgress(context: context);
-                            regimeBloc.nextStep();
-                          },
-                          child: snapshot.data!.isPregnancy == 1
-                              ? ImageUtils.fromLocal(
-                                  'assets/images/physical_report/banner_pregnant.svg',
-                                  height: 15.h)
-                              : ImageUtils.fromLocal('assets/images/physical_report/banner.svg',
-                                  height: 15.h),
+        body: StreamBuilder(
+            stream: regimeBloc.status,
+            builder: (context, AsyncSnapshot<BodyStatus> snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: TouchMouseScrollable(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                children: [
+                                  snapshot.data!.isPregnancy == 1
+                                      ? firstContainer(
+                                          snapshot.data!.daysTillChildbirth,
+                                          snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
+                                          snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
+                                          snapshot.data!.isPregnancy,
+                                          snapshot.data!.bmiStatus)
+                                      : firstContainer(
+                                          snapshot.data!.dietDays,
+                                          snapshot.data!.weightDifference!.toStringAsFixed(1),
+                                          snapshot.data!.normalWeight!.toStringAsFixed(1),
+                                          snapshot.data!.isPregnancy,
+                                          snapshot.data!.bmiStatus),
+                                  SizedBox(height: 2.h),
+                                  secondContainer(snapshot.data!.bmi!.toStringAsFixed(0),
+                                      snapshot.data!.bmiStatus),
+                                  GestureDetector(
+                                    onTap: () {
+                                      sendRequest(isPregnancy: snapshot.data!.isPregnancy == 1);
+                                    },
+                                    child: snapshot.data!.isPregnancy == 1
+                                        ? ImageUtils.fromLocal(
+                                            'assets/images/physical_report/banner_pregnant.svg',
+                                            height: 15.h)
+                                        : ImageUtils.fromLocal(
+                                            'assets/images/physical_report/banner.svg',
+                                            height: 15.h),
+                                  ),
+                                ],
+                              )),
                         ),
-                        SubmitButton(
-                            label: intl.confirmContinue,
-                            onTap: () {
-                              DialogUtils.showDialogProgress(context: context);
-                              regimeBloc.nextStep();
-                            }),
-                      ],
-                    );
-                  } else
-                    return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
-                }),
-          ),
-        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 8),
+                      child: SubmitButton(
+                          label: intl.confirmContinue,
+                          onTap: () {
+                            sendRequest(isPregnancy: snapshot.data!.isPregnancy == 1);
+                          }),
+                    ),
+                  ],
+                );
+              } else
+                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+            }),
       ),
     );
   }
@@ -278,8 +292,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                   bottomLeft: Radius.circular(20.0),
                   topLeft: Radius.circular(20.0)),
               color: Colors.white),
-          child: Row(
-              children: [
+          child: Row(children: [
             Container(
                 width: 3.w,
                 height: 10.h,
@@ -458,23 +471,101 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     }
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void pregnancyWeekAlert() {
+    DialogUtils.showDialogPage(
+      context: context,
+      isDismissible: true,
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          width: double.maxFinite,
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.onPrimary,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              close(),
+              Text(
+                '',
+                style: typography.bodyText2,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 2.h),
+              Text(
+                intl.pregnancyWeekAlertDesc(regimeBloc.bodyStatus.allowedWeeksNum!),
+                style: typography.caption,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 2.h),
+              Container(
+                alignment: Alignment.center,
+                child: SubmitButton(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    DialogUtils.showDialogProgress(context: context);
+                    regimeBloc.nextStep();
+                  },
+                  label: intl.understandGoToNext,
+                ),
+              ),
+              Space(height: 2.h),
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Text(
+                  intl.cancel,
+                  style: typography.caption,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Space(height: 1.h),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget close() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topLeft,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void sendRequest({required bool isPregnancy}) {
+    if (isPregnancy) {
+      pregnancyWeekAlert();
+    } else {
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+      regimeBloc.nextStep();
+    }
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendRequest(isPregnancy: false);
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    regimeBloc.getStatus();
+    regimeBloc.physicalInfoData();
   }
 }

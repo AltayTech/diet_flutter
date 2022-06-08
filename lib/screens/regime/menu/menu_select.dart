@@ -2,20 +2,22 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/menu/bloc.dart';
-import 'package:behandam/screens/regime/menu/item.dart';
+import 'package:behandam/screens/regime/menu/item.dart' as menuItem;
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../routes.dart';
@@ -34,6 +36,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
   void initState() {
     super.initState();
     bloc = MenuSelectBloc();
+    bloc.loadContent();
     initListener();
   }
 
@@ -45,11 +48,12 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
 
   void initListener() {
     bloc.navigateTo.listen((event) {
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       if ('/$event' == Routes.listView)
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       else
-        context.vxNav.push(Uri.parse('/$event'), params: bloc);
+        context.vxNav.push(Uri.parse('/${event["next"]}'), params: event["params"]);
     });
   }
 
@@ -69,20 +73,24 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
       child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Card(
-                shape: AppShapes.rectangleMedium,
-                elevation: 1,
-                margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                  child: StreamBuilder(
-                    stream: bloc.menuTypes,
-                    builder: (_, AsyncSnapshot<List<MenuType>> snapshot) {
-                      if (snapshot.hasData) return menus(snapshot.requireData);
-                      return Center(child: CircularProgressIndicator());
-                    },
+            child: TouchMouseScrollable(
+              child: SingleChildScrollView(
+                child: Card(
+                  shape: AppShapes.rectangleMedium,
+                  elevation: 1,
+                  margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  child: Container(
+                    width: double.infinity,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    child: StreamBuilder(
+                      stream: bloc.menuTypes,
+                      builder: (_, AsyncSnapshot<List<MenuType>> snapshot) {
+                        if (snapshot.hasData)
+                          return menus(snapshot.requireData);
+                        return Center(child: Progress());
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -122,7 +130,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
   }
 
   Widget menuTypeBox(MenuType menuType) {
-    return menuType.menus != null && menuType.menus.length > 0
+    return menuType.menus.length > 0
         ? Container(
             margin: EdgeInsets.only(bottom: 2.h),
             child: Column(
@@ -134,22 +142,22 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
                   textAlign: TextAlign.start,
                 ),
                 Container(
-                  decoration: AppDecorations.boxMedium.copyWith(
-                    color: AppColors.box
-                  ),
+                  decoration:
+                      AppDecorations.boxMedium.copyWith(color: AppColors.box),
                   padding: EdgeInsets.symmetric(horizontal: 3.w),
                   child: Column(
                     children: [
                       Space(height: 2.h),
                       ...menuType.menus
-                          .map((menu) => MenuItem(
+                          .map((menu) => menuItem.MenuItem(
                                 menu: menu,
                                 onClick: () {
                                   if (!navigator.currentConfiguration!.path
                                       .contains(Routes.listMenuSelect)) {
-                                    DialogUtils.showDialogProgress(context: context);
-                                    bloc.onItemClick(menu);
-                                  }else dailyMenuDialog(menu);
+                                    bloc.menuSelected(menu);
+                                    sendRequest();
+                                  } else
+                                    dailyMenuDialog(menu);
                                 },
                               ))
                           .toList(),
@@ -187,7 +195,7 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
               ),
               Space(height: 2.h),
               Text(
-               menu.description!,
+                menu.description!,
                 style: typography.caption,
                 textAlign: TextAlign.center,
               ),
@@ -195,10 +203,10 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
               Container(
                 alignment: Alignment.center,
                 child: SubmitButton(
-                  onTap: () async {
+                  onTap: () {
                     Navigator.of(context).pop();
-                    DialogUtils.showDialogProgress(context: context);
-                    bloc.onItemClick(menu);
+                    bloc.menuSelected(menu);
+                    sendRequest();
                   },
                   label: intl.yesSaveList,
                 ),
@@ -240,23 +248,20 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void sendRequest() {
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
+    bloc.onItemClick();
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

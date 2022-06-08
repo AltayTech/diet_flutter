@@ -1,20 +1,16 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
-import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/screens/ticket/call_bloc.dart';
 import 'package:behandam/screens/ticket/call_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 
 class CallListWidget extends StatefulWidget {
-  late TicketItem ticketItem;
-
   CallListWidget();
 
   @override
@@ -24,6 +20,7 @@ class CallListWidget extends StatefulWidget {
 class CallListWidgetState extends ResourcefulState<CallListWidget> {
   late CallBloc callBloc;
   late List<String> calles;
+  bool isSendRequestReserve = false;
 
   @override
   void initState() {
@@ -113,113 +110,15 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
                               : "${intl.callNumberIs}${index + 1}",
                           style: Theme.of(context).textTheme.caption,
                         )),
-                        if (value.isReserve == null && !value.done!)
-                          StreamBuilder(
-                            builder: (context, snapshot) {
-                              if (snapshot.data == true) {
-                                return SpinKitCircle(
-                                  size: 7.w,
-                                  color: AppColors.primary,
-                                );
-                              } else
-                                return MaterialButton(
-                                  onPressed: () {
-                                    deleteDialog();
-                                  },
-                                  padding: EdgeInsets.zero,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: Colors.redAccent,
-                                        width: 0.8,
-                                      ),
-                                    ),
-                                    alignment: Alignment.center,
-                                    height: 5.h,
-                                    width: 25.w,
-                                    padding: EdgeInsets.symmetric(horizontal: 1.w),
-                                    child: Text(
-                                      intl.cancelCall,
-                                      textAlign: TextAlign.center,
-                                      softWrap: true,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .caption!
-                                          .copyWith(color: AppColors.primary),
-                                    ),
-                                  ),
-                                );
-                            },
-                            stream: callBloc.progressNetworkItem,
-                          )
+                        if (value.callType == UiCallType.Reserved) reservedTileList()
                       ],
                     )),
-                    if (value.isReserve != null && value.isReserve!)
-                      StreamBuilder(
-                        builder: (context, snapshot) {
-                          if (snapshot.data == true) {
-                            return SpinKitCircle(
-                              size: 5.w,
-                              color: AppColors.primary,
-                            );
-                          } else
-                            return MaterialButton(
-                              onPressed: () {
-                                updateDialog();
-                              },
-                              padding: EdgeInsets.zero,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: Colors.redAccent,
-                                    width: 0.8,
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                                height: 5.h,
-                                width: 25.w,
-                                padding: EdgeInsets.symmetric(horizontal: 1.w),
-                                child: Text(
-                                  intl.reserveCall,
-                                  textAlign: TextAlign.center,
-                                  softWrap: true,
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                              ),
-                            );
-                        },
-                        stream: callBloc.progressNetworkItem,
-                      )
+                    if (value.callType == UiCallType.Reserve) reserveTileList()
                   ],
                 ),
               ),
-              if (value.isReserve == null) Space(height: 1.h),
-              if (value.isReserve == null)
-                Container(
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: (value.done!) ? Color(0xffE8FAF6) : Color(0xffF2F2FB),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: (value.done!) ? Color(0xffE8FAF6) : Color(0xffF2F2FB),
-                      width: 0.8,
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.w),
-                  child: Text(
-                    (value.done!) ? intl.callDone : intl.callProgressLabel,
-                    textAlign: TextAlign.right,
-                    style: (value.done!)
-                        ? TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xff1DD1A1))
-                        : TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xff45495D)),
-                  ),
-                ),
+              if (value.callType == UiCallType.Reserved || value.callType == UiCallType.Done)
+                TextDescriptionTileCall(value.done!)
             ],
           ),
         ),
@@ -227,7 +126,114 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
     );
   }
 
-  void updateDialog() {
+  Widget reserveTileList() {
+    return StreamBuilder(
+      builder: (context, snapshot) {
+        if (snapshot.data == true) {
+          return SpinKitCircle(
+            size: 5.w,
+            color: AppColors.primary,
+          );
+        } else
+          return MaterialButton(
+            onPressed: () {
+              reserveDialog();
+            },
+            padding: EdgeInsets.zero,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.redAccent,
+                  width: 0.8,
+                ),
+              ),
+              alignment: Alignment.center,
+              height: 5.h,
+              width: 25.w,
+              padding: EdgeInsets.symmetric(horizontal: 1.w),
+              child: Text(
+                intl.reserveCall,
+                textAlign: TextAlign.center,
+                softWrap: true,
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
+          );
+      },
+      stream: callBloc.progressNetworkItem,
+    );
+  }
+
+  Widget reservedTileList() {
+    return StreamBuilder(
+      builder: (context, snapshot) {
+        if (snapshot.data == true) {
+          return SpinKitCircle(
+            size: 7.w,
+            color: AppColors.primary,
+          );
+        } else
+          return MaterialButton(
+            onPressed: () {
+              deleteDialog();
+            },
+            padding: EdgeInsets.zero,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.redAccent,
+                  width: 0.8,
+                ),
+              ),
+              alignment: Alignment.center,
+              height: 5.h,
+              width: 25.w,
+              padding: EdgeInsets.symmetric(horizontal: 1.w),
+              child: Text(
+                intl.cancelCall,
+                textAlign: TextAlign.center,
+                softWrap: true,
+                style: Theme.of(context).textTheme.caption!.copyWith(color: AppColors.primary),
+              ),
+            ),
+          );
+      },
+      stream: callBloc.progressNetworkItem,
+    );
+  }
+
+  Widget TextDescriptionTileCall(bool isDone) {
+    return Column(
+      children: [
+        Space(height: 1.h),
+        Container(
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            color: isDone ? Color(0xffE8FAF6) : Color(0xffF2F2FB),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: isDone ? Color(0xffE8FAF6) : Color(0xffF2F2FB),
+              width: 0.8,
+            ),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.w),
+          child: Text(
+            isDone ? intl.callDone : intl.callProgressLabel,
+            textAlign: TextAlign.right,
+            style: isDone
+                ? TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xff1DD1A1))
+                : TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xff45495D)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void reserveDialog() {
     DialogUtils.showDialogPage(
         context: context,
         isDismissible: true,
@@ -238,74 +244,19 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
             decoration: AppDecorations.boxLarge.copyWith(
               color: AppColors.onPrimary,
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    intl.callRequest,
-                    textAlign: TextAlign.center,
-                    textDirection: context.textDirectionOfLocale,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                  Space(height: 2.h),
-                  Text(
-                    intl.addCallRequestForYou,
-                    textAlign: TextAlign.center,
-                    textDirection: context.textDirectionOfLocale,
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  Space(height: 3.h),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 6.h,
-                          width: 30.w,
-                          child: MaterialButton(
-                            child: Text(
-                              intl.accept,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .caption!
-                                  .copyWith(color: AppColors.primary),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              callBloc.sendCallRequest();
-                            },
-                            color: Colors.white,
-                            elevation: 0,
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                      Space(width: 2.w),
-                      Expanded(
-                        child: Container(
-                          height: 6.h,
-                          width: 30.w,
-                          child: MaterialButton(
-                            child: Text(
-                              intl.cancel,
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            color: Colors.white,
-                            elevation: 0,
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            child: ContentWidgetDialog(
+              title: intl.callRequest,
+              content: intl.addCallRequestForYou,
+              actionButtonAccept: () {
+                Navigator.of(context).pop();
+                isSendRequestReserve = true;
+                callBloc.sendCallRequest();
+              },
+              actionButtonCancel: () {
+                Navigator.of(context).pop();
+              },
+              titleButtonAccept: intl.accept,
+              titleButtonCancel: intl.cancel,
             ),
           ),
         ));
@@ -322,73 +273,19 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
           decoration: AppDecorations.boxLarge.copyWith(
             color: AppColors.onPrimary,
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  intl.cancelCallRequest,
-                  textAlign: TextAlign.center,
-                  textDirection: context.textDirectionOfLocale,
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                Space(height: 2.h),
-                Text(
-                  intl.cancelCallRequestForYou,
-                  textDirection: context.textDirectionOfLocale,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                Space(height: 3.h),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 6.h,
-                        width: 30.w,
-                        child: MaterialButton(
-                          child: Text(
-                            intl.accept,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(color: AppColors.primary),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            callBloc.deleteCallRequest();
-                          },
-                          color: Colors.white,
-                          elevation: 0,
-                        ),
-                      ),
-                      flex: 1,
-                    ),
-                    Space(width: 2.w),
-                    Expanded(
-                      child: Container(
-                        height: 6.h,
-                        width: 30.w,
-                        child: MaterialButton(
-                          child: Text(
-                            intl.cancel,
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          color: Colors.white,
-                          elevation: 0,
-                        ),
-                      ),
-                      flex: 1,
-                    ),
-                  ],
-                )
-              ],
-            ),
+          child: ContentWidgetDialog(
+            title: intl.cancelCallRequest,
+            content: intl.cancelCallRequestForYou,
+            actionButtonAccept: () {
+              Navigator.of(context).pop();
+              isSendRequestReserve = false;
+              callBloc.deleteCallRequest();
+            },
+            actionButtonCancel: () {
+              Navigator.of(context).pop();
+            },
+            titleButtonAccept: intl.accept,
+            titleButtonCancel: intl.cancel,
           ),
         ),
       ),
@@ -396,22 +293,10 @@ class CallListWidgetState extends ResourcefulState<CallListWidget> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    if (isSendRequestReserve) {
+      callBloc.sendCallRequest();
+    } else
+      callBloc.deleteCallRequest();
   }
 }

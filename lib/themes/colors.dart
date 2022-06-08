@@ -52,6 +52,10 @@ class AppColors {
   static late Color colorTextApp;
   static late Color colorSelectDepartmentTicket;
   static const grey = Color(0xffF5F5F5);
+  static const priceGreyColor = Color(0xff717171);
+  static const priceDiscountColor = Color(0xffED4C67);
+  static const priceGreenColor = Color(0xff1ABC9C);
+  static const priceColor = Color.fromRGBO(86, 195, 180, 1);
   static const purpleRuler = Color(0xff927DFC);
   static const pinkRuler = Color(0xffEC4CA2);
   static const blueRuler = Color(0xff65A8E0);
@@ -60,6 +64,9 @@ class AppColors {
   static const pregnantPink = Color(0xffFE92A3);
   static const chartBorder = Color.fromARGB(255, 255, 87, 87);
   static const pinkPass = Color(0xffFFE2E2);
+  static const redDate = Color(0xffFF5757);
+  static const greyDate = Color(0xff454545);
+  static const alertCallTextColor = Color(0xff5282a5);
   static var colorPackages = [
     {
       'barColor': Color.fromARGB(255, 249, 203, 202),
@@ -149,6 +156,7 @@ class AppColors {
   static late Color helpFastingButton;
   static late Color menuColorDefault=Color.fromRGBO(250, 114, 126, 1.0);
   static late Color menuColorFasting=Color(0xff65A8E0);
+  static late Color newBackground=Color(0xffF5F5F5);
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {

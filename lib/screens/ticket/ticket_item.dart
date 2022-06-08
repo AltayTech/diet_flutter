@@ -6,10 +6,8 @@ import 'package:behandam/screens/ticket/ticket_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class TicketItemWidget extends StatefulWidget {
@@ -81,7 +79,7 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
                           onPressed: () {
                             Navigator.of(context).pop(true);
                           },
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                         Space(width: 2.w),
                         MaterialButton(
@@ -108,13 +106,6 @@ class TicketItemWidgetState extends ResourcefulState<TicketItemWidget> {
               },
             );*/
         } else {
-        //  print('after dialog');
-/*
-queryParameters:{
-              'ticketId': widget.ticketItem.id,
-              'ticketTitle': widget.ticketItem.title,
-            } */
-
           try {
             Uri uri = Uri(path: '${Routes.detailsTicketMessage}', queryParameters: {
               'ticketId': widget.ticketItem.id.toString(),
@@ -124,14 +115,12 @@ queryParameters:{
             print('uri = > ${e.toString()} ');
           }
           //uri.replace();
-
-
         }
       },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColors.onPrimary,
+          color: Color(0xffF5F8FE),
         ),
         padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
         margin: EdgeInsets.symmetric(vertical: 1.h),
@@ -153,14 +142,14 @@ queryParameters:{
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: 4.h,
-                  width: 1.w,
+                  height: 3.h,
+                  width: 0.5.w,
                   color: ticketBloc.statusColor(widget.ticketItem.status!),
                 ),
                 Space(width: 2.w),
                 Expanded(
                   child: Text(
-                    ticketBloc.findTicketStatus(widget.ticketItem.status!),
+                    findTicketStatus(widget.ticketItem.status!),
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.caption!.copyWith(
                           color: ticketBloc.statusColor(widget.ticketItem.status!),
@@ -168,17 +157,9 @@ queryParameters:{
                   ),
                 ),
                 Space(width: 2.w),
-                ImageUtils.fromLocal(
-                  'assets/images/foodlist/archive.svg',
-                  width: 6.w,
-                  height: 6.w,
-                  fit: BoxFit.fill,
-                  color: AppColors.primary,
-                ),
-                Space(width: 2.w),
                 Text(
                   DateTimeUtils.gregorianToJalali(widget.ticketItem.createdAt!),
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.caption!.copyWith(color: AppColors.labelColor,letterSpacing: 0.1),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -187,6 +168,28 @@ queryParameters:{
         ),
       ),
     );
+  }
+
+  String findTicketStatus(TicketStatus status) {
+    print('status = > ${status.index}');
+    switch (status) {
+      case TicketStatus.Resolved:
+        return intl.resolved;
+      case TicketStatus.Closed:
+        return intl.closed;
+      case TicketStatus.PendingAdminResponse:
+        return intl.pendingAdminResponse;
+      case TicketStatus.PendingUserResponse:
+        return intl.pendingUserResponse;
+      case TicketStatus.OnHold:
+        return intl.onHold;
+      case TicketStatus.GlobalIssue:
+        return intl.globalIssue;
+
+      case TicketStatus.ALL:
+        return intl.all;
+        break;
+    }
   }
 
   @override

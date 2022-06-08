@@ -94,7 +94,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
     super.build(context);
     return TicketProvider(bloc,
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
             appBar: Toolbar(titleBar: intl.ticket),
             backgroundColor: AppColors.surface,
@@ -116,7 +116,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                         child: StreamBuilder(
                           stream: bloc.progressNetwork,
                           builder: (ctx, snapshot) {
-                            WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToEnd());
+                            WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
                             if (snapshot.data != null &&
                                 snapshot.data == false &&
                                 bloc.ticketDetails != null) {
@@ -1552,12 +1552,22 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    switch (bloc.typeTicketValue) {
+      case TypeTicket.MESSAGE:
+        bloc.sendTicketTextDetail();
+        break;
+      case TypeTicket.RECORD:
+        bloc.sendTicketFileDetail();
+        break;
+      case TypeTicket.IMAGE:
+        bloc.sendTicketTextDetail();
+        break;
+    }
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.getDetailTicket(args);
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
 class AdvicePage extends StatefulWidget {
   const AdvicePage({Key? key}) : super(key: key);
@@ -46,6 +47,7 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
   void initState() {
     super.initState();
     bloc = AdviceBloc();
+    bloc.loadContent();
   }
 
   @override
@@ -60,37 +62,39 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
 
     return Scaffold(
       appBar: Toolbar(titleBar: intl.advices),
-      body: SingleChildScrollView(
-        child: Card(
-          shape: AppShapes.rectangleMedium,
-          elevation: 1,
-          margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-            child: StreamBuilder(
-              stream: bloc.advices,
-              builder: (_, AsyncSnapshot<AdviceData> snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (snapshot.requireData.adminRecommends != null && snapshot.requireData.adminRecommends!.isNotEmpty)
-                        advicePart(AdviceType.admin,
-                            snapshot.requireData.adminRecommends!, snapshot.requireData),
-                      if (snapshot.requireData.dietTypeRecommends != null && snapshot.requireData.dietTypeRecommends!.isNotEmpty)
-                        advicePart(AdviceType.diet,
-                            snapshot.requireData.dietTypeRecommends!, snapshot.requireData),
-                      if (snapshot.requireData.sicknessRecommends != null && snapshot.requireData.sicknessRecommends!.isNotEmpty)
-                        advicePart(AdviceType.sickness,
-                            snapshot.requireData.sicknessRecommends!, snapshot.requireData),
-                      if (snapshot.requireData.specialRecommends != null && snapshot.requireData.specialRecommends!.isNotEmpty)
-                        advicePart(AdviceType.special,
-                            snapshot.requireData.specialRecommends!, snapshot.requireData),
-                    ],
-                  );
-                }
-                return Center(child: Progress());
-              },
+      body: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: Card(
+            shape: AppShapes.rectangleMedium,
+            elevation: 1,
+            margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+              child: StreamBuilder(
+                stream: bloc.advices,
+                builder: (_, AsyncSnapshot<AdviceData> snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (snapshot.requireData.adminRecommends != null && snapshot.requireData.adminRecommends!.isNotEmpty)
+                          advicePart(AdviceType.admin,
+                              snapshot.requireData.adminRecommends!, snapshot.requireData),
+                        if (snapshot.requireData.dietTypeRecommends != null && snapshot.requireData.dietTypeRecommends!.isNotEmpty)
+                          advicePart(AdviceType.diet,
+                              snapshot.requireData.dietTypeRecommends!, snapshot.requireData),
+                        if (snapshot.requireData.sicknessRecommends != null && snapshot.requireData.sicknessRecommends!.isNotEmpty)
+                          advicePart(AdviceType.sickness,
+                              snapshot.requireData.sicknessRecommends!, snapshot.requireData),
+                        if (snapshot.requireData.specialRecommends != null && snapshot.requireData.specialRecommends!.isNotEmpty)
+                          advicePart(AdviceType.special,
+                              snapshot.requireData.specialRecommends!, snapshot.requireData),
+                      ],
+                    );
+                  }
+                  return Center(child: Progress());
+                },
+              ),
             ),
           ),
         ),
@@ -220,22 +224,8 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

@@ -6,7 +6,6 @@ import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -20,7 +19,8 @@ class AppbarBoxAdviceVideo extends StatefulWidget {
   _AppbarBoxAdviceVideoState createState() => _AppbarBoxAdviceVideoState();
 }
 
-class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> {
+class _AppbarBoxAdviceVideoState
+    extends ResourcefulState<AppbarBoxAdviceVideo> {
   late FoodListBloc bloc;
 
   // int? _selectedDayIndex;
@@ -88,7 +88,8 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
                                   textDirection: context.textDirectionOfLocale,
                                   maxLines: 1,
                                   style: typography.overline!.copyWith(
-                                      fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
+                                      fontWeight: FontWeight.bold,
+                                      overflow: TextOverflow.ellipsis),
                                 ),
                               ],
                             )),
@@ -99,7 +100,11 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
                           ],
                         );
                     }
-                    return Center(child: EmptyBox());
+                    return Center(
+                        child: Text(
+                      intl.noAdviceVideo,
+                      style: typography.caption,
+                    ));
                   },
                 );
               }
@@ -155,7 +160,8 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
             ],
           )),
       onTap: () {
-        VxNavigator.of(context).push(Uri.parse(Routes.dailyMessage), params: bloc.adviceId);
+        VxNavigator.of(context)
+            .push(Uri.parse(Routes.dailyMessage), params: bloc.adviceId);
       },
     );
   }
@@ -172,7 +178,10 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
         child: Center(
           child: Text(
             intl.goToToday,
-            style: typography.caption!.copyWith(color: AppColors.primary,fontWeight: FontWeight.w700,),
+            style: typography.caption!.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w700,
+            ),
             softWrap: true,
           ),
         ),
@@ -184,7 +193,8 @@ class _AppbarBoxAdviceVideoState extends ResourcefulState<AppbarBoxAdviceVideo> 
   }
 
   bool isAfterToday(WeekDay day) {
-    return day.gregorianDate.isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));
+    return day.gregorianDate
+        .isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));
   }
 
   @override

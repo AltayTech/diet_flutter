@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/goal/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -10,6 +11,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
 
 class DietGoalPage extends StatefulWidget {
@@ -27,6 +29,7 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
     super.initState();
     bloc = DietGoalBloc();
     bloc.navigateTo.listen((event) {
+      MemoryApp.isShowDialog=false;
       Navigator.of(context).pop();
       context.vxNav.push(Uri.parse('/$event'));
     });
@@ -44,43 +47,36 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
 
     return Scaffold(
       appBar: Toolbar(titleBar: intl.dietGoal),
-      body: SingleChildScrollView(
-        child: Card(
-          shape: AppShapes.rectangleMedium,
-          elevation: 1,
-          margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-            child: StreamBuilder(
-              stream: bloc.dietGoals,
-              builder: (_, AsyncSnapshot<DietGoalData> snapshot) {
-                if (snapshot.hasData)
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        intl.whatIsYourGoal,
-                        style: typography.caption,
-                        textAlign: TextAlign.center,
-                      ),
-                      Space(height: 2.h),
-                      ...snapshot.requireData.items.map((history) => item(history)).toList(),
-                      Center(
-                        child: SubmitButton(
-                            label: intl.nextStage,
-                            onTap: () {
-                              if (bloc.selectedGoalValue != null) {
-                                DialogUtils.showDialogProgress(context: context);
-                                bloc.condition();
-                              } else {
-                                Utils.getSnackbarMessage(context, intl.errorSelectedItem);
-                              }
-                            }),
-                      ),
-                    ],
-                  );
-                return Center(child: Progress());
-              },
+      body: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: Card(
+            shape: AppShapes.rectangleMedium,
+            elevation: 1,
+            margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+              child: StreamBuilder(
+                stream: bloc.dietGoals,
+                builder: (_, AsyncSnapshot<DietGoalData> snapshot) {
+                  if (snapshot.hasData)
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          intl.whatIsYourGoal,
+                          style: typography.caption,
+                          textAlign: TextAlign.center,
+                        ),
+                        Space(height: 2.h),
+                        ...snapshot.requireData.items.map((history) => item(history)).toList(),
+                        Center(
+                          child: SubmitButton(label: intl.nextStage, onTap: sendData),
+                        ),
+                      ],
+                    );
+                  return Center(child: Progress());
+                },
+              ),
             ),
           ),
         ),
@@ -145,19 +141,23 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void sendData() {
+    if (bloc.selectedGoalValue != null) {
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+      bloc.condition();
+    } else {
+      Utils.getSnackbarMessage(context, intl.errorSelectedItem);
+    }
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    sendData();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
   @override

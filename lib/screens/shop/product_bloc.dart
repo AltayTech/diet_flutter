@@ -1,5 +1,4 @@
 import 'dart:async';
-import "package:universal_html/html.dart" as html;
 import 'dart:io';
 
 import 'package:behandam/data/entity/payment/payment.dart';
@@ -7,9 +6,11 @@ import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/bool.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
+import "package:universal_html/html.dart" as html;
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
@@ -38,8 +39,9 @@ class ProductBloc {
 
   final _loadingMoreProducts = BehaviorSubject<bool>();
   final _selectedProduct = BehaviorSubject<int>();
-  final _navigateToVerify = LiveEvent();
+  final _navigateToRoute = LiveEvent();
   final _onlinePayment = LiveEvent();
+  final _popLoading = LiveEvent();
   final _showServerError = LiveEvent();
   final _wrongDisCode = BehaviorSubject<bool>();
   final _discountLoading = BehaviorSubject<bool>();
@@ -70,7 +72,9 @@ class ProductBloc {
 
   Stream<TypeMediaShop> get typeMediaShop => _typeMediaShop.stream;
 
-  Stream get navigateToVerify => _navigateToVerify.stream;
+  Stream get navigateToRoute => _navigateToRoute.stream;
+
+  Stream get popLoading => _popLoading.stream;
 
   Stream get onlinePayment => _onlinePayment.stream;
 
@@ -113,12 +117,12 @@ class ProductBloc {
     if (tempDir == null && !kIsWeb) {
       tempDir = await getExternalStorageDirectory();
     }
-    _loadingMoreProducts.value = true;
+    _loadingMoreProducts.safeValue = true;
     try {
       _repository.getProduct(id).then((value) {
-        _product.value = value.data!;
+        _product.safeValue = value.data!;
         toolbar = _product.value.productName;
-        _toolbarStream.value = _product.value.productName!;
+        _toolbarStream.safeValue = _product.value.productName!;
         _lessons = value.data!.lessons;
         if (_lessons != null) {
           _lessons?.forEach((element) async {
@@ -139,9 +143,9 @@ class ProductBloc {
               element.typeMediaShop = TypeMediaShop.lock;
             }
           });
-          _typeMediaShop.value = TypeMediaShop.downloadAndPlay;
+          _typeMediaShop.safeValue = TypeMediaShop.downloadAndPlay;
         }
-      }).whenComplete(() => _loadingMoreProducts.value = false);
+      }).whenComplete(() => _loadingMoreProducts.safeValue = false);
     } catch (e) {
       print("error:$e");
     }
@@ -158,20 +162,20 @@ class ProductBloc {
 
   void downloadFile(Lessons value) async {
     if (kIsWeb) {
-     /* html.AnchorElement anchorElement = new html.AnchorElement(href: value.video!);
+      /* html.AnchorElement anchorElement = new html.AnchorElement(href: value.video!);
       anchorElement.download = value.video!;
       anchorElement.click();*/
       html.window.open(value.video!, 'new tab');
     } else {
       value.typeMediaShop = TypeMediaShop.progress;
-      _typeMediaShop.value = TypeMediaShop.progress;
+      _typeMediaShop.safeValue = TypeMediaShop.progress;
       _repository.download(value.video!, value.path!).then((param) {
         debugPrint('path => ${value.path!}');
         value.typeMediaShop = TypeMediaShop.play;
-        _typeMediaShop.value = value.typeMediaShop!;
+        _typeMediaShop.safeValue = value.typeMediaShop!;
       }).catchError((onError) {
         value.typeMediaShop = TypeMediaShop.downloadAndPlay;
-        _typeMediaShop.value = TypeMediaShop.downloadAndPlay;
+        _typeMediaShop.safeValue = TypeMediaShop.downloadAndPlay;
       });
     }
   }
@@ -183,8 +187,6 @@ class ProductBloc {
   }
 
   void onlinePaymentClick(int productId) {
-    _loadingMoreProducts.value = true;
-    //ToDo get selected product from bloc not from ui
     Payment shopPayment = Payment();
     shopPayment.originId = kIsWeb ? 5 : 6;
     shopPayment.paymentTypeId = 0;
@@ -193,7 +195,7 @@ class ProductBloc {
     _repository.shopOnlinePayment(shopPayment).then((value) {
       if (value.data?.url != null && value.data!.url!.isNotEmpty) _checkLatestInvoice = true;
       _onlinePayment.fire(value.data?.url ?? null);
-    }).whenComplete(() => _loadingMoreProducts.value = false);
+    }).whenComplete(() => _popLoading.fire(false));
   }
 
   void mustCheckLastInvoice() {
@@ -203,50 +205,50 @@ class ProductBloc {
   void checkLastInvoice() {
     debugPrint('last invoice ${checkLatestInvoice}');
     // if(!_checkLatestInvoice.isNullOrFalse) {
-    _loadingMoreProducts.value = true;
+    _loadingMoreProducts.safeValue = true;
     _repository.shopLastInvoice().then((value) {
       if (value.data?.refId != null &&
           !value.requireData.success.isNullOrFalse &&
           !value.requireData.resolved.isNullOrFalse) {
-        _navigateToVerify.fire(true);
+        _navigateToRoute.fire(true);
       } else
-        _navigateToVerify.fire(false);
+        _navigateToRoute.fire(false);
     }).whenComplete(() => _loadingMoreProducts.value = false);
     // }
   }
 
   void checkCode(String val, int id) {
-    _discountLoading.value = true;
+    _discountLoading.safeValue = true;
     Price price = new Price();
     price.code = val;
     price.product_id = id;
     _repository.checkCouponShop(price).then((value) {
       _discountInfo = value.data;
       _product.value.discountPrice = _discountInfo!.finalPrice;
-      _usedDiscount.value = true;
+      _usedDiscount.safeValue = true;
       MemoryApp.analytics!.logEvent(name: "discount_code_shop_success", parameters: {'code': val});
     }).catchError((err) {
       debugPrint('${err.toString()}');
-      _usedDiscount.value = false;
-      _wrongDisCode.value = true;
+      _usedDiscount.safeValue = false;
+      _wrongDisCode.safeValue = true;
       MemoryApp.analytics!.logEvent(name: "discount_code_shop_fail", parameters: {'code': val});
     }).whenComplete(() {
-      _discountLoading.value = false;
+      _discountLoading.safeValue = false;
     });
   }
 
   void changeDiscountLoading(bool val) {
-    _discountLoading.value = val;
+    _discountLoading.safeValue = val;
   }
 
   void changeWrongDisCode(bool val) {
-    _wrongDisCode.value = val;
+    _wrongDisCode.safeValue = val;
   }
 
   void dispose() {
     _IsBought.close();
     _showServerError.close();
-    _navigateToVerify.close();
+    _navigateToRoute.close();
     _onlinePayment.close();
     _loadingMoreProducts.close();
     _typeMediaShop.close();
@@ -254,5 +256,6 @@ class ProductBloc {
     _wrongDisCode.close();
     _discountLoading.close();
     _product.close();
+    _popLoading.close();
   }
 }

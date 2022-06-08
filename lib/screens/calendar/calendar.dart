@@ -14,6 +14,7 @@ import 'package:behandam/widget/dialog_close.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:shamsi_date/shamsi_date.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -32,10 +33,9 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
   void initState() {
     super.initState();
     bloc = CalendarBloc();
-    jalali = Jalali.fromDateTime(
-        DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10)));
-    debugPrint(
-        'jalali jalali ${Jalali.now().toDateTime().toString().substring(0, 10)} / $jalali');
+    jalali =
+        Jalali.fromDateTime(DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10)));
+    debugPrint('jalali jalali ${Jalali.now().toDateTime().toString().substring(0, 10)} / $jalali');
     makeCalenderDays();
   }
 
@@ -62,32 +62,34 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
 
     return Scaffold(
       appBar: Toolbar(titleBar: intl.calendar),
-      body: SingleChildScrollView(
-        child: StreamBuilder(
-          stream: bloc.loadingContent,
-          builder: (_, AsyncSnapshot<bool> snapshot) {
-            return Card(
-              shape: AppShapes.rectangleMedium,
-              elevation: 1,
-              margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Column(
-                  children: [
-                    header(),
-                    days(),
-                    Divider(
-                      height: 2.h,
-                      thickness: 0.5,
-                      color: AppColors.labelColor,
-                    ),
-                    Space(height: 2.h),
-                    calendar(),
-                  ],
+      body: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: StreamBuilder(
+            stream: bloc.loadingContent,
+            builder: (_, AsyncSnapshot<bool> snapshot) {
+              return Card(
+                shape: AppShapes.rectangleMedium,
+                elevation: 1,
+                margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  child: Column(
+                    children: [
+                      header(),
+                      days(),
+                      Divider(
+                        height: 2.h,
+                        thickness: 0.5,
+                        color: AppColors.labelColor,
+                      ),
+                      Space(height: 2.h),
+                      calendar(),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -116,9 +118,7 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
         }
       }
       if (jalali.withDay(jalali.monthLength).weekDay != 7) {
-        for (int i = 1;
-            i <= (7 - jalali.withDay(jalali.monthLength).weekDay);
-            i++) {
+        for (int i = 1; i <= (7 - jalali.withDay(jalali.monthLength).weekDay); i++) {
           final shamsi = jalali.withDay(jalali.monthLength).addDays(i);
           monthDays.add(DayItem(
             jalali: shamsi,
@@ -263,35 +263,28 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
   }
 
   void findingStartEndTerm(Term term) {
-    final termStarts = monthDays.where((element) =>
-        element.gregorian.toDateTime().toString().substring(0, 10) ==
-        term.startedAt);
+    final termStarts = monthDays.where(
+        (element) => element.gregorian.toDateTime().toString().substring(0, 10) == term.startedAt);
     final termEnds = monthDays.where((element) =>
         element.gregorian.toDateTime().toString().substring(0, 10) ==
-        (term.refundedAt == null || term.refundedAt!.isEmpty
-            ? term.expiredAt
-            : term.refundedAt));
+        (term.refundedAt == null || term.refundedAt!.isEmpty ? term.expiredAt : term.refundedAt));
     termStarts.forEach((dayItem) {
-      if (!dayItem.types.contains(DayType.termStart))
-        dayItem.types.add(DayType.termStart);
+      if (!dayItem.types.contains(DayType.termStart)) dayItem.types.add(DayType.termStart);
       debugPrint('term start ${dayItem.gregorian} / ${dayItem.types}');
     });
     termEnds.forEach((dayItem) {
-      if (!dayItem.types.contains(DayType.termEnd))
-        dayItem.types.add(DayType.termEnd);
+      if (!dayItem.types.contains(DayType.termEnd)) dayItem.types.add(DayType.termEnd);
       debugPrint('term end ${dayItem.gregorian} / ${dayItem.types}');
     });
   }
 
   void newTermEvent(Term term) {
-    final termEndIndex = monthDays.indexWhere((element) =>
-        element.gregorian.toDateTime().toString().substring(0, 10) ==
-        term.expiredAt);
+    final termEndIndex = monthDays.indexWhere(
+        (element) => element.gregorian.toDateTime().toString().substring(0, 10) == term.expiredAt);
     if (termEndIndex >= 0 && termEndIndex < monthDays.length - 1) {
       if (!monthDays[termEndIndex + 1].types.contains(DayType.newTerm))
         monthDays[termEndIndex + 1].types.add(DayType.newTerm);
-      debugPrint(
-          'new term ${termEndIndex} / ${monthDays[termEndIndex + 1].types}');
+      debugPrint('new term ${termEndIndex} / ${monthDays[termEndIndex + 1].types}');
     }
   }
 
@@ -310,15 +303,10 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
                 .inDays >
             1) {
       final delays = monthDays.where((element) =>
-          element.gregorian
-              .toDateTime()
-              .isAfter(DateTime.parse(term.startedAt)) &&
-          element.gregorian
-              .toDateTime()
-              .isBefore(DateTime.parse(term.menus!.first.startedAt)));
+          element.gregorian.toDateTime().isAfter(DateTime.parse(term.startedAt)) &&
+          element.gregorian.toDateTime().isBefore(DateTime.parse(term.menus!.first.startedAt)));
       delays.forEach((dayItem) {
-        if (!dayItem.types.contains(DayType.menuAlert))
-          dayItem.types.add(DayType.menuAlert);
+        if (!dayItem.types.contains(DayType.menuAlert)) dayItem.types.add(DayType.menuAlert);
       });
     }
   }
@@ -332,15 +320,10 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
               .inDays >
           1) {
         final delays = monthDays.where((element) =>
-            element.gregorian
-                .toDateTime()
-                .isAfter(DateTime.parse(term.menus![i - 1].expiredAt)) &&
-            element.gregorian
-                .toDateTime()
-                .isBefore(DateTime.parse(term.menus![i].startedAt)));
+            element.gregorian.toDateTime().isAfter(DateTime.parse(term.menus![i - 1].expiredAt)) &&
+            element.gregorian.toDateTime().isBefore(DateTime.parse(term.menus![i].startedAt)));
         delays.forEach((dayItem) {
-          if (!dayItem.types.contains(DayType.menuAlert))
-            dayItem.types.add(DayType.menuAlert);
+          if (!dayItem.types.contains(DayType.menuAlert)) dayItem.types.add(DayType.menuAlert);
         });
       }
     }
@@ -353,15 +336,12 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
                 .inDays >
             1) {
       final delays = monthDays.where((element) =>
-          element.gregorian
-              .toDateTime()
-              .isAfter(DateTime.parse(term.menus!.last.expiredAt)) &&
-          element.gregorian
-              .toDateTime()
-              .isBefore(DateTime.parse(term.expiredAt)));
+          element.gregorian.toDateTime().isAfter(DateTime.parse(term.menus!.last.expiredAt)) &&
+          element.gregorian.toDateTime().isBefore(DateTime.parse(term.expiredAt)));
       delays.forEach((dayItem) {
-        if (dayItem.gregorian.toDateTime().isBefore(
-                DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
+        if (dayItem.gregorian
+                .toDateTime()
+                .isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
             !dayItem.types.contains(DayType.menuAlert)) {
           debugPrint(
               'menu alert ${dayItem.gregorian.toDateTime()} / ${DateTime.now()} / ${dayItem.gregorian.toDateTime().isBefore(DateTime.now())}');
@@ -379,20 +359,17 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
   }
 
   void visitEvents(Visit visit, String termExpire) {
-    final visitEndIndex = monthDays.indexWhere((element) =>
-        element.gregorian.toDateTime().toString().substring(0, 10) ==
-        visit.expiredAt);
+    final visitEndIndex = monthDays.indexWhere(
+        (element) => element.gregorian.toDateTime().toString().substring(0, 10) == visit.expiredAt);
     if (visitEndIndex >= 0 && visitEndIndex < monthDays.length - 1) {
-      if (!monthDays[visitEndIndex + 1].gregorian.toDateTime().isBefore(
-              DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
-          monthDays[visitEndIndex]
+      if (!monthDays[visitEndIndex + 1]
               .gregorian
               .toDateTime()
-              .isBefore(DateTime.parse(termExpire)) &&
+              .isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
+          monthDays[visitEndIndex].gregorian.toDateTime().isBefore(DateTime.parse(termExpire)) &&
           !monthDays[visitEndIndex + 1].types.contains(DayType.visit))
         monthDays[visitEndIndex + 1].types.add(DayType.visit);
-      debugPrint(
-          'inside visit 2 ${visitEndIndex} / ${monthDays[visitEndIndex + 1].types}');
+      debugPrint('inside visit 2 ${visitEndIndex} / ${monthDays[visitEndIndex + 1].types}');
     }
   }
 
@@ -409,12 +386,9 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
               element.gregorian
                   .toDateTime()
                   .isAfter(DateTime.parse(term.visits![i - 1].expiredAt)) &&
-              element.gregorian
-                  .toDateTime()
-                  .isBefore(DateTime.parse(term.visits![i].visitedAt)));
+              element.gregorian.toDateTime().isBefore(DateTime.parse(term.visits![i].visitedAt)));
           delays.forEach((dayItem) {
-            if (!dayItem.types.contains(DayType.visitAlert))
-              dayItem.types.add(DayType.visitAlert);
+            if (!dayItem.types.contains(DayType.visitAlert)) dayItem.types.add(DayType.visitAlert);
           });
         }
       }
@@ -429,15 +403,12 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
                 .inDays >
             1) {
       final delays = monthDays.where((element) =>
-          element.gregorian
-              .toDateTime()
-              .isAfter(DateTime.parse(term.visits!.last.expiredAt)) &&
-          element.gregorian
-              .toDateTime()
-              .isBefore(DateTime.parse(term.expiredAt)));
+          element.gregorian.toDateTime().isAfter(DateTime.parse(term.visits!.last.expiredAt)) &&
+          element.gregorian.toDateTime().isBefore(DateTime.parse(term.expiredAt)));
       delays.forEach((dayItem) {
-        if (dayItem.gregorian.toDateTime().isBefore(
-                DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
+        if (dayItem.gregorian
+                .toDateTime()
+                .isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
             !dayItem.types.contains(DayType.visitAlert)) {
           // debugPrint('menu alert ${dayItem.gregorian.toDateTime()} / ${DateTime.now()} / ${dayItem.gregorian.toDateTime().isBefore(DateTime.now())}');
           dayItem.types.add(DayType.visitAlert);
@@ -459,85 +430,63 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
   void findMenuEndStart(Menu menu) {
     final menuStarts = monthDays
         .where((element) =>
-            element.gregorian.toDateTime().toString().substring(0, 10) ==
-            menu.startedAt)
+            element.gregorian.toDateTime().toString().substring(0, 10) == menu.startedAt)
         .toList();
     final menuEnds = monthDays
         .where((element) =>
-            element.gregorian.toDateTime().toString().substring(0, 10) ==
-            menu.expiredAt)
+            element.gregorian.toDateTime().toString().substring(0, 10) == menu.expiredAt)
         .toList();
     debugPrint('menu menu ${menu.startedAt} / ${menuStarts} / $menuEnds');
     menuStarts.forEach((dayItem) {
-      if (!dayItem.types.contains(DayType.menuStart))
-        dayItem.types.add(DayType.menuStart);
+      if (!dayItem.types.contains(DayType.menuStart)) dayItem.types.add(DayType.menuStart);
       debugPrint('menu start ${dayItem.gregorian} / ${dayItem.types}');
     });
     menuEnds.forEach((dayItem) {
-      if (!dayItem.types.contains(DayType.menuEnd))
-        dayItem.types.add(DayType.menuEnd);
+      if (!dayItem.types.contains(DayType.menuEnd)) dayItem.types.add(DayType.menuEnd);
       debugPrint('menu end ${dayItem.gregorian} / ${dayItem.types}');
     });
     if (menuStarts.isNotEmpty || menuEnds.isNotEmpty)
-      menuDays(
-          menuStarts.isEmpty && menuEnds.isNotEmpty
-              ? monthDays.first
-              : menuStarts.first,
-          menuEnds.isEmpty && menuStarts.isNotEmpty
-              ? monthDays.last
-              : menuEnds.first);
+      menuDays(menuStarts.isEmpty && menuEnds.isNotEmpty ? monthDays.first : menuStarts.first,
+          menuEnds.isEmpty && menuStarts.isNotEmpty ? monthDays.last : menuEnds.first);
   }
 
   void menuDays(DayItem start, DayItem end) {
     for (int i = 0; i < monthDays.length; i++) {
-      if ((monthDays[i]
-                  .gregorian
-                  .toDateTime()
-                  .isAfter(start.gregorian.toDateTime()) &&
-              monthDays[i]
-                  .gregorian
-                  .toDateTime()
-                  .isBefore(end.gregorian.toDateTime())) ||
+      if ((monthDays[i].gregorian.toDateTime().isAfter(start.gregorian.toDateTime()) &&
+              monthDays[i].gregorian.toDateTime().isBefore(end.gregorian.toDateTime())) ||
           monthDays[i].gregorian.toDateTime() == start.gregorian.toDateTime() ||
           monthDays[i].gregorian.toDateTime() == end.gregorian.toDateTime()) {
-        if (!monthDays[i].types.contains(DayType.menu))
-          monthDays[i].types.add(DayType.menu);
+        if (!monthDays[i].types.contains(DayType.menu)) monthDays[i].types.add(DayType.menu);
       }
     }
   }
 
   void menuEvents(Menu menu, String termExpire) {
-    final menuEndIndex = monthDays.indexWhere((element) =>
-        element.gregorian.toDateTime().toString().substring(0, 10) ==
-        menu.expiredAt);
+    final menuEndIndex = monthDays.indexWhere(
+        (element) => element.gregorian.toDateTime().toString().substring(0, 10) == menu.expiredAt);
     if (menuEndIndex >= 0 && menuEndIndex < monthDays.length - 1) {
-      if (!monthDays[menuEndIndex + 1].gregorian.toDateTime().isBefore(
-              DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
-          monthDays[menuEndIndex]
+      if (!monthDays[menuEndIndex + 1]
               .gregorian
               .toDateTime()
-              .isBefore(DateTime.parse(termExpire)) &&
+              .isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
+          monthDays[menuEndIndex].gregorian.toDateTime().isBefore(DateTime.parse(termExpire)) &&
           !monthDays[menuEndIndex + 1].types.contains(DayType.newList))
         monthDays[menuEndIndex + 1].types.add(DayType.newList);
-      debugPrint(
-          'inside visit ${menuEndIndex} / ${monthDays[menuEndIndex + 1].types}');
+      debugPrint('inside visit ${menuEndIndex} / ${monthDays[menuEndIndex + 1].types}');
     }
   }
 
   Widget dayWidget(DayItem day) {
     Widget? widget;
-    if (day.types.contains(DayType.termStart) &&
-        day.types.contains(DayType.menuStart)) {
+    if (day.types.contains(DayType.termStart) && day.types.contains(DayType.menuStart)) {
       widget = termMenuStart(day);
-    } else if (day.types.contains(DayType.termEnd) &&
-        day.types.contains(DayType.menuEnd)) {
+    } else if (day.types.contains(DayType.termEnd) && day.types.contains(DayType.menuEnd)) {
       widget = termMenuEnd(day);
     } else if (day.types.contains(DayType.termStart)) {
       widget = termEndStart(DayType.termStart);
     } else if (day.types.contains(DayType.termEnd)) {
       widget = termEndStart(DayType.termEnd);
-    } else if (day.types.contains(DayType.menuStart) ||
-        day.types.contains(DayType.menuEnd)) {
+    } else if (day.types.contains(DayType.menuStart) || day.types.contains(DayType.menuEnd)) {
       widget = Container(
         margin: EdgeInsets.fromLTRB(
           day.types.contains(DayType.menuStart) ? 0 : 1.w,
@@ -547,18 +496,10 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-            bottomRight: day.types.contains(DayType.menuStart)
-                ? AppRadius.radiusMild
-                : Radius.zero,
-            topRight: day.types.contains(DayType.menuStart)
-                ? AppRadius.radiusMild
-                : Radius.zero,
-            bottomLeft: day.types.contains(DayType.menuEnd)
-                ? AppRadius.radiusMild
-                : Radius.zero,
-            topLeft: day.types.contains(DayType.menuEnd)
-                ? AppRadius.radiusMild
-                : Radius.zero,
+            bottomRight: day.types.contains(DayType.menuStart) ? AppRadius.radiusMild : Radius.zero,
+            topRight: day.types.contains(DayType.menuStart) ? AppRadius.radiusMild : Radius.zero,
+            bottomLeft: day.types.contains(DayType.menuEnd) ? AppRadius.radiusMild : Radius.zero,
+            topLeft: day.types.contains(DayType.menuEnd) ? AppRadius.radiusMild : Radius.zero,
           ),
           color: Colors.deepPurple[100],
         ),
@@ -592,12 +533,10 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
           ),
         ),
       );
-    } else if (day.types.contains(DayType.menuAlert) ||
-        day.types.contains(DayType.visitAlert)) {
+    } else if (day.types.contains(DayType.menuAlert) || day.types.contains(DayType.visitAlert)) {
       widget = GestureDetector(
-        onTap: () => dialog(day.types.contains(DayType.visitAlert)
-            ? DayType.visitAlert
-            : DayType.menuAlert),
+        onTap: () =>
+            dialog(day.types.contains(DayType.visitAlert) ? DayType.visitAlert : DayType.menuAlert),
         child: Container(
           child: Stack(
             children: [
@@ -617,9 +556,7 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
                       : 'assets/images/foodlist/advice/bulb_plus.svg',
                   width: 4.w,
                   fit: BoxFit.fitWidth,
-                  color: day.types.contains(DayType.visitAlert)
-                      ? null
-                      : AppColors.warning,
+                  color: day.types.contains(DayType.visitAlert) ? null : AppColors.warning,
                 ),
               ),
             ],
@@ -639,17 +576,20 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
         ),
       );
     }
-    if (!day.gregorian.toDateTime().isBefore(
-            DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
+    if (!day.gregorian
+            .toDateTime()
+            .isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
         day.types.contains(DayType.visit)) {
       widget = event(DayType.visit, widget);
-    } else if (!day.gregorian.toDateTime().isBefore(
-            DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
+    } else if (!day.gregorian
+            .toDateTime()
+            .isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
         day.types.contains(DayType.newList)) {
       widget = event(DayType.newList, widget);
     }
-    if (!day.gregorian.toDateTime().isBefore(
-            DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
+    if (!day.gregorian
+            .toDateTime()
+            .isBefore(DateTime.parse(DateTime.now().toString().substring(0, 10))) &&
         day.types.contains(DayType.newTerm)) {
       widget = event(DayType.newTerm, widget);
     }
@@ -687,18 +627,10 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-          bottomRight: day.types.contains(DayType.termStart)
-              ? AppRadius.radiusMild
-              : Radius.zero,
-          topRight: day.types.contains(DayType.termStart)
-              ? AppRadius.radiusMild
-              : Radius.zero,
-          bottomLeft: day.types.contains(DayType.termEnd)
-              ? AppRadius.radiusMild
-              : Radius.zero,
-          topLeft: day.types.contains(DayType.termEnd)
-              ? AppRadius.radiusMild
-              : Radius.zero,
+          bottomRight: day.types.contains(DayType.termStart) ? AppRadius.radiusMild : Radius.zero,
+          topRight: day.types.contains(DayType.termStart) ? AppRadius.radiusMild : Radius.zero,
+          bottomLeft: day.types.contains(DayType.termEnd) ? AppRadius.radiusMild : Radius.zero,
+          topLeft: day.types.contains(DayType.termEnd) ? AppRadius.radiusMild : Radius.zero,
         ),
         color: Colors.deepPurple[100],
       ),
@@ -733,18 +665,10 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-          bottomRight: day.types.contains(DayType.termStart)
-              ? AppRadius.radiusMild
-              : Radius.zero,
-          topRight: day.types.contains(DayType.termStart)
-              ? AppRadius.radiusMild
-              : Radius.zero,
-          bottomLeft: day.types.contains(DayType.termEnd)
-              ? AppRadius.radiusMild
-              : Radius.zero,
-          topLeft: day.types.contains(DayType.termEnd)
-              ? AppRadius.radiusMild
-              : Radius.zero,
+          bottomRight: day.types.contains(DayType.termStart) ? AppRadius.radiusMild : Radius.zero,
+          topRight: day.types.contains(DayType.termStart) ? AppRadius.radiusMild : Radius.zero,
+          bottomLeft: day.types.contains(DayType.termEnd) ? AppRadius.radiusMild : Radius.zero,
+          topLeft: day.types.contains(DayType.termEnd) ? AppRadius.radiusMild : Radius.zero,
         ),
         color: Colors.deepPurple[100],
       ),
@@ -923,24 +847,19 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
     String title = '';
     switch (type) {
       case DayType.visitAlert:
-        title = intl.youDidNotSubmitWeight(
-            MemoryApp.userInformation?.firstName ?? intl.user);
+        title = intl.youDidNotSubmitWeight(MemoryApp.userInformation?.firstName ?? intl.user);
         break;
       case DayType.menuAlert:
-        title = intl.youDidNotGetNewMenu(
-            MemoryApp.userInformation?.firstName ?? intl.user);
+        title = intl.youDidNotGetNewMenu(MemoryApp.userInformation?.firstName ?? intl.user);
         break;
       case DayType.visit:
-        title = intl.visitShouldBeRenewed(
-            MemoryApp.userInformation?.firstName ?? intl.user);
+        title = intl.visitShouldBeRenewed(MemoryApp.userInformation?.firstName ?? intl.user);
         break;
       case DayType.newList:
-        title = intl.listShouldBeRenewed(
-            MemoryApp.userInformation?.firstName ?? intl.user);
+        title = intl.listShouldBeRenewed(MemoryApp.userInformation?.firstName ?? intl.user);
         break;
       case DayType.newTerm:
-        title = intl.termShouldBeRenewed(
-            MemoryApp.userInformation?.firstName ?? intl.user);
+        title = intl.termShouldBeRenewed(MemoryApp.userInformation?.firstName ?? intl.user);
         break;
       case DayType.usual:
         // TODO: Handle this case.
@@ -979,7 +898,7 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.loadContent();
   }
 
   @override

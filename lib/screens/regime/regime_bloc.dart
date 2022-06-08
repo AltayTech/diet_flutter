@@ -1,27 +1,27 @@
 import 'dart:async';
+
+import 'package:behandam/app/app.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/extensions/stream.dart';
+import 'package:behandam/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
-enum HelpPage{
-  regimeType,
-  menuType,
-  packageType,
-  fasting
-}
+enum HelpPage { regimeType, menuType, packageType, fasting }
+
 class RegimeBloc {
   RegimeBloc();
 
   final _repository = Repository.getInstance();
-
+  late PhysicalInfoData _physicalInfoData;
   late String _path;
   late String _name;
   final _waiting = BehaviorSubject<bool>();
@@ -59,36 +59,42 @@ class RegimeBloc {
 
   Stream get showServerError => _showServerError.stream;
 
+  BodyStatus get bodyStatus => _status.value;
+
   void regimeTypeMethod() async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.regimeType().then((value) {
       _itemsList.value = value.data!.items!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void physicalInfoData() async {
-    _waiting.value = true;
-    _repository.physicalInfo().then((value) {
-      _physicalInfo.value = value.data!;
-    }).catchError((e) => debugPrint('error error $e')).whenComplete(() => _waiting.value = false);
+    _waiting.safeValue = true;
+    _repository
+        .physicalInfo()
+        .then((value) {
+          _physicalInfo.value = value.data!;
+        })
+        .catchError((e) => debugPrint('error error $e'))
+        .whenComplete(() => _waiting.safeValue = false);
   }
 
   void helpMethod(int id) async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.helpDietType(id).then((value) {
       _help.value = value.data!;
       _helpers.value = value.data!.helpers!;
       _helpTitle.value = value.requireData.name!;
       _helpMedia.value = value.requireData.media!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void helpBodyState(int id) async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.helpBodyState(id).then((value) {
       _name = value.data!.name!;
       _helpers.value = value.data!.helpers!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void pathMethod(RegimeType regime) async {
@@ -98,22 +104,26 @@ class RegimeBloc {
       _path = value.next!;
       _navigateToVerify.fire(regime);
     }).whenComplete(() {
-      _showServerError.fire(true);
-      _waiting.value = false;
+      if (!MemoryApp.isNetworkAlertShown) {
+        _showServerError.fire(true);
+        _waiting.safeValue = false;
+      }
     });
   }
 
   void sendInfo(PhysicalInfoData info) async {
     _repository.sendInfo(info).then((value) {
       _navigateToVerify.fire(value.next);
+    }).catchError((err) {
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
     });
   }
 
   void getStatus() async {
-    _waiting.value = true;
+    _waiting.safeValue = true;
     _repository.getStatus().then((value) {
       _status.value = value.data!;
-    }).whenComplete(() => _waiting.value = false);
+    }).whenComplete(() => _waiting.safeValue = false);
   }
 
   void nextStep() async {
@@ -125,13 +135,32 @@ class RegimeBloc {
   void sendVisit(PhysicalInfoData info) async {
     _repository.visit(info).then((value) {
       _navigateToVerify.fire(value.next);
+    }).catchError((err) {
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
     });
   }
+
   void sendWeight(PhysicalInfoData info) async {
     _repository.editVisit(info).then((value) {
       _navigateToVerify.fire(value.next);
+    }).catchError((err) {
+      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
     });
   }
+
+  void setPhysicalInfo({required PhysicalInfoData data}) {
+    _physicalInfoData = data;
+  }
+
+  void sendRequest() {
+    if (navigator.currentConfiguration!.path == '/list${Routes.weightEnter}')
+      sendVisit(_physicalInfoData);
+    else if (navigator.currentConfiguration!.path == '/renew/weight')
+      sendWeight(_physicalInfoData);
+    else
+      sendInfo(_physicalInfoData);
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateToVerify.close();

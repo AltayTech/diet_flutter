@@ -11,6 +11,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CallTicket extends StatefulWidget {
@@ -26,95 +27,102 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
     // TODO: implement initState
     super.initState();
     callBloc = CallBloc();
+    callBloc.getCalls();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    return CallProvider(callBloc, child: Scaffold(
-      backgroundColor: Color.fromARGB(255, 245, 245, 245),
-      body: StreamBuilder(
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data == false) {
-            return SingleChildScrollView(
-              child: Padding(
-                child: Column(children: [
-                  Padding(
+    return CallProvider(callBloc,
+        child: Scaffold(
+          backgroundColor: Color.fromARGB(255, 245, 245, 245),
+          body: StreamBuilder(
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data == false) {
+                return content();
+              } else
+                return SpinKitCircle(
+                  size: 7.w,
+                  color: AppColors.primary,
+                );
+            },
+            stream: callBloc.progressNetwork,
+          ),
+        ));
+  }
+
+  Widget content() {
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: Padding(
+          child: Column(children: [
+            Padding(
+              child: Text(
+                intl.descriptionCallService,
+                textDirection: context.textDirectionOfLocale,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption,
+              ),
+              padding: EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 16),
+            ),
+            Padding(
+              child: Row(
+                textDirection: context.textDirectionOfLocale,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '${intl.callNumber} : ',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.caption,
+                    textDirection: context.textDirectionOfLocale,
+                  ),
+                  Text(
+                    MemoryApp.userInformation?.callNumber ?? MemoryApp.userInformation!.mobile!,
+                    textAlign: TextAlign.center,
+                    textDirection: context.textDirectionOfLocale,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  Space(width: 2.5.w),
+                  MaterialButton(
                     child: Text(
-                      intl.descriptionCallService,
-                      textDirection: context.textDirectionOfLocale,
+                      intl.edit,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.caption,
-                    ),
-                    padding: EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 16),
-                  ),
-                  Padding(
-                    child: Row(
                       textDirection: context.textDirectionOfLocale,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${intl.callNumber} : ',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.caption,
-                          textDirection: context.textDirectionOfLocale,
-                        ),
-                        Text(
-                          MemoryApp.userInformation?.callNumber ??
-                              MemoryApp.userInformation!.mobile!,
-                          textAlign: TextAlign.center,
-                          textDirection: context.textDirectionOfLocale,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        Space(width: 2.5.w),
-                        MaterialButton(
-                          child: Text(
-                            intl.edit,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.caption,
-                            textDirection: context.textDirectionOfLocale,
-                          ),
-                          onPressed: () {
-                            VxNavigator.of(context).push(Uri.parse(Routes.editProfile));
-                          },
-                          padding: EdgeInsets.only(top: 1.w, bottom: 1.w),
-                          color: Color.fromARGB(255, 245, 245, 245),
-                          elevation: 0,
-                          focusColor: Color.fromARGB(255, 245, 245, 245),
-                          focusElevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
-                              side: BorderSide(color: Theme.of(context).primaryColor, width: 2.0)),
-                        ),
-                      ],
                     ),
-                    padding: EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 16),
-                  ),
-                  StreamBuilder(
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data == false) {
-                        return CallListWidget();
-                      } else {
-                        return noAccessCall();
-                      }
+                    onPressed: () {
+                      VxNavigator.of(context).push(Uri.parse(Routes.editProfile));
                     },
-                    stream: callBloc.notFoundCall,
+                    padding: EdgeInsets.only(top: 1.w, bottom: 1.w),
+                    color: Color.fromARGB(255, 245, 245, 245),
+                    elevation: 0,
+                    focusColor: Color.fromARGB(255, 245, 245, 245),
+                    focusElevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                        side: BorderSide(color: Theme.of(context).primaryColor, width: 2.0)),
                   ),
-                ]),
-                padding: EdgeInsets.only(top: 2.h, bottom: 2.h),
+                ],
               ),
-            );
-          } else
-            return SpinKitCircle(
-              size: 7.w,
-              color: AppColors.primary,
-            );
-        },
-        stream: callBloc.progressNetwork,
+              padding: EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 16),
+            ),
+            StreamBuilder(
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data == false) {
+                  return CallListWidget();
+                } else {
+                  return noAccessCall();
+                }
+              },
+              stream: callBloc.notFoundCall,
+            ),
+          ]),
+          padding: EdgeInsets.only(top: 2.h, bottom: 2.h),
+        ),
       ),
-    ));
+    );
   }
 
   Widget noAccessCall() {
@@ -151,27 +159,15 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
               ])),
     );
   }
+
   @override
   void dispose() {
     callBloc.dispose();
     super.dispose();
   }
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+    callBloc.getCalls();
   }
 }

@@ -12,11 +12,13 @@ class PackageItem {
   @JsonKey(name: "id")
   int? id;
   @JsonKey(name: "price")
-  Price? price;
+  PackagePrice? price;
   @JsonKey(name: "name")
   String? name;
   @JsonKey(name: "services")
   List<ServicePackage>? services;
+  @JsonKey(name: "media")
+  String? media;
 
   @JsonKey(name: "package_id")
   int? package_id;
@@ -35,6 +37,30 @@ class PackageItem {
   factory PackageItem.fromJson(Map<String, dynamic> json) => _$PackageItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$PackageItemToJson(this);
+}
+
+@JsonSerializable()
+class PackagePrice {
+  @JsonKey(name: "id")
+  int? id;
+  @JsonKey(name: "priceable_id")
+  int? priceableId;
+  @JsonKey(name: "amount")
+  int? amount;
+  @JsonKey(name: "sale_amount")
+  int? saleAmount;
+  @JsonKey(name: "type")
+  int? type;
+
+  int? totalPrice;
+
+  int get priceDiscount => ((amount ?? 0) - (saleAmount ?? 0));
+
+  PackagePrice();
+
+  factory PackagePrice.fromJson(Map<String, dynamic> json) => _$PackagePriceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PackagePriceToJson(this);
 }
 
 @JsonSerializable()
