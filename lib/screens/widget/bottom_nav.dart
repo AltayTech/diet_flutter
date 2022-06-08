@@ -6,6 +6,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 
 enum BottomNavItem { PROFILE, SUPPORT, DIET, SHOP, STATUS }
 
@@ -54,8 +55,12 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
               navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
             break;
           case BottomNavItem.SHOP:
-            if (widget.currentTab != BottomNavItem.SHOP)
-              navigator.routeManager.clearAndPush(Uri.parse(Routes.shopHome));
+            if (widget.currentTab != BottomNavItem.SHOP) {
+              if (FlavorConfig.instance.variables['isCafeBazaar'])
+                navigator.routeManager.clearAndPush(Uri.parse(Routes.vitrin));
+              else
+                navigator.routeManager.clearAndPush(Uri.parse(Routes.shopHome));
+            }
             break;
           case BottomNavItem.STATUS:
             if (widget.currentTab != BottomNavItem.STATUS)
@@ -71,7 +76,6 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
           children: <Widget>[
             Expanded(
               child: Container(
-
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(2.w),
                 child: Stack(
@@ -131,8 +135,11 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
                 context)),
         Expanded(
             flex: 1,
-            child: item(
-                'assets/images/tab/menu_shop.svg', BottomNavItem.SHOP, intl.shopMenu, context)),
+            child: !FlavorConfig.instance.variables['isCafeBazaar']
+                ? item(
+                    'assets/images/tab/menu_shop.svg', BottomNavItem.SHOP, intl.shopMenu, context)
+                : item('assets/images/tab/tools_menu_icon.svg', BottomNavItem.SHOP, intl.vitrin,
+                    context)),
         Expanded(
             flex: 1,
             child: item(

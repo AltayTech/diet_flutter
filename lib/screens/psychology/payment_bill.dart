@@ -25,14 +25,14 @@ class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPayme
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     calenderBloc = CalenderBloc();
     listenBloc();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     calenderBloc.dispose();
     super.dispose();
   }

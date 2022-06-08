@@ -13,7 +13,8 @@ Future<void> main() async {
       "urlTerms": "https://kermany.com/terms/",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
-      'isProduction': false
+      'isProduction': false,
+      'isCafeBazaar':false
     },
   );
   await entryPoint();

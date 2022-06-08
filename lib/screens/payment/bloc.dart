@@ -305,6 +305,10 @@ class PaymentBloc {
       getLastInvoice();
   }
 
+  void changeUseDiscount() {
+    _usedDiscount.value = true;
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateTo.close();

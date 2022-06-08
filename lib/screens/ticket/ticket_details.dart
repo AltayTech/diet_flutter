@@ -116,7 +116,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                         child: StreamBuilder(
                           stream: bloc.progressNetwork,
                           builder: (ctx, snapshot) {
-                            WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToEnd());
+                            WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
                             if (snapshot.data != null &&
                                 snapshot.data == false &&
                                 bloc.ticketDetails != null) {

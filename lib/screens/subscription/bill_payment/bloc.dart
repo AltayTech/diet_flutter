@@ -204,7 +204,7 @@ class BillPaymentBloc {
     _repository.latestInvoice().then((value) {
       _onlinePayment.fire(value.data!.success);
       _path = value.next ?? '';
-    });
+    }).whenComplete(() => _popDialog.fire(true));
   }
 
   void mustCheckLastInvoice() {

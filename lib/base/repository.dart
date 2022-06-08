@@ -624,11 +624,14 @@ class _RepositoryImpl extends Repository {
           sicknessItem.children?.forEach((element) {
             debugPrint("${element.toJson()}");
           });
-
-          selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
+          Sickness sickness=Sickness();
+          sickness.id=sicknessItem.children!.singleWhere((child) => child.isSelected!).id;
+          selectedItems.add(sickness);
         } else {
-          selectedItems.add(sicknessItem);
-          debugPrint("${sicknessItem.toJson()}");
+          Sickness sickness=Sickness();
+          sickness.id=sicknessItem.id;
+          selectedItems.add(sickness);
+          debugPrint("${sickness.toJson()}");
         }
       }
     });

@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/stream.dart';
 class StatusBloc {
   StatusBloc() {
-    _waiting.safeValue = false;
+    _waiting.safeValue = true;
   }
 
   final _repository = Repository.getInstance();
