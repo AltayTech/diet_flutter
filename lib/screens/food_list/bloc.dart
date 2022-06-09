@@ -84,7 +84,7 @@ class FoodListBloc {
     _repository.foodList(_date.value, invalidate: invalidate).then((value) {
       if (value.data?.menu != null) {
         debugPrint('food list ${value.data?.menu?.title} / $fillFood');
-        _foodList.value = value.data;
+        _foodList.safeValue = value.data;
         _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
         if (_foodList.value?.meals != null)
           for (int i = 0; i < _foodList.value!.meals!.length; i++) {

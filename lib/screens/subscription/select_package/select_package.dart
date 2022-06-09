@@ -32,29 +32,6 @@ class _SelectPackageSubscriptionScreenState
     bloc = SelectPackageSubscriptionBloc();
     bloc.getPackageSubscriptionList();
 
-    packageItem = PackageItem();
-    packageItem.index = 0;
-    packageItem.id = 1;
-    packageItem.name = 'اشتراک سه ماهه';
-    packageItem.price = PackagePrice()
-      ..amount = 100000
-      ..saleAmount = 56000
-      ..priceableId = 12;
-    packageItem.services = [ServicePackage()..name = 'رژیم', ServicePackage()..name = 'پشتیبانی'];
-    packageItem2 = PackageItem();
-    packageItem2 = PackageItem();
-    packageItem2.index = 1;
-    packageItem2.id = 2;
-    packageItem2.name = 'اشتراک شش ماهه';
-    packageItem2.price = PackagePrice()
-      ..amount = 130000
-      ..saleAmount = 99000
-      ..priceableId = 13;
-    packageItem2.services = [
-      ServicePackage()..name = 'رژیم',
-      ServicePackage()..name = 'پشتیبانی',
-      ServicePackage()..name = 'برنامه ورزش'
-    ];
   }
 
   @override

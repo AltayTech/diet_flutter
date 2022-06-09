@@ -86,9 +86,9 @@ abstract class Routes {
   static const shopPaymentOnlineFail = '/shop/payment/online/fail';
   static const dailyMessage = '/dailyMessage';
   static const privacyApp = '/privacy-policy';
-  static const selectPackageSubscription = '/subscription';
+  static const selectPackageSubscription = '/profile/subscription';
   static const billSubscription = '/subscription/payment/bill';
-  static const billSubscriptionHistory = '/subscription/history';
+  static const billSubscriptionHistory = '/profile/subscription/history';
   static const cardToCardSubscription = '/subscription/payment/card';
   static const subscriptionPaymentOnlineSuccess = '/subscription/payment/online/success';
   static const subscriptionPaymentOnlineFail = '/subscription/payment/online/fail';
