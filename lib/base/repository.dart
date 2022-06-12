@@ -175,7 +175,7 @@ abstract class Repository {
 
   NetworkResult<LatestInvoiceData> latestInvoice();
 
-  NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData);
+  NetworkResult<Payment> newPayment(Payment requestData);
 
   NetworkResult<BookingOutput> getBook(Booking booking);
 
@@ -750,7 +750,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData) {
+  NetworkResult<Payment> newPayment(Payment requestData) {
     var response = _apiClient.newPayment(requestData);
     return response;
   }

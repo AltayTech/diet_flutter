@@ -124,13 +124,14 @@ class PaymentBloc {
         : Device.get().isIos
         ? 2
         : 3;
+    //paymentTypeId==1 is cardToCard
     payment.paymentTypeId = 1;
     payment.coupon = discountCode;
     payment.packageId = packageItem!.id!;
     payment.cardOwner = newInvoice.cardOwner;
     payment.cardNum = newInvoice.cardNum;
     payment.payedAt = newInvoice.payedAt;
-    _repository.newPayment(newInvoice).then((value) {
+    _repository.newPayment(payment).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
               '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
