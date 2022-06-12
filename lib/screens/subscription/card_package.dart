@@ -11,9 +11,10 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CardPackage extends StatefulWidget {
-  PackageItem packageItem;
+  late PackageItem packageItem;
+  late bool isSelectable;
 
-  CardPackage(this.packageItem);
+  CardPackage({required this.packageItem, required this.isSelectable});
 
   @override
   _CardPackageState createState() => _CardPackageState();
@@ -44,8 +45,8 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
         borderRadius: BorderRadius.circular(20.0),
         child: InkWell(
           onTap: () {
-            DialogUtils.showBottomSheetPage(
-                context: context, child: bottomSheet());
+            if (widget.isSelectable)
+              DialogUtils.showBottomSheetPage(context: context, child: bottomSheet());
           },
           child: Container(
             padding: EdgeInsets.only(right: 3.w),
@@ -57,8 +58,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
               padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    bottomLeft: Radius.circular(10.0)),
+                    topLeft: Radius.circular(10.0), bottomLeft: Radius.circular(10.0)),
                 color: Color.fromARGB(255, 240, 239, 238),
               ),
               child: Column(
@@ -96,8 +96,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.start,
-                            textDirection:
-                                context.textDirectionOfLocaleInversed,
+                            textDirection: context.textDirectionOfLocaleInversed,
                             children: <Widget>[
                               Text(
                                 pack.name ?? '',
@@ -108,13 +107,11 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle1!
-                                    .copyWith(
-                                        letterSpacing: -0.2, fontSize: 12.sp),
+                                    .copyWith(letterSpacing: -0.2, fontSize: 12.sp),
                               ),
-                              if (pack.services != null &&
-                                  pack.services!.length > 0)
-                                ...pack.services!.map((product) => _itemOption(
-                                    product.name ?? '', pack.barColor)),
+                              if (pack.services != null && pack.services!.length > 0)
+                                ...pack.services!.map(
+                                    (product) => _itemOption(product.name ?? '', pack.barColor)),
                             ],
                           )),
                     ],
@@ -137,25 +134,19 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            textDirection:
-                                context.textDirectionOfLocaleInversed,
+                            textDirection: context.textDirectionOfLocaleInversed,
                             children: [
                               if (pack.price?.amount != null)
                                 Directionality(
                                   textDirection: context.textDirectionOfLocale,
                                   child: Text(
                                     pack.price?.saleAmount != null &&
-                                            int.parse(pack.price!.saleAmount
-                                                    .toString()) !=
-                                                0
+                                            int.parse(pack.price!.saleAmount.toString()) != 0
                                         ? '${int.parse(pack.price!.saleAmount.toString()).toString().seRagham()} ${intl.toman}'
                                         : intl.free,
                                     // '${int.parse(pack['price']['final_price'].toString())} تومان',
                                     textAlign: TextAlign.start,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(
+                                    style: Theme.of(context).textTheme.caption!.copyWith(
                                           color: pack.priceColor,
                                         ),
                                   ),
@@ -181,8 +172,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                       fontWeight: FontWeight.w400,
                                       decoration: TextDecoration.lineThrough,
                                       decorationThickness: 0.7.w,
-                                      decorationColor:
-                                          Color.fromARGB(255, 150, 150, 150),
+                                      decorationColor: Color.fromARGB(255, 150, 150, 150),
                                     ),
                                   ),
                                 ),
@@ -244,8 +234,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
             ),
             Space(height: 1.h),
             Text(
-              widget.packageItem.price != null &&
-                      widget.packageItem.price!.saleAmount != 0
+              widget.packageItem.price != null && widget.packageItem.price!.saleAmount != 0
                   ? '${widget.packageItem.price!.saleAmount.toString().seRagham()} ${intl.toman}'
                   : intl.free,
               textAlign: TextAlign.center,
@@ -262,12 +251,10 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                 height: 7.h,
                 onPressed: () {
                   Navigator.pop(context);
-
                   bloc.setPackageItem = widget.packageItem;
                   bloc.sendPackage();
 
-                  VxNavigator.of(context)
-                      .push(Uri.parse(Routes.billSubscription));
+                  VxNavigator.of(context).push(Uri.parse(Routes.billSubscription));
                 },
                 shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(30.0),

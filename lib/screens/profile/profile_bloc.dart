@@ -16,7 +16,6 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
@@ -163,7 +162,7 @@ class ProfileBloc {
   void getPdfMeal(FoodDietPdf type) {
     _showProgressItem.safeValue = true;
     _repository.getPdfUrl(type).then((value) {
-      launchURL(value.data!.url!);
+      Utils.launchURL(value.data!.url!);
       // Share.share(value['data']['url'])
     }).catchError((onError) {
       _showServerError.fireMessage(onError);

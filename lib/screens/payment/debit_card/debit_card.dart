@@ -44,7 +44,6 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
       bloc = PaymentBloc();
 
-      if (navigator.currentConfiguration!.path.contains('subscription')) {
         var arg = ModalRoute.of(context)!.settings.arguments as Map;
         bloc.setPackage = arg['package'] as PackageItem;
 
@@ -52,9 +51,6 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
         if (bloc.discountCode != null) bloc.changeUseDiscount();
         // call new service
         bloc.getBankAccountActiveCard();
-      } else {
-        bloc.getLastInvoice();
-      }
 
       listenBloc();
     }

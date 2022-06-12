@@ -67,7 +67,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                             initialData: false,
                             stream: bloc.usedDiscount,
                             builder: (context, usedDiscount) {
-                              if ((bloc.packageItem!.price?.totalPrice == null ||
+                              if ((bloc.packageItem?.price?.totalPrice == null ||
                                   bloc.packageItem!.price!.totalPrice! > 0))
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +166,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                     softWrap: false,
                     textAlign: TextAlign.start,
                     style: typography.caption!
-                        .copyWith(color: isSelected ? AppColors.priceColor : Colors.black),
+                        .copyWith(color: isSelected ? AppColors.priceColor : Colors.black,fontSize: 10.sp),
                   ),
                 ),
               ),

@@ -16,7 +16,7 @@ class BillPaymentBloc {
     _enterDiscount.value = false;
     _selectedPayment.value = PaymentType.online;
     _checkedRules.value = false;
-    _waiting.safeValue = false;
+    _waiting.safeValue = true;
   }
 
   final _repository = Repository.getInstance();
@@ -67,7 +67,7 @@ class BillPaymentBloc {
 
   bool get isWrongDisCode => _wrongDisCode.valueOrNull ?? false;
 
-  PaymentType get isOnline => _selectedPayment.value;
+  PaymentType get type => _selectedPayment.value;
 
   Price? get discountInfo => _discountInfo;
 
@@ -162,7 +162,7 @@ class BillPaymentBloc {
       payment.paymentTypeId =
           (discountInfo != null && discountInfo!.finalPrice == 0)
               ? 2
-              : isOnline == PaymentType.online
+              : type == PaymentType.online
                   ? 0
                   : 1;
       payment.coupon = discountCode;
@@ -189,7 +189,7 @@ class BillPaymentBloc {
       payment.paymentTypeId =
           (discountInfo != null && discountInfo!.finalPrice == 0)
               ? 2
-              : isOnline == PaymentType.online
+              : type == PaymentType.online
                   ? 0
                   : 1;
       payment.coupon = discountCode;
