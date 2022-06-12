@@ -118,7 +118,20 @@ class PaymentBloc {
   }
 
   void newPayment(LatestInvoiceData newInvoice) {
-    _repository.newPayment(newInvoice).then((value) {
+    Payment payment = new Payment();
+    payment.originId = kIsWeb
+        ? 0
+        : Device.get().isIos
+        ? 2
+        : 3;
+    //paymentTypeId==1 is cardToCard
+    payment.paymentTypeId = 1;
+    payment.coupon = discountCode;
+    payment.packageId = packageItem!.id!;
+    payment.cardOwner = newInvoice.cardOwner;
+    payment.cardNum = newInvoice.cardNum;
+    payment.payedAt = newInvoice.payedAt;
+    _repository.newPayment(payment).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
               '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
@@ -163,10 +176,6 @@ class PaymentBloc {
   }
 
   void userPaymentCardToCardSubscription(LatestInvoiceData newInvoice) {
-    if (!isUsedDiscount &&
-        (discountCode != null && discountCode!.trim().isNotEmpty)) {
-      _showServerError.fireMessage('error');
-    } else {
       Payment payment = new Payment();
       payment.originId = kIsWeb
           ? 0
@@ -182,7 +191,6 @@ class PaymentBloc {
       _repository.setPaymentTypeReservePackage(payment).then((value) {
         _navigateTo.fire(value);
       }).whenComplete(() => _popLoading.fire(true));
-    }
   }
 
   void changeDiscountLoading(bool val) {

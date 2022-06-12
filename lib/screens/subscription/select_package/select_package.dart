@@ -31,7 +31,6 @@ class _SelectPackageSubscriptionScreenState
 
     bloc = SelectPackageSubscriptionBloc();
     bloc.getPackageSubscriptionList();
-
   }
 
   @override
@@ -62,7 +61,7 @@ class _SelectPackageSubscriptionScreenState
                     margin: EdgeInsets.only(top: 2.h),
                     padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
                     child: BoxEndTimeSubscription(
-                      termPackage: MemoryApp.termPackage!,
+                        termPackage: MemoryApp.termPackage!,
                         mainAxisAlignment: MainAxisAlignment.center),
                   ),
                   Container(
@@ -81,8 +80,10 @@ class _SelectPackageSubscriptionScreenState
                                     physics: ClampingScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: bloc.packageList!.length,
-                                    itemBuilder: (BuildContext context, int index) =>
-                                        CardPackage(bloc.packageList![index]))
+                                    itemBuilder: (BuildContext context, int index) => CardPackage(
+                                          isSelectable: true,
+                                          packageItem: bloc.packageList![index],
+                                        ))
                                 : Container(
                                     height: 20.h,
                                     child: Center(

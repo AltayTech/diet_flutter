@@ -1,4 +1,5 @@
 import 'package:behandam/app/app.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
@@ -122,7 +123,7 @@ Widget attachBox() {
                 child: GestureDetector(
                   onTap: () {
                     debugPrint('assistant clicked');
-                    launchURL('http://support.kermany.com/');
+                    Utils.launchURL('http://support.kermany.com/');
                   },
                   child: attachCard('assets/images/profile/assistant.svg', 'دستیار'),
                 ),
@@ -135,7 +136,7 @@ Widget attachBox() {
               Expanded(
                 flex: 1,
                 child: GestureDetector(
-                  onTap: () => launchURL('https://kermany.com/'),
+                  onTap: () => Utils.launchURL('https://kermany.com/'),
                   child: attachCard('assets/images/profile/magazine.svg', 'مجله دکتر کرمانی'),
                 ),
               ),
@@ -383,39 +384,4 @@ Widget textInput({required double height,
     // textAlign: TextAlign.start,
     validator: (val) => validation(val),
   ),);
-}
-
-void launchURL(String url) async {
-  // url = Uri.encodeFull(url).toString();
-  if (await canLaunch(url)) {
-    debugPrint('can launch');
-    await launch(
-      url,
-      forceSafariVC: false,
-      forceWebView: false,
-      enableJavaScript: true,
-      headers: <String, String>{'my_header_key': 'my_header_value'},
-    );
-  } else {
-    // throw 'Could not launch $url';
-    debugPrint('url lanuch error');
-  }
-  /*url = Uri.encodeFull(url).toString();
-    print('url $url');
-    // Uri.encodeComponent(url);
-    // print('scheme url ${url.substring(8, url.length - 1)}');
-    // final Uri _openUrl = Uri(
-    //     scheme: 'https',
-    //     path: url.substring(8, url.length - 1),
-    //     // queryParameters: {
-    //     //   'subject': 'Example Subject & Symbols are allowed!'
-    //     // }
-    // );
-    if (await canLaunch(url)) {
-       await launch(url, forceSafariVC: false,
-         forceWebView: false,);
-    } else {
-      showSnackbar('$url', SizeConfig.blockSizeHorizontal, true, _scaffoldKey);
-      throw 'Could not launch $url';
-    }*/
 }

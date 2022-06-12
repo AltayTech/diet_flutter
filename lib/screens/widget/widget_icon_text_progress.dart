@@ -1,11 +1,11 @@
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
-import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
@@ -44,7 +44,7 @@ class WidgetIconTextProgressState extends ResourcefulState<WidgetIconTextProgres
       onTap: () {
         switch (widget.index) {
           case 0:
-            launchURL('http://support.kermany.com/');
+            Utils.launchURL('http://support.kermany.com/');
             break;
           case 1:
             //Navigator.of(context).pushNamed(InboxList.routeName);
