@@ -3,6 +3,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/provider.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/card_formatter.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
@@ -62,53 +63,63 @@ class _CardOwnerBoxWidgetState extends ResourcefulState<CardOwnerBoxWidget> {
           textAlign: TextAlign.start,
           softWrap: true,
         ),
-        Container(
-          width: 100.w,
-          child: Stack(
-            children: [
-              ImageUtils.fromLocal('assets/images/bill/card.svg', fit: BoxFit.fill,),
-              Positioned(
-                child: Text(
-                  bloc.invoice?.name ?? intl.unknown,
-                  style: typography.button?.copyWith(
-                    color: Colors.black,
-                      fontWeight: FontWeight.bold
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+          child: Container(
+            width: 90.w,
+            height: 23.h,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: AppBorderRadius.borderRadiusExtraLarge),
+            child: Stack(
+              children: [
+                Positioned(
+                  child: ImageUtils.fromLocal(
+                    'assets/images/bill/shetab.svg',
+                    fit: BoxFit.fill,
                   ),
-                  textAlign: TextAlign.start,
-                  softWrap: true,
+                  left: 8.w,
+                  top: 3.5.h,
                 ),
-                right: 10.w,
-                top: 5.5.h,
-              ),
-              Positioned(
-                child: Text(
-                  CardNumberInputFormatter.getFormatString(bloc.invoice?.cardNumber ?? '62190000') ,
-                  style: typography.headline5?.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold
+                Positioned(
+                  child: Text(
+                    bloc.invoice?.name ?? intl.unknown,
+                    style: typography.button
+                        ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.start,
+                    softWrap: true,
                   ),
-                  textAlign: TextAlign.start,
-                  textDirection: TextDirection.ltr,
-                  softWrap: true,
+                  right: 8.w,
+                  top: 3.5.h,
                 ),
-                right: 10.w,
-                left: 10.w,
-                top: 13.h,
-              ),
-              Positioned(
-                child: Text(
-                  bloc.invoice?.ownerName ?? intl.unknown,
-                  style: typography.bodyText1?.copyWith(
-                    color: Colors.black,
+                Positioned(
+                  child: Text(
+                    CardNumberInputFormatter.getFormatString(
+                        bloc.invoice?.cardNumber ?? '62190000'),
+                    style: typography.headline5
+                        ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.right,
+                    textDirection: TextDirection.ltr,
+                    softWrap: true,
                   ),
-                  textAlign: TextAlign.start,
-                  softWrap: true,
+                  right: 8.w,
+                  left: 8.w,
+                  top: 13.h,
                 ),
-                right: 11.w,
-                left: 11.w,
-                top: 18.h,
-              )
-            ],
+                Positioned(
+                  child: Text(
+                    bloc.invoice?.ownerName ?? intl.unknown,
+                    style: typography.bodyText1?.copyWith(
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.start,
+                    softWrap: true,
+                  ),
+                  right: 8.w,
+                  left: 8.w,
+                  top: 18.h,
+                )
+              ],
+            ),
           ),
         ),
         copyShareBox(bloc.invoice!),
