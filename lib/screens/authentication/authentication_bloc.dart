@@ -15,6 +15,15 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
+enum ChannelSendCode {
+  SMS("sms"),
+  WHATSAPP("whatsapp");
+
+  final String value;
+
+  const ChannelSendCode(this.value);
+}
+
 class AuthenticationBloc {
   AuthenticationBloc() {
     _waiting.safeValue = false;
@@ -175,9 +184,9 @@ class AuthenticationBloc {
     });
   }
 
-  void sendCodeMethod(String mobile) {
+  void sendCodeMethod(String mobile, ChannelSendCode channel) {
     _repository
-        .verificationCode(mobile)
+        .verificationCode(mobile, channel.value)
         .then((value) => _navigateToVerify.fire(value.next))
         .whenComplete(() {
       MemoryApp.forgetPass = false;
@@ -186,8 +195,8 @@ class AuthenticationBloc {
     });
   }
 
-  void tryCodeMethod(String mobile) {
-    _repository.verificationCode(mobile);
+  void tryCodeMethod(String mobile, ChannelSendCode channel) {
+    _repository.verificationCode(mobile, channel.value);
   }
 
   void verifyMethod(VerificationCode verify) {

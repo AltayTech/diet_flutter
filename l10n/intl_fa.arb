@@ -715,5 +715,8 @@
   "noAdviceVideo": "ویدیویی برای نمایش وجود ندارد",
   "notActiveTerm": "شما اشتراک فعالی ندارید",
   "shebaNumber": "شماره شبا",
+  "selectMethodSendCode": "نوع ارسال رو انتخاب کن",
+  "sendWhatsapp": "ارسال به واتساپ",
+  "sendSMS": "ارسال پیامک",
   "understand": "متوجه شدم"
 }
