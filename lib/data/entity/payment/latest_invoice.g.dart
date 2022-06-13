@@ -18,6 +18,7 @@ LatestInvoiceData _$LatestInvoiceDataFromJson(Map<String, dynamic> json) =>
       ..success = json['success'] as bool?
       ..cardOwner = json['card_owner'] as String?
       ..cardNum = json['card_number'] as String?
+      ..name = json['name'] as String?
       ..productId = json['product_id'] as int?;
 
 Map<String, dynamic> _$LatestInvoiceDataToJson(LatestInvoiceData instance) =>
@@ -32,5 +33,6 @@ Map<String, dynamic> _$LatestInvoiceDataToJson(LatestInvoiceData instance) =>
       'success': instance.success,
       'card_owner': instance.cardOwner,
       'card_number': instance.cardNum,
+      'name': instance.name,
       'product_id': instance.productId,
     };

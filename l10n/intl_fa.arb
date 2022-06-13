@@ -630,7 +630,7 @@
   "haveDiscountCode": "کد تخفیف داری؟",
   "paymentType": "نوع پرداخت",
   "confirmAndPay": "تایید و پرداخت",
-  "kermanyRegimeConfirm": "برنامه غذایی دکتر کرمانی را می پذیرم",
+  "kermanyRegimeConfirm": " برنامه غذایی دکتر کرمانی را می پذیرم",
   "totalPrice": "مبلغ کل",
   "historySubscriptionPayment": "سوابق خرید اشتراک",
   "blockPregnancyToolbar": "توقف برنامه غذایی",
@@ -715,5 +715,6 @@
   "noAdviceVideo": "ویدیویی برای نمایش وجود ندارد",
   "notActiveTerm": "شما اشتراک فعالی ندارید",
   "shebaNumber": "شماره شبا",
+  "unknown": "نامشخص",
   "understand": "متوجه شدم"
 }

@@ -114,12 +114,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
       try {
         result = (event as NetworkResponse<Payment>).data;
       } catch (e) {}
-      ;
-      if (bloc.isOnline == PaymentType.online && result?.url != null) {
+      if (bloc.type == PaymentType.online && result?.url != null) {
         MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
         bloc.mustCheckLastInvoice();
         Utils.launchURL(result!.url!);
-      } else if (bloc.isOnline == PaymentType.cardToCard) {
+      } else if (bloc.type == PaymentType.cardToCard) {
         context.vxNav.push(Uri.parse(Routes.cardToCard));
       } else if (event.next != null) {
         if (navigator.currentConfiguration!.path.contains('subscription')) {
@@ -196,15 +195,29 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
   }
 
   void next() {
-    DialogUtils.showDialogProgress(context: context);
     if (navigator.currentConfiguration!.path.contains('subscription') &&
-        bloc.isOnline != PaymentType.cardToCard) {
+        bloc.type != PaymentType.cardToCard) {
+      DialogUtils.showDialogProgress(context: context);
       bloc.selectUserPaymentSubscription();
     } else if (navigator.currentConfiguration!.path.contains('subscription') &&
-        bloc.isOnline == PaymentType.cardToCard) {
-      VxNavigator.of(context).push(Uri.parse(Routes.cardToCardSubscription),
-          params: {'package': bloc.packageItem, 'discountCode': bloc.discountCode});
+        bloc.type == PaymentType.cardToCard) {
+      if (!bloc.isUsedDiscount &&
+          (bloc.discountCode != null && bloc.discountCode!.trim().isNotEmpty)) {
+        Utils.getSnackbarMessage(context, intl.offError);
+      } else {
+        VxNavigator.of(context).push(Uri.parse(Routes.cardToCardSubscription),
+            params: {'package': bloc.packageItem, 'discountCode': bloc.discountCode});
+      }
+    } else if (bloc.type == PaymentType.cardToCard) {
+      if (!bloc.isUsedDiscount &&
+          (bloc.discountCode != null && bloc.discountCode!.trim().isNotEmpty)) {
+        Utils.getSnackbarMessage(context, intl.offError);
+      } else {
+        VxNavigator.of(context).push(Uri.parse(Routes.cardToCard),
+            params: {'package': bloc.packageItem, 'discountCode': bloc.discountCode});
+      }
     } else {
+      DialogUtils.showDialogProgress(context: context);
       bloc.selectUserPayment();
     }
   }

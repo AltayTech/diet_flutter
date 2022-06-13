@@ -51,7 +51,7 @@ class _PurchasedSubscriptionWidget extends ResourcefulState<PurchasedSubscriptio
                     width: 2.w,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 4.w, right: 6.w,top: 1.h,bottom: 1.h),
+                    padding: EdgeInsets.only(left: 4.w, right: 6.w, top: 1.h, bottom: 1.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -68,7 +68,10 @@ class _PurchasedSubscriptionWidget extends ResourcefulState<PurchasedSubscriptio
               Space(
                 width: 2.w,
               ),
-              CardPackage(bloc.packageItem!)
+              CardPackage(
+                packageItem: bloc.packageItem!,
+                isSelectable: false,
+              )
             ]));
   }
 

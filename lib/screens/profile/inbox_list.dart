@@ -1,10 +1,11 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
-import 'package:behandam/screens/widget/widget_box.dart';
+
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
@@ -220,7 +221,7 @@ class _InboxList extends ResourcefulState<InboxList> {
                       VxNavigator.of(context)
                           .push(Uri.parse(Routes.showInbox), params: snapshot.data![index].inbox);
                     }else
-                      launchURL(snapshot.data![index].inbox!.action!);
+                      Utils.launchURL(snapshot.data![index].inbox!.action!);
                   },
                 );
               },

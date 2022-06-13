@@ -25,7 +25,7 @@ abstract class DialogUtils {
       enableDrag: enableDrag,
       builder: (context) {
         return BackdropFilter(
-          filter: ImageFilter.blur(),
+          filter: ImageFilter.blur(sigmaX: 0.5,sigmaY: 0.5),
           child: Container(
               decoration: BoxDecoration(
                   color: Colors.white,

@@ -3,6 +3,8 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/provider.dart';
+import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/card_formatter.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -56,19 +58,69 @@ class _CardOwnerBoxWidgetState extends ResourcefulState<CardOwnerBoxWidget> {
         ),
         Text(
           intl.cardToCardDescription,
-          style: typography.caption?.copyWith(
-              color: Colors.black,
-              fontWeight: FontWeight.w400,
-              fontSize: 10.sp
-          ),
+          style: typography.caption
+              ?.copyWith(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 10.sp),
           textAlign: TextAlign.start,
           softWrap: true,
         ),
-        Container(
-          width: 100.w,
-          child: ImageUtils.fromLocal(
-              'assets/images/bill/saman_bank_debit_card.svg',
-              fit: BoxFit.fill
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+          child: Container(
+            width: 90.w,
+            height: 23.h,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: AppBorderRadius.borderRadiusExtraLarge),
+            child: Stack(
+              children: [
+                Positioned(
+                  child: ImageUtils.fromLocal(
+                    'assets/images/bill/shetab.svg',
+                    fit: BoxFit.fill,
+                  ),
+                  left: 8.w,
+                  top: 3.5.h,
+                ),
+                Positioned(
+                  child: Text(
+                    bloc.invoice?.name ?? intl.unknown,
+                    style: typography.button
+                        ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.start,
+                    softWrap: true,
+                  ),
+                  right: 8.w,
+                  top: 3.5.h,
+                ),
+                Positioned(
+                  child: Text(
+                    CardNumberInputFormatter.getFormatString(
+                        bloc.invoice?.cardNumber ?? '62190000'),
+                    style: typography.headline6
+                        ?.copyWith(color: Colors.black,fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.right,
+                    textDirection: TextDirection.ltr,
+
+                    softWrap: true,
+                  ),
+                  right: 8.w,
+                  left: 8.w,
+                  top: 13.h,
+                ),
+                Positioned(
+                  child: Text(
+                    bloc.invoice?.ownerName ?? intl.unknown,
+                    style: typography.bodyText1?.copyWith(
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.start,
+                    softWrap: true,
+                  ),
+                  right: 8.w,
+                  left: 8.w,
+                  top: 18.h,
+                )
+              ],
+            ),
           ),
         ),
         copyShareBox(bloc.invoice!),
@@ -110,8 +162,8 @@ class _CardOwnerBoxWidgetState extends ResourcefulState<CardOwnerBoxWidget> {
   }
 
   Widget copyShareItem(String iconPath, String title, Function onTap) {
-    return  GestureDetector(
-      onTap:() => onTap() ,
+    return GestureDetector(
+      onTap: () => onTap(),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
@@ -120,8 +172,7 @@ class _CardOwnerBoxWidgetState extends ResourcefulState<CardOwnerBoxWidget> {
             color: Colors.red,
           ),
         ),
-        padding: EdgeInsets.symmetric(
-            horizontal: 5.w, vertical: 2.h),
+        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -138,7 +189,8 @@ class _CardOwnerBoxWidgetState extends ResourcefulState<CardOwnerBoxWidget> {
               flex: 1,
               child: Text(
                 title,
-                style: typography.caption!.copyWith(color: Colors.red, fontSize: 10.sp, fontWeight: FontWeight.w400),
+                style: typography.caption!
+                    .copyWith(color: Colors.red, fontSize: 10.sp, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),

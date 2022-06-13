@@ -36,6 +36,9 @@ class LatestInvoiceData {
   @JsonKey(name: 'card_number')
   String? cardNum;
 
+  @JsonKey(name: 'name')
+  String? name;
+
   @JsonKey(name: 'product_id')
   int? productId;
 

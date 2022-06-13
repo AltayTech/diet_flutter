@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class Utils {
   static void getSnackbarMessage(BuildContext context, String message) {
@@ -123,37 +124,35 @@ class Utils {
 
   static void launchURL(String url) async {
     // url = Uri.encodeFull(url).toString();
-    if (await canLaunch(url)) {
-      print('can launch');
-      await launch(
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(
         url,
-        forceSafariVC: false,
-        forceWebView: false,
-        enableJavaScript: true,
-        headers: <String, String>{'my_header_key': 'my_header_value'},
+        mode: LaunchMode.externalApplication,
       );
     } else {
       // throw 'Could not launch $url';
-      print('url lanuch error');
+      debugPrint('url lanuch error');
     }
   }
+
   static void launchURLWebView(String url) async {
     // url = Uri.encodeFull(url).toString();
-    if (await canLaunch(url)) {
+    if (await canLaunchUrlString(url)) {
       print('can launch');
-      await launch(
+      await launchUrlString(
         url,
-        forceSafariVC: true,
-        forceWebView: true,
-        enableJavaScript: true,
-        enableDomStorage: true,
-        headers: <String, String>{'my_header_key': 'my_header_value'},
+        mode: LaunchMode.inAppWebView,
+        webViewConfiguration: WebViewConfiguration(
+          enableJavaScript: true,
+          enableDomStorage: true,
+        ),
       );
     } else {
       // throw 'Could not launch $url';
-      print('url lanuch error');
+      debugPrint('url lanuch error');
     }
   }
+
   static Future<String> versionApp() async {
     var package = await PackageInfo.fromPlatform();
     return package.version;
@@ -180,23 +179,23 @@ class Utils {
   static Widget loading(double size) {
     Size siz = WidgetsBinding.instance.window.physicalSize;
     double width = siz.width;
-    double height = siz.height/2;
+    double height = siz.height / 2;
     return Center(
         child: Container(
-          height: height,
-          child: SpinKitCircle(
-            size: size,
-            itemBuilder: (BuildContext context, index) {
-              return DecoratedBox(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.primary,
-                        width: 3,
-                      ),
-                      color: Colors.white,
-                      shape: BoxShape.circle));
-            },
-          ),
-        ));
+      height: height,
+      child: SpinKitCircle(
+        size: size,
+        itemBuilder: (BuildContext context, index) {
+          return DecoratedBox(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColors.primary,
+                    width: 3,
+                  ),
+                  color: Colors.white,
+                  shape: BoxShape.circle));
+        },
+      ),
+    ));
   }
 }
