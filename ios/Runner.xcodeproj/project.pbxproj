@@ -397,7 +397,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -409,6 +409,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -570,7 +571,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -582,6 +583,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -737,7 +739,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -749,6 +751,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -903,7 +906,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -915,6 +918,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -992,7 +996,7 @@
 					"-framework",
 					"\"webview_flutter_wkwebview\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.iapps.export;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.iapps;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Iapps Provisioning Profile";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -1076,7 +1080,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1088,6 +1092,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1250,7 +1255,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1262,6 +1267,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1423,7 +1429,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1435,6 +1441,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1592,7 +1599,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1604,6 +1611,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1760,7 +1768,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1772,6 +1780,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1927,7 +1936,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1939,6 +1948,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2093,7 +2103,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2105,6 +2115,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2259,7 +2270,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2271,6 +2282,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2424,7 +2436,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2436,6 +2448,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2652,7 +2665,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2664,6 +2677,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2766,7 +2780,7 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 360;
+				CURRENT_PROJECT_VERSION = 361;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2778,6 +2792,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

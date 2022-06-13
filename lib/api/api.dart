@@ -235,7 +235,7 @@ abstract class RestClient {
   @GET("/latest-invoice")
   NetworkResult<LatestInvoiceData> latestInvoice();
 
-  @POST("/user/payment/cart2cart")
+  @POST("/user/payment/card2card")
   NetworkResult<Payment> newPayment(@Body() Payment requestData);
 
   @POST("/psychology/v2/booking")
