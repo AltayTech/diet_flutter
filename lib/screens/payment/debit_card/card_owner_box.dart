@@ -95,10 +95,11 @@ class _CardOwnerBoxWidgetState extends ResourcefulState<CardOwnerBoxWidget> {
                   child: Text(
                     CardNumberInputFormatter.getFormatString(
                         bloc.invoice?.cardNumber ?? '62190000'),
-                    style: typography.headline5
-                        ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                    style: typography.headline6
+                        ?.copyWith(color: Colors.black,fontSize: 20.sp, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.right,
                     textDirection: TextDirection.ltr,
+
                     softWrap: true,
                   ),
                   right: 8.w,
