@@ -4,6 +4,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/screens/daily_menu/bloc.dart';
+import 'package:behandam/screens/daily_menu/daily_menu.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -13,6 +14,7 @@ import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/sizes.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -398,9 +400,10 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
         if (snapshot.hasData)
           return FloatingActionButton.extended(
             onPressed: () {
-              if (snapshot.data != null)
+              if (snapshot.data != null) {
                 VxNavigator.of(context).returnAndPush(snapshot.requireData);
-              else
+                refreshDailyMenu.fire(snapshot.requireData);
+              }else
                 Utils.getSnackbarMessage(context, 'message');
             },
             label: Text(
@@ -461,23 +464,4 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

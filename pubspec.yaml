@@ -36,7 +36,7 @@ dependencies:
   json_annotation: ^4.4.0
   sizer: ^2.0.15
   flutter_flavor: ^3.0.1
-  velocity_x: ^3.5.1
+  velocity_x: ^3.4.0
   device_info_plus: ^3.2.2
   package_info_plus: ^1.4.0
   url_launcher: ^6.1.3

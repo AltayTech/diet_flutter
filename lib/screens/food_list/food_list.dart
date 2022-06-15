@@ -50,6 +50,9 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
     bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
     });
+    bloc.popLoading.listen((event) {
+      Navigator.of(context).pop();
+    });
   }
 
   @override
@@ -61,7 +64,6 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return FoodListProvider(
       bloc,
       child: body(),
