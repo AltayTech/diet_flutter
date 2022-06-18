@@ -50,7 +50,9 @@ class AuthenticationBloc {
       return _countries.value;
     else
       return _countries.value
-          .where((element) => element.name!.contains(_search!) || element.code!.contains(_search!))
+          .where((element) =>
+              element.name!.contains(_search!) ||
+              element.code!.contains(_search!))
           .toList();
   }
 
@@ -143,7 +145,8 @@ class AuthenticationBloc {
   void passwordMethod(User user) {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      debugPrint('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      debugPrint(
+          'pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       checkFcm();
       _repository
           .getUser()
@@ -185,10 +188,10 @@ class AuthenticationBloc {
   }
 
   void sendCodeMethod(String mobile, ChannelSendCode channel) {
-    _repository
-        .verificationCode(mobile, channel.value)
-        .then((value) => _navigateToVerify.fire(value.next))
-        .whenComplete(() {
+    _repository.verificationCode(mobile, channel.value).then((value) {
+      MemoryApp.analytics!.logEvent(name: "send_code_on_${channel.value}");
+      _navigateToVerify.fire(value.next);
+    }).whenComplete(() {
       MemoryApp.forgetPass = false;
     }).catchError((onError) {
       if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
@@ -196,7 +199,9 @@ class AuthenticationBloc {
   }
 
   void tryCodeMethod(String mobile, ChannelSendCode channel) {
-    _repository.verificationCode(mobile, channel.value);
+    _repository.verificationCode(mobile, channel.value).then((value) {
+      MemoryApp.analytics!.logEvent(name: "try_again_send_code_on_${channel.value}");
+    });
   }
 
   void verifyMethod(VerificationCode verify) {
