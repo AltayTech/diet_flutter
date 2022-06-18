@@ -15,7 +15,8 @@ Future<void> main() async {
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
       'isProduction': true,
-      'isCafeBazaar':false
+      'isCafeBazaar':false,
+      'market': Market.GooglePlay.value
     },
   );
   await entryPoint();

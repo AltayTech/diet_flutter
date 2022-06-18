@@ -118,7 +118,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                                         .contains(FlavorConfig.instance.variables["iappsPackage"]))
                                     ? event.iapps!
                                     : event.sibapp!
-                                : event.google!);
+                                : event.url!);
                           },
                         ),
                       ),

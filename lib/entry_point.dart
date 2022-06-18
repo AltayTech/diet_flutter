@@ -19,7 +19,18 @@ import 'package:velocity_x/velocity_x.dart';
 
 late Locale appInitialLocale;
 final RouteObserver<PageRoute> routeObserver = RouteObserver();
+
 //FirebaseAnalyticsObserver? firebaseAnalyticsObserver;
+enum Market {
+  GooglePlay('GooglePlay'),
+  CafeBazaar('CafeBazaar'),
+  Myket('Myket'),
+  Iapps('Iapps');
+
+  const Market(this.value);
+
+  final String value;
+}
 
 Future<void> entryPoint() async {
   runZonedGuarded(() async {

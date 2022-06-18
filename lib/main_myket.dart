@@ -7,15 +7,16 @@ Future<void> main() async {
     color: Colors.green,
     name: 'Preview',
     variables: {
-      'baseUrl': 'https://behaminplus.ir/behandam-diet/api',
-      "baseUrlFile": "https://behaminplus.ir/helia-service",
-      "baseUrlFileShop": "https://behaminplus.ir/shop-service",
-      "urlTerms": "https://kermany.com/terms/",
+      'baseUrl': 'https://behandam.kermany.com/behandam-diet/api',
+      "baseUrlFile": "https://behandam.kermany.com/helia-service",
+      "baseUrlFileShop": "https://behandam.kermany.com/shop-service",
+      "urlTerms": "https://debug.behaminplus.ir/#/article/5918",
+      "urlPrivacy": "https://debug.behaminplus.ir/#/article/5901",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
-      'isProduction': false,
+      'isProduction': true,
       'isCafeBazaar':false,
-      'market': Market.GooglePlay.value
+      'market': Market.Myket.value
     },
   );
   await entryPoint();

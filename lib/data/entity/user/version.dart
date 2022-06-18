@@ -24,7 +24,7 @@ class Version {
   @JsonKey(name: "force_update")
   int? forceUpdate;
 
-  @JsonKey(name: "force_update_version" ,defaultValue: 1)
+  @JsonKey(name: "force_update_version", defaultValue: 1)
   int? forceUpdateVersion;
 
   @JsonKey(name: "title")
@@ -44,6 +44,9 @@ class Version {
 
   @JsonKey(name: "google")
   String? google;
+
+  @JsonKey(name: "url")
+  String? url;
 
   Version();
 

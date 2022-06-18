@@ -6,6 +6,7 @@ import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/device.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class GlobalInterceptor extends Interceptor {
@@ -28,6 +29,7 @@ class GlobalInterceptor extends Interceptor {
 
     // options.headers['Fcm-Token'] = fcmToken;
     options.headers['App'] = '0';
+    options.headers['market'] = FlavorConfig.instance.variables['market'];
     options.headers['Application-Version-Code'] = packageInfo.buildNumber;
     options.headers['version'] = packageInfo.version.replaceAll('.', '');
     options.headers['Application-Version-Name'] = packageInfo.version;
