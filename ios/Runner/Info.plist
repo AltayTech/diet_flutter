@@ -62,9 +62,9 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>provisioningProfiles</key>
-        <dict>
-            <key>com.iapps.export</key>
-            <string>Iapps Provisioning Profile</string>
-        </dict>
+	<dict>
+		<key>com.iapps.export</key>
+		<string>Iapps Provisioning Profile</string>
+	</dict>
 </dict>
 </plist>
