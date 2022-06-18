@@ -210,6 +210,7 @@ class FoodListBloc {
     final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
+   // _foodList.safeValue=_foodList.valueOrNull;
   }
   void onMealFood(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
@@ -238,7 +239,10 @@ class FoodListBloc {
       if (value.data != null && value.requireData) {
         onRefresh(invalidate: true);
       }
-    }).whenComplete(() =>  _popLoading.fire(false));
+    }).whenComplete(()  {
+      _popLoading.fire(false);
+      _popLoading.fire(false);
+    });
   }
 
   void onReplacingFood(int mealId) {
