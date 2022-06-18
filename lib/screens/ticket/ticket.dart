@@ -7,6 +7,7 @@ import 'package:behandam/screens/ticket/ticket_bloc.dart';
 import 'package:behandam/screens/ticket/ticket_item.dart';
 import 'package:behandam/screens/ticket/ticket_provider.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
@@ -54,19 +55,21 @@ class _TicketState extends ResourcefulState<Ticket> {
   }
 
   Widget body() {
-    return TouchMouseScrollable(
-      child: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(top: 16),
-          padding: EdgeInsets.only(
-            left: 4.w,
-            right: 4.w,
-            bottom: 5.h,
+    return SafeArea(
+      child: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(top: 16),
+            padding: EdgeInsets.only(
+              left: 4.w,
+              right: 4.w,
+              bottom: 5.h,
+            ),
+            decoration: AppDecorations.boxSmall.copyWith(
+              color: Colors.white,
+            ),
+            child: content(),
           ),
-          decoration: AppDecorations.boxSmall.copyWith(
-            color: Colors.white,
-          ),
-          child: content(),
         ),
       ),
     );
@@ -117,10 +120,7 @@ class _TicketState extends ResourcefulState<Ticket> {
                   });
             } else {
               return Center(
-                child: SpinKitCircle(
-                  size: 5.h,
-                  color: AppColors.primary,
-                ),
+                child: Progress(size: 5.h),
               );
             }
           },

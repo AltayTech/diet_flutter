@@ -75,56 +75,56 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   Widget build(BuildContext context) {
     super.build(context);
     return ProfileProvider(profileBloc,
-        child: SafeArea(
-          child: Scaffold(
-            appBar: Toolbar(titleBar: intl.profile, elevationValue: 0),
-            body: body(),
-          ),
+        child: Scaffold(
+          appBar: Toolbar(titleBar: intl.profile, elevationValue: 0),
+          body: body(),
         ));
   }
 
   Widget body() {
-    return Container(
-      height: 100.h,
-      child: Stack(children: [
-        Container(
-            height: 80.h,
-            child: StreamBuilder(
-                stream: profileBloc.progressNetwork,
-                builder: (context, snapshot) {
-                  if (snapshot.data != null && snapshot.data == true ||
-                      profileBloc.isProgressNetwork == null) {
-                    return Center(
-                      child: SpinKitCircle(
-                        size: 5.h,
-                        color: AppColors.primary,
-                      ),
-                    );
-                  } else {
-                    return StreamBuilder(
-                      stream: profileBloc.userInformationStream,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Stack(
-                            fit: StackFit.expand,
-                            children: <Widget>[content(), ToolbarProfile()],
-                          );
-                        } else {
-                          return Center(
-                            child: Progress(),
-                          );
-                        }
-                      },
-                    );
-                  }
-                })),
-        Positioned(
-          bottom: 0,
-          child: BottomNav(
-            currentTab: BottomNavItem.PROFILE,
-          ),
-        )
-      ]),
+    return SafeArea(
+      child: Container(
+        height: 100.h,
+        child: Stack(children: [
+          Container(
+              height: 80.h,
+              child: StreamBuilder(
+                  stream: profileBloc.progressNetwork,
+                  builder: (context, snapshot) {
+                    if (snapshot.data != null && snapshot.data == true ||
+                        profileBloc.isProgressNetwork == null) {
+                      return Center(
+                        child: SpinKitCircle(
+                          size: 5.h,
+                          color: AppColors.primary,
+                        ),
+                      );
+                    } else {
+                      return StreamBuilder(
+                        stream: profileBloc.userInformationStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Stack(
+                              fit: StackFit.expand,
+                              children: <Widget>[content(), ToolbarProfile()],
+                            );
+                          } else {
+                            return Center(
+                              child: Progress(),
+                            );
+                          }
+                        },
+                      );
+                    }
+                  })),
+          Positioned(
+            bottom: 0,
+            child: BottomNav(
+              currentTab: BottomNavItem.PROFILE,
+            ),
+          )
+        ]),
+      ),
     );
   }
 
