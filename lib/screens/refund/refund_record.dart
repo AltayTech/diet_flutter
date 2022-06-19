@@ -122,7 +122,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                     ),
                     Space(height: 1.h),
                     StreamBuilder<String?>(
-                        stream: bloc.cardNumber,
+                        stream: bloc.shebaNumber,
                         builder: (context, snapshot) {
                           return Container(
                               height: 9.h,
@@ -217,7 +217,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
   }
 
   void _clickConfirm() {
-    if (bloc.cardNumberValue != null && bloc.cardNumberValue!.length > 15) {
+    if (bloc.shebaNumberValue != null && bloc.shebaNumberValue!.length > 15) {
       if (bloc.cardOwner != null && bloc.cardOwner!.isNotEmpty) {
         DialogUtils.showDialogProgress(context: context);
         bloc.record();

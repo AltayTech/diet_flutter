@@ -29,7 +29,8 @@ Version _$VersionFromJson(Map<String, dynamic> json) => Version()
   ..description = json['description'] as String?
   ..iapps = json['iapps'] as String?
   ..sibapp = json['sibapp'] as String?
-  ..google = json['google'] as String?;
+  ..google = json['google'] as String?
+  ..url = json['url'] as String?;
 
 Map<String, dynamic> _$VersionToJson(Version instance) => <String, dynamic>{
       'version_code': instance.versionCode,
@@ -41,4 +42,5 @@ Map<String, dynamic> _$VersionToJson(Version instance) => <String, dynamic>{
       'iapps': instance.iapps,
       'sibapp': instance.sibapp,
       'google': instance.google,
+      'url': instance.url,
     };

@@ -17,7 +17,7 @@ class RefundBloc {
 
   late String _path;
 
-  final _cardNumber = BehaviorSubject<String?>();
+  final _shebaNumber = BehaviorSubject<String?>();
   final _waiting = BehaviorSubject<bool>();
   final _canRefund = BehaviorSubject<bool>();
   final _showPass = BehaviorSubject<bool>();
@@ -36,11 +36,11 @@ class RefundBloc {
 
   Stream get navigateTo => _navigateTo.stream;
 
-  Stream<String?> get cardNumber => _cardNumber.stream;
+  Stream<String?> get shebaNumber => _shebaNumber.stream;
 
   Stream<bool> get showPass => _showPass.stream;
 
-  String? get cardNumberValue => _cardNumber.stream.valueOrNull;
+  String? get shebaNumberValue => _shebaNumber.stream.valueOrNull;
 
   String? _date;
   String? message;
@@ -94,7 +94,7 @@ class RefundBloc {
 
   void record() {
     RefundVerify refundVerify = new RefundVerify();
-    refundVerify.cardNumber = _cardNumber.value;
+    refundVerify.shebaNumber = _shebaNumber.value!.replaceAll(' ', '');
     refundVerify.cardOwner = cardOwner;
     _repository.setRefund(refundVerify).then((value) {
       MemoryApp.refundItem = null;
@@ -106,8 +106,8 @@ class RefundBloc {
     });
   }
 
-  void setCardNumber(String cardNumber) {
-    _cardNumber.safeValue = cardNumber;
+  void setCardNumber(String shebaNumber) {
+    _shebaNumber.safeValue = shebaNumber;
   }
 
   void dispose() {
@@ -115,7 +115,7 @@ class RefundBloc {
     _serverError.close();
     _navigateTo.close();
     _canRefund.close();
-    _cardNumber.close();
+    _shebaNumber.close();
     _showPass.close();
   }
 }
