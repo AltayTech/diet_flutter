@@ -716,5 +716,13 @@
   "notActiveTerm": "شما اشتراک فعالی ندارید",
   "shebaNumber": "شماره شبا",
   "unknown": "نامشخص",
+  "surveyCallSupport": "نظرسنجی تماس پشتیبان",
+  "surveyCallSupportEmojiTitle": "از اینکه در نظرسنجی شرکت کردید، متشکریم",
+  "surveyCallSupportEmojiDescription": "شرکت در نظرسنجی به ما در بهبود کیفیت پشتیبانی\nو جلب رضایت شما، کمک زیادی خواهد کرد",
+  "surveyCallSupportEmojiTextRate1": "شرکت در نظرسنجی به ما در بهبود کیفیت پشتیبانی\nو جلب رضایت شما، کمک زیادی خواهد کرد",
+  "surveyCallSupportEmojiTextRate2": "شرکت در نظرسنجی به ما در بهبود کیفیت پشتیبانی\nو جلب رضایت شما، کمک زیادی خواهد کرد",
+  "surveyCallSupportEmojiTextRate3": "پشتیبانی راضی کننده نبود",
+  "surveyCallSupportEmojiTextRate4": "شرکت در نظرسنجی به ما در بهبود کیفیت پشتیبانی\nو جلب رضایت شما، کمک زیادی خواهد کرد",
+  "surveyCallSupportEmojiTextRate5": "شرکت در نظرسنجی به ما در بهبود کیفیت پشتیبانی\nو جلب رضایت شما، کمک زیادی خواهد کرد",
   "understand": "متوجه شدم"
 }

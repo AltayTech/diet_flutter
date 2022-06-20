@@ -61,6 +61,7 @@ import 'package:behandam/screens/status/status_user.dart';
 import 'package:behandam/screens/subscription/bill_payment/bill_payment.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/history_subscription_payment.dart';
 import 'package:behandam/screens/subscription/select_package/select_package.dart';
+import 'package:behandam/screens/survey_call_support/survey_call_support.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/screens/ticket/ticket_details.dart';
@@ -259,7 +260,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(SurveyCallSupportScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
