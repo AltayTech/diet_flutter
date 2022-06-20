@@ -71,16 +71,9 @@ class _MaintenanceState extends ResourcefulState<MaintenancePage> {
       },
       height: 6.h,
       shape: AppShapes.rectangleSmall,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ImageUtils.fromLocal('assets/icon/retry.svg'),
-          Space(width: 8),
-          Text(
-            intl.understand,
-            style: typography.button,
-          ),
-        ],
+      child: Text(
+        intl.understand,
+        style: typography.button,
       ),
     );
   }

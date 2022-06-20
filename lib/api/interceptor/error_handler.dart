@@ -132,7 +132,7 @@ class ErrorHandlerInterceptor extends Interceptor {
   }
 
   void _handleMaintenanceError(DioError err) async {
-    if (_context == null) {
+    if (_context == null || _isMaintenanceAlertShown) {
       return;
     }
     String? message;
@@ -144,7 +144,7 @@ class ErrorHandlerInterceptor extends Interceptor {
             .message;
       }
     } catch (e) {}
-
+    _isMaintenanceAlertShown = true;
     await DialogUtils.showDialogPage(
       context: _context!,
       isDismissible: false,
@@ -152,6 +152,7 @@ class ErrorHandlerInterceptor extends Interceptor {
         message: message,
       ),
     );
+    _isMaintenanceAlertShown = false;
   }
 
   void _handleNoInternetError() async {
