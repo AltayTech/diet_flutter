@@ -5,12 +5,13 @@ import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/stream.dart';
+import 'package:behandam/utils/sheba.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RefundBloc {
   RefundBloc() {
     _waiting.safeValue = false;
-    _showPass.safeValue=false;
+    _showPass.safeValue = false;
   }
 
   final _repository = Repository.getInstance();
@@ -18,6 +19,7 @@ class RefundBloc {
   late String _path;
 
   final _shebaNumber = BehaviorSubject<String?>();
+  final _shebaBankName = BehaviorSubject<String?>();
   final _waiting = BehaviorSubject<bool>();
   final _canRefund = BehaviorSubject<bool>();
   final _showPass = BehaviorSubject<bool>();
@@ -38,17 +40,19 @@ class RefundBloc {
 
   Stream<String?> get shebaNumber => _shebaNumber.stream;
 
+  Stream<String?> get shebaBankName => _shebaBankName.stream;
+
   Stream<bool> get showPass => _showPass.stream;
 
-  String? get shebaNumberValue => _shebaNumber.stream.valueOrNull;
+  String? get shebaNumberValue => _shebaNumber.stream.valueOrNull ?? '';
 
   String? _date;
   String? message;
   String? password;
   String? cardOwner;
 
-  void setShowPassword(bool value){
-    _showPass.safeValue=value;
+  void setShowPassword(bool value) {
+    _showPass.safeValue = value;
   }
 
   void setDate(String date) {
@@ -108,6 +112,9 @@ class RefundBloc {
 
   void setCardNumber(String shebaNumber) {
     _shebaNumber.safeValue = shebaNumber;
+
+    _shebaBankName.safeValue =
+        Sheba(shebaNumberValue!.replaceAll(' ', '')).call()?.persianName ?? '';
   }
 
   void dispose() {
@@ -116,6 +123,7 @@ class RefundBloc {
     _navigateTo.close();
     _canRefund.close();
     _shebaNumber.close();
+    _shebaBankName.close();
     _showPass.close();
   }
 }

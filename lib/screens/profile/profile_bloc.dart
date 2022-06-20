@@ -178,9 +178,7 @@ class ProfileBloc {
       _subscriptionPending.safeValue=value.data?.subscriptionTermData?.pendingCardPayment;
       _showRefund.safeValue = value.data!.showRefundLink!;
       if (value.data != null &&
-          value.data?.term != null &&
-          DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0 &&
-          !_showPdf.isClosed)
+          value.data?.term != null)
         _showPdf.safeValue = true;
       else {
         _showPdf.safeValue = false;
