@@ -3,6 +3,7 @@ import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/list_history_subscription_payment.dart';
 import 'package:behandam/screens/survey_call_support/bloc.dart';
 import 'package:behandam/screens/survey_call_support/provider.dart';
+import 'package:behandam/screens/survey_call_support/strengths_weakness_tabs.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -10,6 +11,7 @@ import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
 class SurveyCallSupportScreen extends StatefulWidget {
@@ -92,17 +94,31 @@ class _SurveyCallSupportScreenState
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: Toolbar(titleBar: intl.surveyCallSupport),
-        body: TouchMouseScrollable(
-          child: SingleChildScrollView(
-            child: Container(
-              width: 100.w,
-              margin: EdgeInsets.all(16),
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+        body: SafeArea(
+          child: TouchMouseScrollable(
+            child: SingleChildScrollView(
+              child: Container(
+                width: 100.w,
+                margin: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          selectEmojiRate(),
+                          Space(height: 3.h),
+                        ],
+                      ),
+                    ),
+                    StrengthsWeaknessTabs(),
+                  ],
+                ),
               ),
-              child: selectEmojiRate(),
             ),
           ),
         ));
@@ -112,13 +128,13 @@ class _SurveyCallSupportScreenState
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
           child: Text(intl.surveyCallSupportEmojiTitle,
               textAlign: TextAlign.center,
               style: typography.caption!.copyWith(fontWeight: FontWeight.bold)),
         ),
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 8),
           child: Text(intl.surveyCallSupportEmojiDescription,
               textAlign: TextAlign.center,
               style: typography.caption!.copyWith(fontSize: 10.sp)),
@@ -152,20 +168,30 @@ class _SurveyCallSupportScreenState
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       emojiSelected.requireData == EmojiSelected.EXTRA_UPSET
-                          ? showEmojiSelected('assets/images/emoji/pouting_face.svg')
-                          : showEmojiFromString(EmojiSelected.EXTRA_UPSET, extraUpsetEmoji, '#DD5F70', '#717171'),
+                          ? showEmojiSelected(
+                              'assets/images/emoji/pouting_face.svg')
+                          : showEmojiFromString(EmojiSelected.EXTRA_UPSET,
+                              extraUpsetEmoji, '#DD5F70', '#717171'),
                       emojiSelected.requireData == EmojiSelected.UPSET
-                          ? showEmojiSelected('assets/images/emoji/face_with_cold_sweat.svg')
-                          : showEmojiFromString(EmojiSelected.UPSET, upsetEmoji, '#EBB34D', '#717171'),
+                          ? showEmojiSelected(
+                              'assets/images/emoji/face_with_cold_sweat.svg')
+                          : showEmojiFromString(EmojiSelected.UPSET, upsetEmoji,
+                              '#EBB34D', '#717171'),
                       emojiSelected.requireData == EmojiSelected.NEUTRAL
-                          ? showEmojiSelected('assets/images/emoji/neutral_face.svg')
-                          : showEmojiFromString(EmojiSelected.NEUTRAL, neutralEmoji, '#EBB34D', '#717171'),
+                          ? showEmojiSelected(
+                              'assets/images/emoji/neutral_face.svg')
+                          : showEmojiFromString(EmojiSelected.NEUTRAL,
+                              neutralEmoji, '#EBB34D', '#717171'),
                       emojiSelected.requireData == EmojiSelected.HAPPY
-                          ? showEmojiSelected('assets/images/emoji/white_smiling_face.svg')
-                          : showEmojiFromString(EmojiSelected.HAPPY, happyEmoji, '#EBB34D', '#717171'),
+                          ? showEmojiSelected(
+                              'assets/images/emoji/white_smiling_face.svg')
+                          : showEmojiFromString(EmojiSelected.HAPPY, happyEmoji,
+                              '#EBB34D', '#717171'),
                       emojiSelected.requireData == EmojiSelected.EXTRA_HAPPY
-                          ? showEmojiSelected('assets/images/emoji/smiling_face_with_open_mouth.svg')
-                          : showEmojiFromString(EmojiSelected.EXTRA_HAPPY, extraHappyEmoji, '#EBB34D', '#717171')
+                          ? showEmojiSelected(
+                              'assets/images/emoji/smiling_face_with_open_mouth.svg')
+                          : showEmojiFromString(EmojiSelected.EXTRA_HAPPY,
+                              extraHappyEmoji, '#EBB34D', '#717171')
                     ]);
               }),
         ),
@@ -181,7 +207,7 @@ class _SurveyCallSupportScreenState
               textAlign: TextAlign.center,
               style: typography.caption!.copyWith(
                   fontWeight: FontWeight.bold, color: AppColors.redBar)),
-        )
+        ),
       ],
     );
   }
@@ -199,14 +225,12 @@ class _SurveyCallSupportScreenState
   }
 
   Widget showEmojiFromPath(String path) {
-    return ImageUtils.fromLocal(
-        path,
-        width: 7.w,
-        height: 7.w,
-        margin: EdgeInsets.all(8));
+    return ImageUtils.fromLocal(path,
+        width: 7.w, height: 7.w, margin: EdgeInsets.all(8));
   }
 
-  Widget showEmojiFromString(EmojiSelected emojiSelected, String stringSvg, String colorPatternFrom, String colorPatternReplace) {
+  Widget showEmojiFromString(EmojiSelected emojiSelected, String stringSvg,
+      String colorPatternFrom, String colorPatternReplace) {
     return InkWell(
       onTap: () {
         bloc.setEmojiSelected = emojiSelected;
