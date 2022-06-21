@@ -153,19 +153,19 @@ class _SurveyCallSupportScreenState
                     children: [
                       emojiSelected.requireData == EmojiSelected.EXTRA_UPSET
                           ? showEmojiSelected('assets/images/emoji/pouting_face.svg')
-                          : showEmojiFromString(emojiSelected.requireData, extraUpsetEmoji, '#DD5F70', '#717171'),
+                          : showEmojiFromString(EmojiSelected.EXTRA_UPSET, extraUpsetEmoji, '#DD5F70', '#717171'),
                       emojiSelected.requireData == EmojiSelected.UPSET
                           ? showEmojiSelected('assets/images/emoji/face_with_cold_sweat.svg')
-                          : showEmojiFromString(emojiSelected.requireData, upsetEmoji, '#EBB34D', '#717171'),
+                          : showEmojiFromString(EmojiSelected.UPSET, upsetEmoji, '#EBB34D', '#717171'),
                       emojiSelected.requireData == EmojiSelected.NEUTRAL
                           ? showEmojiSelected('assets/images/emoji/neutral_face.svg')
-                          : showEmojiFromString(emojiSelected.requireData, neutralEmoji, '#EBB34D', '#717171'),
+                          : showEmojiFromString(EmojiSelected.NEUTRAL, neutralEmoji, '#EBB34D', '#717171'),
                       emojiSelected.requireData == EmojiSelected.HAPPY
                           ? showEmojiSelected('assets/images/emoji/white_smiling_face.svg')
-                          : showEmojiFromString(emojiSelected.requireData, happyEmoji, '#EBB34D', '#717171'),
+                          : showEmojiFromString(EmojiSelected.HAPPY, happyEmoji, '#EBB34D', '#717171'),
                       emojiSelected.requireData == EmojiSelected.EXTRA_HAPPY
                           ? showEmojiSelected('assets/images/emoji/smiling_face_with_open_mouth.svg')
-                          : showEmojiFromString(emojiSelected.requireData, extraHappyEmoji, '#EBB34D', '#717171')
+                          : showEmojiFromString(EmojiSelected.EXTRA_HAPPY, extraHappyEmoji, '#EBB34D', '#717171')
                     ]);
               }),
         ),
