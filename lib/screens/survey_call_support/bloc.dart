@@ -4,6 +4,8 @@ import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/extensions/stream.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../data/entity/poll_phrases/poll_phrases.dart';
+
 enum EmojiSelected {
   EXTRA_UPSET,
   UPSET,
@@ -16,12 +18,18 @@ class SurveyCallSupportBloc {
   SurveyCallSupportBloc() {}
 
   List<SubscriptionsItems>? subscriptions;
+  List<PollPhrases>? _pollPhrasesStrengths;
+  List<PollPhrases>? _pollPhrasesWeakness;
 
   final _repository = Repository.getInstance();
 
   final _progressNetwork = BehaviorSubject<bool>();
 
   final _emojiSelected = BehaviorSubject<EmojiSelected>();
+
+  final _pollPhraseStrengths = BehaviorSubject<PollPhrases>();
+
+  final _pollPhraseWeakness = BehaviorSubject<PollPhrases>();
 
   final _subscriptionPending = BehaviorSubject<SubscriptionPendingData?>();
 
@@ -31,7 +39,15 @@ class SurveyCallSupportBloc {
 
   Stream<SubscriptionPendingData?> get subscriptionPending => _subscriptionPending.stream;
 
+  Stream<PollPhrases> get pollPhrasesStrengths => _pollPhraseStrengths.stream;
+
+  Stream<PollPhrases> get pollPhrasesWeakness => _pollPhraseWeakness.stream;
+
   set setEmojiSelected(EmojiSelected emoji) => _emojiSelected.safeValue = emoji;
+
+  set setPollPhrasesStrengths(PollPhrases pollPhrases) => _pollPhraseStrengths.safeValue = pollPhrases;
+
+  set setPollPhrasesWeakness(PollPhrases pollPhrases) => _pollPhraseWeakness.safeValue = pollPhrases;
 
   void getUserSubscriptions() {
     _progressNetwork.value = true;

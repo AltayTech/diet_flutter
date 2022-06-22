@@ -1,20 +1,11 @@
 import 'dart:core';
 
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/ticket/ticket_item.dart';
-import 'package:behandam/routes.dart';
+import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
+import 'package:behandam/screens/survey_call_support/item_poll_phrase.dart';
 import 'package:behandam/screens/ticket/ticket_bloc.dart';
-import 'package:behandam/screens/ticket/ticket_item.dart';
-import 'package:behandam/screens/ticket/ticket_provider.dart';
-import 'package:behandam/screens/widget/empty_box.dart';
-import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:logifan/widgets/space.dart';
-import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class StrengthsTab extends StatefulWidget {
   StrengthsTab() {}
@@ -28,11 +19,24 @@ class _StrengthsTabState extends ResourcefulState<StrengthsTab> {
 
   late TicketBloc ticketBloc;
 
+  List<PollPhrases>? list = [];
+
   @override
   void initState() {
     super.initState();
     ticketBloc = TicketBloc();
-    // _scrollControllerStatus.animateTo(0, duration: duration, curve: curve)
+
+    PollPhrases pollPhrases = new PollPhrases();
+    pollPhrases.text = "عبارت تستی 1 عبارت تستی 1 عبارت تستی 1";
+    pollPhrases.isSelected = true;
+
+    list!.add(pollPhrases);
+
+    pollPhrases = new PollPhrases();
+    pollPhrases.text = "عبارت تستی 2";
+    pollPhrases.isSelected = false;
+
+    list!.add(pollPhrases);
   }
 
   @override
@@ -44,7 +48,7 @@ class _StrengthsTabState extends ResourcefulState<StrengthsTab> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return body();/*TicketProvider(ticketBloc,
+    return body(); /*TicketProvider(ticketBloc,
         child: Scaffold(
           backgroundColor: AppColors.newBackground,
           body: body(),
@@ -61,11 +65,26 @@ class _StrengthsTabState extends ResourcefulState<StrengthsTab> {
   }
 
   Widget content() {
-    return Container();
+    return list != null && list!.length > 0
+        ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+                physics: ClampingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: list!.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    ItemPollPhrase(
+                        text: list![index].text!,
+                        isSelected: list![index].isSelected!)),
+          )
+        : Container(
+            height: 20.h,
+            child: Center(
+                child: Text(intl.subscriptionPackageNotAvailable,
+                    style: typography.caption)),
+          );
   }
 
   @override
-  void onRetryLoadingPage() {
-
-  }
+  void onRetryLoadingPage() {}
 }

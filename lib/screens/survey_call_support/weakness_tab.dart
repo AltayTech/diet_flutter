@@ -1,10 +1,11 @@
 import 'dart:core';
 
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
+import 'package:behandam/screens/survey_call_support/item_poll_phrase.dart';
 import 'package:behandam/screens/ticket/ticket_bloc.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
-import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
 class WeaknessTab extends StatefulWidget {
   WeaknessTab() {}
@@ -18,11 +19,24 @@ class _WeaknessTabState extends ResourcefulState<WeaknessTab> {
 
   late TicketBloc ticketBloc;
 
+  List<PollPhrases>? list = [];
+
   @override
   void initState() {
     super.initState();
     ticketBloc = TicketBloc();
-    // _scrollControllerStatus.animateTo(0, duration: duration, curve: curve)
+
+    PollPhrases pollPhrases = new PollPhrases();
+    pollPhrases.text = "عبارت تستی 1";
+    pollPhrases.isSelected = true;
+
+    list!.add(pollPhrases);
+
+    pollPhrases = new PollPhrases();
+    pollPhrases.text = "عبارت تستی 2";
+    pollPhrases.isSelected = false;
+
+    list!.add(pollPhrases);
   }
 
   @override
@@ -47,11 +61,26 @@ class _WeaknessTabState extends ResourcefulState<WeaknessTab> {
   }
 
   Widget content() {
-    return Container();
+    return list != null && list!.length > 0
+        ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+                physics: ClampingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: list!.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    ItemPollPhrase(
+                        text: list![index].text!,
+                        isSelected: list![index].isSelected!)),
+          )
+        : Container(
+            height: 20.h,
+            child: Center(
+                child: Text(intl.subscriptionPackageNotAvailable,
+                    style: typography.caption)),
+          );
   }
 
   @override
-  void onRetryLoadingPage() {
-
-  }
+  void onRetryLoadingPage() {}
 }

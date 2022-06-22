@@ -5,6 +5,7 @@ import 'package:behandam/screens/survey_call_support/bloc.dart';
 import 'package:behandam/screens/survey_call_support/provider.dart';
 import 'package:behandam/screens/survey_call_support/strengths_weakness_tabs.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
@@ -110,12 +111,15 @@ class _SurveyCallSupportScreenState
                       padding: EdgeInsets.all(8),
                       child: Column(
                         children: [
-                          selectEmojiRate(),
+                          selectEmojiContainer(),
                           Space(height: 3.h),
                         ],
                       ),
                     ),
                     StrengthsWeaknessTabs(),
+                    Space(height: 3.h),
+                    registerSurvey(),
+                    Space(height: 2.h),
                   ],
                 ),
               ),
@@ -124,23 +128,25 @@ class _SurveyCallSupportScreenState
         ));
   }
 
-  Widget selectEmojiRate() {
+  Widget selectEmojiContainer() {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+          padding:
+              const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
           child: Text(intl.surveyCallSupportEmojiTitle,
               textAlign: TextAlign.center,
               style: typography.caption!.copyWith(fontWeight: FontWeight.bold)),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 8),
+          padding:
+              const EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 8),
           child: Text(intl.surveyCallSupportEmojiDescription,
               textAlign: TextAlign.center,
               style: typography.caption!.copyWith(fontSize: 10.sp)),
         ),
         Container(
-          width: 75.w,
+          width: 80.w,
           margin: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
           padding:
               EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
@@ -158,8 +164,6 @@ class _SurveyCallSupportScreenState
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.all(8),
-          padding: EdgeInsets.all(8),
           child: StreamBuilder<EmojiSelected>(
               initialData: EmojiSelected.EXTRA_HAPPY,
               stream: bloc.emojiSelected,
@@ -214,8 +218,8 @@ class _SurveyCallSupportScreenState
 
   Widget showEmojiSelected(String iconPath) {
     return Container(
-      width: 10.w,
-      margin: EdgeInsets.all(8),
+      width: 12.w,
+      height: 6.h,
       decoration: BoxDecoration(
         color: AppColors.redBar.withOpacity(0.1),
         borderRadius: BorderRadius.circular(100),
@@ -226,7 +230,7 @@ class _SurveyCallSupportScreenState
 
   Widget showEmojiFromPath(String path) {
     return ImageUtils.fromLocal(path,
-        width: 7.w, height: 7.w, margin: EdgeInsets.all(8));
+        width: 9.w, height: 9.w, margin: EdgeInsets.all(8));
   }
 
   Widget showEmojiFromString(EmojiSelected emojiSelected, String stringSvg,
@@ -237,11 +241,22 @@ class _SurveyCallSupportScreenState
         debugPrint("EmojiSelected ${emojiSelected}");
       },
       child: ImageUtils.fromString(
-          stringSvg.replaceAll(colorPatternFrom, colorPatternReplace),
-          width: 7.w,
-          height: 7.w,
+          stringSvg
+              .replaceAll(colorPatternFrom, colorPatternReplace)
+          // blue sweat
+              .replaceAll('#77AAF2', colorPatternReplace)
+          // red lips
+              .replaceAll('#5B0600', '#000000'),
+          width: 9.w,
+          height: 9.w,
           margin: EdgeInsets.all(8)),
     );
+  }
+
+  Widget registerSurvey() {
+    return Container(
+        margin: EdgeInsets.all(2.w),
+        child: SubmitButton(label: intl.registerSurvey, onTap: () {}));
   }
 
   @override

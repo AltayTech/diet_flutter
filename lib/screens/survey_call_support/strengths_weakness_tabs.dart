@@ -2,7 +2,6 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/survey_call_support/strengths_tab.dart';
 import 'package:behandam/screens/survey_call_support/weakness_tab.dart';
 import 'package:behandam/screens/widget/custom_tabbar.dart';
-import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:flutter/material.dart';
 
 class StrengthsWeaknessTabs extends StatefulWidget {
@@ -52,7 +51,7 @@ class StrengthsWeaknessTabsState extends ResourcefulState<StrengthsWeaknessTabs>
               child: CustomTabBarUnderLineIndicator(Colors.white, _list, _controller),
             ),
             Container(
-              height: 1000,
+              height: 30.h,
               child: TabBarView(
                 controller: _controller,
                 physics: NeverScrollableScrollPhysics(),
