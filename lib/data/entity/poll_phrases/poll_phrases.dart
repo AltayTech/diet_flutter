@@ -7,9 +7,13 @@ class PollPhrases {
   @JsonKey(name: "example")
   String? example;
 
+  int? index;
+
   String? text;
 
   bool? isSelected;
+
+  bool? isStrength;
 
   PollPhrases();
 

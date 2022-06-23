@@ -1,47 +1,52 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/regime/package_list.dart';
-import 'package:behandam/routes.dart';
-import 'package:behandam/screens/subscription/select_package/bloc.dart';
-import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
+import 'package:behandam/screens/survey_call_support/bloc.dart';
+import 'package:behandam/screens/survey_call_support/provider.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:persian_number_utility/persian_number_utility.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class ItemPollPhrase extends StatefulWidget {
-  late String text;
-  late bool isSelected;
+  late PollPhrases pollPhrase;
 
-  ItemPollPhrase({required this.text, required this.isSelected});
+  ItemPollPhrase({required this.pollPhrase});
 
   @override
   _ItemPollPhraseState createState() => _ItemPollPhraseState();
 }
 
 class _ItemPollPhraseState extends ResourcefulState<ItemPollPhrase> {
-  late SelectPackageSubscriptionBloc bloc;
+  late SurveyCallSupportBloc bloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    bloc = SelectPackageSubscriptionBloc();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    return _item(widget.text, widget.isSelected);
+    bloc = SurveyCallSupportProvider.of(context);
+
+    return _item(widget.pollPhrase);
   }
 
-  Widget _item(String text, bool isSelected) {
+  Widget _item(PollPhrases pollPhrase) {
     return InkWell(
       onTap: () {
+        if (pollPhrase.isSelected!) {
+          pollPhrase.isSelected = false;
+        } else {
+          pollPhrase.isSelected = true;
+        }
 
+        if (pollPhrase.isStrength!) {
+          bloc.setPollPhrasesStrengths = pollPhrase;
+        } else {
+          bloc.setPollPhrasesWeakness = pollPhrase;
+        }
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 16, left: 32, right: 32),
@@ -50,7 +55,7 @@ class _ItemPollPhraseState extends ResourcefulState<ItemPollPhrase> {
           textDirection: context.textDirectionOfLocaleInversed,
           children: <Widget>[
             Expanded(
-                child: Text(text,
+                child: Text(pollPhrase.text!,
                     textAlign: TextAlign.start,
                     style: Theme.of(context)
                         .textTheme
@@ -58,7 +63,7 @@ class _ItemPollPhraseState extends ResourcefulState<ItemPollPhrase> {
                         .copyWith(letterSpacing: -0.2, fontWeight: FontWeight.w400))),
             Space(width: 2.w),
             ImageUtils.fromLocal(
-              isSelected ? 'assets/images/bill/check.svg' : 'assets/images/bill/not_select.svg',
+              pollPhrase.isSelected! ? 'assets/images/bill/check.svg' : 'assets/images/bill/not_select.svg',
               width: 4.w,
               height: 4.w,
             ),

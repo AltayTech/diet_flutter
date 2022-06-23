@@ -15,11 +15,50 @@ enum EmojiSelected {
 }
 
 class SurveyCallSupportBloc {
-  SurveyCallSupportBloc() {}
+  SurveyCallSupportBloc() {
+    // strengths
+    PollPhrases pollPhrases = new PollPhrases();
+    pollPhrases.text = "عبارت تستی 1 عبارت تستی 1 عبارت تستی 1";
+    pollPhrases.isSelected = true;
+    pollPhrases.isStrength = true;
+    pollPhrases.index = 0;
+
+    listStrengths!.add(pollPhrases);
+
+    pollPhrases = new PollPhrases();
+    pollPhrases.text = "عبارت تستی 2";
+    pollPhrases.isSelected = false;
+    pollPhrases.isStrength = true;
+    pollPhrases.index = 1;
+
+    listStrengths!.add(pollPhrases);
+
+    _pollPhrasesStrengths.safeValue = listStrengths!;
+
+    // weakness
+    pollPhrases = new PollPhrases();
+    pollPhrases.text = "عبارت تستی 1";
+    pollPhrases.isSelected = true;
+    pollPhrases.isStrength = false;
+    pollPhrases.index = 0;
+
+    listWeakness!.add(pollPhrases);
+
+    pollPhrases = new PollPhrases();
+    pollPhrases.text = "عبارت تستی 2";
+    pollPhrases.isSelected = false;
+    pollPhrases.isStrength = false;
+    pollPhrases.index = 1;
+
+    listWeakness!.add(pollPhrases);
+
+    _pollPhrasesWeakness.safeValue = listWeakness!;
+  }
+
+  List<PollPhrases>? listStrengths = [];
+  List<PollPhrases>? listWeakness = [];
 
   List<SubscriptionsItems>? subscriptions;
-  List<PollPhrases>? _pollPhrasesStrengths;
-  List<PollPhrases>? _pollPhrasesWeakness;
 
   final _repository = Repository.getInstance();
 
@@ -27,9 +66,9 @@ class SurveyCallSupportBloc {
 
   final _emojiSelected = BehaviorSubject<EmojiSelected>();
 
-  final _pollPhraseStrengths = BehaviorSubject<PollPhrases>();
+  final _pollPhrasesStrengths = BehaviorSubject<List<PollPhrases>>();
 
-  final _pollPhraseWeakness = BehaviorSubject<PollPhrases>();
+  final _pollPhrasesWeakness = BehaviorSubject<List<PollPhrases>>();
 
   final _subscriptionPending = BehaviorSubject<SubscriptionPendingData?>();
 
@@ -39,15 +78,25 @@ class SurveyCallSupportBloc {
 
   Stream<SubscriptionPendingData?> get subscriptionPending => _subscriptionPending.stream;
 
-  Stream<PollPhrases> get pollPhrasesStrengths => _pollPhraseStrengths.stream;
+  Stream<List<PollPhrases>> get pollPhrasesStrengths => _pollPhrasesStrengths.stream;
 
-  Stream<PollPhrases> get pollPhrasesWeakness => _pollPhraseWeakness.stream;
+  Stream<List<PollPhrases>> get pollPhrasesWeakness => _pollPhrasesWeakness.stream;
 
   set setEmojiSelected(EmojiSelected emoji) => _emojiSelected.safeValue = emoji;
 
-  set setPollPhrasesStrengths(PollPhrases pollPhrases) => _pollPhraseStrengths.safeValue = pollPhrases;
+  set setPollPhrasesStrengths(PollPhrases pollPhrases) {
+    List<PollPhrases> p = _pollPhrasesStrengths.value;
+    p[pollPhrases.index!] = pollPhrases;
 
-  set setPollPhrasesWeakness(PollPhrases pollPhrases) => _pollPhraseWeakness.safeValue = pollPhrases;
+    _pollPhrasesStrengths.safeValue = p;
+  }
+
+  set setPollPhrasesWeakness(PollPhrases pollPhrases) {
+    List<PollPhrases> p = _pollPhrasesWeakness.value;
+    p[pollPhrases.index!] = pollPhrases;
+
+    _pollPhrasesWeakness.safeValue = p;
+  }
 
   void getUserSubscriptions() {
     _progressNetwork.value = true;

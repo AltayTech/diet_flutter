@@ -8,12 +8,16 @@ part of 'poll_phrases.dart';
 
 PollPhrases _$PollPhrasesFromJson(Map<String, dynamic> json) => PollPhrases()
   ..example = json['example'] as String?
+  ..index = json['index'] as int?
   ..text = json['text'] as String?
-  ..isSelected = json['isSelected'] as bool?;
+  ..isSelected = json['isSelected'] as bool?
+  ..isStrength = json['isStrength'] as bool?;
 
 Map<String, dynamic> _$PollPhrasesToJson(PollPhrases instance) =>
     <String, dynamic>{
       'example': instance.example,
+      'index': instance.index,
       'text': instance.text,
       'isSelected': instance.isSelected,
+      'isStrength': instance.isStrength,
     };
