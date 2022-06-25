@@ -74,7 +74,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     });
   }
 
-  void showUpdate(Version event) {
+  void showUpdate(Version version) {
     DialogUtils.showDialogPage(
         context: context,
         child: Center(
@@ -91,14 +91,14 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    event.title!,
+                    version.title!,
                     textAlign: TextAlign.center,
                     textDirection: context.textDirectionOfLocale,
                     style: Theme.of(context).textTheme.caption,
                   ),
                   Space(height: 2.h),
                   Text(
-                    event.description!,
+                    version.description!,
                     textDirection: context.textDirectionOfLocale,
                     style: Theme.of(context).textTheme.caption,
                   ),
@@ -113,12 +113,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                         child: SubmitButton(
                           label: intl.update,
                           onTap: () {
-                            Utils.launchURL((!kIsWeb && Platform.isIOS)
-                                ? (bloc.packageName!
-                                        .contains(FlavorConfig.instance.variables["iappsPackage"]))
-                                    ? event.iapps!
-                                    : event.sibapp!
-                                : event.url!);
+                            Utils.launchURL(version.url!);
                           },
                         ),
                       ),
@@ -133,7 +128,6 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                                 .copyWith(color: AppColors.primary),
                           ),
                           onPressed: () {
-                            print('later');
                             Navigator.of(context).pop();
                             handleDeeplink();
                           },

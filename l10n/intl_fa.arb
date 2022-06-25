@@ -551,7 +551,7 @@
   "cardNumberFull": "شماره شبای کارت بانکی",
   "cardNumber": "شماره کارت",
   "cardNumberOwner": "شماره شبای بالا به نام چه کسی است؟",
-  "validationCardNumber": "شماره کارت نباید کمتر از 16 کاراکتر باشد",
+  "validationCardNumber": "شماره شبای وارد شده نامعتبر است",
   "back": "بازگشت",
   "backProfile": "بازگشت به پروفایل",
   "successRequest": "درخواست شما با موفقیت ثبت شد",

@@ -152,9 +152,9 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                         verification.resetPass = true;
                       DialogUtils.showDialogProgress(context: context);
                       if (isAutoVerify) {
-                        MemoryApp.analytics!.logEvent(name: "AutoVerifyCode");
+                        MemoryApp.analytics!.logEvent(name: "auto_verify_code");
                       } else {
-                        MemoryApp.analytics!.logEvent(name: "ManualVerifyCode");
+                        MemoryApp.analytics!.logEvent(name: "manual_verify_code");
                       }
                       authBloc.verifyMethod(verification);
 

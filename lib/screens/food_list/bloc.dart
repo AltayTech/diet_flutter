@@ -205,13 +205,15 @@ class FoodListBloc {
       setTheme();
     }).whenComplete(() => _loadingContent.safeValue = false);
   }
+
   void onMealFoodDaily(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
     final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
-   // _foodList.safeValue=_foodList.valueOrNull;
+    // _foodList.safeValue=_foodList.valueOrNull;
   }
+
   void onMealFood(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
     final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
@@ -239,7 +241,7 @@ class FoodListBloc {
       if (value.data != null && value.requireData) {
         onRefresh(invalidate: true);
       }
-    }).whenComplete(()  {
+    }).whenComplete(() {
       _popLoading.fire(false);
       _popLoading.fire(false);
     });
@@ -297,8 +299,8 @@ class FoodListBloc {
     articleVideo.expired_at =
         _weekDays.value![_weekDays.value!.length - 1]!.gregorianDate.toString().substring(0, 10);
     _repository.getArticles(articleVideo).then((value) {
-      _articles = value.requireData;
-      setArticle();
+      _articles = value.data ?? [];
+      if (_articles.length > 0) setArticle();
     });
   }
 

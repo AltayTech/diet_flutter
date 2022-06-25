@@ -22,10 +22,10 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver();
 
 //FirebaseAnalyticsObserver? firebaseAnalyticsObserver;
 enum Market {
-  GooglePlay('GooglePlay'),
-  CafeBazaar('CafeBazaar'),
-  Myket('Myket'),
-  Iapps('Iapps');
+  google('google'),
+  cafebazaar('cafebazaar'),
+  myket('myket'),
+  iapps('iapps');
 
   const Market(this.value);
 

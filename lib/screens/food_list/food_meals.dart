@@ -119,19 +119,21 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                         alternateFood(meal),
                       ],
                     ),
+                    if (meal.startAt.isNotNullAndEmpty && meal.startAt.isNotNullAndEmpty)
                     Space(height: 0.5.h),
                     if (meal.startAt.isNotNullAndEmpty && meal.startAt.isNotNullAndEmpty)
                       Text(
                         intl.timeOfTheMeal(
                             meal.startAt!.substring(0, 5), meal.endAt!.substring(0, 5)),
-                        style: typography.caption,
+                        style: typography.overline,
                         softWrap: true,
                       ),
+                    if (meal.description.isNotNullAndEmpty)
                     Space(height: 1.h),
                     if (meal.description.isNotNullAndEmpty)
                       Text(
                         meal.description!,
-                        style: typography.caption,
+                        style: typography.overline,
                         softWrap: true,
                       ),
                     Space(height: 1.h),

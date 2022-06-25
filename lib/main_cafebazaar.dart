@@ -18,7 +18,7 @@ Future<void> main() async {
       "sibappPackage": "com.kermany.behandam-sibapp",
       'isProduction': true,
       'isCafeBazaar': true,
-      'market': Market.CafeBazaar.value
+      'market': Market.cafebazaar.value
     },
   );
   await entryPoint();
