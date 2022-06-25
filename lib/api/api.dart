@@ -275,7 +275,7 @@ abstract class RestClient {
   NetworkResult<dynamic> visit(@Body() Map<String, dynamic> requestData);
 
   @GET("/check-version")
-  NetworkResult<VersionData> getVersion();
+  NetworkResult<Version> getVersion();
 
 
   @GET("/fitamin-url")

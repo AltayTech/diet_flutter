@@ -29,7 +29,10 @@ Notif _$NotifFromJson(Map json) => Notif()
   ..icon = json['icon'] as String?
   ..title = json['title'] as String?
   ..visible = json['visible'] as String?
-  ..actionType = json['actionType'] as String?;
+  ..actionType = json['actionType'] as String?
+  ..layout =
+      $enumDecodeNullable(_$NotificationLayoutEnumMap, json['layoutType']) ??
+          NotificationLayout.Default;
 
 Map<String, dynamic> _$NotifToJson(Notif instance) => <String, dynamic>{
       'channel_id': instance.channel_id,
@@ -43,7 +46,18 @@ Map<String, dynamic> _$NotifToJson(Notif instance) => <String, dynamic>{
       'title': instance.title,
       'visible': instance.visible,
       'actionType': instance.actionType,
+      'layoutType': _$NotificationLayoutEnumMap[instance.layout],
     };
+
+const _$NotificationLayoutEnumMap = {
+  NotificationLayout.Default: 'Default',
+  NotificationLayout.BigPicture: 'BigPicture',
+  NotificationLayout.BigText: 'BigText',
+  NotificationLayout.Inbox: 'Inbox',
+  NotificationLayout.ProgressBar: 'ProgressBar',
+  NotificationLayout.Messaging: 'Messaging',
+  NotificationLayout.MediaPlayer: 'MediaPlayer',
+};
 
 ActionsItem _$ActionsItemFromJson(Map json) => ActionsItem()
   ..title = json['title'] as String?

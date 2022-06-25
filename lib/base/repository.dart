@@ -206,7 +206,7 @@ abstract class Repository {
 
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
 
-  NetworkResult<VersionData> getVersion();
+  NetworkResult<Version> getVersion();
 
   NetworkResult<ShopModel> getHomeShop();
 
@@ -850,7 +850,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<VersionData> getVersion() {
+  NetworkResult<Version> getVersion() {
     var response = _apiClient.getVersion();
     return response;
   }

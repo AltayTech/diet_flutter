@@ -33,8 +33,7 @@ class GlobalInterceptor extends Interceptor {
     options.headers['application-version-code'] = packageInfo.buildNumber;
     options.headers['version'] = packageInfo.version.replaceAll('.', '');
     options.headers['application-version-name'] = packageInfo.version;
-    options.headers['platform'] = DeviceUtils.platform;
-    options.headers['platform-version'] = await DeviceUtils.platformVersion;
+    options.headers['os'] = DeviceUtils.platform;
     options.headers['x-device'] = await DeviceUtils.deviceName;
     options.headers['device-id'] = await DeviceUtils.deviceId;
     options.headers['is-emulator'] = (await DeviceUtils.isEmulator).toString();

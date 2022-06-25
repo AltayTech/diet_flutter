@@ -3,29 +3,15 @@ import 'package:json_annotation/json_annotation.dart';
 part 'version.g.dart';
 
 @JsonSerializable()
-class VersionData {
-  @JsonKey(name: "ios")
-  Version? ios;
-  @JsonKey(name: "android")
-  Version? android;
-
-  VersionData();
-
-  factory VersionData.fromJson(Map<String, dynamic> json) => _$VersionDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$VersionDataToJson(this);
-}
-
-@JsonSerializable()
 class Version {
   @JsonKey(name: "version_code")
   String? versionCode;
 
   @JsonKey(name: "force_update")
-  int? forceUpdate;
+  bool? forceUpdate;
 
-  @JsonKey(name: "force_update_version", defaultValue: 1)
-  int? forceUpdateVersion;
+  @JsonKey(name: "force_version_code", defaultValue: "100")
+  String? forceUpdateVersion;
 
   @JsonKey(name: "title")
   String? title;
@@ -35,15 +21,6 @@ class Version {
 
   @JsonKey(name: "description")
   String? description;
-
-  @JsonKey(name: "iapps")
-  String? iapps;
-
-  @JsonKey(name: "sibapp")
-  String? sibapp;
-
-  @JsonKey(name: "google")
-  String? google;
 
   @JsonKey(name: "url")
   String? url;

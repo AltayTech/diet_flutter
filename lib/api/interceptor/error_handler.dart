@@ -93,7 +93,6 @@ class ErrorHandlerInterceptor extends Interceptor {
       if (message == null && err.response?.data != null && err.response?.data != '') {
         message = NetworkResponse<dynamic>.fromJson(
                 err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
-            .error!
             .message;
       }
     } catch (e) {}
@@ -135,13 +134,11 @@ class ErrorHandlerInterceptor extends Interceptor {
     if (_context == null || _isMaintenanceAlertShown) {
       return;
     }
-    String? message;
+    var error;
     try {
-      if (message == null && err.response?.data != null && err.response?.data != '') {
-        message = NetworkResponse<dynamic>.fromJson(
-                err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
-            .error!
-            .message;
+      if (error == null && err.response?.data != null && err.response?.data != '') {
+        error = NetworkResponse<dynamic>.fromJson(
+                err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>));
       }
     } catch (e) {}
     _isMaintenanceAlertShown = true;
@@ -149,7 +146,7 @@ class ErrorHandlerInterceptor extends Interceptor {
       context: _context!,
       isDismissible: false,
       child: MaintenancePage(
-        message: message,
+        error: error,
       ),
     );
     _isMaintenanceAlertShown = false;

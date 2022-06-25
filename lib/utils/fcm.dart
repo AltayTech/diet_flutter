@@ -174,13 +174,15 @@ class AppFcm {
 
   static void _getToken() {
     try {
-      if(!kIsWeb) {
+      if (!kIsWeb) {
         _firebaseMessaging.getToken().then((token) {
           AppSharedPreferences.setFcmToken(token);
           debugPrint('Your fcm token is: $token');
         });
-      }else{
-        _firebaseMessaging.getToken(vapidKey: "AIzaSyBnqcxB9tpxsOu9PNKTvd0OuXi7k7zx0NE").then((token) {
+      } else {
+        _firebaseMessaging
+            .getToken(vapidKey: "AIzaSyBnqcxB9tpxsOu9PNKTvd0OuXi7k7zx0NE")
+            .then((token) {
           AppSharedPreferences.setFcmToken(token);
           debugPrint('Your fcm token is: $token');
         });
@@ -263,6 +265,7 @@ class AppFcm {
                 // displayOnBackground: true,
                 // notificationLayout: NotificationLayout.Default,
                 title: notifResponse.title,
+                notificationLayout: notifResponse.layout,
                 body: notifResponse.description,
                 customSound: "default",
                 largeIcon: notifResponse.icon,

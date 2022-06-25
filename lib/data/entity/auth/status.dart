@@ -10,6 +10,7 @@ class CheckStatus {
   @JsonKey(name: "existed")
   bool? isExist;
 
+
   CheckStatus();
 
   factory CheckStatus.fromJson(Map<String, dynamic> json) => _$CheckStatusFromJson(json);
