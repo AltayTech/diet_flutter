@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
@@ -105,8 +106,7 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
                 child: profileBloc.userInfo.media != null
-                    ? Image.network(
-                        '${FlavorConfig.instance.variables['baseUrlFile']}${profileBloc.userInfo.media!.url}',
+                    ? Image.network(Utils.getCompletePath(profileBloc.userInfo.media!.url),
                         fit: BoxFit.cover,
                         width: 20.w,
                         height: 20.h,

@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/widget/custom_curve.dart';
@@ -147,8 +148,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                                     );
                                   }else{
                                   return  profileBloc.userInfo.media?.url != null
-                                        ? ImageUtils.fromNetwork(
-                                      '${FlavorConfig.instance.variables['baseUrlFile']}${profileBloc.userInfo.media!.url}',
+                                        ? ImageUtils.fromNetwork( Utils.getCompletePath(profileBloc.userInfo.media!.url),
                                       placeholder: 'assets/images/profile/female_avatar.svg',
                                       showPlaceholder: true,
                                       fit: BoxFit.cover,

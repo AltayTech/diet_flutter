@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/const_&_model/selected_time.dart';
 import 'package:behandam/screens/psychology/calendar_provider.dart';
 import 'package:behandam/screens/psychology/calender_bloc.dart';
@@ -61,9 +62,7 @@ class _ADShowState extends ResourcefulState<ADShow> {
                                 )
                               : ClipRRect(
                                   borderRadius: BorderRadius.circular(20.0),
-                                  child: ImageUtils.fromNetwork(
-                                      FlavorConfig.instance.variables["baseUrlFile"] +
-                                          info[index].adviserImage,
+                                  child: ImageUtils.fromNetwork( Utils.getCompletePath(info[index].adviserImage),
                                       width: 20.w,
                                       fit: BoxFit.fill,
                                       height: 20.w),

@@ -1,3 +1,4 @@
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/const_&_model/selected_time.dart';
 import 'package:behandam/data/entity/psychology/plan.dart';
 import 'package:behandam/routes.dart';
@@ -7,12 +8,11 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:logifan/widgets/space.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
-import 'package:velocity_x/src/extensions/context_ext.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:logifan/widgets/space.dart';
+import 'package:velocity_x/src/extensions/context_ext.dart';
 
 showModal(BuildContext ctx, SelectedTime info, Planning item) {
   showModalBottomSheet(
@@ -49,11 +49,9 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
                   padding: const EdgeInsets.only(right: 8.0, left: 8.0),
                   child: info.adviserImage == null
                       ? ImageUtils.fromLocal('assets/images/profile/psychology.svg',
-                      width: 20.w, height: 7.h)
-                      : ImageUtils.fromNetwork(
-                      FlavorConfig.instance.variables["baseUrlFile"] + info.adviserImage,
-                      width: 20.w,
-                      height: 10.h),
+                          width: 20.w, height: 7.h)
+                      : ImageUtils.fromNetwork(Utils.getCompletePath(info.adviserImage),
+                          width: 20.w, height: 10.h),
                 ),
                 Column(
                   children: [
@@ -68,7 +66,8 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(AppLocalizations.of(ctx)!.sessionDuration, style: TextStyle(fontSize: 12.sp)),
+                  Text(AppLocalizations.of(ctx)!.sessionDuration,
+                      style: TextStyle(fontSize: 12.sp)),
                   Text("${info.duration.toString() + AppLocalizations.of(ctx)!.min}",
                       style: TextStyle(
                           fontSize: 12.sp,
@@ -129,7 +128,7 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(AppLocalizations.of(ctx)!.price, style: TextStyle(fontSize: 12.sp)),
-                  Text("${ info.finalPrice.toString() + AppLocalizations.of(ctx)!.currency } ",
+                  Text("${info.finalPrice.toString() + AppLocalizations.of(ctx)!.currency} ",
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
@@ -138,7 +137,8 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
               ),
             ),
             Space(height: 2.h),
-            button(AppColors.btnColor, AppLocalizations.of(ctx)!.reserveThisTime, Size(70.w, 5.h), () {
+            button(AppColors.btnColor, AppLocalizations.of(ctx)!.reserveThisTime, Size(70.w, 5.h),
+                () {
               ctx.vxNav.push(Uri.parse(Routes.psychologyTerms), params: {
                 'sessionId': item.id,
                 'packageId': info.packageId,
@@ -161,8 +161,8 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
                 shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
               ),
-              child:
-              Text(AppLocalizations.of(ctx)!.iDoNot, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
+              child: Text(AppLocalizations.of(ctx)!.iDoNot,
+                  style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
             ),
           ],
         ),

@@ -421,10 +421,8 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                           child: CustomPlayer(
                                                             isAdmin: false,
                                                             media: Media.remoteExampleFile,
-                                                            url: FlavorConfig.instance
-                                                                    .variables["baseUrlFile"] +
-                                                                bloc.ticketDetails!.items![index]
-                                                                    .messages![i].file![0].url,
+                                                            url: Utils.getCompletePath(bloc.ticketDetails!.items![index]
+                                                                .messages![i].file![0].url),
                                                           ),
                                                           width: 70.w,
                                                         ),
@@ -1372,7 +1370,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
         if (value.mediumType == MediumType.IMAGE)
           GestureDetector(
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return DetailScreen(FlavorConfig.instance.variables["baseUrlFile"] + value.url);
+              return DetailScreen(Utils.getCompletePath(value.url));
             })),
             child: Container(
               decoration: BoxDecoration(

@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/screens/regime/package/package_bloc.dart';
 import 'package:behandam/screens/regime/package/package_provider.dart';
@@ -74,8 +75,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                               Padding(
                                 padding: EdgeInsets.only(left: 2.w),
                                 child: pack.media != null
-                                    ? ImageUtils.fromNetwork(
-                                        '${FlavorConfig.instance.variables['baseUrlFile']}/${pack.media!}',
+                                    ? ImageUtils.fromNetwork(Utils.getCompletePath(pack.media!),
                                         width: 20.w,
                                         height: 20.w,
                                       )

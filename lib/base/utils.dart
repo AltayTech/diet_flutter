@@ -6,6 +6,7 @@ import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -197,5 +198,21 @@ class Utils {
         },
       ),
     ));
+  }
+
+  static String getCompletePath(String? path) {
+    return (path != null && path.startsWith('h'))
+        ? path
+        : (path != null && path.startsWith('/'))
+            ? "${FlavorConfig.instance.variables['baseUrlFile']}$path"
+            : "${FlavorConfig.instance.variables['baseUrlFile']}/$path";
+  }
+
+  static String getCompletePathShop(String? path) {
+    return (path != null && path.startsWith('h'))
+        ? path
+        : (path != null && path.startsWith('/'))
+        ? "${FlavorConfig.instance.variables['baseUrlFileShop']}$path"
+        : "${FlavorConfig.instance.variables['baseUrlFileShop']}/$path";
   }
 }

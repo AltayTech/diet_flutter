@@ -96,9 +96,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                             color: AppColors.primary),
                                         quarterTurns: context.isRtl ? 0 : 90,
                                       ),
-                                      ImageUtils.fromNetwork(
-                                          FlavorConfig.instance.variables['baseUrlFileShop'] +
-                                              bloc.list![index].icon_url,
+                                      ImageUtils.fromNetwork(Utils.getCompletePathShop(bloc.list![index].icon_url),
                                           width: 7.0.w,
                                           height: 8.w,
                                           color: AppColors.primary)
@@ -226,10 +224,8 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                 child: AspectRatio(
                                                   aspectRatio: 16 / 9,
                                                   child: ImageUtils.fromNetwork(
-                                                      FlavorConfig.instance
-                                                          .variables['baseUrlFileShop'] +
-                                                          bloc.list![index].category!.products![i]
-                                                              .productThambnail,
+                                                      Utils.getCompletePathShop(bloc.list![index].category!.products![i]
+                                                          .productThambnail),
                                                       decoration: AppDecorations.boxMild,
                                                       fit: BoxFit.fill),
                                                 ),
@@ -383,8 +379,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                           child: Container(
                             margin: EdgeInsets.all(5.w),
                             child: ImageUtils.fromNetwork(
-                                FlavorConfig.instance.variables['baseUrlFileShop'] +
-                                    bloc.list![index].banner!.sliderImg,
+                                Utils.getCompletePathShop(bloc.list![index].banner!.sliderImg),
                                 decoration: AppDecorations.boxMedium,
                                 showPlaceholder: false,
                                 width: 80.h,

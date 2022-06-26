@@ -107,9 +107,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
               padding: EdgeInsets.all(3.w),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                child: ImageUtils.fromNetwork(
-                    FlavorConfig.instance.variables["baseUrlFileShop"] +
-                        shopProduct.productThambnail,
+                child: ImageUtils.fromNetwork( Utils.getCompletePathShop(shopProduct.productThambnail),
                     width: double.maxFinite,
                     height: 30.h,
                     fit: BoxFit.fill),
