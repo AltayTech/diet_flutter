@@ -6,6 +6,7 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/ticket/call_bloc.dart';
 import 'package:behandam/screens/ticket/call_list_widget.dart';
 import 'package:behandam/screens/ticket/call_provider.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
@@ -42,10 +43,7 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
               if (snapshot.hasData && snapshot.data == false) {
                 return content();
               } else
-                return SpinKitCircle(
-                  size: 7.w,
-                  color: AppColors.primary,
-                );
+                return Progress();
             },
             stream: callBloc.progressNetwork,
           ),

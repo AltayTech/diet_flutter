@@ -744,7 +744,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 363;
-				DEVELOPMENT_TEAM = G4HLJDVLN9;
+				DEVELOPMENT_TEAM = 2CZ4FPMB3V;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
@@ -837,7 +837,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iapps.export;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Iapps Provisioning Profile";
+				PROVISIONING_PROFILE_SPECIFIER = iAppsDeveloperWildcardAdHoc;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
