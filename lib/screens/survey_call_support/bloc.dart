@@ -58,8 +58,6 @@ class SurveyCallSupportBloc {
   List<PollPhrases>? listStrengths = [];
   List<PollPhrases>? listWeakness = [];
 
-  List<SubscriptionsItems>? subscriptions;
-
   final _repository = Repository.getInstance();
 
   final _progressNetwork = BehaviorSubject<bool>();
@@ -70,13 +68,9 @@ class SurveyCallSupportBloc {
 
   final _pollPhrasesWeakness = BehaviorSubject<List<PollPhrases>>();
 
-  final _subscriptionPending = BehaviorSubject<SubscriptionPendingData?>();
-
   Stream<bool> get progressNetwork => _progressNetwork.stream;
 
   Stream<EmojiSelected> get emojiSelected => _emojiSelected.stream;
-
-  Stream<SubscriptionPendingData?> get subscriptionPending => _subscriptionPending.stream;
 
   Stream<List<PollPhrases>> get pollPhrasesStrengths => _pollPhrasesStrengths.stream;
 
@@ -101,15 +95,18 @@ class SurveyCallSupportBloc {
   void getUserSubscriptions() {
     _progressNetwork.value = true;
 
-    _repository.getUserSubscription().then((value) {
+    /*_repository.getUserSubscription().then((value) {
       subscriptions = value.data!.subscriptionList;
       _subscriptionPending.safeValue = value.data?.pendingCardPayment;
     }).whenComplete(() {
       _progressNetwork.value = false;
-    });
+    });*/
   }
 
   void dispose() {
     _progressNetwork.close();
+    _emojiSelected.close();
+    _pollPhrasesStrengths.close();
+    _pollPhrasesWeakness.close();
   }
 }
