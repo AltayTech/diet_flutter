@@ -114,8 +114,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
           children: [
             ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                child: ImageUtils.fromNetwork(
-                    FlavorConfig.instance.variables["baseUrlFileShop"] + product.productThambnail,
+                child: ImageUtils.fromNetwork(Utils.getCompletePathShop(product.productThambnail),
                     width: 20.w,
                     height: 9.h,
                     fit: BoxFit.fill)),

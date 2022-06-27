@@ -1,11 +1,11 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/subscription/select_package/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -78,7 +78,7 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                 padding: EdgeInsets.only(left: 2.w),
                                 child: pack.media != null
                                     ? ImageUtils.fromNetwork(
-                                        '${FlavorConfig.instance.variables['baseUrlFile']}/${pack.media!}',
+                                        Utils.getCompletePath(pack.media!),
                                         width: 20.w,
                                         height: 20.w,
                                       )
@@ -272,23 +272,4 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

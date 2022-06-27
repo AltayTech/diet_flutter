@@ -45,8 +45,7 @@ class _SliderAppState extends State<SliderApp> {
                   margin: EdgeInsets.all(5.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    child: ImageUtils.fromNetwork(
-                        FlavorConfig.instance.variables['baseUrlFileShop'] + value.sliderImg,
+                    child: ImageUtils.fromNetwork(Utils.getCompletePathShop(value.sliderImg),
                         showPlaceholder: false,
                         fit: BoxFit.fill),
                   ),
