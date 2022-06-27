@@ -14,7 +14,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -96,7 +95,8 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                             color: AppColors.primary),
                                         quarterTurns: context.isRtl ? 0 : 90,
                                       ),
-                                      ImageUtils.fromNetwork(Utils.getCompletePathShop(bloc.list![index].icon_url),
+                                      ImageUtils.fromNetwork(
+                                          Utils.getCompletePathShop(bloc.list![index].icon_url),
                                           width: 7.0.w,
                                           height: 8.w,
                                           color: AppColors.primary)
@@ -224,8 +224,8 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                 child: AspectRatio(
                                                   aspectRatio: 16 / 9,
                                                   child: ImageUtils.fromNetwork(
-                                                      Utils.getCompletePathShop(bloc.list![index].category!.products![i]
-                                                          .productThambnail),
+                                                      Utils.getCompletePathShop(bloc.list![index]
+                                                          .category!.products![i].productThambnail),
                                                       decoration: AppDecorations.boxMild,
                                                       fit: BoxFit.fill),
                                                 ),
@@ -236,10 +236,8 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                               AspectRatio(
                                                 aspectRatio: 16 / 9,
                                                 child: ImageUtils.fromNetwork(
-                                                    FlavorConfig
-                                                            .instance.variables['baseUrlFileShop'] +
-                                                        bloc.list![index].category!.products![i]
-                                                            .productThambnail,
+                                                    Utils.getCompletePathShop(bloc.list![index]
+                                                        .category!.products![i].productThambnail),
                                                     showPlaceholder: false,
                                                     decoration: AppDecorations.boxMild,
                                                     fit: BoxFit.fill),

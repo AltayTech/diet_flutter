@@ -9,7 +9,6 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logifan/widgets/space.dart';
 
@@ -62,7 +61,8 @@ class _ADShowState extends ResourcefulState<ADShow> {
                                 )
                               : ClipRRect(
                                   borderRadius: BorderRadius.circular(20.0),
-                                  child: ImageUtils.fromNetwork( Utils.getCompletePath(info[index].adviserImage),
+                                  child: ImageUtils.fromNetwork(
+                                      Utils.getCompletePath(info[index].adviserImage),
                                       width: 20.w,
                                       fit: BoxFit.fill,
                                       height: 20.w),

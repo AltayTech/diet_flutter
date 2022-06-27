@@ -9,7 +9,6 @@ import 'package:behandam/screens/widget/custom_curve.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ToolbarProfile extends StatefulWidget {
@@ -45,20 +44,7 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
                 ),
               )),
         ),
-        Positioned(
-          top: 5.5.h,
-          right: context.isRtl ? 21.w : null,
-          left: context.isRtl ? null : 21.w,
-          child: Text(
-            '${profileBloc.userInfo.fullName}',
-            textAlign: TextAlign.center,
-            softWrap: true,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                  color: AppColors.onPrimary,
-                ),
-          ),
-        ),
+        textName(),
         Positioned(
           top: 3.h,
           right: context.isRtl ? 4.5.w : null,
@@ -85,101 +71,107 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
             ),
           ),
         ),
-        Positioned(
-          top: 3.h,
-          right: context.isRtl ? 4.5.w : null,
-          left: context.isRtl ? null : 4.5.w,
-          child: Center(
-            child: Container(
-              width: 15.w,
-              height: 15.w,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 250, 213, 213),
-                borderRadius: BorderRadius.circular(20.0),
-                border: profileBloc.userInfo.media != null
-                    ? Border.all(
-                        color: Colors.white,
-                        width: 1.w,
-                      )
-                    : null,
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: profileBloc.userInfo.media != null
-                    ? Image.network(Utils.getCompletePath(profileBloc.userInfo.media!.url),
-                        fit: BoxFit.cover,
-                        width: 20.w,
-                        height: 20.h,
-                      )
-                    : ImageUtils.fromLocal(
-                        profileBloc.userInfo.gender == 0
-                            ? 'assets/images/profile/female_avatar.svg'
-                            : 'assets/images/profile/male_avatar.svg',
-                        height: 20.h,
-                        width: 20.h,
-                        fit: BoxFit.cover,
-                      ),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-            top: 5.h,
-            left: context.isRtl ? 4.h : null,
-            right: context.isRtl ? null : 4.h,
-            child: GestureDetector(
-                onTap: () {
-                  VxNavigator.of(context).push(Uri.parse(Routes.inbox));
-                },
-                child: Badge(
-                  badgeColor: Colors.white,
-                  shape: BadgeShape.circle,
-                  badgeContent: StreamBuilder(
-                    builder: (context, snapshot) {
-                      return Text(
-                        '${MemoryApp.inboxCount}',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      );
-                    },
-                    stream: profileBloc.inboxCount,
-                  ),
-                  position: BadgePosition.bottomEnd(),
-                  child: Container(
-                    width: 10.w,
-                    height: 8.w,
-                    child: ImageUtils.fromLocal(
-                      'assets/images/profile/inbox_app.svg',
-                      color: AppColors.primary,
-                      fit: BoxFit.contain,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    padding: EdgeInsets.all(3),
-                  ),
-                ))),
+        avatarUser(),
+        inbox(),
       ],
     );
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  Widget textName() {
+    return Positioned(
+      top: 5.5.h,
+      right: context.isRtl ? 21.w : null,
+      left: context.isRtl ? null : 21.w,
+      child: Text(
+        '${profileBloc.userInfo.fullName}',
+        textAlign: TextAlign.center,
+        softWrap: true,
+        maxLines: 1,
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: AppColors.onPrimary,
+            ),
+      ),
+    );
   }
 
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+  Widget avatarUser() {
+    return Positioned(
+      top: 3.h,
+      right: context.isRtl ? 4.5.w : null,
+      left: context.isRtl ? null : 4.5.w,
+      child: Center(
+        child: Container(
+          width: 15.w,
+          height: 15.w,
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 250, 213, 213),
+            borderRadius: BorderRadius.circular(20.0),
+            border: profileBloc.userInfo.media != null
+                ? Border.all(
+                    color: Colors.white,
+                    width: 1.w,
+                  )
+                : null,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: profileBloc.userInfo.media != null
+                ? Image.network(
+                    Utils.getCompletePath(profileBloc.userInfo.media!.url),
+                    fit: BoxFit.cover,
+                    width: 20.w,
+                    height: 20.h,
+                  )
+                : ImageUtils.fromLocal(
+                    profileBloc.userInfo.gender == 0
+                        ? 'assets/images/profile/female_avatar.svg'
+                        : 'assets/images/profile/male_avatar.svg',
+                    height: 20.h,
+                    width: 20.h,
+                    fit: BoxFit.cover,
+                  ),
+          ),
+        ),
+      ),
+    );
   }
 
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+  Widget inbox() {
+    return Positioned(
+        top: 5.h,
+        left: context.isRtl ? 4.h : null,
+        right: context.isRtl ? null : 4.h,
+        child: GestureDetector(
+            onTap: () {
+              VxNavigator.of(context).push(Uri.parse(Routes.inbox));
+            },
+            child: Badge(
+              badgeColor: Colors.white,
+              shape: BadgeShape.circle,
+              badgeContent: StreamBuilder(
+                builder: (context, snapshot) {
+                  return Text(
+                    '${MemoryApp.inboxCount}',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  );
+                },
+                stream: profileBloc.inboxCount,
+              ),
+              position: BadgePosition.bottomEnd(),
+              child: Container(
+                width: 10.w,
+                height: 8.w,
+                child: ImageUtils.fromLocal(
+                  'assets/images/profile/inbox_app.svg',
+                  color: AppColors.primary,
+                  fit: BoxFit.contain,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                padding: EdgeInsets.all(3),
+              ),
+            )));
   }
 }

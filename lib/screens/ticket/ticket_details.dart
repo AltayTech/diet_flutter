@@ -1352,7 +1352,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                     text: new LinkFile(
                       style: Theme.of(context).textTheme.caption!.copyWith(
                           decoration: TextDecoration.underline, color: Colors.lightBlueAccent),
-                      url: FlavorConfig.instance.variables["baseUrlFile"] + value.url,
+                      url: Utils.getCompletePath(value.url) ,
                       text: '${value.fileName}',
                     ),
                     textAlign: TextAlign.end,
