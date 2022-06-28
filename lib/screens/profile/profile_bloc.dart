@@ -46,7 +46,7 @@ class ProfileBloc {
   final _showRefund = BehaviorSubject<bool>();
   final _showPdf = BehaviorSubject<bool>();
   final _inboxStream = BehaviorSubject<List<InboxItem>>();
-  final _inboxItem = BehaviorSubject<InboxItem>();
+  final _inboxItem = BehaviorSubject<InboxItem?>();
   final _cityProvinceModelStream = BehaviorSubject<CityProvinceModel>();
   final _obscureTextPass = BehaviorSubject<bool>();
   final _obscureTextConfirmPass = BehaviorSubject<bool>();
@@ -92,7 +92,7 @@ class ProfileBloc {
 
   Stream<SubscriptionPendingData?> get subscriptionPending => _subscriptionPending.stream;
 
-  Stream<InboxItem> get inboxItem => _inboxItem.stream;
+  Stream<InboxItem?> get inboxItem => _inboxItem.stream;
 
   bool? get isProgressNetwork => _progressNetwork.value;
 
@@ -364,6 +364,12 @@ class ProfileBloc {
       sendAnalytic();
       AppSharedPreferences.logout();
       navigator.routeManager.clearAndPush(Uri.parse(Routes.auth));
+    });
+  }
+
+  void getInboxMessage(int id) {
+    _repository.getInboxMessage(id).then((value) {
+      _inboxItem.safeValue = value.data!.inbox!;
     });
   }
 

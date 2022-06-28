@@ -282,6 +282,8 @@ final navigator = VxNavigator(
     Routes.inbox: (_, __) => MaterialPage(child: routePage(InboxList())),
     Routes.showInbox: (_, param) =>
         MaterialPage(child: routePage(ShowInboxItem()), arguments: param),
+    RegExp(r"\/inbox\/[0-9]+"): (uri, __) =>
+        MaterialPage(child: routePage(ShowInboxItem()), arguments: uri.pathSegments[1]),
     Routes.ticketMessage: (_, param) =>
         VxRoutePage(child: routePage(TicketTab()), pageName: 'message'),
     Routes.ticketCall: (_, param) => VxRoutePage(child: routePage(TicketTab()), pageName: 'call'),

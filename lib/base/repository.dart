@@ -249,6 +249,8 @@ abstract class Repository {
   NetworkResult<TargetWeight> targetWeight();
 
   NetworkResult<ListUserSubscriptionData> getUserSubscription();
+
+  NetworkResult<InboxItem> getInboxMessage(int id);
 }
 
 class _RepositoryImpl extends Repository {
@@ -998,6 +1000,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<ListUserSubscriptionData> getUserSubscription() {
     var response = _apiClient.getUserSubscription();
+    return response;
+  }
+
+  @override
+  NetworkResult<InboxItem> getInboxMessage(int id) {
+    var response = _apiClient.getInboxMessage(id);
     return response;
   }
 }
