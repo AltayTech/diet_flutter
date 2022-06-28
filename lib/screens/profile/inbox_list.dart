@@ -219,8 +219,8 @@ class _InboxList extends ResourcefulState<InboxList> {
                             snapshot.data![index].inbox!.actionType ==
                                 INBOX_ACTION_TYPE.OPEN_WEB_URL)) {
                       VxNavigator.of(context)
-                          .push(Uri.parse(Routes.showInbox), params: snapshot.data![index].inbox);
-                    }else
+                          .push(Uri.parse(Routes.showInbox), params: snapshot.data![index].inbox!.id);
+                    } else
                       Utils.launchURL(snapshot.data![index].inbox!.action!);
                   },
                 );
