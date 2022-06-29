@@ -111,7 +111,7 @@ class _ShowInboxItemState extends ResourcefulState<ShowInboxItem> {
             );
           return Scaffold(
             backgroundColor: Color.fromARGB(255, 245, 245, 245),
-            appBar: Toolbar(titleBar: intl.loading ?? ''),
+            appBar: Toolbar(titleBar: intl.loading),
             body: Container(
                 color: Color.fromARGB(255, 245, 245, 245),
                 padding: EdgeInsets.only(
