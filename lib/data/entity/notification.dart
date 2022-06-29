@@ -78,7 +78,7 @@ class Notif {
     ..icon = json['icon'] as String?
     ..title = json['title'] as String?
     ..visible = json['visible'] as String?
-    ..layout = $enumDecodeNullable(_$ActionTypeEnumMap, json['layoutType'])
+    ..layout = $enumDecodeNullable(_$ActionTypeStringEnumMap, json['layoutType'])
     ..actionType = json['action_type'] as String?
     ..actions = (json['actions'] as List<dynamic>?)
         ?.map((e) => e == null
@@ -101,7 +101,15 @@ const _$ActionTypeEnumMap = {
   NotificationLayout.Messaging: '5',
   NotificationLayout.MediaPlayer: '6',
 };
-
+const _$ActionTypeStringEnumMap = {
+  NotificationLayout.Default: 'Default',
+  NotificationLayout.BigPicture: 'BigPicture',
+  NotificationLayout.BigText: 'BigText',
+  NotificationLayout.Inbox: 'Inbox',
+  NotificationLayout.ProgressBar: 'ProgressBar',
+  NotificationLayout.Messaging: 'Messaging',
+  NotificationLayout.MediaPlayer: 'MediaPlayer',
+};
 @JsonSerializable(anyMap: true)
 class ActionsItem {
   @JsonKey(name: "title")
