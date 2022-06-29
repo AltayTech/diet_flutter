@@ -108,9 +108,12 @@ class _AppState extends State<App> {
         navigator.routeManager
             .replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
       }
-      if (MemoryApp.analytics != null)
-        MemoryApp.analytics!
-            .logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
+        if (MemoryApp.analytics != null)
+          MemoryApp.analytics!.logEvent(
+              name: navigator.currentConfiguration!.path
+                  .substring(1)
+                  .replaceAll(RegExp(r'\/\d+'), "")
+                  .replaceAll(RegExp(r'[/-]'), "_"));
     });
   }
 
@@ -368,8 +371,8 @@ final navigator = VxNavigator(
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
-    Routes.dailyMessage: (_, param) =>
-        MaterialPage(child: routePage(DailyMessage()), arguments: param),
+    RegExp(r"\/daily-message\/[0-9]+"): (uri, __) =>
+        MaterialPage(child: routePage(DailyMessage()), arguments: int.parse(uri.pathSegments[1])),
     Routes.privacyApp: (_, __) => MaterialPage(child: routePage(PrivacyPolicy())),
     Routes.targetWeight: (_, __) => MaterialPage(child: routePage(TargetWeightScreen())),
     Routes.selectPackageSubscription: (_, __) =>
