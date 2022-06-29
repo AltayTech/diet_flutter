@@ -280,8 +280,6 @@ final navigator = VxNavigator(
     Routes.fastPatterns: (_, __) => MaterialPage(child: routePage(FastPatternPage())),
     Routes.listFood: (_, param) => MaterialPage(child: routePage(ListFoodPage()), arguments: param),
     Routes.inbox: (_, __) => MaterialPage(child: routePage(InboxList())),
-    Routes.showInbox: (_, param) =>
-        MaterialPage(child: routePage(ShowInboxItem()), arguments: param),
     RegExp(r"\/inbox\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(ShowInboxItem()), arguments: uri.pathSegments[1]),
     Routes.ticketMessage: (_, param) =>
