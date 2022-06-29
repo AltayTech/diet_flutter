@@ -67,10 +67,10 @@ class ListFoodBloc {
 
   void _loadContent() {
     _loadingContent.safeValue = true;
-    _loadingMoreFoods.value = true;
+    _loadingMoreFoods.safeValue = true;
     _repository.listFood(filter).then((value) {
-      _listFood.value = value.requireData;
-      if (_tags.valueOrNull == null) _tags.value = value.data?.items.tags;
+      _listFood.safeValue = value.requireData;
+      if (_tags.valueOrNull == null) _tags.safeValue = value.data?.items.tags;
       _totalRow = value.data?.count ?? 0;
       if (value.requireData.items.foods != null &&
           value.requireData.items.foods!.length > 0) {
@@ -78,7 +78,7 @@ class ListFoodBloc {
       }
       debugPrint('tags $_totalRow / ${_foods.value?.length}');
     }).whenComplete(() {
-      _loadingMoreFoods.value = false;
+      _loadingMoreFoods.safeValue = false;
       _loadingContent.safeValue = false;
     });
   }
