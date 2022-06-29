@@ -41,10 +41,10 @@ class _ShowInboxItemState extends ResourcefulState<ShowInboxItem> {
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
-      inboxId = (ModalRoute
+      inboxId = int.parse(ModalRoute
           .of(context)!
           .settings
-          .arguments as int);
+          .arguments as String);
 
       bloc.getInboxMessage(inboxId);
     }
