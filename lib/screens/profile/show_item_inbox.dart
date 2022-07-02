@@ -119,8 +119,6 @@ class _ShowInboxItemState extends ResourcefulState<ShowInboxItem> {
                                             child: Text(
                                               inboxItem.data?.text ?? '',
                                               textAlign: TextAlign.start,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
                                               style: Theme.of(context).textTheme.subtitle2,
                                             ),
                                           ),
