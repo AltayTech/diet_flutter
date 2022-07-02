@@ -717,5 +717,8 @@
   "shebaNumber": "شماره شبا",
   "unknown": "نامشخص",
   "loading": "در حال بارگذاری",
+  "selectMethodSendCode": "نوع ارسال رو انتخاب کن",
+  "sendWhatsapp": "ارسال به واتساپ",
+  "sendSMS": "ارسال پیامک",
   "understand": "متوجه شدم"
 }

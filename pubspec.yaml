@@ -20,6 +20,7 @@ version: 3.6.3+363
 environment:
   sdk: ">=2.17.1 <3.0.0"
 
+
 dependencies:
   logifan:
     path: ../logifan

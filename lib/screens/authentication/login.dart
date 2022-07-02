@@ -28,6 +28,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   String _password = "";
   late AuthenticationBloc authBloc;
   bool check = false;
+  ChannelSendCode channelSendCode = ChannelSendCode.SMS;
 
   @override
   void initState() {
@@ -179,84 +180,143 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               intl.forgetPassword,
               style: TextStyle(fontSize: 16.sp, color: AppColors.penColor),
             ),
-            onTap: () => DialogUtils.showDialogPage(
-              context: context,
-              child: changePassDialog(),
-            ),
+            onTap: () => changePassDialog()
           )
         ],
       ),
     );
   }
 
-  Widget changePassDialog() {
-    return Center(
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 5.w),
-        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-        width: double.maxFinite,
-        decoration: AppDecorations.boxLarge.copyWith(
-          color: AppColors.onPrimary,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(intl.changePassword, style: typography.bodyText2),
-            Container(
-              width: 70.w,
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: intl.textChangePass1,
-                  style: TextStyle(fontSize: 14.sp, color: AppColors.penColor),
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: '${args['mobile']}',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(text: intl.textChangePass2),
-                  ],
+  void changePassDialog() {
+    DialogUtils.showDialogPage(
+      context: context,
+      isDismissible: true,
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          width: double.maxFinite,
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.onPrimary,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              close(),
+              Container(
+                width: 70.w,
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: intl.textChangePass1,
+                    style: TextStyle(fontSize: 14.sp, color: AppColors.penColor),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: '${args['mobile']}',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextSpan(text: intl.textChangePass2),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            ButtonBar(
-              mainAxisSize: MainAxisSize.min,
-              alignment: MainAxisAlignment.start,
-              children: [
-                OutlinedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(Size(8.w, 5.h)),
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    foregroundColor:
-                        MaterialStateProperty.all(AppColors.penColor),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0))),
-                  ),
-                  child: Text(intl.no,
-                      style: TextStyle(
-                          color: AppColors.penColor, fontSize: 16.sp)),
+              Space(height: 2.h),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 8, right: 8),
+                  child: TextButton.icon(
+                      onPressed: () {
+                        channelSendCode = ChannelSendCode.SMS;
+
+                        Navigator.pop(context);
+                        DialogUtils.showDialogProgress(context: context);
+
+                        MemoryApp.forgetPass = true;
+                        authBloc.sendCodeMethod(args['mobile'], channelSendCode);
+                        authBloc.setTrySendCode = true;
+                      },
+                      icon: Icon(
+                        Icons.sms,
+                        size: 7.w,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        intl.sendSMS,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(color: Colors.white),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor: AppColors.blueRuler,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(
+                                color: AppColors.blueRuler,
+                                width: 0.25.w,
+                              )))),
                 ),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.btnColor),
-                        fixedSize: MaterialStateProperty.all(Size(10.0, 20.0))),
-                    child: Text(
-                      intl.yes,
-                      style: TextStyle(fontSize: 22.0),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      DialogUtils.showDialogProgress(context: context);
-                      MemoryApp.forgetPass = true;
-                      authBloc.sendCodeMethod(args['mobile']);
-                      authBloc.setTrySendCode = true;
-                      // context.vxNav.push(Uri.parse(Routes.resetCode), params: args);
-                    })
-              ],
-            )
-          ],
+                Container(
+                  margin: const EdgeInsets.only(left: 8, right: 8),
+                  child: TextButton.icon(
+                      onPressed: () {
+                        channelSendCode = ChannelSendCode.WHATSAPP;
+
+                        Navigator.pop(context);
+                        DialogUtils.showDialogProgress(context: context);
+
+                        MemoryApp.forgetPass = true;
+                        authBloc.sendCodeMethod(args['mobile'], channelSendCode);
+                        authBloc.setTrySendCode = true;
+                      },
+                      icon: Icon(
+                        Icons.whatsapp,
+                        size: 7.w,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        intl.sendWhatsapp,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(color: Colors.white),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor: AppColors.greenRuler,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(
+                                color: AppColors.greenRuler,
+                                width: 0.25.w,
+                              )))),
+                )
+              ]),
+              Space(height: 2.h),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget close() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topLeft,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
+          ),
         ),
       ),
     );
@@ -279,7 +339,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   void onRetryAfterNoInternet() {
     // TODO: implement onRetryAfterNoInternet
     if (authBloc.isTrySendCode) {
-      authBloc.sendCodeMethod(args['mobile']);
+      authBloc.sendCodeMethod(args['mobile'], channelSendCode);
     } else {
       clickButton();
     }

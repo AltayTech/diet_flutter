@@ -910,10 +910,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
+<<<<<<< HEAD
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 363;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
+=======
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 360;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
+>>>>>>> whatsapp_verify_code_beh_635
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
@@ -1088,7 +1095,11 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 363;
+=======
+				CURRENT_PROJECT_VERSION = 360;
+>>>>>>> whatsapp_verify_code_beh_635
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1265,7 +1276,11 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 363;
+=======
+				CURRENT_PROJECT_VERSION = 360;
+>>>>>>> whatsapp_verify_code_beh_635
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1441,7 +1456,11 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 363;
+=======
+				CURRENT_PROJECT_VERSION = 360;
+>>>>>>> whatsapp_verify_code_beh_635
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1613,7 +1632,11 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 363;
+=======
+				CURRENT_PROJECT_VERSION = 360;
+>>>>>>> whatsapp_verify_code_beh_635
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1784,7 +1807,11 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 363;
+=======
+				CURRENT_PROJECT_VERSION = 360;
+>>>>>>> whatsapp_verify_code_beh_635
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -1954,7 +1981,11 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 363;
+=======
+				CURRENT_PROJECT_VERSION = 360;
+>>>>>>> whatsapp_verify_code_beh_635
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2123,7 +2154,11 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 363;
+=======
+				CURRENT_PROJECT_VERSION = 360;
+>>>>>>> whatsapp_verify_code_beh_635
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2292,7 +2327,11 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 363;
+=======
+				CURRENT_PROJECT_VERSION = 360;
+>>>>>>> whatsapp_verify_code_beh_635
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2460,7 +2499,11 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 363;
+=======
+				CURRENT_PROJECT_VERSION = 360;
+>>>>>>> whatsapp_verify_code_beh_635
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
@@ -2689,10 +2732,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
+<<<<<<< HEAD
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 363;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
+=======
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 360;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
+>>>>>>> whatsapp_verify_code_beh_635
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
@@ -2806,12 +2856,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
+<<<<<<< HEAD
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 363;
 				DART_DEFINES = "Zmx1dHRlci5pbnNwZWN0b3Iuc3RydWN0dXJlZEVycm9ycz10cnVl,RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==";
 				DART_OBFUSCATION = false;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
+=======
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 360;
+				DEVELOPMENT_TEAM = 6XHGD7C825;
+>>>>>>> whatsapp_verify_code_beh_635
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = iOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
