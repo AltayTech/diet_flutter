@@ -346,5 +346,8 @@ abstract class RestClient {
 
   @GET("/user/subscription/history")
   NetworkResult<ListUserSubscriptionData> getUserSubscription();
+
+  @GET("/inbox/{id}")
+  NetworkResult<InboxItem> getInboxMessage(@Path('id') int id);
 }
 

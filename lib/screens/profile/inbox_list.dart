@@ -210,18 +210,8 @@ class _InboxList extends ResourcefulState<InboxList> {
                     setState(() {
                       snapshot.data![index].seenAt = DateTime.now().toString();
                     });
-                    profileBloc.seenInbox(snapshot.data![index].id!);
-                    if (snapshot.data![index].inbox!.actionType == null ||
-                        (snapshot.data![index].inbox!.actionType ==
-                                INBOX_ACTION_TYPE.OPEN_INSTAGRAM_PAGE ||
-                            snapshot.data![index].inbox!.actionType ==
-                                INBOX_ACTION_TYPE.OPEN_TELEGRAM_CHANNEL ||
-                            snapshot.data![index].inbox!.actionType ==
-                                INBOX_ACTION_TYPE.OPEN_WEB_URL)) {
-                      VxNavigator.of(context)
-                          .push(Uri.parse(Routes.showInbox), params: snapshot.data![index].inbox);
-                    }else
-                      Utils.launchURL(snapshot.data![index].inbox!.action!);
+                    VxNavigator.of(context)
+                        .push(Uri.parse('${Routes.showInbox}/${snapshot.data![index].inbox!.id}'));
                   },
                 );
               },

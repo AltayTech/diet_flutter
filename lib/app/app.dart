@@ -76,6 +76,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../screens/authentication/auth.dart';
@@ -109,11 +110,13 @@ class _AppState extends State<App> {
             .replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
       }
         if (MemoryApp.analytics != null)
+        try {
           MemoryApp.analytics!.logEvent(
               name: navigator.currentConfiguration!.path
                   .substring(1)
                   .replaceAll(RegExp(r'\/\d+'), "")
                   .replaceAll(RegExp(r'[/-]'), "_"));
+        } catch (e) {}
     });
   }
 
@@ -283,8 +286,8 @@ final navigator = VxNavigator(
     Routes.fastPatterns: (_, __) => MaterialPage(child: routePage(FastPatternPage())),
     Routes.listFood: (_, param) => MaterialPage(child: routePage(ListFoodPage()), arguments: param),
     Routes.inbox: (_, __) => MaterialPage(child: routePage(InboxList())),
-    Routes.showInbox: (_, param) =>
-        MaterialPage(child: routePage(ShowInboxItem()), arguments: param),
+    RegExp(r"\/inbox\/[0-9]+"): (uri, __) =>
+        MaterialPage(child: routePage(ShowInboxItem()), arguments: uri.pathSegments[1]),
     Routes.ticketMessage: (_, param) =>
         VxRoutePage(child: routePage(TicketTab()), pageName: 'message'),
     Routes.ticketCall: (_, param) => VxRoutePage(child: routePage(TicketTab()), pageName: 'call'),
@@ -385,8 +388,27 @@ final navigator = VxNavigator(
     key: ValueKey('not-found-page'),
     child: Builder(
       builder: (context) => Scaffold(
-        body: Center(
-          child: Text('Page ${uri.path} not found'),
+        body: WillPopScope(
+          onWillPop: () {
+            return Future.value(false);
+          },
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Page ${uri.path} not found'),
+                Space(
+                  height: 2.h,
+                ),
+                TextButton(
+                    onPressed: () {
+                      navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
+                    },
+                    child: Text('رفتن به صفحه اصلی'))
+              ],
+            ),
+          ),
         ),
       ),
     ),

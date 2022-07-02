@@ -305,7 +305,7 @@ class FoodListBloc {
   }
 
   void setArticle() {
-    _adviceVideo.value = _articles.firstWhere(
+    _adviceVideo.safeValue = _articles.firstWhere(
         (element) => _selectedWeekDay.value.gregorianDate.toString().contains(element.date!));
     adviceId = _adviceVideo.value.id;
   }

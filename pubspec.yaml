@@ -88,6 +88,7 @@ dependencies:
   easy_mask: ^2.0.1
   dio_http2_adapter: ^2.0.0
 
+
 dependency_overrides:
   provider: ^6.0.2
   retrofit: ^3.0.1+1
