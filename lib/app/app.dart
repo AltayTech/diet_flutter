@@ -76,6 +76,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../screens/authentication/auth.dart';
@@ -109,8 +110,10 @@ class _AppState extends State<App> {
             .replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
       }
       if (MemoryApp.analytics != null)
-        MemoryApp.analytics!
-            .logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
+        try {
+          MemoryApp.analytics!.logEvent(
+              name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
+        } catch (e) {}
     });
   }
 
@@ -382,8 +385,27 @@ final navigator = VxNavigator(
     key: ValueKey('not-found-page'),
     child: Builder(
       builder: (context) => Scaffold(
-        body: Center(
-          child: Text('Page ${uri.path} not found'),
+        body: WillPopScope(
+          onWillPop: () {
+            return Future.value(false);
+          },
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Page ${uri.path} not found'),
+                Space(
+                  height: 2.h,
+                ),
+                TextButton(
+                    onPressed: () {
+                      navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
+                    },
+                    child: Text('رفتن به صفحه اصلی'))
+              ],
+            ),
+          ),
         ),
       ),
     ),
