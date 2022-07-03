@@ -59,9 +59,9 @@ Future<void> entryPoint() async {
 }
 
 void _initializeDebugPrint() {
-  if (kReleaseMode || kIsWeb) {
+  /*if (kReleaseMode || kIsWeb) {
     debugPrint = (String? message, {int? wrapWidth}) => doNothing();
-  }
+  }*/
 }
 
 void _initFireBase() async {

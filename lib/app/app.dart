@@ -260,7 +260,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage(SurveyCallSupportScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
@@ -378,6 +378,8 @@ final navigator = VxNavigator(
     Routes.billSubscription: (_, __) => MaterialPage(child: routePage(BillPaymentScreen())),
     Routes.billSubscriptionHistory: (_, params) =>
         MaterialPage(child: routePage(HistorySubscriptionPaymentScreen()), arguments: params),
+    Routes.surveyCallSupport: (_, params) =>
+        MaterialPage(child: routePage(SurveyCallSupportScreen()), arguments: params),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

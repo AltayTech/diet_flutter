@@ -39,17 +39,21 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
   void initListener() {
     bloc.showServerError.listen((event) {
+      Navigator.of(context).pop();
+    });
+
+    bloc.navigateTo.listen((event) {
       if (event.contains('payment/bill')) {
         context.vxNav.clearAndPush(Uri.parse(
             '/${event.toString().split('/')[0]}${Routes.regimeType}'));
+      } else if (event.contains('survey')) {
+        context.vxNav.clearAndPush(Uri.parse(Routes.surveyCallSupport));
       } else if (!Routes.listView.contains(event)) {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       } else
         context.vxNav.replace(Uri.parse('/$event'));
     });
-    bloc.navigateTo.listen((event) {
-      Navigator.of(context).pop();
-    });
+
     bloc.popLoading.listen((event) {
       Navigator.of(context).pop();
     });

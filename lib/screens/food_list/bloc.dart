@@ -11,11 +11,13 @@ import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/stream.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
+import '../survey_call_support/bloc.dart';
 import 'week_day.dart';
 
 class FoodListBloc {
@@ -95,8 +97,12 @@ class FoodListBloc {
         setTheme();
         fillWeekDays();
         getArticles();
+
+        if (value.data!.surveyData!.surveyStatus!) {
+          _navigateTo.fire(Routes.surveyCallSupport);
+        }
       } else {
-        _showServerError.fire(value.next);
+        _navigateTo.fire(value.next);
       }
     }).whenComplete(() => _loadingContent.safeValue = false);
   }
@@ -272,7 +278,7 @@ class FoodListBloc {
     _repository.nextStep().then((value) {
       _navigateTo.fire(value.next);
     }).whenComplete(() {
-      _showServerError.fire(false);
+      _popLoading.fire(false);
     });
   }
 
@@ -281,14 +287,14 @@ class FoodListBloc {
       Utils.launchURL(value.data!.url!);
       // Share.share(value['data']['url'])
     }).whenComplete(() {
-      _navigateTo.fire(false);
+      _popLoading.fire(false);
     });
   }
 
   void checkFitamin() async {
     _repository.checkFitamin().then((value) {
       Utils.launchURL(value.data!.url!);
-    }).whenComplete(() => _navigateTo.fire(false));
+    }).whenComplete(() => _popLoading.fire(false));
   }
 
   void getArticles() async {
