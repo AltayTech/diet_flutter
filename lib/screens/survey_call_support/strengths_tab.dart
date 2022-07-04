@@ -26,12 +26,6 @@ class _StrengthsTabState extends ResourcefulState<StrengthsTab> {
   }
 
   @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
 

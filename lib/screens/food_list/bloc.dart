@@ -98,7 +98,7 @@ class FoodListBloc {
         fillWeekDays();
         getArticles();
 
-        if (value.data!.surveyData!.surveyStatus!) {
+        if (!value.data!.surveyData!.surveyStatus!) {
           _navigateTo.fire(Routes.surveyCallSupport);
         }
       } else {
