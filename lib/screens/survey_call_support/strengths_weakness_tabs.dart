@@ -27,8 +27,8 @@ class StrengthsWeaknessTabsState extends ResourcefulState<StrengthsWeaknessTabs>
     super.build(context);
 
     _listTabView.clear();
-    _listTabView.add(StrengthsTab());
     _listTabView.add(WeaknessTab());
+    _listTabView.add(StrengthsTab());
 
     _controller = TabController(
       vsync: this,
@@ -38,8 +38,8 @@ class StrengthsWeaknessTabsState extends ResourcefulState<StrengthsWeaknessTabs>
 
     if (_list.isEmpty) {
       _list.clear();
-      _list.add(ItemTab(title: intl.strengths));
       _list.add(ItemTab(title: intl.weakness));
+      _list.add(ItemTab(title: intl.strengths));
     }
 
     return Container(

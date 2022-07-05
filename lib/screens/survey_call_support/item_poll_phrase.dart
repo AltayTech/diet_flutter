@@ -8,8 +8,9 @@ import 'package:logifan/widgets/space.dart';
 
 class ItemPollPhrase extends StatefulWidget {
   late PollPhrases pollPhrase;
+  Function click;
 
-  ItemPollPhrase({required this.pollPhrase});
+  ItemPollPhrase({required this.pollPhrase, required this.click});
 
   @override
   _ItemPollPhraseState createState() => _ItemPollPhraseState();
@@ -30,42 +31,32 @@ class _ItemPollPhraseState extends ResourcefulState<ItemPollPhrase> {
 
     bloc = SurveyCallSupportProvider.of(context);
 
-    return _item(widget.pollPhrase);
+    return _item(widget.pollPhrase, widget.click);
   }
 
-  Widget _item(PollPhrases pollPhrase) {
+  Widget _item(PollPhrases pollPhrase, Function click) {
     return InkWell(
       onTap: () {
-        if (pollPhrase.isSelected!) {
-          pollPhrase.isSelected = false;
-        } else {
-          pollPhrase.isSelected = true;
-        }
-
-        if (pollPhrase.isStrength!) {
-          bloc.setPollPhrasesStrengths = pollPhrase;
-        } else {
-          bloc.setPollPhrasesWeakness = pollPhrase;
-        }
+        click.call();
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 16, left: 32, right: 32),
+        padding: const EdgeInsets.only(top: 16, left: 32, right: 32, bottom: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           textDirection: context.textDirectionOfLocaleInversed,
           children: <Widget>[
             Expanded(
-                child: Text(pollPhrase.text!,
+                child: Text(pollPhrase.cause!,
                     textAlign: TextAlign.start,
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(letterSpacing: -0.2, fontWeight: FontWeight.w400))),
+                    style: Theme.of(context).textTheme.caption!.copyWith(
+                        letterSpacing: -0.2, fontWeight: FontWeight.w400, fontSize: 10.sp))),
             Space(width: 2.w),
             ImageUtils.fromLocal(
-              pollPhrase.isSelected! ? 'assets/images/bill/check.svg' : 'assets/images/bill/not_select.svg',
-              width: 4.w,
-              height: 4.w,
+              pollPhrase.isActive! == boolean.True
+                  ? 'assets/images/bill/checkbox.svg'
+                  : 'assets/images/bill/not_select_rect.svg',
+              width: 5.w,
+              height: 5.w,
             ),
           ],
         ),

@@ -4,16 +4,23 @@ part 'poll_phrases.g.dart';
 
 @JsonSerializable()
 class PollPhrases {
-  @JsonKey(name: "example")
-  String? example;
+  @JsonKey(name: "survey_causes")
+  List<PollPhrases>? surveyCauses;
 
-  int? index;
+  @JsonKey(name: "survey_rates")
+  List<SurveyRates>? surveyRates;
 
-  String? text;
+  @JsonKey(name: "id")
+  int? id;
 
-  bool? isSelected;
+  @JsonKey(name: "cause")
+  String? cause;
 
-  bool? isStrength;
+  @JsonKey(name: "is_active")
+  boolean? isActive;
+
+  @JsonKey(name: "is_positive")
+  boolean? isPositive;
 
   PollPhrases();
 
@@ -21,4 +28,27 @@ class PollPhrases {
       _$PollPhrasesFromJson(json);
 
   Map<String, dynamic> toJson() => _$PollPhrasesToJson(this);
+}
+
+@JsonSerializable()
+class SurveyRates {
+  @JsonKey(name: "id")
+  int? id;
+
+  @JsonKey(name: "title")
+  String? title;
+
+  SurveyRates();
+
+  factory SurveyRates.fromJson(Map<String, dynamic> json) =>
+      _$SurveyRatesFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SurveyRatesToJson(this);
+}
+
+enum boolean {
+  @JsonValue(0)
+  False,
+  @JsonValue(1)
+  True,
 }

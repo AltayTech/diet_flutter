@@ -1,10 +1,13 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
 import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/list_history_subscription_payment.dart';
 import 'package:behandam/screens/survey_call_support/bloc.dart';
+import 'package:behandam/screens/survey_call_support/item_poll_phrase.dart';
 import 'package:behandam/screens/survey_call_support/provider.dart';
 import 'package:behandam/screens/survey_call_support/strengths_weakness_tabs.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -82,13 +85,24 @@ class _SurveyCallSupportScreenState
     super.initState();
 
     bloc = SurveyCallSupportBloc();
+    bloc.getCallSurveyCauses();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
+    setContactedToMe();
+
     return SurveyCallSupportProvider(bloc, child: body());
+  }
+
+  void setContactedToMe() {
+    PollPhrases pollPhrase = new PollPhrases();
+    pollPhrase.cause = intl.isContactedToMe;
+    pollPhrase.isActive = boolean.False;
+
+    bloc.setContactedToMe = pollPhrase;
   }
 
   Widget body() {
@@ -109,13 +123,17 @@ class _SurveyCallSupportScreenState
                   children: [
                     Container(
                       padding: EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          selectEmojiContainer(),
-                          Space(height: 3.h),
-                        ],
-                      ),
+                      child: selectEmojiContainer(),
                     ),
+                    StreamBuilder<PollPhrases>(
+                        stream: bloc.isContactedToMe,
+                        builder: (context, pollPhrase) {
+                          if (pollPhrase.hasData)
+                            return isContactedToMeBox(pollPhrase.requireData);
+                          else
+                            return Progress();
+                        }),
+                    Space(height: 3.h),
                     StrengthsWeaknessTabs(),
                     Space(height: 3.h),
                     registerSurvey(),
@@ -126,6 +144,20 @@ class _SurveyCallSupportScreenState
             ),
           ),
         ));
+  }
+
+  Widget isContactedToMeBox(PollPhrases pollPhrase) {
+    return ItemPollPhrase(
+        pollPhrase: pollPhrase,
+        click: () {
+          if (pollPhrase.isActive! == boolean.True) {
+            pollPhrase.isActive = boolean.False;
+          } else {
+            pollPhrase.isActive = boolean.True;
+          }
+
+          bloc.setContactedToMe = pollPhrase;
+        });
   }
 
   Widget selectEmojiContainer() {
@@ -146,74 +178,146 @@ class _SurveyCallSupportScreenState
               style: typography.caption!.copyWith(fontSize: 10.sp)),
         ),
         Container(
-          width: 80.w,
-          margin: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
-          padding:
-              EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
-          decoration: BoxDecoration(
-            color: AppColors.grey,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: selectEmojiBox(),
-        )
+            width: 80.w,
+            margin: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
+            padding:
+                EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
+            decoration: BoxDecoration(
+              color: AppColors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: StreamBuilder<PollPhrases>(
+                stream: bloc.isContactedToMe,
+                builder: (context, isContactedToMe) {
+                  if (isContactedToMe.hasData &&
+                      isContactedToMe.requireData.isActive! == boolean.False)
+                    return StreamBuilder<List<SurveyRates>>(
+                        stream: bloc.surveyRates,
+                        builder: (context, surveyRates) {
+                          if (surveyRates.hasData)
+                            return selectEmojiBox(surveyRates.requireData);
+                          else
+                            return Center(child: Progress());
+                        });
+                  else
+                    return selectEmojiBoxDisabled();
+                }))
       ],
     );
   }
 
-  Widget selectEmojiBox() {
+  Widget selectEmojiBoxDisabled() {
     return Column(
       children: [
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          showEmojiFromString(
+              EmojiSelected.EXTRA_UPSET, extraUpsetEmoji, '#DD5F70', '#717171'),
+          showEmojiFromString(
+              EmojiSelected.UPSET, upsetEmoji, '#EBB34D', '#717171'),
+          showEmojiFromString(
+              EmojiSelected.NEUTRAL, neutralEmoji, '#EBB34D', '#717171'),
+          showEmojiFromString(
+              EmojiSelected.HAPPY, happyEmoji, '#EBB34D', '#717171'),
+          showEmojiFromString(
+              EmojiSelected.EXTRA_HAPPY, extraHappyEmoji, '#EBB34D', '#717171')
+        ]),
         Container(
-          child: StreamBuilder<EmojiSelected>(
-              initialData: EmojiSelected.EXTRA_HAPPY,
-              stream: bloc.emojiSelected,
-              builder: (context, emojiSelected) {
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      emojiSelected.requireData == EmojiSelected.EXTRA_UPSET
-                          ? showEmojiSelected(
-                              'assets/images/emoji/pouting_face.svg')
-                          : showEmojiFromString(EmojiSelected.EXTRA_UPSET,
-                              extraUpsetEmoji, '#DD5F70', '#717171'),
-                      emojiSelected.requireData == EmojiSelected.UPSET
-                          ? showEmojiSelected(
-                              'assets/images/emoji/face_with_cold_sweat.svg')
-                          : showEmojiFromString(EmojiSelected.UPSET, upsetEmoji,
-                              '#EBB34D', '#717171'),
-                      emojiSelected.requireData == EmojiSelected.NEUTRAL
-                          ? showEmojiSelected(
-                              'assets/images/emoji/neutral_face.svg')
-                          : showEmojiFromString(EmojiSelected.NEUTRAL,
-                              neutralEmoji, '#EBB34D', '#717171'),
-                      emojiSelected.requireData == EmojiSelected.HAPPY
-                          ? showEmojiSelected(
-                              'assets/images/emoji/white_smiling_face.svg')
-                          : showEmojiFromString(EmojiSelected.HAPPY, happyEmoji,
-                              '#EBB34D', '#717171'),
-                      emojiSelected.requireData == EmojiSelected.EXTRA_HAPPY
-                          ? showEmojiSelected(
-                              'assets/images/emoji/smiling_face_with_open_mouth.svg')
-                          : showEmojiFromString(EmojiSelected.EXTRA_HAPPY,
-                              extraHappyEmoji, '#EBB34D', '#717171')
-                    ]);
-              }),
-        ),
-        Container(
-          width: 60.w,
-          margin: EdgeInsets.all(8),
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppColors.redBar.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(intl.surveyCallSupportEmojiTextRate3,
-              textAlign: TextAlign.center,
-              style: typography.caption!.copyWith(
-                  fontWeight: FontWeight.bold, color: AppColors.redBar)),
-        ),
+            width: 60.w,
+            margin: EdgeInsets.all(8),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(intl.surveyCallSupportEmojiTextRate1,
+                textAlign: TextAlign.center,
+                style: typography.caption!.copyWith(
+                    fontWeight: FontWeight.bold, color: AppColors.greyDate))),
       ],
     );
+  }
+
+  Widget selectEmojiBox(List<SurveyRates> surveyRates) {
+    return StreamBuilder<EmojiSelected>(
+        initialData: EmojiSelected.EXTRA_HAPPY,
+        stream: bloc.emojiSelected,
+        builder: (context, emojiSelected) {
+          return Column(
+            children: [
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                emojiSelected.requireData == EmojiSelected.EXTRA_UPSET
+                    ? showEmojiSelected('assets/images/emoji/pouting_face.svg')
+                    : showEmojiFromString(EmojiSelected.EXTRA_UPSET,
+                        extraUpsetEmoji, '#DD5F70', '#717171'),
+                emojiSelected.requireData == EmojiSelected.UPSET
+                    ? showEmojiSelected(
+                        'assets/images/emoji/face_with_cold_sweat.svg')
+                    : showEmojiFromString(
+                        EmojiSelected.UPSET, upsetEmoji, '#EBB34D', '#717171'),
+                emojiSelected.requireData == EmojiSelected.NEUTRAL
+                    ? showEmojiSelected('assets/images/emoji/neutral_face.svg')
+                    : showEmojiFromString(EmojiSelected.NEUTRAL, neutralEmoji,
+                        '#EBB34D', '#717171'),
+                emojiSelected.requireData == EmojiSelected.HAPPY
+                    ? showEmojiSelected(
+                        'assets/images/emoji/white_smiling_face.svg')
+                    : showEmojiFromString(
+                        EmojiSelected.HAPPY, happyEmoji, '#EBB34D', '#717171'),
+                emojiSelected.requireData == EmojiSelected.EXTRA_HAPPY
+                    ? showEmojiSelected(
+                        'assets/images/emoji/smiling_face_with_open_mouth.svg')
+                    : showEmojiFromString(EmojiSelected.EXTRA_HAPPY,
+                        extraHappyEmoji, '#EBB34D', '#717171')
+              ]),
+              Container(
+                  width: 60.w,
+                  margin: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.redBar.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: showEmojiSelectedText(
+                      emojiSelected.requireData, surveyRates)),
+            ],
+          );
+        });
+  }
+
+  Widget showEmojiSelectedText(
+      EmojiSelected emojiSelected, List<SurveyRates> surveyRates) {
+    switch (emojiSelected) {
+      case EmojiSelected.EXTRA_UPSET:
+        return Text(
+            surveyRates[0].title ?? intl.surveyCallSupportEmojiTextRate1,
+            textAlign: TextAlign.center,
+            style: typography.caption!.copyWith(
+                fontWeight: FontWeight.bold, color: AppColors.redBar));
+      case EmojiSelected.UPSET:
+        return Text(
+            surveyRates[1].title ?? intl.surveyCallSupportEmojiTextRate2,
+            textAlign: TextAlign.center,
+            style: typography.caption!.copyWith(
+                fontWeight: FontWeight.bold, color: AppColors.redBar));
+      case EmojiSelected.NEUTRAL:
+        return Text(
+            surveyRates[2].title ?? intl.surveyCallSupportEmojiTextRate3,
+            textAlign: TextAlign.center,
+            style: typography.caption!.copyWith(
+                fontWeight: FontWeight.bold, color: AppColors.redBar));
+      case EmojiSelected.HAPPY:
+        return Text(
+            surveyRates[3].title ?? intl.surveyCallSupportEmojiTextRate4,
+            textAlign: TextAlign.center,
+            style: typography.caption!.copyWith(
+                fontWeight: FontWeight.bold, color: AppColors.redBar));
+      case EmojiSelected.EXTRA_HAPPY:
+        return Text(
+            surveyRates[4].title ?? intl.surveyCallSupportEmojiTextRate5,
+            textAlign: TextAlign.center,
+            style: typography.caption!.copyWith(
+                fontWeight: FontWeight.bold, color: AppColors.redBar));
+    }
   }
 
   Widget showEmojiSelected(String iconPath) {
@@ -243,9 +347,9 @@ class _SurveyCallSupportScreenState
       child: ImageUtils.fromString(
           stringSvg
               .replaceAll(colorPatternFrom, colorPatternReplace)
-          // blue sweat
+              // blue sweat
               .replaceAll('#77AAF2', colorPatternReplace)
-          // red lips
+              // red lips
               .replaceAll('#5B0600', '#000000'),
           width: 9.w,
           height: 9.w,

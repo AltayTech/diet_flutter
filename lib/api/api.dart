@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
+import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
@@ -186,6 +187,9 @@ abstract class RestClient {
 
   @DELETE("/calls/{id}")
   ImperativeNetworkResult deleteCall(@Path('id') int id);
+
+  @GET("/calls/survey")
+  NetworkResult<PollPhrases> getCallSurveyCauses();
 
   @GET("/psychology/v2/dates/list?start_date={startDate}&end_date={endDate}")
   NetworkResult<CalenderOutput> getCalendar(@Path() String? startDate, @Path() String? endDate);

@@ -6,101 +6,74 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../data/entity/poll_phrases/poll_phrases.dart';
 
-enum EmojiSelected {
-  EXTRA_UPSET,
-  UPSET,
-  NEUTRAL,
-  HAPPY,
-  EXTRA_HAPPY
-}
+enum EmojiSelected { EXTRA_UPSET, UPSET, NEUTRAL, HAPPY, EXTRA_HAPPY }
 
 class SurveyCallSupportBloc {
-  SurveyCallSupportBloc() {
-    // strengths
-    PollPhrases pollPhrases = new PollPhrases();
-    pollPhrases.text = "عبارت تستی 1 عبارت تستی 1 عبارت تستی 1";
-    pollPhrases.isSelected = true;
-    pollPhrases.isStrength = true;
-    pollPhrases.index = 0;
-
-    listStrengths!.add(pollPhrases);
-
-    pollPhrases = new PollPhrases();
-    pollPhrases.text = "عبارت تستی 2";
-    pollPhrases.isSelected = false;
-    pollPhrases.isStrength = true;
-    pollPhrases.index = 1;
-
-    listStrengths!.add(pollPhrases);
-
-    _pollPhrasesStrengths.safeValue = listStrengths!;
-
-    // weakness
-    pollPhrases = new PollPhrases();
-    pollPhrases.text = "عبارت تستی 1";
-    pollPhrases.isSelected = true;
-    pollPhrases.isStrength = false;
-    pollPhrases.index = 0;
-
-    listWeakness!.add(pollPhrases);
-
-    pollPhrases = new PollPhrases();
-    pollPhrases.text = "عبارت تستی 2";
-    pollPhrases.isSelected = false;
-    pollPhrases.isStrength = false;
-    pollPhrases.index = 1;
-
-    listWeakness!.add(pollPhrases);
-
-    _pollPhrasesWeakness.safeValue = listWeakness!;
-  }
+  SurveyCallSupportBloc() {}
 
   List<PollPhrases>? listStrengths = [];
   List<PollPhrases>? listWeakness = [];
 
   final _repository = Repository.getInstance();
-
   final _progressNetwork = BehaviorSubject<bool>();
-
   final _emojiSelected = BehaviorSubject<EmojiSelected>();
-
   final _pollPhrasesStrengths = BehaviorSubject<List<PollPhrases>>();
-
   final _pollPhrasesWeakness = BehaviorSubject<List<PollPhrases>>();
+  final _surveyRates = BehaviorSubject<List<SurveyRates>>();
+  final _isContactedToMe = BehaviorSubject<PollPhrases>();
 
   Stream<bool> get progressNetwork => _progressNetwork.stream;
 
   Stream<EmojiSelected> get emojiSelected => _emojiSelected.stream;
 
-  Stream<List<PollPhrases>> get pollPhrasesStrengths => _pollPhrasesStrengths.stream;
+  Stream<List<PollPhrases>> get pollPhrasesStrengths =>
+      _pollPhrasesStrengths.stream;
 
-  Stream<List<PollPhrases>> get pollPhrasesWeakness => _pollPhrasesWeakness.stream;
+  Stream<List<PollPhrases>> get pollPhrasesWeakness =>
+      _pollPhrasesWeakness.stream;
+
+  Stream<List<SurveyRates>> get surveyRates => _surveyRates.stream;
+
+  Stream<PollPhrases> get isContactedToMe => _isContactedToMe.stream;
+
+  set setContactedToMe(PollPhrases pollPhrase) =>
+      _isContactedToMe.safeValue = pollPhrase;
 
   set setEmojiSelected(EmojiSelected emoji) => _emojiSelected.safeValue = emoji;
 
-  set setPollPhrasesStrengths(PollPhrases pollPhrases) {
+  void setPollPhrasesStrengths(PollPhrases pollPhrases, int index) {
     List<PollPhrases> p = _pollPhrasesStrengths.value;
-    p[pollPhrases.index!] = pollPhrases;
+    p[index] = pollPhrases;
 
     _pollPhrasesStrengths.safeValue = p;
   }
 
-  set setPollPhrasesWeakness(PollPhrases pollPhrases) {
+  void setPollPhrasesWeakness(PollPhrases pollPhrases, int index) {
     List<PollPhrases> p = _pollPhrasesWeakness.value;
-    p[pollPhrases.index!] = pollPhrases;
+    p[index] = pollPhrases;
 
     _pollPhrasesWeakness.safeValue = p;
   }
 
-  void getUserSubscriptions() {
+  void getCallSurveyCauses() {
     _progressNetwork.value = true;
 
-    /*_repository.getUserSubscription().then((value) {
-      subscriptions = value.data!.subscriptionList;
-      _subscriptionPending.safeValue = value.data?.pendingCardPayment;
+    _repository.getCallSurveyCauses().then((value) {
+      for (int i = 0; i < value.data!.surveyCauses!.length; i++) {
+        PollPhrases pollPhrase = value.data!.surveyCauses![i];
+        if (pollPhrase.isPositive == boolean.True) {
+          listStrengths!.add(pollPhrase);
+        } else {
+          listWeakness!.add(pollPhrase);
+        }
+      }
+
+      _pollPhrasesStrengths.safeValue = listStrengths!;
+      _pollPhrasesWeakness.safeValue = listWeakness!;
+      _surveyRates.safeValue = value.data!.surveyRates!;
     }).whenComplete(() {
       _progressNetwork.value = false;
-    });*/
+    });
   }
 
   void dispose() {
@@ -108,5 +81,7 @@ class SurveyCallSupportBloc {
     _emojiSelected.close();
     _pollPhrasesStrengths.close();
     _pollPhrasesWeakness.close();
+    _surveyRates.close();
+    _isContactedToMe.close();
   }
 }
