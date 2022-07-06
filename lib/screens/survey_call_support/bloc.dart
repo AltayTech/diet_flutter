@@ -1,3 +1,4 @@
+import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
@@ -6,7 +7,17 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../data/entity/poll_phrases/poll_phrases.dart';
 
-enum EmojiSelected { EXTRA_UPSET, UPSET, NEUTRAL, HAPPY, EXTRA_HAPPY }
+enum EmojiSelected {
+  EXTRA_UPSET(1),
+  UPSET(2),
+  NEUTRAL(3),
+  HAPPY(4),
+  EXTRA_HAPPY(5);
+
+  final int value;
+
+  const EmojiSelected(this.value);
+}
 
 class SurveyCallSupportBloc {
   SurveyCallSupportBloc() {}
@@ -21,6 +32,15 @@ class SurveyCallSupportBloc {
   final _pollPhrasesWeakness = BehaviorSubject<List<PollPhrases>>();
   final _surveyRates = BehaviorSubject<List<SurveyRates>>();
   final _isContactedToMe = BehaviorSubject<PollPhrases>();
+  final _navigateTo = LiveEvent();
+  final _showServerError = LiveEvent();
+  final _popLoading = LiveEvent();
+
+  Stream get navigateTo => _navigateTo.stream;
+
+  Stream get popLoading => _popLoading.stream;
+
+  Stream get showServerError => _showServerError.stream;
 
   Stream<bool> get progressNetwork => _progressNetwork.stream;
 
@@ -35,6 +55,14 @@ class SurveyCallSupportBloc {
   Stream<List<SurveyRates>> get surveyRates => _surveyRates.stream;
 
   Stream<PollPhrases> get isContactedToMe => _isContactedToMe.stream;
+
+  List<PollPhrases> get pollPhrasesArrayStrengths => _pollPhrasesStrengths.value;
+
+  List<PollPhrases> get pollPhrasesArrayWeakness => _pollPhrasesWeakness.value;
+
+  PollPhrases get isContactedMe => _isContactedToMe.value;
+
+  EmojiSelected get getEmojiSelected => _emojiSelected.value;
 
   set setContactedToMe(PollPhrases pollPhrase) =>
       _isContactedToMe.safeValue = pollPhrase;
@@ -76,7 +104,16 @@ class SurveyCallSupportBloc {
     });
   }
 
+  void sendCallRequest(CallRateRequest callRequest) {
+    _repository.sendCallRate(callRequest).then((value) {
+      _navigateTo.fire(true);
+    }).whenComplete(() => _popLoading.fire(true));
+  }
+
   void dispose() {
+    _navigateTo.close();
+    _showServerError.close();
+    _popLoading.close();
     _progressNetwork.close();
     _emojiSelected.close();
     _pollPhrasesStrengths.close();

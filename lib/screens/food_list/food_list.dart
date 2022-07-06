@@ -47,7 +47,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
         context.vxNav.clearAndPush(Uri.parse(
             '/${event.toString().split('/')[0]}${Routes.regimeType}'));
       } else if (event.contains('survey')) {
-        context.vxNav.clearAndPush(Uri.parse(Routes.surveyCallSupport));
+        context.vxNav.clearAndPush(Uri.parse(Routes.surveyCallSupport), params: bloc.getSurveyData);
       } else if (!Routes.listView.contains(event)) {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       } else

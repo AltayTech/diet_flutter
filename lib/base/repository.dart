@@ -138,6 +138,8 @@ abstract class Repository {
 
   NetworkResult<PollPhrases> getCallSurveyCauses();
 
+  ImperativeNetworkResult sendCallRate(CallRateRequest callRateRequest);
+
   // NetworkResult<BodyStatus> getStatus(BodyStatus body);
 
   NetworkResult<CalenderOutput> getCalendar(String? startDate, String? endDate);
@@ -563,6 +565,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<PollPhrases> getCallSurveyCauses() {
     var response = _apiClient.getCallSurveyCauses();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendCallRate(CallRateRequest callRateRequest) {
+    var response = _apiClient.sendCallRate(callRateRequest);
     return response;
   }
 

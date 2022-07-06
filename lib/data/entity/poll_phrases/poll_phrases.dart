@@ -46,6 +46,28 @@ class SurveyRates {
   Map<String, dynamic> toJson() => _$SurveyRatesToJson(this);
 }
 
+@JsonSerializable()
+class CallRateRequest {
+  @JsonKey(name: "call_id")
+  int? callId;
+
+  @JsonKey(name: "user_rate")
+  int? userRate;
+
+  @JsonKey(name: "is_contacted_me")
+  bool? isContactedMe;
+
+  @JsonKey(name: "survey_cause_ids")
+  List<int>? surveyCauseIds;
+
+  CallRateRequest();
+
+  factory CallRateRequest.fromJson(Map<String, dynamic> json) =>
+      _$CallRateRequestFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CallRateRequestToJson(this);
+}
+
 enum boolean {
   @JsonValue(0)
   False,

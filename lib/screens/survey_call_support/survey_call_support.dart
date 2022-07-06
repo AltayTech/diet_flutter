@@ -1,11 +1,16 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/list_view/food_list.dart' as foodList;
 import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
 import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
+import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/subscription/history_subscription_payment/list_history_subscription_payment.dart';
 import 'package:behandam/screens/survey_call_support/bloc.dart';
 import 'package:behandam/screens/survey_call_support/item_poll_phrase.dart';
 import 'package:behandam/screens/survey_call_support/provider.dart';
 import 'package:behandam/screens/survey_call_support/strengths_weakness_tabs.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -17,6 +22,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class SurveyCallSupportScreen extends StatefulWidget {
   const SurveyCallSupportScreen({Key? key}) : super(key: key);
@@ -29,6 +35,8 @@ class SurveyCallSupportScreen extends StatefulWidget {
 class _SurveyCallSupportScreenState
     extends ResourcefulState<SurveyCallSupportScreen> {
   late SurveyCallSupportBloc bloc;
+  late foodList.SurveyData surveyData;
+  bool isInitial = false;
 
   // EXTRA_UPSET
   String extraUpsetEmoji =
@@ -83,16 +91,44 @@ class _SurveyCallSupportScreenState
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
 
-    bloc = SurveyCallSupportBloc();
-    bloc.getCallSurveyCauses();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!isInitial) {
+      surveyData =
+          ModalRoute.of(context)?.settings.arguments as foodList.SurveyData;
+
+      bloc = SurveyCallSupportBloc();
+      bloc.getCallSurveyCauses();
+      setContactedToMe();
+
+      listenBloc();
+
+      isInitial = true;
+    }
+  }
+
+  void listenBloc() {
+    bloc.showServerError.listen((event) {
+      MemoryApp.isShowDialog = false;
+      Navigator.of(context).pop();
+      Utils.getSnackbarMessage(context, intl.offError);
+    });
+
+    bloc.popLoading.listen((event) {
+      Navigator.of(context).pop();
+    });
+
+    bloc.navigateTo.listen((event) {
+      context.vxNav.push(Uri.parse(Routes.listView));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    setContactedToMe();
 
     return SurveyCallSupportProvider(bloc, child: body());
   }
@@ -119,27 +155,28 @@ class _SurveyCallSupportScreenState
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      child: selectEmojiContainer(),
-                    ),
-                    StreamBuilder<PollPhrases>(
-                        stream: bloc.isContactedToMe,
-                        builder: (context, pollPhrase) {
-                          if (pollPhrase.hasData)
-                            return isContactedToMeBox(pollPhrase.requireData);
-                          else
-                            return Progress();
-                        }),
-                    Space(height: 3.h),
-                    StrengthsWeaknessTabs(),
-                    Space(height: 3.h),
-                    registerSurvey(),
-                    Space(height: 2.h),
-                  ],
-                ),
+                child: StreamBuilder<PollPhrases>(
+                    stream: bloc.isContactedToMe,
+                    builder: (context, isContactedToMe) {
+                      if (isContactedToMe.hasData)
+                        return Column(children: [
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            child: selectEmojiContainer(
+                                isContactedToMe.requireData),
+                          ),
+                          isContactedToMeBox(isContactedToMe.requireData),
+                          Space(height: 3.h),
+                          if (isContactedToMe.requireData.isActive ==
+                              boolean.False)
+                            StrengthsWeaknessTabs(),
+                          Space(height: 3.h),
+                          registerSurvey(),
+                          Space(height: 2.h),
+                        ]);
+                      else
+                        return Progress();
+                    }),
               ),
             ),
           ),
@@ -160,7 +197,7 @@ class _SurveyCallSupportScreenState
         });
   }
 
-  Widget selectEmojiContainer() {
+  Widget selectEmojiContainer(PollPhrases isContactedToMe) {
     return Column(
       children: [
         Padding(
@@ -186,22 +223,16 @@ class _SurveyCallSupportScreenState
               color: AppColors.grey,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: StreamBuilder<PollPhrases>(
-                stream: bloc.isContactedToMe,
-                builder: (context, isContactedToMe) {
-                  if (isContactedToMe.hasData &&
-                      isContactedToMe.requireData.isActive! == boolean.False)
-                    return StreamBuilder<List<SurveyRates>>(
-                        stream: bloc.surveyRates,
-                        builder: (context, surveyRates) {
-                          if (surveyRates.hasData)
-                            return selectEmojiBox(surveyRates.requireData);
-                          else
-                            return Center(child: Progress());
-                        });
-                  else
-                    return selectEmojiBoxDisabled();
-                }))
+            child: (isContactedToMe.isActive! == boolean.False)
+                ? StreamBuilder<List<SurveyRates>>(
+                    stream: bloc.surveyRates,
+                    builder: (context, surveyRates) {
+                      if (surveyRates.hasData)
+                        return selectEmojiBox(surveyRates.requireData);
+                      else
+                        return Center(child: Progress());
+                    })
+                : selectEmojiBoxDisabled())
       ],
     );
   }
@@ -226,13 +257,14 @@ class _SurveyCallSupportScreenState
             margin: EdgeInsets.all(8),
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.grey,
+              color: Colors.grey.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(intl.surveyCallSupportEmojiTextRate1,
                 textAlign: TextAlign.center,
                 style: typography.caption!.copyWith(
-                    fontWeight: FontWeight.bold, color: AppColors.greyDate))),
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.greyDate.withOpacity(0.1)))),
       ],
     );
   }
@@ -360,7 +392,51 @@ class _SurveyCallSupportScreenState
   Widget registerSurvey() {
     return Container(
         margin: EdgeInsets.all(2.w),
-        child: SubmitButton(label: intl.registerSurvey, onTap: () {}));
+        child: SubmitButton(
+            label: intl.registerSurvey,
+            onTap: () {
+              DialogUtils.showDialogProgress(context: context);
+
+              sendCallRequest();
+            }));
+  }
+
+  void sendCallRequest() {
+    if (bloc.isContactedMe.isActive == boolean.False) {
+      CallRateRequest callRateRequest = CallRateRequest();
+
+      List<PollPhrases> pollPhrasesArrayStrengths = bloc
+          .pollPhrasesArrayStrengths;
+      List<PollPhrases> pollPhrasesArrayWeakness = bloc
+          .pollPhrasesArrayWeakness;
+
+      for (int i = 0; i < pollPhrasesArrayStrengths.length; i++) {
+        PollPhrases pollPhrase = pollPhrasesArrayStrengths[i];
+
+        callRateRequest.surveyCauseIds!.add(pollPhrase.id!);
+      }
+
+      for (int i = 0; i < pollPhrasesArrayWeakness.length; i++) {
+        PollPhrases pollPhrase = pollPhrasesArrayWeakness[i];
+
+        callRateRequest.surveyCauseIds!.add(pollPhrase.id!);
+      }
+
+      callRateRequest.callId = surveyData.callId;
+      callRateRequest.isContactedMe =
+      bloc.isContactedMe.isActive! == true ? true : false;
+      callRateRequest.userRate = bloc.getEmojiSelected.value;
+
+      bloc.sendCallRequest(callRateRequest);
+    } else {
+      CallRateRequest callRateRequest = CallRateRequest();
+      callRateRequest.callId = surveyData.callId;
+      callRateRequest.isContactedMe = bloc.isContactedMe.isActive! == true ? true : false;
+      callRateRequest.userRate = 1;
+      callRateRequest.surveyCauseIds = [];
+
+      bloc.sendCallRequest(callRateRequest);
+    }
   }
 
   @override

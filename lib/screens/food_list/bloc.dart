@@ -76,6 +76,8 @@ class FoodListBloc {
 
   List<ArticleVideo> get articles => _articles;
 
+  SurveyData get getSurveyData => _foodList.value!.surveyData!;
+
   late WeekDay _previousWeekDay;
   late Menu _menu;
 

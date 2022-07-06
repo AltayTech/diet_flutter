@@ -42,3 +42,20 @@ Map<String, dynamic> _$SurveyRatesToJson(SurveyRates instance) =>
       'id': instance.id,
       'title': instance.title,
     };
+
+CallRateRequest _$CallRateRequestFromJson(Map<String, dynamic> json) =>
+    CallRateRequest()
+      ..callId = json['call_id'] as int?
+      ..userRate = json['user_rate'] as int?
+      ..isContactedMe = json['is_contacted_me'] as bool?
+      ..surveyCauseIds = (json['survey_cause_ids'] as List<dynamic>?)
+          ?.map((e) => e as int)
+          .toList();
+
+Map<String, dynamic> _$CallRateRequestToJson(CallRateRequest instance) =>
+    <String, dynamic>{
+      'call_id': instance.callId,
+      'user_rate': instance.userRate,
+      'is_contacted_me': instance.isContactedMe,
+      'survey_cause_ids': instance.surveyCauseIds,
+    };

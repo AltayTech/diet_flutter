@@ -191,6 +191,9 @@ abstract class RestClient {
   @GET("/calls/survey")
   NetworkResult<PollPhrases> getCallSurveyCauses();
 
+  @PATCH("/call-rates")
+  NetworkResult<CallRateRequest> sendCallRate(CallRateRequest callRateRequest);
+
   @GET("/psychology/v2/dates/list?start_date={startDate}&end_date={endDate}")
   NetworkResult<CalenderOutput> getCalendar(@Path() String? startDate, @Path() String? endDate);
 
