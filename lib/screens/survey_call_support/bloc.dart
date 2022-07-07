@@ -20,7 +20,9 @@ enum EmojiSelected {
 }
 
 class SurveyCallSupportBloc {
-  SurveyCallSupportBloc() {}
+  SurveyCallSupportBloc() {
+    setEmojiSelected = EmojiSelected.EXTRA_HAPPY;
+  }
 
   List<PollPhrases>? listStrengths = [];
   List<PollPhrases>? listWeakness = [];

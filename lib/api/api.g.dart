@@ -814,20 +814,21 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<CallRateRequest>> sendCallRate(callRateRequest) async {
+  Future<NetworkResponse<dynamic>> sendCallRate(callRateRequest) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    _data.addAll(callRateRequest.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<CallRateRequest>>(
+        _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/call-rates',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<CallRateRequest>.fromJson(
+    final value = NetworkResponse<dynamic>.fromJson(
       _result.data!,
-      (json) => CallRateRequest.fromJson(json as Map<String, dynamic>),
+      (json) => json as dynamic,
     );
     return value;
   }

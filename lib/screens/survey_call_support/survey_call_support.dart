@@ -102,7 +102,6 @@ class _SurveyCallSupportScreenState
 
       bloc = SurveyCallSupportBloc();
       bloc.getCallSurveyCauses();
-      setContactedToMe();
 
       listenBloc();
 
@@ -129,6 +128,8 @@ class _SurveyCallSupportScreenState
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    setContactedToMe();
 
     return SurveyCallSupportProvider(bloc, child: body());
   }
@@ -405,33 +406,36 @@ class _SurveyCallSupportScreenState
     if (bloc.isContactedMe.isActive == boolean.False) {
       CallRateRequest callRateRequest = CallRateRequest();
 
-      List<PollPhrases> pollPhrasesArrayStrengths = bloc
-          .pollPhrasesArrayStrengths;
-      List<PollPhrases> pollPhrasesArrayWeakness = bloc
-          .pollPhrasesArrayWeakness;
+      List<PollPhrases> pollPhrasesArrayStrengths =
+          bloc.pollPhrasesArrayStrengths;
+      List<PollPhrases> pollPhrasesArrayWeakness =
+          bloc.pollPhrasesArrayWeakness;
+
+      callRateRequest.surveyCauseIds = [];
 
       for (int i = 0; i < pollPhrasesArrayStrengths.length; i++) {
         PollPhrases pollPhrase = pollPhrasesArrayStrengths[i];
-
+        if (pollPhrase.isActive! == boolean.True)
         callRateRequest.surveyCauseIds!.add(pollPhrase.id!);
       }
 
       for (int i = 0; i < pollPhrasesArrayWeakness.length; i++) {
         PollPhrases pollPhrase = pollPhrasesArrayWeakness[i];
-
+        if (pollPhrase.isActive! == boolean.True)
         callRateRequest.surveyCauseIds!.add(pollPhrase.id!);
       }
 
       callRateRequest.callId = surveyData.callId;
       callRateRequest.isContactedMe =
-      bloc.isContactedMe.isActive! == true ? true : false;
+          bloc.isContactedMe.isActive! == true ? true : false;
       callRateRequest.userRate = bloc.getEmojiSelected.value;
 
       bloc.sendCallRequest(callRateRequest);
     } else {
       CallRateRequest callRateRequest = CallRateRequest();
       callRateRequest.callId = surveyData.callId;
-      callRateRequest.isContactedMe = bloc.isContactedMe.isActive! == true ? true : false;
+      callRateRequest.isContactedMe =
+          bloc.isContactedMe.isActive! == true ? true : false;
       callRateRequest.userRate = 1;
       callRateRequest.surveyCauseIds = [];
 
