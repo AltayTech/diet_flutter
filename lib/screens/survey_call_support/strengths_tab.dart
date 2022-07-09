@@ -50,52 +50,54 @@ class _StrengthsTabState extends ResourcefulState<StrengthsTab> {
         stream: bloc.progressNetwork,
         builder: (context, progress) {
           if (!progress.requireData)
-            return StreamBuilder<List<PollPhrases>>(
-                stream: bloc.pollPhrasesStrengths,
-                builder: (context, snapshot) {
-                  return snapshot.hasData && snapshot.requireData.length > 0
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListView.builder(
-                              physics: ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: snapshot.requireData.length,
-                              itemBuilder: (BuildContext context, int index) =>
-                                  ItemPollPhrase(
-                                      pollPhrase: snapshot.requireData[index],
-                                      click: () {
-                                        if (snapshot
-                                                .requireData[index].isActive! ==
-                                            boolean.True) {
-                                          snapshot.requireData[index].isActive =
-                                              boolean.False;
-                                        } else {
-                                          snapshot.requireData[index].isActive =
-                                              boolean.True;
-                                        }
-
-                                        if (snapshot.requireData[index]
-                                                .isPositive! ==
-                                            boolean.True) {
-                                          bloc.setPollPhrasesStrengths(
-                                              snapshot.requireData[index],
-                                              index);
-                                        } else {
-                                          bloc.setPollPhrasesWeakness(
-                                              snapshot.requireData[index],
-                                              index);
-                                        }
-                                      })),
-                        )
-                      : Container(
-                          height: 20.h,
-                          child: Center(
-                              child: Text(intl.noPollSurveyAvailable,
-                                  style: typography.caption)),
-                        );
-                });
+            return StreamBuilder<PollPhrases>(
+              stream: bloc.isContactedToMe,
+              builder: (context, isContactedToMe) {
+                return StreamBuilder<List<PollPhrases>>(
+                    stream: bloc.pollPhrasesStrengths,
+                    builder: (context, pollPhrases) {
+                      return pollPhrases.hasData &&
+                          pollPhrases.requireData.length > 0
+                          ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView.builder(
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: pollPhrases.requireData.length,
+                            itemBuilder: (BuildContext context, int index) =>
+                                item(isContactedToMe.requireData.isActive!, pollPhrases.requireData[index], index)),
+                      )
+                          : Container(
+                        height: 20.h,
+                        child: Center(
+                            child: Text(intl.noPollSurveyAvailable,
+                                style: typography.caption)),
+                      );
+                    });
+              },
+            );
           else
             return Center(child: Progress());
+        });
+  }
+
+  Widget item(boolean isDisable, PollPhrases pollPhrases, int index) {
+    return ItemPollPhrase(
+        pollPhrase: pollPhrases,
+        click: () {
+          if (isDisable == boolean.False) {
+            if (pollPhrases.isActive! == boolean.True) {
+              pollPhrases.isActive = boolean.False;
+            } else {
+              pollPhrases.isActive = boolean.True;
+            }
+
+            if (pollPhrases.isPositive! == boolean.True) {
+              bloc.setPollPhrasesStrengths(pollPhrases, index);
+            } else {
+              bloc.setPollPhrasesWeakness(pollPhrases, index);
+            }
+          }
         });
   }
 

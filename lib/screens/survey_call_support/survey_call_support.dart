@@ -161,16 +161,30 @@ class _SurveyCallSupportScreenState
                     builder: (context, isContactedToMe) {
                       if (isContactedToMe.hasData)
                         return Column(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 16, left: 16, right: 16, bottom: 8),
+                            child: Text(intl.surveyCallSupportEmojiTitle,
+                                textAlign: TextAlign.center,
+                                style: typography.caption!
+                                    .copyWith(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 8, left: 16, right: 16, bottom: 8),
+                            child: Text(intl.surveyCallSupportEmojiDescription,
+                                textAlign: TextAlign.center,
+                                style: typography.caption!
+                                    .copyWith(fontSize: 10.sp)),
+                          ),
+                          isContactedToMeBox(isContactedToMe.requireData),
                           Container(
                             padding: EdgeInsets.all(8),
                             child: selectEmojiContainer(
                                 isContactedToMe.requireData),
                           ),
-                          isContactedToMeBox(isContactedToMe.requireData),
                           Space(height: 3.h),
-                          if (isContactedToMe.requireData.isActive ==
-                              boolean.False)
-                            StrengthsWeaknessTabs(),
+                          StrengthsWeaknessTabs(),
                           Space(height: 3.h),
                           registerSurvey(),
                           Space(height: 2.h),
@@ -192,6 +206,7 @@ class _SurveyCallSupportScreenState
             pollPhrase.isActive = boolean.False;
           } else {
             pollPhrase.isActive = boolean.True;
+            bloc.pollsReset();
           }
 
           bloc.setContactedToMe = pollPhrase;
@@ -199,43 +214,24 @@ class _SurveyCallSupportScreenState
   }
 
   Widget selectEmojiContainer(PollPhrases isContactedToMe) {
-    return Column(
-      children: [
-        Padding(
-          padding:
-              const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
-          child: Text(intl.surveyCallSupportEmojiTitle,
-              textAlign: TextAlign.center,
-              style: typography.caption!.copyWith(fontWeight: FontWeight.bold)),
+    return Container(
+        width: 80.w,
+        margin: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
+        padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
+        decoration: BoxDecoration(
+          color: AppColors.grey,
+          borderRadius: BorderRadius.circular(10),
         ),
-        Padding(
-          padding:
-              const EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 8),
-          child: Text(intl.surveyCallSupportEmojiDescription,
-              textAlign: TextAlign.center,
-              style: typography.caption!.copyWith(fontSize: 10.sp)),
-        ),
-        Container(
-            width: 80.w,
-            margin: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
-            padding:
-                EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
-            decoration: BoxDecoration(
-              color: AppColors.grey,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: (isContactedToMe.isActive! == boolean.False)
-                ? StreamBuilder<List<SurveyRates>>(
-                    stream: bloc.surveyRates,
-                    builder: (context, surveyRates) {
-                      if (surveyRates.hasData)
-                        return selectEmojiBox(surveyRates.requireData);
-                      else
-                        return Center(child: Progress());
-                    })
-                : selectEmojiBoxDisabled())
-      ],
-    );
+        child: (isContactedToMe.isActive! == boolean.False)
+            ? StreamBuilder<List<SurveyRates>>(
+                stream: bloc.surveyRates,
+                builder: (context, surveyRates) {
+                  if (surveyRates.hasData)
+                    return selectEmojiBox(surveyRates.requireData);
+                  else
+                    return Center(child: Progress());
+                })
+            : selectEmojiBoxDisabled());
   }
 
   Widget selectEmojiBoxDisabled() {
@@ -416,13 +412,13 @@ class _SurveyCallSupportScreenState
       for (int i = 0; i < pollPhrasesArrayStrengths.length; i++) {
         PollPhrases pollPhrase = pollPhrasesArrayStrengths[i];
         if (pollPhrase.isActive! == boolean.True)
-        callRateRequest.surveyCauseIds!.add(pollPhrase.id!);
+          callRateRequest.surveyCauseIds!.add(pollPhrase.id!);
       }
 
       for (int i = 0; i < pollPhrasesArrayWeakness.length; i++) {
         PollPhrases pollPhrase = pollPhrasesArrayWeakness[i];
         if (pollPhrase.isActive! == boolean.True)
-        callRateRequest.surveyCauseIds!.add(pollPhrase.id!);
+          callRateRequest.surveyCauseIds!.add(pollPhrase.id!);
       }
 
       callRateRequest.callId = surveyData.callId;

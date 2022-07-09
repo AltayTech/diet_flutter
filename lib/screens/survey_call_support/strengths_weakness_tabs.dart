@@ -1,4 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
+import 'package:behandam/screens/survey_call_support/bloc.dart';
+import 'package:behandam/screens/survey_call_support/provider.dart';
 import 'package:behandam/screens/survey_call_support/strengths_tab.dart';
 import 'package:behandam/screens/survey_call_support/weakness_tab.dart';
 import 'package:behandam/screens/widget/custom_tabbar.dart';
@@ -14,6 +17,7 @@ class StrengthsWeaknessTabsState extends ResourcefulState<StrengthsWeaknessTabs>
   late List<ItemTab> _list = [];
   late List<Widget> _listTabView = [];
   late TabController _controller;
+  late SurveyCallSupportBloc bloc;
 
   @override
   void dispose() {
@@ -25,6 +29,8 @@ class StrengthsWeaknessTabsState extends ResourcefulState<StrengthsWeaknessTabs>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    bloc = SurveyCallSupportProvider.of(context);
 
     _listTabView.clear();
     _listTabView.add(WeaknessTab());
@@ -45,22 +51,32 @@ class StrengthsWeaknessTabsState extends ResourcefulState<StrengthsWeaknessTabs>
     return Container(
         /*color: CustomColors.background,*/
         child: Column(
-          children: [
-            Container(
-              height: 6.h,
-              child: CustomTabBarUnderLineIndicator(Colors.white, _list, _controller),
-            ),
-            Container(
-              height: 30.h,
-              child: TabBarView(
-                controller: _controller,
-                physics: NeverScrollableScrollPhysics(),
-                children: _listTabView,
-              ),
-            ),
-          ],
-        )
-    );
+      children: [
+        Container(
+          height: 6.h,
+          child: StreamBuilder<PollPhrases>(
+              stream: bloc.isContactedToMe,
+              builder: (context, isContactedToMe) {
+                if (isContactedToMe.hasData &&
+                    isContactedToMe.requireData.isActive! == boolean.True) {
+                  return CustomTabBarUnderLineIndicator(
+                      Colors.white, _list, _controller, Colors.grey);
+                } else {
+                  return CustomTabBarUnderLineIndicator(
+                      Colors.white, _list, _controller, null);
+                }
+              }),
+        ),
+        Container(
+          height: 30.h,
+          child: TabBarView(
+            controller: _controller,
+            physics: NeverScrollableScrollPhysics(),
+            children: _listTabView,
+          ),
+        ),
+      ],
+    ));
   }
 
   @override

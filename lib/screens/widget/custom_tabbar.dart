@@ -77,17 +77,21 @@ class _CustomTabBarState extends ResourcefulState<CustomTabBar> {
 }
 
 class CustomTabBarUnderLineIndicator extends StatefulWidget {
-  CustomTabBarUnderLineIndicator(this.color, this.listItem, this._controller);
+  CustomTabBarUnderLineIndicator(
+      this.color, this.listItem, this._controller, this.tabIndicatorColor);
 
   final Color color;
+  Color? tabIndicatorColor;
   TabController _controller;
   final List<ItemTab> listItem;
 
   @override
-  State<CustomTabBarUnderLineIndicator> createState() => _CustomTabBarUnderLineIndicatorState();
+  State<CustomTabBarUnderLineIndicator> createState() =>
+      _CustomTabBarUnderLineIndicatorState();
 }
 
-class _CustomTabBarUnderLineIndicatorState extends ResourcefulState<CustomTabBarUnderLineIndicator> {
+class _CustomTabBarUnderLineIndicatorState
+    extends ResourcefulState<CustomTabBarUnderLineIndicator> {
   static int indexItem = 0;
 
   @override
@@ -105,11 +109,14 @@ class _CustomTabBarUnderLineIndicatorState extends ResourcefulState<CustomTabBar
           labelColor: Colors.black87,
           unselectedLabelStyle: Theme.of(context).textTheme.button!,
           labelStyle: Theme.of(context).textTheme.button!,
-          indicatorColor: AppColors.accentColor,
+          indicatorColor: widget.tabIndicatorColor ?? AppColors.accentColor,
           labelPadding: EdgeInsets.all(8),
           indicatorSize: TabBarIndicatorSize.tab,
-          indicator: UnderlineTabIndicator( // color for indicator (underline)
-              borderSide: BorderSide(color: AppColors.accentColor, width: 3)),
+          indicator: UnderlineTabIndicator(
+              // color for indicator (underline)
+              borderSide: BorderSide(
+                  color: widget.tabIndicatorColor ?? AppColors.accentColor,
+                  width: 3)),
           controller: widget._controller,
           tabs: widget.listItem
               .asMap()

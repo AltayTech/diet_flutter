@@ -9,8 +9,10 @@ import 'package:logifan/widgets/space.dart';
 class ItemPollPhrase extends StatefulWidget {
   late PollPhrases pollPhrase;
   Function click;
+  boolean? isDisable;
 
-  ItemPollPhrase({required this.pollPhrase, required this.click});
+  ItemPollPhrase(
+      {required this.pollPhrase, required this.click, this.isDisable});
 
   @override
   _ItemPollPhraseState createState() => _ItemPollPhraseState();
@@ -31,28 +33,35 @@ class _ItemPollPhraseState extends ResourcefulState<ItemPollPhrase> {
 
     bloc = SurveyCallSupportProvider.of(context);
 
-    return _item(widget.pollPhrase, widget.click);
+    return _item();
   }
 
-  Widget _item(PollPhrases pollPhrase, Function click) {
+  Widget _item() {
     return InkWell(
       onTap: () {
-        click.call();
+        widget.click.call();
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 16, left: 32, right: 32, bottom: 16),
+        padding:
+            const EdgeInsets.only(top: 16, left: 32, right: 32, bottom: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           textDirection: context.textDirectionOfLocaleInversed,
           children: <Widget>[
             Expanded(
-                child: Text(pollPhrase.cause!,
+                child: Text(widget.pollPhrase.cause!,
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.caption!.copyWith(
-                        letterSpacing: -0.2, fontWeight: FontWeight.w400, fontSize: 10.sp))),
+                        letterSpacing: -0.2,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 10.sp,
+                        color: widget.isDisable != null &&
+                                widget.isDisable == boolean.True
+                            ? Colors.grey
+                            : Colors.black))),
             Space(width: 2.w),
             ImageUtils.fromLocal(
-              pollPhrase.isActive! == boolean.True
+              widget.pollPhrase.isActive! == boolean.True
                   ? 'assets/images/bill/checkbox.svg'
                   : 'assets/images/bill/not_select_rect.svg',
               width: 5.w,

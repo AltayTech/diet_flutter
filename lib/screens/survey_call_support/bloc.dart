@@ -112,6 +112,22 @@ class SurveyCallSupportBloc {
     }).whenComplete(() => _popLoading.fire(true));
   }
 
+  void pollsReset() {
+    if (_pollPhrasesStrengths.hasValue && _pollPhrasesWeakness.hasValue) {
+      for (int i = 0; i < _pollPhrasesStrengths.value.length; i++) {
+        PollPhrases pollPhrase = _pollPhrasesStrengths.value[i];
+        pollPhrase.isActive = boolean.False;
+        _pollPhrasesStrengths.value[i] = pollPhrase;
+      }
+
+      for (int i = 0; i < _pollPhrasesWeakness.value.length; i++) {
+        PollPhrases pollPhrase = _pollPhrasesWeakness.value[i];
+        pollPhrase.isActive = boolean.False;
+        _pollPhrasesWeakness.value[i] = pollPhrase;
+      }
+    }
+  }
+
   void dispose() {
     _navigateTo.close();
     _showServerError.close();
