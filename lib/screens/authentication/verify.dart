@@ -272,7 +272,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                   child: TextButton.icon(
                       onPressed: () {
                         channelSendCode = ChannelSendCode.WHATSAPP;
-                        //   authBloc.tryCodeMethod(args['mobile'], channelSendCode);
+                        authBloc.tryCodeMethod(args['mobile'], channelSendCode);
                         authBloc.setTrySendCode = true;
                         authBloc.setFlag = false;
                         authBloc.startTimer();

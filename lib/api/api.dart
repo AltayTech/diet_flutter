@@ -50,10 +50,10 @@ import '../data/entity/auth/verify.dart';
 import '../data/entity/payment/payment.dart';
 part 'api.g.dart';
 
-enum help {
+/*enum help {
   @JsonValue(1)
   dietType
-}
+}*/
 
 typedef NetworkResult<T> = Future<NetworkResponse<T>>;
 typedef ImperativeNetworkResult = NetworkResult<dynamic>;

@@ -40,12 +40,12 @@ class FastBloc {
 
   void changeToFast(FastPatternData pattern) {
     _loadingContent.safeValue = true;
-    _selectedPattern.value = pattern;
+    _selectedPattern.safeValue = pattern;
     final fastMenuRequestData = FastMenuRequestData();
     fastMenuRequestData.patternId = _patterns.value.indexWhere((element) => element == pattern);
     fastMenuRequestData.isFasting = true;
     _repository.changeToFast(fastMenuRequestData).then((value) {
-      _fast.value = value.requireData;
+      _fast.safeValue = value.requireData;
     }).whenComplete(() {
        _loadingContent.safeValue = false;
     });

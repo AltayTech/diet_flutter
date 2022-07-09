@@ -69,11 +69,6 @@ class SplashBloc {
       _repository.getUser().then((value) {
         MemoryApp.userInformation = value.data;
         MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
-        if (!kIsWeb)
-          FirebaseCrashlytics.instance
-              .setUserIdentifier(MemoryApp.userInformation!.userId.toString());
-        MemoryApp.analytics!
-            .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
       }).whenComplete(() {
         if (!MemoryApp.isNetworkAlertShown) getVersionUpdate();
         _waiting.safeValue = false;

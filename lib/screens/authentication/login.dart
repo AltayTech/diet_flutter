@@ -49,7 +49,15 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
-        if (event.toString().contains(Routes.auth.substring(1)))
+
+        if (channelSendCode == ChannelSendCode.WHATSAPP) {
+          VxNavigator.of(context).push(Uri(
+              path: '${Routes.passVerify}',
+              queryParameters: {"mobile": args['mobile'], 'countryId': '${args['countryId']}'}));
+          IntentUtils.openAppIntent(Uri.encodeFull(
+            'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
+          ));
+        } else if (event.toString().contains(Routes.auth.substring(1)))
           VxNavigator.of(context).push(Uri.parse('/$event'),
               params: {"mobile": args['mobile'], 'countryId': args['countryId']});
         else
@@ -255,18 +263,11 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                             MemoryApp.whatsappInfo!.botStatusBool) {
                           channelSendCode = ChannelSendCode.WHATSAPP;
                           Navigator.pop(context);
-                          //   DialogUtils.showDialogProgress(context: context);
-                          VxNavigator.of(context).push(Uri(
-                              path: '${Routes.passVerify}',
-                              queryParameters: {
-                                "mobile": args['mobile'],
-                                'countryId': '${args['countryId']}'
-                              }));
+                          DialogUtils.showDialogProgress(context: context);
+                          authBloc.sendCodeMethod(args['mobile'], channelSendCode);
+
                           MemoryApp.forgetPass = true;
-                          //authBloc.sendCodeMethod(args['mobile'], channelSendCode);
-                          IntentUtils.openAppIntent(Uri.encodeFull(
-                            'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
-                          ));
+
                           authBloc.setTrySendCode = true;
                         } else {
                           Utils.getSnackbarMessage(context, intl.errorDisableWhatsApp);

@@ -72,23 +72,12 @@ class _NetworkAlertState extends ResourcefulState<NetworkAlertPage> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.1.h),
         height: 7.h,
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: ImageUtils.fromLocal(
-                'assets/icon/retry_curved_edge.svg',
-                color: AppColors.onPrimary.withOpacity(0.15),
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                intl.retry,
-                style: typography.button,
-              ),
-            ),
-          ],
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            intl.retry,
+            style: typography.button,
+          ),
         ),
       ),
     );

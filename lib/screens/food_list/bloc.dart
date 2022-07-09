@@ -23,9 +23,9 @@ class FoodListBloc {
 
   void getFoodMenu({required bool fillFood}) {
     if (_date.valueOrNull == null && MemoryApp.selectedDate == null)
-      _date.value = DateTime.now().toString().substring(0, 10);
+      _date.safeValue = DateTime.now().toString().substring(0, 10);
     else if (_date.valueOrNull == null && MemoryApp.selectedDate != null)
-      _date.value = MemoryApp.selectedDate!;
+      _date.safeValue = MemoryApp.selectedDate!;
     debugPrint('bloc foodlist ${_date.value} / ${MemoryApp.selectedDate}');
     loadContent(invalidate: true, fillFood: fillFood);
   }
@@ -161,7 +161,7 @@ class FoodListBloc {
       debugPrint(
           'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
     }
-    _weekDays.value = data;
+    _weekDays.safeValue = data;
     _selectedWeekDay.value = _weekDays.value!.firstWhere(
         (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
     _previousWeekDay = _selectedWeekDay.value;
@@ -182,7 +182,7 @@ class FoodListBloc {
         } else
           element.isSelected = false;
       });
-      _foodList.value = null;
+      _foodList.safeValue = null;
       _previousWeekDay = _selectedWeekDay.value;
       if (_articles.isNotEmpty) setArticle();
       debugPrint('change date 3 $newDate / ${_previousWeekDay.gregorianDate}');
