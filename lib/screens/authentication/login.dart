@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
+import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
@@ -49,10 +50,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       if (!event.toString().isEmptyOrNull) {
         check = true;
         if (event.toString().contains(Routes.auth.substring(1)))
-          VxNavigator.of(context).push(Uri.parse('/$event'), params: {
-            "mobile": args['mobile'],
-            'countryId': args['countryId']
-          });
+          VxNavigator.of(context).push(Uri.parse('/$event'),
+              params: {"mobile": args['mobile'], 'countryId': args['countryId']});
         else
           VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
@@ -104,9 +103,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 ));
               } else {
                 check = false;
-                return Center(
-                    child: Container(
-                        width: 15.w, height: 15.w, child: Progress()));
+                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
               }
             }),
       ),
@@ -122,8 +119,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -131,9 +127,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               )),
           Space(height: 2.h),
           Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                color: AppColors.arcColor),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
             child: TextField(
               controller: _text,
               textDirection: TextDirection.ltr,
@@ -160,8 +155,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   },
                 ),
                 // errorText: _validate ? intl.fillAllField : null,
-                labelStyle:
-                    TextStyle(color: AppColors.penColor, fontSize: 12.sp),
+                labelStyle: TextStyle(color: AppColors.penColor, fontSize: 12.sp),
               ),
               obscureText: !_obscureText,
               onSubmitted: (String) {
@@ -176,12 +170,11 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           button(AppColors.btnColor, intl.login, Size(100.w, 8.h), clickButton),
           SizedBox(height: 8.h),
           InkWell(
-            child: Text(
-              intl.forgetPassword,
-              style: TextStyle(fontSize: 16.sp, color: AppColors.penColor),
-            ),
-            onTap: () => changePassDialog()
-          )
+              child: Text(
+                intl.forgetPassword,
+                style: TextStyle(fontSize: 16.sp, color: AppColors.penColor),
+              ),
+              onTap: () => changePassDialog())
         ],
       ),
     );
@@ -214,8 +207,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                     style: TextStyle(fontSize: 14.sp, color: AppColors.penColor),
                     children: <TextSpan>[
                       TextSpan(
-                          text: '${args['mobile']}',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          text: '${args['mobile']}', style: TextStyle(fontWeight: FontWeight.bold)),
                       TextSpan(text: intl.textChangePass2),
                     ],
                   ),
@@ -244,10 +236,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       label: Text(
                         intl.sendSMS,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
                       ),
                       style: OutlinedButton.styleFrom(
                           backgroundColor: AppColors.blueRuler,
@@ -261,15 +250,27 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 Container(
                   margin: const EdgeInsets.only(left: 8, right: 8),
                   child: TextButton.icon(
-                      onPressed: () {
-                        channelSendCode = ChannelSendCode.WHATSAPP;
-
-                        Navigator.pop(context);
-                        DialogUtils.showDialogProgress(context: context);
-
-                        MemoryApp.forgetPass = true;
-                        authBloc.sendCodeMethod(args['mobile'], channelSendCode);
-                        authBloc.setTrySendCode = true;
+                      onPressed: () async {
+                        if (MemoryApp.whatsappInfo != null &&
+                            MemoryApp.whatsappInfo!.botStatusBool) {
+                          channelSendCode = ChannelSendCode.WHATSAPP;
+                          Navigator.pop(context);
+                          //   DialogUtils.showDialogProgress(context: context);
+                          VxNavigator.of(context).push(Uri(
+                              path: '${Routes.passVerify}',
+                              queryParameters: {
+                                "mobile": args['mobile'],
+                                'countryId': '${args['countryId']}'
+                              }));
+                          MemoryApp.forgetPass = true;
+                          //authBloc.sendCodeMethod(args['mobile'], channelSendCode);
+                          IntentUtils.openAppIntent(Uri.encodeFull(
+                            'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
+                          ));
+                          authBloc.setTrySendCode = true;
+                        } else {
+                          Utils.getSnackbarMessage(context, intl.errorDisableWhatsApp);
+                        }
                       },
                       icon: Icon(
                         Icons.whatsapp,
@@ -279,17 +280,24 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       label: Text(
                         intl.sendWhatsapp,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.button!.copyWith(
+                            color: (MemoryApp.whatsappInfo != null &&
+                                    MemoryApp.whatsappInfo!.botStatusBool)
+                                ? Colors.white
+                                : AppColors.labelTextColor),
                       ),
                       style: OutlinedButton.styleFrom(
-                          backgroundColor: AppColors.greenRuler,
+                          backgroundColor: (MemoryApp.whatsappInfo != null &&
+                                  MemoryApp.whatsappInfo!.botStatusBool)
+                              ? AppColors.greenRuler
+                              : AppColors.grey,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                               side: BorderSide(
-                                color: AppColors.greenRuler,
+                                color: (MemoryApp.whatsappInfo != null &&
+                                        MemoryApp.whatsappInfo!.botStatusBool)
+                                    ? AppColors.greenRuler
+                                    : AppColors.grey,
                                 width: 0.25.w,
                               )))),
                 )

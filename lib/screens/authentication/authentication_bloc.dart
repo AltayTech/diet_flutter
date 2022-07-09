@@ -50,9 +50,7 @@ class AuthenticationBloc {
       return _countries.value;
     else
       return _countries.value
-          .where((element) =>
-              element.name!.contains(_search!) ||
-              element.code!.contains(_search!))
+          .where((element) => element.name!.contains(_search!) || element.code!.contains(_search!))
           .toList();
   }
 
@@ -135,8 +133,8 @@ class AuthenticationBloc {
 
   void loginMethod(String phoneNumber) {
     _repository.status(phoneNumber).then((value) {
+      MemoryApp.whatsappInfo = value.data?.otpInfo?.whatsappInfo;
       _navigateToVerify.fire(value.next);
-      debugPrint('value: ${value.data!.isExist}');
     }).whenComplete(() {
       if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
@@ -145,8 +143,7 @@ class AuthenticationBloc {
   void passwordMethod(User user) {
     _repository.signIn(user).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      debugPrint(
-          'pass token ${value.next} / ${await AppSharedPreferences.authToken}');
+      debugPrint('pass token ${value.next} / ${await AppSharedPreferences.authToken}');
       checkFcm();
       _repository
           .getUser()

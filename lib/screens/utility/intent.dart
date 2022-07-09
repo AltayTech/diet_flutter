@@ -83,6 +83,24 @@ abstract class IntentUtils {
     }
   }
 
+  /*static void openInstagram(String data) async {
+    if (Device.get().isAndroid) {
+      try {
+        AndroidIntent intent = AndroidIntent(
+          action: 'action_view',
+          package: "com.instagram.android",
+          data: data, // eg. https://www.instagram.com/_u/zirehapp/
+        );
+        await intent.launch();
+      } catch (ActivityNotFoundException) {
+        debugPrint("can't open url");
+        launchURL(data);
+      }
+    } else {
+      launchURL(data);
+    }
+  }*/
+
   static void openApp(String package) async {
     if (Device.get().isAndroid) {
       try {

@@ -720,5 +720,6 @@
   "selectMethodSendCode": "نوع ارسال رو انتخاب کن",
   "sendWhatsapp": "ارسال به واتساپ",
   "sendSMS": "ارسال پیامک",
+  "errorDisableWhatsApp": "سرویس واتساپ غیر فعال میباشد",
   "understand": "متوجه شدم"
 }

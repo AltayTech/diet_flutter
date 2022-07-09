@@ -47,10 +47,15 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) async {
       if (event != null) {
-        context.vxNav.push(
-          Uri(path: '/$event'),
-          params: {'mobile': number, 'countryId': _selectedLocation.id},
-        );
+        if (event.toString().contains('verify'))
+          context.vxNav.push(Uri(
+              path: '/$event',
+              queryParameters: {"mobile": number, 'countryId': _selectedLocation.id}));
+        else
+          context.vxNav.push(
+            Uri(path: '/$event'),
+            params: {'mobile': number, 'countryId': _selectedLocation.id},
+          );
       }
     });
 

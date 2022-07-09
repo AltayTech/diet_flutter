@@ -10,11 +10,12 @@ Future<void> main() async {
       'baseUrl': 'https://behaminplus.ir/behandam-diet/api',
       "baseUrlFile": "https://behaminplus.ir/helia-service",
       "baseUrlFileShop": "https://behaminplus.ir/shop-service",
-      "urlTerms": "https://kermany.com/terms/",
+      "urlTerms": "https://debug.behaminplus.ir/#/article/5918",
+      "urlPrivacy": "https://debug.behaminplus.ir/#/article/5901",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
       'isProduction': false,
-      'isCafeBazaar':false,
+      'isCafeBazaar': true,
       'market': Market.google.value
     },
   );

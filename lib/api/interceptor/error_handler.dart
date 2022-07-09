@@ -41,6 +41,7 @@ class ErrorHandlerInterceptor extends Interceptor {
     final statusCode = err.response?.statusCode;
     switch (statusCode) {
       case HttpStatus.badRequest:
+      case HttpStatus.unprocessableEntity:
       case HttpStatus.forbidden:
       case HttpStatus.notFound:
         _showToastIfNotRelease(err);
@@ -96,10 +97,16 @@ class ErrorHandlerInterceptor extends Interceptor {
             .message;
       }
     } catch (e) {}
+
+    try {
+      message ??= NetworkResponse<dynamic>.fromJson(
+              err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
+          .error
+          ?.message;
+    } catch (e) {}
+
     message ??= intl.httpErrorWithCode(err.response?.statusCode.toString() ?? 'Unknown');
 
-    //Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
-    //Utils.getSnackbarMessage(_context!, message);
     dioErrorObserver.showMessage(message);
     navigatorMessengerKey.currentState!.showSnackBar(SnackBar(
       content: Text('$message'),
@@ -138,7 +145,7 @@ class ErrorHandlerInterceptor extends Interceptor {
     try {
       if (error == null && err.response?.data != null && err.response?.data != '') {
         error = NetworkResponse<dynamic>.fromJson(
-                err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>));
+            err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>));
       }
     } catch (e) {}
     _isMaintenanceAlertShown = true;

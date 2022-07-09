@@ -3,6 +3,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
+import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
@@ -24,8 +25,7 @@ class VerifyScreen extends StatefulWidget {
   _VerifyScreenState createState() => _VerifyScreenState();
 }
 
-class _VerifyScreenState extends ResourcefulState<VerifyScreen>
-    with CodeAutoFill {
+class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFill {
   late AuthenticationBloc authBloc;
   late TextEditingController textEditingController = TextEditingController();
   var args;
@@ -67,11 +67,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
         debugPrint('verifiy ${navigator.currentConfiguration!.path} / $event');
         context.vxNav.replace(
           Uri(path: '/$event'),
-          params: {
-            "mobile": args['mobile'],
-            "code": codeVerify,
-            'id': args['countryId']
-          },
+          params: {"mobile": args['mobile'], "code": codeVerify, 'id': int.parse(args['countryId'])},
         );
       }
     });
@@ -96,8 +92,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                     child: SingleChildScrollView(
                       child: Column(children: [
                         AuthHeader(
-                          title: navigator.currentConfiguration!.path
-                                  .contains('pass')
+                          title: navigator.currentConfiguration!.path.contains('pass')
                               ? intl.changePassword
                               : intl.register,
                         ),
@@ -108,9 +103,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                   );
                 } else {
                   check = false;
-                  return Center(
-                      child: Container(
-                          width: 15.w, height: 15.w, child: Progress()));
+                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -125,8 +118,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -180,8 +172,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                             children: [
                               Icon(Icons.reset_tv, color: AppColors.penColor),
                               Space(width: 2.w),
-                              Text(intl.notSend,
-                                  style: TextStyle(fontSize: 14.0)),
+                              Text(intl.notSend, style: TextStyle(fontSize: 14.0)),
                             ],
                           ),
                           onTap: () {
@@ -265,10 +256,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                       label: Text(
                         intl.sendSMS,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
                       ),
                       style: OutlinedButton.styleFrom(
                           backgroundColor: AppColors.blueRuler,
@@ -284,13 +272,15 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                   child: TextButton.icon(
                       onPressed: () {
                         channelSendCode = ChannelSendCode.WHATSAPP;
-                        authBloc.tryCodeMethod(args['mobile'], channelSendCode);
+                        //   authBloc.tryCodeMethod(args['mobile'], channelSendCode);
                         authBloc.setTrySendCode = true;
-
                         authBloc.setFlag = false;
                         authBloc.startTimer();
 
                         Navigator.of(context).pop();
+                        IntentUtils.openAppIntent(Uri.encodeFull(
+                          'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
+                        ));
                       },
                       icon: Icon(
                         Icons.whatsapp,
@@ -300,13 +290,10 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                       label: Text(
                         intl.sendWhatsapp,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
                       ),
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: AppColors.greenRuler,
+                          backgroundColor: AppColors.greenRuler,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                               side: BorderSide(
@@ -357,14 +344,12 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
     if (!authBloc.isTrySendCode) {
-      if (!MemoryApp.isShowDialog)
-        DialogUtils.showDialogProgress(context: context);
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
 
       VerificationCode verification = VerificationCode();
       verification.mobile = args['mobile'];
       verification.verifyCode = codeVerify;
-      if (navigator.currentConfiguration!.path.contains('pass'))
-        verification.resetPass = true;
+      if (navigator.currentConfiguration!.path.contains('pass')) verification.resetPass = true;
       debugPrint('query verify ${verification.toJson()}');
       authBloc.verifyMethod(verification);
 
