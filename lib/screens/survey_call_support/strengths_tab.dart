@@ -57,22 +57,25 @@ class _StrengthsTabState extends ResourcefulState<StrengthsTab> {
                     stream: bloc.pollPhrasesStrengths,
                     builder: (context, pollPhrases) {
                       return pollPhrases.hasData &&
-                          pollPhrases.requireData.length > 0
+                              pollPhrases.requireData.length > 0
                           ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListView.builder(
-                            physics: ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: pollPhrases.requireData.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                item(isContactedToMe.requireData.isActive!, pollPhrases.requireData[index], index)),
-                      )
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListView.builder(
+                                  physics: ClampingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: pollPhrases.requireData.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) => item(
+                                          isContactedToMe.requireData.isActive!,
+                                          pollPhrases.requireData[index],
+                                          index)),
+                            )
                           : Container(
-                        height: 20.h,
-                        child: Center(
-                            child: Text(intl.noPollSurveyAvailable,
-                                style: typography.caption)),
-                      );
+                              height: 20.h,
+                              child: Center(
+                                  child: Text(intl.noPollSurveyAvailable,
+                                      style: typography.caption)),
+                            );
                     });
               },
             );
@@ -83,6 +86,7 @@ class _StrengthsTabState extends ResourcefulState<StrengthsTab> {
 
   Widget item(boolean isDisable, PollPhrases pollPhrases, int index) {
     return ItemPollPhrase(
+        isDisable: isDisable,
         pollPhrase: pollPhrases,
         click: () {
           if (isDisable == boolean.False) {

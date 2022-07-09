@@ -87,6 +87,7 @@ class _WeaknessTabState extends ResourcefulState<WeaknessTab> {
 
   Widget item(boolean isDisable, PollPhrases pollPhrases, int index) {
     return ItemPollPhrase(
+        isDisable: isDisable,
         pollPhrase: pollPhrases,
         click: () {
           if (isDisable == boolean.False) {

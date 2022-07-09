@@ -105,8 +105,8 @@ class _CustomTabBarUnderLineIndicatorState
       child: DefaultTabController(
         length: widget.listItem.length,
         child: TabBar(
-          unselectedLabelColor: Colors.grey,
-          labelColor: Colors.black87,
+          unselectedLabelColor: widget.tabIndicatorColor ?? Colors.grey,
+          labelColor: widget.tabIndicatorColor ?? Colors.black87,
           unselectedLabelStyle: Theme.of(context).textTheme.button!,
           labelStyle: Theme.of(context).textTheme.button!,
           indicatorColor: widget.tabIndicatorColor ?? AppColors.accentColor,
