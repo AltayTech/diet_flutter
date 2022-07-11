@@ -3,7 +3,6 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/extensions/bool.dart';
 import 'package:behandam/screens/regime/provider.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/regime/ruler_header.dart';
@@ -17,6 +16,7 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -33,6 +33,8 @@ class BodyStateScreen extends StatefulWidget {
 
 class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
   late RegimeBloc regimeBloc;
+  bool selectedNo = false;
+  bool selectedYes = false;
 
   @override
   void initState() {
@@ -100,9 +102,6 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                           children: [
                             rulers(snapshot.requireData),
                             Space(height: 2.h),
-                            if (navigator.currentConfiguration!.path ==
-                                '/list${Routes.weightEnter}')
-                              callBox(snapshot.requireData),
                             if (!navigator.currentConfiguration!.path.contains(Routes.weightEnter))
                               birthDayBox(snapshot.requireData),
                             Space(height: 2.h),
@@ -113,8 +112,12 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                                     '${snapshot.requireData.kilo}.${snapshot.requireData.gram}');
                                 debugPrint('body weight ${snapshot.requireData.weight}');
                                 regimeBloc.setPhysicalInfo(data: snapshot.requireData);
-                                DialogUtils.showDialogProgress(context: context);
-                                regimeBloc.sendRequest();
+                                if (MemoryApp.userInformation?.hasCall ?? false)
+                                  CallBoxDialog(snapshot.requireData);
+                                else {
+                                  DialogUtils.showDialogProgress(context: context);
+                                  regimeBloc.sendRequest();
+                                }
                               },
                             ),
                             Space(height: 2.h),
@@ -326,66 +329,148 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
         ));
   }
 
+  void CallBoxDialog(PhysicalInfoData physicalInfo) {
+    DialogUtils.showDialogPage(
+        context: context,
+        isDismissible: false,
+        child: Center(
+            child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          width: double.maxFinite,
+          height: 65.h,
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.onPrimary,
+          ),
+          child: Scaffold(
+            body: SingleChildScrollView(child: callBox(physicalInfo)),
+            backgroundColor: Colors.white,
+          ),
+        )));
+  }
+
   Widget callBox(PhysicalInfoData physicalInfo) {
-    return Column(
-      children: [
-        Alert(
-          text: intl.weighEnterCallText,
-          boxColor: AppColors.blueRuler.withOpacity(0.2),
-          iconPath: 'assets/images/diet/call-center.svg',
-        ),
-        Space(height: 2.h),
-        Text(
-          intl.shouldWeCallYou,
-          style: typography.caption?.apply(fontWeightDelta: 1),
-          textAlign: TextAlign.center,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            callButton(intl.yes, () {
-              setState(() {
-                physicalInfo.needToCall = true;
-              });
-            }, physicalInfo),
-            Space(width: 3.w),
-            callButton(intl.no, () {
-              setState(() {
-                physicalInfo.needToCall = false;
-              });
-            }, physicalInfo),
-          ],
-        ),
-      ],
+    return StatefulBuilder(
+      builder: (context, setState) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          close(),
+          Space(
+            height: 1.h,
+          ),
+          ImageUtils.fromLocal('assets/images/diet/expert_call.svg'),
+          Space(
+            height: 1.h,
+          ),
+          Alert.widget(
+            widget: Column(
+              children: [
+                Space(height: 2.h),
+                Text(
+                  intl.shouldWeCallYou,
+                  style: typography.caption?.apply(fontWeightDelta: 1),
+                  textAlign: TextAlign.center,
+                ),
+                Space(
+                  height: 2.h,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white, borderRadius: AppBorderRadius.borderRadiusDefault),
+                  child: ListTile(
+                    title: Text(
+                      intl.yesNeedHelpDiet,
+                      style: typography.overline,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        selectedYes = true;
+                        selectedNo = false;
+                        physicalInfo.needToCall = true;
+                      });
+                    },
+                    leading: Radio(
+                        value: selectedYes,
+                        groupValue: true,
+                        activeColor: AppColors.primary,
+                        onChanged: (bool? val) {
+                          setState(() {
+                            selectedYes = true;
+                            selectedNo = false;
+
+                            physicalInfo.needToCall = true;
+                          });
+                        }),
+                  ),
+                ),
+                Space(
+                  height: 1.h,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white, borderRadius: AppBorderRadius.borderRadiusDefault),
+                  child: ListTile(
+                    title: Text(
+                      intl.noNeedHelp,
+                      style: typography.overline,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        selectedYes = false;
+                        selectedNo = true;
+                        physicalInfo.needToCall = true;
+                      });
+                    },
+                    leading: Radio(
+                        value: selectedNo,
+                        activeColor: AppColors.primary,
+                        groupValue: true,
+                        onChanged: (bool? val) {
+                          setState(() {
+                            selectedYes = false;
+                            selectedNo = true;
+                            physicalInfo.needToCall = false;
+                          });
+                        }),
+                  ),
+                ),
+              ],
+            ),
+            boxColor: AppColors.colorTextDepartmentTicket.withOpacity(0.2),
+            iconPath: 'assets/images/diet/call-center.svg',
+          ),
+          Space(
+            height: 2.h,
+          ),
+          SubmitButton(
+            label: intl.confirmContinue,
+            onTap: () {
+              Navigator.of(context).pop();
+              DialogUtils.showDialogProgress(context: context);
+              regimeBloc.sendRequest();
+            },
+          ),
+        ],
+      ),
     );
   }
 
-  Widget callButton(String buttonLabel, Function onClick, PhysicalInfoData physicalInfo) {
-    debugPrint('call button ${buttonLabel == intl.no && physicalInfo.needToCall.isNullOrFalse}');
-    return OutlinedButton(
-      onPressed: () => onClick(),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-            (buttonLabel == intl.yes && !physicalInfo.needToCall.isNullOrFalse) ||
-                    (buttonLabel == intl.no && physicalInfo.needToCall.isNullOrFalse)
-                ? AppColors.primary
-                : AppColors.grey),
-        shadowColor: MaterialStateProperty.all(
-            (buttonLabel == intl.yes && !physicalInfo.needToCall.isNullOrFalse) ||
-                    (buttonLabel == intl.no && physicalInfo.needToCall.isNullOrFalse)
-                ? AppColors.primary
-                : Colors.transparent),
-        foregroundColor: MaterialStateProperty.all(AppColors.onSurface),
-        shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusLarge)),
-      ),
-      child: Text(
-        buttonLabel,
-        style: typography.caption?.apply(
-          color: (buttonLabel == intl.yes && !physicalInfo.needToCall.isNullOrFalse) ||
-                  (buttonLabel == intl.no && physicalInfo.needToCall.isNullOrFalse)
-              ? AppColors.onPrimary
-              : AppColors.labelColor,
+  Widget close() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topLeft,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
+          ),
         ),
       ),
     );
