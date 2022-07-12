@@ -58,7 +58,8 @@ class SurveyCallSupportBloc {
 
   Stream<PollPhrases> get isContactedToMe => _isContactedToMe.stream;
 
-  List<PollPhrases> get pollPhrasesArrayStrengths => _pollPhrasesStrengths.value;
+  List<PollPhrases> get pollPhrasesArrayStrengths =>
+      _pollPhrasesStrengths.value;
 
   List<PollPhrases> get pollPhrasesArrayWeakness => _pollPhrasesWeakness.value;
 
@@ -113,13 +114,14 @@ class SurveyCallSupportBloc {
   }
 
   void pollsReset() {
-    if (_pollPhrasesStrengths.hasValue && _pollPhrasesWeakness.hasValue) {
+    if (_pollPhrasesStrengths.hasValue) {
       for (int i = 0; i < _pollPhrasesStrengths.value.length; i++) {
         PollPhrases pollPhrase = _pollPhrasesStrengths.value[i];
         pollPhrase.isActive = boolean.False;
         _pollPhrasesStrengths.value[i] = pollPhrase;
       }
-
+    }
+    if (_pollPhrasesWeakness.hasValue) {
       for (int i = 0; i < _pollPhrasesWeakness.value.length; i++) {
         PollPhrases pollPhrase = _pollPhrasesWeakness.value[i];
         pollPhrase.isActive = boolean.False;
