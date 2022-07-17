@@ -197,6 +197,7 @@ class AuthenticationBloc {
 
   void tryCodeMethod(String mobile, ChannelSendCode channel) {
     _repository.verificationCode(mobile, channel.value).then((value) {
+      MemoryApp.whatsappInfo = value.data?.otpInfo?.whatsappInfo;
       MemoryApp.analytics!.logEvent(name: "try_again_send_code_on_${channel.value}");
     });
   }

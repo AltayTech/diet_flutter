@@ -73,7 +73,7 @@ abstract class Repository {
 
   NetworkResult<SignIn> signIn(User user);
 
-  NetworkResult<VerificationCode> verificationCode(String mobile, String channel);
+  NetworkResult<CheckStatus> verificationCode(String mobile, String channel);
 
   NetworkResult<VerifyOutput> verify(VerificationCode verificationCode);
 
@@ -315,7 +315,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<VerificationCode> verificationCode(String mobile, String channel) async {
+  NetworkResult<CheckStatus> verificationCode(String mobile, String channel) async {
     var response = await _apiClient.sendVerificationCode(mobile, channel);
     return response;
   }

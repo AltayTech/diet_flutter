@@ -67,7 +67,11 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
         debugPrint('verifiy ${navigator.currentConfiguration!.path} / $event');
         context.vxNav.replace(
           Uri(path: '/$event'),
-          params: {"mobile": args['mobile'], "code": codeVerify, 'id': int.parse(args['countryId'])},
+          params: {
+            "mobile": args['mobile'],
+            "code": codeVerify,
+            'id': int.parse(args['countryId'])
+          },
         );
       }
     });
@@ -96,7 +100,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                               ? intl.changePassword
                               : intl.register,
                         ),
-                        Space(height: 80.0),
+                        Space(height: 70.0),
                         content(),
                       ]),
                     ),
@@ -125,7 +129,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                 style: TextStyle(color: AppColors.penColor),
               )),
           Space(height: 5.h),
-          Text(intl.smsCode, style: TextStyle(fontSize: 16.0)),
+          Text(intl.smsCode, style: typography.caption),
           Space(height: 2.h),
           Container(
             child: Directionality(

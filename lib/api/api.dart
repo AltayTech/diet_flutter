@@ -72,7 +72,7 @@ abstract class RestClient {
   NetworkResult<SignIn> signInWithPhoneNumber(@Body() User user);
 
   @POST("/send-verification-code?mobile={mobile}&channel={channel}")
-  NetworkResult<VerificationCode> sendVerificationCode(@Path('mobile') String? mobile,@Path('channel') String? channel);
+  NetworkResult<CheckStatus> sendVerificationCode(@Path('mobile') String? mobile,@Path('channel') String? channel);
 
   @GET("/verify")
   NetworkResult<VerifyOutput> verifyUser(@Queries() VerificationCode verificationCode);

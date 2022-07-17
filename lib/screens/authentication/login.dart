@@ -270,6 +270,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
 
                           authBloc.setTrySendCode = true;
                         } else {
+                          Navigator.pop(context);
                           Utils.getSnackbarMessage(context, intl.errorDisableWhatsApp);
                         }
                       },
