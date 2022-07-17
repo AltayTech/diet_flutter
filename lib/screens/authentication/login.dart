@@ -58,8 +58,9 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
           ));
         } else if (event.toString().contains(Routes.auth.substring(1)))
-          VxNavigator.of(context).push(Uri.parse('/$event'),
-              params: {"mobile": args['mobile'], 'countryId': args['countryId']});
+          VxNavigator.of(context).push(Uri(
+              path: '/$event',
+              queryParameters: {"mobile": args['mobile'], 'countryId': '${args['countryId']}'}));
         else
           VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
