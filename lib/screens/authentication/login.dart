@@ -200,113 +200,147 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           decoration: AppDecorations.boxLarge.copyWith(
             color: AppColors.onPrimary,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              close(),
-              Container(
-                width: 70.w,
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    text: intl.textChangePass1,
-                    style: TextStyle(fontSize: 14.sp, color: AppColors.penColor),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: '${args['mobile']}', style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: intl.textChangePass2),
-                    ],
+          child: StatefulBuilder(builder: (context, state) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                close(),
+                Text(
+                    intl.sendOtpType(
+                        channelSendCode == ChannelSendCode.WHATSAPP ? intl.whatsApp : intl.sms),
+                    style: typography.caption!.copyWith(fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center),
+                Space(height: 2.h),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextButton.icon(
+                        onPressed: () {
+                          state(() {
+                            channelSendCode = ChannelSendCode.SMS;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.sms,
+                          size: 7.w,
+                          color: (channelSendCode == ChannelSendCode.SMS)
+                              ? Colors.white
+                              : AppColors.labelTextColor,
+                        ),
+                        label: Text(
+                          intl.sms,
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.button!.copyWith(
+                              color: (channelSendCode == ChannelSendCode.SMS)
+                                  ? Colors.white
+                                  : AppColors.labelTextColor),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                            backgroundColor: (channelSendCode == ChannelSendCode.SMS)
+                                ? AppColors.greenRuler
+                                : AppColors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                side: BorderSide(
+                                  color: (channelSendCode == ChannelSendCode.SMS)
+                                      ? AppColors.greenRuler
+                                      : AppColors.grey,
+                                  width: 0.25.w,
+                                )))),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextButton.icon(
+                        onPressed: () async {
+                          state(() {
+                            channelSendCode = ChannelSendCode.WHATSAPP;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.whatsapp,
+                          size: 7.w,
+                          color: (channelSendCode == ChannelSendCode.WHATSAPP)
+                              ? Colors.white
+                              : AppColors.labelTextColor,
+                        ),
+                        label: Text(
+                          intl.whatsApp,
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.button!.copyWith(
+                              color: (channelSendCode == ChannelSendCode.WHATSAPP)
+                                  ? Colors.white
+                                  : AppColors.labelTextColor),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                            backgroundColor: (channelSendCode == ChannelSendCode.WHATSAPP)
+                                ? AppColors.greenRuler
+                                : AppColors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                side: BorderSide(
+                                  color: (channelSendCode == ChannelSendCode.WHATSAPP)
+                                      ? AppColors.greenRuler
+                                      : AppColors.grey,
+                                  width: 0.25.w,
+                                )))),
+                  )
+                ]),
+                Space(height: 2.h),
+                Container(
+                  width: 70.w,
+                  padding: EdgeInsets.all(8),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: intl.textChangePass1,
+                      style:
+                          typography.caption!.copyWith(fontSize: 12.sp, color: AppColors.penColor),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: '${args['mobile']}',
+                            style: typography.caption!.copyWith(fontWeight: FontWeight.bold)),
+                        TextSpan(
+                            text: intl.textChangePass2(channelSendCode == ChannelSendCode.WHATSAPP
+                                ? intl.whatsApp
+                                : intl.sms),
+                            style: typography.caption!
+                                .copyWith(fontSize: 12.sp, color: AppColors.penColor)),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Space(height: 2.h),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 8, right: 8),
-                  child: TextButton.icon(
-                      onPressed: () {
-                        channelSendCode = ChannelSendCode.SMS;
-
-                        Navigator.pop(context);
+                Space(height: 3.h),
+                button(AppColors.primary, intl.accept, Size(60.w, 6.h), () {
+                  switch (channelSendCode) {
+                    case ChannelSendCode.SMS:
+                      Navigator.pop(context);
+                      DialogUtils.showDialogProgress(context: context);
+                      MemoryApp.forgetPass = true;
+                      authBloc.sendCodeMethod(args['mobile'], channelSendCode);
+                      authBloc.setTrySendCode = true;
+                      break;
+                    case ChannelSendCode.WHATSAPP:
+                      Navigator.pop(context);
+                      if (MemoryApp.whatsappInfo != null && MemoryApp.whatsappInfo!.botStatusBool) {
                         DialogUtils.showDialogProgress(context: context);
-
-                        MemoryApp.forgetPass = true;
                         authBloc.sendCodeMethod(args['mobile'], channelSendCode);
+                        MemoryApp.forgetPass = true;
                         authBloc.setTrySendCode = true;
-                      },
-                      icon: Icon(
-                        Icons.sms,
-                        size: 7.w,
-                        color: Colors.white,
-                      ),
-                      label: Text(
-                        intl.sendSMS,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor: AppColors.blueRuler,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(
-                                color: AppColors.blueRuler,
-                                width: 0.25.w,
-                              )))),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 8, right: 8),
-                  child: TextButton.icon(
-                      onPressed: () async {
-                        if (MemoryApp.whatsappInfo != null &&
-                            MemoryApp.whatsappInfo!.botStatusBool) {
-                          channelSendCode = ChannelSendCode.WHATSAPP;
-                          Navigator.pop(context);
-                          DialogUtils.showDialogProgress(context: context);
-                          authBloc.sendCodeMethod(args['mobile'], channelSendCode);
-
-                          MemoryApp.forgetPass = true;
-
-                          authBloc.setTrySendCode = true;
-                        } else {
-                          Navigator.pop(context);
-                          Utils.getSnackbarMessage(context, intl.errorDisableWhatsApp);
-                        }
-                      },
-                      icon: Icon(
-                        Icons.whatsapp,
-                        size: 7.w,
-                        color: Colors.white,
-                      ),
-                      label: Text(
-                        intl.sendWhatsapp,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.button!.copyWith(
-                            color: (MemoryApp.whatsappInfo != null &&
-                                    MemoryApp.whatsappInfo!.botStatusBool)
-                                ? Colors.white
-                                : AppColors.labelTextColor),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor: (MemoryApp.whatsappInfo != null &&
-                                  MemoryApp.whatsappInfo!.botStatusBool)
-                              ? AppColors.greenRuler
-                              : AppColors.grey,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(
-                                color: (MemoryApp.whatsappInfo != null &&
-                                        MemoryApp.whatsappInfo!.botStatusBool)
-                                    ? AppColors.greenRuler
-                                    : AppColors.grey,
-                                width: 0.25.w,
-                              )))),
-                )
-              ]),
-              Space(height: 2.h),
-            ],
-          ),
+                      } else {
+                        Utils.getSnackbarMessage(context, intl.errorDisableWhatsApp);
+                      }
+                      break;
+                    default:
+                      // TODO: Handle this case.
+                      break;
+                  }
+                }),
+                Space(height: 2.h),
+              ],
+            );
+          }),
         ),
       ),
     );

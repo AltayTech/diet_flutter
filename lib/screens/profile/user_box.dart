@@ -129,7 +129,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
               validation: (val) {},
               onChanged: (val) => userInfo!.socialMedia![0].pivot!.link = val,
               value: userInfo!.whatsApp,
-              label: intl.whatsApp,
+              label: intl.whatsAppNumber,
               enable: true,
               maxLine: false,
               ctx: context,

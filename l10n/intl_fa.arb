@@ -32,7 +32,7 @@
   "email": "ایمیل",
   "address": "آدرس",
   "callNumber": "شماره تماس",
-  "whatsApp": "شماره واتساپ",
+  "whatsAppNumber": "شماره واتساپ",
   "skype": "شناسه اسکایپ",
   "zipCode": "کدپستی",
   "foodList": "لیست غذایی",
@@ -106,7 +106,14 @@
   "province": "استان",
   "city": "شهر",
   "textChangePass1": " برای تغییر رمز یک کد تایید به شماره ",
-  "textChangePass2": " ارسال میشه. بعدش میتونی رمزتو عوض کنی ",
+  "textChangePass2": " {otpType} میشه. بعدش میتونی رمزتو عوض کنی ",
+  "@textChangePass2": {
+    "placeholders": {
+      "otpType": {
+        "type": "String"
+      }
+    }
+  },
   "yes": "بله",
   "no": "خیر",
   "enterYourMobileNumber": "شماره موبایلت رو وارد کن",
@@ -723,5 +730,15 @@
   "errorDisableWhatsApp": "سرویس واتساپ غیر فعال میباشد",
   "noNeedHelp": "خیر، نیازی به راهنمایی ندارم",
   "yesNeedHelpDiet": "بله، برای ادامه رژیم نیاز به راهنمایی دارم",
+  "sendOtpType": "ارسال از طریق {otpType}",
+  "@sendOtpType": {
+    "placeholders": {
+      "otpType": {
+        "type": "String"
+      }
+    }
+  },
+  "sms": "پیامک",
+  "whatsApp": "واتساپ",
   "understand": "متوجه شدم"
 }
