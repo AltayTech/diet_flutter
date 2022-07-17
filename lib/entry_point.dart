@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:behandam/app/app.dart';
+import 'package:behandam/base/errors.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
+import 'package:behandam/utils/crashlytics.dart';
 import 'package:behandam/utils/fcm.dart';
 import 'package:behandam/utils/firebase_options.dart';
 import 'package:dio/dio.dart';
@@ -41,21 +43,9 @@ Future<void> entryPoint() async {
     AppLocale.initialize();
     AppColors(themeAppColor: ThemeAppColor.DEFAULT);
     _initFireBase();
-    _handleCaughtErrors();
+    GlobalErrorHandler.handleCaughtErrors();
     runApp(App());
-  }, (Object error, StackTrace stack) async {
-    if (error is DioError || error is HttpException || error is SocketException) {
-      debugPrint("error is => ${error.toString()}");
-      return;
-    }
-    if (!kIsWeb) {
-      debugPrint("error is => ${error.toString()}");
-      FirebaseCrashlytics.instance.recordError(error, stack);
-    } else {
-      debugPrint("error is => ${error.toString()}");
-      debugPrint("error is => ${stack.toString()}");
-    }
-  });
+  }, GlobalErrorHandler.handleUncaughtErrors);
 }
 
 void _initializeDebugPrint() {
@@ -70,6 +60,7 @@ void _initFireBase() async {
       options: await DefaultFirebaseConfig.platformOptions,
     );
     await AppFcm.initialize();
+    await AppCrashlytics.initialize();
     if (!kIsWeb) {
       if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled == false) {
         await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
@@ -86,18 +77,5 @@ void _initFireBase() async {
     // firebaseAnalyticsObserver = FirebaseAnalyticsObserver(analytics: MemoryApp.analytics!);
   } catch (Exception) {
     print("not install FirebaseAnalytics");
-  }
-}
-
-void _handleCaughtErrors() {
-  if (!kIsWeb) {
-    FlutterError.onError = (FlutterErrorDetails details) {
-      FlutterError.presentError(details);
-      if (!(details.exception is DioError ||
-          details.exception is HttpException ||
-          details.exception is SocketException)) {
-        FirebaseCrashlytics.instance.recordError(details.exception, details.stack);
-      }
-    };
   }
 }

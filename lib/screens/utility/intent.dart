@@ -9,6 +9,7 @@ import 'package:open_store/open_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart' as urlLauncher;
+import 'package:url_launcher/url_launcher_string.dart';
 
 abstract class IntentUtils {
   static Future<void> launchCustomTabs(BuildContext context, String url) {
@@ -38,7 +39,7 @@ abstract class IntentUtils {
 
   static void launchURL(String url) async {
     if (await urlLauncher.canLaunchUrl(Uri.parse(url))) {
-      await urlLauncher.launchUrl(Uri.parse(url));
+      await urlLauncher.launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $url';
     }
@@ -82,6 +83,24 @@ abstract class IntentUtils {
       throw 'Platform not supported for Intent : $data';
     }
   }
+
+  /*static void openInstagram(String data) async {
+    if (Device.get().isAndroid) {
+      try {
+        AndroidIntent intent = AndroidIntent(
+          action: 'action_view',
+          package: "com.instagram.android",
+          data: data, // eg. https://www.instagram.com/_u/zirehapp/
+        );
+        await intent.launch();
+      } catch (ActivityNotFoundException) {
+        debugPrint("can't open url");
+        launchURL(data);
+      }
+    } else {
+      launchURL(data);
+    }
+  }*/
 
   static void openApp(String package) async {
     if (Device.get().isAndroid) {

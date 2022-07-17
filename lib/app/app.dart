@@ -102,14 +102,14 @@ class _AppState extends State<App> {
     setTokenToMemoryApp();
 
     navigator.addListener(() {
-      //  debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
-      if (navigator.currentConfiguration!.path == "/") {
+      if (DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)) {
+        navigator.routeManager.clearAndPush(Uri(
+            path: DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path),
+            queryParameters: navigator.currentConfiguration!.queryParameters));
+      } else if (navigator.currentConfiguration!.path == '/') {
         navigator.routeManager.replace(Uri.parse(Routes.splash));
-      } else if (DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)) {
-        navigator.routeManager
-            .replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
       }
-        if (MemoryApp.analytics != null)
+      if (MemoryApp.analytics != null)
         try {
           MemoryApp.analytics!.logEvent(
               name: navigator.currentConfiguration!.path
@@ -270,10 +270,10 @@ final navigator = VxNavigator(
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
     Routes.login: (_, param) => MaterialPage(child: routePage(LoginScreen()), arguments: param),
-    Routes.authVerify: (_, param) =>
-        MaterialPage(child: routePage(VerifyScreen()), arguments: param),
-    Routes.passVerify: (_, param) =>
-        MaterialPage(child: routePage(VerifyScreen()), arguments: param),
+    Routes.authVerify: (uri, __) =>
+        MaterialPage(child: routePage(VerifyScreen()), arguments: uri.queryParameters),
+    Routes.passVerify: (uri, __) =>
+        MaterialPage(child: routePage(VerifyScreen()), arguments: uri.queryParameters),
     Routes.resetPass: (_, param) =>
         MaterialPage(child: routePage(PasswordResetScreen()), arguments: param),
     Routes.resetCode: (_, param) =>

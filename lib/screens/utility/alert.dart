@@ -7,8 +7,10 @@ import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Alert extends StatelessWidget {
-  const Alert({Key? key, required this.text, required this.boxColor, required this.iconPath}) : super(key: key);
-  final String text;
+  const Alert({Key? key, required this.text, required this.boxColor, required this.iconPath, this.widget}) : super(key: key);
+  const Alert.widget({Key? key, required this.widget, required this.boxColor, required this.iconPath, this.text}) : super(key: key);
+  final String? text;
+  final Widget? widget;
   final Color boxColor;
   final String iconPath;
 
@@ -40,14 +42,14 @@ class Alert extends StatelessWidget {
               ),
               padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 2.h),
               child: Center(
-                child: Text(
-                  text,
+                child: this.text!=null ? Text(
+                  text!,
                   style: typography.caption?.copyWith(
                     color: AppColors.alertCallTextColor,
                     fontWeight: FontWeight.w700
                   ),
                   textAlign: TextAlign.center,
-                ),
+                ) : this.widget,
               ),
             ),
           ],

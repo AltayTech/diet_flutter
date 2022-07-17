@@ -50,10 +50,10 @@ import '../data/entity/auth/verify.dart';
 import '../data/entity/payment/payment.dart';
 part 'api.g.dart';
 
-enum help {
+/*enum help {
   @JsonValue(1)
   dietType
-}
+}*/
 
 typedef NetworkResult<T> = Future<NetworkResponse<T>>;
 typedef ImperativeNetworkResult = NetworkResult<dynamic>;
@@ -72,7 +72,7 @@ abstract class RestClient {
   NetworkResult<SignIn> signInWithPhoneNumber(@Body() User user);
 
   @POST("/send-verification-code?mobile={mobile}&channel={channel}")
-  NetworkResult<VerificationCode> sendVerificationCode(@Path('mobile') String? mobile,@Path('channel') String? channel);
+  NetworkResult<CheckStatus> sendVerificationCode(@Path('mobile') String? mobile,@Path('channel') String? channel);
 
   @GET("/verify")
   NetworkResult<VerifyOutput> verifyUser(@Queries() VerificationCode verificationCode);
