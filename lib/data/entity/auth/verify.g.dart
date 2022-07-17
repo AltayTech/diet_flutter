@@ -9,6 +9,7 @@ part of 'verify.dart';
 VerificationCode _$VerificationCodeFromJson(Map<String, dynamic> json) =>
     VerificationCode()
       ..mobile = json['mobile'] as String?
+      ..channel = json['channel'] as String?
       ..verifyCode = json['verification_code'] as String?
       ..resetPass = json['reset_pass'] as bool?
       ..routeName = json['route_name'] as String?;
@@ -16,6 +17,7 @@ VerificationCode _$VerificationCodeFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$VerificationCodeToJson(VerificationCode instance) =>
     <String, dynamic>{
       'mobile': instance.mobile,
+      'channel': instance.channel,
       'verification_code': instance.verifyCode,
       'reset_pass': instance.resetPass,
       'route_name': instance.routeName,

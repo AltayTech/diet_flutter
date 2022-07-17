@@ -5,6 +5,8 @@ part 'verify.g.dart';
 class VerificationCode {
   @JsonKey(name: "mobile")
   String? mobile;
+  @JsonKey(name: "channel")
+  String? channel;
   @JsonKey(name: "verification_code")
   String? verifyCode;
   @JsonKey(name: "reset_pass")

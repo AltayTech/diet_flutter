@@ -31,8 +31,8 @@ class RefundStatus {
 
 @JsonSerializable()
 class RefundVerify {
-  @JsonKey(name: "card_number")
-  String? cardNumber;
+  @JsonKey(name: "sheba_number")
+  String? shebaNumber;
 
   @JsonKey(name: "card_owner")
   String? cardOwner;

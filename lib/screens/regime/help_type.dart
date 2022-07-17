@@ -139,10 +139,8 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
             children: [
               ...snapshot.requireData.helpers!.map((help) => item(help)).toList(),
               ...snapshot.requireData.media!
-                  .map((media) => ImageUtils.fromNetwork(
-                      FlavorConfig.instance.variables["baseUrlFile"] + media.url,
-                      width: 10.w,
-                      height: 20.h))
+                  .map((media) => ImageUtils.fromNetwork(Utils.getCompletePath(media.url),
+                      width: 10.w, height: 20.h))
                   .toList(),
               // .map((help) => item(help))
               // .toList(),
@@ -176,8 +174,7 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
           //         .toList(),
           //   ],
           // );
-          return ImageUtils.fromNetwork(
-              FlavorConfig.instance.variables["baseUrlFile"] + snapshot.data![index].url,
+          return ImageUtils.fromNetwork( Utils.getCompletePath(snapshot.data![index].url),
               width: 10.w,
               height: 20.h);
         } else {

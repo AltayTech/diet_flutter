@@ -23,9 +23,9 @@ class FoodListBloc {
 
   void getFoodMenu({required bool fillFood}) {
     if (_date.valueOrNull == null && MemoryApp.selectedDate == null)
-      _date.value = DateTime.now().toString().substring(0, 10);
+      _date.safeValue = DateTime.now().toString().substring(0, 10);
     else if (_date.valueOrNull == null && MemoryApp.selectedDate != null)
-      _date.value = MemoryApp.selectedDate!;
+      _date.safeValue = MemoryApp.selectedDate!;
     debugPrint('bloc foodlist ${_date.value} / ${MemoryApp.selectedDate}');
     loadContent(invalidate: true, fillFood: fillFood);
   }
@@ -161,7 +161,7 @@ class FoodListBloc {
       debugPrint(
           'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
     }
-    _weekDays.value = data;
+    _weekDays.safeValue = data;
     _selectedWeekDay.value = _weekDays.value!.firstWhere(
         (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
     _previousWeekDay = _selectedWeekDay.value;
@@ -182,7 +182,7 @@ class FoodListBloc {
         } else
           element.isSelected = false;
       });
-      _foodList.value = null;
+      _foodList.safeValue = null;
       _previousWeekDay = _selectedWeekDay.value;
       if (_articles.isNotEmpty) setArticle();
       debugPrint('change date 3 $newDate / ${_previousWeekDay.gregorianDate}');
@@ -205,13 +205,15 @@ class FoodListBloc {
       setTheme();
     }).whenComplete(() => _loadingContent.safeValue = false);
   }
+
   void onMealFoodDaily(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
     final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
-   // _foodList.safeValue=_foodList.valueOrNull;
+    // _foodList.safeValue=_foodList.valueOrNull;
   }
+
   void onMealFood(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
     final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
@@ -239,7 +241,7 @@ class FoodListBloc {
       if (value.data != null && value.requireData) {
         onRefresh(invalidate: true);
       }
-    }).whenComplete(()  {
+    }).whenComplete(() {
       _popLoading.fire(false);
       _popLoading.fire(false);
     });
@@ -297,13 +299,13 @@ class FoodListBloc {
     articleVideo.expired_at =
         _weekDays.value![_weekDays.value!.length - 1]!.gregorianDate.toString().substring(0, 10);
     _repository.getArticles(articleVideo).then((value) {
-      _articles = value.requireData;
-      setArticle();
+      _articles = value.data ?? [];
+      if (_articles.length > 0) setArticle();
     });
   }
 
   void setArticle() {
-    _adviceVideo.value = _articles.firstWhere(
+    _adviceVideo.safeValue = _articles.firstWhere(
         (element) => _selectedWeekDay.value.gregorianDate.toString().contains(element.date!));
     adviceId = _adviceVideo.value.id;
   }

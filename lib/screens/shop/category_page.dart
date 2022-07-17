@@ -87,9 +87,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          ImageUtils.fromNetwork(
-                              FlavorConfig.instance.variables["baseUrlFileShop"] +
-                                  snapshot.data!.image,
+                          ImageUtils.fromNetwork(Utils.getCompletePathShop(snapshot.data!.image),
                               width: 100.w,
                               height: 12.h,
                               showPlaceholder: false,
@@ -155,8 +153,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
           children: [
             ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                child: ImageUtils.fromNetwork(
-                    FlavorConfig.instance.variables["baseUrlFileShop"] + product.productThambnail,
+                child: ImageUtils.fromNetwork( Utils.getCompletePathShop(product.productThambnail),
                     width: 20.w,
                     height: 9.h,
                     fit: BoxFit.fill)),

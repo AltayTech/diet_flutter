@@ -29,11 +29,11 @@ Map<String, dynamic> _$RefundStatusToJson(RefundStatus instance) =>
     };
 
 RefundVerify _$RefundVerifyFromJson(Map<String, dynamic> json) => RefundVerify()
-  ..cardNumber = json['card_number'] as String?
+  ..shebaNumber = json['sheba_number'] as String?
   ..cardOwner = json['card_owner'] as String?;
 
 Map<String, dynamic> _$RefundVerifyToJson(RefundVerify instance) =>
     <String, dynamic>{
-      'card_number': instance.cardNumber,
+      'sheba_number': instance.shebaNumber,
       'card_owner': instance.cardOwner,
     };

@@ -1,17 +1,53 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/extensions/stream.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:rxdart/rxdart.dart';
+
 class MaintenancePage extends StatefulWidget {
-  const MaintenancePage({Key? key}) : super(key: key);
+  NetworkResponse error;
+
+  MaintenancePage({Key? key, required this.error}) : super(key: key);
 
   @override
   State createState() => _MaintenanceState();
 }
 
-class _MaintenanceState extends ResourcefulState<MaintenancePage> {
+class _MaintenanceState extends ResourcefulState<MaintenancePage>
+    with SingleTickerProviderStateMixin {
+  final _ReminderTime = BehaviorSubject<String>();
+  int second = 0;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    second = int.parse(widget.error.remainingTime!.split('.').first);
+    const oneSec = const Duration(seconds: 1);
+    _timer = Timer.periodic(oneSec, (Timer timer) {
+      if (second - 1 <= 0) {
+        second = 0;
+      } else
+        second -= 1;
+
+      formatTime(second);
+    });
+  }
+
+  void formatTime(int seconds) {
+    _ReminderTime.safeValue = '${(Duration(seconds: seconds))}'.split('.')[0].padLeft(8, '0');
+    debugPrint("${_ReminderTime.valueOrNull}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +77,26 @@ class _MaintenanceState extends ResourcefulState<MaintenancePage> {
         Padding(
           padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 4.h),
           child: Text(
-            intl.maintenanceError,
+            widget.error.message ?? intl.maintenanceError,
             textAlign: TextAlign.center,
             style: typography.caption,
           ),
+        ),
+        StreamBuilder<String?>(
+          builder: (context, time) {
+            if (time.hasData)
+              return Padding(
+                padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
+                child: Text(
+                  time.data ?? '',
+                  textAlign: TextAlign.center,
+                  style: typography.caption,
+                ),
+              );
+            else
+              return EmptyBox();
+          },initialData: "0",
+          stream: _ReminderTime,
         ),
         Padding(
           padding: EdgeInsets.only(top: 5.h, bottom: 2.h, left: 5.w, right: 5.w),
@@ -58,21 +110,27 @@ class _MaintenanceState extends ResourcefulState<MaintenancePage> {
     return MaterialButton(
       color: AppColors.primary,
       minWidth: double.infinity,
-      onPressed: () => Navigator.pop(context),
+      onPressed: () {
+        if (Platform.isAndroid) {
+          SystemNavigator.pop();
+        } else if (Platform.isIOS) {
+          exit(0);
+        }
+      },
       height: 6.h,
       shape: AppShapes.rectangleSmall,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ImageUtils.fromLocal('assets/icon/retry.svg'),
-          Space(width: 8),
-          Text(
-            intl.retry,
-            style: typography.button,
-          ),
-        ],
+      child: Text(
+        intl.understand,
+        style: typography.button,
       ),
     );
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _ReminderTime.close();
+    _timer.cancel();
+  }
 }

@@ -33,18 +33,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
   }
 
   void listenBloc() {
-    vitrinBloc.navigateToVerify.listen((event) {
-      if ((event as bool)) {
-        LaunchApp.openApp(
-          androidPackageName: 'com.app.fitamin',
-          // iosUrlScheme: 'pulsesecure://',
-          // appStoreLink: 'itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041',
-          // openStore: false
-        );
-      } else {
-        _launchURL('https://app.fitamin.ir/register');
-      }
-    });
+
     vitrinBloc.showServerError.listen((event) {
       Utils.getSnackbarMessage(context, event);
     });

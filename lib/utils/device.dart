@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/extensions/string.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -23,7 +24,7 @@ abstract class DeviceUtils {
     return await _getDeviceInfo(
       (androidInfo) => androidInfo.version.sdkInt!.toString(),
       (iosInfo) => iosInfo.systemVersion!,
-          (webDeviceInfo) => webDeviceInfo.hardwareConcurrency.toString(),
+      (webDeviceInfo) => webDeviceInfo.hardwareConcurrency.toString(),
     );
   }
 
@@ -65,24 +66,27 @@ abstract class DeviceUtils {
     if (kIsWeb) {
       final webBrowserInfo = await deviceInfo.webBrowserInfo;
       userAgent = 'Behandam/$appVersion (Web/${webBrowserInfo.userAgent})';
-    }else if (Platform.isIOS) {
+    } else if (Platform.isIOS) {
       print('is ios');
       var iosInfo = await deviceInfo.iosInfo;
       var systemName = iosInfo.systemName;
       var iosVersion = iosInfo.systemVersion;
       var name = iosInfo.name;
-      userAgent = 'Behandam/$appVersion{${packageInfo.buildNumber}} $systemName/$iosVersion (Apple/${iosInfo.utsname.machine})';
+      userAgent =
+          'Behandam/${FlavorConfig.instance.variables['market']}/$appVersion{${packageInfo.buildNumber}} $systemName/$iosVersion (Apple/${iosInfo.utsname.machine})';
       print('user agent $userAgent');
     } else if (Platform.isAndroid) {
       var androidInfo = await deviceInfo.androidInfo;
       var release = androidInfo.version.release;
       var model = androidInfo.model;
       var brand = androidInfo.brand;
-      userAgent = 'Behandam/$appVersion Android/$release ($brand/$model)';
+      userAgent =
+          'Behandam/${FlavorConfig.instance.variables['market']}/$appVersion Android/$release ($brand/$model)';
       print('user agent $userAgent');
     }
     return userAgent;
   }
+
   static Future<String> _getDeviceInfo(
     String Function(AndroidDeviceInfo) androidDeviceInfo,
     String Function(IosDeviceInfo) iosDeviceInfo,
@@ -93,8 +97,7 @@ abstract class DeviceUtils {
     if (kIsWeb) {
       final webBrowserInfo = await deviceInfo.webBrowserInfo;
       identifier = webDeviceInfo.call(webBrowserInfo);
-    }
-    else if (Platform.isAndroid) {
+    } else if (Platform.isAndroid) {
       final androidInfo = await deviceInfo.androidInfo;
       identifier = androidDeviceInfo.call(androidInfo);
     } else if (Platform.isIOS) {

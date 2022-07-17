@@ -5,9 +5,11 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/refund/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
+import 'package:behandam/utils/sheba.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -122,7 +124,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                     ),
                     Space(height: 1.h),
                     StreamBuilder<String?>(
-                        stream: bloc.cardNumber,
+                        stream: bloc.shebaNumber,
                         builder: (context, snapshot) {
                           return Container(
                               height: 9.h,
@@ -145,8 +147,9 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly,
                                     new LengthLimitingTextInputFormatter(24),
-                                    TextInputMask(mask: 'IR99 9999 9999 9999 9999 9999 99',
-                                      )
+                                    TextInputMask(
+                                      mask: 'IR99 9999 9999 9999 9999 9999 99',
+                                    )
                                   ],
                                   keyboardType: TextInputType.phone,
                                   onChanged: (val) {
@@ -160,6 +163,15 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                                       .copyWith(color: Colors.black87),
                                 ),
                               ));
+                        }),
+                    StreamBuilder<String?>(
+                        stream: bloc.shebaBankName,
+                        builder: (context, shebaBankName) {
+                          if (shebaBankName.hasData)
+                            return Container(height: 4.h, child: Text(shebaBankName.data ?? ''));
+                          else {
+                            return EmptyBox();
+                          }
                         }),
                     Space(height: 2.h),
                     Container(
@@ -217,7 +229,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
   }
 
   void _clickConfirm() {
-    if (bloc.cardNumberValue != null && bloc.cardNumberValue!.length > 15) {
+    if (Sheba(bloc.shebaNumberValue!.replaceAll(' ', '')).isValid) {
       if (bloc.cardOwner != null && bloc.cardOwner!.isNotEmpty) {
         DialogUtils.showDialogProgress(context: context);
         bloc.record();

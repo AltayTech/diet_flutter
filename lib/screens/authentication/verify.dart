@@ -1,12 +1,13 @@
-
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
+import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
@@ -24,8 +25,7 @@ class VerifyScreen extends StatefulWidget {
   _VerifyScreenState createState() => _VerifyScreenState();
 }
 
-class _VerifyScreenState extends ResourcefulState<VerifyScreen>
-    with CodeAutoFill {
+class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFill {
   late AuthenticationBloc authBloc;
   late TextEditingController textEditingController = TextEditingController();
   var args;
@@ -34,6 +34,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
   String? thirdP;
   String? fourthP;
   String? codeVerify;
+  ChannelSendCode channelSendCode = ChannelSendCode.SMS;
 
   final focus = FocusNode();
   bool check = false;
@@ -69,7 +70,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
           params: {
             "mobile": args['mobile'],
             "code": codeVerify,
-            'id': args['countryId']
+            'id': int.parse(args['countryId'])
           },
         );
       }
@@ -95,21 +96,18 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                     child: SingleChildScrollView(
                       child: Column(children: [
                         AuthHeader(
-                          title: navigator.currentConfiguration!.path
-                                  .contains('pass')
+                          title: navigator.currentConfiguration!.path.contains('pass')
                               ? intl.changePassword
                               : intl.register,
                         ),
-                        Space(height: 80.0),
+                        Space(height: 70.0),
                         content(),
                       ]),
                     ),
                   );
                 } else {
                   check = false;
-                  return Center(
-                      child: Container(
-                          width: 15.w, height: 15.w, child: Progress()));
+                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
                 }
               })),
     );
@@ -124,15 +122,14 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
                 style: TextStyle(color: AppColors.penColor),
               )),
           Space(height: 5.h),
-          Text(intl.smsCode, style: TextStyle(fontSize: 16.0)),
+          Text(intl.smsCode, style: typography.caption),
           Space(height: 2.h),
           Container(
             child: Directionality(
@@ -152,9 +149,9 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                         verification.resetPass = true;
                       DialogUtils.showDialogProgress(context: context);
                       if (isAutoVerify) {
-                        MemoryApp.analytics!.logEvent(name: "AutoVerifyCode");
+                        MemoryApp.analytics!.logEvent(name: "auto_verify_code");
                       } else {
-                        MemoryApp.analytics!.logEvent(name: "ManualVerifyCode");
+                        MemoryApp.analytics!.logEvent(name: "manual_verify_code");
                       }
                       authBloc.verifyMethod(verification);
 
@@ -179,16 +176,11 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                             children: [
                               Icon(Icons.reset_tv, color: AppColors.penColor),
                               Space(width: 2.w),
-                              Text(intl.notSend,
-                                  style: TextStyle(fontSize: 14.0)),
+                              Text(intl.notSend, style: TextStyle(fontSize: 14.0)),
                             ],
                           ),
                           onTap: () {
-                            authBloc.tryCodeMethod(args['mobile']);
-                            authBloc.setTrySendCode = true;
-
-                            authBloc.setFlag = false;
-                            authBloc.startTimer();
+                            methodSendCodeDialog();
                           });
                     else
                       return StreamBuilder<int>(
@@ -204,7 +196,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                           });
                   })),
           Space(height: 8.h),
-          button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
+          button(AppColors.btnColor, intl.confirmContinue, Size(100.w, 8.h), () {
             DialogUtils.showDialogProgress(context: context);
             VerificationCode verification = VerificationCode();
             verification.mobile = args['mobile'];
@@ -222,11 +214,131 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
     );
   }
 
+  void methodSendCodeDialog() {
+    DialogUtils.showDialogPage(
+      context: context,
+      isDismissible: true,
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          width: double.maxFinite,
+          decoration: AppDecorations.boxLarge.copyWith(
+            color: AppColors.onPrimary,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              close(),
+              Text(
+                intl.selectMethodSendCode,
+                style: typography.bodyText2,
+                textAlign: TextAlign.center,
+              ),
+              Space(height: 2.h),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 8, right: 8),
+                  child: TextButton.icon(
+                      onPressed: () {
+                        channelSendCode = ChannelSendCode.SMS;
+                        authBloc.tryCodeMethod(args['mobile'], channelSendCode);
+                        authBloc.setTrySendCode = true;
+
+                        authBloc.setFlag = false;
+                        authBloc.startTimer();
+
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                        Icons.sms,
+                        size: 7.w,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        intl.sendSMS,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor: AppColors.blueRuler,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(
+                                color: AppColors.blueRuler,
+                                width: 0.25.w,
+                              )))),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 8, right: 8),
+                  child: TextButton.icon(
+                      onPressed: () {
+                        channelSendCode = ChannelSendCode.WHATSAPP;
+                        authBloc.tryCodeMethod(args['mobile'], channelSendCode);
+                        authBloc.setTrySendCode = true;
+                        authBloc.setFlag = false;
+                        authBloc.startTimer();
+
+                        Navigator.of(context).pop();
+                        IntentUtils.openAppIntent(Uri.encodeFull(
+                          'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
+                        ));
+                      },
+                      icon: Icon(
+                        Icons.whatsapp,
+                        size: 7.w,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        intl.sendWhatsapp,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor: AppColors.greenRuler,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(
+                                color: AppColors.greenRuler,
+                                width: 0.25.w,
+                              )))),
+                )
+              ]),
+              Space(height: 2.h),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget close() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topLeft,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void onRetryAfterNoInternet() {
     // TODO: implement onRetryAfterNoInternet
     if (authBloc.isTrySendCode) {
-      authBloc.tryCodeMethod(args['mobile']);
+      authBloc.tryCodeMethod(args['mobile'], channelSendCode);
       authBloc.setFlag = false;
       authBloc.setTrySendCode = true;
     }
@@ -236,14 +348,12 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
     if (!authBloc.isTrySendCode) {
-      if(!MemoryApp.isShowDialog)
-      DialogUtils.showDialogProgress(context: context);
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
 
       VerificationCode verification = VerificationCode();
       verification.mobile = args['mobile'];
       verification.verifyCode = codeVerify;
-      if (navigator.currentConfiguration!.path.contains('pass'))
-        verification.resetPass = true;
+      if (navigator.currentConfiguration!.path.contains('pass')) verification.resetPass = true;
       debugPrint('query verify ${verification.toJson()}');
       authBloc.verifyMethod(verification);
 

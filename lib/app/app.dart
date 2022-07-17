@@ -76,6 +76,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../screens/authentication/auth.dart';
@@ -101,16 +102,21 @@ class _AppState extends State<App> {
     setTokenToMemoryApp();
 
     navigator.addListener(() {
-      //  debugPrint('routeName is => ${navigator.currentConfiguration!.path}');
-      if (navigator.currentConfiguration!.path == "/") {
+      if (DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)) {
+        navigator.routeManager.clearAndPush(Uri(
+            path: DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path),
+            queryParameters: navigator.currentConfiguration!.queryParameters));
+      } else if (navigator.currentConfiguration!.path == '/') {
         navigator.routeManager.replace(Uri.parse(Routes.splash));
-      } else if (DeepLinkUtils.isDeepLink(navigator.currentConfiguration!.path)) {
-        navigator.routeManager
-            .replace(Uri.parse(DeepLinkUtils.generateRoute(navigator.currentConfiguration!.path)));
       }
       if (MemoryApp.analytics != null)
-        MemoryApp.analytics!
-            .logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
+        try {
+          MemoryApp.analytics!.logEvent(
+              name: navigator.currentConfiguration!.path
+                  .substring(1)
+                  .replaceAll(RegExp(r'\/\d+'), "")
+                  .replaceAll(RegExp(r'[/-]'), "_"));
+        } catch (e) {}
     });
   }
 
@@ -264,10 +270,10 @@ final navigator = VxNavigator(
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
     Routes.login: (_, param) => MaterialPage(child: routePage(LoginScreen()), arguments: param),
-    Routes.authVerify: (_, param) =>
-        MaterialPage(child: routePage(VerifyScreen()), arguments: param),
-    Routes.passVerify: (_, param) =>
-        MaterialPage(child: routePage(VerifyScreen()), arguments: param),
+    Routes.authVerify: (uri, __) =>
+        MaterialPage(child: routePage(VerifyScreen()), arguments: uri.queryParameters),
+    Routes.passVerify: (uri, __) =>
+        MaterialPage(child: routePage(VerifyScreen()), arguments: uri.queryParameters),
     Routes.resetPass: (_, param) =>
         MaterialPage(child: routePage(PasswordResetScreen()), arguments: param),
     Routes.resetCode: (_, param) =>
@@ -280,8 +286,8 @@ final navigator = VxNavigator(
     Routes.fastPatterns: (_, __) => MaterialPage(child: routePage(FastPatternPage())),
     Routes.listFood: (_, param) => MaterialPage(child: routePage(ListFoodPage()), arguments: param),
     Routes.inbox: (_, __) => MaterialPage(child: routePage(InboxList())),
-    Routes.showInbox: (_, param) =>
-        MaterialPage(child: routePage(ShowInboxItem()), arguments: param),
+    RegExp(r"\/inbox\/[0-9]+"): (uri, __) =>
+        MaterialPage(child: routePage(ShowInboxItem()), arguments: uri.pathSegments[1]),
     Routes.ticketMessage: (_, param) =>
         VxRoutePage(child: routePage(TicketTab()), pageName: 'message'),
     Routes.ticketCall: (_, param) => VxRoutePage(child: routePage(TicketTab()), pageName: 'call'),
@@ -368,8 +374,8 @@ final navigator = VxNavigator(
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.termsApp: (_, __) => MaterialPage(child: routePage(WebViewApp())),
-    Routes.dailyMessage: (_, param) =>
-        MaterialPage(child: routePage(DailyMessage()), arguments: param),
+    RegExp(r"\/daily-message\/[0-9]+"): (uri, __) =>
+        MaterialPage(child: routePage(DailyMessage()), arguments: int.parse(uri.pathSegments[1])),
     Routes.privacyApp: (_, __) => MaterialPage(child: routePage(PrivacyPolicy())),
     Routes.targetWeight: (_, __) => MaterialPage(child: routePage(TargetWeightScreen())),
     Routes.selectPackageSubscription: (_, __) =>
@@ -382,8 +388,27 @@ final navigator = VxNavigator(
     key: ValueKey('not-found-page'),
     child: Builder(
       builder: (context) => Scaffold(
-        body: Center(
-          child: Text('Page ${uri.path} not found'),
+        body: WillPopScope(
+          onWillPop: () {
+            return Future.value(false);
+          },
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Page ${uri.path} not found'),
+                Space(
+                  height: 2.h,
+                ),
+                TextButton(
+                    onPressed: () {
+                      navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
+                    },
+                    child: Text('رفتن به صفحه اصلی'))
+              ],
+            ),
+          ),
         ),
       ),
     ),

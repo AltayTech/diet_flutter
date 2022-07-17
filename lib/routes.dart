@@ -19,8 +19,8 @@ abstract class Routes {
   static const listFood = '/list/food';
   static const fastPatterns = '/list/pattern';
   static const editProfile = '/profile/edit';
-  static const inbox = '/profile/inbox';
-  static const showInbox = '/profile/inbox/item';
+  static const inbox = '/inbox';
+  static const showInbox = '/inbox';
   static const ticket = '/ticket';
   static const ticketCall = '/ticket/call';
   static const ticketMessage = '/ticket/message';
@@ -84,7 +84,7 @@ abstract class Routes {
   static const shopBill = '/shop/payment/bill';
   static const shopPaymentOnlineSuccess = '/shop/payment/online/success';
   static const shopPaymentOnlineFail = '/shop/payment/online/fail';
-  static const dailyMessage = '/dailyMessage';
+  static const dailyMessage = '/daily-message';
   static const privacyApp = '/privacy-policy';
   static const selectPackageSubscription = '/profile/subscription';
   static const billSubscription = '/subscription/payment/bill';

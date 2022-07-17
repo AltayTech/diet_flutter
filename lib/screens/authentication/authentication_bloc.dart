@@ -15,6 +15,15 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
+enum ChannelSendCode {
+  SMS("sms"),
+  WHATSAPP("whatsapp");
+
+  final String value;
+
+  const ChannelSendCode(this.value);
+}
+
 class AuthenticationBloc {
   AuthenticationBloc() {
     _waiting.safeValue = false;
@@ -124,8 +133,8 @@ class AuthenticationBloc {
 
   void loginMethod(String phoneNumber) {
     _repository.status(phoneNumber).then((value) {
+      MemoryApp.whatsappInfo = value.data?.otpInfo?.whatsappInfo;
       _navigateToVerify.fire(value.next);
-      debugPrint('value: ${value.data!.isExist}');
     }).whenComplete(() {
       if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
@@ -175,19 +184,22 @@ class AuthenticationBloc {
     });
   }
 
-  void sendCodeMethod(String mobile) {
-    _repository
-        .verificationCode(mobile)
-        .then((value) => _navigateToVerify.fire(value.next))
-        .whenComplete(() {
+  void sendCodeMethod(String mobile, ChannelSendCode channel) {
+    _repository.verificationCode(mobile, channel.value).then((value) {
+      MemoryApp.analytics!.logEvent(name: "send_code_on_${channel.value}");
+      _navigateToVerify.fire(value.next);
+    }).whenComplete(() {
       MemoryApp.forgetPass = false;
     }).catchError((onError) {
       if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
   }
 
-  void tryCodeMethod(String mobile) {
-    _repository.verificationCode(mobile);
+  void tryCodeMethod(String mobile, ChannelSendCode channel) {
+    _repository.verificationCode(mobile, channel.value).then((value) {
+      MemoryApp.whatsappInfo = value.data?.otpInfo?.whatsappInfo;
+      MemoryApp.analytics!.logEvent(name: "try_again_send_code_on_${channel.value}");
+    });
   }
 
   void verifyMethod(VerificationCode verify) {

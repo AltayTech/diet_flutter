@@ -161,7 +161,7 @@ class _AppbarBoxAdviceVideoState
           )),
       onTap: () {
         VxNavigator.of(context)
-            .push(Uri.parse(Routes.dailyMessage), params: bloc.adviceId);
+            .push(Uri.parse('${Routes.dailyMessage}/${bloc.adviceId}'));
       },
     );
   }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/stream.dart';
@@ -68,54 +69,39 @@ class SplashBloc {
       _repository.getUser().then((value) {
         MemoryApp.userInformation = value.data;
         MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
-        if (!kIsWeb)
-          FirebaseCrashlytics.instance
-              .setUserIdentifier(MemoryApp.userInformation!.userId.toString());
-        MemoryApp.analytics!
-            .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
       }).whenComplete(() {
-        if (!MemoryApp.isNetworkAlertShown) getVersionApp();
+        if (!MemoryApp.isNetworkAlertShown) getVersionUpdate();
         _waiting.safeValue = false;
       });
     } else {
-      getVersionApp();
+      getVersionUpdate();
     }
   }
 
-  void getVersionApp() {
+  void getVersionUpdate() {
     if (!kIsWeb) {
       _waiting.safeValue = true;
       if (MemoryApp.token.isNotNullAndEmpty) {
         _repository.getVersion().then((value) async {
-          if (Platform.isIOS) {
-            if (value.data?.ios != null &&
-                int.parse(value.data!.ios!.versionCode!) > buildNumber!) {
-              if (value.data!.ios!.forceUpdate == 1) forceUpdate = true;
-              if (value.data!.ios!.versionCode != null &&
-                  value.data!.ios!.forceUpdateVersion! > buildNumber!) forceUpdate = true;
-              _showUpdate.fire(value.data!.ios);
-            } else {
-              _navigateTo.fire(true);
-            }
-          } else if (Platform.isAndroid) {
-            //debugPrint('onError = > ${value.data!.android!.toJson()} // $buildNumber');
-            if (value.data?.android != null &&
-                int.parse(value.data!.android!.versionCode!) > buildNumber!) {
-              if (value.data!.android!.forceUpdate == 1) forceUpdate = true;
-              if (value.data!.android!.versionCode != null &&
-                  value.data!.android!.forceUpdateVersion! > buildNumber!) forceUpdate = true;
-              _showUpdate.fire(value.data!.android);
-            } else {
-              _navigateTo.fire(true);
-            }
-          }
+          checkVersionForceUpdate(value.data);
         }).catchError((onError) {
-          print('onError = > ${onError}');
+
         }).whenComplete(() {
           _waiting.safeValue = false;
         });
       } else
         _navigateTo.fire(true);
+    } else {
+      _navigateTo.fire(true);
+    }
+  }
+
+  void checkVersionForceUpdate(Version? version) {
+    if (version != null && int.parse(version.versionCode!) > buildNumber!) {
+      if (version.forceUpdate!) forceUpdate = true;
+      if (version.forceUpdateVersion != null &&  int.parse(version.forceUpdateVersion!) > buildNumber!)
+        forceUpdate = true;
+      _showUpdate.fire(version);
     } else {
       _navigateTo.fire(true);
     }

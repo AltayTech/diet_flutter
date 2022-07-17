@@ -46,6 +46,7 @@ class ProfileBloc {
   final _showRefund = BehaviorSubject<bool>();
   final _showPdf = BehaviorSubject<bool>();
   final _inboxStream = BehaviorSubject<List<InboxItem>>();
+  final _inboxItem = BehaviorSubject<InboxItem?>();
   final _cityProvinceModelStream = BehaviorSubject<CityProvinceModel>();
   final _obscureTextPass = BehaviorSubject<bool>();
   final _obscureTextConfirmPass = BehaviorSubject<bool>();
@@ -90,6 +91,8 @@ class ProfileBloc {
   Stream<TermPackage> get termPackage => _termPackage.stream;
 
   Stream<SubscriptionPendingData?> get subscriptionPending => _subscriptionPending.stream;
+
+  Stream<InboxItem?> get inboxItem => _inboxItem.stream;
 
   bool? get isProgressNetwork => _progressNetwork.value;
 
@@ -178,32 +181,12 @@ class ProfileBloc {
       _subscriptionPending.safeValue=value.data?.subscriptionTermData?.pendingCardPayment;
       _showRefund.safeValue = value.data!.showRefundLink!;
       if (value.data != null &&
-          value.data?.term != null &&
-          DateTime.parse(value.data!.term!.expiredAt).difference(DateTime.now()).inDays >= 0 &&
-          !_showPdf.isClosed)
+          value.data?.term != null)
         _showPdf.safeValue = true;
       else {
         _showPdf.safeValue = false;
       }
     }).whenComplete(() {});
-  }
-
-  void dispose() {
-    _showServerError.close();
-    _progressNetwork.close();
-    _showProgressItem.close();
-    _userInformationStream.close();
-    _cityProvinceModelStream.close();
-    _showProgressUploadImage.close();
-    _showRefund.close();
-    _showPdf.close();
-    _inboxCount.close();
-    _navigateTo.close();
-    _termPackage.close();
-    _obscureTextPass.close();
-    _obscureTextConfirmPass.close();
-    _subscriptionPending.close();
-    //  _isPlay.close();
   }
 
   void getProvinces() {
@@ -384,6 +367,12 @@ class ProfileBloc {
     });
   }
 
+  void getInboxMessage(int id) {
+    _repository.getInboxMessage(id).then((value) {
+      _inboxItem.safeValue = value.data!.inbox!;
+    });
+  }
+
   void sendAnalytic(){
     try {
       MemoryApp.analytics?.logEvent(name: "click_logout_button");
@@ -398,5 +387,24 @@ class ProfileBloc {
 
   void setObscureTextConfirmPass() {
     _obscureTextConfirmPass.safeValue = !_obscureTextConfirmPass.value;
+  }
+
+  void dispose() {
+    _showServerError.close();
+    _progressNetwork.close();
+    _showProgressItem.close();
+    _userInformationStream.close();
+    _cityProvinceModelStream.close();
+    _showProgressUploadImage.close();
+    _showRefund.close();
+    _showPdf.close();
+    _inboxCount.close();
+    _navigateTo.close();
+    _termPackage.close();
+    _obscureTextPass.close();
+    _obscureTextConfirmPass.close();
+    _subscriptionPending.close();
+    _inboxItem.close();
+    //  _isPlay.close();
   }
 }

@@ -15,6 +15,9 @@ class NetworkResponse<T> {
   @JsonKey(name: "next")
   String? next;
 
+  @JsonKey(name: "remaining_time")
+  String? remainingTime;
+
   @JsonKey(name: "data")
   T? data;
 

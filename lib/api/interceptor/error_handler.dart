@@ -41,6 +41,7 @@ class ErrorHandlerInterceptor extends Interceptor {
     final statusCode = err.response?.statusCode;
     switch (statusCode) {
       case HttpStatus.badRequest:
+      case HttpStatus.unprocessableEntity:
       case HttpStatus.forbidden:
       case HttpStatus.notFound:
         _showToastIfNotRelease(err);
@@ -57,7 +58,7 @@ class ErrorHandlerInterceptor extends Interceptor {
         _showToast(err);
         break;
       case HttpStatus.serviceUnavailable:
-        _handleMaintenanceError();
+        _handleMaintenanceError(err);
         break;
       default:
         _showToastIfNotRelease(err);
@@ -93,14 +94,19 @@ class ErrorHandlerInterceptor extends Interceptor {
       if (message == null && err.response?.data != null && err.response?.data != '') {
         message = NetworkResponse<dynamic>.fromJson(
                 err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
-            .error!
             .message;
       }
     } catch (e) {}
+
+    try {
+      message ??= NetworkResponse<dynamic>.fromJson(
+              err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
+          .error
+          ?.message;
+    } catch (e) {}
+
     message ??= intl.httpErrorWithCode(err.response?.statusCode.toString() ?? 'Unknown');
 
-    //Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
-    //Utils.getSnackbarMessage(_context!, message);
     dioErrorObserver.showMessage(message);
     navigatorMessengerKey.currentState!.showSnackBar(SnackBar(
       content: Text('$message'),
@@ -131,17 +137,26 @@ class ErrorHandlerInterceptor extends Interceptor {
     _crashlytics.recordError(err.error, err.stackTrace, reason: reason);
   }
 
-  void _handleMaintenanceError() async {
-    if (_context == null) {
+  void _handleMaintenanceError(DioError err) async {
+    if (_context == null || _isMaintenanceAlertShown) {
       return;
     }
+    var error;
+    try {
+      if (error == null && err.response?.data != null && err.response?.data != '') {
+        error = NetworkResponse<dynamic>.fromJson(
+            err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>));
+      }
+    } catch (e) {}
+    _isMaintenanceAlertShown = true;
     await DialogUtils.showDialogPage(
       context: _context!,
       isDismissible: false,
-      child: MaintenancePage(),
+      child: MaintenancePage(
+        error: error,
+      ),
     );
-    dioErrorObserver.retryForMaintenance();
-    dioErrorObserver.retryForLoadingPage();
+    _isMaintenanceAlertShown = false;
   }
 
   void _handleNoInternetError() async {

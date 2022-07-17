@@ -43,6 +43,7 @@ import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
@@ -72,7 +73,7 @@ abstract class Repository {
 
   NetworkResult<SignIn> signIn(User user);
 
-  NetworkResult<VerificationCode> verificationCode(String mobile);
+  NetworkResult<CheckStatus> verificationCode(String mobile, String channel);
 
   NetworkResult<VerifyOutput> verify(VerificationCode verificationCode);
 
@@ -205,7 +206,7 @@ abstract class Repository {
 
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
 
-  NetworkResult<VersionData> getVersion();
+  NetworkResult<Version> getVersion();
 
   NetworkResult<ShopModel> getHomeShop();
 
@@ -248,6 +249,8 @@ abstract class Repository {
   NetworkResult<TargetWeight> targetWeight();
 
   NetworkResult<ListUserSubscriptionData> getUserSubscription();
+
+  NetworkResult<InboxItem> getInboxMessage(int id);
 }
 
 class _RepositoryImpl extends Repository {
@@ -266,7 +269,12 @@ class _RepositoryImpl extends Repository {
       connectTimeout: connectTimeout,
       sendTimeout: sendTimeout,
     );
-
+    _dio.httpClientAdapter = Http2Adapter(
+    ConnectionManager(
+    idleTimeout: 10000,
+    // Ignore bad certificate
+    onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
+    ));
     _dio.interceptors.add(ErrorHandlerInterceptor());
     _dio.interceptors.add(GlobalInterceptor());
     _dio.interceptors.add(LoggingInterceptor());
@@ -307,8 +315,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<VerificationCode> verificationCode(String mobile) async {
-    var response = await _apiClient.sendVerificationCode(mobile);
+  NetworkResult<CheckStatus> verificationCode(String mobile, String channel) async {
+    var response = await _apiClient.sendVerificationCode(mobile, channel);
     return response;
   }
 
@@ -844,7 +852,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<VersionData> getVersion() {
+  NetworkResult<Version> getVersion() {
     var response = _apiClient.getVersion();
     return response;
   }
@@ -992,6 +1000,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<ListUserSubscriptionData> getUserSubscription() {
     var response = _apiClient.getUserSubscription();
+    return response;
+  }
+
+  @override
+  NetworkResult<InboxItem> getInboxMessage(int id) {
+    var response = _apiClient.getInboxMessage(id);
     return response;
   }
 }

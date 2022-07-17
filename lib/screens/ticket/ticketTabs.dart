@@ -60,40 +60,41 @@ class TicketTabState extends ResourcefulState<TicketTab> with SingleTickerProvid
         _list.add(ItemTab(title: intl.message));
         _list.add(ItemTab(title: intl.call));
       }
-    return SafeArea(
-        child: Scaffold(
-            appBar: Toolbar(titleBar: intl.ticket),
-            body: Container(
-              /*color: CustomColors.background,*/
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 6.h,
-                      margin: EdgeInsets.only(left: 16,right: 16,top: 16),
-                      child: CustomTabBar(Colors.white, _list, _controller),
+    return Scaffold(
+        appBar: Toolbar(titleBar: intl.ticket),
+        body: SafeArea(
+          child: Container(
+            /*color: CustomColors.background,*/
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 6.h,
+                    margin: EdgeInsets.only(left: 16,right: 16,top: 16),
+                    child: CustomTabBar(Colors.white, _list, _controller),
+                  ),
+                  flex: 0,
+                ),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 16, right: 16),
+                    height: 1000,
+                    child: TabBarView(
+                      controller: _controller,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: _listTabView,
                     ),
-                    flex: 0,
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 16, right: 16),
-                      height: 1000,
-                      child: TabBarView(
-                        controller: _controller,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: _listTabView,
-                      ),
-                    ),
-                    flex: 1,
-                  ),
-                  Expanded(
-                    child: BottomNav(currentTab: BottomNavItem.SUPPORT),
-                    flex: 0,
-                  ),
-                ],
-              ),
-            )));
+                  flex: 1,
+                ),
+                Expanded(
+                  child: BottomNav(currentTab: BottomNavItem.SUPPORT),
+                  flex: 0,
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   @override

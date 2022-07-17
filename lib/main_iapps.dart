@@ -2,8 +2,6 @@ import 'package:behandam/entry_point.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
-
-
 Future<void> main() async {
   FlavorConfig(
     color: Colors.green,
@@ -17,8 +15,8 @@ Future<void> main() async {
       "iappsPackage": "com.kermany.behandam.iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
       'isProduction': true,
-      'isCafeBazaar': true,
-      'market': Market.cafebazaar.value
+      'isCafeBazaar': false,
+      'market': Market.iapps.value
     },
   );
   await entryPoint();

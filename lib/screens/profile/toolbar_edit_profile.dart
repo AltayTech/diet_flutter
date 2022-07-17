@@ -1,4 +1,5 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/widget/custom_curve.dart';
@@ -7,7 +8,6 @@ import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 
@@ -82,7 +82,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                         ),
                       ),
                       Positioned(
-                        bottom:1.h,
+                        bottom: 1.h,
                         right: 10.w,
                         left: 10.w,
                         child: Center(
@@ -107,7 +107,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                           ),
                         ),
                       ),
-                     /* Positioned(
+                      /* Positioned(
                         top: 0.0,
                         bottom: 0.0,
                         right: 0.0,
@@ -139,34 +139,37 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
-                                child: StreamBuilder(builder: (context, snapshot) {
-                                  if(snapshot.data==true){
-                                    return SpinKitCircle(
-                                      color: AppColors.primary,
-                                      size: 4.w,
-                                    );
-                                  }else{
-                                  return  profileBloc.userInfo.media?.url != null
-                                        ? ImageUtils.fromNetwork(
-                                      '${FlavorConfig.instance.variables['baseUrlFile']}${profileBloc.userInfo.media!.url}',
-                                      placeholder: 'assets/images/profile/female_avatar.svg',
-                                      showPlaceholder: true,
-                                      fit: BoxFit.cover,
-                                      width: 20.w,
-                                      height: 20.w,
-                                    )
-                                        : ImageUtils.fromLocal(
-                                      profileBloc.userInfo.gender == 0
-                                          ? 'assets/images/profile/female_avatar.svg'
-                                          : 'assets/images/profile/male_avatar.svg',
-                                      height: 20.w,
-                                      width: 20.w,
-                                      fit: BoxFit.cover,
-                                    );
-                                  }
-                                },stream: profileBloc.showProgressUploadImage,),
-
-
+                                child: StreamBuilder(
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data == true) {
+                                      return SpinKitCircle(
+                                        color: AppColors.primary,
+                                        size: 4.w,
+                                      );
+                                    } else {
+                                      return profileBloc.userInfo.media?.url != null
+                                          ? ImageUtils.fromNetwork(
+                                              Utils.getCompletePath(
+                                                  profileBloc.userInfo.media!.url),
+                                              placeholder:
+                                                  'assets/images/profile/female_avatar.svg',
+                                              showPlaceholder: true,
+                                              fit: BoxFit.cover,
+                                              width: 20.w,
+                                              height: 20.w,
+                                            )
+                                          : ImageUtils.fromLocal(
+                                              profileBloc.userInfo.gender == 0
+                                                  ? 'assets/images/profile/female_avatar.svg'
+                                                  : 'assets/images/profile/male_avatar.svg',
+                                              height: 20.w,
+                                              width: 20.w,
+                                              fit: BoxFit.cover,
+                                            );
+                                    }
+                                  },
+                                  stream: profileBloc.showProgressUploadImage,
+                                ),
                               )),
                         ),
                       ),
@@ -270,6 +273,7 @@ class ToolbarEditProfileState extends ResourcefulState<ToolbarEditProfile> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

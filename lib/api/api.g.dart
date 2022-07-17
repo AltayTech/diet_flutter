@@ -77,22 +77,23 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<VerificationCode>> sendVerificationCode(mobile) async {
+  Future<NetworkResponse<CheckStatus>> sendVerificationCode(
+      mobile, channel) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<VerificationCode>>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(
-                    _dio.options, '/send-verification-code?mobile=${mobile}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<VerificationCode>.fromJson(
+        _setStreamType<NetworkResponse<CheckStatus>>(Options(
+                method: 'POST', headers: _headers, extra: _extra)
+            .compose(_dio.options,
+                '/send-verification-code?mobile=${mobile}&channel=${channel}',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<CheckStatus>.fromJson(
       _result.data!,
-      (json) => VerificationCode.fromJson(json as Map<String, dynamic>),
+      (json) => CheckStatus.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
@@ -1358,20 +1359,20 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<VersionData>> getVersion() async {
+  Future<NetworkResponse<Version>> getVersion() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<VersionData>>(
+        _setStreamType<NetworkResponse<Version>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/check-version',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<VersionData>.fromJson(
+    final value = NetworkResponse<Version>.fromJson(
       _result.data!,
-      (json) => VersionData.fromJson(json as Map<String, dynamic>),
+      (json) => Version.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
@@ -1802,6 +1803,25 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<ListUserSubscriptionData>.fromJson(
       _result.data!,
       (json) => ListUserSubscriptionData.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<InboxItem>> getInboxMessage(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<InboxItem>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/inbox/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<InboxItem>.fromJson(
+      _result.data!,
+      (json) => InboxItem.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

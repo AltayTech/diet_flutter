@@ -4,6 +4,7 @@ import 'package:behandam/screens/status/bloc.dart';
 import 'package:behandam/screens/status/chart_weight.dart';
 import 'package:behandam/screens/status/status_provider.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
@@ -60,15 +61,16 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   }
 
   Widget content() {
-    return Padding(
-      padding: EdgeInsets.all(2.w),
-      child: TouchMouseScrollable(
-        child: SingleChildScrollView(
-          child: StreamBuilder(
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data == false) {
-                return Container(
-                  constraints: BoxConstraints(minHeight: 110.h, minWidth: 100.w),
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: StreamBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data == false) {
+              return Padding(
+                padding: EdgeInsets.all(2.w),
+                child: Container(
+                  constraints:
+                      BoxConstraints(minHeight: 110.h, minWidth: 100.w),
                   color: Color.fromRGBO(245, 245, 245, 1),
                   padding: EdgeInsets.fromLTRB(
                     4.w,
@@ -92,23 +94,32 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                             Space(height: 1.h),
                             itemUi(
                                 intl.old,
-                                (bloc.visitItem?.physicalInfo?.age.toString() ?? intl.none),
+                                (bloc.visitItem?.physicalInfo?.age.toString() ??
+                                    intl.none),
                                 intl.age),
                             Space(height: 1.h),
                             itemUi(
                                 intl.centimeter,
-                                bloc.visitItem?.physicalInfo?.height.toString() ?? intl.none,
+                                bloc.visitItem?.physicalInfo?.height
+                                        .toString() ??
+                                    intl.none,
                                 intl.height),
                             Space(height: 1.h),
                             itemUi(
                                 intl.kiloGr,
-                                bloc.activeTerms?.firstWeight?.toStringAsFixed(1) ?? intl.none,
+                                bloc.activeTerms?.firstWeight
+                                        ?.toStringAsFixed(1) ??
+                                    intl.none,
                                 intl.firstWeight),
                             Space(height: 1.h),
                             itemUi(
                                 intl.kiloGr,
-                                bloc.activeTerms?.lostWeight?.abs().toStringAsFixed(1) ?? intl.none,
-                                (bloc.activeTerms != null && bloc.activeTerms!.lostWeight! > 0)
+                                bloc.activeTerms?.lostWeight
+                                        ?.abs()
+                                        .toStringAsFixed(1) ??
+                                    intl.none,
+                                (bloc.activeTerms != null &&
+                                        bloc.activeTerms!.lostWeight! > 0)
                                     ? intl.addedWeight
                                     : (bloc.activeTerms != null &&
                                             bloc.activeTerms!.lostWeight! == 0)
@@ -117,7 +128,9 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                             Space(height: 1.h),
                             itemUi(
                                 intl.kiloGr,
-                                bloc.visitItem?.weightDifference?.abs().toStringAsFixed(1) ??
+                                bloc.visitItem?.weightDifference
+                                        ?.abs()
+                                        .toStringAsFixed(1) ??
                                     intl.none,
                                 intl.remainingWeight),
                             pregnancy(),
@@ -131,15 +144,20 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.w, vertical: 1.5.h),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(intl.chartWeightName,
-                                  style: Theme.of(context).textTheme.caption!.copyWith(
-                                      color: AppColors.colorTextApp, fontWeight: FontWeight.bold)),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(
+                                          color: AppColors.colorTextApp,
+                                          fontWeight: FontWeight.bold)),
                               ...bloc.terms
                                   .map((e) => Padding(
                                         padding: EdgeInsets.only(top: 1.h),
@@ -153,17 +171,12 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                       Space(height: 2.h),
                     ],
                   ),
-                );
-              } else
-                return Center(
-                  child: SpinKitCircle(
-                    color: AppColors.primary,
-                    size: 7.w,
-                  ),
-                );
-            },
-            stream: bloc.waiting,
-          ),
+                ),
+              );
+            } else
+              return Container(height: 80.h, child: Progress());
+          },
+          stream: bloc.waiting,
         ),
       ),
     );
@@ -188,7 +201,10 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
           Text(
             amount ?? intl.none,
             textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.caption!.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context)
+                .textTheme
+                .caption!
+                .copyWith(fontWeight: FontWeight.bold),
           ),
           Expanded(
             child: Text(
@@ -209,19 +225,23 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
               Space(height: 1.h),
               itemUi(
                   intl.kiloGr,
-                  bloc.visitItem?.physicalInfo?.pregnancyIdealWeight?.toStringAsFixed(1) ??
+                  bloc.visitItem?.physicalInfo?.pregnancyIdealWeight
+                          ?.toStringAsFixed(1) ??
                       0.toString(),
                   intl.pregnancyIdealWeight),
               Space(height: 1.h),
               itemUi(
                   intl.kiloGr,
-                  bloc.visitItem?.physicalInfo?.idealWeightBasedOnPervVisit?.toStringAsFixed(1) ??
+                  bloc.visitItem?.physicalInfo?.idealWeightBasedOnPervVisit
+                          ?.toStringAsFixed(1) ??
                       '',
                   intl.idealWeightBasedOnPervVisit),
               Space(height: 1.h),
               itemUi(
                   intl.kiloGr,
-                  bloc.visitItem?.physicalInfo?.daysTillChildbirth?.toString() ?? 0.toString(),
+                  bloc.visitItem?.physicalInfo?.daysTillChildbirth
+                          ?.toString() ??
+                      0.toString(),
                   intl.daysTillChildbirth),
             ],
           )

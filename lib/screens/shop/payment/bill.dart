@@ -166,8 +166,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
                     // width: 30.w,
                     fit: BoxFit.fitWidth,
                   )
-                : ImageUtils.fromNetwork(
-                    FlavorConfig.instance.variables["baseUrlFileShop"] + product!.productThambnail,
+                : ImageUtils.fromNetwork(Utils.getCompletePathShop(product!.productThambnail),
                     decoration: AppDecorations.boxMedium,
                     width: 30.w,
                     fit: BoxFit.fill,

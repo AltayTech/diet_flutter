@@ -10,12 +10,13 @@ Future<void> main() async {
       'baseUrl': 'https://debug.behaminplus.ir/behandam-diet/api',
       "baseUrlFile": "https://debug.behaminplus.ir/helia-service",
       "baseUrlFileShop": "https://debug.behaminplus.ir/shop-service",
-      "urlTerms": "https://debug.behaminplus.ir/#/article/3249",
-      "urlPrivacy": "https://debug.behaminplus.ir/#/article/3248",
+      "urlTerms": "https://debug.behaminplus.ir/app/article/3249",
+      "urlPrivacy": "https://debug.behaminplus.ir/app/article/3248",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
       'isProduction': false,
-      'isCafeBazaar':false
+      'isCafeBazaar':false,
+      'market': Market.google.value
     },
   );
   await entryPoint();

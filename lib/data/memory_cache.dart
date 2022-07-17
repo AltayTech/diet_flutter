@@ -1,3 +1,4 @@
+import 'package:behandam/data/entity/auth/status.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
@@ -31,6 +32,8 @@ class MemoryApp {
   static FirebaseAnalytics? analytics;
   static List<String> fastingDates = [];
   List<ArticleVideo>? _articles;
+
+  static WhatsappInfo? whatsappInfo;
 
   Map<String, FoodListData> _foodList = {};
   Map<String, int> _selectedFastPatten = {};
