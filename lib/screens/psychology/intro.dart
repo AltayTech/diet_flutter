@@ -67,16 +67,16 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.redBar,
-          title: Text(intl.psy),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () => VxNavigator.of(context).pop()),
-        ),
-        body: TouchMouseScrollable(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.redBar,
+        title: Text(intl.psy),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => VxNavigator.of(context).pop()),
+      ),
+      body: SafeArea(
+        child: TouchMouseScrollable(
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(right: 12.0, left: 12.0),
@@ -227,20 +227,20 @@ class _PsychologyIntroScreenState extends ResourcefulState<PsychologyIntroScreen
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            // if(chewieController.isPlaying)
-            //   chewieController.pause();
-              calenderBloc.getHistory();
-          },
-          label: Container(
-              width:50.w,
-              height:10.h,
-              child: Center(child: Text(intl.sessionReserve))),
-          backgroundColor: AppColors.btnColor,
-        ),
-        floatingActionButtonLocation:  FloatingActionButtonLocation.centerFloat,
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // if(chewieController.isPlaying)
+          //   chewieController.pause();
+            calenderBloc.getHistory();
+        },
+        label: Container(
+            width:50.w,
+            height:10.h,
+            child: Center(child: Text(intl.sessionReserve))),
+        backgroundColor: AppColors.btnColor,
+      ),
+      floatingActionButtonLocation:  FloatingActionButtonLocation.centerFloat,
     );
   }
   @override

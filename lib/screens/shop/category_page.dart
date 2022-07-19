@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/src/extensions.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'category_bloc.dart';
@@ -73,16 +74,17 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
   Widget build(BuildContext context) {
     super.build(context);
 
-    return SafeArea(
-        child: StreamBuilder(
-            stream: categoryBloc.category,
-            builder: (context, AsyncSnapshot<ShopCategory> snapshot) {
-              if (snapshot.hasData)
-                return Scaffold(
-                  appBar: Toolbar(
-                    titleBar: snapshot.data!.category_name!,
-                  ),
-                  body: SingleChildScrollView(
+    return StreamBuilder(
+        stream: categoryBloc.category,
+        builder: (context, AsyncSnapshot<ShopCategory> snapshot) {
+          if (snapshot.hasData)
+            return Scaffold(
+              appBar: Toolbar(
+                titleBar: snapshot.data!.category_name!,
+              ),
+              body: SafeArea(
+                child: TouchMouseScrollable(
+                  child: SingleChildScrollView(
                       controller: scrollController,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -135,10 +137,12 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                           ),
                         ],
                       )),
-                );
-              else
-                return Scaffold(body: Progress());
-            }));
+                ),
+              ),
+            );
+          else
+            return Scaffold(body: Progress());
+        });
   }
 
   Widget firstTile(ShopProduct product) {
