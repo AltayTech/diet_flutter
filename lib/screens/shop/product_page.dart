@@ -59,40 +59,41 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
   Widget build(BuildContext context) {
     // productBloc.getProduct(1);
     super.build(context);
-    return SafeArea(
-        child: StreamBuilder(
-            stream: productBloc.toolbarStream,
-            builder: (context, snapshot) {
-              return Scaffold(
-                  appBar: Toolbar(
-                    titleBar: productBloc.toolbar ?? intl.shop,
-                  ),
-                  body: TouchMouseScrollable(
-                    child: SingleChildScrollView(
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                      Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: StreamBuilder(
-                              stream: productBloc.product,
-                              builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
-                                if (snapshot.hasData)
-                                  return Container(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        firstSection(
-                                          snapshot.data!,
-                                        ),
-                                        secondSection(snapshot.data!),
-                                      ],
-                                    ),
-                                  );
-                                else
-                                  return Progress();
-                              }))
-                    ])),
-                  ));
-            }));
+    return StreamBuilder(
+        stream: productBloc.toolbarStream,
+        builder: (context, snapshot) {
+          return Scaffold(
+              appBar: Toolbar(
+                titleBar: productBloc.toolbar ?? intl.shop,
+              ),
+              body: SafeArea(
+                child: TouchMouseScrollable(
+                  child: SingleChildScrollView(
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                    Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: StreamBuilder(
+                            stream: productBloc.product,
+                            builder: (context, AsyncSnapshot<ShopProduct> snapshot) {
+                              if (snapshot.hasData)
+                                return Container(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      firstSection(
+                                        snapshot.data!,
+                                      ),
+                                      secondSection(snapshot.data!),
+                                    ],
+                                  ),
+                                );
+                              else
+                                return Progress();
+                            }))
+                  ])),
+                ),
+              ));
+        });
   }
 
   Widget firstSection(ShopProduct shopProduct) {
