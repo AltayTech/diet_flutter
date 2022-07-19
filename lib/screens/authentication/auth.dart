@@ -50,11 +50,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
         if (event.toString().contains('verify'))
           context.vxNav.push(Uri(
               path: '/$event',
-              queryParameters: {"mobile": number, 'countryId': _selectedLocation.id}));
+              queryParameters: {"mobile": number, "countryId": '${_selectedLocation.id}'}));
         else
           context.vxNav.push(
             Uri(path: '/$event'),
-            params: {'mobile': number, 'countryId': _selectedLocation.id},
+            params: {'mobile': number, 'countryId': '${_selectedLocation.id}'},
           );
       }
     });
