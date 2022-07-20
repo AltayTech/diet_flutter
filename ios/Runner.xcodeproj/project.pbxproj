@@ -396,14 +396,15 @@
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 363;
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دیباگ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -411,7 +412,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -493,7 +494,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -573,13 +574,13 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 363;
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -587,7 +588,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -669,7 +670,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Iapps Provisioning Profile";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -743,13 +744,13 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 363;
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 2CZ4FPMB3V;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -757,7 +758,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -839,7 +840,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = iAppsDeveloperWildcardAdHoc;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -910,22 +911,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
-<<<<<<< HEAD
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 363;
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
-=======
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
-				DEVELOPMENT_TEAM = 6XHGD7C825;
->>>>>>> whatsapp_verify_code_beh_635
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -933,7 +927,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1015,7 +1009,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Iapps Provisioning Profile";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1094,18 +1088,15 @@
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 363;
-=======
-				CURRENT_PROJECT_VERSION = 360;
->>>>>>> whatsapp_verify_code_beh_635
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دیباگ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1113,7 +1104,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1195,7 +1186,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1276,17 +1267,13 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 363;
-=======
-				CURRENT_PROJECT_VERSION = 360;
->>>>>>> whatsapp_verify_code_beh_635
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دولوپ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1294,7 +1281,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1375,7 +1362,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1456,17 +1443,13 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 363;
-=======
-				CURRENT_PROJECT_VERSION = 360;
->>>>>>> whatsapp_verify_code_beh_635
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام استیج";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1474,7 +1457,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1556,7 +1539,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1631,18 +1614,15 @@
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 363;
-=======
-				CURRENT_PROJECT_VERSION = 360;
->>>>>>> whatsapp_verify_code_beh_635
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دیباگ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1650,7 +1630,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1732,7 +1712,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1807,17 +1787,13 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 363;
-=======
-				CURRENT_PROJECT_VERSION = 360;
->>>>>>> whatsapp_verify_code_beh_635
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دولوپ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1825,7 +1801,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1906,7 +1882,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1981,17 +1957,13 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 363;
-=======
-				CURRENT_PROJECT_VERSION = 360;
->>>>>>> whatsapp_verify_code_beh_635
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام استیج";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1999,7 +1971,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2081,7 +2053,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2153,18 +2125,15 @@
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 363;
-=======
-				CURRENT_PROJECT_VERSION = 360;
->>>>>>> whatsapp_verify_code_beh_635
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دیباگ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2172,7 +2141,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2254,7 +2223,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2327,17 +2296,13 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 363;
-=======
-				CURRENT_PROJECT_VERSION = 360;
->>>>>>> whatsapp_verify_code_beh_635
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام دولوپ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2345,7 +2310,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2426,7 +2391,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kermany.behandam.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2499,17 +2464,13 @@
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 363;
-=======
-				CURRENT_PROJECT_VERSION = 360;
->>>>>>> whatsapp_verify_code_beh_635
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = 6XHGD7C825;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام استیج";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2517,7 +2478,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2599,7 +2560,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2732,22 +2693,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
-<<<<<<< HEAD
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 363;
+				CURRENT_PROJECT_VERSION = 367;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
-=======
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
-				DEVELOPMENT_TEAM = 6XHGD7C825;
->>>>>>> whatsapp_verify_code_beh_635
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "به اندام";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2755,7 +2709,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2837,7 +2791,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Iapps Provisioning Profile";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -2856,26 +2810,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COCOAPODS_PARALLEL_CODE_SIGN = true;
-<<<<<<< HEAD
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 363;
+				CURRENT_PROJECT_VERSION = 367;
 				DART_DEFINES = "Zmx1dHRlci5pbnNwZWN0b3Iuc3RydWN0dXJlZEVycm9ycz10cnVl,RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==";
 				DART_OBFUSCATION = false;
 				DEVELOPMENT_TEAM = G4HLJDVLN9;
-=======
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 360;
-				DEVELOPMENT_TEAM = 6XHGD7C825;
->>>>>>> whatsapp_verify_code_beh_635
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = iOS;
+				EXCLUDED_ARCHS = IOS;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				FLUTTER_APPLICATION_PATH = "/Users/zahrahosseini/projects/new-behandam-flutter";
 				FLUTTER_BUILD_DIR = build;
-				FLUTTER_BUILD_NAME = 3.6.3;
-				FLUTTER_BUILD_NUMBER = 363;
+				FLUTTER_BUILD_NAME = 3.6.7;
+				FLUTTER_BUILD_NUMBER = 367;
 				FLUTTER_ROOT = /Users/zahrahosseini/SDK/FlutterSdk;
 				FLUTTER_TARGET = "/Users/zahrahosseini/projects/new-behandam-flutter/lib/main.dart";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -2885,7 +2832,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 3.6.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2968,7 +2915,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Iapps Provisioning Profile";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

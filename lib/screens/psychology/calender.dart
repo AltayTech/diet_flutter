@@ -53,15 +53,15 @@ class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalender
     super.build(context);
     return CalendarProvider(
       calenderBloc,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-              backgroundColor: AppColors.redBar,
-              title: Text(intl.determineTime),
-              leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
-                  onPressed: () => VxNavigator.of(context).pop())),
-          body: Column(
+      child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: AppColors.redBar,
+            title: Text(intl.determineTime),
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () => VxNavigator.of(context).pop())),
+        body: SafeArea(
+          child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(12.0),
