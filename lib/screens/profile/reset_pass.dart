@@ -38,10 +38,10 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.redBar,
-        body: Stack(clipBehavior: Clip.none, children: [
+    return Scaffold(
+      backgroundColor: AppColors.redBar,
+      body: SafeArea(
+        child: Stack(clipBehavior: Clip.none, children: [
           Positioned(
             top: 20.h,
             right: 0,

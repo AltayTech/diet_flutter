@@ -57,10 +57,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SafeArea(
-      child: Scaffold(
-        appBar: Toolbar(titleBar: intl.statusReport),
-        body: StreamBuilder(
+    return Scaffold(
+      appBar: Toolbar(titleBar: intl.statusReport),
+      body: SafeArea(
+        child: StreamBuilder(
             stream: regimeBloc.status,
             builder: (context, AsyncSnapshot<BodyStatus> snapshot) {
               if (snapshot.hasData) {

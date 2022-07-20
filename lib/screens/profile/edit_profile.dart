@@ -36,41 +36,41 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
   Widget build(BuildContext context) {
     super.build(context);
     return ProfileProvider(profileBloc,
-        child: SafeArea(
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: Toolbar(titleBar: intl.editProfile),
-            body: body(),
-          ),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: Toolbar(titleBar: intl.editProfile),
+          body: body(),
         ));
   }
 
   Widget body() {
-    return Container(
-      height: 100.h,
-      child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: Container(
-                  child: StreamBuilder(
-                      stream: profileBloc.progressNetwork,
-                      builder: (context, AsyncSnapshot<bool> snapshot) {
-                        if (snapshot.data == null || snapshot.data == true) {
-                          return Center(
-                            child: SpinKitCircle(
-                              size: 5.h,
-                              color: AppColors.primary,
-                            ),
-                          );
-                        } else {
-                          return content();
-                        }
-                      })),
-              flex: 1,
-            ),
-          ]),
+    return SafeArea(
+      child: Container(
+        height: 100.h,
+        child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Container(
+                    child: StreamBuilder(
+                        stream: profileBloc.progressNetwork,
+                        builder: (context, AsyncSnapshot<bool> snapshot) {
+                          if (snapshot.data == null || snapshot.data == true) {
+                            return Center(
+                              child: SpinKitCircle(
+                                size: 5.h,
+                                color: AppColors.primary,
+                              ),
+                            );
+                          } else {
+                            return content();
+                          }
+                        })),
+                flex: 1,
+              ),
+            ]),
+      ),
     );
   }
 
