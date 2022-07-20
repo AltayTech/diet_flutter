@@ -86,18 +86,18 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: AppColors.arcColor,
-          elevation: 0.0,
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              color: Color(0xffb4babb),
-              onPressed: () => VxNavigator.of(context).pop()),
-        ),
-        body: StreamBuilder(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: AppColors.arcColor,
+        elevation: 0.0,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: Color(0xffb4babb),
+            onPressed: () => VxNavigator.of(context).pop()),
+      ),
+      body: SafeArea(
+        child: StreamBuilder(
             stream: authBloc.waiting,
             builder: (context, snapshot) {
               if (snapshot.data == false && !check) {

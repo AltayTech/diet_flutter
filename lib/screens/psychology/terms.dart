@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
@@ -21,11 +22,8 @@ class _PsychologyTermsScreenState extends ResourcefulState<PsychologyTermsScreen
     var args = ModalRoute.of(context)!.settings.arguments;
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-    backgroundColor: AppColors.redBar,
-    title: Text(intl.condition),
-    leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios), onPressed: () => VxNavigator.of(context).pop()),
+      appBar: Toolbar(
+        titleBar: intl.condition,
       ),
       body: SafeArea(
         child: TouchMouseScrollable(

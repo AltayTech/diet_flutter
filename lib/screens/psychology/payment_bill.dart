@@ -4,6 +4,7 @@ import 'package:behandam/data/entity/psychology/booking.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/psychology/calender_bloc.dart';
 import 'package:behandam/screens/widget/line.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +63,8 @@ class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPayme
     args = ModalRoute.of(context)!.settings.arguments;
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-    backgroundColor: AppColors.redBar,
-    title: Text(intl.condition),
-    leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios), onPressed: () => VxNavigator.of(context).pop()),
+      appBar: Toolbar(
+        titleBar: intl.condition,
       ),
       body: SafeArea(
         child: TouchMouseScrollable(
