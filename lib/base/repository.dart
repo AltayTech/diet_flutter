@@ -44,6 +44,7 @@ import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
@@ -269,6 +270,7 @@ class _RepositoryImpl extends Repository {
       connectTimeout: connectTimeout,
       sendTimeout: sendTimeout,
     );
+    if(!kIsWeb)
     _dio.httpClientAdapter = Http2Adapter(
     ConnectionManager(
     idleTimeout: 10000,
