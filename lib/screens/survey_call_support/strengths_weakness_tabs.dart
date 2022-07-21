@@ -42,6 +42,8 @@ class StrengthsWeaknessTabsState extends ResourcefulState<StrengthsWeaknessTabs>
       initialIndex: 0,
     );
 
+    bloc.tabController = _controller;
+
     if (_list.isEmpty) {
       _list.clear();
       _list.add(ItemTab(title: intl.weakness));

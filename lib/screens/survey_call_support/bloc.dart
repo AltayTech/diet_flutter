@@ -3,6 +3,7 @@ import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/extensions/stream.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../data/entity/poll_phrases/poll_phrases.dart';
@@ -26,6 +27,7 @@ class SurveyCallSupportBloc {
 
   List<PollPhrases>? listStrengths = [];
   List<PollPhrases>? listWeakness = [];
+  TabController? tabController;
 
   final _repository = Repository.getInstance();
   final _progressNetwork = BehaviorSubject<bool>();

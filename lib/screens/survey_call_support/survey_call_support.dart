@@ -2,23 +2,18 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart' as foodList;
 import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
-import 'package:behandam/data/entity/subscription/subscription_term_data.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/subscription/history_subscription_payment/list_history_subscription_payment.dart';
 import 'package:behandam/screens/survey_call_support/bloc.dart';
 import 'package:behandam/screens/survey_call_support/item_poll_phrase.dart';
 import 'package:behandam/screens/survey_call_support/provider.dart';
 import 'package:behandam/screens/survey_call_support/strengths_weakness_tabs.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -370,6 +365,16 @@ class _SurveyCallSupportScreenState
       String colorPatternFrom, String colorPatternReplace) {
     return InkWell(
       onTap: () {
+        if (emojiSelected.value == EmojiSelected.EXTRA_UPSET &&
+            emojiSelected.value == EmojiSelected.UPSET) {
+          bloc.tabController!.animateTo(0);
+        } else if (emojiSelected.value == EmojiSelected.EXTRA_HAPPY &&
+            emojiSelected.value == EmojiSelected.HAPPY) {
+          bloc.tabController!.animateTo(1);
+        } else {
+          // when emoji is normal
+          bloc.tabController!.animateTo(0);
+        }
         bloc.setEmojiSelected = emojiSelected;
         debugPrint("EmojiSelected ${emojiSelected}");
       },
