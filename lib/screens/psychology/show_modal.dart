@@ -150,6 +150,7 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
                 'time': item.startTime.toString().substring(0, 5),
               });
             }),
+            Space(height: 1.h),
             OutlinedButton(
               onPressed: () {
                 Navigator.pop(ctx);

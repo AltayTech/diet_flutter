@@ -72,10 +72,10 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   Widget build(BuildContext context) {
     super.build(context);
     args = ModalRoute.of(context)!.settings.arguments;
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: Colors.white,
-          body: StreamBuilder(
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: StreamBuilder(
               stream: authBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
@@ -96,8 +96,8 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                       child: Container(
                           width: 15.w, height: 15.w, child: Progress()));
                 }
-              })),
-    );
+              }),
+        ));
   }
 
   Widget content() {

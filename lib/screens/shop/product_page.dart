@@ -88,7 +88,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                   ),
                                 );
                               else
-                                return Progress();
+                                return Container(height: 80.h, child: Progress());
                             }))
                   ])),
                 ),

@@ -77,10 +77,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: Colors.white,
-          body: StreamBuilder(
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: StreamBuilder(
               stream: authBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
@@ -146,8 +146,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   check = false;
                   return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
                 }
-              })),
-    );
+              }),
+        ));
   }
 
   Widget content() {
