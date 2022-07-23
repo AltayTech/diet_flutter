@@ -306,7 +306,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
                 // padding: EdgeInsets.all(_widthSpace * 0.06),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  boxShadow: sickness.isActive!
+                  boxShadow: sickness.isSelected!
                       ? [
                           BoxShadow(
                             color: special.shadow,
@@ -319,7 +319,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
                 ),
                 child: CircleAvatar(
                   backgroundColor:
-                      sickness.isActive! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
+                      sickness.isSelected! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
                   radius: 4.w,
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 2.w),
@@ -329,7 +329,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
                         'assets/images/bill/tick.svg',
                         width: 3.w,
                         height: 3.w,
-                        color: sickness.isActive!
+                        color: sickness.isSelected!
                             ? special.tick
                             : Color.fromARGB(255, 217, 217, 217),
                       ),
@@ -346,7 +346,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
               margin: EdgeInsets.fromLTRB(0.5.w, 0.5.h, 0.5.w, 0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: sickness.isActive!
+                boxShadow: sickness.isSelected!
                     ? [
                         BoxShadow(
                           color: special.shadow,
@@ -372,7 +372,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
                       item.isSelected = false;
                       special.isSelected = false;
                     });
-                    sickness.isActive = true;
+                    sickness.isSelected = true;
                     special.isSelected = true;
                     Navigator.of(context).pop();
                     widget.itemClick.click();
@@ -380,7 +380,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
                 },
                 child: CircleAvatar(
                   backgroundColor:
-                      sickness.isActive! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
+                      sickness.isSelected! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
                   radius: 4.w,
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 1.h),
@@ -390,7 +390,7 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
                         'assets/images/bill/tick.svg',
                         width: 3.w,
                         height: 3.w,
-                        color: sickness.isActive!
+                        color: sickness.isSelected!
                             ? special.tick
                             : Color.fromARGB(255, 217, 217, 217),
                       ),
@@ -575,23 +575,4 @@ class _SicknessDialogState extends ResourcefulState<SicknessDialog> {
     ;
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

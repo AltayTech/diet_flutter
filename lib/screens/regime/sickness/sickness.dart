@@ -329,7 +329,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                 // padding: EdgeInsets.all(_widthSpace * 0.06),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  boxShadow: sickness.isActive!
+                  boxShadow: sickness.isSelected!
                       ? [
                           BoxShadow(
                             color: current.shadow,
@@ -342,7 +342,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                 ),
                 child: CircleAvatar(
                   backgroundColor:
-                      sickness.isActive! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
+                      sickness.isSelected! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
                   radius: 4.w,
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 2.w),
@@ -352,7 +352,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                         'assets/images/bill/tick.svg',
                         width: 3.w,
                         height: 3.w,
-                        color: sickness.isActive!
+                        color: sickness.isSelected!
                             ? current.tick
                             : Color.fromARGB(255, 217, 217, 217),
                       ),
@@ -369,7 +369,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
               margin: EdgeInsets.fromLTRB(0.5.w, 0.5.h, 0.5.w, 0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: sickness.isActive!
+                boxShadow: sickness.isSelected!
                     ? [
                         BoxShadow(
                           color: current.shadow,
@@ -390,14 +390,14 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             child: Center(
               child: InkWell(
                 onTap: () => setState(() {
-                  if (sickness.isActive!) {
-                    sickness.isActive = false;
+                  if (sickness.isSelected!) {
+                    sickness.isSelected = false;
                     sickness.children?.forEach((element) {
-                      element.isActive = false;
+                      element.isSelected = false;
                     });
                   } else {
                     if (sickness.children?.length == 0) {
-                      sickness.isActive = true;
+                      sickness.isSelected = true;
                     } else {
                       DialogUtils.showDialogPage(
                           context: context,
@@ -421,7 +421,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                 }),
                 child: CircleAvatar(
                   backgroundColor:
-                      sickness.isActive! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
+                      sickness.isSelected! ? Colors.white : Color.fromRGBO(239, 239, 239, 1),
                   radius: 4.w,
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 1.h),
@@ -431,7 +431,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                         'assets/images/bill/tick.svg',
                         width: 3.w,
                         height: 3.w,
-                        color: sickness.isActive!
+                        color: sickness.isSelected!
                             ? current.tick
                             : Color.fromARGB(255, 217, 217, 217),
                       ),
