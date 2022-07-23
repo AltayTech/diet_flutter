@@ -81,23 +81,4 @@ class StrengthsWeaknessTabsState extends ResourcefulState<StrengthsWeaknessTabs>
     ));
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }

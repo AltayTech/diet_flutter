@@ -8,7 +8,6 @@ import 'package:behandam/screens/survey_call_support/provider.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class WeaknessTab extends StatefulWidget {
   WeaknessTab() {}
@@ -57,25 +56,23 @@ class _WeaknessTabState extends ResourcefulState<WeaknessTab> {
                 return StreamBuilder<List<PollPhrases>>(
                     stream: bloc.pollPhrasesWeakness,
                     builder: (context, pollPhrases) {
-                      return pollPhrases.hasData &&
-                              pollPhrases.requireData.length > 0
+                      return pollPhrases.hasData && pollPhrases.requireData.length > 0
                           ? Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ListView.builder(
                                   physics: ClampingScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: pollPhrases.requireData.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) => item(
-                                          isContactedToMe.requireData.isActive!,
-                                          pollPhrases.requireData[index],
-                                          index)),
+                                  itemBuilder: (BuildContext context, int index) => item(
+                                      isContactedToMe.requireData.isActive!,
+                                      pollPhrases.requireData[index],
+                                      index)),
                             )
                           : Container(
                               height: 20.h,
                               child: Center(
-                                  child: Text(intl.noPollSurveyAvailable,
-                                      style: typography.caption)),
+                                  child:
+                                      Text(intl.noPollSurveyAvailable, style: typography.caption)),
                             );
                     });
               },
@@ -86,24 +83,34 @@ class _WeaknessTabState extends ResourcefulState<WeaknessTab> {
   }
 
   Widget item(boolean isDisable, PollPhrases pollPhrases, int index) {
-    return ItemPollPhrase(
-        isDisable: isDisable,
-        pollPhrase: pollPhrases,
-        click: () {
-          if (isDisable == boolean.False) {
-            if (pollPhrases.isActive! == boolean.True) {
-              pollPhrases.isActive = boolean.False;
-            } else {
-              pollPhrases.isActive = boolean.True;
-            }
+    return Column(
+      children: [
+        ItemPollPhrase(
+            isDisable: isDisable,
+            pollPhrase: pollPhrases,
+            click: () {
+              if (isDisable == boolean.False) {
+                if (pollPhrases.isActive! == boolean.True) {
+                  pollPhrases.isActive = boolean.False;
+                } else {
+                  pollPhrases.isActive = boolean.True;
+                }
 
-            if (pollPhrases.isPositive! == boolean.True) {
-              bloc.setPollPhrasesStrengths(pollPhrases, index);
-            } else {
-              bloc.setPollPhrasesWeakness(pollPhrases, index);
-            }
-          }
-        });
+                if (pollPhrases.isPositive! == boolean.True) {
+                  bloc.setPollPhrasesStrengths(pollPhrases, index);
+                } else {
+                  bloc.setPollPhrasesWeakness(pollPhrases, index);
+                }
+              }
+            }),
+        Padding(
+          padding: const EdgeInsets.only(left: 32, right: 32),
+          child: Divider(
+            height: 0.5,
+          ),
+        )
+      ],
+    );
   }
 
   @override

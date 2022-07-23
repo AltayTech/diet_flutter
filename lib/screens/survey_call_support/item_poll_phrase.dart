@@ -6,7 +6,6 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 
-import '../../themes/colors.dart';
 
 class ItemPollPhrase extends StatefulWidget {
   late PollPhrases pollPhrase;

@@ -29,7 +29,6 @@ class _StrengthsTabState extends ResourcefulState<StrengthsTab> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     bloc = SurveyCallSupportProvider.of(context);
 
     return body();
@@ -104,7 +103,4 @@ class _StrengthsTabState extends ResourcefulState<StrengthsTab> {
           }
         });
   }
-
-  @override
-  void onRetryLoadingPage() {}
 }
