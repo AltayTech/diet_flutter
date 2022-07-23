@@ -78,7 +78,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
                       );
                     } else {
                       return SizedBox(
-                          height: 100.h,
+                          height: 80.h,
                           child: Center(
                               child: EmptyBox(
                             child: Text(
@@ -92,7 +92,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
                           )));
                     }
                     else
-                      return Progress();
+                      return Container(height: 80.h, child: Progress());
                   },
                 ),
               ),

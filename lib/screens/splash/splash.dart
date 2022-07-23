@@ -145,53 +145,54 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SafeArea(
-        child: Scaffold(
-      body: Container(
-        color: Colors.white,
-        width: 100.w,
-        height: 100.h,
-        child: Stack(
-          children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ImageUtils.fromLocal(
-                    'assets/images/registry/app_logo.svg',
-                    width: 30.w,
-                    height: 30.w,
-                  ),
-                  Space(
-                    height: 2.h,
-                  ),
-                  Text(
-                    intl.appNameSplash,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                ],
-              ),
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+    color: Colors.white,
+    width: 100.w,
+    height: 100.h,
+    child: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ImageUtils.fromLocal(
+                  'assets/images/registry/app_logo.svg',
+                  width: 30.w,
+                  height: 30.w,
+                ),
+                Space(
+                  height: 2.h,
+                ),
+                Text(
+                  intl.appNameSplash,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ],
             ),
-            StreamBuilder(
-                stream: bloc.versionApp,
-                builder: (context, snapshot) {
-                  return Align(
-                    child: Padding(
-                      child: Text(
-                        intl.version(snapshot.data?.toString() ?? ''),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      padding: EdgeInsets.only(bottom: 16),
+          ),
+          StreamBuilder(
+              stream: bloc.versionApp,
+              builder: (context, snapshot) {
+                return Align(
+                  child: Padding(
+                    child: Text(
+                      intl.version(snapshot.data?.toString() ?? ''),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
-                    alignment: Alignment.bottomCenter,
-                  );
-                })
-          ],
+                    padding: EdgeInsets.only(bottom: 16),
+                  ),
+                  alignment: Alignment.bottomCenter,
+                );
+              })
+        ],
+    ),
         ),
       ),
-    ));
+    );
   }
 
   @override
