@@ -233,16 +233,16 @@ class _SurveyCallSupportScreenState
     return Column(
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          showEmojiFromString(true, EmojiSelected.EXTRA_UPSET, extraUpsetEmoji,
+              '#DD5F70', '#717171'),
           showEmojiFromString(
-              EmojiSelected.EXTRA_UPSET, extraUpsetEmoji, '#DD5F70', '#717171'),
+              true, EmojiSelected.UPSET, upsetEmoji, '#EBB34D', '#717171'),
           showEmojiFromString(
-              EmojiSelected.UPSET, upsetEmoji, '#EBB34D', '#717171'),
+              true, EmojiSelected.NEUTRAL, neutralEmoji, '#EBB34D', '#717171'),
           showEmojiFromString(
-              EmojiSelected.NEUTRAL, neutralEmoji, '#EBB34D', '#717171'),
-          showEmojiFromString(
-              EmojiSelected.HAPPY, happyEmoji, '#EBB34D', '#717171'),
-          showEmojiFromString(
-              EmojiSelected.EXTRA_HAPPY, extraHappyEmoji, '#EBB34D', '#717171')
+              true, EmojiSelected.HAPPY, happyEmoji, '#EBB34D', '#717171'),
+          showEmojiFromString(true, EmojiSelected.EXTRA_HAPPY, extraHappyEmoji,
+              '#EBB34D', '#717171')
         ]),
         Container(
             width: 60.w,
@@ -271,26 +271,26 @@ class _SurveyCallSupportScreenState
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 emojiSelected.requireData == EmojiSelected.EXTRA_UPSET
                     ? showEmojiSelected('assets/images/emoji/pouting_face.svg')
-                    : showEmojiFromString(EmojiSelected.EXTRA_UPSET,
+                    : showEmojiFromString(false, EmojiSelected.EXTRA_UPSET,
                         extraUpsetEmoji, '#DD5F70', '#717171'),
                 emojiSelected.requireData == EmojiSelected.UPSET
                     ? showEmojiSelected(
                         'assets/images/emoji/face_with_cold_sweat.svg')
-                    : showEmojiFromString(
-                        EmojiSelected.UPSET, upsetEmoji, '#EBB34D', '#717171'),
+                    : showEmojiFromString(false, EmojiSelected.UPSET,
+                        upsetEmoji, '#EBB34D', '#717171'),
                 emojiSelected.requireData == EmojiSelected.NEUTRAL
                     ? showEmojiSelected('assets/images/emoji/neutral_face.svg')
-                    : showEmojiFromString(EmojiSelected.NEUTRAL, neutralEmoji,
-                        '#EBB34D', '#717171'),
+                    : showEmojiFromString(false, EmojiSelected.NEUTRAL,
+                        neutralEmoji, '#EBB34D', '#717171'),
                 emojiSelected.requireData == EmojiSelected.HAPPY
                     ? showEmojiSelected(
                         'assets/images/emoji/white_smiling_face.svg')
-                    : showEmojiFromString(
-                        EmojiSelected.HAPPY, happyEmoji, '#EBB34D', '#717171'),
+                    : showEmojiFromString(false, EmojiSelected.HAPPY,
+                        happyEmoji, '#EBB34D', '#717171'),
                 emojiSelected.requireData == EmojiSelected.EXTRA_HAPPY
                     ? showEmojiSelected(
                         'assets/images/emoji/smiling_face_with_open_mouth.svg')
-                    : showEmojiFromString(EmojiSelected.EXTRA_HAPPY,
+                    : showEmojiFromString(false, EmojiSelected.EXTRA_HAPPY,
                         extraHappyEmoji, '#EBB34D', '#717171')
               ]),
               Container(
@@ -345,14 +345,16 @@ class _SurveyCallSupportScreenState
   }
 
   Widget showEmojiSelected(String iconPath) {
-    return Container(
-      width: 12.w,
-      height: 6.h,
-      decoration: BoxDecoration(
-        color: AppColors.redBar.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(100),
+    return InkWell(
+      child: Container(
+        width: 12.w,
+        height: 6.h,
+        decoration: BoxDecoration(
+          color: AppColors.redBar.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: showEmojiFromPath(iconPath),
       ),
-      child: showEmojiFromPath(iconPath),
     );
   }
 
@@ -361,22 +363,24 @@ class _SurveyCallSupportScreenState
         width: 9.w, height: 9.w, margin: EdgeInsets.all(8));
   }
 
-  Widget showEmojiFromString(EmojiSelected emojiSelected, String stringSvg,
-      String colorPatternFrom, String colorPatternReplace) {
+  Widget showEmojiFromString(bool isDisable, EmojiSelected emojiSelected,
+      String stringSvg, String colorPatternFrom, String colorPatternReplace) {
     return InkWell(
       onTap: () {
-        if (emojiSelected.value == EmojiSelected.EXTRA_UPSET &&
-            emojiSelected.value == EmojiSelected.UPSET) {
-          bloc.tabController!.animateTo(0);
-        } else if (emojiSelected.value == EmojiSelected.EXTRA_HAPPY &&
-            emojiSelected.value == EmojiSelected.HAPPY) {
-          bloc.tabController!.animateTo(1);
-        } else {
-          // when emoji is normal
-          bloc.tabController!.animateTo(0);
+        if (!isDisable) {
+          if (emojiSelected == EmojiSelected.EXTRA_UPSET ||
+              emojiSelected == EmojiSelected.UPSET) {
+            bloc.tabController!.animateTo(0);
+          } else if (emojiSelected == EmojiSelected.EXTRA_HAPPY ||
+              emojiSelected == EmojiSelected.HAPPY) {
+            bloc.tabController!.animateTo(1);
+          } else {
+            // when emoji is normal
+            bloc.tabController!.animateTo(0);
+          }
+          bloc.setEmojiSelected = emojiSelected;
+          debugPrint("EmojiSelected ${emojiSelected}");
         }
-        bloc.setEmojiSelected = emojiSelected;
-        debugPrint("EmojiSelected ${emojiSelected}");
       },
       child: ImageUtils.fromString(
           stringSvg

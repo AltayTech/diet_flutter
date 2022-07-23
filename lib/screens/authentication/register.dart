@@ -85,7 +85,6 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                         AuthHeader(
                           title: intl.register,
                         ),
-                        Space(height: 3.h),
                         content(),
                       ]),
                     ),
@@ -115,9 +114,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               child: Text("+ ${args['mobile']}",
                   textDirection: TextDirection.ltr,
                   style: TextStyle(color: AppColors.penColor))),
-          Space(height: 3.h),
+          Space(height: 2.h),
           Container(
-            height: 10.h,
+            height: 8.h,
             child: TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -136,9 +135,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   firstName = txt;
                 }),
           ),
-          Space(height: 3.h),
+          Space(height: 2.h),
           Container(
-            height: 10.h,
+            height: 8.h,
             child: TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -157,9 +156,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   lastName = txt;
                 }),
           ),
-          Space(height: 3.h),
+          Space(height: 2.h),
           Container(
-            height: 10.h,
+            height: 8.h,
             child: TextField(
               obscureText: !_obscureText,
               decoration: InputDecoration(
@@ -192,7 +191,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               },
             ),
           ),
-          Space(height: 3.h),
+          Space(height: 2.h),
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -239,7 +238,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               ],
             ),
           ),
-          Space(height: 3.h),
+          Space(height: 2.h),
           SubmitButton(
               label: intl.register, size: Size(100.w, 8.h), onTap: clickSubmit),
         ],
