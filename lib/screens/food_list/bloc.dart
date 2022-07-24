@@ -92,15 +92,22 @@ class FoodListBloc {
         if (_foodList.value?.meals != null)
           for (int i = 0; i < _foodList.value!.meals!.length; i++) {
             _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
-            _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
+            _foodList.value!.meals![i].bgColor =
+                AppColors.mealColors[i]['bgColor'];
           }
         MemoryApp.fastingDates = _foodList.value?.menu?.fastingDates ?? [];
         setTheme();
         fillWeekDays();
         getArticles();
 
-        if (value.data?.surveyData?.surveyStatus != null && value.data!.surveyData!.surveyStatus!) {
-          _navigateTo.fire(Routes.surveyCallSupport);
+        if (MemoryApp.callSurveyData == null &&
+            value.data?.surveyData != null) {
+          if (value.data?.surveyData?.surveyStatus != null &&
+              value.data!.surveyData!.surveyStatus!) {
+            MemoryApp.callSurveyData = value.data!.surveyData!;
+
+            _navigateTo.fire(Routes.surveyCallSupport);
+          }
         }
       } else {
         _navigateTo.fire(value.next);
@@ -138,7 +145,8 @@ class FoodListBloc {
   void fillWeekDays() {
     DateTime gregorianDate;
     if (_foodList.hasValue)
-      gregorianDate = DateTime.parse(_foodList.value!.menu!.startedAt!).toUtc().toLocal();
+      gregorianDate =
+          DateTime.parse(_foodList.value!.menu!.startedAt!).toUtc().toLocal();
     else
       gregorianDate = DateTime.now().toUtc().toLocal();
     Jalali jalaliDate = Jalali.fromDateTime(gregorianDate);
@@ -157,20 +165,22 @@ class FoodListBloc {
             gregorianDate: gregorianDate.add(Duration(days: i)),
             jalaliDate: gregorianDate.add(Duration(days: i)).toJalali(),
             clickable: _foodList.valueOrNull != null
-                ? gregorianDate
-                        .add(Duration(days: i))
-                        .compareTo(DateTime.parse(_foodList.value!.menu!.expiredAt!)) <=
+                ? gregorianDate.add(Duration(days: i)).compareTo(
+                        DateTime.parse(_foodList.value!.menu!.expiredAt!)) <=
                     0
                 : false,
-            isSelected:
-                gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value),
+            isSelected: gregorianDate
+                    .add(Duration(days: i))
+                    .toString()
+                    .substring(0, 10) ==
+                _date.value),
       );
       debugPrint(
           'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
     }
     _weekDays.value = data;
-    _selectedWeekDay.value = _weekDays.value!.firstWhere(
-        (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
+    _selectedWeekDay.value = _weekDays.value!.firstWhere((element) =>
+        element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
     _previousWeekDay = _selectedWeekDay.value;
   }
 
@@ -185,7 +195,8 @@ class FoodListBloc {
         if (element!.gregorianDate.toString().substring(0, 10) == newDate) {
           element.isSelected = true;
           _selectedWeekDay.value = element;
-          debugPrint('change date 2 ${_selectedWeekDay.value.isSelected} / ${element.isSelected}');
+          debugPrint(
+              'change date 2 ${_selectedWeekDay.value.isSelected} / ${element.isSelected}');
         } else
           element.isSelected = false;
       });
@@ -206,7 +217,8 @@ class FoodListBloc {
       if (_foodList.value?.meals != null)
         for (int i = 0; i < _foodList.value!.meals!.length; i++) {
           _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
-          _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
+          _foodList.value!.meals![i].bgColor =
+              AppColors.mealColors[i]['bgColor'];
         }
       MemoryApp.fastingDates = _foodList.value?.menu?.fastingDates ?? [];
       setTheme();
@@ -215,7 +227,8 @@ class FoodListBloc {
 
   void onMealFoodDaily(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
-    final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
+    final index = _foodList.valueOrNull?.meals
+        ?.indexWhere((element) => element.id == mealId);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     // _foodList.safeValue=_foodList.valueOrNull;
@@ -223,7 +236,8 @@ class FoodListBloc {
 
   void onMealFood(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
-    final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
+    final index = _foodList.valueOrNull?.meals
+        ?.indexWhere((element) => element.id == mealId);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     debugPrint(
@@ -233,14 +247,15 @@ class FoodListBloc {
 
   void onDailyMenu() {
     List<DailyFood> foods = [];
-    int day = _weekDays.value!
-        .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
+    int day = _weekDays.value!.indexWhere((element) =>
+        element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
     debugPrint('newfood3 ${_foodList.valueOrNull?.meals?[0].newFood?.id}');
     _foodList.valueOrNull?.meals?.forEach((meal) {
-      debugPrint('daily menu newfood ${meal.id} / ${meal.title} / ${meal.newFood?.toJson()}');
+      debugPrint(
+          'daily menu newfood ${meal.id} / ${meal.title} / ${meal.newFood?.toJson()}');
       if (meal.newFood?.id != null)
-        foods.add(DailyFood(
-            meal.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
+        foods.add(DailyFood(meal.newFood!.id!, meal.id, day + 1,
+            meal.newFood?.selectedFreeFood?.id ?? null));
       debugPrint('daily menu change ${foods.last.toJson()}');
     });
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
@@ -257,11 +272,12 @@ class FoodListBloc {
   void onReplacingFood(int mealId) {
     _loadingContent.safeValue = true;
     List<DailyFood> foods = [];
-    int day = _weekDays.value!
-        .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
-    final meal = _foodList.value?.meals?.firstWhere((element) => element.id == mealId);
-    foods.add(DailyFood(
-        meal!.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
+    int day = _weekDays.value!.indexWhere((element) =>
+        element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
+    final meal =
+        _foodList.value?.meals?.firstWhere((element) => element.id == mealId);
+    foods.add(DailyFood(meal!.newFood!.id!, meal.id, day + 1,
+        meal.newFood?.selectedFreeFood?.id ?? null));
     debugPrint('replace Food ${foods.last.toJson()}');
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
     _repository.dailyMenu(requestData).then((value) {
@@ -274,7 +290,9 @@ class FoodListBloc {
   }
 
   void makingFoodEmpty(int mealId) {
-    _foodList.valueOrNull?.meals?.firstWhere((element) => element.id == mealId).newFood = null;
+    _foodList.valueOrNull?.meals
+        ?.firstWhere((element) => element.id == mealId)
+        .newFood = null;
   }
 
   void nextStep() {
@@ -302,9 +320,12 @@ class FoodListBloc {
 
   void getArticles() async {
     TimeRequest articleVideo = TimeRequest();
-    articleVideo.started_at = _weekDays.value![0]!.gregorianDate.toString().substring(0, 10);
-    articleVideo.expired_at =
-        _weekDays.value![_weekDays.value!.length - 1]!.gregorianDate.toString().substring(0, 10);
+    articleVideo.started_at =
+        _weekDays.value![0]!.gregorianDate.toString().substring(0, 10);
+    articleVideo.expired_at = _weekDays
+        .value![_weekDays.value!.length - 1]!.gregorianDate
+        .toString()
+        .substring(0, 10);
     _repository.getArticles(articleVideo).then((value) {
       _articles = value.requireData;
       setArticle();
@@ -312,8 +333,10 @@ class FoodListBloc {
   }
 
   void setArticle() {
-    _adviceVideo.value = _articles.firstWhere(
-        (element) => _selectedWeekDay.value.gregorianDate.toString().contains(element.date!));
+    _adviceVideo.value = _articles.firstWhere((element) => _selectedWeekDay
+        .value.gregorianDate
+        .toString()
+        .contains(element.date!));
     adviceId = _adviceVideo.value.id;
   }
 
