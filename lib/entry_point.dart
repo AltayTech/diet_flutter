@@ -8,7 +8,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/utils/crashlytics.dart';
 import 'package:behandam/utils/fcm.dart';
-import 'package:behandam/utils/firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -33,21 +32,25 @@ enum Market {
 }
 
 Future<void> entryPoint() async {
-  runZonedGuarded(() {
+  runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
     Vx.setPathUrlStrategy();
-    initialNeededApp();
+    await initialNeededApp();
     runApp(App());
   }, GlobalErrorHandler.handleUncaughtErrors);
 }
 
-void initialNeededApp() async {
+Future<bool> initialNeededApp() async {
   _initializeDebugPrint();
   await AppSharedPreferences.initialize();
   AppLocale.initialize();
   AppColors(themeAppColor: ThemeAppColor.DEFAULT);
   _initFireBase();
   GlobalErrorHandler.handleCaughtErrors();
+  return Future.delayed(
+    Duration(milliseconds: 100),
+    () => true,
+  );
 }
 
 void _initializeDebugPrint() {
@@ -58,9 +61,7 @@ void _initializeDebugPrint() {
 
 void _initFireBase() async {
   try {
-    await Firebase.initializeApp(
-      options: await DefaultFirebaseConfig.platformOptions,
-    );
+    await Firebase.initializeApp();
     await AppFcm.initialize();
     await AppCrashlytics.initialize();
     if (!kIsWeb) {

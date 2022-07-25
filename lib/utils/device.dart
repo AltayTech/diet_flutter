@@ -30,7 +30,7 @@ abstract class DeviceUtils {
 
   static Future<String> get deviceId async {
     return await _getDeviceInfo(
-      (androidInfo) => androidInfo.androidId!,
+      (androidInfo) => androidInfo.androidId ?? androidInfo.id ?? '',
       (iosInfo) => iosInfo.identifierForVendor!,
       (webDeviceInfo) => webDeviceInfo.vendor!,
     );
