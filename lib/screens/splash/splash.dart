@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
@@ -15,9 +13,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
