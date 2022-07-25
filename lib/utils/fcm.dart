@@ -206,9 +206,7 @@ class AppFcm {
     debugPrint('on background message');
 
     await AppSharedPreferences.initialize();
-    await Firebase.initializeApp(
-      options: await DefaultFirebaseConfig.platformOptions,
-    );
+    await Firebase.initializeApp();
     _listenAwesomeEvents();
     sendNotification(message);
   }
