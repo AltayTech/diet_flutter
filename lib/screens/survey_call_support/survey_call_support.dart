@@ -185,14 +185,16 @@ class _SurveyCallSupportScreenState extends ResourcefulState<SurveyCallSupportSc
       }
 
       callRateRequest.callId = surveyData.callId;
-      callRateRequest.isContactedMe = bloc.isContactedMe.isActive! == true ? true : false;
+      // if is not contacted to me checked is contacted to me must false
+      callRateRequest.isContactedMe = bloc.isContactedMe.isActive! == true ? false : true;
       callRateRequest.userRate = bloc.getEmojiSelected.value;
 
       bloc.sendCallRequest(callRateRequest);
     } else {
       CallRateRequest callRateRequest = CallRateRequest();
       callRateRequest.callId = surveyData.callId;
-      callRateRequest.isContactedMe = bloc.isContactedMe.isActive! == true ? true : false;
+      // if is not contacted to me checked is contacted to me must false
+      callRateRequest.isContactedMe = bloc.isContactedMe.isActive! == true ? false : true;
       callRateRequest.userRate = 1;
       callRateRequest.surveyCauseIds = [];
 
