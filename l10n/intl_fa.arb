@@ -1,5 +1,7 @@
 {
   "appName": "به اندام",
+  "appDescription": "رژیم غذایی دکتر کرمانی",
+  "appDescription2": "معجزه‌ای برای چاق‌ها‌ و لاغر‌ها",
   "login": "ورود",
   "register": "ثبت نام",
   "mobileOrEmail": "شماره موبایل / ایمیل",
@@ -111,6 +113,8 @@
   "no": "خیر",
   "enterYourMobileNumber": "شماره موبایلت رو وارد کن",
   "registerOrLogin": "ثبت نام و ورود",
+  "registerLogin": "ورود / ثبت نام",
+  "enterYourPhone": "شماره همراه خود را وارد نمایید",
   "woman": "خانم",
   "man": "آقا",
   "enterNewPassword": "رمز عبور جدیدتو وارد کن",
@@ -723,5 +727,7 @@
   "errorDisableWhatsApp": "سرویس واتساپ غیر فعال میباشد",
   "noNeedHelp": "خیر، نیازی به راهنمایی ندارم",
   "yesNeedHelpDiet": "بله، برای ادامه رژیم نیاز به راهنمایی دارم",
+  "getCode": "دریافت کد",
+  "phoneNumber": "شماره همراه",
   "understand": "متوجه شدم"
 }

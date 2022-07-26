@@ -6,6 +6,7 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/advice/advice.dart';
+import 'package:behandam/screens/authentication/auth_new.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
@@ -268,7 +269,7 @@ final navigator = VxNavigator(
     Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
-    Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
+    Routes.auth: (_, __) => MaterialPage(child: routePage(AuthNewScreen())),
     Routes.login: (_, param) => MaterialPage(child: routePage(LoginScreen()), arguments: param),
     Routes.authVerify: (uri, __) =>
         MaterialPage(child: routePage(VerifyScreen()), arguments: uri.queryParameters),
