@@ -1,8 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
-import 'package:behandam/routes.dart';
-import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
@@ -13,7 +11,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
-import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -141,7 +138,14 @@ class _AuthNewScreenState extends ResourcefulState<AuthNewScreen> {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50), topLeft: Radius.circular(50))),
+              topRight: Radius.circular(50), topLeft: Radius.circular(50)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3))
+          ]),
       child: Padding(
         padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
         child: Column(
@@ -163,98 +167,40 @@ class _AuthNewScreenState extends ResourcefulState<AuthNewScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Space(height: 5.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              textDirection: TextDirection.rtl,
-              children: [
-                Flexible(
-                  child: Container(
-                    decoration: BoxDecoration(
+            Space(height: 3.h),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _text,
+                  textDirection: TextDirection.ltr,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(15.0)),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
                         borderRadius: BorderRadius.circular(15.0),
-                        color: AppColors.arcColor),
-                    child: TextField(
-                      controller: _text,
-                      textDirection: TextDirection.ltr,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: AppColors.penColor),
-                              borderRadius: BorderRadius.circular(15.0)),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          // enabledBorder: OutlineInputBorder(
-                          //   borderSide: BorderSide(color: Colors.grey)),
-                          labelText: intl.phoneNumber,
-                          // errorText: _validate ? intl.fillAllField : null,
-                          labelStyle: TextStyle(
-                              color: AppColors.penColor,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600)),
-                      onSubmitted: (String) {
-                        click(_selectedLocation);
-                      },
-                      onChanged: (txt) {
-                        phoneNumber = txt;
-                      },
-                    ),
-                  ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(15.0)),
+                      labelText: intl.phoneNumber,
+                      // errorText: _validate ? intl.fillAllField : null,
+                      labelStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600),
+                      suffixIcon: selectCountry()),
+                  onSubmitted: (String) {
+                    click(_selectedLocation);
+                  },
+                  onChanged: (txt) {
+                    phoneNumber = txt;
+                  },
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: AppColors.arcColor),
-                  width: 30.w,
-                  margin: EdgeInsets.only(right: 2.w),
-                  child: StreamBuilder(
-                    stream: authBloc.selectedCountry,
-                    builder: (_, AsyncSnapshot<Country> snapshot) {
-                      if (snapshot.hasData) {
-                        _selectedLocation = snapshot.requireData;
-                        return InkWell(
-                            onTap: () => countryDialog(),
-                            child: Container(
-                              child: TextField(
-                                controller: _textCountryCode,
-                                textDirection: TextDirection.ltr,
-                                keyboardType: TextInputType.phone,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.penColor),
-                                      borderRadius:
-                                          BorderRadius.circular(15.0)),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  // enabledBorder: OutlineInputBorder(
-                                  //   borderSide: BorderSide(color: Colors.grey)),
-                                  // errorText: _validate ? intl.fillAllField : null,
-                                  labelStyle: TextStyle(
-                                      color: AppColors.penColor,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w600),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down,
-                                      color: Colors.grey,
-                                    ),
-                                    onPressed: () => countryDialog(),
-                                  ),
-                                ),
-                                onSubmitted: (String) {
-                                  click(_selectedLocation);
-                                },
-                              ),
-                            ));
-                      }
-                      return Progress();
-                    },
-                  ),
-                )
-              ],
+              ),
             ),
             Space(height: 3.h),
             StreamBuilder(
@@ -262,7 +208,7 @@ class _AuthNewScreenState extends ResourcefulState<AuthNewScreen> {
               builder: (_, AsyncSnapshot<Country> snapshot) {
                 return button(
                   AppColors.btnColor,
-                  intl.getCode,
+                  intl.login,
                   Size(100.w, 6.h),
                   () {
                     click(snapshot.requireData);
@@ -270,8 +216,58 @@ class _AuthNewScreenState extends ResourcefulState<AuthNewScreen> {
                 );
               },
             ),
+            Space(height: 3.h),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget selectCountry() {
+    return Container(
+      width: 30.w,
+      height: 7.h,
+      margin: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0), color: Colors.grey[200]),
+      child: StreamBuilder(
+        stream: authBloc.selectedCountry,
+        builder: (_, AsyncSnapshot<Country> snapshot) {
+          if (snapshot.hasData) {
+            _selectedLocation = snapshot.requireData;
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                  onTap: () => countryDialog(),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Icon(Icons.keyboard_arrow_down,
+                            color: Colors.orange, size: 20),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            '+${_selectedLocation.code ?? ''}',
+                            textDirection: TextDirection.ltr,
+                            style: typography.caption,
+                          ),
+                        ),
+                      ),
+                      Space(width: 3.w),
+                      Expanded(
+                        child: ImageUtils.fromLocal(
+                            'assets/images/flags/${_selectedLocation.isoCode!.toLowerCase() ?? ''}.png',
+                            width: 7.w,
+                            height: 7.w),
+                      ),
+                    ],
+                  )),
+            );
+          }
+          return Progress();
+        },
       ),
     );
   }
@@ -338,6 +334,11 @@ class _AuthNewScreenState extends ResourcefulState<AuthNewScreen> {
                                 textDirection: TextDirection.ltr,
                                 child: Row(
                                   children: [
+                                    ImageUtils.fromLocal(
+                                        'assets/images/flags/${filterListCountry.data![index].isoCode!.toLowerCase() ?? ''}.png',
+                                        width: 5.w,
+                                        height: 5.w),
+                                    Space(width: 3.w),
                                     Text(
                                       '+${filterListCountry.data![index].code ?? ''}',
                                       style: typography.caption,
