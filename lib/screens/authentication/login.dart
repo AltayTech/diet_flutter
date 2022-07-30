@@ -51,16 +51,20 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
         check = true;
 
         if (channelSendCode == ChannelSendCode.WHATSAPP) {
-          VxNavigator.of(context).push(Uri(
-              path: '${Routes.passVerify}',
-              queryParameters: {"mobile": args['mobile'], 'countryId': '${args['countryId']}'}));
+          VxNavigator.of(context).push(
+              Uri(
+                path: '${Routes.passVerify}',
+              ),
+              params: {"mobile": args['mobile'], 'country': args['country']});
           IntentUtils.openAppIntent(Uri.encodeFull(
             'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
           ));
         } else if (event.toString().contains(Routes.auth.substring(1)))
-          VxNavigator.of(context).push(Uri(
-              path: '/$event',
-              queryParameters: {"mobile": args['mobile'], 'countryId': '${args['countryId']}'}));
+          VxNavigator.of(context).push(
+              Uri(
+                path: '${Routes.passVerify}',
+              ),
+              params: {"mobile": args['mobile'], 'country': args['country']});
         else
           VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
@@ -112,7 +116,9 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 ));
               } else {
                 check = false;
-                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+                return Center(
+                    child: Container(
+                        width: 15.w, height: 15.w, child: Progress()));
               }
             }),
       ),
@@ -128,7 +134,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -136,8 +143,9 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               )),
           Space(height: 2.h),
           Container(
-            decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                color: AppColors.arcColor),
             child: TextField(
               controller: _text,
               textDirection: TextDirection.ltr,
@@ -164,7 +172,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   },
                 ),
                 // errorText: _validate ? intl.fillAllField : null,
-                labelStyle: TextStyle(color: AppColors.penColor, fontSize: 12.sp),
+                labelStyle:
+                    TextStyle(color: AppColors.penColor, fontSize: 12.sp),
               ),
               obscureText: !_obscureText,
               onSubmitted: (String) {
@@ -213,10 +222,12 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     text: intl.textChangePass1,
-                    style: TextStyle(fontSize: 14.sp, color: AppColors.penColor),
+                    style:
+                        TextStyle(fontSize: 14.sp, color: AppColors.penColor),
                     children: <TextSpan>[
                       TextSpan(
-                          text: '${args['mobile']}', style: TextStyle(fontWeight: FontWeight.bold)),
+                          text: '${args['mobile']}',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       TextSpan(text: intl.textChangePass2),
                     ],
                   ),
@@ -234,7 +245,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                         DialogUtils.showDialogProgress(context: context);
 
                         MemoryApp.forgetPass = true;
-                        authBloc.sendCodeMethod(args['mobile'], channelSendCode);
+                        authBloc.sendCodeMethod(
+                            args['mobile'], channelSendCode);
                         authBloc.setTrySendCode = true;
                       },
                       icon: Icon(
@@ -245,7 +257,10 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       label: Text(
                         intl.sendSMS,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(color: Colors.white),
                       ),
                       style: OutlinedButton.styleFrom(
                           backgroundColor: AppColors.blueRuler,
@@ -265,14 +280,16 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                           channelSendCode = ChannelSendCode.WHATSAPP;
                           Navigator.pop(context);
                           DialogUtils.showDialogProgress(context: context);
-                          authBloc.sendCodeMethod(args['mobile'], channelSendCode);
+                          authBloc.sendCodeMethod(
+                              args['mobile'], channelSendCode);
 
                           MemoryApp.forgetPass = true;
 
                           authBloc.setTrySendCode = true;
                         } else {
                           Navigator.pop(context);
-                          Utils.getSnackbarMessage(context, intl.errorDisableWhatsApp);
+                          Utils.getSnackbarMessage(
+                              context, intl.errorDisableWhatsApp);
                         }
                       },
                       icon: Icon(

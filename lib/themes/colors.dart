@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum ThemeAppColor { DEFAULT, BLUE, DARK, PURPLE,FASTTING,FASTTINGLIST }
+enum ThemeAppColor { DEFAULT, BLUE, DARK, PURPLE, FASTTING, FASTTINGLIST }
 
 class AppColors {
   late ThemeAppColor themeAppColor;
@@ -28,6 +28,8 @@ class AppColors {
   static late Color labelTab;
   static late Color warning = Colors.orange.shade100;
 
+  static const btnColorsGradient =
+      LinearGradient(colors: [Color(0xfff7879d), Color(0xffff5757)]);
   static const penColor = Color(0xff666666);
   static const redBar = Color(0xffFF5757);
   static const looseType = Color(0xfff6ded5);
@@ -154,9 +156,9 @@ class AppColors {
 
   static late Color replaceFoodButton;
   static late Color helpFastingButton;
-  static late Color menuColorDefault=Color.fromRGBO(250, 114, 126, 1.0);
-  static late Color menuColorFasting=Color(0xff65A8E0);
-  static late Color newBackground=Color(0xffF5F5F5);
+  static late Color menuColorDefault = Color.fromRGBO(250, 114, 126, 1.0);
+  static late Color menuColorFasting = Color(0xff65A8E0);
+  static late Color newBackground = Color(0xffF5F5F5);
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {
@@ -277,9 +279,9 @@ class AppColors {
         helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
         break;
       case ThemeAppColor.FASTTING:
-        accentColor = Color.fromRGBO(72, 157, 220,1);
+        accentColor = Color.fromRGBO(72, 157, 220, 1);
         primaryColorDark = Color.fromARGB(255, 16, 95, 149);
-        primary = Color.fromARGB(255,53, 144, 214);
+        primary = Color.fromARGB(255, 53, 144, 214);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
         iconsColor = Color(0xff646464);
@@ -308,9 +310,9 @@ class AppColors {
         helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
         break;
       case ThemeAppColor.FASTTINGLIST:
-        accentColor = Color.fromRGBO(15, 92, 150,1);
+        accentColor = Color.fromRGBO(15, 92, 150, 1);
         primaryColorDark = Color.fromARGB(255, 11, 63, 99);
-        primary = Color.fromARGB(255,15, 92, 150);
+        primary = Color.fromARGB(255, 15, 92, 150);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
         iconsColor = Color(0xff646464);
