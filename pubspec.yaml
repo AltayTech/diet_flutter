@@ -87,6 +87,7 @@ dependencies:
   event_bus: ^2.0.0
   easy_mask: ^2.0.1
   dio_http2_adapter: ^2.0.0
+  scroll_snap_list: ^0.9.1
 
 dependency_overrides:
   provider: ^6.0.2
