@@ -37,7 +37,7 @@ dependencies:
   sizer: ^2.0.15
   flutter_flavor: ^3.0.3
   velocity_x: ^3.5.1
-  device_info_plus: ^4.0.1
+  device_info_plus: ^3.2.4
   package_info_plus: ^1.4.0
   url_launcher: ^6.1.5
   flutter_spinkit: ^5.1.0
