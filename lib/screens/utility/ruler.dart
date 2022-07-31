@@ -193,7 +193,6 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                               textAlign: TextAlign.center,
                               style: typography.caption?.apply(
                                 color: AppColors.labelColor,
-
                               ),
                             ),
                           ),
