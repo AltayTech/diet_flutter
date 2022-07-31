@@ -8,15 +8,15 @@ import 'package:logifan/widgets/space.dart';
 class RulerHeader extends StatelessWidget {
   RulerHeader({
     Key? key,
-    required this.value,
-    required this.heading,
-    required this.color,
+     this.value,
+     required this.heading,
+     this.color,
     this.onHelpClick,
   }) : super(key: key);
 
-  final String value;
+  final String? value;
   final String heading;
-  final Color color;
+  final Color? color;
   final Function? onHelpClick;
 
   @override
@@ -31,7 +31,7 @@ class RulerHeader extends StatelessWidget {
           children: [
             Text(
               heading,
-              style: typography.subtitle2,
+              style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
             ),
             Space(width: 2.w,),
             if (onHelpClick != null)
@@ -41,8 +41,9 @@ class RulerHeader extends StatelessWidget {
                   onTap: () => onHelpClick!.call()),
           ],
         ),
+        if(value!=null)
         Center(child:  Text(
-          value,
+          value!,
           textAlign: TextAlign.center,
           style: typography.headline6!.copyWith(color: color),
         ),)
@@ -50,3 +51,4 @@ class RulerHeader extends StatelessWidget {
     );
   }
 }
+

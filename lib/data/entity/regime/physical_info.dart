@@ -31,7 +31,7 @@ class PhysicalInfoData {
   double? bmi;
   @JsonKey(name: "whr")
   double? whr;
-  @JsonKey(name: "gender")
+  @JsonKey(name: "gender", defaultValue: GenderType.Female)
   GenderType? gender;
   @JsonKey(name: "multi_birth_num", defaultValue: 1)
   int? multiBirth;

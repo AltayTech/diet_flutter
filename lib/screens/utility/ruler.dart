@@ -189,7 +189,7 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              '${widget.value.toString().split('.')[1]}00',
+                              '${widget.value.toString().split('.')[1]}',
                               textAlign: TextAlign.center,
                               style: typography.caption?.apply(
                                 color: AppColors.labelColor,
