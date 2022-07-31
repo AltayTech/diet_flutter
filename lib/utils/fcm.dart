@@ -261,7 +261,6 @@ class AppFcm {
                 id: notifResponse.hashCode,
                 channelKey: notifResponse.channel_id ?? "behandam",
                 // displayOnBackground: true,
-                // notificationLayout: NotificationLayout.Default,
                 title: notifResponse.title,
                 notificationLayout: notifResponse.layout,
                 body: notifResponse.description,
