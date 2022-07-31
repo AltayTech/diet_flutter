@@ -194,6 +194,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
                     child: Container(
                       width: 15.w,
                       height: 7.h,
+                      padding: EdgeInsets.only(top: 4),
                       child: StreamBuilder<int>(
                           stream: authBloc.start,
                           builder: (context, start) {

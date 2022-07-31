@@ -731,6 +731,8 @@
   "enterCodeSent": "کد تایید ارسال شده را وارد نمایید.",
   "forSendCodeCallMe": "برای ارسال کد،با من تماس بگیر",
   "editPhone": "اصلاح شماره",
+  "loginWithOtp": "ورود با رمز یکبار مصرف",
+  "enterPassword": "رمز عبوری که انتخاب کردید را وارد کنید.",
   "phoneNumber": "شماره همراه",
   "understand": "متوجه شدم"
 }

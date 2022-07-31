@@ -1,17 +1,14 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-import 'package:behandam/screens/widget/login_background.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -34,8 +31,6 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   bool check = false;
   ChannelSendCode channelSendCode = ChannelSendCode.SMS;
 
-  late Country countrySelected;
-
   @override
   void initState() {
     super.initState();
@@ -52,9 +47,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
       Navigator.pop(context);
-      if (!event
-          .toString()
-          .isEmptyOrNull) {
+      if (!event.toString().isEmptyOrNull) {
         check = true;
 
         if (channelSendCode == ChannelSendCode.WHATSAPP) {
@@ -64,8 +57,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               ),
               params: {"mobile": args['mobile'], 'country': args['country']});
           IntentUtils.openAppIntent(Uri.encodeFull(
-            'https://wa.me/${MemoryApp.whatsappInfo!
-                .botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
+            'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
           ));
         } else if (event.toString().contains(Routes.auth.substring(1)))
           VxNavigator.of(context).push(
@@ -90,13 +82,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
-      args = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as Map<String, dynamic>;
-
-      countrySelected = args["country"];
-
+      args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       debugPrint('login args $args');
     }
   }
@@ -104,123 +90,77 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(backgroundColor: Colors.white, body: body());
-  }
-
-  Widget body() {
-    return SafeArea(
-      child: StreamBuilder(
-          stream: authBloc.waiting,
-          builder: (context, snapshot) {
-            if (snapshot.data == false && !check) {
-              return LoginBackground(
-                children: [
-                  Space(height: 12.h),
-                  Expanded(child: content()),
-                ],
-              );
-            } else {
-              check = false;
-              return Container(height: 100.h, child: Progress());
-            }
-          }),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: AppColors.arcColor,
+        elevation: 0.0,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: Color(0xffb4babb),
+            onPressed: () => VxNavigator.of(context).pop()),
+      ),
+      body: SafeArea(
+        child: StreamBuilder(
+            stream: authBloc.waiting,
+            builder: (context, snapshot) {
+              if (snapshot.data == false && !check) {
+                return TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                  child: Column(children: [
+                    AuthHeader(
+                      title: intl.login,
+                    ),
+                    content(),
+                  ]),
+                ));
+              } else {
+                check = false;
+                return Center(
+                    child: Container(
+                        width: 15.w, height: 15.w, child: Progress()));
+              }
+            }),
+      ),
     );
   }
 
   Widget content() {
-    return Container(
-      height: 62.h,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50), topLeft: Radius.circular(50)),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 1,
-                offset: Offset(0, 1))
-          ]),
-      child: Padding(
-          padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-            Text(
-            intl.registerLogin,
-            textAlign: TextAlign.start,
-            style: typography.subtitle1!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          Space(height: 1.h),
-          Row(
-            children: [
-              Text(
-                intl.enterPassword,
-                textAlign: TextAlign.start,
-                style: typography.caption!
-                    .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
-              ),
-            ],
-          ),
-          Space(height: 3.h),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 7.h,
+    return Padding(
+      padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+      child: Column(
+        children: [
+          Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Row(children: [
-                Expanded(
-                    flex: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        '+${args["mobile"]}',
-                        textAlign: TextAlign.start,
-                        textDirection: TextDirection.ltr,
-                        style: typography.caption!.copyWith(fontSize: 14.sp),
-                      ),
-                    )),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                    child: ImageUtils.fromLocal(
-                        'assets/images/flags/${countrySelected.isoCode
-                            ?.toLowerCase() ?? ''}.png',
-                        width: 7.w,
-                        height: 7.w),
-                  ),
-                ),
-              ]),
-            ),
-          ),
-          Space(height: 1.h),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: AppColors.arcColor),
+              child: Text(
+                "+ ${args['mobile']}",
+                textDirection: TextDirection.ltr,
+                style: TextStyle(color: AppColors.penColor),
+              )),
+          Space(height: 2.h),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                color: AppColors.arcColor),
             child: TextField(
               controller: _text,
               textDirection: TextDirection.ltr,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0)),
+                    borderSide: BorderSide(color: AppColors.penColor),
+                    borderRadius: BorderRadius.circular(15.0)),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(15.0),
                 ),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0)),
                 // enabledBorder: OutlineInputBorder(
                 //   borderSide: BorderSide(color: Colors.grey)),
                 labelText: intl.password,
-                prefixIcon: IconButton(
+                suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
                     color: AppColors.penColor,
@@ -233,7 +173,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 ),
                 // errorText: _validate ? intl.fillAllField : null,
                 labelStyle:
-                TextStyle(color: AppColors.penColor, fontSize: 12.sp),
+                    TextStyle(color: AppColors.penColor, fontSize: 12.sp),
               ),
               obscureText: !_obscureText,
               onSubmitted: (String) {
@@ -244,37 +184,21 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               },
             ),
           ),
-          Space(height: 3.h),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: InkWell(
-              onTap: () => loginWithOtpDialog(),
+          SizedBox(height: 8.h),
+          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), clickButton),
+          SizedBox(height: 8.h),
+          InkWell(
               child: Text(
-                intl.loginWithOtp,
-                textAlign: TextAlign.start,
-                textDirection: TextDirection.ltr,
-                style: typography.overline!
-                    .copyWith(color: AppColors.priceGreenColor),
+                intl.forgetPassword,
+                style: TextStyle(fontSize: 16.sp, color: AppColors.penColor),
               ),
-            ),
-          ),
-          Space(height: 2.h),
-          button(
-            AppColors.btnColor,
-            intl.login,
-            Size(100.w, 6.h),
-                () {
-              clickButton();
-            },
-          ),
-          Space(height: 2.h),
-      ],
-    ),)
-    ,
+              onTap: () => changePassDialog())
+        ],
+      ),
     );
   }
 
-  void loginWithOtpDialog() {
+  void changePassDialog() {
     DialogUtils.showDialogPage(
       context: context,
       isDismissible: true,
@@ -299,7 +223,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   text: TextSpan(
                     text: intl.textChangePass1,
                     style:
-                    TextStyle(fontSize: 14.sp, color: AppColors.penColor),
+                        TextStyle(fontSize: 14.sp, color: AppColors.penColor),
                     children: <TextSpan>[
                       TextSpan(
                           text: '${args['mobile']}',
@@ -333,8 +257,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       label: Text(
                         intl.sendSMS,
                         textAlign: TextAlign.start,
-                        style: Theme
-                            .of(context)
+                        style: Theme.of(context)
                             .textTheme
                             .button!
                             .copyWith(color: Colors.white),
@@ -377,26 +300,22 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       label: Text(
                         intl.sendWhatsapp,
                         textAlign: TextAlign.start,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(
+                        style: Theme.of(context).textTheme.button!.copyWith(
                             color: (MemoryApp.whatsappInfo != null &&
-                                MemoryApp.whatsappInfo!.botStatusBool)
+                                    MemoryApp.whatsappInfo!.botStatusBool)
                                 ? Colors.white
                                 : AppColors.labelTextColor),
                       ),
                       style: OutlinedButton.styleFrom(
                           backgroundColor: (MemoryApp.whatsappInfo != null &&
-                              MemoryApp.whatsappInfo!.botStatusBool)
+                                  MemoryApp.whatsappInfo!.botStatusBool)
                               ? AppColors.greenRuler
                               : AppColors.grey,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                               side: BorderSide(
                                 color: (MemoryApp.whatsappInfo != null &&
-                                    MemoryApp.whatsappInfo!.botStatusBool)
+                                        MemoryApp.whatsappInfo!.botStatusBool)
                                     ? AppColors.greenRuler
                                     : AppColors.grey,
                                 width: 0.25.w,
