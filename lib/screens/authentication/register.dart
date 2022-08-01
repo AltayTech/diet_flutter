@@ -1,12 +1,16 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/gender_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -40,6 +44,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   bool switchValue = false;
   bool _obscureText = false;
   bool check = false;
+  late Country countrySelected;
+
+  bool isInit = false;
 
   @override
   void initState() {
@@ -69,27 +76,33 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!isInit) {
+      isInit = true;
+
+      args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      countrySelected = args["country"];
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
-    args = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
+        appBar: Toolbar(titleBar: intl.register),
         backgroundColor: Colors.white,
         body: SafeArea(
           child: StreamBuilder(
               stream: authBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
-                  return TouchMouseScrollable(
-                    child: SingleChildScrollView(
-                      child: Column(children: [
-                        AuthHeader(
-                          title: intl.register,
-                        ),
-                        Space(height: 3.h),
-                        content(),
-                      ]),
-                    ),
-                  );
+                  return Column(children: [
+                    Space(height: 1.h),
+                    //Stepper(steps: )
+                    Space(height: 3.h),
+                    content(),
+                  ]);
                 } else {
                   check = false;
                   return Center(
@@ -101,83 +114,123 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   }
 
   Widget content() {
-    return Padding(
-      padding: EdgeInsets.all(8.w),
-      child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(15.0),
+    return Container(
+      height: 80.h,
+      child: Padding(
+        padding: EdgeInsets.all(5.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              intl.firstInfo,
+              textAlign: TextAlign.start,
+              style: typography.subtitle1!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            Space(height: 1.h),
+            Text(
+              intl.pleaseFillInformation,
+              textAlign: TextAlign.start,
+              style: typography.caption!
+                  .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+            ),
+            Space(height: 2.h),
+            Container(
+              height: 7.h,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.arcColor),
-              child: Text("+ ${args['mobile']}",
-                  textDirection: TextDirection.ltr,
-                  style: TextStyle(color: AppColors.penColor))),
-          Space(height: 3.h),
-          Container(
-            height: 10.h,
-            child: TextField(
+                color: Colors.grey.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Row(children: [
+                Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        '+${args["mobile"]}',
+                        textAlign: TextAlign.start,
+                        textDirection: TextDirection.ltr,
+                        style: typography.caption!.copyWith(fontSize: 14.sp),
+                      ),
+                    )),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                    child: ImageUtils.fromLocal(
+                        'assets/images/flags/${countrySelected.isoCode?.toLowerCase() ?? ''}.png',
+                        width: 7.w,
+                        height: 7.w),
+                  ),
+                ),
+              ]),
+            ),
+            Space(height: 2.h),
+            TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.penColor),
-                        borderRadius: BorderRadius.circular(15.0)),
+                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(10.0)),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.penColor),
-                        borderRadius: BorderRadius.circular(15.0)),
+                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(10.0)),
                     labelText: intl.name,
                     labelStyle:
-                        TextStyle(color: AppColors.penColor, fontSize: 16.0),
+                        TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
                     // errorText:
                     // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
                 onChanged: (txt) {
                   firstName = txt;
                 }),
-          ),
-          Space(height: 3.h),
-          Container(
-            height: 10.h,
-            child: TextField(
+            Space(height: 2.h),
+            TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.penColor),
-                        borderRadius: BorderRadius.circular(15.0)),
+                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(10.0)),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.penColor),
-                        borderRadius: BorderRadius.circular(15.0)),
+                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(10.0)),
                     labelText: intl.lastName,
                     labelStyle:
-                        TextStyle(color: AppColors.penColor, fontSize: 16.0),
+                        TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
                     // errorText:
                     // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
                 onChanged: (txt) {
                   lastName = txt;
                 }),
-          ),
-          Space(height: 3.h),
-          Container(
-            height: 10.h,
-            child: TextField(
+            Space(height: 2.h),
+            TextField(
               obscureText: !_obscureText,
               decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.penColor)),
+                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                      borderRadius: BorderRadius.circular(10.0)),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.penColor),
-                      borderRadius: BorderRadius.circular(15.0)),
+                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                      borderRadius: BorderRadius.circular(10.0)),
                   labelText: intl.password,
                   // errorText:
                   // _validate ? intl.fillAllField : null,
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility : Icons.visibility_off,
-                      color: AppColors.penColor,
+                      color: AppColors.penColor.withOpacity(0.5),
                     ),
                     onPressed: () {
                       setState(() {
@@ -186,63 +239,40 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                     },
                   ),
                   labelStyle:
-                      TextStyle(color: AppColors.penColor, fontSize: 18.0)),
+                      TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 18.0)),
               onChanged: (txt) {
                 _password = txt;
               },
             ),
-          ),
-          Space(height: 3.h),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(intl.woman,
-                    style:
-                        TextStyle(fontSize: 14.0, color: AppColors.penColor)),
-                Space(width: 3.w),
-                ToggleSwitch(
-                  minWidth: 90.0,
-                  minHeight: 45.0,
-                  initialLabelIndex: 0,
-                  cornerRadius: 25.0,
-                  activeFgColor: AppColors.primary,
-                  inactiveBgColor: Colors.grey,
-                  inactiveFgColor: Colors.white,
-                  totalSwitches: 2,
-                  icons: [
-                    'assets/images/registry/gender_woman.svg',
-                    'assets/images/registry/gender_man.svg',
-                    'assets/images/registry/gender_woman_selected.svg',
-                    'assets/images/registry/gender_man_selected.svg',
+            Space(height: 1.h),
+            Container(
+              height: 5.h,
+              decoration: BoxDecoration(color: AppColors.priceGreenColor.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.info_outline, color: AppColors.priceGreenColor),
+                    Space(width: 1.w),
+                    Text(
+                      intl.forSendCodeCallMe,
+                      textAlign: TextAlign.start,
+                      textDirection: TextDirection.ltr,
+                      style: typography.caption!
+                          .copyWith(color: AppColors.priceGreenColor),
+                    ),
                   ],
-                  iconSize: 30.0,
-                  activeBgColors: [
-                    [Colors.red, Colors.pinkAccent],
-                    [Color(0xff3b5998), Color(0xff8b9dc3)]
-                  ],
-                  animate: true,
-                  // with just animate set to true, default curve = Curves.easeIn
-                  animationDuration: 200,
-                  curve: Curves.bounceInOut,
-                  // animate must be set to true when using custom curve
-                  onToggle: (index) {
-                    index == gender.man.index
-                        ? switchValue = true
-                        : switchValue = false;
-                  },
                 ),
-                Space(width: 3.w),
-                Text(intl.man,
-                    style:
-                        TextStyle(fontSize: 14.0, color: AppColors.penColor)),
-              ],
+              ),
             ),
-          ),
-          Space(height: 3.h),
-          SubmitButton(
-              label: intl.register, size: Size(100.w, 8.h), onTap: clickSubmit),
-        ],
+            Space(height: 18.h),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0, left: 16.0),
+              child: button(AppColors.btnColor, intl.nextStage, Size(100.w, 6.h), clickSubmit),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -256,7 +286,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
       register.password = _password;
       register.gender = switchValue;
       register.verifyCode = args['code'];
-      register.countryId = args['id'];
+      register.countryId = countrySelected.id;
       register.appId = '0';
       authBloc.registerMethod(register);
     } else

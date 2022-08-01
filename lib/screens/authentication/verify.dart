@@ -94,7 +94,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
           params: {
             "mobile": args['mobile'],
             "code": codeVerify,
-            'id': countrySelected.id
+            "country": countrySelected
           },
         );
       }

@@ -5,7 +5,7 @@
   "login": "ورود",
   "register": "ثبت نام",
   "mobileOrEmail": "شماره موبایل / ایمیل",
-  "password": "کلمه عبور",
+  "password": "رمز عبور",
   "confirmPassword": "تکرار کلمه عبور",
   "forgetPassword": "رمز عبورت رو فراموش کردی؟",
   "farsi": "فارسی",
@@ -550,7 +550,7 @@
   "validationPass": "رمز عبور حداقل 4 کاراکتری وارد کن",
   "requestRefundPaymentLabel": " درخواست بازگشت وجه ثبت کنید. پس از بررسی توسط کارشناسان ما مبلغ پرداختی به حساب شما بازگردانده خواهد شد.",
   "acceptRefundPayment": "ثبت درخواست بازگشت وجه",
-  "pleaseFillInformation": "لطفا اطلاعات زیر را با دقت کامل کنید",
+  "pleaseFillInformation": "لطفا اطلاعات زیر را تکمیل نمایید.",
   "pleaseFillAllParams": "لطفا تمامی گزینه ها را پر کنید",
   "cardNumberFull": "شماره شبای کارت بانکی",
   "cardNumber": "شماره کارت",
@@ -734,5 +734,6 @@
   "loginWithOtp": "ورود با رمز یکبار مصرف",
   "enterPassword": "رمز عبوری که انتخاب کردید را وارد کنید.",
   "phoneNumber": "شماره همراه",
+  "firstInfo": "اطلاعات اولیه",
   "understand": "متوجه شدم"
 }
