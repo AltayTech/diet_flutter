@@ -9,6 +9,7 @@ import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
+import 'package:behandam/screens/widget/package_item.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -219,7 +220,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
               width: double.infinity,
               height: 7.h,
               color: AppColors.grey,
-              padding: EdgeInsets.only(left: 8,right: 8),
+              padding: EdgeInsets.only(left: 8, right: 8),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -230,9 +231,8 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                       style: typography.subtitle2,
                     ),
                   ),
-
                   ImageUtils.fromLocal("assets/images/physical_report/date.svg",
-                      width:5.h, height: 5.h),
+                      width: 5.h, height: 5.h),
                 ],
               ),
             ),
@@ -322,6 +322,17 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
             )),
           ],
         ),
+        PackageWidget(
+          title: "sdfs",
+          description: "sdfsfsfs",
+          price: "30000 تومان",
+          finalPrice: "10000 تومان",
+          isSelected: true,
+          isBorder: true,
+          maxHeight: 15.h,
+          onTap: () {},
+          isOurSuggestion: true,
+        )
       ],
     );
   }
