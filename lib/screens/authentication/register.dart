@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
@@ -12,6 +13,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/gender_switch.dart';
+import 'package:behandam/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logifan/widgets/space.dart';
@@ -97,12 +99,42 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               stream: authBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
-                  return Column(children: [
-                    Space(height: 1.h),
-                    //Stepper(steps: )
-                    Space(height: 3.h),
-                    content(),
-                  ]);
+                  return TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        Space(height: 1.h),
+                        Container(
+                          margin: EdgeInsets.only(top: 16),
+                          width: 100.w,
+                          alignment: Alignment.center,
+                          child: ProgressTimeline(
+                              width: 65.w,
+                              height: 7.h,
+                              failedIcon: Icon(Icons.cancel),
+                              checkedIcon: Icon(Icons.check_circle),
+                              uncheckedIcon: Icon(Icons.circle_outlined),
+                              currentIcon: Icon(
+                                Icons.radio_button_checked_rounded,
+                                color: AppColors.primary,
+                              ),
+                              connectorWidth: 1.w,
+                              iconSize: 7.w,
+                              connectorLength: 15.w,
+                              connectorColor: AppColors.grey,
+                              connectorColorSelected: AppColors.primary,
+                              states: [
+                                SingleState(stateTitle: "", isFailed: false),
+                                SingleState(stateTitle: "", isFailed: false),
+                                SingleState(stateTitle: "", isFailed: false),
+                                SingleState(stateTitle: "", isFailed: false),
+                                SingleState(stateTitle: "", isFailed: false)
+                              ]),
+                        ),
+                        Space(height: 1.h),
+                        content(),
+                      ]),
+                    ),
+                  );
                 } else {
                   check = false;
                   return Center(
@@ -170,18 +202,22 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(10.0)),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                      borderSide:
+                          BorderSide(color: Colors.grey.withOpacity(0.5)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(10.0)),
                     labelText: intl.name,
-                    labelStyle:
-                        TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
+                    labelStyle: TextStyle(
+                        color: AppColors.penColor.withOpacity(0.5),
+                        fontSize: 16.0),
                     // errorText:
                     // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
@@ -192,18 +228,22 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             TextField(
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(10.0)),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                      borderSide:
+                          BorderSide(color: Colors.grey.withOpacity(0.5)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(10.0)),
                     labelText: intl.lastName,
-                    labelStyle:
-                        TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
+                    labelStyle: TextStyle(
+                        color: AppColors.penColor.withOpacity(0.5),
+                        fontSize: 16.0),
                     // errorText:
                     // _validate ? intl.fillAllField : null,
                     suffixStyle: TextStyle(color: Colors.green)),
@@ -215,14 +255,16 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               obscureText: !_obscureText,
               decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                      borderSide:
+                          BorderSide(color: Colors.grey.withOpacity(0.5)),
                       borderRadius: BorderRadius.circular(10.0)),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                      borderSide:
+                          BorderSide(color: Colors.grey.withOpacity(0.5)),
                       borderRadius: BorderRadius.circular(10.0)),
                   labelText: intl.password,
                   // errorText:
@@ -238,8 +280,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                       });
                     },
                   ),
-                  labelStyle:
-                      TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 18.0)),
+                  labelStyle: TextStyle(
+                      color: AppColors.penColor.withOpacity(0.5),
+                      fontSize: 18.0)),
               onChanged: (txt) {
                 _password = txt;
               },
@@ -247,8 +290,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             Space(height: 1.h),
             Container(
               height: 5.h,
-              decoration: BoxDecoration(color: AppColors.priceGreenColor.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(
+                  color: AppColors.priceGreenColor.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(10)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -256,20 +300,20 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                     Icon(Icons.info_outline, color: AppColors.priceGreenColor),
                     Space(width: 1.w),
                     Text(
-                      intl.forSendCodeCallMe,
+                      intl.youCanSetPasswordForEachLogin,
                       textAlign: TextAlign.start,
-                      textDirection: TextDirection.ltr,
-                      style: typography.caption!
+                      style: typography.overline!
                           .copyWith(color: AppColors.priceGreenColor),
                     ),
                   ],
                 ),
               ),
             ),
-            Space(height: 18.h),
+            Space(height: 12.h),
             Padding(
               padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-              child: button(AppColors.btnColor, intl.nextStage, Size(100.w, 6.h), clickSubmit),
+              child: button.withIcon(AppColors.btnColor, intl.nextStage,
+                  Size(100.w, 6.h), Icon(Icons.arrow_forward), clickSubmit),
             ),
           ],
         ),

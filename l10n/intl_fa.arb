@@ -735,5 +735,6 @@
   "enterPassword": "رمز عبوری که انتخاب کردید را وارد کنید.",
   "phoneNumber": "شماره همراه",
   "firstInfo": "اطلاعات اولیه",
+  "youCanSetPasswordForEachLogin": "می‌تونید برای ورودهای بعدی، رمز عبور تعیین کنید.",
   "understand": "متوجه شدم"
 }
