@@ -44,21 +44,21 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
         SingleState(stateTitle: "", isFailed: false),
         SingleState(stateTitle: "", isFailed: false),
       ],
-      height: 6.8.h,
+      height: 5.h,
       width: 50.w,
       checkedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 5.w, height: 5.w, fit: BoxFit.fill),
+          width: 28, height: 28, fit: BoxFit.fill),
       currentIcon: ImageUtils.fromLocal("assets/images/physical_report/current_step.svg",
-          width: 5.w, height: 5.w, fit: BoxFit.fill),
+          width: 28, height: 28, fit: BoxFit.fill),
       failedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 5.w, height: 5.w, fit: BoxFit.fill),
+          width: 28, height: 28, fit: BoxFit.fill),
       uncheckedIcon: ImageUtils.fromLocal("assets/images/physical_report/none_step.svg",
-          width: 5.w, height: 5.w, fit: BoxFit.fill),
-      iconSize: 5.w,
+          width: 15, height: 15, fit: BoxFit.fill),
+      iconSize: 28,
       connectorLength: 10.w,
       connectorColorSelected: AppColors.primary,
-      connectorWidth: 1.5.w,
-      connectorColor: Colors.grey,
+      connectorWidth: 4,
+      connectorColor: Color(0xffC9D1E1),
     );
 
     bloc = PhysicalInfoBloc();
@@ -119,7 +119,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                             Space(height: 2.h),
                             genderBox(physicalInfo.requireData.gender!),
                             Space(
-                              height: 1.h,
+                              height: 3.h,
                             ),
                             SubmitButton(
                               label: intl.confirmContinue,
@@ -352,12 +352,16 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
               Expanded(
                 flex: 2,
                 child: ImageUtils.fromLocal(
-                    type == GenderType.Male
-                        ? 'assets/images/physical_report/male.svg'
-                        : 'assets/images/physical_report/female.svg',
-                    width: 10.w,
-                    height: 10.w,
-                    color: isSelected ? AppColors.greenRuler : AppColors.labelTextColor),
+                  type == GenderType.Male
+                      ? isSelected
+                          ? 'assets/images/physical_report/male_selected.svg'
+                          : 'assets/images/physical_report/male.svg'
+                      : isSelected
+                          ? 'assets/images/physical_report/female_selected.svg'
+                          : 'assets/images/physical_report/female.svg',
+                  width: 10.w,
+                  height: 10.w,
+                ),
               ),
               Space(
                 width: 1.w,

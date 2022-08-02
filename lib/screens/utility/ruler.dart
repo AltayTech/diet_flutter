@@ -5,6 +5,7 @@ import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
@@ -45,6 +46,8 @@ class Ruler extends StatefulWidget {
 
 class _CustomRulerState extends ResourcefulState<Ruler> {
   bool showRuler = false;
+  final _text = TextEditingController();
+  GlobalKey<_SliderState> sliderKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +98,7 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                           child: Stack(
                             children: [
                               Slider(
+                                key: sliderKey,
                                 color: widget.color,
                                 minValue: widget.min,
                                 maxValue: widget.max,
@@ -103,6 +107,8 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                                   setState(() {
                                     widget.onClick.call(val);
                                     widget.value = '$val';
+                                    _text.clear();
+                                    _text.text = '${val}'.split('.')[0];
                                   });
                                 },
                                 width: constraints.maxWidth,
@@ -131,7 +137,7 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                   flex: 1,
                   child: Container(
                     width: 18.w,
-                    height: 4.h,
+                    height: 5.h,
                     padding: EdgeInsets.all(1.w),
                     decoration: BoxDecoration(
                       color: AppColors.onPrimary,
@@ -139,15 +145,40 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                     ),
                     child: Row(
                       children: [
-                        Expanded(
+                        Flexible(
                           flex: 1,
-                          child: Text(
-                            widget.value.toString().split('.')[0],
+                          child: TextField(
+                            controller: _text,
                             textAlign: TextAlign.center,
-                            style: typography.caption?.apply(
-                              color: AppColors.labelColor,
-                              fontSizeDelta: -3,
+                            textDirection: TextDirection.ltr,
+                            maxLines: 1,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(3),
+                            ],
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              counterStyle: TextStyle(fontSize: 0.sp),
+                              contentPadding: EdgeInsets.only(left: 15, bottom: 2.h, right: 15),
                             ),
+                            style: typography.caption?.apply(
+                              color: widget.color,
+                            ),
+                            onSubmitted: (txt) {
+                              if (widget.max > int.parse(txt) && widget.min < int.parse(txt)) {
+                                if (widget.secondUnit != null)
+                                  sliderKey.currentState!
+                                      .scrollTo('$txt.${widget.value.toString().split('.')[1]}');
+                                else
+                                  sliderKey.currentState!.scrollTo('$txt');
+                              } /* else if (widget.max < int.parse(txt)) {
+                                sliderKey.currentState!.scrollTo('${widget.max}.0');
+                              } else {
+                                sliderKey.currentState!.scrollTo('${widget.min}.0');
+                              }*/
+                            },
                           ),
                         ),
                         Container(
@@ -233,16 +264,19 @@ class Slider extends StatefulWidget {
   final Color color;
   final RulerType type;
   final bool isSecond;
+  final Key? key;
 
   Slider(
-      {required this.minValue,
+      {this.key,
+      required this.minValue,
       required this.maxValue,
       required this.value,
       required this.onChanged,
       required this.width,
       required this.color,
       required this.type,
-      this.isSecond = false});
+      this.isSecond = false})
+      : super(key: key);
 
   @override
   State<Slider> createState() => _SliderState();
@@ -260,9 +294,10 @@ class _SliderState extends State<Slider> {
     if (widget.type == RulerType.Weight) {
       for (int i = widget.minValue; i <= widget.maxValue; i++) {
         _list.add('$i.0');
-        for (int g = 1; g <= 9; g++) {
-          _list.add('$i.${(g * 100)}');
-        }
+        if (i < widget.maxValue)
+          for (int g = 1; g <= 9; g++) {
+            _list.add('$i.${(g * 100)}');
+          }
       }
     } else {
       for (int i = widget.minValue; i <= widget.maxValue; i++) {
@@ -273,6 +308,11 @@ class _SliderState extends State<Slider> {
     _list.forEach((element) {
       if (element == '${widget.value}') {
         indexSelected = index;
+        Future.delayed(Duration(milliseconds: 500), () {
+          setState(() {
+            indexSelected;
+          });
+        });
       }
       index++;
     });
@@ -292,6 +332,7 @@ class _SliderState extends State<Slider> {
         child: ScrollSnapList(
           itemSize: 5.w,
           focusOnItemTap: true,
+          curve: Curves.ease,
           key: sslKey,
           initialIndex: indexSelected.toDouble(),
           onItemFocus: (val) {
@@ -351,6 +392,19 @@ class _SliderState extends State<Slider> {
 
   TextStyle _getTextStyle(BuildContext context, int index, Color color) {
     return index == indexSelected ? _getHighlightTextStyle(context, color) : _getDefaultTextStyle();
+  }
+
+  void scrollTo(String value) {
+    int index = 0;
+    _list.forEach((element) {
+      if (element == '$value') {
+        sslKey.currentState!.focusToItem(index);
+        setState(() {
+          indexSelected = index;
+        });
+      }
+      index++;
+    });
   }
 }
 

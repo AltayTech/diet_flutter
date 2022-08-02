@@ -297,25 +297,17 @@ class _RenderedState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.all(0.0),
-          child: Row(
-            children: [
-              //if (!isLeading) line(),
-              renderCurrentState(),
-              if (!isTrailing) line(),
-            ],
-          ),
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.all(0.0),
+        child: Row(
+          children: [
+            //if (!isLeading) line(),
+            renderCurrentState(),
+            if (!isTrailing) line(),
+          ],
         ),
-        Container(
-          child: Text(
-            stateTitle,
-            style: textStyle,
-          ),
-        ),
-      ],
+      ),
     );
   }
 
