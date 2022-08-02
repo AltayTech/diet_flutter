@@ -5,9 +5,11 @@ import 'package:behandam/screens/diet/bloc.dart';
 import 'package:behandam/screens/utility/custom_ruler.dart';
 import 'package:behandam/screens/utility/ruler.dart';
 import 'package:behandam/screens/utility/ruler_header.dart';
+import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
+import 'package:behandam/screens/widget/package_item.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -218,23 +220,19 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
               width: double.infinity,
               height: 7.h,
               color: AppColors.grey,
+              padding: EdgeInsets.only(left: 8, right: 8),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 12.w,
-                    height: double.infinity,
-                    color: AppColors.strongPen,
-                    child: Icon(
-                      Icons.calendar_today,
-                      color: Colors.white,
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      birthdateFormatted(physicalInfo) ?? '',
+                      style: typography.subtitle2,
                     ),
                   ),
-                  SizedBox(width: 2.w),
-                  Text(
-                    birthdateFormatted(physicalInfo) ?? '',
-                    style: typography.subtitle2,
-                  ),
+                  ImageUtils.fromLocal("assets/images/physical_report/date.svg",
+                      width: 5.h, height: 5.h),
                 ],
               ),
             ),
@@ -299,90 +297,43 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
         Space(height: 0.5.h),
         Row(
           children: [
-            Expanded(child: genderItem(gender == GenderType.Female, GenderType.Female)),
+            Expanded(
+                child: CheckBoxApp.icon(
+              isSelected: gender == GenderType.Female,
+              onTap: () {
+                bloc.setGender(GenderType.Female);
+              },
+              title: intl.womanItem,
+              iconPath: 'assets/images/physical_report/female.svg',
+              iconPathSelected: 'assets/images/physical_report/female_selected.svg',
+            )),
             Space(
               width: 2.w,
             ),
-            Expanded(child: genderItem(gender == GenderType.Male, GenderType.Male)),
+            Expanded(
+                child: CheckBoxApp.icon(
+              isSelected: gender == GenderType.Male,
+              onTap: () {
+                bloc.setGender(GenderType.Male);
+              },
+              title: intl.menItem,
+              iconPath: 'assets/images/physical_report/male.svg',
+              iconPathSelected: 'assets/images/physical_report/male_selected.svg',
+            )),
           ],
         ),
+        PackageWidget(
+          title: "sdfs",
+          description: "sdfsfsfs",
+          price: "30000 تومان",
+          finalPrice: "10000 تومان",
+          isSelected: true,
+          isBorder: true,
+          maxHeight: 15.h,
+          onTap: () {},
+          isOurSuggestion: true,
+        )
       ],
-    );
-  }
-
-  Widget genderItem(bool isSelected, GenderType type) {
-    return InkWell(
-      onTap: () {
-        bloc.setGender(type);
-      },
-      child: Container(
-        width: double.maxFinite,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border:
-              isSelected ? Border.all(color: AppColors.priceColor) : Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        constraints: BoxConstraints(minHeight: 8.h, maxHeight: 8.h),
-        child: Container(
-          margin: EdgeInsets.only(right: 2.w),
-          width: double.maxFinite,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                    padding: EdgeInsets.only(top: 8),
-                    child: ImageUtils.fromLocal(
-                      isSelected
-                          ? 'assets/images/physical_report/checked.svg'
-                          : 'assets/images/bill/not_select.svg',
-                      width: 5.w,
-                      height: 5.w,
-                    ),
-                    alignment: Alignment.topRight,
-                    height: double.maxFinite),
-              ),
-              Space(
-                width: 1.w,
-              ),
-              Expanded(
-                flex: 2,
-                child: ImageUtils.fromLocal(
-                  type == GenderType.Male
-                      ? isSelected
-                          ? 'assets/images/physical_report/male_selected.svg'
-                          : 'assets/images/physical_report/male.svg'
-                      : isSelected
-                          ? 'assets/images/physical_report/female_selected.svg'
-                          : 'assets/images/physical_report/female.svg',
-                  width: 10.w,
-                  height: 10.w,
-                ),
-              ),
-              Space(
-                width: 1.w,
-              ),
-              Expanded(
-                flex: 4,
-                child: Container(
-                  width: double.maxFinite,
-                  child: Text(
-                    type == GenderType.Male ? intl.manItem : intl.womanItem,
-                    softWrap: false,
-                    textAlign: TextAlign.start,
-                    style: typography.caption!
-                        .copyWith(color: isSelected ? Colors.black : Colors.grey, fontSize: 10.sp),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
