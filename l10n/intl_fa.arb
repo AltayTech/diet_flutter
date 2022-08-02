@@ -725,7 +725,7 @@
   "yesNeedHelpDiet": "بله، برای ادامه رژیم نیاز به راهنمایی دارم",
   "enterYourStateDescription": "اطلاعات جسمانی خود را به صورت صحیح وارد نمایید.",
   "womanItem": "خانم هستم",
-  "manItem": "آقا هستم",
+  "menItem": "آقا هستم",
   "gender": "جنسیت",
   "understand": "متوجه شدم"
 }
