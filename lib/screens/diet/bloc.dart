@@ -5,6 +5,7 @@ import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/extensions/stream.dart';
+import 'package:behandam/screens/authentication/register.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -33,7 +34,7 @@ class PhysicalInfoBloc {
     _physicalInfo=PhysicalInfoData();
     _physicalInfo.gender=GenderType.Male;
     _physicalInfo.height=170;
-    _physicalInfo.weight=55.0;
+    _physicalInfo.weight=55.300;
     _physicalInfo.kilo=55;
     _physicalInfo.gram=5;
     _physicalInfo.age=25;
@@ -56,6 +57,11 @@ class PhysicalInfoBloc {
     }).whenComplete(() => _loadingContent.safeValue = false);
   }
 */
+
+  void setGender(GenderType gender){
+    _physicalInfo.gender=gender;
+    _physicalInfoData.safeValue=_physicalInfo;
+  }
 
   void dispose() {
     _loadingContent.close();

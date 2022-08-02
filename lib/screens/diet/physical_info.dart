@@ -2,9 +2,9 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/screens/diet/bloc.dart';
-import 'package:behandam/screens/regime/ruler_header.dart';
 import 'package:behandam/screens/utility/custom_ruler.dart';
 import 'package:behandam/screens/utility/ruler.dart';
+import 'package:behandam/screens/utility/ruler_header.dart';
 import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
@@ -13,6 +13,8 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -29,10 +31,36 @@ class PhysicalInfoScreen extends StatefulWidget {
 
 class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
   late PhysicalInfoBloc bloc;
+  late ProgressTimeline _progressTimeline;
 
   @override
   void initState() {
     super.initState();
+    _progressTimeline = ProgressTimeline(
+      states: [
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+      ],
+      height: 5.h,
+      width: 50.w,
+      checkedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
+          width: 28, height: 28, fit: BoxFit.fill),
+      currentIcon: ImageUtils.fromLocal("assets/images/physical_report/current_step.svg",
+          width: 28, height: 28, fit: BoxFit.fill),
+      failedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
+          width: 28, height: 28, fit: BoxFit.fill),
+      uncheckedIcon: ImageUtils.fromLocal("assets/images/physical_report/none_step.svg",
+          width: 15, height: 15, fit: BoxFit.fill),
+      iconSize: 28,
+      connectorLength: 10.w,
+      connectorColorSelected: AppColors.primary,
+      connectorWidth: 4,
+      connectorColor: Color(0xffC9D1E1),
+    );
+
     bloc = PhysicalInfoBloc();
     bloc.physicalInfo();
   }
@@ -59,14 +87,25 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  width: 90.w,
+                  child: Center(
+                    child: _progressTimeline,
+                  ),
+                ),
                 Text(
-                  navigator.currentConfiguration!.path.contains(Routes.weightEnter)
-                      ? intl.enterNewWeight
-                      : intl.enterYourState,
-                  textAlign: TextAlign.center,
-                  style: typography.subtitle2,
+                  intl.enterYourState,
+                  style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  intl.enterYourStateDescription,
+                  style: typography.overline,
+                ),
+                Space(
+                  height: 2.h,
                 ),
                 StreamBuilder<PhysicalInfoData>(
                     stream: bloc.physicalInfoData,
@@ -78,9 +117,15 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                             Space(height: 2.h),
                             birthDayBox(physicalInfo.requireData),
                             Space(height: 2.h),
+                            genderBox(physicalInfo.requireData.gender!),
+                            Space(
+                              height: 3.h,
+                            ),
                             SubmitButton(
                               label: intl.confirmContinue,
-                              onTap: () {},
+                              onTap: () {
+                                _progressTimeline.gotoNextStage();
+                              },
                             ),
                             Space(height: 2.h),
                           ],
@@ -101,7 +146,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
       children: [
         Ruler(
           rulerType: RulerType.Weight,
-          value: '${physicalInfo.weight}',
+          value: '${physicalInfo.weight!.toStringAsFixed(3)}',
           max: 210,
           min: 30,
           heading: intl.weight,
@@ -159,11 +204,13 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
   Widget birthDayBox(PhysicalInfoData physicalInfo) {
     return Column(
       children: [
-        RulerHeader(
-          iconPath: 'assets/images/diet/birth_icon.svg',
-          heading: intl.birthday,
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+          child: RulerHeader(
+            heading: intl.birthday,
+          ),
         ),
-        Space(height: 1.5.h),
+        Space(height: 0.5.h),
         InkWell(
           child: ClipRRect(
             borderRadius: AppBorderRadius.borderRadiusDefault,
@@ -238,6 +285,105 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
             ),
           ),
         ));
+  }
+
+  Widget genderBox(GenderType gender) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+          child: RulerHeader(
+            heading: intl.gender,
+          ),
+        ),
+        Space(height: 0.5.h),
+        Row(
+          children: [
+            Expanded(child: genderItem(gender == GenderType.Female, GenderType.Female)),
+            Space(
+              width: 2.w,
+            ),
+            Expanded(child: genderItem(gender == GenderType.Male, GenderType.Male)),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget genderItem(bool isSelected, GenderType type) {
+    return InkWell(
+      onTap: () {
+        bloc.setGender(type);
+      },
+      child: Container(
+        width: double.maxFinite,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border:
+              isSelected ? Border.all(color: AppColors.priceColor) : Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        constraints: BoxConstraints(minHeight: 8.h, maxHeight: 8.h),
+        child: Container(
+          margin: EdgeInsets.only(right: 2.w),
+          width: double.maxFinite,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                    padding: EdgeInsets.only(top: 8),
+                    child: ImageUtils.fromLocal(
+                      isSelected
+                          ? 'assets/images/physical_report/checked.svg'
+                          : 'assets/images/bill/not_select.svg',
+                      width: 5.w,
+                      height: 5.w,
+                    ),
+                    alignment: Alignment.topRight,
+                    height: double.maxFinite),
+              ),
+              Space(
+                width: 1.w,
+              ),
+              Expanded(
+                flex: 2,
+                child: ImageUtils.fromLocal(
+                  type == GenderType.Male
+                      ? isSelected
+                          ? 'assets/images/physical_report/male_selected.svg'
+                          : 'assets/images/physical_report/male.svg'
+                      : isSelected
+                          ? 'assets/images/physical_report/female_selected.svg'
+                          : 'assets/images/physical_report/female.svg',
+                  width: 10.w,
+                  height: 10.w,
+                ),
+              ),
+              Space(
+                width: 1.w,
+              ),
+              Expanded(
+                flex: 4,
+                child: Container(
+                  width: double.maxFinite,
+                  child: Text(
+                    type == GenderType.Male ? intl.manItem : intl.womanItem,
+                    softWrap: false,
+                    textAlign: TextAlign.start,
+                    style: typography.caption!
+                        .copyWith(color: isSelected ? Colors.black : Colors.grey, fontSize: 10.sp),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override

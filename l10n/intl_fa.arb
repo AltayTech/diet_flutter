@@ -243,7 +243,7 @@
   "errorFillItem": "تمامی اطلاعات خواسته شده را وارد کنید",
   "closedTicket": "این تیکت بسته شده است. در صورت پاسخ به آن مجددا باز خواهد شد.",
   "stateOfBody": "وضعیت جسمانی",
-  "enterYourState": "اطلاعات جسمانیت رو وارد کن",
+  "enterYourState": "اطلاعات جسمانی",
   "weight": "وزن",
   "height": "قد",
   "wrist": "دور مچ",
@@ -723,5 +723,9 @@
   "errorDisableWhatsApp": "سرویس واتساپ غیر فعال میباشد",
   "noNeedHelp": "خیر، نیازی به راهنمایی ندارم",
   "yesNeedHelpDiet": "بله، برای ادامه رژیم نیاز به راهنمایی دارم",
+  "enterYourStateDescription": "اطلاعات جسمانی خود را به صورت صحیح وارد نمایید.",
+  "womanItem": "خانم هستم",
+  "manItem": "آقا هستم",
+  "gender": "جنسیت",
   "understand": "متوجه شدم"
 }
