@@ -11,7 +11,7 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/gender_switch.dart';
 import 'package:behandam/widget/stepper.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +139,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   check = false;
                   return Center(
                       child: Container(
-                          width: 15.w, height: 15.w, child: Progress()));
+                          width: 15.w, height: 80.h, child: Progress()));
                 }
               }),
         ));
@@ -312,7 +312,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             Space(height: 12.h),
             Padding(
               padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-              child: button.withIcon(AppColors.btnColor, intl.nextStage,
+              child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
                   Size(100.w, 6.h), Icon(Icons.arrow_forward), clickSubmit),
             ),
           ],

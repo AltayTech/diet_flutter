@@ -3,7 +3,7 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -88,7 +88,7 @@ class _PsychologyTermsScreenState extends ResourcefulState<PsychologyTermsScreen
                     ],
                   ),
                   Space(height: 2.h),
-                  button(
+                  CustomButton(
                       AppColors.primaryVariantLight,
                       intl.readRules,
                       Size(70.w, 5.h),

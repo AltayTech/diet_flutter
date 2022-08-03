@@ -9,7 +9,7 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -196,7 +196,7 @@ class _VerifyOldScreenState extends ResourcefulState<VerifyOldScreen> with CodeA
                           });
                   })),
           Space(height: 8.h),
-          button(AppColors.btnColor, intl.confirmContinue, Size(100.w, 8.h), () {
+          CustomButton(AppColors.btnColor, intl.confirmContinue, Size(100.w, 8.h), () {
             DialogUtils.showDialogProgress(context: context);
             VerificationCode verification = VerificationCode();
             verification.mobile = args['mobile'];

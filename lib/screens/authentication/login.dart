@@ -12,7 +12,7 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -259,7 +259,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             ),
           ),
           Space(height: 2.h),
-          button(
+          CustomButton(
             AppColors.btnColor,
             intl.login,
             Size(100.w, 6.h),

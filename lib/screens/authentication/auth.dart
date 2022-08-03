@@ -7,7 +7,7 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -175,7 +175,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
             StreamBuilder(
               stream: authBloc.selectedCountry,
               builder: (_, AsyncSnapshot<Country> snapshot) {
-                return button(
+                return CustomButton(
                   AppColors.btnColor,
                   intl.login,
                   Size(100.w, 6.h),

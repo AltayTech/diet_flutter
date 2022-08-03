@@ -13,7 +13,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -293,7 +293,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen>
             StreamBuilder(
               stream: authBloc.selectedCountry,
               builder: (_, AsyncSnapshot<Country> snapshot) {
-                return button(
+                return CustomButton(
                   AppColors.btnColor,
                   intl.login,
                   Size(100.w, 6.h),

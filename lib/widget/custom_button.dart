@@ -4,10 +4,10 @@ import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 
-class button extends StatefulWidget {
-  button(this.btnColor, this.txt, this.size, this.press) : super();
+class CustomButton extends StatefulWidget {
+  CustomButton(this.btnColor, this.txt, this.size, this.press) : super();
 
-  button.withIcon(this.btnColor, this.txt, this.size, this.icon, this.press)
+  CustomButton.withIcon(this.btnColor, this.txt, this.size, this.icon, this.press)
       : super();
 
   final Color btnColor;
@@ -19,10 +19,10 @@ class button extends StatefulWidget {
   // final Icon icon,
 
   @override
-  _buttonState createState() => _buttonState();
+  _CustomButtonState createState() => _CustomButtonState();
 }
 
-class _buttonState extends ResourcefulState<button> {
+class _CustomButtonState extends ResourcefulState<CustomButton> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
