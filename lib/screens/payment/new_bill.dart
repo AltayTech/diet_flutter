@@ -8,13 +8,17 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/enable_discount_box.dart';
+import 'package:behandam/screens/payment/payment_type_new.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/package_item.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_checkbox.dart';
+import 'package:behandam/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -30,12 +34,37 @@ class BillPaymentNewScreen extends StatefulWidget {
 class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
     with WidgetsBindingObserver {
   late BillPaymentBloc bloc;
+  late ProgressTimeline _progressTimeline;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _progressTimeline = ProgressTimeline(
+      states: [
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+      ],
+      height: 5.h,
+      width: 50.w,
+      checkedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
+          width: 28, height: 28, fit: BoxFit.fill),
+      currentIcon: ImageUtils.fromLocal("assets/images/physical_report/current_step.svg",
+          width: 28, height: 28, fit: BoxFit.fill),
+      failedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
+          width: 28, height: 28, fit: BoxFit.fill),
+      uncheckedIcon: ImageUtils.fromLocal("assets/images/physical_report/none_step.svg",
+          width: 15, height: 15, fit: BoxFit.fill),
+      iconSize: 28,
+      connectorLength: 10.w,
+      connectorColorSelected: AppColors.primary,
+      connectorWidth: 4,
+      connectorColor: Color(0xffC9D1E1),
+    );
 
     bloc = BillPaymentBloc();
     if (navigator.currentConfiguration!.path.contains('subscription')) {
@@ -45,6 +74,10 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
     }
 
     listenBloc();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _progressTimeline.state.gotoStage(3);
+    });
   }
 
   @override
@@ -82,7 +115,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
       } else {
         MemoryApp.isShowDialog = false;
         if (event != null && !event) {
-          if (bloc.packageItem!.type! == 2) {
+          if (bloc.packageItemNew!.type! == 2) {
             VxNavigator.of(context).clearAndPushAll([
               Uri.parse(Routes.profile),
               Uri.parse(Routes.billSubscriptionHistory),
@@ -145,37 +178,72 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: Toolbar(titleBar: intl.paymentFinalBill),
+        backgroundColor: AppColors.newBackgroundFlow,
         body: StreamBuilder<bool>(
             stream: bloc.waiting,
             builder: (context, waiting) {
-              if (waiting.hasData && !waiting.requireData && bloc.packageItem != null)
+              if (waiting.hasData && !waiting.requireData)
                 return TouchMouseScrollable(
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ...bloc.packageItems
-                            .asMap()
-                            .map((index, package) => MapEntry(
-                                index,
-                                PackageWidget(
-                                    onTap: () {
-                                      bloc.setPackageItem = package;
-                                    },
-                                    title: package.name ?? '',
-                                    isSelected: package.isSelected ?? false,
-                                    description: package.description ?? '',
-                                    price: '${package.price}',
-                                    finalPrice: '${package.finalPrice}',
-                                    maxHeight: 15.h,
-                                    isOurSuggestion: false,
-                                    isBorder: true)))
-                            .values
-                            .toList(),
-                        Space(height: 1.h),
-                        EnableDiscountBoxWidget(),
-                        //PaymentTypeWidget(),
-                        rulesAndPaymentBtn()
-                      ],
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 90.w,
+                            child: Center(
+                              child: _progressTimeline,
+                            ),
+                          ),
+                          Text(
+                            intl.enterYourPackage,
+                            style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            intl.enterYourPackageDescription,
+                            style: typography.overline,
+                          ),
+                          Space(
+                            height: 2.h,
+                          ),
+                          StreamBuilder(
+                            stream: bloc.refreshPackages,
+                            builder: (context, snapshot) {
+                              return Column(
+                                children: [
+                                  ...bloc.packageItems
+                                      .asMap()
+                                      .map((index, package) => MapEntry(
+                                          index,
+                                          Padding(
+                                            padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
+                                            child: PackageWidget(
+                                                onTap: () {
+                                                  bloc.setPackageItem = package;
+                                                },
+                                                title: package.name ?? '',
+                                                isSelected: package.isSelected ?? false,
+                                                description: package.description ?? '',
+                                                price: '${package.price}',
+                                                finalPrice: '${package.finalPrice}',
+                                                maxHeight: 15.h,
+                                                isOurSuggestion: false,
+                                                isBorder: true),
+                                          )))
+                                      .values
+                                      .toList()
+                                ],
+                              );
+                            },
+                          ),
+                          Space(height: 1.h),
+                          EnableDiscountBoxWidget(),
+                          PaymentTypeWidget(),
+                          rulesAndPaymentBtn()
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -185,7 +253,6 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
 
   Widget rulesAndPaymentBtn() {
     return Container(
-        margin: EdgeInsets.all(2.w),
         child: StreamBuilder<bool>(
             initialData: false,
             stream: bloc.checkedRules,
@@ -267,5 +334,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
   }
 
   @override
-  void onShowMessage(String value) {}
+  void onShowMessage(String value) {
+    bloc.setMessageErrorCode(value);
+  }
 }

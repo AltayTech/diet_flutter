@@ -157,6 +157,7 @@ class AppColors {
   static late Color menuColorDefault=Color.fromRGBO(250, 114, 126, 1.0);
   static late Color menuColorFasting=Color(0xff65A8E0);
   static late Color newBackground=Color(0xffF5F5F5);
+  static late Color newBackgroundFlow=Color(0xffffffff);
 
   AppColors({required this.themeAppColor}) {
     switch (this.themeAppColor) {

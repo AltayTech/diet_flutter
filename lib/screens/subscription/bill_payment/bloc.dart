@@ -23,7 +23,8 @@ class BillPaymentBloc {
 
   String? discountCode;
   Price? _discountInfo;
-  Package? _packageItem;
+  PackageItem? _packageItem;
+  Package? _packageItemNew;
   List<Package> _list = [];
   late String _path;
   bool _checkLatestInvoice = false;
@@ -73,7 +74,8 @@ class BillPaymentBloc {
 
   Price? get discountInfo => _discountInfo;
 
-  Package? get packageItem => _packageItem;
+  PackageItem? get packageItem => _packageItem;
+  Package? get packageItemNew => _packageItemNew;
 
   List<Package> get packageItems => _list;
   String? get messageErrorCode => _messageErrorCode;
@@ -91,9 +93,9 @@ class BillPaymentBloc {
     _list.forEach((element) {
       element.isSelected = false;
     });
-    _packageItem = packageItem;
-    _packageItem!.isSelected = true;
-    _waiting.safeValue=true;
+    _packageItemNew = packageItem;
+    _packageItemNew!.isSelected = true;
+    _refreshPackages.safeValue=true;
   }
 
   void changeDiscountLoading(bool val) {
@@ -111,7 +113,7 @@ class BillPaymentBloc {
     price.code = val;
     _repository.checkCoupon(price).then((value) {
       _discountInfo = value.data;
-      _packageItem!.totalPrice = _discountInfo!.finalPrice;
+      _packageItemNew!.totalPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
       if (_discountInfo!.finalPrice == 0) {
         onPaymentTap = PaymentType.online;
@@ -145,7 +147,7 @@ class BillPaymentBloc {
       ..index = 0
       ..totalPrice = 1900
       ..description = 'dsfdsf sdfdsfds sdfsdfsd sdfsdfsd');
-    _packageItem = _list[0];
+    _packageItemNew = _list[0];
     /*   _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
       _packageItem!.index = 0;

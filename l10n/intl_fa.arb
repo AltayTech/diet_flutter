@@ -727,5 +727,7 @@
   "womanItem": "خانم هستم",
   "menItem": "آقا هستم",
   "gender": "جنسیت",
+  "enterYourPackage": "انتخاب پکیج و پرداخت",
+  "enterYourPackageDescription": "میتونید پکیج های پیشنهادی رو به پکیج اصلی اضافه کنید",
   "understand": "متوجه شدم"
 }

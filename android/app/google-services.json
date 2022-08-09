@@ -55,10 +55,10 @@
               "client_type": 3
             },
             {
-              "client_id": "343455511841-kklojkmsgmitpqvon8v2favmmbsk050s.apps.googleusercontent.com",
+              "client_id": "343455511841-0s9pspr1i7qlib3bnkssovegrm5riit8.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.kermany.behandam"
+                "bundle_id": "com.kermany.behandam.stage"
               }
             }
           ]
@@ -115,10 +115,10 @@
               "client_type": 3
             },
             {
-              "client_id": "343455511841-kklojkmsgmitpqvon8v2favmmbsk050s.apps.googleusercontent.com",
+              "client_id": "343455511841-0s9pspr1i7qlib3bnkssovegrm5riit8.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.kermany.behandam"
+                "bundle_id": "com.kermany.behandam.stage"
               }
             }
           ]
@@ -175,10 +175,10 @@
               "client_type": 3
             },
             {
-              "client_id": "343455511841-kklojkmsgmitpqvon8v2favmmbsk050s.apps.googleusercontent.com",
+              "client_id": "343455511841-0s9pspr1i7qlib3bnkssovegrm5riit8.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.kermany.behandam"
+                "bundle_id": "com.kermany.behandam.stage"
               }
             }
           ]
@@ -235,10 +235,10 @@
               "client_type": 3
             },
             {
-              "client_id": "343455511841-kklojkmsgmitpqvon8v2favmmbsk050s.apps.googleusercontent.com",
+              "client_id": "343455511841-0s9pspr1i7qlib3bnkssovegrm5riit8.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.kermany.behandam"
+                "bundle_id": "com.kermany.behandam.stage"
               }
             }
           ]

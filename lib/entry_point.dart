@@ -8,6 +8,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/utils/crashlytics.dart';
 import 'package:behandam/utils/fcm.dart';
+import 'package:behandam/utils/firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -61,7 +62,7 @@ void _initializeDebugPrint() {
 
 void _initFireBase() async {
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(options: await DefaultFirebaseConfig.platformOptions);
     await AppFcm.initialize();
     await AppCrashlytics.initialize();
     if (!kIsWeb) {

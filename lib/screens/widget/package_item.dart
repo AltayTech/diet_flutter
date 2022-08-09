@@ -29,7 +29,7 @@ class PackageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme  typography = context.typography;
+    TextTheme typography = context.typography;
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -39,14 +39,14 @@ class PackageWidget extends StatelessWidget {
           color: Colors.white,
           border: isBorder!
               ? isSelected
-              ? Border.all(color: AppColors.priceColor)
-              : Border.all(color: Colors.grey)
+                  ? Border.all(color: AppColors.priceColor)
+                  : Border.all(color: Color(0x443498DB))
               : null,
           borderRadius: BorderRadius.circular(10),
         ),
         constraints: BoxConstraints(maxHeight: maxHeight ?? 8.h),
         child: Container(
-          margin: EdgeInsets.only(right: 16,top: 16,left: 16,bottom: 16),
+          margin: EdgeInsets.only(right: 16, top: 16, left: 16, bottom: 16),
           width: double.maxFinite,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +63,6 @@ class PackageWidget extends StatelessWidget {
                       height: 5.w,
                     ),
                     alignment: Alignment.topRight,
-
                     height: double.maxFinite),
               ),
               Space(
@@ -91,47 +90,51 @@ class PackageWidget extends StatelessWidget {
                     Container(
                       width: double.maxFinite,
                       child: Text(
-                        description??"",
+                        description ?? "",
                         softWrap: false,
                         textAlign: TextAlign.start,
                         style: typography.overline!.copyWith(color: Color(0xff454545)),
                       ),
                     ),
-                    Row(children: [
-                      Expanded(
-                        flex:1,
-                        child: Container(
-                          width: double.maxFinite,
-                          child: Text(
-                            price??'',
-                            softWrap: false,
-                            textAlign: TextAlign.start,
-                            style: typography.caption!.copyWith(
-                                letterSpacing: -0.02,
-                                color: Colors.grey,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w300),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            width: double.maxFinite,
+                            child: Text(
+                              '$price ${context.intl.toman}',
+                              softWrap: false,
+                              textAlign: TextAlign.start,
+                              style: typography.caption!.copyWith(
+                                  letterSpacing: -0.02,
+                                  color: Colors.grey,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w300),
+                            ),
                           ),
                         ),
-                      ),
-                      Space(width: 2.w,),
-                      Expanded(
-                        flex:1,
-                        child: Container(
-                          width: double.maxFinite,
-                          child: Text(
-                            finalPrice??'',
-                            softWrap: false,
-                            textAlign: TextAlign.start,
-                            style: typography.caption!.copyWith(
-                                letterSpacing: -0.02,
-                                color: AppColors.priceColor,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w700),
+                        Space(
+                          width: 2.w,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            width: double.maxFinite,
+                            child: Text(
+                              '$finalPrice ${context.intl.toman}',
+                              softWrap: false,
+                              textAlign: TextAlign.start,
+                              style: typography.caption!.copyWith(
+                                  letterSpacing: -0.02,
+                                  color: AppColors.priceColor,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w700),
+                            ),
                           ),
                         ),
-                      ),
-                    ],)
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -141,5 +144,4 @@ class PackageWidget extends StatelessWidget {
       ),
     );
   }
-
 }
