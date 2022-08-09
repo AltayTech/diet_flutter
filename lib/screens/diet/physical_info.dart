@@ -322,17 +322,6 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
             )),
           ],
         ),
-        PackageWidget(
-          title: "sdfs",
-          description: "sdfsfsfs",
-          price: "30000 تومان",
-          finalPrice: "10000 تومان",
-          isSelected: true,
-          isBorder: true,
-          maxHeight: 15.h,
-          onTap: () {},
-          isOurSuggestion: true,
-        )
       ],
     );
   }
