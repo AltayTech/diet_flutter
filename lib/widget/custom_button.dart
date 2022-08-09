@@ -95,6 +95,42 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
         onPressed: () => press.call());
   }
 
+  Widget buttonWithCustomColor(
+      Color btnColor, String txt, Size size, Function press, Icon icon) {
+    return ElevatedButton(
+        style: ButtonStyle(
+            elevation: MaterialStateProperty.all(0),
+            backgroundColor: MaterialStateProperty.all(btnColor),
+            fixedSize: MaterialStateProperty.all(size),
+            padding: MaterialStateProperty.all(EdgeInsets.zero),
+            // padding: MaterialStateProperty.all(
+            //     EdgeInsets.fromLTRB(50, 20, 50, 20)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                ))),
+        child: Ink(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.0),
+                gradient: AppColors.btnColorsGradient),
+            child: Container(
+                width: size.width,
+                height: size.height,
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(txt,
+                        style:
+                        typography.caption!.copyWith(color: Colors.white)),
+                    Space(width: 2.w),
+                    icon,
+                  ],
+                ))),
+        onPressed: () => press.call());
+  }
+
   @override
   void onRetryAfterMaintenance() {
     // TODO: implement onRetryAfterMaintenance

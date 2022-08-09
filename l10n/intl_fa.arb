@@ -299,6 +299,7 @@
   "firstStatusReport": "گزارش اولیه وضعیت جسمانی",
   "day": "روز",
   "appropriateWeight": "به وزن مناسب",
+  "properWeight": "وزن مناسب",
   "untilReach": "تا رسیدن ",
   "extraWeight": "اضافه وزن",
   "lakeWeight": "کمبود وزن",
@@ -750,5 +751,9 @@
   "emptySickness": "لیست بیماری وجود ندارد",
   "dietsSuitableYou": "رژیم های مناسب شما",
   "whichDietShouldITake": "کدام رژیم را بگیرم؟",
+  "confirmBodyState": "تایید اطلاعات جسمانی",
+  "youMustEnterCorrectInfoOfBodyState": "اطلاعات جسمانی وارد شده باید کاملا صحیح باشند.",
+  "thisInfoVeryImportantToReduceYourWeight": "این اطلاعات نقش مهمی در روند کاهش وزن شما خواهند داشت.",
+  "necessaryTime": "زمان لازم",
   "understand": "متوجه شدم"
 }

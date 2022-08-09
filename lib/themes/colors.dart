@@ -71,6 +71,12 @@ class AppColors {
   static const alertCallTextColor = Color(0xff5282a5);
   static const weightBoxColor = Color(0xffbb0101);
   static const dietTypeBoxColor = Color(0xffddf5f0);
+  static const bodyStateBlueColor = Color(0xff3498db);
+  static const bodyStatePurpleColor = Color(0xff686de0);
+  static const bodyStateOrangeColor = Color(0xfff8924f);
+  static const bodyStateGreenColor = Color(0xff1abc9c);
+  static const bodyStateRedColor = Color(0xffed4c67);
+  static const bodyStateDarkBlueColor = Color(0xff273c75);
   static var colorPackages = [
     {
       'barColor': Color.fromARGB(255, 249, 203, 202),
