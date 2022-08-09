@@ -13,6 +13,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
+import 'package:behandam/widget/custom_video.dart';
 import 'package:behandam/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -92,8 +93,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                               snapshot.data!.dietDays,
                               snapshot.data!.weightDifference!
                                   .toStringAsFixed(1),
-                              snapshot.data!.normalWeight!
-                                  .toStringAsFixed(1),
+                              snapshot.data!.normalWeight!.toStringAsFixed(1),
                               snapshot.data!.isPregnancy,
                               snapshot.data!.bmiStatus,
                               snapshot.data!.bmi!.toStringAsFixed(0)),
@@ -352,14 +352,14 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
       margin: EdgeInsets.only(right: 32, left: 32),
       height: 20.h,
       decoration: BoxDecoration(
-          color: AppColors.dietTypeBoxColor.withOpacity(0.08),
+          color: Colors.white,
           border: Border.all(color: AppColors.dietTypeBoxColor, width: 1),
           boxShadow: [
             BoxShadow(
                 color: AppColors.priceGreenColor.withOpacity(0.08),
                 spreadRadius: 1,
-                blurRadius: 2,
-                offset: Offset(1, 1))
+                blurRadius: 1,
+                offset: Offset(1, 0))
           ],
           borderRadius: BorderRadius.circular(10)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -372,9 +372,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 right: 2,
                 left: 2,
                 child: ImageUtils.fromLocal("assets/images/diet/spoon_fork.svg",
-                    width: 10.w,
-                    height: 10.h,
-                    fit: BoxFit.contain),
+                    width: 10.w, height: 10.h, fit: BoxFit.contain),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 48),
@@ -390,7 +388,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
           Space(width: 3.w),
           Expanded(
             child: CheckBoxApp(
-                isBorder: false,
+                isBorder: true,
                 iconSelectType: IconSelectType.Radio,
                 onTap: () {},
                 title: 'رژیم کاهش وزن',
@@ -399,7 +397,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
           Space(width: 3.w),
           Expanded(
             child: CheckBoxApp(
-                isBorder: false,
+                isBorder: true,
                 iconSelectType: IconSelectType.Radio,
                 onTap: () {},
                 title: 'رژیم تثبیت',
@@ -422,19 +420,30 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
       margin: EdgeInsets.only(right: 32, left: 32),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Space(height: 1.h),
           Text(
             intl.whichDietShouldITake,
             textDirection: context.textDirectionOfLocale,
-            style: typography.caption!.copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold),
+            style: typography.caption!
+                .copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold),
           ),
           Text(
-            intl.thisIsFirstStatusReport,
+            '‌‌دکتر کرمانی در این ویدئو از چاقی درجه ۱ می‌گوید',
             textDirection: context.textDirectionOfLocale,
             style: typography.caption!.copyWith(fontSize: 10.sp),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 1.h),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: CustomVideo(
+                image: null,
+                isLooping: false,
+                isStart: false,
+                url: '',
+              ),
+            ),
           ),
         ]),
       ),
