@@ -90,9 +90,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
   Widget content() {
     return Column(
       children: [
-        Space(height: 2.h),
+        Space(height: 1.h),
         Container(
-          margin: EdgeInsets.only(top: 16),
           width: 100.w,
           alignment: Alignment.center,
           child: ProgressTimeline(

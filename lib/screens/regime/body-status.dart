@@ -3,6 +3,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
+import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -11,6 +12,8 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/custom_button.dart';
+import 'package:behandam/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -59,416 +62,383 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     super.build(context);
     return Scaffold(
       appBar: Toolbar(titleBar: intl.statusReport),
-      body: SafeArea(
-        child: StreamBuilder(
-            stream: regimeBloc.status,
-            builder: (context, AsyncSnapshot<BodyStatus> snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: TouchMouseScrollable(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                children: [
-                                  snapshot.data!.isPregnancy == 1
-                                      ? firstContainer(
-                                          snapshot.data!.daysTillChildbirth,
-                                          snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
-                                          snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
-                                          snapshot.data!.isPregnancy,
-                                          snapshot.data!.bmiStatus)
-                                      : firstContainer(
-                                          snapshot.data!.dietDays,
-                                          snapshot.data!.weightDifference!.toStringAsFixed(1),
-                                          snapshot.data!.normalWeight!.toStringAsFixed(1),
-                                          snapshot.data!.isPregnancy,
-                                          snapshot.data!.bmiStatus),
-                                  SizedBox(height: 2.h),
-                                  secondContainer(snapshot.data!.bmi!.toStringAsFixed(0),
-                                      snapshot.data!.bmiStatus),
-                                  GestureDetector(
-                                    onTap: () {
-                                      sendRequest(isPregnancy: snapshot.data!.isPregnancy == 1);
-                                    },
-                                    child: snapshot.data!.isPregnancy == 1
-                                        ? ImageUtils.fromLocal(
-                                            'assets/images/physical_report/banner_pregnant.svg',
-                                            height: 15.h)
-                                        : ImageUtils.fromLocal(
-                                            'assets/images/physical_report/banner.svg',
-                                            height: 15.h),
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 8),
-                      child: SubmitButton(
-                          label: intl.confirmContinue,
-                          onTap: () {
-                            sendRequest(isPregnancy: snapshot.data!.isPregnancy == 1);
-                          }),
-                    ),
-                  ],
-                );
-              } else
-                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
-            }),
-      ),
+      body: body(),
     );
   }
 
-  Widget firstContainer(
-      int? dietDays, String? weightDiff, String? weight, int? pregnancy, int? bmiStatus) {
-    return Container(
-      padding: EdgeInsets.only(bottom: 10.0),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white),
-      child: Padding(
-        padding: const EdgeInsets.only(right: 12, left: 12),
-        child: Stack(
-          children: [
-            Positioned(
-                top: 0,
-                right: 5,
-                child: Row(
-                  textDirection: context.textDirectionOfLocale,
-                  children: [
-                    pregnancy == 1
-                        ? ImageUtils.fromLocal('assets/images/physical_report/element1.svg',
-                            width: 10.w, height: 15.w)
-                        : Container(),
-                    pregnancy == 1
-                        ? ImageUtils.fromLocal('assets/images/physical_report/element2.svg',
-                            width: 10.w, height: 15.w)
-                        : Container(),
-                  ],
-                )),
-            Positioned(
-                top: 0,
-                left: 0,
-                child: Row(
-                  textDirection: context.textDirectionOfLocale,
-                  children: [
-                    pregnancy == 1
-                        ? ImageUtils.fromLocal('assets/images/physical_report/element3.svg',
-                            width: 10.w, height: 15.w)
-                        : Container(),
-                    pregnancy == 1
-                        ? ImageUtils.fromLocal('assets/images/physical_report/element4.svg',
-                            width: 10.w, height: 15.w)
-                        : Container(),
-                  ],
-                )),
-            Column(
-              children: [
-                Space(height: 2.h),
-                Center(
-                  child: Text(
-                    intl.firstStatusReport,
-                    textDirection: context.textDirectionOfLocale,
-                    style: Theme.of(context).textTheme.caption,
+  Widget body() {
+    return SafeArea(
+      child: StreamBuilder(
+          stream: regimeBloc.status,
+          builder: (context, AsyncSnapshot<BodyStatus> snapshot) {
+            if (snapshot.hasData) {
+              return TouchMouseScrollable(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      header(),
+                      Space(height: 3.h),
+                      snapshot.data!.isPregnancy == 1
+                          ? showWeightBmi(
+                              snapshot.data!.daysTillChildbirth,
+                              snapshot.data!.pregnancyWeightDiff!
+                                  .toStringAsFixed(1),
+                              snapshot.data!.pregnancyWeight!
+                                  .toStringAsFixed(1),
+                              snapshot.data!.isPregnancy,
+                              snapshot.data!.bmiStatus,
+                              snapshot.data!.bmi!.toStringAsFixed(0))
+                          : showWeightBmi(
+                              snapshot.data!.dietDays,
+                              snapshot.data!.weightDifference!
+                                  .toStringAsFixed(1),
+                              snapshot.data!.normalWeight!
+                                  .toStringAsFixed(1),
+                              snapshot.data!.isPregnancy,
+                              snapshot.data!.bmiStatus,
+                              snapshot.data!.bmi!.toStringAsFixed(0)),
+                      Space(height: 2.h),
+                      dietType(),
+                      Space(height: 2.h),
+                      helpDietSelect(),
+                      Space(height: 2.h),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 32, left: 32),
+                        child: CustomButton.withIcon(
+                            AppColors.btnColor,
+                            intl.nextStage,
+                            Size(100.w, 6.h),
+                            Icon(Icons.arrow_forward),
+                            () {}),
+                      )
+                    ],
                   ),
                 ),
-                SizedBox(height: 2.h),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 40.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        color: AppColors.box,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          pregnancy == 1
-                              ? colorfulContainer('$dietDays', intl.day, intl.untilBeingMom, ' ',
-                                  AppColors.pregnantPink)
-                              : colorfulContainer('$dietDays', intl.day, intl.untilReach,
-                                  intl.appropriateWeight, AppColors.purpleRuler),
-                          SizedBox(height: 2.h),
-                          if (pregnancy == 0)
-                            bmiStatus == 0
-                                ? colorfulContainer('$weightDiff', intl.kilo, intl.lakeWeight, '',
-                                    AppColors.purpleRuler)
-                                : colorfulContainer('$weightDiff', intl.kilo, intl.extraWeight, '',
-                                    AppColors.purpleRuler),
-                          if (pregnancy == 1)
-                            colorfulContainer('$weightDiff', intl.kilo, intl.getWeight, '',
-                                AppColors.pregnantPink),
-                        ],
-                      ),
-                    ),
-                    Space(width: 2.w),
-                    Column(
-                      children: [
-                        Container(
-                          width: 40.w,
-                          height: 30.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            color: AppColors.box,
-                          ),
+              );
+            } else
+              return Center(
+                  child:
+                      Container(width: 15.w, height: 15.w, child: Progress()));
+          }),
+    );
+  }
+
+  Widget header() {
+    return Container(
+      padding: EdgeInsets.only(right: 32, left: 32),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Space(height: 1.h),
+        Container(
+          width: 100.w,
+          alignment: Alignment.center,
+          child: ProgressTimeline(
+              width: 50.w,
+              height: 7.h,
+              failedIcon: Icon(Icons.cancel),
+              checkedIcon: Icon(Icons.check_circle),
+              uncheckedIcon: Icon(Icons.circle_outlined),
+              currentIcon: Icon(
+                Icons.radio_button_checked_rounded,
+                color: AppColors.primary,
+              ),
+              connectorWidth: 1.w,
+              iconSize: 7.w,
+              connectorLength: 15.w,
+              connectorColor: AppColors.grey,
+              connectorColorSelected: AppColors.primary,
+              states: [
+                SingleState(stateTitle: "", isFailed: false),
+                SingleState(stateTitle: "", isFailed: false),
+                SingleState(stateTitle: "", isFailed: false),
+                SingleState(stateTitle: "", isFailed: false)
+              ]),
+        ),
+        Space(height: 2.h),
+        Text(
+          intl.statusReport,
+          textDirection: context.textDirectionOfLocale,
+          style: typography.subtitle1!.copyWith(fontWeight: FontWeight.bold),
+        ),
+        Text(
+          intl.thisIsFirstStatusReport,
+          textDirection: context.textDirectionOfLocale,
+          style: typography.caption!.copyWith(fontSize: 10.sp),
+        ),
+      ]),
+    );
+  }
+
+  Widget showWeightBmi(int? dietDays, String? weightDiff, String? weight,
+      int? pregnancy, int? bmiStatus, String? bmi) {
+    return Container(
+      height: 33.h,
+      padding: EdgeInsets.only(right: 32, left: 32),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (pregnancy == 0)
+                        bmiStatus == 0
+                            ? colorfulContainer('$weightDiff', intl.lakeWeight,
+                                intl.kiloGr, '', AppColors.purpleRuler)
+                            : colorfulContainer('$weightDiff', intl.extraWeight,
+                                intl.kiloGr, '', AppColors.purpleRuler),
+                      if (pregnancy == 1)
+                        colorfulContainer('$weightDiff', intl.getWeight,
+                            intl.kiloGr, '', AppColors.pregnantPink),
+                      Space(height: 1.h),
+                      Container(
+                        width: 40.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: AppColors.grey.withOpacity(0.5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              pregnancy == 1
-                                  ? Text(intl.appropriateWeightPregnancy,
-                                      textAlign: TextAlign.center)
-                                  : Text(intl.yourAppropriateWeight, textAlign: TextAlign.center),
-                              SizedBox(height: 1.h),
+                              Text(intl.bmi,
+                                  style: typography.caption!.copyWith(
+                                      color: Colors.grey.withOpacity(0.9))),
+                              Text('BMI',
+                                  style: typography.caption!.copyWith(
+                                      color: Colors.grey.withOpacity(0.9))),
                               Container(
                                 width: 30.w,
-                                // height: 9.h,
+                                height: 7.h,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.0), color: Colors.white),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white),
                                 child: Center(
-                                    child: Column(
-                                  children: [
-                                    Text('${weight}',
-                                        style: TextStyle(
-                                            color: AppColors.purpleRuler,
-                                            fontWeight: FontWeight.w700)),
-                                    Text(intl.kiloGr,
-                                        style: TextStyle(color: AppColors.purpleRuler))
-                                  ],
+                                    child: Text(
+                                  '$bmi',
+                                  style: typography.caption!.copyWith(
+                                      color: AppColors.redBar,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16.sp),
                                 )),
                               )
                             ],
                           ),
                         ),
-                        Container(
-                          width: 12.w,
-                          height: 4.h,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.box,
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(70.0),
-                                    bottomRight: Radius.circular(70.0)),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: InkWell(
-                                  onTap: () => DialogUtils.showDialogPage(
-                                      context: context, child: HelpDialog(helpId: 5)),
-                                  child: ImageUtils.fromLocal(
-                                    'assets/images/diet/help_icon.svg',
-                                    color: AppColors.strongPen,
-                                  ),
-                                ),
-                              )),
-                        )
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget colorfulContainer(String txt1, String txt2, String txt3, String txt4, Color color) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 6.0, left: 6.0),
-      child: Container(
-          // width: 30.w,
-          // height: 10.h,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
-                  bottomLeft: Radius.circular(20.0),
-                  topLeft: Radius.circular(20.0)),
-              color: Colors.white),
-          child: Row(children: [
-            Container(
-                width: 3.w,
-                height: 10.h,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-                    color: color)),
-            // SizedBox(width: 4.w),
-            Expanded(
-              child: Container(
-                // width: 20.w,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RichText(
-                      textDirection: context.textDirectionOfLocale,
-                      text: TextSpan(
-                        text: txt1,
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 14.sp, color: color, fontWeight: FontWeight.w700),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: ' ',
-                              style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 12.0)),
-                          TextSpan(
-                              text: txt2,
-                              style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 12.0))
-                        ],
                       ),
-                    ),
-                    Text(txt3,
-                        style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 8.sp)),
-                    Text(txt4, style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 8.sp))
-                  ],
-                ),
-              ),
-            )
-          ])),
-    );
-  }
-
-  Widget secondContainer(String bmi, int? bmiStatus) {
-    return Container(
-      padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white),
-      child: Padding(
-        padding: const EdgeInsets.only(right: 12, left: 12),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      width: 40.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        color: AppColors.box,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(intl.bmi),
-                          Text('BMI'),
-                          Container(
-                            width: 30.w,
-                            height: 9.h,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0), color: Colors.white),
-                            child: Center(
-                                child: Text(
-                              '$bmi',
-                              style: Theme.of(context).textTheme.caption!.copyWith(
-                                  color: AppColors.blueRuler,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16.sp),
-                            )),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    InkWell(
-                      onTap: () => DialogUtils.showDialogPage(
-                        context: context,
-                        child: HelpDialog(helpId: 1),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(color: AppColors.redBar)),
+                      Space(height: 1.h),
+                      InkWell(
+                        onTap: () => DialogUtils.showDialogPage(
+                          context: context,
+                          child: HelpDialog(helpId: 1),
+                        ),
                         child: Container(
-                          padding: EdgeInsets.all(4.0),
-                          child: Row(
-                            children: [
-                              ImageUtils.fromLocal('assets/images/physical_report/bmi.svg',
-                                  width: 2.w, height: 2.h),
-                              Space(width: 2.w),
-                              Text('BMI',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .caption!
-                                      .copyWith(fontSize: 14.sp, color: AppColors.redBar)),
-                              Space(width: 1.w),
-                              Text(intl.what,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .caption!
-                                      .copyWith(fontSize: 14.sp, color: AppColors.redBar)),
-                              ImageUtils.fromLocal('assets/images/physical_report/guide.svg',
-                                  width: 3.w, height: 3.h),
-                            ],
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(color: AppColors.redBar)),
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('BMI',
+                                    style: typography.caption!
+                                        .copyWith(color: AppColors.redBar)),
+                                Space(width: 1.w),
+                                Text(intl.what,
+                                    style: typography.caption!
+                                        .copyWith(color: AppColors.redBar)),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-                SizedBox(width: 2.w),
-                Flexible(child: bmiPic(bmiStatus)),
-              ],
-            )
-          ],
-        ),
+              ),
+              Space(width: 3.w),
+              Expanded(
+                child: Container(
+                  child: bmiPic(bmiStatus),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
+  }
+
+  Widget colorfulContainer(
+      String weight, String txt2, String txt3, String txt4, Color color) {
+    return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: AppColors.weightBoxColor),
+        child: Row(children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(txt2,
+                      style: typography.caption!
+                          .copyWith(fontSize: 10.sp, color: Colors.white)),
+                  RichText(
+                    textDirection: context.textDirectionOfLocale,
+                    text: TextSpan(
+                      text: weight,
+                      style: typography.caption!.copyWith(
+                          fontSize: 16.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: ' ',
+                            style: typography.caption!.copyWith(
+                                fontSize: 12.sp, color: Colors.white)),
+                        TextSpan(
+                            text: txt3,
+                            style: typography.caption!.copyWith(
+                                fontSize: 12.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700))
+                      ],
+                    ),
+                  ),
+                  if (txt4.length > 0)
+                    Text(txt4,
+                        style: typography.caption!
+                            .copyWith(fontSize: 10.sp, color: Colors.white))
+                ],
+              ),
+            ),
+          )
+        ]));
+  }
+
+  String bmiPicPath(int? status) {
+    switch (status) {
+      case 0:
+        return 'assets/images/physical_report/thin.svg';
+      case 1:
+        return 'assets/images/physical_report/normal.svg';
+      case 2:
+        return 'assets/images/physical_report/fat.svg';
+      case 3:
+        return 'assets/images/physical_report/obesity.svg';
+      case 4:
+        return 'assets/images/physical_report/extreme_obesity.svg';
+      case 5:
+        return 'assets/images/physical_report/extreme_obesity.svg';
+      default:
+        return 'assets/images/physical_report/extreme_obesity.svg';
+    }
   }
 
   Widget bmiPic(int? status) {
-    switch (status) {
-      case 0:
-        return ImageUtils.fromLocal('assets/images/physical_report/thin.svg',
-            width: 40.w, height: 30.h);
-      case 1:
-        return ImageUtils.fromLocal(
-          'assets/images/physical_report/normal.svg',
-          width: 40.w,
-          height: 40.h,
-        );
-      case 2:
-        return ImageUtils.fromLocal(
-          'assets/images/physical_report/fat.svg',
-          width: 40.w,
-          height: 40.h,
-        );
-      case 3:
-        return ImageUtils.fromLocal(
-          'assets/images/physical_report/obesity.svg',
-          width: 40.w,
-          height: 40.h,
-        );
-      case 4:
-        return ImageUtils.fromLocal(
-          'assets/images/physical_report/extreme_obesity.svg',
-          width: 40.w,
-          height: 40.h,
-        );
-      case 5:
-        return ImageUtils.fromLocal(
-          'assets/images/physical_report/extreme_obesity.svg',
-          width: 40.w,
-          height: 40.h,
-        );
-      default:
-        return ImageUtils.fromLocal(
-          'assets/images/physical_report/extreme_obesity.svg',
-          width: 40.w,
-          height: 40.h,
-        );
-    }
+    return ImageUtils.fromLocal(bmiPicPath(status),
+        width: 40.w, height: 33.h, fit: BoxFit.fill);
+  }
+
+  Widget dietType() {
+    return Container(
+      margin: EdgeInsets.only(right: 32, left: 32),
+      height: 20.h,
+      decoration: BoxDecoration(
+          color: AppColors.dietTypeBoxColor.withOpacity(0.08),
+          border: Border.all(color: AppColors.dietTypeBoxColor, width: 1),
+          boxShadow: [
+            BoxShadow(
+                color: AppColors.priceGreenColor.withOpacity(0.08),
+                spreadRadius: 1,
+                blurRadius: 2,
+                offset: Offset(1, 1))
+          ],
+          borderRadius: BorderRadius.circular(10)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Expanded(
+          child: Stack(
+            children: [
+              Positioned(
+                top: 2,
+                bottom: 2,
+                right: 2,
+                left: 2,
+                child: ImageUtils.fromLocal("assets/images/diet/spoon_fork.svg",
+                    width: 10.w,
+                    height: 10.h,
+                    fit: BoxFit.contain),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 48),
+                child: Text(
+                  intl.dietsSuitableYou,
+                  style: typography.caption,
+                ),
+              )
+            ],
+          ),
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Space(width: 3.w),
+          Expanded(
+            child: CheckBoxApp(
+                isBorder: false,
+                iconSelectType: IconSelectType.Radio,
+                onTap: () {},
+                title: 'رژیم کاهش وزن',
+                isSelected: true),
+          ),
+          Space(width: 3.w),
+          Expanded(
+            child: CheckBoxApp(
+                isBorder: false,
+                iconSelectType: IconSelectType.Radio,
+                onTap: () {},
+                title: 'رژیم تثبیت',
+                isSelected: false),
+          ),
+          Space(width: 3.w),
+        ]),
+        Space(height: 1.h)
+      ]),
+    );
+  }
+
+  Widget helpDietSelect() {
+    return Container(
+      width: 100.w,
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: EdgeInsets.only(right: 32, left: 32),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+          Space(height: 1.h),
+          Text(
+            intl.whichDietShouldITake,
+            textDirection: context.textDirectionOfLocale,
+            style: typography.caption!.copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            intl.thisIsFirstStatusReport,
+            textDirection: context.textDirectionOfLocale,
+            style: typography.caption!.copyWith(fontSize: 10.sp),
+          ),
+        ]),
+      ),
+    );
   }
 
   void pregnancyWeekAlert() {
@@ -496,7 +466,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
               ),
               Space(height: 2.h),
               Text(
-                intl.pregnancyWeekAlertDesc(regimeBloc.bodyStatus.allowedWeeksNum!),
+                intl.pregnancyWeekAlertDesc(
+                    regimeBloc.bodyStatus.allowedWeeksNum!),
                 style: typography.caption,
                 textAlign: TextAlign.center,
               ),
@@ -553,7 +524,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     if (isPregnancy) {
       pregnancyWeekAlert();
     } else {
-      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+      if (!MemoryApp.isShowDialog)
+        DialogUtils.showDialogProgress(context: context);
       regimeBloc.nextStep();
     }
   }

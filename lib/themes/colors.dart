@@ -69,6 +69,8 @@ class AppColors {
   static const redDate = Color(0xffFF5757);
   static const greyDate = Color(0xff454545);
   static const alertCallTextColor = Color(0xff5282a5);
+  static const weightBoxColor = Color(0xffbb0101);
+  static const dietTypeBoxColor = Color(0xffddf5f0);
   static var colorPackages = [
     {
       'barColor': Color.fromARGB(255, 249, 203, 202),

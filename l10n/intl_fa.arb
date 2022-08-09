@@ -295,6 +295,7 @@
   "multiBirth": "تعداد قل",
   "multi": "قل",
   "statusReport": "گزارش وضعیت جسمانی",
+  "thisIsFirstStatusReport": "گزارش اولیه وضعیت جسمانی شما به این صورته:",
   "firstStatusReport": "گزارش اولیه وضعیت جسمانی",
   "day": "روز",
   "appropriateWeight": "به وزن مناسب",
@@ -747,5 +748,7 @@
   "iHave": "دارم",
   "iDoNotHave": "ندارم",
   "emptySickness": "لیست بیماری وجود ندارد",
+  "dietsSuitableYou": "رژیم های مناسب شما",
+  "whichDietShouldITake": "کدام رژیم را بگیرم؟",
   "understand": "متوجه شدم"
 }
