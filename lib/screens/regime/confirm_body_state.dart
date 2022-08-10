@@ -137,11 +137,14 @@ class _ConfirmBodyStateScreenState
                                       snapshot.data!.bmiStatus,
                                       snapshot.data!.bmi!.toStringAsFixed(0)),
                               Space(height: 5.h),
-                              CustomButton(
-                                  Colors.white,
-                                  intl.editPhysicalInfo,
-                                  Size(100.w, 6.h),
-                                  () {}),
+                              SubmitButton(
+                                  color: Colors.white,
+                                  textColor: AppColors.primary,
+                                  label: intl.editPhysicalInfo,
+                                  size: Size(100.w, 6.h),
+                                  onTap: () {
+                                    context.vxNav.push(Uri.parse(Routes.bodyState));
+                                  }),
                               Space(height: 2.h),
                               CustomButton.withIcon(
                                   AppColors.btnColor,
