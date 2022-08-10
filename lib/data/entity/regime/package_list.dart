@@ -37,6 +37,9 @@ class Package {
   @JsonKey(name: "type")
   int? type;
 
+  @JsonKey(name: "is_suggestion")
+  bool? is_suggestion;
+
   int? index;
 
   int? totalPrice;

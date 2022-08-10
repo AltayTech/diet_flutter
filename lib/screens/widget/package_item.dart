@@ -1,4 +1,6 @@
 import 'package:behandam/extensions/build_context.dart';
+import 'package:behandam/screens/widget/custom_banner.dart' as banner;
+import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
@@ -10,11 +12,13 @@ class PackageWidget extends StatelessWidget {
   String title;
   late bool isSelected;
   bool? isBorder;
+  Color? borderColor;
   bool? isOurSuggestion;
   String? description;
   String? price;
   String? finalPrice;
   double? maxHeight;
+  TextTheme? typography;
 
   PackageWidget(
       {required this.onTap,
@@ -25,11 +29,26 @@ class PackageWidget extends StatelessWidget {
       required this.finalPrice,
       required this.maxHeight,
       required this.isOurSuggestion,
+      required this.borderColor,
       required this.isBorder});
 
   @override
   Widget build(BuildContext context) {
-    TextTheme typography = context.typography;
+    typography = context.typography;
+    return isOurSuggestion!
+        ? ClipRect(
+            child: banner.CustomBanner(
+              location: banner.BannerLocation.topEnd,
+              message: context.intl.suggestion,
+              color: AppColors.suggestion,
+              textStyle: typography!.overline!.copyWith(color: Colors.white, letterSpacing: -0.3),
+              child: content(context),
+            ),
+          )
+        : content(context);
+  }
+
+  Widget content(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -39,8 +58,11 @@ class PackageWidget extends StatelessWidget {
           color: Colors.white,
           border: isBorder!
               ? isSelected
-                  ? Border.all(color: AppColors.priceColor)
-                  : Border.all(color: Color(0x443498DB))
+                  ? Border.all(color: borderColor ?? AppColors.priceColor, width: 2)
+                  : Border.all(
+                      color:
+                          borderColor != null ? borderColor!.withOpacity(0.3) : Color(0x443498DB),
+                      width: 2)
               : null,
           borderRadius: BorderRadius.circular(10),
         ),
@@ -78,60 +100,58 @@ class PackageWidget extends StatelessWidget {
                       width: double.maxFinite,
                       child: Text(
                         title,
-                        softWrap: false,
+                        softWrap: true,
                         textAlign: TextAlign.start,
-                        style: typography.caption!.copyWith(
+                        style: typography!.caption!.copyWith(
                             letterSpacing: -0.02,
                             color: Colors.black,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w600),
                       ),
                     ),
+                    Space(
+                      height: 1.h,
+                    ),
                     Container(
                       width: double.maxFinite,
+                      padding: EdgeInsets.only(left: 12),
                       child: Text(
                         description ?? "",
-                        softWrap: false,
+                        softWrap: true,
                         textAlign: TextAlign.start,
-                        style: typography.overline!.copyWith(color: Color(0xff454545)),
+                        style: typography!.overline!.copyWith(color: Color(0xff454545)),
                       ),
+                    ),
+                    Space(
+                      height: 1.h,
                     ),
                     Row(
                       children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            width: double.maxFinite,
-                            child: Text(
-                              '$price ${context.intl.toman}',
-                              softWrap: false,
-                              textAlign: TextAlign.start,
-                              style: typography.caption!.copyWith(
-                                  letterSpacing: -0.02,
-                                  color: Colors.grey,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w300),
-                            ),
+                        CustomPaint(
+                          painter: MyLine(),
+                          child: Text(
+                            '$price ${context.intl.toman}',
+                            softWrap: true,
+                            textAlign: TextAlign.start,
+                            style: typography!.caption!.copyWith(
+                                letterSpacing: -0.02,
+                                color: Colors.grey,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w300),
                           ),
                         ),
                         Space(
                           width: 2.w,
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            width: double.maxFinite,
-                            child: Text(
-                              '$finalPrice ${context.intl.toman}',
-                              softWrap: false,
-                              textAlign: TextAlign.start,
-                              style: typography.caption!.copyWith(
-                                  letterSpacing: -0.02,
-                                  color: AppColors.priceColor,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
+                        Text(
+                          '$finalPrice ${context.intl.toman}',
+                          softWrap: true,
+                          textAlign: TextAlign.start,
+                          style: typography!.caption!.copyWith(
+                              letterSpacing: -0.02,
+                              color: AppColors.priceColor,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     )

@@ -19,8 +19,6 @@ class PaymentTypeWidget extends StatefulWidget {
 class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
   late BillPaymentBloc bloc;
 
-  late Package packageItem;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -33,9 +31,14 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
 
     bloc = BillPaymentProvider.of(context);
 
-    packageItem = bloc.packageItemNew!;
-
-    return paymentTypeWidget();
+    return StreamBuilder(
+        stream: bloc.refreshPackages,
+        builder: (context, snapshot) {
+          if (snapshot.hasData)
+            return paymentTypeWidget();
+          else
+            return EmptyBox();
+        });
   }
 
   Widget paymentTypeWidget() {
@@ -106,19 +109,17 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                                                       ),
                                                       Space(width: 3.w),
                                                       Expanded(
-                                                        child: CheckBoxApp(
-                                                          title: intl.cardToCard,
-                                                          isSelected: selectedPayment.data! ==
-                                                              PaymentType.online,
-                                                          onTap: () {
-                                                            bloc.onPaymentTap =
-                                                                PaymentType.online;
-                                                          },
-                                                          maxHeight: 8.h,
-                                                          isBorder: true,
-                                                          iconSelectType: IconSelectType.Radio,
-                                                        )
-                                                      )
+                                                          child: CheckBoxApp(
+                                                        title: intl.cardToCard,
+                                                        isSelected: selectedPayment.data! ==
+                                                            PaymentType.online,
+                                                        onTap: () {
+                                                          bloc.onPaymentTap = PaymentType.online;
+                                                        },
+                                                        maxHeight: 8.h,
+                                                        isBorder: true,
+                                                        iconSelectType: IconSelectType.Radio,
+                                                      ))
                                                     ]),
                                               );
                                             return Container();
@@ -129,7 +130,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                               else
                                 return EmptyBox();
                             }),
-                        showSubscriptionInfo()
+                        showPaymentInfo()
                       ],
                     ),
                   ),
@@ -140,14 +141,14 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
         ]);
   }
 
-  Widget showSubscriptionInfo() {
+  Widget showPaymentInfo() {
     return Container(
       width: double.maxFinite,
       margin: EdgeInsets.only(top: 3.h, bottom: 3.h),
       padding: EdgeInsets.all(4.w),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppColors.grey,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -159,7 +160,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
               Expanded(
                 flex: 2,
                 child: Text(
-                  packageItem.name!,
+                  bloc.packageItemNew!.name!,
                   softWrap: true,
                   textAlign: TextAlign.start,
                   style: typography.caption!
@@ -173,7 +174,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                   textAlign: TextAlign.end,
                   softWrap: true,
                   text: TextSpan(
-                    text: '${packageItem.price} ',
+                    text: '${bloc.packageItemNew!.price} ',
                     children: [
                       TextSpan(
                         text: intl.toman,
@@ -188,10 +189,10 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
               ),
             ],
           ),
-          if (packageItem.totalPrice == null &&
-              packageItem.finalPrice != packageItem.price &&
-              packageItem.finalPrice != 0 &&
-              packageItem.price != 0)
+          if (bloc.packageItemNew!.totalPrice == null &&
+              bloc.packageItemNew!.finalPrice != bloc.packageItemNew!.price &&
+              bloc.packageItemNew!.finalPrice != 0 &&
+              bloc.packageItemNew!.price != 0)
             Container(
               margin: EdgeInsets.only(top: 1.h),
               child: Row(
@@ -209,7 +210,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                   ),
                   Expanded(
                     child: Text(
-                      '${packageItem.price! - packageItem.finalPrice!} ${intl.toman}',
+                      '${bloc.packageItemNew!.price! - bloc.packageItemNew!.finalPrice!} ${intl.toman}',
                       softWrap: false,
                       textAlign: TextAlign.end,
                       style: typography.caption!.copyWith(color: AppColors.priceDiscountColor),
@@ -254,7 +255,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
               }),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Color(0xfff5f5f5),
               borderRadius: BorderRadius.circular(10),
             ),
             margin: EdgeInsets.only(top: 1.h),
@@ -276,15 +277,24 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                     stream: bloc.usedDiscount,
                     builder: (context, usedDiscount) {
                       return Expanded(
-                        child: Text(
-                          usedDiscount.requireData
-                              ? packageItem.totalPrice != 0 && packageItem.totalPrice != null
-                                  ? '${packageItem.totalPrice} ${intl.toman}'
-                                  : intl.free
-                              : '${packageItem.finalPrice} ${intl.toman}',
+                        child: RichText(
+                          text: TextSpan(
+                              text: usedDiscount.requireData
+                                  ? bloc.packageItemNew!.totalPrice != 0 &&
+                                          bloc.packageItemNew!.totalPrice != null
+                                      ? '${bloc.packageItemNew!.totalPrice}'
+                                      : intl.free
+                                  : '${bloc.packageItemNew!.finalPrice}',
+                              style: typography.titleMedium!.copyWith(
+                                  color: AppColors.priceGreenColor, fontWeight: FontWeight.w700),
+                              children: [
+                                TextSpan(
+                                    text: ' ${intl.toman}',
+                                    style: typography.overline!
+                                        .copyWith(color: AppColors.priceGreenColor))
+                              ]),
                           softWrap: false,
                           textAlign: TextAlign.end,
-                          style: typography.caption!.copyWith(color: AppColors.priceGreenColor),
                         ),
                       );
                     }),

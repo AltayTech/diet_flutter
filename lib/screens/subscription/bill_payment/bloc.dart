@@ -138,16 +138,17 @@ class BillPaymentBloc {
       ..name = 'پکیج یک ماهه'
       ..index = 0
       ..totalPrice = 900
-      ..description = 'dsfdsf sdfdsfds sdfsdfsd sdfsdfsd');
+      ..is_suggestion=true
+      ..description = 'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
     _list.add(Package()
       ..price = 2000
       ..finalPrice = 1900
       ..id = 1
       ..name = 'پکیج سه ماهه'
-      ..index = 0
+      ..index = 1
       ..totalPrice = 1900
-      ..description = 'dsfdsf sdfdsfds sdfsdfsd sdfsdfsd');
-    _packageItemNew = _list[0];
+      ..is_suggestion=false
+      ..description = 'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
     /*   _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
       _packageItem!.index = 0;

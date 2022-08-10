@@ -5,10 +5,10 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/payment/payment_type_new.dart';
 import 'package:behandam/screens/profile/profile.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/enable_discount_box.dart';
-import 'package:behandam/screens/payment/payment_type_new.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/package_item.dart';
@@ -39,6 +39,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _progressTimeline = ProgressTimeline(
@@ -47,24 +48,28 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
         SingleState(stateTitle: "", isFailed: false),
         SingleState(stateTitle: "", isFailed: false),
         SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
       ],
-      height: 5.h,
-      width: 50.w,
+      height: 6.h,
+      width: 45.w,
       checkedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 28, height: 28, fit: BoxFit.fill),
+          width: 7.w, height: 7.w, fit: BoxFit.fill),
       currentIcon: ImageUtils.fromLocal("assets/images/physical_report/current_step.svg",
-          width: 28, height: 28, fit: BoxFit.fill),
+          width: 7.w, height: 7.w, fit: BoxFit.fill),
       failedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 28, height: 28, fit: BoxFit.fill),
+          width: 7.w, height: 7.w, fit: BoxFit.fill),
       uncheckedIcon: ImageUtils.fromLocal("assets/images/physical_report/none_step.svg",
-          width: 15, height: 15, fit: BoxFit.fill),
-      iconSize: 28,
-      connectorLength: 10.w,
+          width: 4.w, height: 4.w, fit: BoxFit.fill),
+      iconSize: 7.w,
+      connectorLength: 8.w,
       connectorColorSelected: AppColors.primary,
       connectorWidth: 4,
       connectorColor: Color(0xffC9D1E1),
     );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(milliseconds: 500), () {
+        _progressTimeline.gotoStage(2);
+      });
+    });
 
     bloc = BillPaymentBloc();
     if (navigator.currentConfiguration!.path.contains('subscription')) {
@@ -74,10 +79,6 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
     }
 
     listenBloc();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _progressTimeline.state.gotoStage(3);
-    });
   }
 
   @override
@@ -192,7 +193,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: 90.w,
+                            width: 100.w,
                             child: Center(
                               child: _progressTimeline,
                             ),
@@ -218,7 +219,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                                       .map((index, package) => MapEntry(
                                           index,
                                           Padding(
-                                            padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
+                                            padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0,left: 8,right: 8),
                                             child: PackageWidget(
                                                 onTap: () {
                                                   bloc.setPackageItem = package;
@@ -228,10 +229,38 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                                                 description: package.description ?? '',
                                                 price: '${package.price}',
                                                 finalPrice: '${package.finalPrice}',
-                                                maxHeight: 15.h,
-                                                isOurSuggestion: false,
-                                                isBorder: true),
+                                                maxHeight: 22.h,
+                                                isOurSuggestion: package.is_suggestion,
+                                                isBorder: true,borderColor: package.barColor,
+                                            ),
                                           )))
+                                      .values
+                                      .toList(),
+                                  Space(height: 2.h,),
+                                  Text(
+                                    intl.enterYourPackage,
+                                    style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  ...bloc.packageItems
+                                      .asMap()
+                                      .map((index, package) => MapEntry(
+                                      index,
+                                      Padding(
+                                        padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0,left: 8,right: 8),
+                                        child: PackageWidget(
+                                          onTap: () {
+                                            bloc.setPackageItem = package;
+                                          },
+                                          title: package.name ?? '',
+                                          isSelected: package.isSelected ?? false,
+                                          description: package.description ?? '',
+                                          price: '${package.price}',
+                                          finalPrice: '${package.finalPrice}',
+                                          maxHeight: 22.h,
+                                          isOurSuggestion: package.is_suggestion,
+                                          isBorder: true,borderColor: package.barColor,
+                                        ),
+                                      )))
                                       .values
                                       .toList()
                                 ],
@@ -240,6 +269,9 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                           ),
                           Space(height: 1.h),
                           EnableDiscountBoxWidget(),
+                          Space(
+                            height: 1.h,
+                          ),
                           PaymentTypeWidget(),
                           rulesAndPaymentBtn()
                         ],
