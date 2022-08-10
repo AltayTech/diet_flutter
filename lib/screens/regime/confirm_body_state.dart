@@ -90,7 +90,7 @@ class _ConfirmBodyStateScreenState
                     return Container(
                         width: 100.w,
                         padding: EdgeInsets.symmetric(
-                            horizontal: 7.w, vertical: 2.h),
+                            horizontal: 7.w, vertical: 3.h),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

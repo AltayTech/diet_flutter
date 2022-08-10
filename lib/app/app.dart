@@ -50,6 +50,7 @@ import 'package:behandam/screens/regime/menu/menu_select.dart';
 import 'package:behandam/screens/regime/overview/overview.dart';
 import 'package:behandam/screens/regime/package/package_list.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
+import 'package:behandam/screens/regime/sickness/other_sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
@@ -268,7 +269,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage(ConfirmBodyStateScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(OtherSicknessScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
