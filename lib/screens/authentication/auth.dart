@@ -12,6 +12,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -81,22 +82,26 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   }
 
   Widget body() {
-    return SafeArea(
-      child: StreamBuilder(
-          stream: authBloc.waiting,
-          builder: (context, snapshot) {
-            if (snapshot.data == false && !check) {
-              return LoginBackground(
-                children: [
-                  Space(height: 25.h),
-                  Expanded(child: content()),
-                ],
-              );
-            } else {
-              check = false;
-              return Container(height: 100.h, child: Progress());
-            }
-          }),
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: StreamBuilder(
+              stream: authBloc.waiting,
+              builder: (context, snapshot) {
+                if (snapshot.data == false && !check) {
+                  return LoginBackground(
+                    children: [
+                      Space(height: 25.h),
+                      Expanded(child: content()),
+                    ],
+                  );
+                } else {
+                  check = false;
+                  return Container(height: 100.h, child: Progress());
+                }
+              }),
+        ),
+      ),
     );
   }
 

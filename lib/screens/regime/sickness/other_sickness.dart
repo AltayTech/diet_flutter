@@ -174,8 +174,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
                   bottomRight: Radius.circular(10)),
             ),
             child: sickness.sicknesses!.length > 0
-                ? GridView.extent(
-                    maxCrossAxisExtent: 200,
+                ? Wrap(
                     children: <Widget>[
                       ...sickness.sicknesses!
                           .map((sickness) => sicknessItem(sickness))
@@ -211,7 +210,8 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
   }
 
   Widget sicknessItem(CategorySickness sickness) {
-    return Expanded(
+    return Container(
+      width: 30.w,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: CheckBoxApp(

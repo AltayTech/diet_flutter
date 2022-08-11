@@ -108,22 +108,26 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   }
 
   Widget body() {
-    return SafeArea(
-      child: StreamBuilder(
-          stream: authBloc.waiting,
-          builder: (context, snapshot) {
-            if (snapshot.data == false && !check) {
-              return LoginBackground(
-                children: [
-                  Space(height: 12.h),
-                  Expanded(child: content()),
-                ],
-              );
-            } else {
-              check = false;
-              return Container(height: 100.h, child: Progress());
-            }
-          }),
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: StreamBuilder(
+              stream: authBloc.waiting,
+              builder: (context, snapshot) {
+                if (snapshot.data == false && !check) {
+                  return LoginBackground(
+                    children: [
+                      Space(height: 12.h),
+                      Expanded(child: content()),
+                    ],
+                  );
+                } else {
+                  check = false;
+                  return Container(height: 100.h, child: Progress());
+                }
+              }),
+        ),
+      ),
     );
   }
 
