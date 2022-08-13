@@ -200,7 +200,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                           ),
                           Text(
                             intl.enterYourPackage,
-                            style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
+                            style: typography.headline5!.copyWith(fontSize: 14.sp),
                           ),
                           Text(
                             intl.enterYourPackageDescription,
@@ -209,64 +209,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                           Space(
                             height: 2.h,
                           ),
-                          StreamBuilder(
-                            stream: bloc.refreshPackages,
-                            builder: (context, snapshot) {
-                              return Column(
-                                children: [
-                                  ...bloc.packageItems
-                                      .asMap()
-                                      .map((index, package) => MapEntry(
-                                          index,
-                                          Padding(
-                                            padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0,left: 8,right: 8),
-                                            child: PackageWidget(
-                                                onTap: () {
-                                                  bloc.setPackageItem = package;
-                                                },
-                                                title: package.name ?? '',
-                                                isSelected: package.isSelected ?? false,
-                                                description: package.description ?? '',
-                                                price: '${package.price}',
-                                                finalPrice: '${package.finalPrice}',
-                                                maxHeight: 22.h,
-                                                isOurSuggestion: package.is_suggestion,
-                                                isBorder: true,borderColor: package.barColor,
-                                            ),
-                                          )))
-                                      .values
-                                      .toList(),
-                                  Space(height: 2.h,),
-                                  Text(
-                                    intl.enterYourPackage,
-                                    style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                  ...bloc.packageItems
-                                      .asMap()
-                                      .map((index, package) => MapEntry(
-                                      index,
-                                      Padding(
-                                        padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0,left: 8,right: 8),
-                                        child: PackageWidget(
-                                          onTap: () {
-                                            bloc.setPackageItem = package;
-                                          },
-                                          title: package.name ?? '',
-                                          isSelected: package.isSelected ?? false,
-                                          description: package.description ?? '',
-                                          price: '${package.price}',
-                                          finalPrice: '${package.finalPrice}',
-                                          maxHeight: 22.h,
-                                          isOurSuggestion: package.is_suggestion,
-                                          isBorder: true,borderColor: package.barColor,
-                                        ),
-                                      )))
-                                      .values
-                                      .toList()
-                                ],
-                              );
-                            },
-                          ),
+                          packageItem(),
                           Space(height: 1.h),
                           EnableDiscountBoxWidget(),
                           Space(
@@ -281,6 +224,79 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                 );
               return Progress();
             }));
+  }
+
+  Widget packageItem() {
+    return StreamBuilder(
+      stream: bloc.refreshPackages,
+      builder: (context, snapshot) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 8, right: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ...bloc.packageItems
+                  .asMap()
+                  .map((index, package) => MapEntry(
+                      index,
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: (index > 0) ? 8.0 : 0.0,
+                        ),
+                        child: PackageWidget(
+                          onTap: () {
+                            bloc.setPackageItem = package;
+                          },
+                          title: package.name ?? '',
+                          isSelected: package.isSelected ?? false,
+                          description: package.description ?? '',
+                          price: '${package.price}',
+                          finalPrice: '${package.finalPrice}',
+                          maxHeight: 22.h,
+                          isOurSuggestion: package.is_suggestion,
+                          isBorder: true,
+                          borderColor: package.barColor,
+                        ),
+                      )))
+                  .values
+                  .toList(),
+              Space(
+                height: 2.h,
+              ),
+              Text(
+                intl.weAreServiceMore,
+                style: typography.headline5!.copyWith(fontSize: 12.sp),
+              ),
+              Space(height: 1.h),
+              ...bloc.services
+                  .asMap()
+                  .map((index, package) => MapEntry(
+                      index,
+                      Padding(
+                        padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0, left: 8, right: 8),
+                        child: PackageWidget.service(
+                          onTap: () {
+                            bloc.setServiceSelected(package);
+                          },
+                          title: package.name ?? '',
+                          isSelected: package.isSelected ?? false,
+                          description: package.description ?? '',
+                          price: '${package.price}',
+                          finalPrice: '${package.finalPrice}',
+                          maxHeight: 12.5.h,
+                          isOurSuggestion: package.is_suggestion,
+                          isBorder: true,
+                          borderColor: package.barColor,
+                        ),
+                      )))
+                  .values
+                  .toList(),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget rulesAndPaymentBtn() {

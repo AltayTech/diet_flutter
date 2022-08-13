@@ -35,7 +35,15 @@ class _EnableDiscountBoxWidget extends ResourcefulState<EnableDiscountBoxWidget>
     return StreamBuilder<bool>(
         stream: bloc.enterDiscount,
         builder: (context, enterDiscount) {
-          if (enterDiscount.hasData && enterDiscount.requireData) return DiscountWidget();
+          if (enterDiscount.hasData && enterDiscount.requireData)
+            return StreamBuilder(
+                stream: bloc.usedDiscount,
+                builder: (context, usedDiscount) {
+                  if (usedDiscount.hasData && usedDiscount.data == true)
+                    return DiscountWidget();
+                  else
+                   return successBox();
+                });
           return Container(
             height: 10.h,
             decoration: AppDecorations.boxSmall.copyWith(
@@ -76,7 +84,6 @@ class _EnableDiscountBoxWidget extends ResourcefulState<EnableDiscountBoxWidget>
                                 width: 1,
                                 color: Colors.red,
                               ),
-                              color: Colors.white,
                             ),
                             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
                             child: Text(
@@ -97,23 +104,13 @@ class _EnableDiscountBoxWidget extends ResourcefulState<EnableDiscountBoxWidget>
         });
   }
 
-  @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
+  Widget successBox() {
+    return Container(
+      child: Column(
+        children: [
 
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+        ],
+      ),
+    );
   }
 }

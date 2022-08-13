@@ -25,7 +25,9 @@ class BillPaymentBloc {
   Price? _discountInfo;
   PackageItem? _packageItem;
   Package? _packageItemNew;
+  Package? _serviceSelected;
   List<Package> _list = [];
+  List<Package> _services = [];
   late String _path;
   bool _checkLatestInvoice = false;
   String? _messageErrorCode;
@@ -44,6 +46,7 @@ class BillPaymentBloc {
   final _onlinePayment = LiveEvent();
 
   Stream<bool> get waiting => _waiting.stream;
+
   Stream<bool> get refreshPackages => _refreshPackages.stream;
 
   Stream<bool> get wrongDisCode => _wrongDisCode.stream;
@@ -75,10 +78,17 @@ class BillPaymentBloc {
   Price? get discountInfo => _discountInfo;
 
   PackageItem? get packageItem => _packageItem;
+
   Package? get packageItemNew => _packageItemNew;
 
+  Package? get serviceSelected => _serviceSelected;
+
   List<Package> get packageItems => _list;
+
+  List<Package> get services => _services;
+
   String? get messageErrorCode => _messageErrorCode;
+
   String get path => _path;
 
   bool get checkLatestInvoice => _checkLatestInvoice;
@@ -95,7 +105,25 @@ class BillPaymentBloc {
     });
     _packageItemNew = packageItem;
     _packageItemNew!.isSelected = true;
-    _refreshPackages.safeValue=true;
+    _refreshPackages.safeValue = true;
+  }
+
+  void setServiceSelected(Package packageItem) {
+    if(packageItem.isSelected==null ||  !packageItem.isSelected!)
+    packageItem.isSelected = true;
+    else  packageItem.isSelected = false;
+    changePayment();
+
+  }
+
+  void changePayment(){
+    _packageItemNew!.totalPrice = _packageItemNew!.finalPrice!;
+    _services.forEach((element) {
+      if(element.isSelected==true){
+        _packageItemNew!.totalPrice = _packageItemNew!.totalPrice! + element.price!;
+      }
+    });
+    _refreshPackages.safeValue = true;
   }
 
   void changeDiscountLoading(bool val) {
@@ -132,23 +160,46 @@ class BillPaymentBloc {
   void getPackagePayment() {
     _waiting.safeValue = true;
     _list.add(Package()
-      ..price = 1000
-      ..finalPrice = 900
+      ..price = 12000
+      ..finalPrice = 90000
       ..id = 1
       ..name = 'پکیج یک ماهه'
       ..index = 0
-      ..totalPrice = 900
-      ..is_suggestion=true
-      ..description = 'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
+      ..totalPrice = 90000
+      ..is_suggestion = true
+      ..description =
+          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
     _list.add(Package()
-      ..price = 2000
-      ..finalPrice = 1900
+      ..price = 20000
+      ..finalPrice = 10900
       ..id = 1
       ..name = 'پکیج سه ماهه'
       ..index = 1
+      ..totalPrice = 10900
+      ..is_suggestion = false
+      ..description =
+          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
+
+    _services.add(Package()
+      ..price = 150000
+      ..finalPrice = 900
+      ..id = 1
+      ..name = 'برنامه ورزشی(فیتامین)'
+      ..index = 0
+      ..totalPrice = 900
+      ..is_suggestion = true
+      ..description =
+          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
+    _services.add(Package()
+      ..price = 40000
+      ..finalPrice = 1900
+      ..id = 1
+      ..name = 'پشتیبانی اختصاصی'
+      ..index = 1
       ..totalPrice = 1900
-      ..is_suggestion=false
-      ..description = 'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
+      ..is_suggestion = false
+      ..description =
+          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
     /*   _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
       _packageItem!.index = 0;
@@ -161,7 +212,7 @@ class BillPaymentBloc {
   void getReservePackagePayment() {
     _waiting.safeValue = true;
     _repository.getReservePackageUser().then((value) {
-   //   _packageItem = value.data;
+      //   _packageItem = value.data;
       _packageItem!.index = 0;
     }).whenComplete(() {
       _waiting.safeValue = false;
@@ -171,7 +222,7 @@ class BillPaymentBloc {
   void getPackage() {
     _waiting.safeValue = true;
     _repository.getPackagesList().then((value) {
-     // _list = value.data!.items!;
+      // _list = value.data!.items!;
       for (int i = 0; i < _list.length; i++) {
         _list[i].index = i;
       }

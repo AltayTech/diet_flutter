@@ -8,6 +8,9 @@ class Package {
   @JsonKey(name: "items")
   List<Package>? items;
 
+  @JsonKey(name: "servicesPackages")
+  List<Package>? servicesPackages;
+
   @JsonKey(name: "id")
   int? id;
   @JsonKey(name: "price")
@@ -44,6 +47,7 @@ class Package {
 
   int? totalPrice;
 
+  @JsonKey(name: "isSelected",defaultValue: false)
   bool? isSelected;
 
   int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));

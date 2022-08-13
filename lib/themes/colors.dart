@@ -52,7 +52,7 @@ class AppColors {
   static late Color colorTextApp;
   static late Color colorSelectDepartmentTicket;
   static const grey = Color(0xffF5F5F5);
-  static const priceGreyColor = Color(0xff717171);
+  static const priceGreyColor = Color(0xff454545);
   static const priceDiscountColor = Color(0xffED4C67);
   static const priceGreenColor = Color(0xff1ABC9C);
   static const priceColor = Color.fromRGBO(86, 195, 180, 1);

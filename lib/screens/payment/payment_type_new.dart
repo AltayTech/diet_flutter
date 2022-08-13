@@ -1,5 +1,4 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
@@ -8,6 +7,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class PaymentTypeWidget extends StatefulWidget {
   PaymentTypeWidget({Key? key}) : super(key: key);
@@ -110,7 +110,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                                                       Space(width: 3.w),
                                                       Expanded(
                                                           child: CheckBoxApp(
-                                                        title: intl.cardToCard,
+                                                        title: intl.online,
                                                         isSelected: selectedPayment.data! ==
                                                             PaymentType.online,
                                                         onTap: () {
@@ -174,7 +174,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                   textAlign: TextAlign.end,
                   softWrap: true,
                   text: TextSpan(
-                    text: '${bloc.packageItemNew!.price} ',
+                    text: '${bloc.packageItemNew!.price}'.seRagham() + ' ',
                     children: [
                       TextSpan(
                         text: intl.toman,
@@ -210,7 +210,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                   ),
                   Expanded(
                     child: Text(
-                      '${bloc.packageItemNew!.price! - bloc.packageItemNew!.finalPrice!} ${intl.toman}',
+                      '${bloc.packageItemNew!.price! - bloc.packageItemNew!.finalPrice!}'.seRagham()+' ${intl.toman}',
                       softWrap: false,
                       textAlign: TextAlign.end,
                       style: typography.caption!.copyWith(color: AppColors.priceDiscountColor),
@@ -219,6 +219,41 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                 ],
               ),
             ),
+          ...bloc.services
+              .asMap()
+              .map((key, value) => MapEntry(
+                  key,
+                  value.isSelected ?? false
+                      ? Container(
+                          margin: EdgeInsets.only(top: 1.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  value.name!,
+                                  softWrap: true,
+                                  textAlign: TextAlign.start,
+                                  style: typography.caption!.copyWith(
+                                      color: AppColors.priceGreyColor,fontSize: 10.sp),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  '${value.price.toString().seRagham()} ${intl.toman}',
+                                  softWrap: true,
+                                  textAlign: TextAlign.end,
+                                  style: typography.caption!
+                                      .copyWith(color: AppColors.priceGreyColor,),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : EmptyBox()))
+              .values
+              .toList(),
           StreamBuilder<bool>(
               initialData: false,
               stream: bloc.usedDiscount,
@@ -241,7 +276,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                         ),
                         Expanded(
                           child: Text(
-                            '${bloc.discountInfo!.discount} ${intl.toman}',
+                            '${bloc.discountInfo!.discount.toString().seRagham()} ${intl.toman}',
                             softWrap: false,
                             textAlign: TextAlign.end,
                             style:
@@ -279,12 +314,10 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                       return Expanded(
                         child: RichText(
                           text: TextSpan(
-                              text: usedDiscount.requireData
-                                  ? bloc.packageItemNew!.totalPrice != 0 &&
-                                          bloc.packageItemNew!.totalPrice != null
-                                      ? '${bloc.packageItemNew!.totalPrice}'
-                                      : intl.free
-                                  : '${bloc.packageItemNew!.finalPrice}',
+                              text: bloc.packageItemNew!.totalPrice != 0 &&
+                                      bloc.packageItemNew!.totalPrice != null
+                                  ? '${bloc.packageItemNew!.totalPrice}'.seRagham()
+                                  : intl.free,
                               style: typography.titleMedium!.copyWith(
                                   color: AppColors.priceGreenColor, fontWeight: FontWeight.w700),
                               children: [
