@@ -160,8 +160,7 @@ class _CheckBoxAppState extends ResourcefulState<CheckBoxApp> {
     return InkWell(
       onTap: widget.onTap,
       child: Container(
-        width: double.maxFinite,
-        alignment: Alignment.center,
+        height: 5.h,
         decoration: BoxDecoration(
           color: Colors.white,
           border: widget.isBorder!
@@ -171,48 +170,37 @@ class _CheckBoxAppState extends ResourcefulState<CheckBoxApp> {
               : null,
           borderRadius: BorderRadius.circular(10),
         ),
-        constraints: BoxConstraints(maxHeight: widget.maxHeight ?? 8.h),
         child: Container(
           margin: EdgeInsets.only(right: 2.w),
-          width: double.maxFinite,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 0,
-                child: Container(
-                    child: ImageUtils.fromLocal(
-                      widget.isSelected
-                          ? widget.iconSelectType == IconSelectType.Radio
-                          ? 'assets/images/physical_report/selected.svg'
-                          : 'assets/images/physical_report/icon_checked.svg'
-                          : widget.iconSelectType == IconSelectType.Radio
-                          ? 'assets/images/bill/not_select.svg'
-                          : 'assets/images/physical_report/none_checked.svg',
-                      width: 5.w,
-                      height: 5.w,
-                    ),
-                    alignment: Alignment.center,
-                    height: double.maxFinite),
+              Container(
+                  child: ImageUtils.fromLocal(
+                    widget.isSelected
+                        ? widget.iconSelectType == IconSelectType.Radio
+                        ? 'assets/images/physical_report/selected.svg'
+                        : 'assets/images/physical_report/icon_checked.svg'
+                        : widget.iconSelectType == IconSelectType.Radio
+                        ? 'assets/images/bill/not_select.svg'
+                        : 'assets/images/physical_report/none_checked.svg',
+                    width: 5.w,
+                    height: 5.w,
+                  ),
+                  alignment: Alignment.center,
               ),
               Space(
                 width: 2.w,
               ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: double.maxFinite,
-                  height: 4.w,
-                  child: Text(
-                    widget.title,
-                    softWrap: false,
-                    textAlign: TextAlign.start,
-                    style: typography.caption!.copyWith(
-                        color: widget.isSelected ? Color(0xff1ABC9C) : Color(0xff454545),
-                        fontSize: 10.sp,
-                        fontWeight: widget.isSelected ? FontWeight.w700 : FontWeight.w400),
-                  ),
+              Container(
+                height: 4.w,
+                child: Text(
+                  widget.title,
+                  softWrap: false,
+                  textAlign: TextAlign.start,
+                  style: typography.caption!.copyWith(
+                      color: widget.isSelected ? Color(0xff1ABC9C) : Color(0xff454545),
+                      fontSize: 10.sp,
+                      fontWeight: widget.isSelected ? FontWeight.w700 : FontWeight.w400),
                 ),
               ),
             ],

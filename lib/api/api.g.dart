@@ -856,6 +856,25 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NetworkResponse<dynamic>> getNotBlockingSickness() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<dynamic>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/not-blocking-sicknesses',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
   Future<NetworkResponse<dynamic>> setUserSickness(userSickness) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

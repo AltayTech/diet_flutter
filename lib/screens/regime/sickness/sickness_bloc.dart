@@ -76,6 +76,48 @@ class SicknessBloc {
     _userCategorySickness.safeValue = _userSickness.sickness_categories!;
   }
 
+  void getNotBlockingSickness() async {
+    _waiting.safeValue = true;
+    _repository.getNotBlockingSickness().then((value) {
+      _userSickness = value.data!;
+      int index = 0;
+      if (value.data != null) {
+        _userSickness.sickness_categories?.forEach((element) {
+          element.barColor = _illColor[index]['barColor'];
+          element.bgColor = _illColor[index]['bgColor'];
+          element.tick = _illColor[index]['tick'];
+          element.shadow = _illColor[index]['shadow'];
+          element.sicknesses!.sort((a, b) {
+            return a.order!.compareTo(b.order!);
+          });
+          element.sicknesses?.forEach((sickness) {
+            // print('Start sicknesses sick ${sickness.toJson()}');
+            _userSickness.userSicknesses?.forEach((user) {
+              //print('user sicknesses sick ${sickness.toJson()}');
+              if (user.id == sickness.id) {
+                sickness.isSelected = true;
+              }
+            });
+            sickness.children?.forEach((child) {
+              _userSickness.userSicknesses?.forEach((user) {
+                if (user.id == child.id) {
+                  sickness.isSelected = true;
+                  child.isSelected = true;
+                }
+              });
+            });
+          });
+
+          if (index == _illColor.length - 1)
+            index = 0;
+          else
+            index += 1;
+        });
+        _userCategorySickness.safeValue = _userSickness.sickness_categories!;
+      }
+    }).whenComplete(() => _waiting.safeValue = false);
+  }
+
   void getSickness() async {
     _waiting.safeValue = true;
     _repository.getSickness().then((value) {

@@ -38,7 +38,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
   void initState() {
     super.initState();
     sicknessBloc = SicknessBloc();
-    sicknessBloc.getSickness();
+    sicknessBloc.getNotBlockingSickness();
     listenBloc();
   }
 
@@ -75,8 +75,8 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
               stream: sicknessBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data == false) {
-                  controller.text =
-                      sicknessBloc.userSickness?.sicknessNote ?? '';
+                  /*controller.text =
+                      sicknessBloc.userSickness?.sicknessNote ?? '';*/
                   return content();
                 } else {
                   return Container(height: 80.h, child: Progress());
@@ -115,7 +115,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
                     .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
               ),
               Space(height: 2.h),
-              if (sicknessBloc.userSickness != null)
+              /*if (sicknessBloc.userSickness != null)*/
                 StreamBuilder<List<CategorySickness>>(
                     stream: sicknessBloc.userCategorySickness,
                     builder: (context, userCategorySickness) {
@@ -211,11 +211,9 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
 
   Widget sicknessItem(CategorySickness sickness) {
     return Container(
-      width: 30.w,
-      child: Padding(
-        padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
+      child: Flexible(
         child: CheckBoxApp(
-          maxHeight: 5.h,
           isBorder: false,
           iconSelectType: IconSelectType.Radio,
           onTap: () {

@@ -147,6 +147,8 @@ abstract class Repository {
 
   NetworkResult<UserSickness> getSickness();
 
+  ImperativeNetworkResult getNotBlockingSickness();
+
   ImperativeNetworkResult sendSickness(UserSickness sickness);
 
   NetworkResult<UserSicknessSpecial> getSicknessSpecial();
@@ -594,6 +596,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<UserSickness> getSickness() {
     var response = _apiClient.getUserSickness();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult getNotBlockingSickness() {
+    var response = _apiClient.getNotBlockingSickness();
     return response;
   }
 
