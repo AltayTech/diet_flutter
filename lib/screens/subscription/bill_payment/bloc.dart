@@ -95,6 +95,8 @@ class BillPaymentBloc {
 
   set setEnterDiscount(bool val) => _enterDiscount.value = val;
 
+  set setUsedDiscount(bool val) => _usedDiscount.value = val;
+
   set onPaymentTap(PaymentType type) => _selectedPayment.value = type;
 
   set setCheckedRules(bool check) => _checkedRules.value = check;
@@ -104,22 +106,23 @@ class BillPaymentBloc {
       element.isSelected = false;
     });
     _packageItemNew = packageItem;
+    _services = packageItem.servicesPackages ?? [];
     _packageItemNew!.isSelected = true;
     _refreshPackages.safeValue = true;
   }
 
   void setServiceSelected(Package packageItem) {
-    if(packageItem.isSelected==null ||  !packageItem.isSelected!)
-    packageItem.isSelected = true;
-    else  packageItem.isSelected = false;
+    if (packageItem.isSelected == null || !packageItem.isSelected!)
+      packageItem.isSelected = true;
+    else
+      packageItem.isSelected = false;
     changePayment();
-
   }
 
-  void changePayment(){
+  void changePayment() {
     _packageItemNew!.totalPrice = _packageItemNew!.finalPrice!;
     _services.forEach((element) {
-      if(element.isSelected==true){
+      if (element.isSelected == true) {
         _packageItemNew!.totalPrice = _packageItemNew!.totalPrice! + element.price!;
       }
     });
@@ -159,6 +162,27 @@ class BillPaymentBloc {
 
   void getPackagePayment() {
     _waiting.safeValue = true;
+    List<Package> serv1 = [];
+    serv1.add(Package()
+      ..price = 150000
+      ..finalPrice = 900
+      ..id = 1
+      ..name = 'برنامه ورزشی(فیتامین)'
+      ..index = 0
+      ..totalPrice = 900
+      ..is_suggestion = true
+      ..description =
+          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
+    serv1.add(Package()
+      ..price = 40000
+      ..finalPrice = 1900
+      ..id = 1
+      ..name = 'پشتیبانی اختصاصی'
+      ..index = 1
+      ..totalPrice = 1900
+      ..is_suggestion = false
+      ..description =
+          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
     _list.add(Package()
       ..price = 12000
       ..finalPrice = 90000
@@ -167,6 +191,28 @@ class BillPaymentBloc {
       ..index = 0
       ..totalPrice = 90000
       ..is_suggestion = true
+      ..servicesPackages = serv1
+      ..description =
+          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
+    List<Package> serv = [];
+    serv.add(Package()
+      ..price = 150000
+      ..finalPrice = 900
+      ..id = 1
+      ..name = 'برنامه ورزشی(فیتامین)'
+      ..index = 0
+      ..totalPrice = 900
+      ..is_suggestion = true
+      ..description =
+          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
+    serv.add(Package()
+      ..price = 40000
+      ..finalPrice = 1900
+      ..id = 1
+      ..name = 'پشتیبانی اختصاصی'
+      ..index = 1
+      ..totalPrice = 1900
+      ..is_suggestion = false
       ..description =
           'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
     _list.add(Package()
@@ -177,29 +223,10 @@ class BillPaymentBloc {
       ..index = 1
       ..totalPrice = 10900
       ..is_suggestion = false
+      ..servicesPackages = serv
       ..description =
           'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
 
-    _services.add(Package()
-      ..price = 150000
-      ..finalPrice = 900
-      ..id = 1
-      ..name = 'برنامه ورزشی(فیتامین)'
-      ..index = 0
-      ..totalPrice = 900
-      ..is_suggestion = true
-      ..description =
-          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
-    _services.add(Package()
-      ..price = 40000
-      ..finalPrice = 1900
-      ..id = 1
-      ..name = 'پشتیبانی اختصاصی'
-      ..index = 1
-      ..totalPrice = 1900
-      ..is_suggestion = false
-      ..description =
-          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
     /*   _repository.getPackagePayment().then((value) {
       _packageItem = value.data;
       _packageItem!.index = 0;

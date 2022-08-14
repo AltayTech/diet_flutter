@@ -264,34 +264,36 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
               Space(
                 height: 2.h,
               ),
-              Text(
-                intl.weAreServiceMore,
-                style: typography.headline5!.copyWith(fontSize: 12.sp),
-              ),
-              Space(height: 1.h),
-              ...bloc.services
-                  .asMap()
-                  .map((index, package) => MapEntry(
-                      index,
-                      Padding(
-                        padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0, left: 8, right: 8),
-                        child: PackageWidget.service(
-                          onTap: () {
-                            bloc.setServiceSelected(package);
-                          },
-                          title: package.name ?? '',
-                          isSelected: package.isSelected ?? false,
-                          description: package.description ?? '',
-                          price: '${package.price}',
-                          finalPrice: '${package.finalPrice}',
-                          maxHeight: 12.5.h,
-                          isOurSuggestion: package.is_suggestion,
-                          isBorder: true,
-                          borderColor: package.barColor,
-                        ),
-                      )))
-                  .values
-                  .toList(),
+              if (bloc.services.isNotEmpty)
+                Text(
+                  intl.weAreServiceMore,
+                  style: typography.headline5!.copyWith(fontSize: 12.sp),
+                ),
+              if (bloc.services.isNotEmpty) Space(height: 1.h),
+              if (bloc.services.isNotEmpty)
+                ...bloc.services
+                    .asMap()
+                    .map((index, package) => MapEntry(
+                        index,
+                        Padding(
+                          padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0, left: 8, right: 8),
+                          child: PackageWidget.service(
+                            onTap: () {
+                              bloc.setServiceSelected(package);
+                            },
+                            title: package.name ?? '',
+                            isSelected: package.isSelected ?? false,
+                            description: package.description ?? '',
+                            price: '${package.price}',
+                            finalPrice: '${package.finalPrice}',
+                            maxHeight: 12.5.h,
+                            isOurSuggestion: package.is_suggestion,
+                            isBorder: true,
+                            borderColor: package.barColor,
+                          ),
+                        )))
+                    .values
+                    .toList(),
             ],
           ),
         );

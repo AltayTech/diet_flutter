@@ -2,9 +2,12 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/discount_widget.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class EnableDiscountBoxWidget extends StatefulWidget {
   EnableDiscountBoxWidget({Key? key}) : super(key: key);
@@ -28,7 +31,14 @@ class _EnableDiscountBoxWidget extends ResourcefulState<EnableDiscountBoxWidget>
 
     bloc = BillPaymentProvider.of(context);
 
-    return enableDiscountBoxWidget();
+    return StreamBuilder<bool>(
+        stream: bloc.refreshPackages,
+        builder: (context, enterDiscount) {
+          if (bloc.packageItemNew != null)
+            return enableDiscountBoxWidget();
+          else
+            return EmptyBox();
+        });
   }
 
   Widget enableDiscountBoxWidget() {
@@ -42,7 +52,7 @@ class _EnableDiscountBoxWidget extends ResourcefulState<EnableDiscountBoxWidget>
                   if (usedDiscount.hasData && usedDiscount.data == true)
                     return DiscountWidget();
                   else
-                   return successBox();
+                    return successBox();
                 });
           return Container(
             height: 10.h,
@@ -106,11 +116,57 @@ class _EnableDiscountBoxWidget extends ResourcefulState<EnableDiscountBoxWidget>
 
   Widget successBox() {
     return Container(
-      child: Column(
-        children: [
-
-        ],
-      ),
-    );
+        height: 10.h,
+        decoration: AppDecorations.boxSmall.copyWith(
+          color: Color(0xffF5F5F5),
+        ),
+        padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          textDirection: context.textDirectionOfLocale,
+          children: [
+            ImageUtils.fromLocal('assets/images/bill/discount_success.svg',
+                width: 10.w, height: 10.w),
+            Space(
+              width: 2.w,
+            ),
+            Expanded(
+              flex: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                textDirection: context.textDirectionOfLocale,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: Text(
+                      '${bloc.discountInfo?.priceDiscount}'.seRagham() + ' تخفیف',
+                      style: typography.caption,
+                    ),
+                  ),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: Text(
+                      '${bloc.discountInfo?.discount_message}',
+                      style: typography.caption,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                bloc.setUsedDiscount = false;
+                bloc.setEnterDiscount = false;
+              },
+              icon: Icon(
+                Icons.close_rounded,
+                color: Colors.red,
+              ),
+              iconSize: 5.w,
+            )
+          ],
+        ));
   }
 }

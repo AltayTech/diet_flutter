@@ -169,16 +169,27 @@ class PackageWidget extends StatelessWidget {
                         Space(
                           width: 2.w,
                         ),
-                        Text(
-                          '$finalPrice'.seRagham() + '${context.intl.toman}',
+                        RichText(
                           softWrap: true,
                           textAlign: TextAlign.start,
-                          style: typography!.caption!.copyWith(
-                              letterSpacing: -0.02,
-                              color: AppColors.priceColor,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w700),
-                        ),
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: '${context.intl.toman}',
+                                  style: typography!.caption!.copyWith(
+                                      letterSpacing: -0.02,
+                                      color: AppColors.priceColor,
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w700))
+                            ],
+                            text: '$finalPrice'.seRagham(),
+                            style: typography!.caption!.copyWith(
+                                letterSpacing: -0.02,
+                                color: AppColors.priceColor,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        )
                       ],
                     )
                   ],

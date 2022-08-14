@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'package_list.g.dart';
+
 @JsonSerializable()
 class Package {
   @JsonKey(name: "items")
@@ -47,7 +48,7 @@ class Package {
 
   int? totalPrice;
 
-  @JsonKey(name: "isSelected",defaultValue: false)
+  @JsonKey(name: "isSelected", defaultValue: false)
   bool? isSelected;
 
   int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
@@ -62,6 +63,7 @@ class Package {
 
   Map<String, dynamic> toJson() => _$PackageToJson(this);
 }
+
 @JsonSerializable()
 class PackageItem {
   @JsonKey(name: "items")
@@ -81,7 +83,7 @@ class PackageItem {
   @JsonKey(name: "package_id")
   int? package_id;
 
-  @JsonKey(name: "refund_deadline",defaultValue: 0)
+  @JsonKey(name: "refund_deadline", defaultValue: 0)
   int? refundDeadline;
 
   int? index;
@@ -138,6 +140,9 @@ class Price {
 
   @JsonKey(name: "product_id")
   int? product_id;
+
+  @JsonKey(name: "discount_message")
+  String? discount_message;
 
   int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
 
