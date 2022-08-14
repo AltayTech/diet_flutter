@@ -1,26 +1,21 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
-import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
+import 'package:behandam/screens/regime/sickness/other_sickness/bloc.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/bottom_triangle.dart';
 import 'package:behandam/widget/custom_button.dart';
-import 'package:behandam/widget/custom_switch.dart';
 import 'package:behandam/widget/sickness_dialog.dart';
-import 'package:behandam/widget/stepper.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import '../../../../data/entity/regime/sickness.dart';
 
 class OtherSicknessScreen extends StatefulWidget {
   const OtherSicknessScreen({Key? key}) : super(key: key);
@@ -31,24 +26,24 @@ class OtherSicknessScreen extends StatefulWidget {
 
 class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
     implements ItemClick {
-  late SicknessBloc sicknessBloc;
+  late OtherSicknessBloc bloc;
   TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    sicknessBloc = SicknessBloc();
-    sicknessBloc.getNotBlockingSickness();
+    bloc = OtherSicknessBloc();
+    bloc.getNotBlockingSickness();
     listenBloc();
   }
 
   void listenBloc() {
-    sicknessBloc.navigateTo.listen((event) {
+    bloc.navigateTo.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       VxNavigator.of(context).push(Uri.parse(event));
     });
-    sicknessBloc.showServerError.listen((event) {
+    bloc.showServerError.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
@@ -58,11 +53,10 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SicknessProvider(sicknessBloc,
-        child: Scaffold(
-          appBar: Toolbar(titleBar: intl.otherSickness),
-          body: body(),
-        ));
+    return Scaffold(
+      appBar: Toolbar(titleBar: intl.otherSickness),
+      body: body(),
+    );
   }
 
   Widget body() {
@@ -72,7 +66,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
           padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 3.h),
           color: Colors.white,
           child: StreamBuilder(
-              stream: sicknessBloc.waiting,
+              stream: bloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data == false) {
                   /*controller.text =
@@ -115,32 +109,30 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
                     .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
               ),
               Space(height: 2.h),
-              /*if (sicknessBloc.userSickness != null)*/
-                StreamBuilder<List<CategorySickness>>(
-                    stream: sicknessBloc.userCategorySickness,
-                    builder: (context, userCategorySickness) {
-                      if (userCategorySickness.hasData &&
-                          userCategorySickness.requireData.length > 0)
+              StreamBuilder<List<Sickness>>(
+                  stream: bloc.userSickness,
+                  builder: (context, userSickness) {
+                    if (userSickness.hasData) {
+                      if (userSickness.requireData.length > 0) {
                         return ListView.builder(
                             physics: ClampingScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: sicknessBloc
-                                .userSickness!.sickness_categories!.length,
+                            itemCount: userSickness.requireData.length,
                             itemBuilder: (BuildContext context, int index) =>
                                 sicknessBox(
+                                  userSickness.requireData[index].title!,
                                   index,
-                                  sicknessBloc.userSickness!
-                                      .sickness_categories![index],
+                                  userSickness.requireData[index].categories!,
                                 ));
-                      else if (sicknessBloc
-                              .userSickness!.sickness_categories!.length <=
-                          0)
+                      } else {
                         return Container(
                             child: Text(intl.emptySickness,
                                 style: typography.caption));
-                      else
-                        return Container(height: 80.h, child: Progress());
-                    }),
+                      }
+                    } else {
+                      return Container(height: 60.h, child: Progress());
+                    }
+                  }),
               Space(height: 1.h),
               Padding(
                 padding: const EdgeInsets.only(right: 16.0, left: 16.0),
@@ -154,7 +146,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
     );
   }
 
-  Widget sicknessBox(int index, CategorySickness sickness) {
+  Widget sicknessBox(String title, int index, List<SicknessCategory> sickness) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -173,10 +165,10 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
                   bottomLeft: Radius.circular(10),
                   bottomRight: Radius.circular(10)),
             ),
-            child: sickness.sicknesses!.length > 0
+            child: sickness.length > 0
                 ? Wrap(
-                    children: <Widget>[
-                      ...sickness.sicknesses!
+                    children:[
+                      ...sickness
                           .map((sickness) => sicknessItem(sickness))
                           .toList(),
                     ],
@@ -194,8 +186,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                      child: Text(sickness.title!, style: typography.caption)),
+                  Expanded(child: Text(title, style: typography.caption)),
                 ],
               ),
               Space(height: 2.h),
@@ -209,11 +200,12 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
     );
   }
 
-  Widget sicknessItem(CategorySickness sickness) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Flexible(
-        child: CheckBoxApp(
+  Widget sicknessItem(SicknessCategory sickness) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Chip(
+        label: Text(sickness.title!, style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp))/*CheckBoxApp(
+          maxHeight: 5.h,
           isBorder: false,
           iconSelectType: IconSelectType.Radio,
           onTap: () {
@@ -222,7 +214,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
           },
           title: sickness.title!,
           isSelected: sickness.isSelected!,
-        ),
+        )*/,
       ),
     );
   }
@@ -230,7 +222,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
   void sendRequest() {
     if (!MemoryApp.isShowDialog)
       DialogUtils.showDialogProgress(context: context);
-    sicknessBloc.sendSickness();
+    bloc.sendSickness();
   }
 
   @override
@@ -240,7 +232,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
 
   @override
   void onRetryLoadingPage() {
-    sicknessBloc.getSickness();
+    bloc.getNotBlockingSickness();
   }
 
   @override
@@ -250,7 +242,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
 
   @override
   void dispose() {
-    sicknessBloc.dispose();
+    bloc.dispose();
     controller.dispose();
     super.dispose();
   }

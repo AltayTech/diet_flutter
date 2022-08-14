@@ -30,6 +30,7 @@ import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/entity/regime/sickness.dart' as sickness;
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
@@ -147,7 +148,7 @@ abstract class Repository {
 
   NetworkResult<UserSickness> getSickness();
 
-  ImperativeNetworkResult getNotBlockingSickness();
+  NetworkResult<List<sickness.Sickness>> getNotBlockingSickness();
 
   ImperativeNetworkResult sendSickness(UserSickness sickness);
 
@@ -600,7 +601,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  ImperativeNetworkResult getNotBlockingSickness() {
+  NetworkResult<List<sickness.Sickness>> getNotBlockingSickness() {
     var response = _apiClient.getNotBlockingSickness();
     return response;
   }

@@ -1,4 +1,3 @@
-import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/utils/boolean.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +9,7 @@ class Sickness {
   int? id;
 
   @JsonKey(name: "title")
-  int? title;
+  String? title;
 
   @JsonKey(name: "has_multichoice_children")
   boolean? hasMultiChoiceChildren;

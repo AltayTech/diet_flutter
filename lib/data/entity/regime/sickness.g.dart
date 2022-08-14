@@ -8,7 +8,7 @@ part of 'sickness.dart';
 
 Sickness _$SicknessFromJson(Map<String, dynamic> json) => Sickness()
   ..id = json['id'] as int?
-  ..title = json['title'] as int?
+  ..title = json['title'] as String?
   ..hasMultiChoiceChildren =
       $enumDecodeNullable(_$booleanEnumMap, json['has_multichoice_children'])
   ..categories = (json['categories'] as List<dynamic>?)
