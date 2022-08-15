@@ -20,7 +20,7 @@ enum ProductType { SHOP, DIET, SUBSCRIPTION }
 
 class PaymentBloc {
   PaymentBloc() {
-    _waiting.safeValue = true;
+    _waiting.safeValue = false;
     _discountLoading.value = false;
     _selectedDateType.value = PaymentDate.today;
 
@@ -303,7 +303,7 @@ class PaymentBloc {
       _productType.safeValue = ProductType.DIET;
     }
 
-    sendRequest();
+   // sendRequest();
   }
 
   void sendRequest() {
