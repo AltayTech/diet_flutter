@@ -430,7 +430,7 @@
   "onlinePay": "پرداخت آنلاین",
   "activityLevel": "فعالیت روزانه",
   "paymentSuccess": "پرداخت موفق",
-  "paymentSuccessLabel": "پرداخت با موفقیت انجام شد",
+  "paymentSuccessLabel": "پرداخت شما با موفقیت انجام شد",
   "paymentInformation": "اطلاعات پرداخت",
   "refId": "شماره پیگیری",
   "amount": "مبلغ",
@@ -727,5 +727,6 @@
   "womanItem": "خانم هستم",
   "menItem": "آقا هستم",
   "gender": "جنسیت",
+  "backToPayment": "صفحه فاکتور",
   "understand": "متوجه شدم"
 }

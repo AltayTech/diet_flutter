@@ -1,11 +1,11 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 
@@ -56,10 +56,7 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
                   if (snapshot.hasData && snapshot.data == false) {
                     return content();
                   } else {
-                    return SpinKitCircle(
-                      size: 7.w,
-                      color: AppColors.primary,
-                    );
+                    return Progress();
                   }
                 },
               ),
@@ -103,17 +100,22 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
                   'assets/images/bill/success.svg',
                   width: 20.w,
                   height: 20.w,
-                  fit: BoxFit.fitHeight,
                 ),
-                SizedBox(height: 3.h),
+                Space(height: 1.h),
                 Text(
-                  intl.paymentSuccessLabel,
+                  intl.paymentSuccess,
                   textAlign: TextAlign.center,
                   softWrap: true,
                   style: Theme.of(context)
                       .textTheme
                       .headline6!
                       .copyWith(color: AppColors.primaryVariantLight),
+                ),
+                Text(
+                  intl.paymentSuccessLabel,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.caption,
                 ),
                 Space(
                   height: 2.h,
