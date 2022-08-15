@@ -18,7 +18,7 @@ class _LoginBackgroundState extends ResourcefulState<LoginBackground> {
     super.build(context);
     return Container(
       width: double.infinity,
-      height: 100.h,
+      height: 97.h,
       decoration: BoxDecoration(
           image: ImageUtils.decorationImage("assets/images/app_background.png",
               fit: BoxFit.fill)),

@@ -1,8 +1,8 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
-import 'package:behandam/screens/widget/login_background.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/login_background.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
@@ -48,15 +48,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     authBloc.navigateToVerify.listen((event) async {
       if (event != null) {
         if (event.toString().contains('verify'))
-          context.vxNav.push(Uri(path: '/$event'), params: {
-            "mobile": number,
-            "country": _selectedLocation
-          });
+          context.vxNav
+              .push(Uri(path: '/$event'), params: {"mobile": number, "country": _selectedLocation});
         else
-          context.vxNav.push(Uri(path: '/$event'), params: {
-            "mobile": number,
-            "country": _selectedLocation
-          });
+          context.vxNav
+              .push(Uri(path: '/$event'), params: {"mobile": number, "country": _selectedLocation});
       }
     });
 
@@ -110,8 +106,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
       height: 45.h,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50), topLeft: Radius.circular(50)),
+          borderRadius:
+              BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
           boxShadow: [
             BoxShadow(
                 color: Colors.grey.withOpacity(0.2),
@@ -136,10 +132,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
             Text(
               intl.enterCodeSent,
               textAlign: TextAlign.start,
-              style: typography.caption!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 10.sp
-              ),
+              style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
             ),
             Space(height: 3.h),
             Flexible(
@@ -149,6 +142,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   controller: _text,
                   textDirection: TextDirection.ltr,
                   keyboardType: TextInputType.phone,
+                  style: typography.caption!.copyWith(color: Color(0xff454545)),
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
@@ -163,10 +157,9 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       labelText: intl.phoneNumber,
                       // errorText: _validate ? intl.fillAllField : null,
                       labelStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600),
-                      suffixIcon: selectCountry()),
+                          color: Colors.grey, fontSize: 12.sp, fontWeight: FontWeight.w500),
+                      suffixIcon: selectCountry(),
+                      suffixIconConstraints: BoxConstraints(maxWidth: 35.w, minWidth: 30.w)),
                   onSubmitted: (String) {
                     click(_selectedLocation);
                   },
@@ -176,7 +169,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 ),
               ),
             ),
-            Space(height: 3.h),
+            Space(height: 5.h),
             StreamBuilder(
               stream: authBloc.selectedCountry,
               builder: (_, AsyncSnapshot<Country> snapshot) {
@@ -199,11 +192,9 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
 
   Widget selectCountry() {
     return Container(
-      width: 30.w,
       height: 7.h,
       margin: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0), color: Colors.grey[200]),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.grey[200]),
       child: StreamBuilder(
         stream: authBloc.selectedCountry,
         builder: (_, AsyncSnapshot<Country> snapshot) {
@@ -214,23 +205,27 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               child: InkWell(
                   onTap: () => countryDialog(),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Expanded(
-                        child: Icon(Icons.keyboard_arrow_down,
-                            color: Colors.orange, size: 20),
+                        flex: 0,
+                        child: Icon(Icons.keyboard_arrow_down, color: Colors.orange, size: 20),
                       ),
                       Expanded(
+                        flex: 1,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
                             '+${_selectedLocation.code ?? ''}',
                             textDirection: TextDirection.ltr,
+                            maxLines: 1,
                             style: typography.caption,
                           ),
                         ),
                       ),
                       Space(width: 3.w),
                       Expanded(
+                        flex: 0,
                         child: ImageUtils.fromLocal(
                             'assets/images/flags/${_selectedLocation.isoCode?.toLowerCase() ?? ''}.png',
                             width: 7.w,
@@ -271,14 +266,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 // errorText: _validate ? intl.fillAllField : null,
                 label: Text(intl.search),
                 labelStyle: TextStyle(
-                    color: AppColors.penColor,
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w400),
+                    color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
               ),
               style: TextStyle(
-                  color: AppColors.penColor,
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w400),
+                  color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
               onSubmitted: (String) {
                 click(_selectedLocation);
               },
@@ -296,10 +287,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                           // shrinkWrap: true,
                           itemBuilder: (_, index) => GestureDetector(
                             onTap: () {
-                              authBloc
-                                  .setCountry(filterListCountry.data![index]);
-                              _selectedLocation =
-                                  filterListCountry.data![index];
+                              authBloc.setCountry(filterListCountry.data![index]);
+                              _selectedLocation = filterListCountry.data![index];
                               Navigator.of(context).pop();
                             },
                             child: Container(
