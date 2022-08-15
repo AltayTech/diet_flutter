@@ -107,7 +107,7 @@ class AuthenticationBloc {
 
   void fetchCountries() {
     if (MemoryApp.countries == null) {
-      _repository.country().then((value) {
+      _repository.country().then((value) async {
         MemoryApp.countries = value.data!;
         _countries.value = value.data!;
         _filterListCountry.value = value.data!;

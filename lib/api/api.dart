@@ -28,6 +28,7 @@ import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/entity/regime/sickness.dart' as sickness;
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
@@ -195,6 +196,9 @@ abstract class RestClient {
 
   @GET("/user-sickness")
   NetworkResult<UserSickness> getUserSickness();
+
+  @GET("/not-blocking-sicknesses")
+  NetworkResult<List<sickness.Sickness>> getNotBlockingSickness();
 
   @PATCH("/user-sickness")
   ImperativeNetworkResult setUserSickness(@Body() UserSickness userSickness);

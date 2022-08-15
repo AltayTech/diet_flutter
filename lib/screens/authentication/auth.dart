@@ -1,13 +1,13 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
-import 'package:behandam/routes.dart';
-import 'package:behandam/screens/authentication/auth_header.dart';
+import 'package:behandam/screens/widget/login_background.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -48,14 +48,15 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     authBloc.navigateToVerify.listen((event) async {
       if (event != null) {
         if (event.toString().contains('verify'))
-          context.vxNav.push(Uri(
-              path: '/$event',
-              queryParameters: {"mobile": number, "countryId": '${_selectedLocation.id}'}));
+          context.vxNav.push(Uri(path: '/$event'), params: {
+            "mobile": number,
+            "country": _selectedLocation
+          });
         else
-          context.vxNav.push(
-            Uri(path: '/$event'),
-            params: {'mobile': number, 'countryId': '${_selectedLocation.id}'},
-          );
+          context.vxNav.push(Uri(path: '/$event'), params: {
+            "mobile": number,
+            "country": _selectedLocation
+          });
       }
     });
 
@@ -77,191 +78,171 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
+    return Scaffold(body: body());
+  }
+
+  Widget body() {
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: SafeArea(
           child: StreamBuilder(
               stream: authBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.data == false && !check) {
-                  return TouchMouseScrollable(
-                    child: SingleChildScrollView(
-                      child: SizedBox(
-                        height: 90.h,
-                        child: Column(children: [
-                          AuthHeader(
-                            title: intl.behandamDrKermany,
-                            showLogo: true,
-                          ),
-                          content(),
-                          Container(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 8, left: 5.w, right: 5.w),
-                              child: RichText(
-                                  textDirection: context.textDirectionOfLocale,
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                        text: intl.termsOfUseDescription,
-                                        style: Theme.of(context).textTheme.overline!.copyWith(
-                                            color: Colors.lightBlue,
-                                            fontSize: 9.sp,
-                                            decoration: TextDecoration.underline),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            VxNavigator.of(context)
-                                                .push(Uri.parse(Routes.termsApp));
-                                          }),
-                                    TextSpan(
-                                      text: " ${intl.and} ",
-                                      style: Theme.of(context).textTheme.overline!.copyWith(
-                                            color: AppColors.labelTextColor,
-                                          ),
-                                    ),
-                                    TextSpan(
-                                        text: intl.privacyPolicy,
-                                        style: Theme.of(context).textTheme.overline!.copyWith(
-                                            color: Colors.lightBlue,
-                                            fontSize: 9.sp,
-                                            decoration: TextDecoration.underline),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            VxNavigator.of(context)
-                                                .push(Uri.parse(Routes.privacyApp));
-                                          }),
-                                    TextSpan(
-                                      text: " ${intl.iAccept} ",
-                                      style: Theme.of(context).textTheme.overline!.copyWith(
-                                          color: AppColors.labelTextColor, fontSize: 9.sp),
-                                    ),
-                                  ])),
-                            ),
-                          ),
-                          Space(height: 1.h),
-                        ]),
-                      ),
-                    ),
+                  return LoginBackground(
+                    children: [
+                      Space(height: 25.h),
+                      Expanded(child: content()),
+                    ],
                   );
                 } else {
                   check = false;
-                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+                  return Container(height: 100.h, child: Progress());
                 }
               }),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget content() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            textDirection: TextDirection.rtl,
-            children: [
-              Flexible(
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
-                  child: TextField(
-                    controller: _text,
-                    textDirection: TextDirection.ltr,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.penColor),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        // enabledBorder: OutlineInputBorder(
-                        //   borderSide: BorderSide(color: Colors.grey)),
-                        labelText: intl.enterYourMobileNumber,
-                        // errorText: _validate ? intl.fillAllField : null,
-                        labelStyle: TextStyle(
-                            color: AppColors.penColor,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600)),
-                    onSubmitted: (String) {
-                      click(_selectedLocation);
-                    },
-                    onChanged: (txt) {
-                      phoneNumber = txt;
-                    },
-                  ),
-                ),
+    return Container(
+      height: 45.h,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(50), topLeft: Radius.circular(50)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 1,
+                offset: Offset(0, 1))
+          ]),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              intl.registerLogin,
+              textAlign: TextAlign.start,
+              style: typography.subtitle1!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
-                width: 30.w,
-                margin: EdgeInsets.only(right: 2.w),
-                child: StreamBuilder(
-                  stream: authBloc.selectedCountry,
-                  builder: (_, AsyncSnapshot<Country> snapshot) {
-                    if (snapshot.hasData) {
-                      _selectedLocation = snapshot.requireData;
-                      return InkWell(
-                          onTap: () => countryDialog(),
-                          child: Container(
-                            child: TextField(
-                              controller: _textCountryCode,
-                              textDirection: TextDirection.ltr,
-                              keyboardType: TextInputType.phone,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: AppColors.penColor),
-                                    borderRadius: BorderRadius.circular(15.0)),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                // enabledBorder: OutlineInputBorder(
-                                //   borderSide: BorderSide(color: Colors.grey)),
-                                // errorText: _validate ? intl.fillAllField : null,
-                                labelStyle: TextStyle(
-                                    color: AppColors.penColor,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: Colors.grey,
-                                  ),
-                                  onPressed: () => countryDialog(),
-                                ),
-                              ),
-                              onSubmitted: (String) {
-                                click(_selectedLocation);
-                              },
-                            ),
-                          ));
-                    }
-                    return Progress();
+            ),
+            Space(height: 1.h),
+            Text(
+              intl.enterCodeSent,
+              textAlign: TextAlign.start,
+              style: typography.caption!.copyWith(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 10.sp
+              ),
+            ),
+            Space(height: 3.h),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _text,
+                  textDirection: TextDirection.ltr,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10.0)),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10.0)),
+                      labelText: intl.phoneNumber,
+                      // errorText: _validate ? intl.fillAllField : null,
+                      labelStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600),
+                      suffixIcon: selectCountry()),
+                  onSubmitted: (String) {
+                    click(_selectedLocation);
+                  },
+                  onChanged: (txt) {
+                    phoneNumber = txt;
                   },
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Space(height: 3.h),
+            StreamBuilder(
+              stream: authBloc.selectedCountry,
+              builder: (_, AsyncSnapshot<Country> snapshot) {
+                return CustomButton(
+                  AppColors.btnColor,
+                  intl.login,
+                  Size(100.w, 6.h),
+                  () {
+                    click(snapshot.requireData);
+                  },
+                );
+              },
+            ),
+            Space(height: 3.h),
+          ],
         ),
-        Space(height: 10.h),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: StreamBuilder(
-            stream: authBloc.selectedCountry,
-            builder: (_, AsyncSnapshot<Country> snapshot) {
-              return button(
-                AppColors.btnColor,
-                intl.registerOrLogin,
-                Size(100.w, 8.h),
-                () {
-                  click(snapshot.requireData);
-                },
-              );
-            },
-          ),
-        ),
-      ],
+      ),
+    );
+  }
+
+  Widget selectCountry() {
+    return Container(
+      width: 30.w,
+      height: 7.h,
+      margin: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0), color: Colors.grey[200]),
+      child: StreamBuilder(
+        stream: authBloc.selectedCountry,
+        builder: (_, AsyncSnapshot<Country> snapshot) {
+          if (snapshot.hasData) {
+            _selectedLocation = snapshot.requireData;
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                  onTap: () => countryDialog(),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Icon(Icons.keyboard_arrow_down,
+                            color: Colors.orange, size: 20),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            '+${_selectedLocation.code ?? ''}',
+                            textDirection: TextDirection.ltr,
+                            style: typography.caption,
+                          ),
+                        ),
+                      ),
+                      Space(width: 3.w),
+                      Expanded(
+                        child: ImageUtils.fromLocal(
+                            'assets/images/flags/${_selectedLocation.isoCode?.toLowerCase() ?? ''}.png',
+                            width: 7.w,
+                            height: 7.w),
+                      ),
+                    ],
+                  )),
+            );
+          }
+          return Progress();
+        },
+      ),
     );
   }
 
@@ -290,10 +271,14 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 // errorText: _validate ? intl.fillAllField : null,
                 label: Text(intl.search),
                 labelStyle: TextStyle(
-                    color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
+                    color: AppColors.penColor,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w400),
               ),
               style: TextStyle(
-                  color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
+                  color: AppColors.penColor,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w400),
               onSubmitted: (String) {
                 click(_selectedLocation);
               },
@@ -311,8 +296,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                           // shrinkWrap: true,
                           itemBuilder: (_, index) => GestureDetector(
                             onTap: () {
-                              authBloc.setCountry(filterListCountry.data![index]);
-                              _selectedLocation = filterListCountry.data![index];
+                              authBloc
+                                  .setCountry(filterListCountry.data![index]);
+                              _selectedLocation =
+                                  filterListCountry.data![index];
                               Navigator.of(context).pop();
                             },
                             child: Container(
@@ -321,6 +308,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                 textDirection: TextDirection.ltr,
                                 child: Row(
                                   children: [
+                                    ImageUtils.fromLocal(
+                                        'assets/images/flags/${filterListCountry.data![index].isoCode?.toLowerCase() ?? ''}.png',
+                                        width: 5.w,
+                                        height: 5.w),
+                                    Space(width: 3.w),
                                     Text(
                                       '+${filterListCountry.data![index].code ?? ''}',
                                       style: typography.caption,

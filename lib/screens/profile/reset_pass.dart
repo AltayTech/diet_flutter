@@ -5,7 +5,7 @@ import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -145,7 +145,7 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
                               }),
                         ),
                         SizedBox(height: 20.0),
-                        button(AppColors.btnColor, intl.setNewPassword, Size(100.w, 8.h),
+                        CustomButton(AppColors.btnColor, intl.setNewPassword, Size(100.w, 8.h),
                             checkPassword),
                       ],
                     ),

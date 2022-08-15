@@ -49,6 +49,7 @@ class SicknessBloc {
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
   final _helpers = BehaviorSubject<List<Help>>();
   final _status = BehaviorSubject<BodyStatus>();
+  final _userCategorySickness = BehaviorSubject<List<CategorySickness>>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
 
@@ -57,6 +58,8 @@ class SicknessBloc {
   UserSickness? get userSickness => _userSickness;
 
   UserSicknessSpecial? get userSicknessSpecial => _userSicknessSpecial;
+
+  Stream<List<CategorySickness>> get userCategorySickness => _userCategorySickness;
 
   Stream<BodyStatus> get status => _status.stream;
 
@@ -67,6 +70,11 @@ class SicknessBloc {
   Stream get navigateTo => _navigateTo.stream;
 
   Stream get showServerError => _showServerError.stream;
+
+  void updateSickness(int index, CategorySickness sickness) {
+    _userSickness.sickness_categories![index] = sickness;
+    _userCategorySickness.safeValue = _userSickness.sickness_categories!;
+  }
 
   void getSickness() async {
     _waiting.safeValue = true;
@@ -105,6 +113,7 @@ class SicknessBloc {
           else
             index += 1;
         });
+        _userCategorySickness.safeValue = _userSickness.sickness_categories!;
       }
     }).whenComplete(() => _waiting.safeValue = false);
   }
@@ -165,5 +174,8 @@ class SicknessBloc {
     _showServerError.close();
     _navigateTo.close();
     _waiting.close();
+    _status.close();
+    _helpers.close();
+    _userCategorySickness.close();
   }
 }

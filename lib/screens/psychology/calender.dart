@@ -11,7 +11,7 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:shamsi_date/shamsi_date.dart';
@@ -376,7 +376,7 @@ class _PsychologyCalenderScreenState
                                                     )),
                                                 SizedBox(height: 2.h),
                                                 Text(intl.thereIsNotTime),
-                                                button(
+                                                CustomButton(
                                                     AppColors.btnColor,
                                                     intl.showFirstFreeTime,
                                                     Size(80.w, 4.h), () {

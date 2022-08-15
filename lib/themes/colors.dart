@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum ThemeAppColor { DEFAULT, BLUE, DARK, PURPLE,FASTTING,FASTTINGLIST }
+enum ThemeAppColor { DEFAULT, BLUE, DARK, PURPLE, FASTTING, FASTTINGLIST }
 
 class AppColors {
   late ThemeAppColor themeAppColor;
@@ -28,6 +28,8 @@ class AppColors {
   static late Color labelTab;
   static late Color warning = Colors.orange.shade100;
 
+  static const btnColorsGradient =
+      LinearGradient(colors: [Color(0xfff7879d), Color(0xffff5757)]);
   static const penColor = Color(0xff666666);
   static const redBar = Color(0xffFF5757);
   static const looseType = Color(0xfff6ded5);
@@ -68,6 +70,14 @@ class AppColors {
   static const greyDate = Color(0xff454545);
   static const alertCallTextColor = Color(0xff5282a5);
   static const suggestion = Color(0xff1DD1A1);
+  static const weightBoxColor = Color(0xffbb0101);
+  static const dietTypeBoxColor = Color(0xffddf5f0);
+  static const bodyStateBlueColor = Color(0xff3498db);
+  static const bodyStatePurpleColor = Color(0xff686de0);
+  static const bodyStateOrangeColor = Color(0xfff8924f);
+  static const bodyStateGreenColor = Color(0xff1abc9c);
+  static const bodyStateRedColor = Color(0xffed4c67);
+  static const bodyStateDarkBlueColor = Color(0xff273c75);
   static var colorPackages = [
     {
       'barColor': Color.fromARGB(255, 249, 203, 202),
@@ -279,9 +289,9 @@ class AppColors {
         helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
         break;
       case ThemeAppColor.FASTTING:
-        accentColor = Color.fromRGBO(72, 157, 220,1);
+        accentColor = Color.fromRGBO(72, 157, 220, 1);
         primaryColorDark = Color.fromARGB(255, 16, 95, 149);
-        primary = Color.fromARGB(255,53, 144, 214);
+        primary = Color.fromARGB(255, 53, 144, 214);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
         iconsColor = Color(0xff646464);
@@ -310,9 +320,9 @@ class AppColors {
         helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
         break;
       case ThemeAppColor.FASTTINGLIST:
-        accentColor = Color.fromRGBO(15, 92, 150,1);
+        accentColor = Color.fromRGBO(15, 92, 150, 1);
         primaryColorDark = Color.fromARGB(255, 11, 63, 99);
-        primary = Color.fromARGB(255,15, 92, 150);
+        primary = Color.fromARGB(255, 15, 92, 150);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
         iconsColor = Color(0xff646464);

@@ -15,7 +15,7 @@ class Toolbar extends AppBar {
       textAlign: TextAlign.center,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 13.sp,
+        fontSize: 14.sp,
       ),
     );
   }

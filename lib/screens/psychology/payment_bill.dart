@@ -6,7 +6,7 @@ import 'package:behandam/screens/psychology/calender_bloc.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -215,7 +215,7 @@ class _PsychologyPaymentBillScreenState extends ResourcefulState<PsychologyPayme
                     ),
                   ),
                   SizedBox(height: 2.h),
-                  button(AppColors.primaryVariantLight, intl.onlinePay, Size(80.w, 5.h), () {
+                  CustomButton(AppColors.primaryVariantLight, intl.onlinePay, Size(80.w, 5.h), () {
                     Booking booking = Booking();
                     booking.expertPlanningId = args['sessionId'];
                     booking.packageId = args['packageId'];

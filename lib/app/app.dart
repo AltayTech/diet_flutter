@@ -6,6 +6,7 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/advice/advice.dart';
+import 'package:behandam/screens/authentication/auth.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
@@ -43,6 +44,7 @@ import 'package:behandam/screens/regime/activity/activity_level.dart';
 import 'package:behandam/screens/regime/block/block.dart';
 import 'package:behandam/screens/regime/block/block_week_pergnancy.dart';
 import 'package:behandam/screens/regime/body-status.dart';
+import 'package:behandam/screens/regime/confirm_body_state.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
 import 'package:behandam/screens/regime/help_type.dart';
@@ -51,6 +53,7 @@ import 'package:behandam/screens/regime/menu/menu_select.dart';
 import 'package:behandam/screens/regime/overview/overview.dart';
 import 'package:behandam/screens/regime/package/package_list.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
+import 'package:behandam/screens/regime/sickness/other_sickness/other_sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
@@ -274,10 +277,10 @@ final navigator = VxNavigator(
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
     Routes.login: (_, param) => MaterialPage(child: routePage(LoginScreen()), arguments: param),
-    Routes.authVerify: (uri, __) =>
-        MaterialPage(child: routePage(VerifyScreen()), arguments: uri.queryParameters),
-    Routes.passVerify: (uri, __) =>
-        MaterialPage(child: routePage(VerifyScreen()), arguments: uri.queryParameters),
+    Routes.authVerify: (uri, params) =>
+        MaterialPage(child: routePage(VerifyScreen()), arguments: params),
+    Routes.passVerify: (uri, params) =>
+        MaterialPage(child: routePage(VerifyScreen()), arguments: params),
     Routes.resetPass: (_, param) =>
         MaterialPage(child: routePage(PasswordResetScreen()), arguments: param),
     Routes.resetCode: (_, param) =>

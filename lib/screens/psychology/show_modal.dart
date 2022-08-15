@@ -7,7 +7,7 @@ import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -137,7 +137,7 @@ showModal(BuildContext ctx, SelectedTime info, Planning item) {
               ),
             ),
             Space(height: 2.h),
-            button(AppColors.btnColor, AppLocalizations.of(ctx)!.reserveThisTime, Size(70.w, 5.h),
+            CustomButton(AppColors.btnColor, AppLocalizations.of(ctx)!.reserveThisTime, Size(70.w, 5.h),
                 () {
               ctx.vxNav.push(Uri.parse(Routes.psychologyTerms), params: {
                 'sessionId': item.id,
