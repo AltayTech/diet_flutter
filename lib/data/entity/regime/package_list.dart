@@ -5,6 +5,66 @@ import 'package:json_annotation/json_annotation.dart';
 part 'package_list.g.dart';
 
 @JsonSerializable()
+class Package {
+  @JsonKey(name: "items")
+  List<Package>? items;
+
+  @JsonKey(name: "servicesPackages")
+  List<Package>? servicesPackages;
+
+  @JsonKey(name: "id")
+  int? id;
+  @JsonKey(name: "price")
+  int? price;
+
+  @JsonKey(name: "final_price")
+  int? finalPrice;
+
+  @JsonKey(name: "name")
+  String? name;
+
+  @JsonKey(name: "services")
+  List<ServicePackage>? services;
+
+  @JsonKey(name: "media")
+  String? media;
+
+  @JsonKey(name: "description")
+  String? description;
+
+  @JsonKey(name: "package_id")
+  int? package_id;
+
+  @JsonKey(name: "refund_deadline", defaultValue: 0)
+  int? refundDeadline;
+
+  @JsonKey(name: "type")
+  int? type;
+
+  @JsonKey(name: "is_suggestion")
+  bool? is_suggestion;
+
+  int? index;
+
+  int? totalPrice;
+
+  @JsonKey(name: "isSelected", defaultValue: false)
+  bool? isSelected;
+
+  int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
+
+  Package();
+
+  Color get barColor => Utils.getColorPackage(index!);
+
+  Color get priceColor => Utils.getColorPackagePrice(index!);
+
+  factory Package.fromJson(Map<String, dynamic> json) => _$PackageFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PackageToJson(this);
+}
+
+@JsonSerializable()
 class PackageItem {
   @JsonKey(name: "items")
   List<PackageItem>? items;
@@ -23,7 +83,7 @@ class PackageItem {
   @JsonKey(name: "package_id")
   int? package_id;
 
-  @JsonKey(name: "refund_deadline",defaultValue: 0)
+  @JsonKey(name: "refund_deadline", defaultValue: 0)
   int? refundDeadline;
 
   int? index;
@@ -81,6 +141,8 @@ class Price {
   @JsonKey(name: "product_id")
   int? product_id;
 
+  @JsonKey(name: "discount_message")
+  String? discount_message;
 
   int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
 

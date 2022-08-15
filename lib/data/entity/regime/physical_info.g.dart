@@ -17,7 +17,8 @@ PhysicalInfoData _$PhysicalInfoDataFromJson(Map<String, dynamic> json) =>
       ..bfp = (json['bfp'] as num?)?.toDouble()
       ..bmi = (json['bmi'] as num?)?.toDouble()
       ..whr = (json['whr'] as num?)?.toDouble()
-      ..gender = $enumDecodeNullable(_$GenderTypeEnumMap, json['gender'])
+      ..gender = $enumDecodeNullable(_$GenderTypeEnumMap, json['gender']) ??
+          GenderType.Female
       ..multiBirth = json['multi_birth_num'] as int? ?? 1
       ..pregnancyWeek = json['pregnancy_week_number'] as int? ?? 15
       ..targetWeight = (json['target_weight'] as num?)?.toDouble()

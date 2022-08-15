@@ -157,8 +157,12 @@ class AppFcm {
       badge: true,
       sound: true,
     );
-    subscribeTopicAll();
     _getToken();
+    try {
+      subscribeTopicAll();
+    }catch(e){
+      debugPrint(e.toString());
+    }
     FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   }
 

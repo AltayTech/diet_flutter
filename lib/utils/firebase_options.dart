@@ -15,8 +15,7 @@ class DefaultFirebaseConfig {
           storageBucket: "behandam-test.appspot.com",
           messagingSenderId: "343455511841",
           appId: "1:343455511841:web:19fc501195f6b0c1567a60",
-          measurementId: "G-7FGHS67SXD"
-      );
+          measurementId: "G-7FGHS67SXD");
     } else if (Platform.isIOS || Platform.isMacOS) {
       // iOS and MacOS
       return const FirebaseOptions(
