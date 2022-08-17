@@ -20,6 +20,8 @@ class PhysicalInfoBloc {
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
 
+  String? date;
+
   Stream<bool> get loadingContent => _loadingContent.stream;
   Stream<PhysicalInfoData> get physicalInfoData => _physicalInfoData.stream;
 
@@ -32,13 +34,6 @@ class PhysicalInfoBloc {
   void physicalInfo() {
 
     _physicalInfo=PhysicalInfoData();
-    _physicalInfo.gender=GenderType.Male;
-    _physicalInfo.height=170;
-    _physicalInfo.weight=55.300;
-    _physicalInfo.kilo=55;
-    _physicalInfo.gram=5;
-    _physicalInfo.age=25;
-    _physicalInfo.birthDate="1993-10-20";
     _physicalInfoData.safeValue=_physicalInfo;
 
 /*  _repository.physicalInfo().then((value) {

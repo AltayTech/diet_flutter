@@ -102,7 +102,10 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                                 color: widget.color,
                                 minValue: widget.min,
                                 maxValue: widget.max,
-                                value: widget.value,
+                                value: widget.value ==
+                                        '${widget.rulerType == RulerType.Weight ? 0.0 : 0}'
+                                    ? '${widget.rulerType == RulerType.Weight ? (widget.max - widget.min) / 2 : ((widget.max - widget.min) / 2).floor()}'
+                                    : widget.value,
                                 onChanged: (val) {
                                   setState(() {
                                     widget.onClick.call(val);

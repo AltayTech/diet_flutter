@@ -119,7 +119,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                             Space(height: 2.h),
                             birthDayBox(physicalInfo.requireData),
                             Space(height: 2.h),
-                            genderBox(physicalInfo.requireData.gender!),
+                            genderBox(physicalInfo.requireData.gender??GenderType.Female),
                             Space(
                               height: 3.h,
                             ),
@@ -148,7 +148,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
       children: [
         Ruler(
           rulerType: RulerType.Weight,
-          value: '${physicalInfo.weight!.toStringAsFixed(3)}',
+          value: physicalInfo.weight !=null ? '${physicalInfo.weight!.toStringAsFixed(3)}' : '0.0',
           max: 210,
           min: 30,
           heading: intl.weight,
@@ -167,7 +167,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
         ),
         Ruler(
           rulerType: RulerType.Normal,
-          value: '${physicalInfo.height}',
+          value:physicalInfo.weight !=null ? '${physicalInfo.height}' : '0',
           max: 210,
           min: 50,
           heading: intl.height,
@@ -261,28 +261,98 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
     return null;
   }
 
-  Future _selectDate(PhysicalInfoData physicalInfo) async {
+  void _selectDate(PhysicalInfoData physicalInfo) {
     DialogUtils.showBottomSheetPage(
         context: context,
         child: SingleChildScrollView(
           child: Container(
-            height: 32.h,
+            height: 60.h,
             padding: EdgeInsets.all(5.w),
             alignment: Alignment.center,
-            child: Center(
-              child: CustomDate(
-                function: (value) {
-                  print('value = > $value');
-                  setState(() {
-                    physicalInfo.birthDate = value!;
-                  });
-                },
-                datetime: physicalInfo.birthDate,
-                maxYear: Jalali.now().year - 10,
-              ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    closeDialog(),
+                    Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 4.h),
+                          child: Center(
+                            child: Text(
+                              intl.selectPaymentDate,
+                              softWrap: false,
+                              style: typography.caption!
+                                  .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ))
+                  ],
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      intl.enterPaymentDate,
+                      softWrap: false,
+                      style: typography.caption!.copyWith(color: Colors.black, fontSize: 10.sp),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Center(
+                    child: CustomDate(
+                      function: (value) {
+                        bloc.date=value;
+                      },
+                      datetime:
+                      DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10))
+                          .toString()
+                          .substring(0, 10),
+                      maxYear: Jalali.now().year,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                      child: SubmitButton(
+                        label: intl.submitDate,
+                        onTap: () {
+                          if (bloc.date != null) {
+                            setState(() {
+                              physicalInfo.birthDate = bloc.date!;
+                            });
+
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        size: Size(80.w, 6.h),
+                      )),
+                )
+              ],
             ),
           ),
         ));
+  }
+
+  Widget closeDialog() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topRight,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget genderBox(GenderType gender) {

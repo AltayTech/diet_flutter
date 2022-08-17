@@ -21,9 +21,7 @@ import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
-import 'package:behandam/screens/payment/fail_new.dart';
-import 'package:behandam/screens/payment/new_success.dart';
-import 'package:behandam/screens/payment/new_bill.dart';
+
 import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/payment/wait.dart';
 import 'package:behandam/screens/privacy_policy/privacy_policy.dart';
@@ -44,7 +42,6 @@ import 'package:behandam/screens/regime/activity/activity_level.dart';
 import 'package:behandam/screens/regime/block/block.dart';
 import 'package:behandam/screens/regime/block/block_week_pergnancy.dart';
 import 'package:behandam/screens/regime/body-status.dart';
-import 'package:behandam/screens/regime/confirm_body_state.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
 import 'package:behandam/screens/regime/help_type.dart';
@@ -123,6 +120,7 @@ class _AppState extends State<App> {
                   .substring(1)
                   .replaceAll(RegExp(r'\/\d+'), "")
                   .replaceAll(RegExp(r'[/-]'), "_"));
+
         } catch (e) {}
     });
   }
@@ -272,7 +270,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage( SplashScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(PhysicalInfoScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
