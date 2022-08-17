@@ -1,8 +1,11 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
+import 'package:behandam/data/entity/regime/diet_goal.dart';
+import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/complete_info/bloc.dart';
+import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -21,11 +24,12 @@ class CompleteInformationScreen extends StatefulWidget {
   const CompleteInformationScreen({Key? key}) : super(key: key);
 
   @override
-  _CompleteInformationScreenState createState() => _CompleteInformationScreenState();
+  _CompleteInformationScreenState createState() =>
+      _CompleteInformationScreenState();
 }
 
-class _CompleteInformationScreenState extends ResourcefulState<CompleteInformationScreen>
-    implements ItemClick {
+class _CompleteInformationScreenState
+    extends ResourcefulState<CompleteInformationScreen> implements ItemClick {
   late CompleteInformationBloc bloc;
   TextEditingController controller = TextEditingController();
 
@@ -33,7 +37,7 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
   void initState() {
     super.initState();
     bloc = CompleteInformationBloc();
-    bloc.getActivities();
+    bloc.getDietPreferences();
     listenBloc();
   }
 
@@ -103,20 +107,15 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
                     .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
               ),
               Space(height: 2.h),
-              StreamBuilder<ActivityLevelData>(
-                  stream: bloc.activityLevel,
-                  builder: (context, activity) {
-                    if (activity.hasData) {
-                      if (activity.requireData.items.length > 0) {
-                        return ListView.builder(
-                            physics: ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: activity.requireData.items.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                box(
-                                    activity.requireData.items,
-                                    index
-                                ));
+              StreamBuilder<List<DietGoal>>(
+                  stream: bloc.dietGoals,
+                  builder: (context, dietGoals) {
+                    if (dietGoals.hasData) {
+                      if (dietGoals.requireData.length > 0) {
+                        return box(
+                          intl.whatIsYourGoal,
+                          dietGoals.requireData,
+                        );
                       } else {
                         return Container(
                             child: Text(intl.emptySickness,
@@ -126,20 +125,15 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
                       return Container(height: 60.h, child: Progress());
                     }
                   }),
-              StreamBuilder<ActivityLevelData>(
-                  stream: bloc.activityLevel,
-                  builder: (context, activity) {
-                    if (activity.hasData) {
-                      if (activity.requireData.items.length > 0) {
-                        return ListView.builder(
-                            physics: ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: activity.requireData.items.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                box(
-                                    activity.requireData.items,
-                                    index
-                                ));
+              StreamBuilder<List<DietHistory>>(
+                  stream: bloc.dietHistory,
+                  builder: (context, dietHistory) {
+                    if (dietHistory.hasData) {
+                      if (dietHistory.requireData.length > 0) {
+                        return box(
+                          intl.haveYouEverBeenOnDiet,
+                          dietHistory.requireData,
+                        );
                       } else {
                         return Container(
                             child: Text(intl.emptySickness,
@@ -149,20 +143,15 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
                       return Container(height: 60.h, child: Progress());
                     }
                   }),
-              StreamBuilder<ActivityLevelData>(
+              StreamBuilder<List<ActivityData>>(
                   stream: bloc.activityLevel,
                   builder: (context, activity) {
                     if (activity.hasData) {
-                      if (activity.requireData.items.length > 0) {
-                        return ListView.builder(
-                            physics: ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: activity.requireData.items.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                box(
-                                  activity.requireData.items,
-                                  index
-                                ));
+                      if (activity.requireData.length > 0) {
+                        return boxActivity(
+                          intl.howMuchIsYourDailyActivity,
+                          activity.requireData,
+                        );
                       } else {
                         return Container(
                             child: Text(intl.emptySickness,
@@ -173,11 +162,12 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
                     }
                   }),
               Space(height: 1.h),
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-                child: CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue,
-                    Size(100.w, 6.h), Icon(Icons.arrow_forward), () {}),
-              )
+              CustomButton.withIcon(
+                  AppColors.btnColor,
+                  intl.confirmContinue,
+                  Size(100.w, 6.h),
+                  Icon(Icons.arrow_forward),
+                  () {})
             ],
           ),
         )
@@ -185,7 +175,7 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
     );
   }
 
-  Widget box(List<dynamic> ListData, int index) {
+  Widget box(String title, List<dynamic> ListData) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -222,7 +212,7 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: Text(intl.howMuchIsYourDailyActivity, style: typography.caption)),
+                  Expanded(child: Text(title, style: typography.caption)),
                 ],
               ),
               Space(height: 2.h),
@@ -239,29 +229,92 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
   Widget boxItem(dynamic item) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Chip(
-        label: Text(item.title, style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp))/*CheckBoxApp(
+      child:  CheckBoxApp(
           maxHeight: 5.h,
           isBorder: false,
           iconSelectType: IconSelectType.Radio,
           onTap: () {
-            sickness.isSelected = !sickness.isSelected!;
-            setState(() {});
+
           },
-          title: sickness.title!,
-          isSelected: sickness.isSelected!,
-        )*/,
+          title: item.title!,
+          isSelected: false,
+        )
+    );
+  }
+
+  Widget boxActivity(String title, List<ActivityData> ActivityListData) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: ExpandablePanel(
+        controller: ExpandableController(initialExpanded: true),
+        theme: ExpandableThemeData(
+            expandIcon: null,
+            collapseIcon: null,
+            hasIcon: false,
+            animationDuration: const Duration(milliseconds: 700)),
+        expanded: Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.only(bottom: 8, right: 8, left: 8),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.15),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
+            ),
+            child: ListView.builder(
+                physics: ClampingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: ActivityListData.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    boxActivityItem(ActivityListData[index]))),
+        header: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.15),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    topLeft: Radius.circular(10))),
+            child: Column(children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(child: Text(title, style: typography.caption)),
+                ],
+              ),
+              Space(height: 2.h),
+              Container(
+                height: 1.5,
+                color: Colors.grey.withOpacity(0.2),
+              )
+            ])),
+        collapsed: Container(),
       ),
     );
   }
 
-  @override
-  void onRetryAfterNoInternet() {
+  Widget boxActivityItem(ActivityData activityData) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child:  CheckBoxApp.description(
+          description: activityData.description!,
+          isBorder: false,
+          iconSelectType: IconSelectType.Radio,
+          onTap: () {
+
+          },
+          title: activityData.title,
+          isSelected: false,
+        )
+    );
   }
 
   @override
+  void onRetryAfterNoInternet() {}
+
+  @override
   void onRetryLoadingPage() {
-    bloc.getActivities();
+    bloc.getDietPreferences();
   }
 
   @override

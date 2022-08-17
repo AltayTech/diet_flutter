@@ -156,6 +156,7 @@ class CheckBoxApp extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        width: double.maxFinite,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -194,7 +195,7 @@ class CheckBoxApp extends StatelessWidget {
                 width: 2.w,
               ),
               Expanded(
-                flex: 0,
+                flex: 1,
                 child: Container(
                   height: 4.w,
                   child: Text(
@@ -275,13 +276,15 @@ class CheckBoxApp extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Container(
-                        width: double.maxFinite,
-                        child: Text(
-                          description!,
-                          softWrap: false,
-                          textAlign: TextAlign.start,
-                          style: typography!.overline!.copyWith(color: Color(0xff454545)),
+                      Expanded(
+                        child: Container(
+                          width: double.maxFinite,
+                          child: Text(
+                            description!,
+                            softWrap: false,
+                            textAlign: TextAlign.start,
+                            style: typography!.overline!.copyWith(color: Color(0xff454545)),
+                          ),
                         ),
                       ),
                     ],

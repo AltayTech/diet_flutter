@@ -19,6 +19,7 @@ import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/entity/regime/diet_preferences.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
@@ -250,6 +251,9 @@ abstract class RestClient {
 
   @GET("/psychology/latest-invoice")
   NetworkResult<LatestInvoiceData> getInvoice();
+
+  @GET("/user/diet-preferences")
+  NetworkResult<DietPreferences> getDietPreferences();
 
   @GET("/activity-level")
   NetworkResult<ActivityLevelData> activityLevel();

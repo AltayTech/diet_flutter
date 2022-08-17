@@ -22,18 +22,18 @@ class CompleteInformationBloc {
   final _waiting = BehaviorSubject<bool>();
 
   final _userSickness = BehaviorSubject<List<Sickness>>();
-  final _activityLevel = BehaviorSubject<ActivityLevelData>();
+  final _activityLevel = BehaviorSubject<List<ActivityData>>();
   final _selectedActivityLevel = BehaviorSubject<ActivityData?>();
-  final _dietGoals = BehaviorSubject<DietGoalData>();
+  final _dietGoals = BehaviorSubject<List<DietGoal>>();
   final _selectedGoal = BehaviorSubject<DietGoal?>();
-  final _dietHistory = BehaviorSubject<DietHistoryData>();
+  final _dietHistory = BehaviorSubject<List<DietHistory>>();
   final _selectedDietHistory = BehaviorSubject<DietHistory?>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
 
   String get path => _path;
 
-  Stream<ActivityLevelData> get activityLevel => _activityLevel.stream;
+  Stream<List<ActivityData>> get activityLevel => _activityLevel.stream;
 
   Stream<ActivityData?> get selectedActivityLevel =>
       _selectedActivityLevel.stream;
@@ -41,13 +41,13 @@ class CompleteInformationBloc {
   ActivityData? get selectedActivity =>
       _selectedActivityLevel.stream.valueOrNull;
 
-  Stream<DietGoalData> get dietGoals => _dietGoals.stream;
+  Stream<List<DietGoal>> get dietGoals => _dietGoals.stream;
 
   Stream<DietGoal?> get selectedGoal => _selectedGoal.stream;
 
   DietGoal? get selectedGoalValue => _selectedGoal.stream.valueOrNull;
 
-  Stream<DietHistoryData> get dietHistory => _dietHistory.stream;
+  Stream<List<DietHistory>> get dietHistory => _dietHistory.stream;
 
   Stream<DietHistory?> get selectedDietHistory => _selectedDietHistory.stream;
 
@@ -60,25 +60,13 @@ class CompleteInformationBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void getActivities() {
+  void getDietPreferences() {
     _waiting.safeValue = true;
-    _repository.activityLevel().then((value) {
-      _activityLevel.value = value.requireData;
+    _repository.getDietPreferences().then((value) {
+      _activityLevel.safeValue = value.data!.activityLevels!;
+      _dietGoals.safeValue = value.data!.dietGoal!;
+      _dietHistory.safeValue = value.data!.dietHistories!;
       debugPrint('repository ${_activityLevel.value}');
-    }).whenComplete(() => getDietGoalData());
-  }
-
-  void getDietGoalData() {
-    _repository.dietGoals().then((value) {
-      _dietGoals.value = value.requireData;
-      debugPrint('repository ${_dietGoals.value}');
-    }).whenComplete(() => getDietHistory());
-  }
-
-  void getDietHistory() {
-    _repository.dietHistory().then((value) {
-      _dietHistory.value = value.requireData;
-      debugPrint('repository ${_dietHistory.value}');
     }).whenComplete(() => _waiting.safeValue = false);
   }
 
