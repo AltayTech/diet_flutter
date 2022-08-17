@@ -52,7 +52,6 @@ class ActivityBloc {
         debugPrint('bloc condition ${value.data}');
         if(value.data != null) _navigateTo.fire(value.next);
       }).whenComplete(() => _loadingContent.safeValue = false);
-
   }
 
   void dispose() {

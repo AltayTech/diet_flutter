@@ -760,7 +760,9 @@
   "confirmBodyState": "تایید اطلاعات جسمانی",
   "youMustEnterCorrectInfoOfBodyState": "اطلاعات جسمانی وارد شده باید کاملا صحیح باشند.",
   "thisInfoVeryImportantToReduceYourWeight": "این اطلاعات نقش مهمی در روند کاهش وزن شما خواهند داشت.",
+  "thisInfoHelpUsToGetYouDiet": "این اطلاعات به ما کمک میکنه تا تمام شرایط شما رو برای دریافت رژیم اختصاصی شما، در نظر بگیریم.",
   "necessaryTime": "زمان لازم",
   "otherSickness": "سایر بیماری‌ها",
+  "completeInformation": "اطلاعات تکمیلی",
   "understand": "متوجه شدم"
 }
