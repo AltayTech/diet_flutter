@@ -29,9 +29,8 @@ class CompleteInformationScreen extends StatefulWidget {
 }
 
 class _CompleteInformationScreenState
-    extends ResourcefulState<CompleteInformationScreen> implements ItemClick {
+    extends ResourcefulState<CompleteInformationScreen> {
   late CompleteInformationBloc bloc;
-  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
@@ -112,7 +111,7 @@ class _CompleteInformationScreenState
                   builder: (context, dietGoals) {
                     if (dietGoals.hasData) {
                       if (dietGoals.requireData.length > 0) {
-                        return box(
+                        return boxGoal(
                           intl.whatIsYourGoal,
                           dietGoals.requireData,
                         );
@@ -130,7 +129,7 @@ class _CompleteInformationScreenState
                   builder: (context, dietHistory) {
                     if (dietHistory.hasData) {
                       if (dietHistory.requireData.length > 0) {
-                        return box(
+                        return boxHistory(
                           intl.haveYouEverBeenOnDiet,
                           dietHistory.requireData,
                         );
@@ -162,12 +161,8 @@ class _CompleteInformationScreenState
                     }
                   }),
               Space(height: 1.h),
-              CustomButton.withIcon(
-                  AppColors.btnColor,
-                  intl.confirmContinue,
-                  Size(100.w, 6.h),
-                  Icon(Icons.arrow_forward),
-                  () {})
+              CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue,
+                  Size(100.w, 6.h), Icon(Icons.arrow_forward), () {})
             ],
           ),
         )
@@ -175,7 +170,7 @@ class _CompleteInformationScreenState
     );
   }
 
-  Widget box(String title, List<dynamic> ListData) {
+  Widget boxGoal(String title, List<DietGoal> DietGoalListData) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -197,9 +192,18 @@ class _CompleteInformationScreenState
             child: ListView.builder(
                 physics: ClampingScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: ListData.length,
+                itemCount: DietGoalListData.length,
                 itemBuilder: (BuildContext context, int index) =>
-                    boxItem(ListData[index]))),
+                    StreamBuilder<DietGoal?>(
+                        stream: bloc.selectedGoal,
+                        builder: (context, selectedDietGoal) {
+                          if (selectedDietGoal.hasData)
+                            return boxGoalItem(
+                                DietGoalListData[index],
+                                DietGoalListData[index].id ==
+                                    selectedDietGoal.data!.id);
+                          return boxGoalItem(DietGoalListData[index], false);
+                        }))),
         header: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -212,7 +216,10 @@ class _CompleteInformationScreenState
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: Text(title, style: typography.caption)),
+                  Expanded(
+                      child: Text(title,
+                          style: typography.caption!
+                              .copyWith(fontWeight: FontWeight.bold))),
                 ],
               ),
               Space(height: 2.h),
@@ -226,20 +233,98 @@ class _CompleteInformationScreenState
     );
   }
 
-  Widget boxItem(dynamic item) {
+  Widget boxGoalItem(DietGoal dietGoal, bool selected) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child:  CheckBoxApp(
+        padding: const EdgeInsets.all(8.0),
+        child: CheckBoxApp(
           maxHeight: 5.h,
           isBorder: false,
           iconSelectType: IconSelectType.Radio,
           onTap: () {
-
+            bloc.onDietGoalClick(dietGoal);
           },
-          title: item.title!,
-          isSelected: false,
-        )
+          title: dietGoal.title,
+          isSelected: selected,
+        ));
+  }
+
+  Widget boxHistory(String title, List<DietHistory> DietHistoryListData) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: ExpandablePanel(
+        controller: ExpandableController(initialExpanded: true),
+        theme: ExpandableThemeData(
+            expandIcon: null,
+            collapseIcon: null,
+            hasIcon: false,
+            animationDuration: const Duration(milliseconds: 700)),
+        expanded: Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.only(bottom: 8, right: 8, left: 8),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.15),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
+            ),
+            child: ListView.builder(
+                physics: ClampingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: DietHistoryListData.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    StreamBuilder<DietHistory?>(
+                        stream: bloc.selectedDietHistory,
+                        builder: (context, selectedDietHistory) {
+                          if (selectedDietHistory.hasData)
+                            return boxHistoryItem(
+                                DietHistoryListData[index],
+                                DietHistoryListData[index].id ==
+                                    selectedDietHistory.data!.id);
+                          return boxHistoryItem(
+                              DietHistoryListData[index], false);
+                        }))),
+        header: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.15),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    topLeft: Radius.circular(10))),
+            child: Column(children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Text(title,
+                          style: typography.caption!
+                              .copyWith(fontWeight: FontWeight.bold))),
+                ],
+              ),
+              Space(height: 2.h),
+              Container(
+                height: 1.5,
+                color: Colors.grey.withOpacity(0.2),
+              )
+            ])),
+        collapsed: Container(),
+      ),
     );
+  }
+
+  Widget boxHistoryItem(DietHistory dietHistory, bool selected) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CheckBoxApp(
+          maxHeight: 5.h,
+          isBorder: false,
+          iconSelectType: IconSelectType.Radio,
+          onTap: () {
+            bloc.onDietHistoryClick(dietHistory);
+          },
+          title: dietHistory.title,
+          isSelected: selected,
+        ));
   }
 
   Widget boxActivity(String title, List<ActivityData> ActivityListData) {
@@ -266,7 +351,17 @@ class _CompleteInformationScreenState
                 shrinkWrap: true,
                 itemCount: ActivityListData.length,
                 itemBuilder: (BuildContext context, int index) =>
-                    boxActivityItem(ActivityListData[index]))),
+                    StreamBuilder<ActivityData?>(
+                        stream: bloc.selectedActivityLevel,
+                        builder: (context, selectedActivityLevel) {
+                          if (selectedActivityLevel.hasData)
+                            return boxActivityItem(
+                                ActivityListData[index],
+                                ActivityListData[index].id ==
+                                    selectedActivityLevel.data!.id);
+                          return boxActivityItem(
+                              ActivityListData[index], false);
+                        }))),
         header: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -279,34 +374,36 @@ class _CompleteInformationScreenState
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: Text(title, style: typography.caption)),
+                  Expanded(
+                      child: Text(title,
+                          style: typography.caption!
+                              .copyWith(fontWeight: FontWeight.bold))),
                 ],
               ),
-              Space(height: 2.h),
-              Container(
-                height: 1.5,
-                color: Colors.grey.withOpacity(0.2),
-              )
             ])),
         collapsed: Container(),
       ),
     );
   }
 
-  Widget boxActivityItem(ActivityData activityData) {
+  Widget boxActivityItem(ActivityData activityData, bool selected) {
     return Padding(
         padding: const EdgeInsets.all(8.0),
-        child:  CheckBoxApp.description(
+        child: CheckBoxApp.description(
+          maxHeight: activityData.description!.length > 85
+              ? 14.h
+              : activityData.description!.length > 50
+                  ? 12.h
+                  : 10.h,
           description: activityData.description!,
           isBorder: false,
           iconSelectType: IconSelectType.Radio,
           onTap: () {
-
+            bloc.onActivityLevelClick(activityData);
           },
           title: activityData.title,
-          isSelected: false,
-        )
-    );
+          isSelected: selected,
+        ));
   }
 
   @override
@@ -318,14 +415,8 @@ class _CompleteInformationScreenState
   }
 
   @override
-  click() {
-    setState(() {});
-  }
-
-  @override
   void dispose() {
     bloc.dispose();
-    controller.dispose();
     super.dispose();
   }
 }

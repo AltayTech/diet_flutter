@@ -253,7 +253,7 @@ class CheckBoxApp extends StatelessWidget {
                       width: 5.w,
                       height: 5.w,
                     ),
-                    height: double.maxFinite),
+                ),
                 Space(
                   width: 2.w,
                 ),
@@ -265,6 +265,8 @@ class CheckBoxApp extends StatelessWidget {
                     children: [
                       Container(
                         width: double.maxFinite,
+                        alignment: Alignment.centerRight,
+                        margin: EdgeInsets.only(top: 12),
                         child: Text(
                           title,
                           softWrap: false,
@@ -278,9 +280,13 @@ class CheckBoxApp extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
+                          margin: EdgeInsets.only(bottom: 12),
+                          alignment: Alignment.centerRight,
                           width: double.maxFinite,
                           child: Text(
                             description!,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
                             softWrap: false,
                             textAlign: TextAlign.start,
                             style: typography!.overline!.copyWith(color: Color(0xff454545)),
