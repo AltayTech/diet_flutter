@@ -46,6 +46,7 @@ import 'package:behandam/screens/regime/block/block_week_pergnancy.dart';
 import 'package:behandam/screens/regime/body-status.dart';
 import 'package:behandam/screens/regime/confirm_body_state.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
+import 'package:behandam/screens/regime/flow_starter/flow_starter.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
 import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/regime/menu/menu_confirm.dart';
@@ -272,7 +273,8 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage( SplashScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
+    Routes.start: (_, __) => MaterialPage(child: routePage(FlowStarterScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),

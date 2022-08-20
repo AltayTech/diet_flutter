@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/screens/regime/flow_starter/bloc.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
@@ -29,9 +30,29 @@ class FlowStarterScreen extends StatefulWidget {
 }
 
 class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
+  late FlowStarterBloc bloc;
+
   @override
   void initState() {
     super.initState();
+
+    bloc = FlowStarterBloc();
+    listenBloc();
+  }
+
+  void listenBloc() {
+    bloc.navigateTo.listen((event) {
+      context.vxNav.push(Uri.parse('/$event'));
+    });
+
+    bloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
+    });
+
+    bloc.popDialog.listen((event) {
+      MemoryApp.isShowDialog = false;
+      Navigator.of(context).pop();
+    });
   }
 
   @override
@@ -83,8 +104,10 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
                     AppColors.btnColor,
                     intl.getFoodProgram,
                     Size(100.w, 6.h),
-                    Icon(Icons.arrow_forward),
-                    () {}),
+                    Icon(Icons.arrow_forward), () {
+                  DialogUtils.showDialogProgress(context: context);
+                  bloc.nextStep();
+                }),
               ),
             ],
           ),
