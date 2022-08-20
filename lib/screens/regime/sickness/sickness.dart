@@ -33,10 +33,34 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
     implements ItemClick {
   late SicknessBloc sicknessBloc;
   TextEditingController controller = TextEditingController();
-
+  late ProgressTimeline _progressTimeline;
   @override
   void initState() {
     super.initState();
+    _progressTimeline = ProgressTimeline(
+      states: [
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+        SingleState(stateTitle: "", isFailed: false),
+      ],
+      height: 5.h,
+      width: 50.w,
+      checkedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
+          width: 28, height: 28, fit: BoxFit.fill),
+      currentIcon: ImageUtils.fromLocal("assets/images/physical_report/current_step.svg",
+          width: 28, height: 28, fit: BoxFit.fill),
+      failedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
+          width: 28, height: 28, fit: BoxFit.fill),
+      uncheckedIcon: ImageUtils.fromLocal("assets/images/physical_report/none_step.svg",
+          width: 15, height: 15, fit: BoxFit.fill),
+      iconSize: 28,
+      connectorLength: 10.w,
+      connectorColorSelected: AppColors.primary,
+      connectorWidth: 4,
+      connectorColor: Color(0xffC9D1E1),
+    );
     sicknessBloc = SicknessBloc();
     sicknessBloc.getSickness();
     listenBloc();
@@ -58,6 +82,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    _progressTimeline.gotoStage(MemoryApp.page);
     return SicknessProvider(sicknessBloc,
         child: Scaffold(
           appBar: Toolbar(titleBar: intl.sickness),
@@ -94,28 +119,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
         Container(
           width: 100.w,
           alignment: Alignment.center,
-          child: ProgressTimeline(
-              width: 65.w,
-              height: 7.h,
-              failedIcon: Icon(Icons.cancel),
-              checkedIcon: Icon(Icons.check_circle),
-              uncheckedIcon: Icon(Icons.circle_outlined),
-              currentIcon: Icon(
-                Icons.radio_button_checked_rounded,
-                color: AppColors.primary,
-              ),
-              connectorWidth: 1.w,
-              iconSize: 7.w,
-              connectorLength: 15.w,
-              connectorColor: AppColors.grey,
-              connectorColorSelected: AppColors.primary,
-              states: [
-                SingleState(stateTitle: "", isFailed: false),
-                SingleState(stateTitle: "", isFailed: false),
-                SingleState(stateTitle: "", isFailed: false),
-                SingleState(stateTitle: "", isFailed: false),
-                SingleState(stateTitle: "", isFailed: false)
-              ]),
+          child: _progressTimeline,
         ),
         Container(
           child: Padding(

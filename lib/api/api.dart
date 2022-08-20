@@ -353,5 +353,8 @@ abstract class RestClient {
 
   @GET("/inbox/{id}")
   NetworkResult<InboxItem> getInboxMessage(@Path('id') int id);
+
+  @GET("/blocking-sicpecials")
+  NetworkResult<UserSickness> getUserBlockingSickness();
 }
 

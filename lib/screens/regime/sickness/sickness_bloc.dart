@@ -78,7 +78,7 @@ class SicknessBloc {
 
   void getSickness() async {
     _waiting.safeValue = true;
-    _repository.getSickness().then((value) {
+    _repository.getUserBlockingSickness().then((value) {
       _userSickness = value.data!;
       int index = 0;
       if (value.data != null) {

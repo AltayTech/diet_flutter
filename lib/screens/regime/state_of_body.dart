@@ -175,20 +175,6 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
             iconPath: 'assets/images/diet/height_icon.svg',
             onClick: (val) => physicalInfo.height = val,
           ),
-        if (!navigator.currentConfiguration!.path.contains('weight'))
-          CustomRuler(
-            rulerType: RulerType.Normal,
-            value: physicalInfo.wrist!,
-            max: 40,
-            min: 10,
-            heading: intl.wrist,
-            unit: intl.centimeter,
-            color: AppColors.blueRuler,
-            helpClick: () =>
-                DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 4)),
-            iconPath: 'assets/images/diet/wrist_icon.svg',
-            onClick: (val) => physicalInfo.wrist = val,
-          ),
         if (physicalInfo.dietTypeAlias == RegimeAlias.Pregnancy &&
             !navigator.currentConfiguration!.path.contains('enter'))
           CustomRuler(

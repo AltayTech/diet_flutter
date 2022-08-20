@@ -17,8 +17,6 @@ class PhysicalInfoData {
   double? weight;
   @JsonKey(name: "height", defaultValue: 0)
   int? height;
-  @JsonKey(name: "wrist", defaultValue: 0)
-  int? wrist;
   @JsonKey(name: "waist")
   int? waist;
   @JsonKey(name: "birth_date")

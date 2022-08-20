@@ -856,21 +856,21 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<List<sickness.Sickness>>> getNotBlockingSickness() async {
+  Future<NetworkResponse<List<Sickness>>> getNotBlockingSickness() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<List<sickness.Sickness>>>(
+        _setStreamType<NetworkResponse<List<Sickness>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/not-blocking-sicknesses',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<List<sickness.Sickness>>.fromJson(
+    final value = NetworkResponse<List<Sickness>>.fromJson(
       _result.data!,
       (json) => (json as List<dynamic>)
-          .map<sickness.Sickness>((i) => sickness.Sickness.fromJson(i as Map<String, dynamic>))
+          .map<Sickness>((i) => Sickness.fromJson(i as Map<String, dynamic>))
           .toList(),
     );
     return value;

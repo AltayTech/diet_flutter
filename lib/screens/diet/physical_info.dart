@@ -1,6 +1,8 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/diet/bloc.dart';
 import 'package:behandam/screens/utility/custom_ruler.dart';
 import 'package:behandam/screens/utility/ruler.dart';
@@ -9,7 +11,6 @@ import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
-import 'package:behandam/screens/widget/package_item.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -20,6 +21,7 @@ import 'package:behandam/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -65,6 +67,18 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
 
     bloc = PhysicalInfoBloc();
     bloc.physicalInfo();
+    listenBloc();
+  }
+
+  void listenBloc() {
+    bloc.navigateTo.listen((next) {
+      VxNavigator.of(context).push(Uri.parse('/$next'));
+    });
+
+    bloc.popLoadingDialog.listen((event) {
+      MemoryApp.isShowDialog = false;
+      Navigator.of(context).pop();
+    });
   }
 
   @override
@@ -75,69 +89,83 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
+    _progressTimeline.gotoStage(MemoryApp.page);
     return Scaffold(
       appBar: Toolbar(
           titleBar: (navigator.currentConfiguration!.path.contains(Routes.weightEnter))
               ? intl.newVisit
               : intl.stateOfBody),
-      body: SingleChildScrollView(
-        child: Card(
-          margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          shape: AppShapes.rectangleMild,
-          elevation: 2,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 90.w,
-                  child: Center(
-                    child: _progressTimeline,
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+        width: 100.w,
+        height: 100.h,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+                flex: 1,
+                child: TouchMouseScrollable(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 90.w,
+                          child: Center(
+                            child: _progressTimeline,
+                          ),
+                        ),
+                        Text(
+                          intl.enterYourState,
+                          style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          intl.enterYourStateDescription,
+                          style: typography.overline,
+                        ),
+                        Space(
+                          height: 2.h,
+                        ),
+                        StreamBuilder<PhysicalInfoData>(
+                            stream: bloc.physicalInfoData,
+                            builder: (context, physicalInfo) {
+                              if (physicalInfo.hasData)
+                                return Column(
+                                  children: [
+                                    rulers(physicalInfo.requireData),
+                                    Space(height: 2.h),
+                                    birthDayBox(physicalInfo.requireData),
+                                    Space(height: 2.h),
+                                    genderBox(physicalInfo.requireData.gender ?? GenderType.Female),
+                                    Space(
+                                      height: 3.h,
+                                    ),
+                                  ],
+                                );
+                              else
+                                return Center(child: Progress());
+                            }),
+                      ],
+                    ),
                   ),
-                ),
-                Text(
-                  intl.enterYourState,
-                  style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  intl.enterYourStateDescription,
-                  style: typography.overline,
-                ),
-                Space(
-                  height: 2.h,
-                ),
-                StreamBuilder<PhysicalInfoData>(
-                    stream: bloc.physicalInfoData,
-                    builder: (context, physicalInfo) {
-                      if (physicalInfo.hasData)
-                        return Column(
-                          children: [
-                            rulers(physicalInfo.requireData),
-                            Space(height: 2.h),
-                            birthDayBox(physicalInfo.requireData),
-                            Space(height: 2.h),
-                            genderBox(physicalInfo.requireData.gender??GenderType.Female),
-                            Space(
-                              height: 3.h,
-                            ),
-                            SubmitButton(
-                              label: intl.confirmContinue,
-                              onTap: () {
-                                _progressTimeline.gotoNextStage();
-                              },
-                            ),
-                            Space(height: 2.h),
-                          ],
-                        );
-                      else
-                        return Center(child: Progress());
-                    })
-              ],
+                )),
+            Center(
+              child: SubmitButton(
+                label: intl.confirmContinue,
+                onTap: () {
+                  if (bloc.physicalInfoValue.weight == null ||
+                      bloc.physicalInfoValue.height == null ||
+                      bloc.physicalInfoValue.birthDate == null) {
+                    Utils.getSnackbarMessage(context, intl.errorCompleteInfo);
+                    return;
+                  }
+                  if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+                  bloc.sendRequest();
+                },
+              ),
             ),
-          ),
+            Space(height: 2.h),
+          ],
         ),
       ),
     );
@@ -148,7 +176,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
       children: [
         Ruler(
           rulerType: RulerType.Weight,
-          value: physicalInfo.weight !=null ? '${physicalInfo.weight!.toStringAsFixed(3)}' : '0.0',
+          value: physicalInfo.weight != null ? '${physicalInfo.weight!.toStringAsFixed(3)}' : '0.0',
           max: 210,
           min: 30,
           heading: intl.weight,
@@ -167,9 +195,9 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
         ),
         Ruler(
           rulerType: RulerType.Normal,
-          value:physicalInfo.weight !=null ? '${physicalInfo.height}' : '0',
-          max: 210,
-          min: 50,
+          value: physicalInfo.height != null ? '${physicalInfo.height}' : '0',
+          max: 300,
+          min: 100,
           heading: intl.height,
           unit: intl.centimeter,
           color: AppColors.pinkRuler,
@@ -303,12 +331,12 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                   child: Center(
                     child: CustomDate(
                       function: (value) {
-                        bloc.date=value;
+                        bloc.date = value;
                       },
                       datetime:
-                      DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10))
-                          .toString()
-                          .substring(0, 10),
+                          DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10))
+                              .toString()
+                              .substring(0, 10),
                       maxYear: Jalali.now().year,
                     ),
                   ),
@@ -316,18 +344,17 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                 Expanded(
                   child: Center(
                       child: SubmitButton(
-                        label: intl.submitDate,
-                        onTap: () {
-                          if (bloc.date != null) {
-                            setState(() {
-                              physicalInfo.birthDate = bloc.date!;
-                            });
-
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        size: Size(80.w, 6.h),
-                      )),
+                    label: intl.submitDate,
+                    onTap: () {
+                      if (bloc.date != null) {
+                        setState(() {
+                          physicalInfo.birthDate = bloc.date!;
+                        });
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    size: Size(80.w, 6.h),
+                  )),
                 )
               ],
             ),
