@@ -15,6 +15,7 @@ import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/custom_switch.dart';
 import 'package:behandam/widget/sickness_dialog.dart';
 import 'package:behandam/widget/stepper.dart';
+import 'package:behandam/widget/stepper_widget.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -29,38 +30,14 @@ class SicknessScreen extends StatefulWidget {
   _SicknessScreenState createState() => _SicknessScreenState();
 }
 
-class _SicknessScreenState extends ResourcefulState<SicknessScreen>
-    implements ItemClick {
+class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements ItemClick {
   late SicknessBloc sicknessBloc;
   TextEditingController controller = TextEditingController();
-  late ProgressTimeline _progressTimeline;
+
   @override
   void initState() {
     super.initState();
-    _progressTimeline = ProgressTimeline(
-      states: [
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-      ],
-      height: 5.h,
-      width: 50.w,
-      checkedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 28, height: 28, fit: BoxFit.fill),
-      currentIcon: ImageUtils.fromLocal("assets/images/physical_report/current_step.svg",
-          width: 28, height: 28, fit: BoxFit.fill),
-      failedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 28, height: 28, fit: BoxFit.fill),
-      uncheckedIcon: ImageUtils.fromLocal("assets/images/physical_report/none_step.svg",
-          width: 15, height: 15, fit: BoxFit.fill),
-      iconSize: 28,
-      connectorLength: 10.w,
-      connectorColorSelected: AppColors.primary,
-      connectorWidth: 4,
-      connectorColor: Color(0xffC9D1E1),
-    );
+
     sicknessBloc = SicknessBloc();
     sicknessBloc.getSickness();
     listenBloc();
@@ -82,7 +59,6 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    _progressTimeline.gotoStage(MemoryApp.page);
     return SicknessProvider(sicknessBloc,
         child: Scaffold(
           appBar: Toolbar(titleBar: intl.sickness),
@@ -100,8 +76,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
               stream: sicknessBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data == false) {
-                  controller.text =
-                      sicknessBloc.userSickness?.sicknessNote ?? '';
+                  controller.text = sicknessBloc.userSickness?.sicknessNote ?? '';
                   return content();
                 } else {
                   return Container(height: 80.h, child: Progress());
@@ -119,7 +94,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
         Container(
           width: 100.w,
           alignment: Alignment.center,
-          child: _progressTimeline,
+          child: StepperWidget(),
         ),
         Container(
           child: Padding(
@@ -138,8 +113,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
                 Text(
                   intl.obstructiveCauseToLeaveDiet,
                   textAlign: TextAlign.start,
-                  style: typography.caption!
-                      .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+                  style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
                 ),
                 Space(height: 2.h),
                 if (sicknessBloc.userSickness != null)
@@ -151,32 +125,22 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
                           return ListView.builder(
                               physics: ClampingScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: sicknessBloc
-                                  .userSickness!.sickness_categories!.length,
-                              itemBuilder: (BuildContext context, int index) =>
-                                  sicknessBox(
+                              itemCount: sicknessBloc.userSickness!.sickness_categories!.length,
+                              itemBuilder: (BuildContext context, int index) => sicknessBox(
                                     index,
-                                    sicknessBloc.userSickness!
-                                        .sickness_categories![index],
+                                    sicknessBloc.userSickness!.sickness_categories![index],
                                   ));
-                        else if (sicknessBloc
-                                .userSickness!.sickness_categories!.length <=
-                            0)
+                        else if (sicknessBloc.userSickness!.sickness_categories!.length <= 0)
                           return Container(
-                              child: Text(intl.emptySickness,
-                                  style: typography.caption));
+                              child: Text(intl.emptySickness, style: typography.caption));
                         else
                           return Container(height: 80.h, child: Progress());
                       }),
                 Space(height: 1.h),
                 Padding(
                   padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-                  child: CustomButton.withIcon(
-                      AppColors.btnColor,
-                      intl.nextStage,
-                      Size(100.w, 6.h),
-                      Icon(Icons.arrow_forward),
-                      () {}),
+                  child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage, Size(100.w, 6.h),
+                      Icon(Icons.arrow_forward), () {}),
                 )
               ],
             ),
@@ -201,8 +165,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
             ),
             child: sickness.sicknesses!.length > 0
                 ? ListView.builder(
@@ -212,21 +175,17 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
                     itemBuilder: (BuildContext context, int index) => Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CheckBoxApp.description(
-                            contentPadding: 8,
-                            isBorder: false,
-                            iconSelectType: IconSelectType.Checked,
+                              contentPadding: 8,
+                              isBorder: false,
+                              iconSelectType: IconSelectType.Checked,
                               onTap: () {
                                 sickness.sicknesses![index].isSelected =
                                     !sickness.sicknesses![index].isSelected!;
-                                setState(() {
-
-                                });
+                                setState(() {});
                               },
                               title: sickness.sicknesses![index].title!,
-                              isSelected:
-                                  sickness.sicknesses![index].isSelected!,
-                              description:
-                                  'توضیح درباره اینکه چرا با این عارضه نمیشه رژیم گرفت'),
+                              isSelected: sickness.sicknesses![index].isSelected!,
+                              description: 'توضیح درباره اینکه چرا با این عارضه نمیشه رژیم گرفت'),
                         ))
                 : Container()),
         header: Container(
@@ -234,9 +193,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: sickness.isSelected!
-                  ? BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      topLeft: Radius.circular(10))
+                  ? BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
                   : BorderRadius.circular(10),
             ),
             child: Column(children: [
@@ -244,8 +201,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                      child: Text(sickness.title!, style: typography.caption)),
+                  Expanded(child: Text(sickness.title!, style: typography.caption)),
                   Expanded(
                     child: CustomSwitch(
                       isSwitch: sickness.isSelected!,
@@ -269,8 +225,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
   }
 
   void sendRequest() {
-    if (!MemoryApp.isShowDialog)
-      DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     sicknessBloc.sendSickness();
   }
 

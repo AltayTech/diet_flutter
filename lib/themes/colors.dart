@@ -194,7 +194,7 @@ class AppColors {
         statusTicketPendingUserResponse = Colors.pinkAccent;
         statusTicketOnHold = primaryVariantLight;
         statusTicketGlobalIssue = Color(0xFFF3543C);
-        background = Color.fromARGB(255, 245, 245, 245);
+        background = Color.fromARGB(255, 255, 255, 255);
         colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
         colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
         labelTextColor = Color(0xff7f7f7f);

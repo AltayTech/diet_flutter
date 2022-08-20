@@ -153,12 +153,12 @@ class _AppState extends State<App> {
     );
   }
 
-  Widget app(Locale locale) {
+  Widget  app(Locale locale) {
     return MaterialApp.router(
         useInheritedMediaQuery: true,
         // generate title from localization instead of `MaterialApp.title` property
         onGenerateTitle: (BuildContext context) => context.intl.appName,
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,color: AppColors.background,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocale.supportedLocales,
         theme: ThemeData(

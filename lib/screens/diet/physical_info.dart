@@ -17,7 +17,7 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/stepper.dart';
+import 'package:behandam/widget/stepper_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -35,36 +35,10 @@ class PhysicalInfoScreen extends StatefulWidget {
 
 class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
   late PhysicalInfoBloc bloc;
-  late ProgressTimeline _progressTimeline;
 
   @override
   void initState() {
     super.initState();
-    _progressTimeline = ProgressTimeline(
-      states: [
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-      ],
-      height: 5.h,
-      width: 50.w,
-      checkedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 28, height: 28, fit: BoxFit.fill),
-      currentIcon: ImageUtils.fromLocal("assets/images/physical_report/current_step.svg",
-          width: 28, height: 28, fit: BoxFit.fill),
-      failedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 28, height: 28, fit: BoxFit.fill),
-      uncheckedIcon: ImageUtils.fromLocal("assets/images/physical_report/none_step.svg",
-          width: 15, height: 15, fit: BoxFit.fill),
-      iconSize: 28,
-      connectorLength: 10.w,
-      connectorColorSelected: AppColors.primary,
-      connectorWidth: 4,
-      connectorColor: Color(0xffC9D1E1),
-    );
-
     bloc = PhysicalInfoBloc();
     bloc.physicalInfo();
     listenBloc();
@@ -72,6 +46,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
 
   void listenBloc() {
     bloc.navigateTo.listen((next) {
+      MemoryApp.page++;
       VxNavigator.of(context).push(Uri.parse('/$next'));
     });
 
@@ -89,8 +64,9 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    _progressTimeline.gotoStage(MemoryApp.page);
+
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: Toolbar(
           titleBar: (navigator.currentConfiguration!.path.contains(Routes.weightEnter))
               ? intl.newVisit
@@ -112,7 +88,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                         SizedBox(
                           width: 90.w,
                           child: Center(
-                            child: _progressTimeline,
+                            child: StepperWidget(),
                           ),
                         ),
                         Text(
