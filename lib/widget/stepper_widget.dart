@@ -13,7 +13,9 @@ class StepperWidget extends StatelessWidget {
     _progressTimeline = progressTimeline();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Future.delayed(Duration(milliseconds: 200), () {
-        _progressTimeline.gotoStage(MemoryApp.page);
+        try {
+          _progressTimeline.gotoStage(MemoryApp.page);
+        } catch (e) {}
       });
     });
   }

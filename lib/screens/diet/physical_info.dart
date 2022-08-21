@@ -17,6 +17,7 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/stepper_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -126,19 +127,16 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                   ),
                 )),
             Center(
-              child: SubmitButton(
-                label: intl.confirmContinue,
-                onTap: () {
-                  if (bloc.physicalInfoValue.weight == null ||
+              child:
+              CustomButton.withIcon(AppColors.btnColor, intl.nextStage, Size(100.w, 6.h),
+                  Icon(Icons.arrow_forward), () {if (bloc.physicalInfoValue.weight == null ||
                       bloc.physicalInfoValue.height == null ||
                       bloc.physicalInfoValue.birthDate == null) {
                     Utils.getSnackbarMessage(context, intl.errorCompleteInfo);
                     return;
                   }
                   if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-                  bloc.sendRequest();
-                },
-              ),
+                  bloc.sendRequest();})
             ),
             Space(height: 2.h),
           ],
@@ -160,7 +158,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
           secondUnit: intl.gr,
           color: AppColors.purpleRuler,
           helpClick: () =>
-              DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 2)),
+              DialogUtils.showBottomSheetPage(context: context, child: HelpDialog(helpId: 2)),
           iconPath: 'assets/images/diet/weight_icon.svg',
           onClick: (val) {
             physicalInfo.weight = double.parse('${val}');
@@ -178,7 +176,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
           unit: intl.centimeter,
           color: AppColors.pinkRuler,
           helpClick: () =>
-              DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 3)),
+              DialogUtils.showBottomSheetPage(context: context, child: HelpDialog(helpId: 3)),
           iconPath: 'assets/images/diet/height_icon.svg',
           onClick: (val) => physicalInfo.height = int.parse('${val}'),
         ),
