@@ -6,6 +6,7 @@ import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -43,7 +44,6 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   String? lastName;
   String? _password;
   late AuthenticationBloc authBloc;
-  bool switchValue = false;
   bool _obscureText = false;
   bool check = false;
   late Country countrySelected;
@@ -102,34 +102,6 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   return TouchMouseScrollable(
                     child: SingleChildScrollView(
                       child: Column(children: [
-                        Space(height: 1.h),
-                        Container(
-                          margin: EdgeInsets.only(top: 16),
-                          width: 100.w,
-                          alignment: Alignment.center,
-                          child: ProgressTimeline(
-                              width: 65.w,
-                              height: 7.h,
-                              failedIcon: Icon(Icons.cancel),
-                              checkedIcon: Icon(Icons.check_circle),
-                              uncheckedIcon: Icon(Icons.circle_outlined),
-                              currentIcon: Icon(
-                                Icons.radio_button_checked_rounded,
-                                color: AppColors.primary,
-                              ),
-                              connectorWidth: 1.w,
-                              iconSize: 7.w,
-                              connectorLength: 15.w,
-                              connectorColor: AppColors.grey,
-                              connectorColorSelected: AppColors.primary,
-                              states: [
-                                SingleState(stateTitle: "", isFailed: false),
-                                SingleState(stateTitle: "", isFailed: false),
-                                SingleState(stateTitle: "", isFailed: false),
-                                SingleState(stateTitle: "", isFailed: false),
-                                SingleState(stateTitle: "", isFailed: false)
-                              ]),
-                        ),
                         Space(height: 1.h),
                         content(),
                       ]),
@@ -328,10 +300,11 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
       register.lastName = lastName;
       register.mobile = args['mobile'];
       register.password = _password;
-      register.gender = switchValue;
+      register.gender = true;
       register.verifyCode = args['code'];
       register.countryId = countrySelected.id;
       register.appId = '0';
+      DialogUtils.showDialogProgress(context: context);
       authBloc.registerMethod(register);
     } else
       Utils.getSnackbarMessage(context, intl.fillAllField);

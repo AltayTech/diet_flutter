@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
-import 'package:behandam/data/entity/regime/sickness.dart';
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/stream.dart';
 class OtherSicknessBloc {
@@ -16,13 +16,13 @@ class OtherSicknessBloc {
   final _waiting = BehaviorSubject<bool>();
 
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
-  final _userSickness = BehaviorSubject<List<Sickness>>();
+  final _userSickness = BehaviorSubject<List<ObstructiveDisease>>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
 
   String get path => _path;
 
-  Stream<List<Sickness>> get userSickness => _userSickness.stream;
+  Stream<List<ObstructiveDisease>> get userSickness => _userSickness.stream;
 
   Stream<bool> get waiting => _waiting.stream;
 
@@ -30,8 +30,8 @@ class OtherSicknessBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void updateSickness(int indexSickness, int indexCategory, SicknessCategory sickness) {
-    List<Sickness> userSickness = _userSickness.value;
+  void updateSickness(int indexSickness, int indexCategory, ObstructiveDiseaseCategory sickness) {
+    List<ObstructiveDisease> userSickness = _userSickness.value;
     userSickness[indexSickness].categories![indexCategory] = sickness;
     _userSickness.safeValue = userSickness;
   }
@@ -39,7 +39,7 @@ class OtherSicknessBloc {
   void getNotBlockingSickness() async {
     _waiting.safeValue = true;
     _repository.getNotBlockingSickness().then((value) {
-      _userSickness.safeValue = value.data! as List<Sickness>;
+      _userSickness.safeValue = value.data! as List<ObstructiveDisease>;
     }).whenComplete(() => _waiting.safeValue = false);
   }
 

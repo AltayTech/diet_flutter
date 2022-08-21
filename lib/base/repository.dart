@@ -30,7 +30,7 @@ import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
-import 'package:behandam/data/entity/regime/sickness.dart' as sickness;
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
@@ -148,7 +148,7 @@ abstract class Repository {
 
   NetworkResult<UserSickness> getSickness();
 
-  NetworkResult<List<sickness.Sickness>> getNotBlockingSickness();
+  NetworkResult<List<ObstructiveDisease>> getNotBlockingSickness();
 
   ImperativeNetworkResult sendSickness(UserSickness sickness);
 
@@ -255,6 +255,8 @@ abstract class Repository {
   NetworkResult<ListUserSubscriptionData> getUserSubscription();
 
   NetworkResult<InboxItem> getInboxMessage(int id);
+
+  NetworkResult<UserSickness> getUserBlockingSickness();
 }
 
 class _RepositoryImpl extends Repository {
@@ -601,7 +603,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<List<sickness.Sickness>> getNotBlockingSickness() {
+  NetworkResult<List<ObstructiveDisease>> getNotBlockingSickness() {
     var response = _apiClient.getNotBlockingSickness();
     return response;
   }
@@ -1017,6 +1019,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<InboxItem> getInboxMessage(int id) {
     var response = _apiClient.getInboxMessage(id);
+    return response;
+  }
+
+  @override
+  NetworkResult<UserSickness> getUserBlockingSickness() {
+    var response = _apiClient.getUserBlockingSickness();
     return response;
   }
 }

@@ -102,7 +102,10 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                                 color: widget.color,
                                 minValue: widget.min,
                                 maxValue: widget.max,
-                                value: widget.value,
+                                value: widget.value ==
+                                        '${widget.rulerType == RulerType.Weight ? 0.0 : 0}'
+                                    ? '${widget.rulerType == RulerType.Weight ? (widget.max - widget.min) / 2 : (widget.max - ((widget.max - widget.min) / 2)).round()}'
+                                    : widget.value,
                                 onChanged: (val) {
                                   setState(() {
                                     widget.onClick.call(val);
@@ -204,50 +207,98 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                   Space(
                     width: 2.w,
                   ),
-                if (widget.secondUnit != null)
+                if (widget.secondUnit != null) gram(),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget gram() {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        width: 18.w,
+        height: 5.h,
+        padding: EdgeInsets.all(1.w),
+        decoration: BoxDecoration(
+          color: AppColors.onPrimary,
+          borderRadius: BorderRadius.all(AppRadius.radiusVerySmall),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Row(
+                children: [
                   Expanded(
                     flex: 1,
-                    child: Container(
-                      width: 18.w,
-                      height: 4.h,
-                      padding: EdgeInsets.all(1.w),
-                      decoration: BoxDecoration(
-                        color: AppColors.onPrimary,
-                        borderRadius: BorderRadius.all(AppRadius.radiusVerySmall),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              '${widget.value.toString().split('.')[1]}',
-                              textAlign: TextAlign.center,
-                              style: typography.caption?.apply(
-                                color: AppColors.labelColor,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.w, bottom: 1.w),
-                            decoration: BoxDecoration(
-                              color: AppColors.box,
-                              borderRadius: BorderRadius.all(AppRadius.radiusVerySmall),
-                            ),
-                            child: Text(
-                              widget.secondUnit!,
-                              textAlign: TextAlign.center,
-                              style: typography.caption?.apply(
-                                color: widget.color,
-                                fontSizeDelta: -3,
-                              ),
-                            ),
-                          ),
-                        ],
+                    child: IconButton(
+                        color: Colors.red,
+                        padding: EdgeInsets.zero,
+                        icon: Icon(Icons.add),
+                        iconSize: 20,
+                        onPressed: () {
+                          if (double.parse(widget.value.toString().split('.')[1]) < 900) {
+                            setState(() {
+                              widget.value =
+                                  '${(double.parse(widget.value) + 0.100).toStringAsFixed(1)}00';
+                              sliderKey.currentState!.scrollTo('${widget.value}');
+                            });
+                          } else
+                            return;
+                        }),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      '${widget.value.toString().split('.')[1]}',
+                      textAlign: TextAlign.center,
+                      softWrap: false,
+                      style: typography.caption?.apply(
+                        color: AppColors.labelColor,
                       ),
                     ),
                   ),
-              ],
-            )
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                        color: Colors.red,
+                        padding: EdgeInsets.zero,
+                        icon: Icon(Icons.remove),
+                        iconSize: 20,
+                        onPressed: () {
+                          if (double.parse(widget.value.toString().split('.')[1]) > 0) {
+                            setState(() {
+                              widget.value =
+                                  '${(double.parse(widget.value) - 0.100).toStringAsFixed(1)}${(double.parse(widget.value.toString().split('.')[1]) - 100 > 0) ? '00' : ''}';
+                              sliderKey.currentState!.scrollTo('${widget.value}');
+                            });
+                          }
+                        }),
+                  ),
+                ],
+              ),
+              flex: 1,
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 3.w, right: 3.w, top: 1.w, bottom: 1.w),
+              decoration: BoxDecoration(
+                color: AppColors.box,
+                borderRadius: BorderRadius.all(AppRadius.radiusVerySmall),
+              ),
+              child: Text(
+                widget.secondUnit!,
+                textAlign: TextAlign.center,
+                style: typography.caption?.apply(
+                  color: widget.color,
+                  fontSizeDelta: -3,
+                ),
+              ),
+            ),
           ],
         ),
       ),

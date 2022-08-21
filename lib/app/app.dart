@@ -21,9 +21,6 @@ import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
-import 'package:behandam/screens/payment/fail_new.dart';
-import 'package:behandam/screens/payment/new_success.dart';
-import 'package:behandam/screens/payment/new_bill.dart';
 import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/payment/wait.dart';
 import 'package:behandam/screens/privacy_policy/privacy_policy.dart';
@@ -44,7 +41,6 @@ import 'package:behandam/screens/regime/activity/activity_level.dart';
 import 'package:behandam/screens/regime/block/block.dart';
 import 'package:behandam/screens/regime/block/block_week_pergnancy.dart';
 import 'package:behandam/screens/regime/body-status.dart';
-import 'package:behandam/screens/regime/confirm_body_state.dart';
 import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
 import 'package:behandam/screens/regime/help_type.dart';
@@ -53,7 +49,6 @@ import 'package:behandam/screens/regime/menu/menu_select.dart';
 import 'package:behandam/screens/regime/overview/overview.dart';
 import 'package:behandam/screens/regime/package/package_list.dart';
 import 'package:behandam/screens/regime/regime_type.dart';
-import 'package:behandam/screens/regime/sickness/other_sickness/other_sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
@@ -158,12 +153,12 @@ class _AppState extends State<App> {
     );
   }
 
-  Widget app(Locale locale) {
+  Widget  app(Locale locale) {
     return MaterialApp.router(
         useInheritedMediaQuery: true,
         // generate title from localization instead of `MaterialApp.title` property
         onGenerateTitle: (BuildContext context) => context.intl.appName,
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,color: AppColors.background,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocale.supportedLocales,
         theme: ThemeData(
@@ -272,7 +267,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage( SplashScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
@@ -307,7 +302,7 @@ final navigator = VxNavigator(
     Routes.calendar: (_, __) => MaterialPage(child: routePage(CalendarPage())),
     RegExp(r"\/(reg|renew|revive)(\/diet\/type)"): (_, __) =>
         MaterialPage(child: routePage(RegimeTypeScreen())),
-    RegExp(r"\/(reg|renew|revive)(\/size)"): (_, __) =>
+    RegExp(r"\/(renew|revive)(\/size)"): (_, __) =>
         MaterialPage(child: routePage(BodyStateScreen())),
     RegExp(r"\/(reg|renew|revive)(\/report)"): (_, __) =>
         MaterialPage(child: routePage(BodyStatusScreen())),
@@ -390,6 +385,9 @@ final navigator = VxNavigator(
     Routes.billSubscription: (_, __) => MaterialPage(child: routePage(BillPaymentScreen())),
     Routes.billSubscriptionHistory: (_, params) =>
         MaterialPage(child: routePage(HistorySubscriptionPaymentScreen()), arguments: params),
+    RegExp(r"\/(reg)(\/size)"): (_, __) => MaterialPage(child: routePage(PhysicalInfoScreen())),
+    RegExp(r"\/(reg)(\/blocking-sicpecial\/select)"): (_, __) =>
+        MaterialPage(child: routePage(SicknessScreen())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

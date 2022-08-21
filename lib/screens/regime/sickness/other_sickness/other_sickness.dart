@@ -15,7 +15,7 @@ import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../../../data/entity/regime/sickness.dart';
+import '../../../../data/entity/regime/obstructive_disease.dart';
 
 class OtherSicknessScreen extends StatefulWidget {
   const OtherSicknessScreen({Key? key}) : super(key: key);
@@ -109,7 +109,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
                     .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
               ),
               Space(height: 2.h),
-              StreamBuilder<List<Sickness>>(
+              StreamBuilder<List<ObstructiveDisease>>(
                   stream: bloc.userSickness,
                   builder: (context, userSickness) {
                     if (userSickness.hasData) {
@@ -146,7 +146,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
     );
   }
 
-  Widget sicknessBox(String title, int index, List<SicknessCategory> sickness) {
+  Widget sicknessBox(String title, int index, List<ObstructiveDiseaseCategory> sickness) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -200,7 +200,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
     );
   }
 
-  Widget sicknessItem(SicknessCategory sickness) {
+  Widget sicknessItem(ObstructiveDiseaseCategory sickness) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Chip(

@@ -79,7 +79,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     });
     authBloc.showServerError.listen((event) {
       Navigator.of(context).pop();
-      Utils.getSnackbarMessage(context, event);
+
     });
   }
 

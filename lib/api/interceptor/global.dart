@@ -13,9 +13,9 @@ class GlobalInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final authToken = await AppSharedPreferences.authToken;
+    final fcmToken = await AppSharedPreferences.fcmToken;
     final packageInfo = await PackageInfo.fromPlatform();
     final languageCode = (await AppLocale.currentLocale).languageCode;
-    // final fcmToken = await AppSharedPreferences.fcmToken;
 
     options.headers['accept'] = 'application/json';
     options.headers['content-type'] = 'application/json';
@@ -27,7 +27,6 @@ class GlobalInterceptor extends Interceptor {
       options.headers['authorization'] = 'Bearer ${authToken}';
     }
 
-    // options.headers['Fcm-Token'] = fcmToken;
     options.headers['app'] = '0';
     options.headers['market'] = FlavorConfig.instance.variables['market'];
     options.headers['application-version-code'] = packageInfo.buildNumber;
@@ -36,6 +35,7 @@ class GlobalInterceptor extends Interceptor {
     options.headers['os'] = DeviceUtils.platform;
     options.headers['x-device'] = await DeviceUtils.deviceName;
     options.headers['device-id'] = await DeviceUtils.deviceId;
+    options.headers['fcm-token'] = fcmToken;
     options.headers['is-emulator'] = (await DeviceUtils.isEmulator).toString();
     options.headers['time-zone'] = DateTimeUtils.timezoneOffset.toString();
 
