@@ -27,9 +27,9 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^1.1.1+1
+  flutter_svg: ^1.1.4
   intl: ^0.17.0
-  rxdart: ^0.27.3
+  rxdart: ^0.27.5
   shared_preferences: ^2.0.12
   fluttertoast: ^8.0.8
   logger: ^1.1.0
@@ -89,6 +89,7 @@ dependencies:
   dio_http2_adapter: ^2.0.0
   scroll_snap_list: ^0.9.1
   scrollable_positioned_list: ^0.3.2
+  introduction_screen: ^3.0.2
 
 dependency_overrides:
   provider: ^6.0.2
@@ -131,6 +132,7 @@ flutter:
     - assets/images/foodlist/pregnancy/
     - assets/images/foodlist/ramadan/
     - assets/images/flags/
+    - assets/images/onboarding/
   fonts:
     - family: Iransans
       fonts:

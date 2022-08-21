@@ -24,13 +24,13 @@ import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
-import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
@@ -275,13 +275,12 @@ class _RepositoryImpl extends Repository {
       connectTimeout: connectTimeout,
       sendTimeout: sendTimeout,
     );
-    if(!kIsWeb)
-    _dio.httpClientAdapter = Http2Adapter(
-    ConnectionManager(
-    idleTimeout: 10000,
-    // Ignore bad certificate
-    onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
-    ));
+    if (!kIsWeb)
+      _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
+        idleTimeout: 10000,
+        // Ignore bad certificate
+        onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
+      ));
     _dio.interceptors.add(ErrorHandlerInterceptor());
     _dio.interceptors.add(GlobalInterceptor());
     _dio.interceptors.add(LoggingInterceptor());
@@ -645,12 +644,12 @@ class _RepositoryImpl extends Repository {
           sicknessItem.children?.forEach((element) {
             debugPrint("${element.toJson()}");
           });
-          Sickness sickness=Sickness();
-          sickness.id=sicknessItem.children!.singleWhere((child) => child.isSelected!).id;
+          Sickness sickness = Sickness();
+          sickness.id = sicknessItem.children!.singleWhere((child) => child.isSelected!).id;
           selectedItems.add(sickness);
         } else {
-          Sickness sickness=Sickness();
-          sickness.id=sicknessItem.id;
+          Sickness sickness = Sickness();
+          sickness.id = sicknessItem.id;
           selectedItems.add(sickness);
           debugPrint("${sickness.toJson()}");
         }
