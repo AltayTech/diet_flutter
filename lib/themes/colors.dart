@@ -70,7 +70,11 @@ class AppColors {
   static const greyDate = Color(0xff454545);
   static const alertCallTextColor = Color(0xff5282a5);
   static const suggestion = Color(0xff1DD1A1);
-  static const weightBoxColor = Color(0xffbb0101);
+  static const weightBoxColorRedLight = Color(0xffff7373 );
+  static const weightBoxColorGreen = Color(0xff8BC384);
+  static const weightBoxColorOrange = Color(0xffFFAC6F);
+  static const weightBoxColorRed = Color(0xffbb0101);
+  static const weightBoxColorBlue = Color(0xff84C8D0);
   static const dietTypeBoxColor = Color(0xffddf5f0);
   static const bodyStateBlueColor = Color(0xff3498db);
   static const bodyStatePurpleColor = Color(0xff686de0);

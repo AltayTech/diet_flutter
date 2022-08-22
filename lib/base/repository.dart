@@ -255,6 +255,8 @@ abstract class Repository {
   NetworkResult<ListUserSubscriptionData> getUserSubscription();
 
   NetworkResult<InboxItem> getInboxMessage(int id);
+
+  NetworkResult<List<DietType>> getUserAllowedDietType();
 }
 
 class _RepositoryImpl extends Repository {
@@ -1017,6 +1019,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<InboxItem> getInboxMessage(int id) {
     var response = _apiClient.getInboxMessage(id);
+    return response;
+  }
+
+  @override
+  NetworkResult<List<DietType>> getUserAllowedDietType() {
+    var response = _apiClient.getUserAllowedDietType();
     return response;
   }
 }
