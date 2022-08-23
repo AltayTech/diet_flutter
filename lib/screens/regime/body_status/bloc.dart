@@ -15,8 +15,6 @@ import 'package:behandam/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-enum HelpPage { regimeType, menuType, packageType, fasting }
-
 class BodyStatusBloc {
   BodyStatusBloc();
 
@@ -24,41 +22,40 @@ class BodyStatusBloc {
   late PhysicalInfoData _physicalInfoData;
   final _waiting = BehaviorSubject<bool>();
   final _dietTypeList = BehaviorSubject<List<DietType>>();
-  final _helpers = BehaviorSubject<List<Help>>();
-  final _helpTitle = BehaviorSubject<String>();
-  final _helpMedia = BehaviorSubject<List<Help>>();
-  final _help = BehaviorSubject<Help>();
+  final _dietSelected = BehaviorSubject<DietType?>();
   final _status = BehaviorSubject<BodyStatus>();
   final _physicalInfo = BehaviorSubject<PhysicalInfoData>();
-  final _navigateToVerify = LiveEvent();
+  final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
+  final _popDialog = LiveEvent();
 
   Stream<BodyStatus> get status => _status.stream;
 
   Stream<List<DietType>> get dietTypeList => _dietTypeList.stream;
 
-  Stream<List<Help>> get helpers => _helpers.stream;
-
-  Stream<Help> get help => _help.stream;
-
-  Stream<String> get helpTitle => _helpTitle.stream;
-
-  Stream<List<Help>> get helpMedia => _helpMedia.stream;
+  Stream<DietType?> get dietSelected => _dietSelected.stream;
 
   Stream<bool> get waiting => _waiting.stream;
 
   Stream<PhysicalInfoData> get physicalInfo => _physicalInfo.stream;
 
-  Stream get navigateToVerify => _navigateToVerify.stream;
+  Stream get navigateToVerify => _navigateTo.stream;
 
   Stream get showServerError => _showServerError.stream;
 
+  Stream get popDialog => _popDialog.stream;
+
   BodyStatus get bodyStatus => _status.value;
+
+  get getDietSelected => _dietSelected.value;
+
+  set setDietSelected(DietType dietType) => _dietSelected.safeValue = dietType;
 
   void getUserAllowedDietType() {
     _waiting.safeValue = true;
     _repository.getUserAllowedDietType().then((value) {
       _dietTypeList.safeValue = value.data!;
+      _dietSelected.safeValue = value.data?[0] ?? null;
     }).whenComplete(() => getStatus());
   }
 
@@ -78,56 +75,28 @@ class BodyStatusBloc {
         .whenComplete(() => _waiting.safeValue = false);
   }
 
-  void sendInfo(PhysicalInfoData info) async {
-    _repository.sendInfo(info).then((value) {
-      _navigateToVerify.fire(value.next);
-    }).catchError((err) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
-    });
+  void updateDietType() {
+    ConditionRequestData requestData = ConditionRequestData();
+    requestData.dietTypeId = _dietSelected.value!.id;
+    _repository.setCondition(requestData).then((value) {
+      debugPrint('bloc updateDietType ${value.data}');
+      if (value.data != null) _navigateTo.fire(value.next);
+    }).whenComplete(() => _popDialog.fire(true));
   }
 
-  void nextStep() async {
+  void nextStep() {
     _repository.nextStep().then((value) {
-      _navigateToVerify.fire(value.next);
+      _navigateTo.fire(value.next);
     }).catchError((e) => _showServerError.fire(e));
-  }
-
-  void sendVisit(PhysicalInfoData info) async {
-    _repository.visit(info).then((value) {
-      _navigateToVerify.fire(value.next);
-    }).catchError((err) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
-    });
-  }
-
-  void sendWeight(PhysicalInfoData info) async {
-    _repository.editVisit(info).then((value) {
-      _navigateToVerify.fire(value.next);
-    }).catchError((err) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
-    });
-  }
-
-  void setPhysicalInfo({required PhysicalInfoData data}) {
-    _physicalInfoData = data;
-  }
-
-  void sendRequest() {
-    if (navigator.currentConfiguration!.path == '/list${Routes.weightEnter}')
-      sendVisit(_physicalInfoData);
-    else if (navigator.currentConfiguration!.path == '/renew/weight')
-      sendWeight(_physicalInfoData);
-    else
-      sendInfo(_physicalInfoData);
   }
 
   void dispose() {
     _showServerError.close();
-    _navigateToVerify.close();
+    _navigateTo.close();
+    _popDialog.close();
     _dietTypeList.close();
+    _dietSelected.close();
     _waiting.close();
     _physicalInfo.close();
-    _helpers.close();
-    _helpTitle.close();
   }
 }

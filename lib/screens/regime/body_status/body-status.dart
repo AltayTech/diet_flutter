@@ -108,8 +108,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                             AppColors.btnColor,
                             intl.nextStage,
                             Size(100.w, 6.h),
-                            Icon(Icons.arrow_forward),
-                            () {}),
+                            Icon(Icons.arrow_forward), () {
+                          sendRequest(
+                              isPregnancy: snapshot.data!.isPregnancy! == 1);
+                        }),
                       ),
                       Space(height: 2.h),
                     ],
@@ -433,21 +435,52 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                             ],
                           ),
                         ),
-                        ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          physics: ClampingScrollPhysics(),
-                          shrinkWrap: false,
-                          itemCount: dietTypeList.data!.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              CheckBoxApp(
-                                  isBorder: true,
-                                  iconSelectType: IconSelectType.Radio,
-                                  onTap: () {},
-                                  title: dietTypeList.data![index].title,
-                                  isSelected:
-                                      dietTypeList.data![index].isActive ==
-                                          boolean.True),
-                        ),
+                        StreamBuilder<DietType?>(
+                            stream: bloc.dietSelected,
+                            builder: (context, dietSelected) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Space(width: 3.w),
+                                  Expanded(
+                                    child: CheckBoxApp(
+                                        maxHeight: 8.h,
+                                        titleFontSize: 12.sp,
+                                        rowMainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        isBorder: true,
+                                        iconSelectType: IconSelectType.Radio,
+                                        onTap: () {
+                                          bloc.setDietSelected =
+                                              dietTypeList.data![0];
+                                        },
+                                        title: dietTypeList.data![0].title,
+                                        isSelected: dietSelected.data?.id ==
+                                            dietTypeList.data![0].id),
+                                  ),
+                                  Space(width: 3.w),
+                                  if (dietTypeList.data!.length > 1)
+                                    Expanded(
+                                      child: CheckBoxApp(
+                                          maxHeight: 8.h,
+                                          titleFontSize: 12.sp,
+                                          rowMainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          isBorder: true,
+                                          iconSelectType: IconSelectType.Radio,
+                                          onTap: () {
+                                            bloc.setDietSelected =
+                                                dietTypeList.data![1];
+                                          },
+                                          title: dietTypeList.data![1].title,
+                                          isSelected: dietSelected.data?.id ==
+                                              dietTypeList.data![1].id),
+                                    ),
+                                  Space(width: 3.w),
+                                ],
+                              );
+                            }),
                         Space(height: 1.h)
                       ]),
                 )
@@ -579,7 +612,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     } else {
       if (!MemoryApp.isShowDialog)
         DialogUtils.showDialogProgress(context: context);
-      bloc.nextStep();
+      if (bloc.getDietSelected != null)
+        bloc.updateDietType();
+      else
+        Utils.getSnackbarMessage(context, intl.pleaseSelectDietType);
     }
   }
 
