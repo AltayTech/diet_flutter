@@ -28,7 +28,6 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   void initState() {
     super.initState();
     regimeBloc = RegimeBloc();
-    regimeBloc.helpMethod(3);
     listenBloc();
   }
 
@@ -39,13 +38,11 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
-      /*helpType = ModalRoute.of(context)!.settings.arguments as HelpPage;
+      helpType = ModalRoute.of(context)!.settings.arguments as HelpPage;
       if (helpType == HelpPage.regimeType) regimeBloc.helpMethod(1);
       if (helpType == HelpPage.menuType) regimeBloc.helpMethod(2);
       if (helpType == HelpPage.packageType) regimeBloc.helpMethod(3);
-      if (helpType == HelpPage.fasting) regimeBloc.helpMethod(4);*/
-
-      regimeBloc.helpMethod(3);
+      if (helpType == HelpPage.fasting) regimeBloc.helpMethod(4);
     }
   }
 
