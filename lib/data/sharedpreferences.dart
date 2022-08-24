@@ -92,6 +92,14 @@ abstract class AppSharedPreferences {
     (await preference).setInt(_keyInputDebounce, value);
   }
 
+  static Future<bool> get isShowOnBoarding async {
+    return preference.getBool(_keyShowOnBoarding) ?? true;
+  }
+
+  static Future<void> setShowOnBoarding(bool? isSend) async {
+    preference.setBool(_keyShowOnBoarding, isSend ?? false);
+  }
+
   static const _keyIsLoggedIn = 'isLoggedIn';
   static const _keyAuthToken = 'token';
   static const _keyLocaleCode = 'localeCode';
@@ -102,4 +110,5 @@ abstract class AppSharedPreferences {
   static const _keyInputDebounce = 'inputDebounce';
   static const _nullString = 'null';
   static const _keyDeeplink = 'deeplink';
+  static const _keyShowOnBoarding = 'onBoarding';
 }

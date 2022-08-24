@@ -1,10 +1,13 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class OnboardScreen extends StatefulWidget {
   OnboardScreen({Key? key}) : super(key: key);
@@ -157,14 +160,18 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.chevron_left_outlined,color: Colors.white24,size: 35,),
+                Icon(
+                  Icons.chevron_left_outlined,
+                  color: Colors.white24,
+                  size: 35,
+                ),
                 ImageUtils.fromLocal(
                   "assets/images/onboarding/cup.png",
                   height: 10.h,
                   width: 20.w,
                 ),
                 Expanded(
-                  flex: 1,
+                    flex: 1,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -184,7 +191,7 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
                         ),
                       ],
                     )),
-                Icon(Icons.chevron_right_outlined,color: Colors.white24,size: 35),
+                Icon(Icons.chevron_right_outlined, color: Colors.white24, size: 35),
               ],
             )
           ],
@@ -218,8 +225,9 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
     if (pages.isEmpty) fillPage();
     return IntroductionScreen(
       pages: pages,
-      onDone: () {
-        // When done button is press
+      onDone: () async {
+        await AppSharedPreferences.setShowOnBoarding(false);
+        VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
       },
       showBackButton: true,
       showSkipButton: false,

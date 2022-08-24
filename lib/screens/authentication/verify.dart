@@ -20,7 +20,7 @@ import 'package:logifan/widgets/space.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
-
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'authentication_bloc.dart';
 
 class VerifyScreen extends StatefulWidget {
@@ -208,7 +208,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                   Expanded(
                       flex: 3,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.only(top: 8.0,left: 8.0),
                         child: Text(
                           _textPhone.text,
                           textAlign: TextAlign.start,
@@ -217,12 +217,18 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                         ),
                       )),
                   Expanded(
+                    flex: 0,
                     child: Padding(
                       padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                      child: ImageUtils.fromLocal(
-                          'assets/images/flags/${countrySelected.isoCode?.toLowerCase() ?? ''}.png',
-                          width: 7.w,
-                          height: 7.w),
+                      child:ClipRRect(
+                        borderRadius: BorderRadius.circular(4.0),
+                        child: ImageUtils.fromLocal(
+                            countrySelected.flag!,
+                            package: picker.countryCodePackageName,
+                            width: 7.w,
+                            fit: BoxFit.fill,
+                            height: 5.5.w),
+                      ),
                     ),
                   ),
                 ]),

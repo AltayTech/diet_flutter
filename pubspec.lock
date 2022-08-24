@@ -218,6 +218,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+  country_calling_code_picker:
+    dependency: "direct main"
+    description:
+      name: country_calling_code_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   cross_file:
     dependency: transitive
     description:
@@ -578,6 +585,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.6"
+  flutter_sim_country_code:
+    dependency: transitive
+    description:
+      name: flutter_sim_country_code
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   flutter_sound:
     dependency: "direct main"
     description:

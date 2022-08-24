@@ -269,7 +269,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage(OnboardScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
@@ -390,6 +390,7 @@ final navigator = VxNavigator(
     RegExp(r"\/(reg)(\/size)"): (_, __) => MaterialPage(child: routePage(PhysicalInfoScreen())),
     RegExp(r"\/(reg)(\/blocking-sicpecial\/select)"): (_, __) =>
         MaterialPage(child: routePage(SicknessScreen())),
+    Routes.onboarding: (_, __) => MaterialPage(child: routePage(OnboardScreen())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

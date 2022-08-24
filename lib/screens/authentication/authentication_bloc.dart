@@ -9,6 +9,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/extensions/string.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -88,6 +89,8 @@ class AuthenticationBloc {
 
   Timer? _timer;
 
+  late List<picker.Country> _listCountry;
+
   void startTimer() {
     _start.value = 120;
 
@@ -105,12 +108,23 @@ class AuthenticationBloc {
     );
   }
 
+  setListCountry(List<picker.Country> list) {
+    _listCountry = list;
+  }
+
   void fetchCountries() {
     if (MemoryApp.countries == null) {
       _repository.country().then((value) async {
-        MemoryApp.countries = value.data!;
-        _countries.value = value.data!;
-        _filterListCountry.value = value.data!;
+        _countries.safeValue = value.data!;
+        MemoryApp.countries = _countries.valueOrNull;
+        _countries.value.forEach((country) {
+          _listCountry.forEach((flagCountry) {
+            if (country.isoCode == flagCountry.countryCode) {
+              country.flag = flagCountry.flag;
+            }
+          });
+        });
+        _filterListCountry.value = _countries.value;
         value.data!.forEach((element) {
           if (element.code == "98") {
             _selectedCountry.value = element;

@@ -93,6 +93,8 @@ abstract class Routes {
   static const subscriptionPaymentOnlineSuccess = '/subscription/payment/online/success';
   static const subscriptionPaymentOnlineFail = '/subscription/payment/online/fail';
   static const subscriptionPaymentCardWait = '/subscription/payment/card/wait';
+
+  static const onboarding = '/onboarding';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),
