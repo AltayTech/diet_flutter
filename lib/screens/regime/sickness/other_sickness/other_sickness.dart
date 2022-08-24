@@ -6,6 +6,7 @@ import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/sickness_dialog.dart';
 import 'package:expandable/expandable.dart';
@@ -153,24 +154,6 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
             collapseIcon: null,
             hasIcon: false,
             animationDuration: const Duration(milliseconds: 700)),
-        expanded: Container(
-            width: double.maxFinite,
-            padding: EdgeInsets.only(bottom: 8, right: 8, left: 8),
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.15),
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-            ),
-            child: sickness.length > 0
-                ? Wrap(
-                    children: [
-                      ...sickness
-                          .mapIndexed(
-                              (sickness, i) => sicknessItem(index, i, sickness))
-                          .toList(),
-                    ],
-                  )
-                : Container()),
         header: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -191,13 +174,31 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                 color: Colors.grey.withOpacity(0.2),
               )
             ])),
+        expanded: Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.only(bottom: 8, right: 8, left: 8),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.15),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
+            ),
+            child: sickness.length > 0
+                ? Wrap(
+                    children: [
+                      ...sickness
+                          .mapIndexed(
+                              (sickness, index) => sicknessItem(categoryIndex, index, sickness))
+                          .toList(),
+                    ],
+                  )
+                : Container()),
         collapsed: Container(),
       ),
     );
   }
 
-  Widget sicknessItem(int indexSickness, int indexCategory,
-      ObstructiveDiseaseCategory sickness) {
+  Widget sicknessItem(int categoryIndex, int index, SicknessCategory sickness) {
     return InkWell(
       onTap: () {
         sickness.isSelected = !sickness.isSelected!;
@@ -206,9 +207,32 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Chip(
-            label: Text(sickness.title!,
-                style: typography.caption!
-                    .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp))),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+          shape: RoundedRectangleBorder(
+              side: BorderSide(
+                  color: sickness.isSelected!
+                      ? AppColors.priceColor
+                      : Colors.white,
+                  width: 1),
+              borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Colors.white,
+          label: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ImageUtils.fromLocal(
+                sickness.isSelected!
+                    ? 'assets/images/physical_report/selected.svg'
+                    : 'assets/images/bill/not_select.svg',
+                width: 4.w,
+                height: 4.w,
+              ),
+              Space(width: 1.w),
+              Text(sickness.title!,
+                  style: typography.caption!
+                      .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
+            ],
+          ),
+        ),
       ),
     );
   }
