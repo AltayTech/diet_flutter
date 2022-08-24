@@ -22,6 +22,7 @@ import 'package:behandam/data/entity/regime/body_status.dart' as body;
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/entity/regime/diet_preferences.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
 import 'package:behandam/data/entity/regime/obstructive_disease.dart';
@@ -187,6 +188,8 @@ abstract class Repository {
   NetworkResult<HistoryOutput> getHistory();
 
   NetworkResult<LatestInvoiceData> getPsychologyInvoice();
+
+  NetworkResult<DietPreferences> getDietPreferences();
 
   NetworkResult<ActivityLevelData> activityLevel();
 
@@ -792,6 +795,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<LatestInvoiceData> getPsychologyInvoice() {
     var response = _apiClient.getInvoice();
+    return response;
+  }
+
+  @override
+  NetworkResult<DietPreferences> getDietPreferences() {
+    var response = _apiClient.getDietPreferences();
     return response;
   }
 
