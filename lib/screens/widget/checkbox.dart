@@ -22,6 +22,8 @@ class CheckBoxApp extends StatelessWidget {
   double? maxHeight;
   double? contentPadding;
   TextTheme? typography;
+  MainAxisAlignment? rowMainAxisAlignment;
+  double? titleFontSize;
 
   CheckBoxApp({
     required this.onTap,
@@ -30,6 +32,8 @@ class CheckBoxApp extends StatelessWidget {
     this.maxHeight,
     this.iconSelectType,
     this.isBorder,
+    this.rowMainAxisAlignment,
+    this.titleFontSize
   }) {
     this.checkBoxType = CheckBoxType.NoneIcon;
     this.isBorder ??= true;
@@ -170,7 +174,7 @@ class CheckBoxApp extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.only(right: 2.w),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: rowMainAxisAlignment ?? MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
@@ -196,14 +200,13 @@ class CheckBoxApp extends StatelessWidget {
               Expanded(
                 flex: 0,
                 child: Container(
-                  height: 4.w,
                   child: Text(
                     title,
                     softWrap: false,
                     textAlign: TextAlign.start,
                     style: typography!.caption!.copyWith(
                         color: isSelected ? Color(0xff1ABC9C) : Color(0xff454545),
-                        fontSize: 10.sp,
+                        fontSize: titleFontSize ?? 10.sp,
                         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400),
                   ),
                 ),

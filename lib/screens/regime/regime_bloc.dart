@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:behandam/app/app.dart';
+import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/help.dart';

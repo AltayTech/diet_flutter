@@ -23,7 +23,8 @@ class FoodListData {
   @JsonKey(name: 'has_pattern')
   boolean? hasPattern;
 
-  factory FoodListData.fromJson(Map<String, dynamic> json) => _$FoodListDataFromJson(json);
+  factory FoodListData.fromJson(Map<String, dynamic> json) =>
+      _$FoodListDataFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
@@ -216,7 +217,8 @@ class RatioFoodItem {
   @JsonKey(name: 'unit_title', defaultValue: '')
   String unitTitle;
 
-  factory RatioFoodItem.fromJson(Map<String, dynamic> json) => _$RatioFoodItemFromJson(json);
+  factory RatioFoodItem.fromJson(Map<String, dynamic> json) =>
+      _$RatioFoodItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$RatioFoodItemToJson(this);
 }
@@ -231,7 +233,8 @@ class RatioAmount {
   @JsonKey(name: 'second_unit')
   DefaultUnit? secondUnit;
 
-  factory RatioAmount.fromJson(Map<String, dynamic> json) => _$RatioAmountFromJson(json);
+  factory RatioAmount.fromJson(Map<String, dynamic> json) =>
+      _$RatioAmountFromJson(json);
 
   Map<String, dynamic> toJson() => _$RatioAmountToJson(this);
 }
@@ -261,7 +264,8 @@ class DefaultUnit {
   @JsonKey(name: 'representational')
   final dynamic representational;
 
-  factory DefaultUnit.fromJson(Map<String, dynamic> json) => _$DefaultUnitFromJson(json);
+  factory DefaultUnit.fromJson(Map<String, dynamic> json) =>
+      _$DefaultUnitFromJson(json);
 
   Map<String, dynamic> toJson() => _$DefaultUnitToJson(this);
 }
@@ -339,7 +343,8 @@ class FoodItem {
   // @JsonKey(name: 'pivot')
   // final FoodItemPivot? pivot;
 
-  factory FoodItem.fromJson(Map<String, dynamic> json) => _$FoodItemFromJson(json);
+  factory FoodItem.fromJson(Map<String, dynamic> json) =>
+      _$FoodItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$FoodItemToJson(this);
 }
@@ -377,7 +382,8 @@ class FoodItemPivot {
   @JsonKey(name: 'max_calories')
   final int maxCalorie;
 
-  factory FoodItemPivot.fromJson(Map<String, dynamic> json) => _$FoodItemPivotFromJson(json);
+  factory FoodItemPivot.fromJson(Map<String, dynamic> json) =>
+      _$FoodItemPivotFromJson(json);
 
   Map<String, dynamic> toJson() => _$FoodItemPivotToJson(this);
 }
@@ -461,11 +467,7 @@ class Visit {
 
 @JsonSerializable(createToJson: false)
 class DietType {
-  DietType(
-    this.id,
-    this.alias,
-    this.title,
-  );
+  DietType(this.id, this.alias, this.title);
 
   @JsonKey(name: 'id')
   final int id;
@@ -476,7 +478,11 @@ class DietType {
   @JsonKey(name: 'title')
   final String title;
 
-  factory DietType.fromJson(Map<String, dynamic> json) => _$DietTypeFromJson(json);
+  @JsonKey(name: 'is_active')
+  boolean? isActive;
+
+  factory DietType.fromJson(Map<String, dynamic> json) =>
+      _$DietTypeFromJson(json);
 }
 
 enum boolean {

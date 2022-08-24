@@ -254,7 +254,7 @@ DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType(
       json['id'] as int,
       $enumDecode(_$RegimeAliasEnumMap, json['alias']),
       json['title'] as String,
-    );
+    )..isActive = $enumDecodeNullable(_$booleanEnumMap, json['is_active']);
 
 const _$RegimeAliasEnumMap = {
   RegimeAlias.Pregnancy: 'PREGNANCY',

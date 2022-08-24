@@ -257,6 +257,8 @@ abstract class Repository {
   NetworkResult<InboxItem> getInboxMessage(int id);
 
   NetworkResult<UserSickness> getUserBlockingSickness();
+
+  NetworkResult<List<DietType>> getUserAllowedDietType();
 }
 
 class _RepositoryImpl extends Repository {
@@ -1024,6 +1026,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<UserSickness> getUserBlockingSickness() {
     var response = _apiClient.getUserBlockingSickness();
+    return response;
+  }
+
+  @override
+  NetworkResult<List<DietType>> getUserAllowedDietType() {
+    var response = _apiClient.getUserAllowedDietType();
     return response;
   }
 }
