@@ -18,6 +18,8 @@ import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/alert_list.dart';
 import 'package:behandam/screens/food_list/daily_message.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
+import 'package:behandam/screens/onboard/intro.dart';
+
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
@@ -388,6 +390,7 @@ final navigator = VxNavigator(
     RegExp(r"\/(reg)(\/size)"): (_, __) => MaterialPage(child: routePage(PhysicalInfoScreen())),
     RegExp(r"\/(reg)(\/blocking-sicpecial\/select)"): (_, __) =>
         MaterialPage(child: routePage(SicknessScreen())),
+    Routes.onboarding: (_, __) => MaterialPage(child: routePage(OnboardScreen())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

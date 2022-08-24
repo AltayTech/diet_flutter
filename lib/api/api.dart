@@ -1,34 +1,34 @@
 import 'dart:io';
 
-import 'package:behandam/data/entity/fitamin.dart';
-import 'package:behandam/data/entity/list_food/article.dart';
-import 'package:behandam/data/entity/refund.dart';
-import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/sign_in.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
+import 'package:behandam/data/entity/fitamin.dart';
+import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/psychology/booking.dart';
 import 'package:behandam/data/entity/psychology/calender.dart';
-import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
+import 'package:behandam/data/entity/refund.dart';
+import 'package:behandam/data/entity/regime/activity_level.dart';
+import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
-import 'package:behandam/data/entity/regime/menu.dart';
-import 'package:behandam/data/entity/regime/overview.dart';
-import 'package:behandam/data/entity/regime/physical_info.dart';
-import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/menu.dart';
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
+import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
-import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
@@ -39,7 +39,6 @@ import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/user/version.dart';
 import 'package:dio/dio.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../base/network_response.dart';
@@ -49,6 +48,7 @@ import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
 import '../data/entity/payment/payment.dart';
+
 part 'api.g.dart';
 
 /*enum help {
@@ -73,7 +73,8 @@ abstract class RestClient {
   NetworkResult<SignIn> signInWithPhoneNumber(@Body() User user);
 
   @POST("/send-verification-code?mobile={mobile}&channel={channel}")
-  NetworkResult<CheckStatus> sendVerificationCode(@Path('mobile') String? mobile,@Path('channel') String? channel);
+  NetworkResult<CheckStatus> sendVerificationCode(
+      @Path('mobile') String? mobile, @Path('channel') String? channel);
 
   @GET("/verify")
   NetworkResult<VerifyOutput> verifyUser(@Queries() VerificationCode verificationCode);
@@ -281,7 +282,6 @@ abstract class RestClient {
   @GET("/check-version")
   NetworkResult<Version> getVersion();
 
-
   @GET("/fitamin-url")
   NetworkResult<Fitamin> checkFitamin();
 
@@ -357,4 +357,3 @@ abstract class RestClient {
   @GET("/blocking-sicpecials")
   NetworkResult<UserSickness> getUserBlockingSickness();
 }
-

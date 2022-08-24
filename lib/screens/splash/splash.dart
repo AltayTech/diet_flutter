@@ -38,6 +38,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
 
   void handleDeeplink() async {
     var fcm = await AppSharedPreferences.fcmToken;
+    bool isShowOnboarding = await AppSharedPreferences.isShowOnBoarding;
     debugPrint('fcm is => ${fcm}');
     final deeplink = await AppSharedPreferences.deeplink;
     if (MemoryApp.token.isNotNullAndEmpty) {
@@ -51,8 +52,9 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
         VxNavigator.of(context).clearAndPushAll(
             [Uri.parse(Routes.shopHome), Uri.parse(navigator.currentConfiguration!.path)]);
       }
-    } else
-      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
+    } else if(isShowOnboarding) {
+      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.onboarding));
+    }else   VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
   }
 
   @override

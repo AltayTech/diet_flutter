@@ -8,7 +8,7 @@ import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
-import 'package:flutter/gestures.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
@@ -37,11 +37,15 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   @override
   void initState() {
     super.initState();
-
     authBloc = AuthenticationBloc();
+    getlistCountry();
     authBloc.fetchCountries();
 
     listenBloc();
+  }
+
+  void getlistCountry() async {
+    authBloc.setListCountry(await picker.getCountries(context));
   }
 
   void listenBloc() {
@@ -105,16 +109,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     return Container(
       height: 45.h,
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius:
-              BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 1,
-                offset: Offset(0, 1))
-          ]),
+        color: Colors.white,
+        borderRadius:
+            BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
+      ),
       child: Padding(
         padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
         child: Column(
@@ -159,7 +157,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       labelStyle: TextStyle(
                           color: Colors.grey, fontSize: 12.sp, fontWeight: FontWeight.w500),
                       suffixIcon: selectCountry(),
-                      suffixIconConstraints: BoxConstraints(maxWidth: 35.w, minWidth: 30.w)),
+                      suffixIconConstraints: BoxConstraints(maxWidth: 34.w, minWidth: 25.w)),
                   onSubmitted: (String) {
                     click(_selectedLocation);
                   },
@@ -223,13 +221,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                           ),
                         ),
                       ),
-                      Space(width: 3.w),
-                      Expanded(
-                        flex: 0,
-                        child: ImageUtils.fromLocal(
-                            'assets/images/flags/${_selectedLocation.isoCode?.toLowerCase() ?? ''}.png',
-                            width: 7.w,
-                            height: 7.w),
+                      Space(width: 2.w),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4.0),
+                        child: ImageUtils.fromLocal(_selectedLocation.flag!,
+                            width: 6.w, package: picker.countryCodePackageName, height: 4.5.w,fit: BoxFit.fill),
                       ),
                     ],
                   )),
@@ -296,12 +292,18 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                               child: Directionality(
                                 textDirection: TextDirection.ltr,
                                 child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    ImageUtils.fromLocal(
-                                        'assets/images/flags/${filterListCountry.data![index].isoCode?.toLowerCase() ?? ''}.png',
-                                        width: 5.w,
-                                        height: 5.w),
-                                    Space(width: 3.w),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(2.0),
+                                      child: ImageUtils.fromLocal(filterListCountry.data![index].flag!,
+                                          package: picker.countryCodePackageName,
+                                          width: 7.w,
+                                          fit: BoxFit.fill,
+                                          height: 5.w),
+                                    ),
+                                    Space(width: 2.w),
                                     Text(
                                       '+${filterListCountry.data![index].code ?? ''}',
                                       style: typography.caption,

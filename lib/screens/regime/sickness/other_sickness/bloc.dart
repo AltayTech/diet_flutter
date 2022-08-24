@@ -39,7 +39,7 @@ class OtherSicknessBloc {
   void getNotBlockingSickness() async {
     _waiting.safeValue = true;
     _repository.getNotBlockingSickness().then((value) {
-      _userSickness.safeValue = value.data! as List<ObstructiveDisease>;
+      _userSickness.safeValue = value.data!;
     }).whenComplete(() => _waiting.safeValue = false);
   }
 

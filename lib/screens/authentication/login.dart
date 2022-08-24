@@ -3,7 +3,7 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/authentication/auth_header.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -182,22 +182,27 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 Expanded(
                     flex: 5,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.only(top: 8.0,left: 8),
                       child: Text(
                         '+${args["mobile"]}',
                         textAlign: TextAlign.start,
                         textDirection: TextDirection.ltr,
-                        style: typography.caption!.copyWith(fontSize: 14.sp),
+                        style: typography.caption!.copyWith(fontSize: 14.sp,fontWeight: FontWeight.w500),
                       ),
                     )),
                 Expanded(
+                  flex: 0,
                   child: Padding(
                     padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                    child: ImageUtils.fromLocal(
-                        'assets/images/flags/${countrySelected.isoCode
-                            ?.toLowerCase() ?? ''}.png',
-                        width: 7.w,
-                        height: 7.w),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4.0),
+                      child: ImageUtils.fromLocal(
+                         countrySelected.flag!,
+                          package: picker.countryCodePackageName,
+                          width: 7.w,
+                          fit: BoxFit.fill,
+                          height: 5.5.w),
+                    ),
                   ),
                 ),
               ]),

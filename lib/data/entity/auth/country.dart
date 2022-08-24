@@ -14,6 +14,9 @@ class Country {
   @JsonKey(name: "iso3")
   String? iso3;
 
+  @JsonKey(name: "flag")
+  String? flag;
+
   Country();
 
   factory Country.fromJson(Map<String, dynamic> json) => _$CountryFromJson(json);

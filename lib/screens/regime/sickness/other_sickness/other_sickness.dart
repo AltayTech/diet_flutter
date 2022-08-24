@@ -2,7 +2,6 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/sickness/other_sickness/bloc.dart';
-import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -24,8 +23,7 @@ class OtherSicknessScreen extends StatefulWidget {
   _OtherSicknessScreenState createState() => _OtherSicknessScreenState();
 }
 
-class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
-    implements ItemClick {
+class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> implements ItemClick {
   late OtherSicknessBloc bloc;
   TextEditingController controller = TextEditingController();
 
@@ -99,14 +97,12 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
               Text(
                 intl.youMustEnterCorrectInfoOfBodyState,
                 textAlign: TextAlign.start,
-                style: typography.caption!
-                    .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+                style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
               ),
               Text(
                 intl.thisInfoVeryImportantToReduceYourWeight,
                 textAlign: TextAlign.start,
-                style: typography.caption!
-                    .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+                style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
               ),
               Space(height: 2.h),
               StreamBuilder<List<ObstructiveDisease>>(
@@ -118,16 +114,14 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
                             physics: ClampingScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: userSickness.requireData.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                sicknessBox(
+                            itemBuilder: (BuildContext context, int index) => sicknessBox(
                                   userSickness.requireData[index].title!,
                                   index,
                                   userSickness.requireData[index].categories!,
                                 ));
                       } else {
                         return Container(
-                            child: Text(intl.emptySickness,
-                                style: typography.caption));
+                            child: Text(intl.emptySickness, style: typography.caption));
                       }
                     } else {
                       return Container(height: 60.h, child: Progress());
@@ -136,8 +130,8 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
               Space(height: 1.h),
               Padding(
                 padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-                child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
-                    Size(100.w, 6.h), Icon(Icons.arrow_forward), () {}),
+                child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage, Size(100.w, 6.h),
+                    Icon(Icons.arrow_forward), () {}),
               )
             ],
           ),
@@ -162,15 +156,12 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
             ),
             child: sickness.length > 0
                 ? Wrap(
-                    children:[
-                      ...sickness
-                          .map((sickness) => sicknessItem(sickness))
-                          .toList(),
+                    children: [
+                      ...sickness.map((sickness) => sicknessItem(sickness)).toList(),
                     ],
                   )
                 : Container()),
@@ -178,9 +169,8 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.15),
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    topLeft: Radius.circular(10))),
+                borderRadius:
+                    BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
             child: Column(children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -204,7 +194,11 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Chip(
-        label: Text(sickness.title!, style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp))/*CheckBoxApp(
+        label: Text(sickness.title!,
+            style: typography.caption!.copyWith(
+                fontWeight: FontWeight.w400,
+                fontSize: 10
+                    .sp)) /*CheckBoxApp(
           maxHeight: 5.h,
           isBorder: false,
           iconSelectType: IconSelectType.Radio,
@@ -214,14 +208,14 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
           },
           title: sickness.title!,
           isSelected: sickness.isSelected!,
-        )*/,
+        )*/
+        ,
       ),
     );
   }
 
   void sendRequest() {
-    if (!MemoryApp.isShowDialog)
-      DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     bloc.sendSickness();
   }
 
