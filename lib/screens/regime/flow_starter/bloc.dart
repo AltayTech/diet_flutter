@@ -28,7 +28,7 @@ class FlowStarterBloc {
 
   void nextStep() {
     _repository.nextStep().then((value) {
-      _navigateTo.fire(value.data!);
+      _navigateTo.fire(value.next!);
     }).catchError((onError) {
       _showServerError.fire(onError);
     }).whenComplete(() => _popDialog.fire(true));

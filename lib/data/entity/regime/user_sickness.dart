@@ -11,7 +11,7 @@ class UserSickness {
   @JsonKey(name: "user_sicknesses")
   List<Sickness>? userSicknesses;
 
-  @JsonKey(name: "sickness_categories")
+  @JsonKey(name: "categories")
   List<CategorySickness>? sickness_categories;
 
   @JsonKey(name: "sicknesses")
