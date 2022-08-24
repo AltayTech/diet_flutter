@@ -1,5 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/base/utils.dart';
+import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -66,13 +68,14 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
         padding: EdgeInsets.only(top: 10.h),
         child: ImageUtils.fromLocal(
           "assets/images/onboarding/2.png",
-          height: 40.h,
+          height: 35.h,
           width: 70.w,
         ),
       )),
       footer: InkWell(
         onTap: () {
-          Utils.getSnackbarMessage(context, 'message');
+          DialogUtils.showBottomSheetPageColor(
+              context: context, color: Color(0xff0E8562), child: showChampion());
         },
         child: ImageUtils.fromLocal(
           "assets/images/onboarding/recorddar.png",
@@ -85,7 +88,7 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
           imageFlex: 0,
           bodyFlex: 1,
           bodyPadding: EdgeInsets.only(top: 1.h, right: 5.w, left: 5.w),
-          imagePadding: EdgeInsets.zero,
+          imagePadding: EdgeInsets.only(top: 16),
           titlePadding: EdgeInsets.zero,
           titleTextStyle: typography.headline5!
               .copyWith(color: Colors.white, fontFamily: 'yekan', fontWeight: FontWeight.bold),
@@ -117,6 +120,98 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
     ));
   }
 
+  Widget showChampion() {
+    return SingleChildScrollView(
+      child: Container(
+        height: 60.h,
+        padding: EdgeInsets.all(5.w),
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                closeDialog(),
+                Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 4.h),
+                      child: Center(
+                        child: Text(
+                          'قهرمانان دکتر کرمانی',
+                          softWrap: false,
+                          style: typography.caption!.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14.sp),
+                        ),
+                      ),
+                    )),
+              ],
+            ),
+            Expanded(
+              child: ImageUtils.fromLocal(
+                "assets/images/onboarding/r2.png",
+                height: 40.h,
+                width: 100.w,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.chevron_left_outlined,color: Colors.white24,size: 35,),
+                ImageUtils.fromLocal(
+                  "assets/images/onboarding/cup.png",
+                  height: 10.h,
+                  width: 20.w,
+                ),
+                Expanded(
+                  flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'سمیرا حاجیزاده',
+                          textAlign: TextAlign.start,
+                          softWrap: false,
+                          style: typography.caption!
+                              .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+                        ),
+                        Text(
+                          '21 کیلوگرم کاهش وزن',
+                          softWrap: false,
+                          textAlign: TextAlign.start,
+                          style: typography.caption!
+                              .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+                        ),
+                      ],
+                    )),
+                Icon(Icons.chevron_right_outlined,color: Colors.white24,size: 35),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget closeDialog() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topRight,
+        child: Container(
+          decoration: AppDecorations.boxSmall
+              .copyWith(color: Color(0x2531E6B0), border: Border.all(color: Color(0xaa104e40))),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -136,7 +231,7 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
         backgroundColor: pageColor[_index],
       ),
       back: CircleAvatar(
-        child:Icon(
+        child: Icon(
           Icons.arrow_forward,
           color: pageColor[_index],
         ),

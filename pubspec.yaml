@@ -19,6 +19,8 @@ version: 3.6.8+368
 
 environment:
   sdk: ">=2.17.1 <3.0.0"
+module:
+  androidX: true
 
 dependencies:
   logifan:
