@@ -118,60 +118,114 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   }
 
   Widget content() {
-    return Container(
-      height: 80.h,
-      child: Padding(
-        padding: EdgeInsets.all(5.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              intl.firstInfo,
-              textAlign: TextAlign.start,
-              style: typography.subtitle1!.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+    return Stack(children: [
+      Container(
+        height: 80.h,
+        child: Padding(
+          padding: EdgeInsets.all(5.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                intl.firstInfo,
+                textAlign: TextAlign.start,
+                style: typography.subtitle1!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            Space(height: 1.h),
-            Text(
-              intl.pleaseFillInformation,
-              textAlign: TextAlign.start,
-              style: typography.caption!
-                  .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
-            ),
-            Space(height: 2.h),
-            Container(
-              height: 7.h,
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10.0),
+              Space(height: 1.h),
+              Text(
+                intl.pleaseFillInformation,
+                textAlign: TextAlign.start,
+                style: typography.caption!
+                    .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
               ),
-              child: Row(children: [
-                Expanded(
-                    flex: 5,
+              Space(height: 2.h),
+              Container(
+                height: 7.h,
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Row(children: [
+                  Expanded(
+                      flex: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          '+${args["mobile"]}',
+                          textAlign: TextAlign.start,
+                          textDirection: TextDirection.ltr,
+                          style: typography.caption!.copyWith(fontSize: 14.sp),
+                        ),
+                      )),
+                  Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        '+${args["mobile"]}',
-                        textAlign: TextAlign.start,
-                        textDirection: TextDirection.ltr,
-                        style: typography.caption!.copyWith(fontSize: 14.sp),
+                      padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                      child: ImageUtils.fromLocal(
+                          'assets/images/flags/${countrySelected.isoCode?.toLowerCase() ?? ''}.png',
+                          width: 7.w,
+                          height: 7.w),
+                    ),
+                  ),
+                ]),
+              ),
+              Space(height: 2.h),
+              TextField(
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.grey.withOpacity(0.5)),
+                          borderRadius: BorderRadius.circular(10.0)),
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                    )),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                    child: ImageUtils.fromLocal(
-                        'assets/images/flags/${countrySelected.isoCode?.toLowerCase() ?? ''}.png',
-                        width: 7.w,
-                        height: 7.w),
-                  ),
-                ),
-              ]),
-            ),
-            Space(height: 2.h),
-            TextField(
+                      enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.grey.withOpacity(0.5)),
+                          borderRadius: BorderRadius.circular(10.0)),
+                      labelText: intl.name,
+                      labelStyle: TextStyle(
+                          color: AppColors.penColor.withOpacity(0.5),
+                          fontSize: 16.0),
+                      // errorText:
+                      // _validate ? intl.fillAllField : null,
+                      suffixStyle: TextStyle(color: Colors.green)),
+                  onChanged: (txt) {
+                    firstName = txt;
+                  }),
+              Space(height: 2.h),
+              TextField(
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.grey.withOpacity(0.5)),
+                          borderRadius: BorderRadius.circular(10.0)),
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.grey.withOpacity(0.5)),
+                          borderRadius: BorderRadius.circular(10.0)),
+                      labelText: intl.lastName,
+                      labelStyle: TextStyle(
+                          color: AppColors.penColor.withOpacity(0.5),
+                          fontSize: 16.0),
+                      // errorText:
+                      // _validate ? intl.fillAllField : null,
+                      suffixStyle: TextStyle(color: Colors.green)),
+                  onChanged: (txt) {
+                    lastName = txt;
+                  }),
+              Space(height: 2.h),
+              TextField(
+                obscureText: !_obscureText,
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                         borderSide:
@@ -186,111 +240,65 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                         borderSide:
                             BorderSide(color: Colors.grey.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(10.0)),
-                    labelText: intl.name,
-                    labelStyle: TextStyle(
-                        color: AppColors.penColor.withOpacity(0.5),
-                        fontSize: 16.0),
+                    labelText: intl.password,
                     // errorText:
                     // _validate ? intl.fillAllField : null,
-                    suffixStyle: TextStyle(color: Colors.green)),
-                onChanged: (txt) {
-                  firstName = txt;
-                }),
-            Space(height: 2.h),
-            TextField(
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.grey.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    border: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.grey.withOpacity(0.5)),
-                      borderRadius: BorderRadius.circular(10.0),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                        color: AppColors.penColor.withOpacity(0.5),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
                     ),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.grey.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    labelText: intl.lastName,
                     labelStyle: TextStyle(
                         color: AppColors.penColor.withOpacity(0.5),
-                        fontSize: 16.0),
-                    // errorText:
-                    // _validate ? intl.fillAllField : null,
-                    suffixStyle: TextStyle(color: Colors.green)),
+                        fontSize: 18.0)),
                 onChanged: (txt) {
-                  lastName = txt;
-                }),
-            Space(height: 2.h),
-            TextField(
-              obscureText: !_obscureText,
-              decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.grey.withOpacity(0.5)),
-                      borderRadius: BorderRadius.circular(10.0)),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                    borderRadius: BorderRadius.circular(10.0),
+                  _password = txt;
+                },
+              ),
+              Space(height: 1.h),
+              Container(
+                height: 5.h,
+                decoration: BoxDecoration(
+                    color: AppColors.priceGreenColor.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.info_outline,
+                          color: AppColors.priceGreenColor),
+                      Space(width: 1.w),
+                      Text(
+                        intl.youCanSetPasswordForEachLogin,
+                        textAlign: TextAlign.start,
+                        style: typography.overline!
+                            .copyWith(color: AppColors.priceGreenColor),
+                      ),
+                    ],
                   ),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.grey.withOpacity(0.5)),
-                      borderRadius: BorderRadius.circular(10.0)),
-                  labelText: intl.password,
-                  // errorText:
-                  // _validate ? intl.fillAllField : null,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
-                      color: AppColors.penColor.withOpacity(0.5),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                  ),
-                  labelStyle: TextStyle(
-                      color: AppColors.penColor.withOpacity(0.5),
-                      fontSize: 18.0)),
-              onChanged: (txt) {
-                _password = txt;
-              },
-            ),
-            Space(height: 1.h),
-            Container(
-              height: 5.h,
-              decoration: BoxDecoration(
-                  color: AppColors.priceGreenColor.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.info_outline, color: AppColors.priceGreenColor),
-                    Space(width: 1.w),
-                    Text(
-                      intl.youCanSetPasswordForEachLogin,
-                      textAlign: TextAlign.start,
-                      style: typography.overline!
-                          .copyWith(color: AppColors.priceGreenColor),
-                    ),
-                  ],
                 ),
               ),
-            ),
-            Space(height: 12.h),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-              child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
-                  Size(100.w, 6.h), Icon(Icons.arrow_forward), clickSubmit),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    );
+      Positioned(
+        right: 4,
+        left: 4,
+        bottom: 0,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16),
+          child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
+              Size(100.w, 6.h), Icon(Icons.arrow_forward), clickSubmit),
+        ),
+      )
+    ]);
   }
 
   void clickSubmit() {

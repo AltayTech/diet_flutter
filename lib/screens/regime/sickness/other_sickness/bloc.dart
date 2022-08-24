@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/regime/obstructive_disease.dart';
+import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/stream.dart';
+
 class OtherSicknessBloc {
   OtherSicknessBloc() {
     _waiting.safeValue = false;
@@ -13,6 +15,8 @@ class OtherSicknessBloc {
   final _repository = Repository.getInstance();
 
   late String _path;
+  List<int> selectedSicknessCategoryIds = [];
+  late UserSickness userSicknessSelectedId;
   final _waiting = BehaviorSubject<bool>();
 
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
@@ -30,7 +34,8 @@ class OtherSicknessBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void updateSickness(int indexSickness, int indexCategory, ObstructiveDiseaseCategory sickness) {
+  void updateSickness(int indexSickness, int indexCategory,
+      ObstructiveDiseaseCategory sickness) {
     List<ObstructiveDisease> userSickness = _userSickness.value;
     userSickness[indexSickness].categories![indexCategory] = sickness;
     _userSickness.safeValue = userSickness;
@@ -44,12 +49,17 @@ class OtherSicknessBloc {
   }
 
   void sendSickness() {
-    /*_repository
-        .sendSickness(_userSickness.value)
-        .then((value) {
-          _navigateTo.fireMessage('/${value.next}');
-        })
-        .catchError((e) => _showServerError.fire(e));*/
+    for(int i = 0; i < _userSickness.value.length; i++) {
+      for(int i = 0; i < _userSickness.value[i].categories!.length; i++) {
+        if (_userSickness.value[i].categories![i].isSelected!) {
+          userSicknessSelectedId.sicknesses = selectedSicknessCategoryIds;
+        }
+      }
+    }
+
+    _repository.sendSickness(userSicknessSelectedId).then((value) {
+      _navigateTo.fireMessage('/${value.next}');
+    }).catchError((e) => _showServerError.fire(e));
   }
 
   void dispose() {
