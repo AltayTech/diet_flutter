@@ -6,7 +6,7 @@ import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/complete_info/bloc.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
-import 'package:behandam/screens/widget/dialog.dart';
+
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -17,8 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import '../../../../data/entity/regime/sickness.dart';
 
 class CompleteInformationScreen extends StatefulWidget {
   const CompleteInformationScreen({Key? key}) : super(key: key);

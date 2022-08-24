@@ -225,7 +225,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
                         child: ImageUtils.fromLocal(_selectedLocation.flag!,
-                            width: 6.w, package: picker.countryCodePackageName, height: 4.5.w,fit: BoxFit.fill),
+                            width: 6.w,
+                            package: picker.countryCodePackageName,
+                            height: 4.5.w,
+                            fit: BoxFit.fill),
                       ),
                     ],
                   )),
@@ -297,7 +300,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(2.0),
-                                      child: ImageUtils.fromLocal(filterListCountry.data![index].flag!,
+                                      child: ImageUtils.fromLocal(
+                                          filterListCountry.data![index].flag!,
                                           package: picker.countryCodePackageName,
                                           width: 7.w,
                                           fit: BoxFit.fill,

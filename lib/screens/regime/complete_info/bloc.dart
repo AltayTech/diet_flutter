@@ -6,10 +6,11 @@ import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
-import 'package:behandam/data/entity/regime/sickness.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:behandam/extensions/stream.dart';
+
+import '../../../data/entity/regime/user_sickness.dart';
 
 class CompleteInformationBloc {
   CompleteInformationBloc() {

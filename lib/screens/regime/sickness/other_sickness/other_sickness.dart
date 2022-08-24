@@ -8,7 +8,6 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
-import 'package:behandam/widget/sickness_dialog.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -131,8 +130,9 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
               Space(height: 1.h),
               Padding(
                 padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-                child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
-                    Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
+                child: CustomButton.withIcon(
+                    AppColors.btnColor, intl.nextStage, Size(100.w, 6.h), Icon(Icons.arrow_forward),
+                    () {
                   sendRequest();
                 }),
               )
@@ -143,8 +143,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
     );
   }
 
-  Widget sicknessBox(
-      String title, int index, List<ObstructiveDiseaseCategory> sickness) {
+  Widget sicknessBox(String title, int indexCategory, List<ObstructiveDiseaseCategory> sickness) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -180,15 +179,14 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
             ),
             child: sickness.length > 0
                 ? Wrap(
                     children: [
                       ...sickness
                           .mapIndexed(
-                              (sickness, index) => sicknessItem(categoryIndex, index, sickness))
+                              (sickness, index) => sicknessItem(indexCategory, index, sickness))
                           .toList(),
                     ],
                   )
@@ -198,7 +196,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
     );
   }
 
-  Widget sicknessItem(int categoryIndex, int index, SicknessCategory sickness) {
+  Widget sicknessItem(int indexCategory, int indexSickness, ObstructiveDiseaseCategory sickness) {
     return InkWell(
       onTap: () {
         sickness.isSelected = !sickness.isSelected!;
@@ -210,10 +208,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
           shape: RoundedRectangleBorder(
               side: BorderSide(
-                  color: sickness.isSelected!
-                      ? AppColors.priceColor
-                      : Colors.white,
-                  width: 1),
+                  color: sickness.isSelected! ? AppColors.priceColor : Colors.white, width: 1),
               borderRadius: BorderRadius.circular(10)),
           backgroundColor: Colors.white,
           label: Row(
@@ -228,8 +223,8 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
               ),
               Space(width: 1.w),
               Text(sickness.title!,
-                  style: typography.caption!
-                      .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
+                  style:
+                      typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
             ],
           ),
         ),
