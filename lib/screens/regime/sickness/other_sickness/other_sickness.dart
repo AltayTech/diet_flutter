@@ -24,8 +24,7 @@ class OtherSicknessScreen extends StatefulWidget {
   _OtherSicknessScreenState createState() => _OtherSicknessScreenState();
 }
 
-class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
-    implements ItemClick {
+class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
   late OtherSicknessBloc bloc;
   TextEditingController controller = TextEditingController();
 
@@ -137,7 +136,9 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
               Padding(
                 padding: const EdgeInsets.only(right: 16.0, left: 16.0),
                 child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
-                    Size(100.w, 6.h), Icon(Icons.arrow_forward), () {}),
+                    Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
+                  sendRequest();
+                }),
               )
             ],
           ),
@@ -146,7 +147,8 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
     );
   }
 
-  Widget sicknessBox(String title, int index, List<ObstructiveDiseaseCategory> sickness) {
+  Widget sicknessBox(
+      String title, int index, List<ObstructiveDiseaseCategory> sickness) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -167,9 +169,10 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
             ),
             child: sickness.length > 0
                 ? Wrap(
-                    children:[
+                    children: [
                       ...sickness
-                          .map((sickness) => sicknessItem(sickness))
+                          .mapIndexed(
+                              (sickness, i) => sicknessItem(index, i, sickness))
                           .toList(),
                     ],
                   )
@@ -200,21 +203,19 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
     );
   }
 
-  Widget sicknessItem(ObstructiveDiseaseCategory sickness) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Chip(
-        label: Text(sickness.title!, style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp))/*CheckBoxApp(
-          maxHeight: 5.h,
-          isBorder: false,
-          iconSelectType: IconSelectType.Radio,
-          onTap: () {
-            sickness.isSelected = !sickness.isSelected!;
-            setState(() {});
-          },
-          title: sickness.title!,
-          isSelected: sickness.isSelected!,
-        )*/,
+  Widget sicknessItem(int indexSickness, int indexCategory,
+      ObstructiveDiseaseCategory sickness) {
+    return InkWell(
+      onTap: () {
+        sickness.isSelected = !sickness.isSelected!;
+        bloc.updateSickness(indexSickness, indexCategory, sickness);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Chip(
+            label: Text(sickness.title!,
+                style: typography.caption!
+                    .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp))),
       ),
     );
   }
@@ -233,11 +234,6 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen>
   @override
   void onRetryLoadingPage() {
     bloc.getNotBlockingSickness();
-  }
-
-  @override
-  click() {
-    setState(() {});
   }
 
   @override
