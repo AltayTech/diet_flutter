@@ -12,7 +12,6 @@ import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -127,17 +126,18 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                   ),
                 )),
             Center(
-              child:
-              CustomButton.withIcon(AppColors.btnColor, intl.nextStage, Size(100.w, 6.h),
-                  Icon(Icons.arrow_forward), () {if (bloc.physicalInfoValue.weight == null ||
-                      bloc.physicalInfoValue.height == null ||
-                      bloc.physicalInfoValue.birthDate == null) {
-                    Utils.getSnackbarMessage(context, intl.errorCompleteInfo);
-                    return;
-                  }
-                  if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-                  bloc.sendRequest();})
-            ),
+                child: CustomButton.withIcon(
+                    AppColors.btnColor, intl.nextStage, Size(100.w, 6.h), Icon(Icons.arrow_forward),
+                    () {
+              if (bloc.physicalInfoValue.weight == null ||
+                  bloc.physicalInfoValue.height == null ||
+                  bloc.physicalInfoValue.birthDate == null) {
+                Utils.getSnackbarMessage(context, intl.errorCompleteInfo);
+                return;
+              }
+              if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+              bloc.sendRequest();
+            })),
             Space(height: 2.h),
           ],
         ),
@@ -182,27 +182,6 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
         ),
       ],
     );
-  }
-
-  void setData(PhysicalInfoData data) {
-    data.kilo = int.parse(data.weight!.toString().split('.').first);
-    data.gram = int.parse(data.weight!.toString().split('.').last.substring(0, 1));
-    data.isForbidden = false;
-    data.mustGetNotrica = false;
-    if (data.needToCall == null) data.needToCall = false;
-    if (data.birthDate.isEmptyOrNull) data.isForbidden = true;
-    // else {
-    // if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays <
-    //     (365 * 16)) {
-    //   data.isForbidden = true;
-    //   if (DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays >
-    //       (365 * 10)) data.mustGetNotrica = true;
-    // debugPrint(
-    //     'date difference ${DateTime.now().difference(DateTime.parse(data.birthDate!)).inDays}');
-    // }
-    // }
-    if ((data.pregnancyWeek != null && data.pregnancyWeek! >= 35) ||
-        (data.multiBirth != null && data.multiBirth! >= 2)) data.isForbidden = true;
   }
 
   Widget birthDayBox(PhysicalInfoData physicalInfo) {
@@ -268,7 +247,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
         context: context,
         child: SingleChildScrollView(
           child: Container(
-            height: 60.h,
+            height: 55.h,
             padding: EdgeInsets.all(5.w),
             alignment: Alignment.center,
             child: Column(
@@ -282,7 +261,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                           padding: EdgeInsets.only(left: 4.h),
                           child: Center(
                             child: Text(
-                              intl.selectPaymentDate,
+                              intl.birthday,
                               softWrap: false,
                               style: typography.caption!
                                   .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
@@ -291,15 +270,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                         ))
                   ],
                 ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      intl.enterPaymentDate,
-                      softWrap: false,
-                      style: typography.caption!.copyWith(color: Colors.black, fontSize: 10.sp),
-                    ),
-                  ),
-                ),
+                Space(height: 3.h,),
                 Expanded(
                   flex: 3,
                   child: Center(
@@ -317,9 +288,11 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                 ),
                 Expanded(
                   child: Center(
-                      child: SubmitButton(
-                    label: intl.submitDate,
-                    onTap: () {
+                      child: CustomButton(
+                    AppColors.btnColor,
+                    intl.ok,
+                    Size(80.w, 6.h),
+                    () {
                       if (bloc.date != null) {
                         setState(() {
                           physicalInfo.birthDate = bloc.date!;
@@ -327,7 +300,6 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                         Navigator.of(context).pop();
                       }
                     },
-                    size: Size(80.w, 6.h),
                   )),
                 )
               ],

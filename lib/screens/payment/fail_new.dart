@@ -4,7 +4,6 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/pay_diamond.dart';
-import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
@@ -46,33 +45,34 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
     super.build(context);
     return PaymentProvider(bloc,
         child: Scaffold(
-          appBar: Toolbar(titleBar: intl.paymentFail),
-          body: StreamBuilder(
-              stream: bloc.waiting,
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data == false) {
-                  return StreamBuilder<ProductType?>(
-                      stream: bloc.productType,
-                      builder: (context, type) {
-                        if (type.data != null)
-                          return Column(children: [
-                            Expanded(child: content(type.data!)),
-                            if (!navigator.currentConfiguration!.path.contains("subscription"))
-                              BottomNav(
-                                  currentTab: type == ProductType.SHOP
-                                      ? BottomNavItem.SHOP
-                                      : BottomNavItem.DIET)
-                          ]);
-                        else
-                          return Space();
-                      });
-                } else {
-                  return SpinKitCircle(
-                    size: 7.w,
-                    color: AppColors.primary,
-                  );
-                }
-              }),
+          body: SafeArea(
+            child: StreamBuilder(
+                stream: bloc.waiting,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data == false) {
+                    return StreamBuilder<ProductType?>(
+                        stream: bloc.productType,
+                        builder: (context, type) {
+                          if (type.data != null)
+                            return Column(children: [
+                              Expanded(child: content(type.data!)),
+                              if (!navigator.currentConfiguration!.path.contains("subscription"))
+                                BottomNav(
+                                    currentTab: type == ProductType.SHOP
+                                        ? BottomNavItem.SHOP
+                                        : BottomNavItem.DIET)
+                            ]);
+                          else
+                            return Space();
+                        });
+                  } else {
+                    return SpinKitCircle(
+                      size: 7.w,
+                      color: AppColors.primary,
+                    );
+                  }
+                }),
+          ),
         ));
   }
 
@@ -81,40 +81,95 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
       width: double.infinity,
       height: 97.h,
       decoration: BoxDecoration(
-          image: ImageUtils.decorationImage("assets/images/background.png",
-              fit: BoxFit.fill)),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: TouchMouseScrollable(
-          child: SingleChildScrollView(
-            child: Container(
-              constraints: BoxConstraints(
-                minHeight: 80.h,
-              ),
-              padding: EdgeInsets.only(left: 5.w, right: 5.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                textDirection: context.textDirectionOfLocale,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ImageUtils.fromLocal(
-                    'assets/images/bill/fail.svg',
-                    width: 20.w,
-                    height: 20.w,
-                  ),
-                  Space(height: 1.h),
-                  titlePaymentFail(),
-                  Space(
-                    height: 2.h,
-                  ),
-                  buttonShowInformation(),
-                  Space(height: 2.h),
-                  informationInvoice(),
-                  Space(height: 3.h),
-                  if (type != ProductType.SHOP) buttonRetryPayment() else buttonBackToShop(),
-                  Space(height: 3.h),
-                ],
-              ),
+          image: ImageUtils.decorationImage("assets/images/background.png", fit: BoxFit.fill)),
+      child: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: 80.h,
+            ),
+            padding: EdgeInsets.only(left: 10.w, right: 10.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              textDirection: context.textDirectionOfLocale,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Space(height: 3.h),
+                ImageUtils.fromLocal(
+                  'assets/images/bill/fail.svg',
+                  width: 25.w,
+                  height: 25.w,
+                ),
+                Space(height: 1.h),
+                titlePaymentFail(),
+                if(bloc.invoice?.note!=null)
+                Space(
+                  height: 3.h,
+                ),
+                if(bloc.invoice?.note!=null)
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 70.w,
+                      child: ImageUtils.fromLocal(
+                        'assets/images/bill/back_fail_billing.svg',
+                        width: 70.w,
+                        height: 30.h,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    Positioned(
+                      child: Text(intl.mobile,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context).textTheme.caption!),
+                      top: 2.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text('09357947632',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6!
+                              .copyWith(color: AppColors.priceColor)),
+                      top: 5.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text(intl.theCauseOfTheExpert,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w400, color: Color(0xff959499))),
+                      top: 15.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text('33543453',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w500)),
+                      top: 18.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                  ],
+                ),
+                Space(height: 3.h),
+                if (type != ProductType.SHOP) buttonRetryPayment() else buttonBackToShop(),
+                Space(height: 3.h),
+              ],
             ),
           ),
         ),

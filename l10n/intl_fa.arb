@@ -769,5 +769,7 @@
   "errorCompleteInfo": "اطلاعات خود را کامل وارد کنید",
   "pleaseSelectDietType": "لطفا رژیم مورد نظر خود را انتخاب کنید",
   "completeInformation": "اطلاعات تکمیلی",
+  "theCauseOfTheExpert": "دلیل کارشناس",
+  "completeInformationAndGetDiet": "تکمیل اطلاعات و دریافت رژیم",
   "understand": "متوجه شدم"
 }
