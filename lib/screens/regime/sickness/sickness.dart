@@ -117,7 +117,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                   StreamBuilder<List<ObstructiveDiseaseCategory>>(
                       stream: sicknessBloc.userCategoryDisease,
                       builder: (context, userCategoryDisease) {
-                        if (userCategoryDisease.hasData &&
+                        if (userCategoryDisease.data!=null && userCategoryDisease.hasData &&
                             userCategoryDisease.requireData.length > 0)
                           return ListView.builder(
                               physics: ClampingScrollPhysics(),
@@ -127,7 +127,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                     index,
                                     userCategoryDisease.requireData[index],
                                   ));
-                        else if (userCategoryDisease.requireData.length <= 0)
+                        else if (userCategoryDisease.data!=null && userCategoryDisease.requireData.length <= 0)
                           return Container(
                               child: Text(intl.emptySickness, style: typography.caption));
                         else
@@ -182,7 +182,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                               },
                               title: sickness.diseases![index].title!,
                               isSelected: sickness.diseases![index].isSelected!,
-                              description: sickness.diseases![index].description!),
+                              description: sickness.diseases![index].description??""),
                         ))
                 : Container()),
         header: Container(
