@@ -4,6 +4,7 @@ import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -42,24 +43,25 @@ class SicknessBloc {
   final _repository = Repository.getInstance();
 
   late String _path;
-  late UserSickness _userSickness;
+  late List<ObstructiveDisease> _userDisease;
+  late ObstructiveDisease diseaseIds;
   late UserSicknessSpecial _userSicknessSpecial;
   final _waiting = BehaviorSubject<bool>();
 
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
   final _helpers = BehaviorSubject<List<Help>>();
   final _status = BehaviorSubject<BodyStatus>();
-  final _userCategorySickness = BehaviorSubject<List<CategorySickness>>();
+  final _userCategoryDisease = BehaviorSubject<List<ObstructiveDiseaseCategory>>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
 
   String get path => _path;
 
-  UserSickness? get userSickness => _userSickness;
+  Stream<List<ObstructiveDiseaseCategory>> get userCategoryDisease => _userCategoryDisease;
 
   UserSicknessSpecial? get userSicknessSpecial => _userSicknessSpecial;
 
-  Stream<List<CategorySickness>> get userCategorySickness => _userCategorySickness;
+  List<ObstructiveDisease> get userDiseaseSickness => _userDisease;
 
   Stream<BodyStatus> get status => _status.stream;
 
@@ -71,50 +73,16 @@ class SicknessBloc {
 
   Stream get showServerError => _showServerError.stream;
 
-  void updateSickness(int index, CategorySickness sickness) {
-    _userSickness.sickness_categories![index] = sickness;
-    _userCategorySickness.safeValue = _userSickness.sickness_categories!;
+  void updateSickness(int index, ObstructiveDiseaseCategory category) {
+    List<ObstructiveDiseaseCategory> categories = _userCategoryDisease.value;
+    categories[index] = category;
+    _userCategoryDisease.safeValue = categories;
   }
 
   void getSickness() async {
     _waiting.safeValue = true;
-    _repository.getUserBlockingSickness().then((value) {
-      _userSickness = value.data!;
-      int index = 0;
-      if (value.data != null) {
-        _userSickness.sickness_categories?.forEach((element) {
-          element.barColor = _illColor[index]['barColor'];
-          element.bgColor = _illColor[index]['bgColor'];
-          element.tick = _illColor[index]['tick'];
-          element.shadow = _illColor[index]['shadow'];
-          element.sicknesses!.sort((a, b) {
-            return a.order!.compareTo(b.order!);
-          });
-          element.sicknesses?.forEach((sickness) {
-            // print('Start sicknesses sick ${sickness.toJson()}');
-            _userSickness.userSicknesses?.forEach((user) {
-              //print('user sicknesses sick ${sickness.toJson()}');
-              if (user.id == sickness.id) {
-                sickness.isSelected = true;
-              }
-            });
-            sickness.children?.forEach((child) {
-              _userSickness.userSicknesses?.forEach((user) {
-                if (user.id == child.id) {
-                  sickness.isSelected = true;
-                  child.isSelected = true;
-                }
-              });
-            });
-          });
-
-          if (index == _illColor.length - 1)
-            index = 0;
-          else
-            index += 1;
-        });
-        _userCategorySickness.safeValue = _userSickness.sickness_categories!;
-      }
+    _repository.getBlockingSickness().then((value) {
+      _userCategoryDisease.safeValue = value.data!;
     }).whenComplete(() => _waiting.safeValue = false);
   }
 
@@ -155,7 +123,7 @@ class SicknessBloc {
 
   void sendSickness() {
     _repository
-        .sendSickness(userSickness!)
+        .sendSickness(_userCategoryDisease.value)
         .then((value) {
           _navigateTo.fireMessage('/${value.next}');
         })
@@ -176,6 +144,6 @@ class SicknessBloc {
     _waiting.close();
     _status.close();
     _helpers.close();
-    _userCategorySickness.close();
+    _userCategoryDisease.close();
   }
 }

@@ -68,7 +68,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                       stream: sicknessBloc.waiting,
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data == false) {
-                          controller.text = sicknessBloc.userSickness?.sicknessNote ?? '';
+                          controller.text = sicknessBloc.userCategoryDisease?.sicknessNote ?? '';
                           return Column(
                             children: [
                               Space(height: 2.h),
@@ -80,8 +80,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                 ),
                               ),
                               Space(height: 2.h),
-                              if (sicknessBloc.userSickness != null)
-                                ...sicknessBloc.userSickness!.sickness_categories!.map((element) {
+                              if (sicknessBloc.userCategoryDisease != null)
+                                ...sicknessBloc.userCategoryDisease!.sickness_categories!.map((element) {
                                   return _sicknessPartBox(element);
                                 }),
                               Space(height: 2.h),
@@ -90,9 +90,9 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                   validation: () {},
                                   label: intl.sicknessDescriptionUser,
                                   textController: controller,
-                                  value: sicknessBloc.userSickness!.sicknessNote,
+                                  value: sicknessBloc.userCategoryDisease!.sicknessNote,
                                   onChanged: (value) {
-                                    sicknessBloc.userSickness!.sicknessNote = value;
+                                    sicknessBloc.userCategoryDisease!.sicknessNote = value;
                                   },
                                   enable: true,
                                   maxLine: true,
@@ -119,7 +119,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
   }
 
   Widget _sicknessPartBox(CategorySickness sickness) {
-    var index = sicknessBloc.userSickness!.sickness_categories
+    var index = sicknessBloc.userCategoryDisease!.sickness_categories
         ?.indexWhere((element) => element == sickness);
     return sickness.sicknesses != null && sickness.sicknesses!.length > 0
         ? Column(
@@ -128,11 +128,11 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                 sickness,
                 Color.fromRGBO(230, 244, 254, 1),
               ),
-              if (index != sicknessBloc.userSickness!.sickness_categories!.length - 1)
+              if (index != sicknessBloc.userCategoryDisease!.sickness_categories!.length - 1)
                 Space(height: 0.5.h),
-              if (index != sicknessBloc.userSickness!.sickness_categories!.length - 1)
+              if (index != sicknessBloc.userCategoryDisease!.sickness_categories!.length - 1)
                 Divider(height: 1.h),
-              if (index != sicknessBloc.userSickness!.sickness_categories!.length - 1)
+              if (index != sicknessBloc.userCategoryDisease!.sickness_categories!.length - 1)
                 Space(height: 1.h),
             ],
           )

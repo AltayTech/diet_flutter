@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
@@ -72,7 +73,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
               stream: sicknessBloc.waiting,
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data == false) {
-                  controller.text = sicknessBloc.userSickness?.sicknessNote ?? '';
+                  //controller.text = sicknessBloc.userCategoryDisease?.sicknessNote ?? '';
                   return content();
                 } else {
                   return Container(height: 80.h, child: Progress());
@@ -112,21 +113,21 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                   style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
                 ),
                 Space(height: 2.h),
-                if (sicknessBloc.userSickness != null)
-                  StreamBuilder<List<CategorySickness>>(
-                      stream: sicknessBloc.userCategorySickness,
-                      builder: (context, userCategorySickness) {
-                        if (userCategorySickness.hasData &&
-                            userCategorySickness.requireData.length > 0)
+                if (sicknessBloc.userCategoryDisease != null)
+                  StreamBuilder<List<ObstructiveDiseaseCategory>>(
+                      stream: sicknessBloc.userCategoryDisease,
+                      builder: (context, userCategoryDisease) {
+                        if (userCategoryDisease.hasData &&
+                            userCategoryDisease.requireData.length > 0)
                           return ListView.builder(
                               physics: ClampingScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: sicknessBloc.userSickness!.sickness_categories!.length,
+                              itemCount: userCategoryDisease.requireData.length,
                               itemBuilder: (BuildContext context, int index) => sicknessBox(
                                     index,
-                                    sicknessBloc.userSickness!.sickness_categories![index],
+                                    userCategoryDisease.requireData[index],
                                   ));
-                        else if (sicknessBloc.userSickness!.sickness_categories!.length <= 0)
+                        else if (userCategoryDisease.requireData.length <= 0)
                           return Container(
                               child: Text(intl.emptySickness, style: typography.caption));
                         else
@@ -146,7 +147,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     );
   }
 
-  Widget sicknessBox(int index, CategorySickness sickness) {
+  Widget sicknessBox(int index, ObstructiveDiseaseCategory sickness) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -163,11 +164,11 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
             ),
-            child: sickness.sicknesses!.length > 0
+            child: sickness.diseases!.length > 0
                 ? ListView.builder(
                     physics: ClampingScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: sickness.sicknesses!.length,
+                    itemCount: sickness.diseases!.length,
                     itemBuilder: (BuildContext context, int index) => Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CheckBoxApp.description(
@@ -175,13 +176,13 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                               isBorder: false,
                               iconSelectType: IconSelectType.Checked,
                               onTap: () {
-                                sickness.sicknesses![index].isSelected =
-                                    !sickness.sicknesses![index].isSelected!;
+                                sickness.diseases![index].isSelected =
+                                    !sickness.diseases![index].isSelected!;
                                 setState(() {});
                               },
-                              title: sickness.sicknesses![index].title!,
-                              isSelected: sickness.sicknesses![index].isSelected!,
-                              description: 'توضیح درباره اینکه چرا با این عارضه نمیشه رژیم گرفت'),
+                              title: sickness.diseases![index].title!,
+                              isSelected: sickness.diseases![index].isSelected!,
+                              description: sickness.diseases![index].description!),
                         ))
                 : Container()),
         header: Container(

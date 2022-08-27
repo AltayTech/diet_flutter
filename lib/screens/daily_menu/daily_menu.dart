@@ -54,7 +54,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
 
     refreshDailyMenu.on<ListFood>().listen((ListFood value) {
       debugPrint('return ${value}');
-      bloc.onMealFoodDaily(value, selectedMeal.id);
+      bloc.onMealFoodDaily(value, selectedMeal.categoryId);
     });
   }
 
