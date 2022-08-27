@@ -81,8 +81,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
       width: double.infinity,
       height: 97.h,
       decoration: BoxDecoration(
-          image: ImageUtils.decorationImage("assets/images/background.png",
-              fit: BoxFit.fill)),
+          image: ImageUtils.decorationImage("assets/images/background.png", fit: BoxFit.fill)),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: TouchMouseScrollable(
