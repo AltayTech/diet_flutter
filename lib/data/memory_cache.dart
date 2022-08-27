@@ -32,7 +32,7 @@ class MemoryApp {
   static FirebaseAnalytics? analytics;
   static List<String> fastingDates = [];
   List<ArticleVideo>? _articles;
-  static int page = 1;
+  static int page = 0;
 
   static WhatsappInfo? whatsappInfo;
 

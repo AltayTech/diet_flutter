@@ -58,7 +58,11 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     return SicknessProvider(sicknessBloc,
         child: Scaffold(
           appBar: Toolbar(titleBar: intl.sickness),
-          body: body(),
+          body: WillPopScope(
+              onWillPop: () {
+                MemoryApp.page--;
+                return Future.value(true);
+              },child: body()),
         ));
   }
 
