@@ -27,7 +27,8 @@ class SicknessScreen extends StatefulWidget {
   _SicknessScreenState createState() => _SicknessScreenState();
 }
 
-class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements ItemClick {
+class _SicknessScreenState extends ResourcefulState<SicknessScreen>
+    implements ItemClick {
   late SicknessBloc sicknessBloc;
   TextEditingController controller = TextEditingController();
 
@@ -46,10 +47,14 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
       Navigator.of(context).pop();
       VxNavigator.of(context).push(Uri.parse(event));
     });
+
     sicknessBloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
+    });
+
+    sicknessBloc.popDialog.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
-      Utils.getSnackbarMessage(context, event);
     });
   }
 
@@ -70,87 +75,100 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
   }
 
   Widget body() {
-    return TouchMouseScrollable(
-      child: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(4.w),
-          color: Colors.white,
-          child: StreamBuilder(
-              stream: sicknessBloc.waiting,
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data == false) {
-                  //controller.text = sicknessBloc.userCategoryDisease?.sicknessNote ?? '';
-                  return content();
-                } else {
-                  return Container(height: 80.h, child: Progress());
-                }
-              }),
-        ),
-      ),
+    return Container(
+      height: 100.h,
+      padding: EdgeInsets.all(4.w),
+      color: Colors.white,
+      child: StreamBuilder(
+          stream: sicknessBloc.waiting,
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data == false) {
+              //controller.text = sicknessBloc.userCategoryDisease?.sicknessNote ?? '';
+              return content();
+            } else {
+              return Container(height: 80.h, child: Progress());
+            }
+          }),
     );
   }
 
   Widget content() {
     return Column(
       children: [
-        Space(height: 1.h),
-        Container(
-          width: 100.w,
-          alignment: Alignment.center,
-          child: StepperWidget(),
-        ),
-        Container(
-          child: Padding(
-            padding: EdgeInsets.all(5.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  intl.obstructiveDisease,
-                  textAlign: TextAlign.start,
-                  style: typography.subtitle1!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+        Expanded(
+          child: TouchMouseScrollable(
+            child: SingleChildScrollView(
+              child: Column(children: [
+                Space(height: 1.h),
+                Container(
+                  width: 100.w,
+                  alignment: Alignment.center,
+                  child: StepperWidget(),
+                ),
+                Container(
+                  child: Padding(
+                    padding: EdgeInsets.all(5.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          intl.obstructiveDisease,
+                          textAlign: TextAlign.start,
+                          style: typography.subtitle1!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          intl.obstructiveCauseToLeaveDiet,
+                          textAlign: TextAlign.start,
+                          style: typography.caption!.copyWith(
+                              fontWeight: FontWeight.w400, fontSize: 10.sp),
+                        ),
+                        Space(height: 2.h),
+                        if (sicknessBloc.userCategoryDisease != null)
+                          StreamBuilder<List<ObstructiveDiseaseCategory>>(
+                              stream: sicknessBloc.userCategoryDisease,
+                              builder: (context, userCategoryDisease) {
+                                if (userCategoryDisease.data != null &&
+                                    userCategoryDisease.hasData &&
+                                    userCategoryDisease.requireData.length > 0)
+                                  return ListView.builder(
+                                      physics: ClampingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount:
+                                      userCategoryDisease.requireData.length,
+                                      itemBuilder: (BuildContext context,
+                                          int index) =>
+                                          sicknessBox(
+                                            index,
+                                            userCategoryDisease.requireData[index],
+                                          ));
+                                else if (userCategoryDisease.data != null &&
+                                    userCategoryDisease.requireData.length <= 0)
+                                  return Container(
+                                      child: Text(intl.emptySickness,
+                                          style: typography.caption));
+                                else
+                                  return Container(height: 80.h, child: Progress());
+                              }),
+                        Space(height: 1.h),
+                      ],
+                    ),
                   ),
                 ),
-                Text(
-                  intl.obstructiveCauseToLeaveDiet,
-                  textAlign: TextAlign.start,
-                  style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
-                ),
-                Space(height: 2.h),
-                if (sicknessBloc.userCategoryDisease != null)
-                  StreamBuilder<List<ObstructiveDiseaseCategory>>(
-                      stream: sicknessBloc.userCategoryDisease,
-                      builder: (context, userCategoryDisease) {
-                        if (userCategoryDisease.data != null &&
-                            userCategoryDisease.hasData &&
-                            userCategoryDisease.requireData.length > 0)
-                          return ListView.builder(
-                              physics: ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: userCategoryDisease.requireData.length,
-                              itemBuilder: (BuildContext context, int index) => sicknessBox(
-                                    index,
-                                    userCategoryDisease.requireData[index],
-                                  ));
-                        else if (userCategoryDisease.data != null &&
-                            userCategoryDisease.requireData.length <= 0)
-                          return Container(
-                              child: Text(intl.emptySickness, style: typography.caption));
-                        else
-                          return Container(height: 80.h, child: Progress());
-                      }),
-                Space(height: 1.h),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-                  child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage, Size(100.w, 6.h),
-                      Icon(Icons.arrow_forward), () {}),
-                )
-              ],
+              ],),
             ),
           ),
-        )
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0, left: 16.0),
+          child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
+              Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
+                sendRequest();
+              }),
+        ),
+        Space(height: 2.h),
       ],
     );
   }
@@ -170,7 +188,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
             ),
             child: sickness.diseases!.length > 0
                 ? ListView.builder(
@@ -208,7 +227,9 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: sickness.isSelected!
-                  ? BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
+                  ? BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      topLeft: Radius.circular(10))
                   : BorderRadius.circular(10),
             ),
             child: Column(children: [
@@ -216,7 +237,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: Text(sickness.title!, style: typography.caption)),
+                  Expanded(
+                      child: Text(sickness.title!, style: typography.caption)),
                   Expanded(
                     child: CustomSwitch(
                       isSwitch: sickness.isSelected!,

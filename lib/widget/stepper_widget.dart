@@ -35,7 +35,7 @@ class StepperWidget extends StatelessWidget {
         SingleState(stateTitle: "", isFailed: false),
       ],
       height: 5.h,
-      width: 40.w,
+      width: 10.w * 4 + 5.w,
       checkedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
           width: 28, height: 28, fit: BoxFit.fill),
       currentIcon: ImageUtils.fromLocal("assets/images/physical_report/current_step.svg",

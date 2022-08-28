@@ -9,6 +9,7 @@ import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:behandam/extensions/stream.dart';
+
 class SicknessBloc {
   SicknessBloc() {
     _waiting.safeValue = false;
@@ -51,13 +52,16 @@ class SicknessBloc {
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
   final _helpers = BehaviorSubject<List<Help>>();
   final _status = BehaviorSubject<BodyStatus>();
-  final _userCategoryDisease = BehaviorSubject<List<ObstructiveDiseaseCategory>>();
+  final _userCategoryDisease =
+      BehaviorSubject<List<ObstructiveDiseaseCategory>>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
+  final _popDialog = LiveEvent();
 
   String get path => _path;
 
-  Stream<List<ObstructiveDiseaseCategory>> get userCategoryDisease => _userCategoryDisease;
+  Stream<List<ObstructiveDiseaseCategory>> get userCategoryDisease =>
+      _userCategoryDisease;
 
   UserSicknessSpecial? get userSicknessSpecial => _userSicknessSpecial;
 
@@ -73,6 +77,8 @@ class SicknessBloc {
   Stream get navigateTo => _navigateTo.stream;
 
   Stream get showServerError => _showServerError.stream;
+
+  Stream get popDialog => _popDialog.stream;
 
   void updateSickness(int index, ObstructiveDiseaseCategory category) {
     List<ObstructiveDiseaseCategory> categories = _userCategoryDisease.value;
@@ -128,20 +134,24 @@ class SicknessBloc {
         .then((value) {
           _navigateTo.fireMessage('/${value.next}');
         })
-        .catchError((e) => _showServerError.fire(e));
+        .catchError((e) => _showServerError.fire(e))
+        .whenComplete(() => _popDialog.fire(true));
   }
 
   void sendSicknessSpecial() {
-    _repository.sendSicknessSpecial(userSicknessSpecial!).then((value) {
-      _navigateTo.fireMessage('/${value.next}');
-    }).whenComplete(() {
-      _showServerError.fire(false);
-    });
+    _repository
+        .sendSicknessSpecial(userSicknessSpecial!)
+        .then((value) {
+          _navigateTo.fireMessage('/${value.next}');
+        })
+        .catchError((e) => _showServerError.fire(e))
+        .whenComplete(() => _popDialog.fire(true));
   }
 
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
+    _popDialog.close();
     _waiting.close();
     _status.close();
     _helpers.close();
