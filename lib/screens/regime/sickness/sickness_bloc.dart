@@ -134,7 +134,6 @@ class SicknessBloc {
         .then((value) {
           _navigateTo.fireMessage('/${value.next}');
         })
-        .catchError((e) => _showServerError.fire(e))
         .whenComplete(() => _popDialog.fire(true));
   }
 

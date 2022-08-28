@@ -48,10 +48,6 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
       VxNavigator.of(context).push(Uri.parse(event));
     });
 
-    sicknessBloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
-    });
-
     sicknessBloc.popDialog.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
@@ -262,13 +258,13 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
   }
 
   void sendRequest() {
-    bool isFind = false;
+    bool isFindErrorSingleChoiceCategory = false;
     sicknessBloc.userCategoryDiseaseValue.forEach((category) {
-      isFind = false;
+      isFindErrorSingleChoiceCategory = false;
       if (category.isSelected! && category.hasMultiChoiceChildren.isNotNullAndFalse) {
         category.diseases?.forEach((element) {
           if (element.isSelected.isNotNullAndTrue) {
-            isFind = true;
+            isFindErrorSingleChoiceCategory = true;
             Utils.getSnackbarMessage(context, intl.alertDiseaseMessage(category.title!));
             return;
           }
@@ -276,7 +272,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
       }
     });
 
-    if (!isFind) {
+    if (!isFindErrorSingleChoiceCategory) {
       if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
       sicknessBloc.sendSickness();
     }
