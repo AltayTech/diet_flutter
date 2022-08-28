@@ -295,8 +295,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
 
   @override
   void dispose() {
+    super.dispose();
     sicknessBloc.dispose();
     controller.dispose();
-    super.dispose();
   }
 }

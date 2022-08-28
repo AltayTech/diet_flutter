@@ -205,7 +205,7 @@ abstract class RestClient {
   @GET("/user/usual-diseases")
   NetworkResult<List<ObstructiveDiseaseCategory>> getNotBlockingSickness();
 
-  @PATCH("/user/disease")
+  @PATCH("/user/diseases")
   ImperativeNetworkResult setUserSickness(@Body() List<dynamic> diseasesIds);
 
   @GET("/user-special")
