@@ -62,6 +62,7 @@ class SicknessBloc {
   UserSicknessSpecial? get userSicknessSpecial => _userSicknessSpecial;
 
   List<ObstructiveDisease> get userDiseaseSickness => _userDisease;
+  List<ObstructiveDiseaseCategory> get userCategoryDiseaseValue => _userCategoryDisease.value;
 
   Stream<BodyStatus> get status => _status.stream;
 
