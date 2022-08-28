@@ -33,7 +33,7 @@ class PhysicalInfoBloc {
 
   void physicalInfo() {
     _physicalInfo = PhysicalInfoData();
-
+    _physicalInfo.gender=GenderType.Female;
     _physicalInfoData.safeValue = _physicalInfo;
 
 /*  _repository.physicalInfo().then((value) {

@@ -1,6 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/sickness/sickness_bloc.dart';
 import 'package:behandam/screens/regime/sickness/sicknss_provider.dart';
@@ -15,6 +15,7 @@ import 'package:behandam/widget/sickness_dialog.dart';
 import 'package:behandam/widget/stepper_widget.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:logifan/extensions/bool.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -26,7 +27,8 @@ class SicknessScreen extends StatefulWidget {
   _SicknessScreenState createState() => _SicknessScreenState();
 }
 
-class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements ItemClick {
+class _SicknessScreenState extends ResourcefulState<SicknessScreen>
+    implements ItemClick {
   late SicknessBloc sicknessBloc;
   TextEditingController controller = TextEditingController();
 
@@ -42,13 +44,12 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
   void listenBloc() {
     sicknessBloc.navigateTo.listen((event) {
       MemoryApp.isShowDialog = false;
-      Navigator.of(context).pop();
       VxNavigator.of(context).push(Uri.parse(event));
     });
-    sicknessBloc.showServerError.listen((event) {
+
+    sicknessBloc.popDialog.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
-      Utils.getSnackbarMessage(context, event);
     });
   }
 
@@ -67,90 +68,105 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
   }
 
   Widget body() {
-    return TouchMouseScrollable(
-      child: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(4.w),
-          color: Colors.white,
-          child: StreamBuilder(
-              stream: sicknessBloc.waiting,
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data == false) {
-                  controller.text = sicknessBloc.userSickness?.sicknessNote ?? '';
-                  return content();
-                } else {
-                  return Container(height: 80.h, child: Progress());
-                }
-              }),
-        ),
-      ),
+    return Container(
+      height: 100.h,
+      padding: EdgeInsets.all(4.w),
+      color: Colors.white,
+      child: StreamBuilder(
+          stream: sicknessBloc.waiting,
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data == false) {
+              //controller.text = sicknessBloc.userCategoryDisease?.sicknessNote ?? '';
+              return content();
+            } else {
+              return Container(height: 80.h, child: Progress());
+            }
+          }),
     );
   }
 
   Widget content() {
     return Column(
       children: [
-        Space(height: 1.h),
-        Container(
-          width: 100.w,
-          alignment: Alignment.center,
-          child: StepperWidget(),
-        ),
-        Container(
-          child: Padding(
-            padding: EdgeInsets.all(5.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  intl.obstructiveDisease,
-                  textAlign: TextAlign.start,
-                  style: typography.subtitle1!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+        Expanded(
+          child: TouchMouseScrollable(
+            child: SingleChildScrollView(
+              child: Column(children: [
+                Space(height: 1.h),
+                Container(
+                  width: 100.w,
+                  alignment: Alignment.center,
+                  child: StepperWidget(),
+                ),
+                Container(
+                  child: Padding(
+                    padding: EdgeInsets.all(5.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          intl.obstructiveDisease,
+                          textAlign: TextAlign.start,
+                          style: typography.subtitle1!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          intl.obstructiveCauseToLeaveDiet,
+                          textAlign: TextAlign.start,
+                          style: typography.caption!.copyWith(
+                              fontWeight: FontWeight.w400, fontSize: 10.sp),
+                        ),
+                        Space(height: 2.h),
+                        if (sicknessBloc.userCategoryDisease != null)
+                          StreamBuilder<List<ObstructiveDiseaseCategory>>(
+                              stream: sicknessBloc.userCategoryDisease,
+                              builder: (context, userCategoryDisease) {
+                                if (userCategoryDisease.data != null &&
+                                    userCategoryDisease.hasData &&
+                                    userCategoryDisease.requireData.length > 0)
+                                  return ListView.builder(
+                                      physics: ClampingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount:
+                                      userCategoryDisease.requireData.length,
+                                      itemBuilder: (BuildContext context,
+                                          int index) =>
+                                          sicknessBox(
+                                            index,
+                                            userCategoryDisease.requireData[index],
+                                          ));
+                                else if (userCategoryDisease.data != null &&
+                                    userCategoryDisease.requireData.length <= 0)
+                                  return Container(
+                                      child: Text(intl.emptySickness,
+                                          style: typography.caption));
+                                else
+                                  return Container(height: 80.h, child: Progress());
+                              }),
+                        Space(height: 1.h),
+                      ],
+                    ),
                   ),
                 ),
-                Text(
-                  intl.obstructiveCauseToLeaveDiet,
-                  textAlign: TextAlign.start,
-                  style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
-                ),
-                Space(height: 2.h),
-                if (sicknessBloc.userSickness != null)
-                  StreamBuilder<List<CategorySickness>>(
-                      stream: sicknessBloc.userCategorySickness,
-                      builder: (context, userCategorySickness) {
-                        if (userCategorySickness.hasData &&
-                            userCategorySickness.requireData.length > 0)
-                          return ListView.builder(
-                              physics: ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: sicknessBloc.userSickness!.sickness_categories!.length,
-                              itemBuilder: (BuildContext context, int index) => sicknessBox(
-                                    index,
-                                    sicknessBloc.userSickness!.sickness_categories![index],
-                                  ));
-                        else if (sicknessBloc.userSickness!.sickness_categories!.length <= 0)
-                          return Container(
-                              child: Text(intl.emptySickness, style: typography.caption));
-                        else
-                          return Container(height: 80.h, child: Progress());
-                      }),
-                Space(height: 1.h),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-                  child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage, Size(100.w, 6.h),
-                      Icon(Icons.arrow_forward), () {}),
-                )
-              ],
+              ],),
             ),
           ),
-        )
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0, left: 16.0),
+          child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
+              Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
+                sendRequest();
+              }),
+        ),
+        Space(height: 2.h),
       ],
     );
   }
 
-  Widget sicknessBox(int index, CategorySickness sickness) {
+  Widget sicknessBox(int index, ObstructiveDiseaseCategory sickness) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -165,27 +181,38 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
             ),
-            child: sickness.sicknesses!.length > 0
+            child: sickness.diseases!.length > 0
                 ? ListView.builder(
                     physics: ClampingScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: sickness.sicknesses!.length,
+                    itemCount: sickness.diseases!.length,
                     itemBuilder: (BuildContext context, int index) => Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CheckBoxApp.description(
                               contentPadding: 8,
                               isBorder: false,
-                              iconSelectType: IconSelectType.Checked,
+                              iconSelectType: sickness.hasMultiChoiceChildren.isNotNullAndTrue
+                                  ? IconSelectType.Checked
+                                  : IconSelectType.Radio,
                               onTap: () {
-                                sickness.sicknesses![index].isSelected =
-                                    !sickness.sicknesses![index].isSelected!;
+                                if (sickness.hasMultiChoiceChildren.isNotNullAndTrue)
+                                  sickness.diseases![index].isSelected =
+                                      !sickness.diseases![index].isSelected!;
+                                else {
+                                  sickness.diseases!.forEach((element) {
+                                    element.isSelected = false;
+                                  });
+                                  sickness.diseases![index].isSelected =
+                                      !sickness.diseases![index].isSelected!;
+                                }
                                 setState(() {});
                               },
-                              title: sickness.sicknesses![index].title!,
-                              isSelected: sickness.sicknesses![index].isSelected!,
-                              description: 'توضیح درباره اینکه چرا با این عارضه نمیشه رژیم گرفت'),
+                              title: sickness.diseases![index].title!,
+                              isSelected: sickness.diseases![index].isSelected!,
+                              description: sickness.diseases![index].description ?? ""),
                         ))
                 : Container()),
         header: Container(
@@ -193,7 +220,9 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: sickness.isSelected!
-                  ? BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
+                  ? BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      topLeft: Radius.circular(10))
                   : BorderRadius.circular(10),
             ),
             child: Column(children: [
@@ -201,7 +230,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: Text(sickness.title!, style: typography.caption)),
+                  Expanded(
+                      child: Text(sickness.title!, style: typography.caption)),
                   Expanded(
                     child: CustomSwitch(
                       isSwitch: sickness.isSelected!,
@@ -225,8 +255,24 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
   }
 
   void sendRequest() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-    sicknessBloc.sendSickness();
+    bool isFindErrorSingleChoiceCategory = false;
+    sicknessBloc.userCategoryDiseaseValue.forEach((category) {
+      isFindErrorSingleChoiceCategory = false;
+      if (category.isSelected! && category.hasMultiChoiceChildren.isNotNullAndFalse) {
+        category.diseases?.forEach((element) {
+          if (element.isSelected.isNotNullAndTrue) {
+            isFindErrorSingleChoiceCategory = true;
+            Utils.getSnackbarMessage(context, intl.alertDiseaseMessage(category.title!));
+            return;
+          }
+        });
+      }
+    });
+
+    if (!isFindErrorSingleChoiceCategory) {
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+      sicknessBloc.sendSickness();
+    }
   }
 
   @override
@@ -246,8 +292,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
 
   @override
   void dispose() {
+    super.dispose();
     sicknessBloc.dispose();
     controller.dispose();
-    super.dispose();
   }
 }

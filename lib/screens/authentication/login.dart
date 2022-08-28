@@ -214,7 +214,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             child: TextField(
               controller: _text,
               textDirection: TextDirection.ltr,
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),

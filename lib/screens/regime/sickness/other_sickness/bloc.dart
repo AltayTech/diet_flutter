@@ -15,18 +15,17 @@ class OtherSicknessBloc {
   final _repository = Repository.getInstance();
 
   late String _path;
-  List<int> selectedSicknessCategoryIds = [];
   late UserSickness userSicknessSelectedId;
   final _waiting = BehaviorSubject<bool>();
 
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
-  final _userSickness = BehaviorSubject<List<ObstructiveDisease>>();
+  final _userSickness = BehaviorSubject<List<ObstructiveDiseaseCategory>>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
 
   String get path => _path;
 
-  Stream<List<ObstructiveDisease>> get userSickness => _userSickness.stream;
+  Stream<List<ObstructiveDiseaseCategory>> get userSickness => _userSickness.stream;
 
   Stream<bool> get waiting => _waiting.stream;
 
@@ -35,13 +34,13 @@ class OtherSicknessBloc {
   Stream get showServerError => _showServerError.stream;
 
   void updateSickness(int indexSickness, int indexCategory,
-      ObstructiveDiseaseCategory sickness) {
-    List<ObstructiveDisease> userSickness = _userSickness.value;
-    userSickness[indexSickness].categories![indexCategory] = sickness;
+      ObstructiveDisease sickness) {
+    List<ObstructiveDiseaseCategory> userSickness = _userSickness.value;
+    userSickness[indexSickness].diseases![indexCategory] = sickness;
     _userSickness.safeValue = userSickness;
   }
 
-  void getNotBlockingSickness() async {
+  void getNotBlockingSickness() {
     _waiting.safeValue = true;
     _repository.getNotBlockingSickness().then((value) {
       _userSickness.safeValue = value.data!;
@@ -49,15 +48,7 @@ class OtherSicknessBloc {
   }
 
   void sendSickness() {
-    for(int i = 0; i < _userSickness.value.length; i++) {
-      for(int i = 0; i < _userSickness.value[i].categories!.length; i++) {
-        if (_userSickness.value[i].categories![i].isSelected!) {
-          userSicknessSelectedId.sicknesses = selectedSicknessCategoryIds;
-        }
-      }
-    }
-
-    _repository.sendSickness(userSicknessSelectedId).then((value) {
+    _repository.sendSickness(_userSickness.value).then((value) {
       _navigateTo.fireMessage('/${value.next}');
     }).catchError((e) => _showServerError.fire(e));
   }

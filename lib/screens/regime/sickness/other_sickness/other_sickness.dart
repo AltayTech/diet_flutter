@@ -105,7 +105,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                 style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
               ),
               Space(height: 2.h),
-              StreamBuilder<List<ObstructiveDisease>>(
+              StreamBuilder<List<ObstructiveDiseaseCategory>>(
                   stream: bloc.userSickness,
                   builder: (context, userSickness) {
                     if (userSickness.hasData) {
@@ -117,7 +117,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                             itemBuilder: (BuildContext context, int index) => sicknessBox(
                                   userSickness.requireData[index].title!,
                                   index,
-                                  userSickness.requireData[index].categories!,
+                                  userSickness.requireData[index].diseases!,
                                 ));
                       } else {
                         return Container(
@@ -143,7 +143,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
     );
   }
 
-  Widget sicknessBox(String title, int indexCategory, List<ObstructiveDiseaseCategory> sickness) {
+  Widget sicknessBox(String title, int indexCategory, List<ObstructiveDisease> sickness) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -196,7 +196,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
     );
   }
 
-  Widget sicknessItem(int indexCategory, int indexSickness, ObstructiveDiseaseCategory sickness) {
+  Widget sicknessItem(int indexCategory, int indexSickness, ObstructiveDisease sickness) {
     return InkWell(
       onTap: () {
         sickness.isSelected = !sickness.isSelected!;

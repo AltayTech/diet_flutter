@@ -149,9 +149,9 @@ abstract class Repository {
 
   NetworkResult<UserSickness> getSickness();
 
-  NetworkResult<List<ObstructiveDisease>> getNotBlockingSickness();
+  NetworkResult<List<ObstructiveDiseaseCategory>> getNotBlockingSickness();
 
-  ImperativeNetworkResult sendSickness(UserSickness sickness);
+  ImperativeNetworkResult sendSickness(List<ObstructiveDiseaseCategory> diseasesIds);
 
   NetworkResult<UserSicknessSpecial> getSicknessSpecial();
 
@@ -259,7 +259,7 @@ abstract class Repository {
 
   NetworkResult<InboxItem> getInboxMessage(int id);
 
-  NetworkResult<UserSickness> getUserBlockingSickness();
+  NetworkResult<List<ObstructiveDiseaseCategory>> getBlockingSickness();
 
   NetworkResult<List<DietType>> getUserAllowedDietType();
 }
@@ -607,29 +607,22 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<List<ObstructiveDisease>> getNotBlockingSickness() {
+  NetworkResult<List<ObstructiveDiseaseCategory>> getNotBlockingSickness() {
     var response = _apiClient.getNotBlockingSickness();
     return response;
   }
 
   @override
-  ImperativeNetworkResult sendSickness(UserSickness sickness) {
+  ImperativeNetworkResult sendSickness(List<ObstructiveDiseaseCategory> sickness) {
     List<dynamic> selectedItems = [];
-    UserSickness userSickness = new UserSickness();
-    sickness.sickness_categories!.forEach((element) {
-      element.sicknesses!.forEach((sicknessItem) {
-        if (sicknessItem.isSelected!) {
-          if (sicknessItem.children!.length > 0) {
-            selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
-          } else {
-            selectedItems.add(sicknessItem);
-          }
+    for(int i = 0; i < sickness.length; i++) {
+      for(int j = 0; j < sickness[i].diseases!.length; j++) {
+        if (sickness[i].diseases![j].isSelected!) {
+          selectedItems.add(sickness[j].diseases![j].id);
         }
-      });
-    });
-    userSickness.sicknesses = selectedItems;
-    userSickness.sicknessNote = sickness.sicknessNote;
-    var response = _apiClient.setUserSickness(userSickness);
+      }
+    }
+    var response = _apiClient.setUserSickness(selectedItems);
     return response;
   }
 
@@ -1033,8 +1026,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<UserSickness> getUserBlockingSickness() {
-    var response = _apiClient.getUserBlockingSickness();
+  NetworkResult<List<ObstructiveDiseaseCategory>> getBlockingSickness() {
+    var response = _apiClient.getBlockingSickness();
     return response;
   }
 
