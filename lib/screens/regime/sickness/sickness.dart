@@ -265,7 +265,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
     bool isFind = false;
     sicknessBloc.userCategoryDiseaseValue.forEach((category) {
       isFind = false;
-      if (category.hasMultiChoiceChildren.isNotNullAndFalse) {
+      if (category.isSelected! && category.hasMultiChoiceChildren.isNotNullAndFalse) {
         category.diseases?.forEach((element) {
           if (element.isSelected.isNotNullAndTrue) {
             isFind = true;
