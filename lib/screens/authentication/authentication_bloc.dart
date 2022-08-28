@@ -117,28 +117,33 @@ class AuthenticationBloc {
       _repository.country().then((value) async {
         _countries.safeValue = value.data!;
         MemoryApp.countries = _countries.valueOrNull;
-        _countries.value.forEach((country) {
-          _listCountry.forEach((flagCountry) {
-            if (country.isoCode == flagCountry.countryCode) {
-              country.flag = flagCountry.flag;
-            }
-          });
-        });
+        setFlagToCountry();
         _filterListCountry.value = _countries.value;
-        value.data!.forEach((element) {
-          if (element.code == "98") {
-            _selectedCountry.value = element;
-          }
-        });
+        selectIran();
       });
     } else {
       _countries.value = MemoryApp.countries!;
-      _countries.value.forEach((element) {
-        if (element.code == "98") {
-          _selectedCountry.safeValue = element;
+      setFlagToCountry();
+      selectIran();
+    }
+  }
+
+  void selectIran() {
+    _countries.value.forEach((element) {
+      if (element.code == "98") {
+        _selectedCountry.safeValue = element;
+      }
+    });
+  }
+
+  void setFlagToCountry() {
+    _countries.value.forEach((country) {
+      _listCountry.forEach((flagCountry) {
+        if (country.isoCode == flagCountry.countryCode) {
+          country.flag = flagCountry.flag;
         }
       });
-    }
+    });
   }
 
   void setCountry(Country value) {

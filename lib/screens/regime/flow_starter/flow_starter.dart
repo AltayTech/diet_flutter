@@ -1,25 +1,16 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/flow_starter/bloc.dart';
-import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
-import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-import 'package:behandam/screens/widget/help_dialog.dart';
-import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
-import 'package:behandam/widget/custom_video.dart';
 import 'package:behandam/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class FlowStarterScreen extends StatefulWidget {
@@ -42,7 +33,7 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
 
   void listenBloc() {
     bloc.navigateTo.listen((event) {
-      context.vxNav.push(Uri.parse('/$event'));
+      VxNavigator.of(context).push(Uri.parse('/$event'));
     });
 
     bloc.showServerError.listen((event) {
@@ -58,6 +49,7 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
   @override
   void dispose() {
     super.dispose();
+    bloc.dispose();
   }
 
   @override
@@ -74,50 +66,39 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
       child: Container(
         height: 100.h,
         child: Stack(children: [
-          TouchMouseScrollable(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Space(height: 10.h),
-                  ImageUtils.fromLocal('assets/images/diet/fill_data.png',
-                      width: 60.w, height: 60.w),
-                  Space(height: 10.h),
-                  Text(
-                    intl.fillYourInformation,
-                    textAlign: TextAlign.center,
-                    textDirection: context.textDirectionOfLocale,
-                    style:
-                        typography.subtitle1!.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  Space(height: 1.h),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 32, left: 32),
-                    child: Text(
-                      intl.getFoodProgramDescription,
-                      textAlign: TextAlign.center,
-                      textDirection: context.textDirectionOfLocale,
-                      style: typography.caption!.copyWith(fontSize: 10.sp),
-                    ),
-                  ),
-                  Space(height: 8.h),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 32, left: 32),
-                    child: CustomButton.withIcon(
-                        AppColors.btnColor,
-                        intl.getFoodProgram,
-                        Size(100.w, 6.h),
-                        Icon(Icons.arrow_forward), () {
-                      DialogUtils.showDialogProgress(context: context);
-                      bloc.nextStep();
-                    }),
-                  ),
-                  Space(height: 10.h),
-                ],
+          Column(
+            children: [
+              Space(height: 12.h),
+              ImageUtils.fromLocal('assets/images/diet/fill_data.png', width: 60.w, height: 60.w),
+              Space(height: 8.h),
+              Text(
+                intl.fillYourInformation,
+                textAlign: TextAlign.center,
+                textDirection: context.textDirectionOfLocale,
+                style: typography.subtitle1!.copyWith(fontWeight: FontWeight.bold),
               ),
-            ),
+              Space(height: 1.h),
+              Padding(
+                padding: const EdgeInsets.only(right: 32, left: 32),
+                child: Text(
+                  intl.getFoodProgramDescription,
+                  textAlign: TextAlign.center,
+                  textDirection: context.textDirectionOfLocale,
+                  style: typography.caption!.copyWith(fontSize: 10.sp),
+                ),
+              ),
+              Space(height: 8.h),
+              Padding(
+                padding: const EdgeInsets.only(right: 32, left: 32),
+                child: CustomButton.withIcon(AppColors.btnColor, intl.getFoodProgram,
+                    Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
+                  DialogUtils.showDialogProgress(context: context);
+                  bloc.nextStep();
+                }),
+              ),
+            ],
           ),
-          Positioned(
-              bottom: 0, child: BottomNav(currentTab: BottomNavItem.DIET))
+          Positioned(bottom: 0, child: BottomNav(currentTab: BottomNavItem.DIET))
         ]),
       ),
     );

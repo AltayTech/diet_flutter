@@ -23,6 +23,8 @@ import 'package:behandam/screens/onboard/intro.dart';
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
+import 'package:behandam/screens/payment/fail_new.dart';
+import 'package:behandam/screens/payment/new_success.dart';
 import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/payment/wait.dart';
 import 'package:behandam/screens/privacy_policy/privacy_policy.dart';
@@ -270,7 +272,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(PaymentFailNewScreen())),
     Routes.start: (_, __) => MaterialPage(child: routePage(FlowStarterScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),

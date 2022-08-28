@@ -237,7 +237,7 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                   Expanded(
                     flex: 1,
                     child: IconButton(
-                        color: Colors.red,
+                        color: Color(0xff454545),
                         padding: EdgeInsets.zero,
                         icon: Icon(Icons.add),
                         iconSize: 20,
@@ -266,7 +266,7 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                   Expanded(
                     flex: 1,
                     child: IconButton(
-                        color: Colors.red,
+                        color: Color(0xff454545),
                         padding: EdgeInsets.zero,
                         icon: Icon(Icons.remove),
                         iconSize: 20,

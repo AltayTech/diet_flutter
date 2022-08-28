@@ -1,13 +1,15 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import 'bloc.dart';
 import 'provider.dart';
@@ -46,34 +48,35 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
     return PaymentProvider(
       bloc,
       child: Scaffold(
-        appBar: Toolbar(titleBar: intl.paymentSuccess),
-        body: Column(
-          children: [
-            Expanded(
-              child: StreamBuilder(
-                stream: bloc.waiting,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data == false) {
-                    return content();
-                  } else {
-                    return Progress();
-                  }
-                },
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: StreamBuilder(
+                  stream: bloc.waiting,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data == false) {
+                      return content();
+                    } else {
+                      return Progress();
+                    }
+                  },
+                ),
               ),
-            ),
-            StreamBuilder<ProductType>(
-              stream: bloc.productType,
-              initialData: ProductType.DIET,
-              builder: (context, type) {
-                if (type.hasData && type.data != ProductType.SUBSCRIPTION)
-                  return BottomNav(
-                      currentTab:
-                          type == ProductType.DIET ? BottomNavItem.SHOP : BottomNavItem.DIET);
-                else
-                  return EmptyBox();
-              },
-            )
-          ],
+              StreamBuilder<ProductType>(
+                stream: bloc.productType,
+                initialData: ProductType.DIET,
+                builder: (context, type) {
+                  if (type.hasData && type.data != ProductType.SUBSCRIPTION)
+                    return BottomNav(
+                        currentTab:
+                            type == ProductType.DIET ? BottomNavItem.SHOP : BottomNavItem.DIET);
+                  else
+                    return EmptyBox();
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -84,155 +87,185 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
       width: double.infinity,
       height: 97.h,
       decoration: BoxDecoration(
-          image: ImageUtils.decorationImage("assets/images/background.png",
-              fit: BoxFit.fill)),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: TouchMouseScrollable(
-          child: SingleChildScrollView(
-            child: Container(
-              constraints: BoxConstraints(
-                minHeight: 80.h,
-              ),
-              padding: EdgeInsets.only(left: 5.w, right: 5.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: context.textDirectionOfLocale,
-                children: [
-                  Space(
-                    height: 2.h,
-                  ),
-                  ImageUtils.fromLocal(
-                    'assets/images/bill/success.svg',
-                    width: 20.w,
-                    height: 20.w,
-                  ),
-                  Space(height: 1.h),
-                  Text(
-                    intl.paymentSuccess,
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(color: AppColors.primaryVariantLight),
-                  ),
-                  Text(
-                    intl.paymentSuccessLabel,
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  Space(
-                    height: 2.h,
-                  ),
-                  Stack(
-                    fit: StackFit.loose,
-                    alignment: Alignment.center,
-                    children: [
-                      ImageUtils.fromLocal(
-                        'assets/images/bill/back_billing.svg',
-                        width: 70.w,
-                        height: 40.h,
-                        fit: BoxFit.fill,
-                      ),
-                      Positioned(
-                        child: Text(intl.amountPaid,
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: Theme.of(context).textTheme.caption!),
-                        top: 2.h,
-                        left: 10.w,
-                        right: 10.w,
-                      ),
-                      Positioned(
-                        child: Text('30000 تومان',
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(color: AppColors.priceColor)),
-                        top: 6.h,
-                        left: 10.w,
-                        right: 10.w,
-                      ),
-                      Positioned(
-                        child: Text(intl.refId,
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(fontWeight: FontWeight.w400, color: Color(0xff959499))),
-                        top: 16.h,
-                        left: 10.w,
-                        right: 10.w,
-                      ),
-                      Positioned(
-                        child: Text('33543453',
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(fontWeight: FontWeight.w500)),
-                        top: 19.h,
-                        left: 10.w,
-                        right: 10.w,
-                      ),
-                      Positioned(
-                        child: Text(intl.date,
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(fontWeight: FontWeight.w400, color: Color(0xff959499))),
-                        top: 24.h,
-                        left: 10.w,
-                        right: 10.w,
-                      ),
-                      Positioned(
-                        child: Text('1400/05/22',
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(fontWeight: FontWeight.w500)),
-                        top: 27.h,
-                        left: 10.w,
-                        right: 10.w,
-                      ),
-                      Positioned(
-                        child: Text(intl.time,
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(fontWeight: FontWeight.w400, color: Color(0xff959499))),
-                        top: 32.h,
-                        left: 10.w,
-                        right: 10.w,
-                      ),
-                      Positioned(
-                        child: Text('14:30',
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(fontWeight: FontWeight.w500)),
-                        top: 35.h,
-                        left: 10.w,
-                        right: 10.w,
-                      )
-                    ],
-                  ),
-                ],
-              ),
+          image: ImageUtils.decorationImage("assets/images/background.png", fit: BoxFit.fill)),
+      child: TouchMouseScrollable(
+        child: SingleChildScrollView(
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: 80.h,
+            ),
+            padding: EdgeInsets.only(left: 10.w, right: 10.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              textDirection: context.textDirectionOfLocale,
+              children: [
+                Space(
+                  height: 3.h,
+                ),
+                ImageUtils.fromLocal(
+                  'assets/images/bill/success.svg',
+                  width: 30.w,
+                  height: 30.w,
+                ),
+                Space(height: 1.h),
+                Text(
+                  intl.paymentSuccess,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(color: AppColors.primaryVariantLight),
+                ),
+                Text(
+                  intl.paymentSuccessLabel,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+                Space(
+                  height: 2.h,
+                ),
+                Stack(
+                  fit: StackFit.loose,
+                  alignment: Alignment.center,
+                  children: [
+                    ImageUtils.fromLocal(
+                      'assets/images/bill/back_billing.svg',
+                      width: 70.w,
+                      height: 53.h,
+                      fit: BoxFit.fill,
+                    ),
+                    Positioned(
+                      child: Text(intl.amountPaid,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context).textTheme.caption!),
+                      top: 4.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text('30000 تومان',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6!
+                              .copyWith(color: AppColors.priceColor)),
+                      top: 8.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text(intl.refId,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w400, color: Color(0xff959499))),
+                      top: 20.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text('33543453',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w500)),
+                      top: 23.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text(intl.date,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w400, color: Color(0xff959499))),
+                      top: 28.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text('1400/05/22',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w500)),
+                      top: 31.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text(intl.hour,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w400, color: Color(0xff959499))),
+                      top: 36.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text('14:30',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w500)),
+                      top: 39.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text(intl.mobile,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w400, color: Color(0xff959499))),
+                      top: 44.h,
+                      left: 10.w,
+                      right: 10.w,
+                    ),
+                    Positioned(
+                      child: Text('14:30',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontWeight: FontWeight.w500)),
+                      top: 47.h,
+                      left: 10.w,
+                      right: 10.w,
+                    )
+                  ],
+                ),
+                Space(
+                  height: 3.h,
+                ),
+                CustomButton(AppColors.primary, intl.completeInformationAndGetDiet, Size(80.w, 6.h),
+                    () {
+                  VxNavigator.of(context).push(Uri.parse(bloc.path ?? Routes.listView));
+                }),
+                Space(
+                  height: 3.h,
+                ),
+              ],
             ),
           ),
         ),
