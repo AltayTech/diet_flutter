@@ -1,5 +1,6 @@
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'food_list.g.dart';
@@ -79,9 +80,9 @@ class Meals {
 
   factory Meals.fromJson(Map<String, dynamic> json) => _$MealsFromJson(json);
 }
-
+@HiveType()
 @JsonSerializable(createToJson: false)
-class Menu {
+class Menu extends HiveObject{
   Menu(
     this.id,
     this.title,
@@ -96,13 +97,15 @@ class Menu {
     this.expiredAt,
     this.hex,
   );
-
+  @HiveField(0)
   @JsonKey(name: 'id')
   final int id;
 
+  @HiveField(1)
   @JsonKey(name: 'is_public')
   final int isPublic;
 
+  @HiveField(2)
   @JsonKey(name: 'title')
   final String title;
 
