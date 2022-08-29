@@ -1,4 +1,3 @@
-import 'package:behandam/utils/boolean.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'obstructive_disease.g.dart';
@@ -22,7 +21,8 @@ class ObstructiveDisease {
 
   ObstructiveDisease();
 
-  factory ObstructiveDisease.fromJson(Map<String, dynamic> json) => _$ObstructiveDiseaseFromJson(json);
+  factory ObstructiveDisease.fromJson(Map<String, dynamic> json) =>
+      _$ObstructiveDiseaseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ObstructiveDiseaseToJson(this);
 }
@@ -34,6 +34,9 @@ class ObstructiveDiseaseCategory {
 
   @JsonKey(name: "category_id")
   int? categoryId;
+
+  @JsonKey(name: "disease_id", defaultValue: -1)
+  late int disease_id;
 
   @JsonKey(name: "category_type")
   int? categoryType;
@@ -52,7 +55,8 @@ class ObstructiveDiseaseCategory {
 
   ObstructiveDiseaseCategory();
 
-  factory ObstructiveDiseaseCategory.fromJson(Map<String, dynamic> json) => _$ObstructiveDiseaseCategoryFromJson(json);
+  factory ObstructiveDiseaseCategory.fromJson(Map<String, dynamic> json) =>
+      _$ObstructiveDiseaseCategoryFromJson(json);
 
   Map<String, dynamic> toJson() => _$ObstructiveDiseaseCategoryToJson(this);
 }

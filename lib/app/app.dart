@@ -158,12 +158,13 @@ class _AppState extends State<App> {
     );
   }
 
-  Widget  app(Locale locale) {
+  Widget app(Locale locale) {
     return MaterialApp.router(
         useInheritedMediaQuery: true,
         // generate title from localization instead of `MaterialApp.title` property
         onGenerateTitle: (BuildContext context) => context.intl.appName,
-        debugShowCheckedModeBanner: false,color: AppColors.background,
+        debugShowCheckedModeBanner: false,
+        color: AppColors.background,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocale.supportedLocales,
         theme: ThemeData(
@@ -272,7 +273,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage(PaymentFailNewScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
     Routes.start: (_, __) => MaterialPage(child: routePage(FlowStarterScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),

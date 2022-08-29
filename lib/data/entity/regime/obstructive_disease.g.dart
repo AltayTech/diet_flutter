@@ -28,6 +28,7 @@ ObstructiveDiseaseCategory _$ObstructiveDiseaseCategoryFromJson(
     ObstructiveDiseaseCategory()
       ..id = json['id'] as int?
       ..categoryId = json['category_id'] as int?
+      ..disease_id = json['disease_id'] as int? ?? -1
       ..categoryType = json['category_type'] as int?
       ..title = json['category_title'] as String?
       ..hasMultiChoiceChildren = json['has_multichoice_children'] as bool?
@@ -41,6 +42,7 @@ Map<String, dynamic> _$ObstructiveDiseaseCategoryToJson(
     <String, dynamic>{
       'id': instance.id,
       'category_id': instance.categoryId,
+      'disease_id': instance.disease_id,
       'category_type': instance.categoryType,
       'category_title': instance.title,
       'has_multichoice_children': instance.hasMultiChoiceChildren,
