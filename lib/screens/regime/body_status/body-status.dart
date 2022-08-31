@@ -195,8 +195,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                         .copyWith(color: Colors.grey.withOpacity(0.9))),
                                 Container(
                                   width: 30.w,
-
-                                  padding: EdgeInsets.only(top:1.1.h),
+                                  padding: EdgeInsets.only(top: 1.1.h),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10.0),
                                       color: Colors.white),
@@ -353,7 +352,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
           return dietTypeList.hasData
               ? Container(
                   margin: EdgeInsets.only(right: 32, left: 32),
-                  height: dietTypeList.data!.length>2 ? 35.h :20.h,
+                  height: dietTypeList.data!.length > 2 ? 35.h : 20.h,
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -380,7 +379,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                           children: [
                             Text(
                               intl.dietsSuitableYou,
-                              style: typography.caption!.copyWith(fontWeight: FontWeight.w500,letterSpacing: -1.4,fontSize: 13.sp),
+                              style: typography.caption!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: -1.4,
+                                  fontSize: 13.sp),
                             ),
                             Space(
                               height: 1.h,
@@ -400,7 +402,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                         ...dietTypeList.data!
                                             .asMap()
                                             .map((index, value) => MapEntry(
-                                            index,
+                                                index,
                                                 SizedBox(
                                                   width: 40.w,
                                                   child: CheckBoxApp(
@@ -410,7 +412,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                                       isBorder: true,
                                                       iconSelectType: IconSelectType.Radio,
                                                       onTap: () {
-                                                        bloc.setDietSelected = dietTypeList.data![index];
+                                                        bloc.setDietSelected =
+                                                            dietTypeList.data![index];
                                                       },
                                                       title: dietTypeList.data![index].title,
                                                       isSelected: dietSelected.data?.id ==
@@ -424,8 +427,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                     return RichText(
                                         text: TextSpan(
                                             text: intl.dietSuitableYou,
-                                            style: typography.caption!
-                                                .copyWith(fontWeight: FontWeight.w400,letterSpacing: -1.5),
+                                            style: typography.caption!.copyWith(
+                                                fontWeight: FontWeight.w400, letterSpacing: -1.5),
                                             children: [
                                           TextSpan(
                                             text: dietTypeList.data![0].title,
