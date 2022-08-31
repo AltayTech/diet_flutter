@@ -26,7 +26,7 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
   @override
   void initState() {
     super.initState();
-
+    MemoryApp.page=0;
     bloc = FlowStarterBloc();
     listenBloc();
   }

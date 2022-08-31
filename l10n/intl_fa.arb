@@ -772,7 +772,7 @@
   "alertDiseaseMessage": "انتخاب یکی از موارد {disease} الزامی است",
   "@alertDiseaseMessage": {
     "placeholders": {
-      "dietType": {
+      "disease": {
         "type": "String"
       }
     }
@@ -781,5 +781,7 @@
   "completeInformationAndGetDiet": "تکمیل اطلاعات و دریافت رژیم",
   "iAm": "هستم",
   "iAmNot": "نیستم",
+  "dietSuitableYou": "رژیم مناسب شما رژیم ",
+  "continueDietSuitableYou": " می باشد.",
   "understand": "متوجه شدم"
 }

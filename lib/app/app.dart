@@ -24,6 +24,7 @@ import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
 import 'package:behandam/screens/payment/fail_new.dart';
+import 'package:behandam/screens/payment/new_bill.dart';
 import 'package:behandam/screens/payment/new_success.dart';
 import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/payment/wait.dart';
@@ -308,7 +309,7 @@ final navigator = VxNavigator(
         arguments: int.parse(uri.queryParameters['ticketId'].toString())),
     Routes.calendar: (_, __) => MaterialPage(child: routePage(CalendarPage())),
     RegExp(r"\/(reg|renew|revive)(\/diet\/type)"): (_, __) =>
-        MaterialPage(child: routePage(RegimeTypeScreen())),
+        MaterialPage(child: routePage(BodyStatusScreen())),
     RegExp(r"\/(renew|revive)(\/size)"): (_, __) =>
         MaterialPage(child: routePage(BodyStateScreen())),
     RegExp(r"\/(reg|renew|revive)(\/report)"): (_, __) =>
@@ -319,7 +320,7 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(SicknessSpecialScreen())),
     Routes.advice: (_, __) => MaterialPage(child: routePage(AdvicePage())),
     RegExp(r"\/(reg|renew|revive)(\/package)"): (_, __) =>
-        MaterialPage(child: routePage(PackageListScreen())),
+        MaterialPage(child: routePage(BillPaymentNewScreen())),
     RegExp(r"\/(reg|renew|revive)(\/payment\/bill)"): (_, params) =>
         MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
     RegExp(r"\/(reg|renew|revive)(\/payment\/card\/confirm)"): (_, __) =>

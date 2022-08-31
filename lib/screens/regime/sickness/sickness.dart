@@ -44,6 +44,7 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
   void listenBloc() {
     sicknessBloc.navigateTo.listen((event) {
       MemoryApp.isShowDialog = false;
+      MemoryApp.page++;
       VxNavigator.of(context).push(Uri.parse(event));
     });
 
