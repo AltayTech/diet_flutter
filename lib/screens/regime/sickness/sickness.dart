@@ -231,13 +231,15 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
+                    flex: 1,
                       child: Text(sickness.title!, style: typography.caption)),
                   Expanded(
+                    flex: 1,
                     child: CustomSwitch(
                       isSwitch: sickness.isSelected!,
                       title: '',
-                      lableLeft: intl.iHave,
-                      lableRight: intl.iDoNotHave,
+                      lableLeft: sickness.hasMultiChoiceChildren! ? intl.iHave : intl.iAm,
+                      lableRight: sickness.hasMultiChoiceChildren! ? intl.iDoNotHave :  intl.iAmNot,
                       colorSelected: AppColors.priceGreenColor,
                       colorOff: AppColors.grey,
                       function: (value) {

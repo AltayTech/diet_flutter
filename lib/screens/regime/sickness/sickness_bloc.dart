@@ -6,9 +6,9 @@ import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:behandam/extensions/stream.dart';
 
 class SicknessBloc {
   SicknessBloc() {
@@ -52,20 +52,19 @@ class SicknessBloc {
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
   final _helpers = BehaviorSubject<List<Help>>();
   final _status = BehaviorSubject<BodyStatus>();
-  final _userCategoryDisease =
-      BehaviorSubject<List<ObstructiveDiseaseCategory>>();
+  final _userCategoryDisease = BehaviorSubject<List<ObstructiveDiseaseCategory>>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
   final _popDialog = LiveEvent();
 
   String get path => _path;
 
-  Stream<List<ObstructiveDiseaseCategory>> get userCategoryDisease =>
-      _userCategoryDisease;
+  Stream<List<ObstructiveDiseaseCategory>> get userCategoryDisease => _userCategoryDisease;
 
   UserSicknessSpecial? get userSicknessSpecial => _userSicknessSpecial;
 
   List<ObstructiveDisease> get userDiseaseSickness => _userDisease;
+
   List<ObstructiveDiseaseCategory> get userCategoryDiseaseValue => _userCategoryDisease.value;
 
   Stream<BodyStatus> get status => _status.stream;
@@ -82,6 +81,10 @@ class SicknessBloc {
 
   void updateSickness(int index, ObstructiveDiseaseCategory category) {
     List<ObstructiveDiseaseCategory> categories = _userCategoryDisease.value;
+    if (!category.isSelected!)
+      category.diseases?.forEach((element) {
+        element.isSelected = false;
+      });
     categories[index] = category;
     _userCategoryDisease.safeValue = categories;
   }
@@ -129,21 +132,15 @@ class SicknessBloc {
   }
 
   void sendSickness() {
-    _repository
-        .sendSickness(_userCategoryDisease.value)
-        .then((value) {
-          _navigateTo.fireMessage('/${value.next}');
-        })
-        .whenComplete(() => _popDialog.fire(true));
+    _repository.sendSickness(_userCategoryDisease.value).then((value) {
+      _navigateTo.fireMessage('/${value.next}');
+    }).whenComplete(() => _popDialog.fire(true));
   }
 
   void sendSicknessSpecial() {
-    _repository
-        .sendSicknessSpecial(userSicknessSpecial!)
-        .then((value) {
-          _navigateTo.fireMessage('/${value.next}');
-        })
-        .whenComplete(() => _popDialog.fire(true));
+    _repository.sendSicknessSpecial(userSicknessSpecial!).then((value) {
+      _navigateTo.fireMessage('/${value.next}');
+    }).whenComplete(() => _popDialog.fire(true));
   }
 
   void dispose() {
