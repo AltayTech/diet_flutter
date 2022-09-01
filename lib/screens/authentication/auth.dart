@@ -91,8 +91,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 if (snapshot.data == false && !check) {
                   return LoginBackground(
                     children: [
-                      Space(height: 25.h),
-                      Expanded(child: content()),
+                      content(),
                     ],
                   );
                 } else {
@@ -107,6 +106,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
 
   Widget content() {
     return Container(
+      width: 100.w,
       height: 45.h,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -175,7 +175,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   AppColors.btnColor,
                   intl.login,
                   Size(100.w, 6.h),
-                  () {
+                      () {
                     click(snapshot.requireData);
                   },
                 );

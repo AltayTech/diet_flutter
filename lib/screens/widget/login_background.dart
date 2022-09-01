@@ -22,11 +22,10 @@ class _LoginBackgroundState extends ResourcefulState<LoginBackground> {
       decoration: BoxDecoration(
           image: ImageUtils.decorationImage("assets/images/app_background.png",
               fit: BoxFit.fill)),
-      child: Column(
+      child: Stack(alignment: Alignment.center,
         children: [
-          Space(height: 10.h),
-          showLogo(),
-          Expanded(child: Column(children: widget.children)),
+          Positioned(top: 8.h, child: showLogo()),
+          Positioned(bottom: 0, child: Column(children: widget.children)),
         ],
       ),
     );

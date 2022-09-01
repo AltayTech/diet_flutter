@@ -61,7 +61,7 @@ class SicknessBloc {
   String get path => _path;
 
   Stream<List<ObstructiveDiseaseCategory>> get userCategoryDisease =>
-      _userCategoryDisease;
+      _userCategoryDisease.stream;
 
   UserSicknessSpecial? get userSicknessSpecial => _userSicknessSpecial;
 
@@ -134,6 +134,7 @@ class SicknessBloc {
         .then((value) {
           _navigateTo.fireMessage('/${value.next}');
         })
+        //.catchError((e) => _showServerError.fire(e))
         .whenComplete(() => _popDialog.fire(true));
   }
 

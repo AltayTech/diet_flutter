@@ -117,8 +117,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 if (snapshot.data == false && !check) {
                   return LoginBackground(
                     children: [
-                      Space(height: 12.h),
-                      Expanded(child: content()),
+                      content(),
                     ],
                   );
                 } else {
@@ -133,6 +132,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
 
   Widget content() {
     return Container(
+      width: 100.w,
       height: 62.h,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -267,7 +267,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               ),
             ),
           ),
-          Space(height: 2.h),
+          Space(height: 5.h),
           CustomButton(
             AppColors.btnColor,
             intl.login,
