@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/onboard/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -18,6 +19,7 @@ class OnboardScreen extends StatefulWidget {
 
 class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
   late List<PageViewModel> pages = [];
+  late OnboardBloc bloc;
   int _index = 0;
   late List<Color> pageColor = [
     Color(0xff321E6C),
@@ -28,6 +30,8 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
   @override
   void initState() {
     super.initState();
+    bloc = OnboardBloc();
+    bloc.getSlider();
   }
 
   @override
@@ -49,7 +53,9 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
         ),
       )),
       titleWidget: ImageUtils.fromLocal("assets/images/onboarding/t1.svg",
-          height: 10.h, width: 70.w, padding: EdgeInsets.only(top: 0, left: 10.w, right: 10.w)),
+          height: 10.h,
+          width: 70.w,
+          padding: EdgeInsets.only(top: 0, left: 10.w, right: 10.w)),
       decoration: PageDecoration(
           pageColor: Color(0xff5342C3),
           imageFlex: 0,
@@ -57,13 +63,18 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
           bodyPadding: EdgeInsets.only(top: 1.h, right: 5.w, left: 5.w),
           imagePadding: EdgeInsets.zero,
           titlePadding: EdgeInsets.zero,
-          titleTextStyle: typography.headline5!
-              .copyWith(color: Colors.white, fontFamily: 'yekan', fontWeight: FontWeight.bold),
-          bodyTextStyle: typography.caption!.copyWith(color: Colors.white, fontFamily: 'yekan')),
+          titleTextStyle: typography.headline5!.copyWith(
+              color: Colors.white,
+              fontFamily: 'yekan',
+              fontWeight: FontWeight.bold),
+          bodyTextStyle: typography.caption!
+              .copyWith(color: Colors.white, fontFamily: 'yekan')),
     ));
     pages.add(PageViewModel(
       titleWidget: ImageUtils.fromLocal("assets/images/onboarding/t2.svg",
-          height: 15.h, width: 40.w, padding: EdgeInsets.only(left: 25.w, right: 25.w)),
+          height: 15.h,
+          width: 40.w,
+          padding: EdgeInsets.only(left: 25.w, right: 25.w)),
       body:
           "با رعایت برنامه غذایی دکتر کرمانی و کمک پشتیبان‌های ما میتونی توی 3 ماه، 12 کیلو کاهش وزن داشته باشی. قهرمانای زیادی از پسش براومدن، پس تو میتونی...",
       image: Center(
@@ -78,7 +89,9 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
       footer: InkWell(
         onTap: () {
           DialogUtils.showBottomSheetPageColor(
-              context: context, color: Color(0xff0E8562), child: showChampion());
+              context: context,
+              color: Color(0xff0E8562),
+              child: showChampion());
         },
         child: ImageUtils.fromLocal(
           "assets/images/onboarding/recorddar.png",
@@ -93,13 +106,18 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
           bodyPadding: EdgeInsets.only(top: 1.h, right: 5.w, left: 5.w),
           imagePadding: EdgeInsets.only(top: 16),
           titlePadding: EdgeInsets.zero,
-          titleTextStyle: typography.headline5!
-              .copyWith(color: Colors.white, fontFamily: 'yekan', fontWeight: FontWeight.bold),
-          bodyTextStyle: typography.caption!.copyWith(color: Colors.white, fontFamily: 'yekan')),
+          titleTextStyle: typography.headline5!.copyWith(
+              color: Colors.white,
+              fontFamily: 'yekan',
+              fontWeight: FontWeight.bold),
+          bodyTextStyle: typography.caption!
+              .copyWith(color: Colors.white, fontFamily: 'yekan')),
     ));
     pages.add(PageViewModel(
       titleWidget: ImageUtils.fromLocal("assets/images/onboarding/t3.svg",
-          height: 15.h, width: 50.w, padding: EdgeInsets.only(left: 20.w, right: 20.w)),
+          height: 15.h,
+          width: 50.w,
+          padding: EdgeInsets.only(left: 20.w, right: 20.w)),
       body:
           "می‌تونین غذاهایی که دوست ندارین یا بهشون حساسیت دارین رو از برنامه رژیمتون حذف کنین و یا وعده پیشنهادی در برنامه‌تون رو با غذایی که در منزل دارین عوض کنین.",
       image: Center(
@@ -117,9 +135,12 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
           bodyPadding: EdgeInsets.only(top: 1.h, right: 5.w, left: 5.w),
           imagePadding: EdgeInsets.zero,
           titlePadding: EdgeInsets.zero,
-          titleTextStyle: typography.headline5!
-              .copyWith(color: Colors.white, fontFamily: 'yekan', fontWeight: FontWeight.bold),
-          bodyTextStyle: typography.caption!.copyWith(color: Colors.white, fontFamily: 'yekan')),
+          titleTextStyle: typography.headline5!.copyWith(
+              color: Colors.white,
+              fontFamily: 'yekan',
+              fontWeight: FontWeight.bold),
+          bodyTextStyle: typography.caption!
+              .copyWith(color: Colors.white, fontFamily: 'yekan')),
     ));
   }
 
@@ -143,7 +164,9 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
                           'قهرمانان دکتر کرمانی',
                           softWrap: false,
                           style: typography.caption!.copyWith(
-                              color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14.sp),
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 14.sp),
                         ),
                       ),
                     )),
@@ -179,19 +202,20 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
                           'سمیرا حاجیزاده',
                           textAlign: TextAlign.start,
                           softWrap: false,
-                          style: typography.caption!
-                              .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+                          style: typography.caption!.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.w900),
                         ),
                         Text(
                           '21 کیلوگرم کاهش وزن',
                           softWrap: false,
                           textAlign: TextAlign.start,
-                          style: typography.caption!
-                              .copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+                          style: typography.caption!.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.w900),
                         ),
                       ],
                     )),
-                Icon(Icons.chevron_right_outlined, color: Colors.white24, size: 35),
+                Icon(Icons.chevron_right_outlined,
+                    color: Colors.white24, size: 35),
               ],
             )
           ],
@@ -206,8 +230,9 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
       child: Container(
         alignment: Alignment.topRight,
         child: Container(
-          decoration: AppDecorations.boxSmall
-              .copyWith(color: Color(0x2531E6B0), border: Border.all(color: Color(0xaa104e40))),
+          decoration: AppDecorations.boxSmall.copyWith(
+              color: Color(0x2531E6B0),
+              border: Border.all(color: Color(0xaa104e40))),
           padding: EdgeInsets.all(1.w),
           child: Icon(
             Icons.close,
@@ -267,7 +292,8 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
         activeColor: pageColor[_index],
         color: Colors.white,
         spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-        activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+        activeShape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
       ),
     );
   }

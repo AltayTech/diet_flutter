@@ -150,6 +150,9 @@ class Media {
   @JsonKey(name: "image_url")
   String? imageUrl;
 
+  @JsonKey(name: "original_url")
+  String? originalUrl;
+
   @JsonKey(name: "tutorial_url")
   String? tutorialUrl;
 

@@ -37,6 +37,7 @@ import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/data/entity/slider/slider.dart';
 
 // import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -47,7 +48,6 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
 import '../api/api.dart';
@@ -262,6 +262,8 @@ abstract class Repository {
   NetworkResult<List<ObstructiveDiseaseCategory>> getBlockingSickness();
 
   NetworkResult<List<DietType>> getUserAllowedDietType();
+
+  NetworkResult<Slider> getSliders();
 }
 
 class _RepositoryImpl extends Repository {
@@ -1034,6 +1036,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<List<DietType>> getUserAllowedDietType() {
     var response = _apiClient.getUserAllowedDietType();
+    return response;
+  }
+
+  @override
+  NetworkResult<Slider> getSliders() {
+    var response = _apiClient.getSliders();
     return response;
   }
 }
