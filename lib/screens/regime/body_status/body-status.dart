@@ -43,12 +43,13 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     bloc.navigateToVerify.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
+      MemoryApp.page++;
       context.vxNav.push(Uri.parse('/${event}'));
     });
     bloc.showServerError.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
-      Utils.getSnackbarMessage(context, event);
+     // Utils.getSnackbarMessage(context, event);
     });
   }
 

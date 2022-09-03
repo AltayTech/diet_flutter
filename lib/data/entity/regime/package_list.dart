@@ -32,7 +32,7 @@ class Package {
   @JsonKey(name: "refund_deadline", defaultValue: 0)
   int? refundDeadline;
 
-  @JsonKey(name: "type")
+  @JsonKey(name: "payment_type_id")
   int? type;
 
   @JsonKey(name: "is_suggestion")

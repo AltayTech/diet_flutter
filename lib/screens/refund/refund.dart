@@ -213,7 +213,7 @@ class _RefundScreenState extends ResourcefulState<RefundScreen> {
                     Container(
                         height: 6.5.h,
                         width: 55.w,
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },

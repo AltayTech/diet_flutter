@@ -89,15 +89,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
       } else {
         MemoryApp.isShowDialog = false;
         if (event != null && !event) {
-          if (bloc.packageItemNew!.type! == 2) {
-            VxNavigator.of(context).clearAndPushAll([
-              Uri.parse(Routes.profile),
-              Uri.parse(Routes.billSubscriptionHistory),
-              Uri.parse(Routes.subscriptionPaymentOnlineFail)
-            ]);
-          } else {
-            VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
-          }
+          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
         } else
           Navigator.of(context).pop();
       }
@@ -250,10 +242,10 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                 ),
               if (bloc.services.isNotEmpty) Space(height: 1.h),
               if (bloc.services.isNotEmpty)
-                AlignedGridView.count(
-                  crossAxisCount: 1,
-                  mainAxisSpacing: 4,
-                  crossAxisSpacing: 4,
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: bloc.services.length,itemExtent: 15.5.h,
+                  physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     ServicePackage package = bloc.services[index];
                     return Padding(
@@ -267,7 +259,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                         description: package.description ?? '',
                         price: '${package.price!.price}',
                         finalPrice: '${package.price!.finalPrice}',
-                        maxHeight: double.infinity,
+                        maxHeight: 15.5.h,
                         isOurSuggestion: false,
                         isBorder: true,
                         borderColor: null,

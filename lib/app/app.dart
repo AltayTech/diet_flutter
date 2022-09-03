@@ -19,7 +19,6 @@ import 'package:behandam/screens/food_list/alert_list.dart';
 import 'package:behandam/screens/food_list/daily_message.dart';
 import 'package:behandam/screens/food_list/food_list.dart';
 import 'package:behandam/screens/onboard/intro.dart';
-
 import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/payment/debit_card/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
@@ -53,8 +52,6 @@ import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/regime/menu/menu_confirm.dart';
 import 'package:behandam/screens/regime/menu/menu_select.dart';
 import 'package:behandam/screens/regime/overview/overview.dart';
-import 'package:behandam/screens/regime/package/package_list.dart';
-import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
@@ -87,7 +84,6 @@ import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../screens/authentication/auth.dart';
 import '../screens/authentication/login.dart';
 
 class App extends StatefulWidget {
@@ -275,7 +271,7 @@ class MyObs extends VxObserver {
 final navigator = VxNavigator(
   routes: {
     Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
-    Routes.start: (_, __) => MaterialPage(child: routePage(FlowStarterScreen())),
+    RegExp(r"\/(reg|renew|revive)\/start"): (_, __) => MaterialPage(child: routePage(FlowStarterScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
@@ -338,7 +334,7 @@ final navigator = VxNavigator(
     Routes.psychologyReservedMeeting: (_, __) =>
         MaterialPage(child: routePage(PsychologyReservedMeetingScreen())),
     Routes.resetPasswordProfile: (_, __) => MaterialPage(child: routePage(ResetPasswordProfile())),
-    RegExp(r"\/(reg|list|renew|revive|shop|subscription)(\/payment\/online\/fail)"):
+    RegExp(r"\/(list|shop|subscription)(\/payment\/online\/fail)"):
         (path, params) => MaterialPage(
             child: routePage(PaymentFailScreen()),
             arguments: path.path.contains("shop") ? ProductType.SHOP : ProductType.DIET),
@@ -394,9 +390,11 @@ final navigator = VxNavigator(
     Routes.billSubscriptionHistory: (_, params) =>
         MaterialPage(child: routePage(HistorySubscriptionPaymentScreen()), arguments: params),
     RegExp(r"\/(reg)(\/size)"): (_, __) => MaterialPage(child: routePage(PhysicalInfoScreen())),
-    RegExp(r"\/(reg)(\/blocking-sicpecial\/select)"): (_, __) =>
+    RegExp(r"\/(reg)(\/blocking-disease\/select)"): (_, __) =>
         MaterialPage(child: routePage(SicknessScreen())),
     Routes.onboarding: (_, __) => MaterialPage(child: routePage(OnboardScreen())),
+    RegExp(r"\/reg\/payment\/online\/fail"): (_, __) => MaterialPage(child: routePage(PaymentFailNewScreen())),
+    RegExp(r"\/reg\/payment\/online\/success"): (_, __) => MaterialPage(child: routePage(PaymentSuccessNewScreen())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

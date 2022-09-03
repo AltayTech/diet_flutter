@@ -303,14 +303,16 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
       textDirection: context.textDirectionOfLocale,
       child: Container(
         width: 50.w,
-        child: FlatButton.icon(
-          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 4, right: 4),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-              side: BorderSide(
-                color: Color.fromRGBO(178, 178, 178, 1),
-                width: 0.2.w,
-              )),
+        child: TextButton.icon(
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.only(top: 8, bottom: 8, left: 4, right: 4),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+                side: BorderSide(
+                  color: Color.fromRGBO(178, 178, 178, 1),
+                  width: 0.2.w,
+                )),
+          ),
           onPressed: () {
             bloc.setShowInformation();
           },
@@ -375,18 +377,19 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
   Widget buttonBackToShop() {
     return Directionality(
       textDirection: context.textDirectionOfLocale,
-      child: FlatButton(
-        minWidth: 80.w,
-        padding: EdgeInsets.symmetric(
-          vertical: 2.h,
-          horizontal: 3.w,
+      child: TextButton(
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.symmetric(
+            vertical: 2.h,
+            horizontal: 3.w,
+          ),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+              side: BorderSide(
+                color: AppColors.primary,
+                width: 0.25.w,
+              )),
         ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-            side: BorderSide(
-              color: AppColors.primary,
-              width: 0.25.w,
-            )),
         onPressed: () {
           context.vxNav.popToRoot();
         },

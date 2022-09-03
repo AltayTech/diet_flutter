@@ -213,7 +213,7 @@ class BillPaymentBloc {
               ? 0
               : 1;
       payment.coupon = discountCode;
-      payment.packageId = packageItem!.id!;
+      payment.packageId = packageItemNew!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       }).whenComplete(() {
