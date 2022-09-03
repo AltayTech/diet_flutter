@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/screens/widget/custom_banner.dart' as banner;
 import 'package:behandam/screens/widget/line.dart';
@@ -92,7 +94,8 @@ class PackageWidget extends StatelessWidget {
               : null,
           borderRadius: BorderRadius.circular(10),
         ),
-        constraints: BoxConstraints(maxHeight: maxHeight ?? 8.h),
+       // constraints: BoxConstraints(maxHeight:maxHeight ?? 8.h),
+        constraints: BoxConstraints.tightFor(height: max(maxHeight ?? 8.h, ((maxHeight ?? 8.h) + 3.h))),
         child: Container(
           margin: EdgeInsets.only(right: 16, top: 16, left: 16, bottom: 16),
           width: double.maxFinite,
@@ -121,6 +124,7 @@ class PackageWidget extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
                       width: double.maxFinite,
@@ -144,6 +148,8 @@ class PackageWidget extends StatelessWidget {
                       child: Text(
                         description ?? "",
                         softWrap: true,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
                         style: typography!.overline!.copyWith(color: Color(0xff454545)),
                       ),
@@ -220,7 +226,6 @@ class PackageWidget extends StatelessWidget {
               : null,
           borderRadius: BorderRadius.circular(10),
         ),
-        constraints: BoxConstraints(maxHeight: maxHeight ?? 8.h),
         child: Container(
           margin: EdgeInsets.only(right: 16, top: 16, left: 16, bottom: 16),
           width: double.maxFinite,

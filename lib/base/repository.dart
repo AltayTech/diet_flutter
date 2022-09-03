@@ -262,6 +262,8 @@ abstract class Repository {
   NetworkResult<List<ObstructiveDiseaseCategory>> getBlockingSickness();
 
   NetworkResult<List<DietType>> getUserAllowedDietType();
+
+  NetworkResult<Package> getPackages();
 }
 
 class _RepositoryImpl extends Repository {
@@ -1037,6 +1039,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<List<DietType>> getUserAllowedDietType() {
     var response = _apiClient.getUserAllowedDietType();
+    return response;
+  }
+
+  @override
+  NetworkResult<Package> getPackages() {
+    var response = _apiClient.getPackagesNew();
     return response;
   }
 }

@@ -27,7 +27,7 @@ class BillPaymentBloc {
   Package? _packageItemNew;
   Package? _serviceSelected;
   List<Package> _list = [];
-  List<Package> _services = [];
+  List<ServicePackage> _services = [];
   late String _path;
   bool _checkLatestInvoice = false;
   String? _messageErrorCode;
@@ -85,7 +85,7 @@ class BillPaymentBloc {
 
   List<Package> get packageItems => _list;
 
-  List<Package> get services => _services;
+  List<ServicePackage> get services => _services;
 
   String? get messageErrorCode => _messageErrorCode;
 
@@ -111,7 +111,7 @@ class BillPaymentBloc {
     _refreshPackages.safeValue = true;
   }
 
-  void setServiceSelected(Package packageItem) {
+  void setServiceSelected(ServicePackage packageItem) {
     if (packageItem.isSelected == null || !packageItem.isSelected!)
       packageItem.isSelected = true;
     else
@@ -120,10 +120,11 @@ class BillPaymentBloc {
   }
 
   void changePayment() {
-    _packageItemNew!.totalPrice = _packageItemNew!.finalPrice!;
+    _packageItemNew!.price!.totalPrice = _packageItemNew!.price!.finalPrice!;
     _services.forEach((element) {
       if (element.isSelected == true) {
-        _packageItemNew!.totalPrice = _packageItemNew!.totalPrice! + element.price!;
+        _packageItemNew!.price!.totalPrice =
+            _packageItemNew!.price!.totalPrice! + element.price!.price!;
       }
     });
     _refreshPackages.safeValue = true;
@@ -144,7 +145,7 @@ class BillPaymentBloc {
     price.code = val;
     _repository.checkCoupon(price).then((value) {
       _discountInfo = value.data;
-      _packageItemNew!.totalPrice = _discountInfo!.finalPrice;
+      _packageItemNew!.price!.totalPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
       if (_discountInfo!.finalPrice == 0) {
         onPaymentTap = PaymentType.online;
@@ -162,78 +163,16 @@ class BillPaymentBloc {
 
   void getPackagePayment() {
     _waiting.safeValue = true;
-    List<Package> serv1 = [];
-    serv1.add(Package()
-      ..price = 150000
-      ..finalPrice = 900
-      ..id = 1
-      ..name = 'برنامه ورزشی(فیتامین)'
-      ..index = 0
-      ..totalPrice = 900
-      ..is_suggestion = true
-      ..description =
-          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
-    serv1.add(Package()
-      ..price = 40000
-      ..finalPrice = 1900
-      ..id = 1
-      ..name = 'پشتیبانی اختصاصی'
-      ..index = 1
-      ..totalPrice = 1900
-      ..is_suggestion = false
-      ..description =
-          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
-    _list.add(Package()
-      ..price = 12000
-      ..finalPrice = 90000
-      ..id = 1
-      ..name = 'پکیج یک ماهه'
-      ..index = 0
-      ..totalPrice = 90000
-      ..is_suggestion = true
-      ..servicesPackages = serv1
-      ..description =
-          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
-    List<Package> serv = [];
-    serv.add(Package()
-      ..price = 150000
-      ..finalPrice = 900
-      ..id = 1
-      ..name = 'برنامه ورزشی(فیتامین)'
-      ..index = 0
-      ..totalPrice = 900
-      ..is_suggestion = true
-      ..description =
-          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
-    serv.add(Package()
-      ..price = 40000
-      ..finalPrice = 1900
-      ..id = 1
-      ..name = 'پشتیبانی اختصاصی'
-      ..index = 1
-      ..totalPrice = 1900
-      ..is_suggestion = false
-      ..description =
-          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
-    _list.add(Package()
-      ..price = 20000
-      ..finalPrice = 10900
-      ..id = 1
-      ..name = 'پکیج سه ماهه'
-      ..index = 1
-      ..totalPrice = 10900
-      ..is_suggestion = false
-      ..servicesPackages = serv
-      ..description =
-          'پکیج یکماه رژیم دکتر کرمانی شامل 2 ویزیت با 2 تماس برای شما فعال خواهد شد2 تماس برای شما فعال خواهد شد');
 
-    /*   _repository.getPackagePayment().then((value) {
-      _packageItem = value.data;
-      _packageItem!.index = 0;
+    _repository.getPackages().then((value) {
+      _list.addAll(value.data!.items!);
+      for (int i = 0; i < _list.length; i++) {
+        _list[i].index = i;
+        _list[i].price!.totalPrice = _list[i].price!.finalPrice;
+      }
     }).whenComplete(() {
       _waiting.safeValue = false;
-    });*/
-    _waiting.safeValue = false;
+    });
   }
 
   void getReservePackagePayment() {
