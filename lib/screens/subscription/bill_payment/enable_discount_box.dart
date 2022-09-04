@@ -49,7 +49,7 @@ class _EnableDiscountBoxWidget extends ResourcefulState<EnableDiscountBoxWidget>
             return StreamBuilder(
                 stream: bloc.usedDiscount,
                 builder: (context, usedDiscount) {
-                  if (usedDiscount.hasData && usedDiscount.data == true)
+                  if (usedDiscount.data==null || usedDiscount.data == false)
                     return DiscountWidget();
                   else
                     return successBox();
@@ -86,7 +86,10 @@ class _EnableDiscountBoxWidget extends ResourcefulState<EnableDiscountBoxWidget>
                           ),
                         ),
                         InkWell(
-                          onTap: () => bloc.setEnterDiscount = true,
+                          onTap: () {
+                            bloc.setUsedDiscount = false;
+                            bloc.setEnterDiscount = true;
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -140,15 +143,15 @@ class _EnableDiscountBoxWidget extends ResourcefulState<EnableDiscountBoxWidget>
                   SizedBox(
                     width: double.maxFinite,
                     child: Text(
-                      '${bloc.discountInfo?.priceDiscount}'.seRagham() + ' تخفیف',
-                      style: typography.caption,
+                      '${bloc.discountInfo?.discount}'.seRagham() + ' ${intl.discount}',
+                      style: typography.caption!.copyWith(fontSize: 12.sp,fontWeight: FontWeight.w700),
                     ),
                   ),
                   SizedBox(
                     width: double.maxFinite,
                     child: Text(
-                      '${bloc.discountInfo?.discount_message}',
-                      style: typography.caption,
+                      bloc.discountInfo?.description ?? intl.discountMessage,
+                      style: typography.caption!.copyWith(fontSize: 10.sp,fontWeight: FontWeight.w400),
                       textAlign: TextAlign.start,
                     ),
                   ),

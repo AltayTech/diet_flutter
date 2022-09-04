@@ -251,14 +251,16 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
       textDirection: context.textDirectionOfLocale,
       child: Container(
         width: 50.w,
-        child: FlatButton.icon(
-          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 4, right: 4),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-              side: BorderSide(
-                color: Color.fromRGBO(178, 178, 178, 1),
-                width: 0.2.w,
-              )),
+        child: TextButton.icon(
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.only(top: 8, bottom: 8, left: 4, right: 4),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+                side: BorderSide(
+                  color: Color.fromRGBO(178, 178, 178, 1),
+                  width: 0.2.w,
+                )),
+          ),
           onPressed: () {
             bloc.setShowInformation();
           },
@@ -323,18 +325,20 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
   Widget buttonBackToShop() {
     return Directionality(
       textDirection: context.textDirectionOfLocale,
-      child: FlatButton(
-        minWidth: 80.w,
-        padding: EdgeInsets.symmetric(
-          vertical: 2.h,
-          horizontal: 3.w,
+      child: TextButton(
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.symmetric(
+            vertical: 2.h,
+            horizontal: 3.w,
+          ),
+          minimumSize: Size(80.w, 5.h),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+              side: BorderSide(
+                color: AppColors.primary,
+                width: 0.25.w,
+              )),
         ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-            side: BorderSide(
-              color: AppColors.primary,
-              width: 0.25.w,
-            )),
         onPressed: () {
           context.vxNav.popToRoot();
         },
@@ -353,18 +357,20 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
   Widget buttonRetryPayment() {
     return Directionality(
       textDirection: context.textDirectionOfLocale,
-      child: FlatButton.icon(
-        minWidth: 80.w,
-        padding: EdgeInsets.symmetric(
-          vertical: 2.h,
-          horizontal: 3.w,
+      child: TextButton.icon(
+        style: TextButton.styleFrom(
+            padding: EdgeInsets.symmetric(
+              vertical: 2.h,
+              horizontal: 3.w,
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+                side: BorderSide(
+                  color: AppColors.primary,
+                  width: 0.25.w,
+                )),
+          minimumSize: Size(80.w, 5.h)
         ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-            side: BorderSide(
-              color: AppColors.primary,
-              width: 0.25.w,
-            )),
         onPressed: () {
           if (navigator.currentConfiguration!.path.contains("subscription") ||
               navigator.currentConfiguration!.path.contains("shop")) {

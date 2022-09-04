@@ -9,22 +9,16 @@ class Package {
   @JsonKey(name: "items")
   List<Package>? items;
 
-  @JsonKey(name: "servicesPackages")
-  List<Package>? servicesPackages;
+  @JsonKey(name: "services")
+  List<ServicePackage>? servicesPackages;
 
   @JsonKey(name: "id")
   int? id;
   @JsonKey(name: "price")
-  int? price;
-
-  @JsonKey(name: "final_price")
-  int? finalPrice;
+  PackagePriceNew? price;
 
   @JsonKey(name: "name")
   String? name;
-
-  @JsonKey(name: "services")
-  List<ServicePackage>? services;
 
   @JsonKey(name: "media")
   String? media;
@@ -38,7 +32,7 @@ class Package {
   @JsonKey(name: "refund_deadline", defaultValue: 0)
   int? refundDeadline;
 
-  @JsonKey(name: "type")
+  @JsonKey(name: "payment_type_id")
   int? type;
 
   @JsonKey(name: "is_suggestion")
@@ -50,8 +44,6 @@ class Package {
 
   @JsonKey(name: "isSelected", defaultValue: false)
   bool? isSelected;
-
-  int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
 
   Package();
 
@@ -141,8 +133,14 @@ class Price {
   @JsonKey(name: "product_id")
   int? product_id;
 
+  @JsonKey(name: "package_id")
+  int? packageId;
+
   @JsonKey(name: "discount_message")
   String? discount_message;
+
+  @JsonKey(name: "description")
+  String? description;
 
   int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
 
@@ -160,9 +158,39 @@ class ServicePackage {
   @JsonKey(name: "description")
   String? description;
 
+  @JsonKey(name: "price")
+  PackagePriceNew? price;
+
+  @JsonKey(name: "isSelected", defaultValue: false)
+  bool? isSelected;
+
   ServicePackage();
 
   factory ServicePackage.fromJson(Map<String, dynamic> json) => _$ServicePackageFromJson(json);
 
   Map<String, dynamic> toJson() => _$ServicePackageToJson(this);
+}
+
+@JsonSerializable()
+class PackagePriceNew {
+  @JsonKey(name: "id")
+  int? id;
+  @JsonKey(name: "priceable_id")
+  int? priceableId;
+  @JsonKey(name: "amount")
+  int? price;
+  @JsonKey(name: "sale_amount")
+  int? finalPrice;
+  @JsonKey(name: "type")
+  int? type;
+
+  int? totalPrice;
+
+  int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
+
+  PackagePriceNew();
+
+  factory PackagePriceNew.fromJson(Map<String, dynamic> json) => _$PackagePriceNewFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PackagePriceNewToJson(this);
 }

@@ -3,6 +3,7 @@ import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/payment/payment_type_new.dart';
@@ -16,13 +17,14 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_checkbox.dart';
-import 'package:behandam/widget/stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import '../../widget/stepper_widget.dart';
 
 class BillPaymentNewScreen extends StatefulWidget {
   const BillPaymentNewScreen({Key? key}) : super(key: key);
@@ -34,7 +36,6 @@ class BillPaymentNewScreen extends StatefulWidget {
 class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
     with WidgetsBindingObserver {
   late BillPaymentBloc bloc;
-  late ProgressTimeline _progressTimeline;
 
   @override
   void initState() {
@@ -42,34 +43,6 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
 
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _progressTimeline = ProgressTimeline(
-      states: [
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-        SingleState(stateTitle: "", isFailed: false),
-      ],
-      height: 6.h,
-      width: 45.w,
-      checkedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 7.w, height: 7.w, fit: BoxFit.fill),
-      currentIcon: ImageUtils.fromLocal("assets/images/physical_report/current_step.svg",
-          width: 7.w, height: 7.w, fit: BoxFit.fill),
-      failedIcon: ImageUtils.fromLocal("assets/images/physical_report/checked_step.svg",
-          width: 7.w, height: 7.w, fit: BoxFit.fill),
-      uncheckedIcon: ImageUtils.fromLocal("assets/images/physical_report/none_step.svg",
-          width: 4.w, height: 4.w, fit: BoxFit.fill),
-      iconSize: 7.w,
-      connectorLength: 8.w,
-      connectorColorSelected: AppColors.primary,
-      connectorWidth: 4,
-      connectorColor: Color(0xffC9D1E1),
-    );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(milliseconds: 500), () {
-        _progressTimeline.gotoStage(2);
-      });
-    });
 
     bloc = BillPaymentBloc();
     if (navigator.currentConfiguration!.path.contains('subscription')) {
@@ -116,15 +89,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
       } else {
         MemoryApp.isShowDialog = false;
         if (event != null && !event) {
-          if (bloc.packageItemNew!.type! == 2) {
-            VxNavigator.of(context).clearAndPushAll([
-              Uri.parse(Routes.profile),
-              Uri.parse(Routes.billSubscriptionHistory),
-              Uri.parse(Routes.subscriptionPaymentOnlineFail)
-            ]);
-          } else {
-            VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
-          }
+          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
         } else
           Navigator.of(context).pop();
       }
@@ -180,50 +145,56 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
         resizeToAvoidBottomInset: false,
         appBar: Toolbar(titleBar: intl.paymentFinalBill),
         backgroundColor: AppColors.newBackgroundFlow,
-        body: StreamBuilder<bool>(
-            stream: bloc.waiting,
-            builder: (context, waiting) {
-              if (waiting.hasData && !waiting.requireData)
-                return TouchMouseScrollable(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 100.w,
-                            child: Center(
-                              child: _progressTimeline,
+        body: WillPopScope(
+          onWillPop: () {
+            MemoryApp.page--;
+            return Future.value(true);
+          },
+          child: StreamBuilder<bool>(
+              stream: bloc.waiting,
+              builder: (context, waiting) {
+                if (waiting.hasData && !waiting.requireData)
+                  return TouchMouseScrollable(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 100.w,
+                              child: Center(
+                                child: StepperWidget(),
+                              ),
                             ),
-                          ),
-                          Text(
-                            intl.enterYourPackage,
-                            style: typography.headline5!.copyWith(fontSize: 14.sp),
-                          ),
-                          Text(
-                            intl.enterYourPackageDescription,
-                            style: typography.overline,
-                          ),
-                          Space(
-                            height: 2.h,
-                          ),
-                          packageItem(),
-                          Space(height: 1.h),
-                          EnableDiscountBoxWidget(),
-                          Space(
-                            height: 1.h,
-                          ),
-                          PaymentTypeWidget(),
-                          rulesAndPaymentBtn()
-                        ],
+                            Text(
+                              intl.enterYourPackage,
+                              style: typography.headline5!.copyWith(fontSize: 14.sp),
+                            ),
+                            Text(
+                              intl.enterYourPackageDescription,
+                              style: typography.overline,
+                            ),
+                            Space(
+                              height: 2.h,
+                            ),
+                            packageItem(),
+                            Space(height: 1.h),
+                            EnableDiscountBoxWidget(),
+                            Space(
+                              height: 1.h,
+                            ),
+                            PaymentTypeWidget(),
+                            rulesAndPaymentBtn()
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              return Progress();
-            }));
+                  );
+                return Progress();
+              }),
+        ));
   }
 
   Widget packageItem() {
@@ -251,10 +222,10 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                           title: package.name ?? '',
                           isSelected: package.isSelected ?? false,
                           description: package.description ?? '',
-                          price: '${package.price}',
-                          finalPrice: '${package.finalPrice}',
+                          price: '${package.price!.price}',
+                          finalPrice: '${package.price!.finalPrice}',
                           maxHeight: 22.h,
-                          isOurSuggestion: package.is_suggestion,
+                          isOurSuggestion: package.is_suggestion ?? false,
                           isBorder: true,
                           borderColor: package.barColor,
                         ),
@@ -269,31 +240,33 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                   intl.weAreServiceMore,
                   style: typography.headline5!.copyWith(fontSize: 12.sp),
                 ),
-              if (bloc.services.isNotEmpty) Space(height: 1.h),
+              if (bloc.services.isNotEmpty) Space(height: 2.h),
               if (bloc.services.isNotEmpty)
-                ...bloc.services
-                    .asMap()
-                    .map((index, package) => MapEntry(
-                        index,
-                        Padding(
-                          padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0, left: 8, right: 8),
-                          child: PackageWidget.service(
-                            onTap: () {
-                              bloc.setServiceSelected(package);
-                            },
-                            title: package.name ?? '',
-                            isSelected: package.isSelected ?? false,
-                            description: package.description ?? '',
-                            price: '${package.price}',
-                            finalPrice: '${package.finalPrice}',
-                            maxHeight: 12.5.h,
-                            isOurSuggestion: package.is_suggestion,
-                            isBorder: true,
-                            borderColor: package.barColor,
-                          ),
-                        )))
-                    .values
-                    .toList(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: bloc.services.length,itemExtent: 15.5.h,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    ServicePackage package = bloc.services[index];
+                    return Padding(
+                      padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
+                      child: PackageWidget.service(
+                        onTap: () {
+                          bloc.setServiceSelected(package);
+                        },
+                        title: package.name ?? '',
+                        isSelected: package.isSelected ?? false,
+                        description: package.description ?? '',
+                        price: '${package.price!.price}',
+                        finalPrice: '${package.price!.finalPrice}',
+                        maxHeight: 15.5.h,
+                        isOurSuggestion: false,
+                        isBorder: true,
+                        borderColor: null,
+                      ),
+                    );
+                  },
+                )
             ],
           ),
         );

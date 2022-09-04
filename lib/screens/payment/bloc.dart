@@ -23,7 +23,6 @@ class PaymentBloc {
     _waiting.safeValue = false;
     _discountLoading.value = false;
     _selectedDateType.value = PaymentDate.today;
-
     _invoice = LatestInvoiceData();
   }
 
@@ -236,7 +235,7 @@ class PaymentBloc {
     _waiting.safeValue = true;
     _repository.latestInvoice().then((value) {
       _invoice = value.data;
-      _invoice!.payedAt = DateTime.now().toString().substring(0, 10);
+      _invoice!.payedAt ??= DateTime.now().toString().substring(0, 10);
       _path = value.next!;
     }).whenComplete(() => _waiting.safeValue = false);
   }
@@ -303,7 +302,7 @@ class PaymentBloc {
       _productType.safeValue = ProductType.DIET;
     }
 
-   // sendRequest();
+   sendRequest();
   }
 
   void sendRequest() {

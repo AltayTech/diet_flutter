@@ -40,8 +40,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   void initListener() {
     bloc.showServerError.listen((event) {
       if (event.contains('payment/bill')) {
-        context.vxNav.clearAndPush(Uri.parse(
-            '/${event.toString().split('/')[0]}${Routes.regimeType}'));
+        context.vxNav.clearAndPush(Uri.parse('/${event.toString().split('/')[0]}${Routes.start}'));
       } else if (!Routes.listView.contains(event)) {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       } else
@@ -106,18 +105,15 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 3.w),
                                 child: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(16.0)),
+                                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
                                   child: InkWell(
                                       onTap: () {
-                                        DialogUtils.showDialogProgress(
-                                            context: context);
+                                        DialogUtils.showDialogProgress(context: context);
                                         bloc.checkFitamin();
                                         // _launchURL(vitrinBloc.url);
                                       },
                                       child: ImageUtils.fromLocal(
-                                        MemoryApp.userInformation!
-                                                .hasFitaminService.isNullOrFalse
+                                        MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
                                             ? 'assets/images/vitrin/fitamin_banner.png'
                                             : 'assets/images/vitrin/fitamin_banner_02.png',
                                       )),

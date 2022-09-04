@@ -1,27 +1,21 @@
-import 'package:behandam/app/app.dart';
+
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
-import 'package:behandam/data/entity/regime/physical_info.dart';
-import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/provider.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
-import 'package:behandam/screens/regime/ruler_header.dart';
-import 'package:behandam/screens/utility/alert.dart';
-import 'package:behandam/screens/utility/custom_ruler.dart';
-import 'package:behandam/screens/widget/custom_date_picker.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/themes/shapes.dart';
+
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 

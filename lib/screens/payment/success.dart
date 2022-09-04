@@ -144,17 +144,19 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                 ),
                 Directionality(
                   textDirection: context.textDirectionOfLocaleInversed,
-                  child: FlatButton.icon(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 2.h,
-                      horizontal: 3.w,
+                  child: TextButton.icon(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 2.h,
+                        horizontal: 3.w,
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          side: BorderSide(
+                            color: Color.fromRGBO(178, 178, 178, 1),
+                            width: 0.2.w,
+                          )),
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        side: BorderSide(
-                          color: Color.fromRGBO(178, 178, 178, 1),
-                          width: 0.2.w,
-                        )),
                     onPressed: () {
                       bloc.setShowInformation();
                     },

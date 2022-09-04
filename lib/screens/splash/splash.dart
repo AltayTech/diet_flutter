@@ -117,7 +117,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                       ),
                       if (!bloc.forceUpdate) SizedBox(width: 2.w),
                       if (!bloc.forceUpdate)
-                        FlatButton(
+                        TextButton(
                           child: Text(
                             intl.later,
                             style: Theme.of(context)
@@ -129,7 +129,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                             Navigator.of(context).pop();
                             handleDeeplink();
                           },
-                          color: Colors.white,
+                        style: TextButton.styleFrom(backgroundColor:  Colors.white,),
                         ),
                     ],
                   )

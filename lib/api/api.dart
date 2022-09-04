@@ -363,4 +363,7 @@ abstract class RestClient {
 
   @GET("/user/allowed-diet-types")
   NetworkResult<List<DietType>> getUserAllowedDietType();
+
+  @GET("/package")
+  NetworkResult<Package> getPackagesNew();
 }

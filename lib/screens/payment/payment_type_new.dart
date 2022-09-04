@@ -174,7 +174,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                   textAlign: TextAlign.end,
                   softWrap: true,
                   text: TextSpan(
-                    text: '${bloc.packageItemNew!.price}'.seRagham() + ' ',
+                    text: '${bloc.packageItemNew!.price!.finalPrice}'.seRagham() + ' ',
                     children: [
                       TextSpan(
                         text: intl.toman,
@@ -189,10 +189,10 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
               ),
             ],
           ),
-          if (bloc.packageItemNew!.totalPrice == null &&
-              bloc.packageItemNew!.finalPrice != bloc.packageItemNew!.price &&
-              bloc.packageItemNew!.finalPrice != 0 &&
-              bloc.packageItemNew!.price != 0)
+          if (bloc.packageItemNew!.price!.totalPrice == null &&
+              bloc.packageItemNew!.price!.finalPrice != bloc.packageItemNew!.price!.price &&
+              bloc.packageItemNew!.price!.finalPrice != 0 &&
+              bloc.packageItemNew!.price!.price != 0)
             Container(
               margin: EdgeInsets.only(top: 1.h),
               child: Row(
@@ -210,7 +210,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                   ),
                   Expanded(
                     child: Text(
-                      '${bloc.packageItemNew!.price! - bloc.packageItemNew!.finalPrice!}'.seRagham()+' ${intl.toman}',
+                      '${bloc.packageItemNew!.price!.price! - bloc.packageItemNew!.price!.finalPrice!}'.seRagham()+' ${intl.toman}',
                       softWrap: false,
                       textAlign: TextAlign.end,
                       style: typography.caption!.copyWith(color: AppColors.priceDiscountColor),
@@ -241,7 +241,7 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                               ),
                               Expanded(
                                 child: Text(
-                                  '${value.price.toString().seRagham()} ${intl.toman}',
+                                  '${value.price!.price.toString().seRagham()} ${intl.toman}',
                                   softWrap: true,
                                   textAlign: TextAlign.end,
                                   style: typography.caption!
@@ -314,9 +314,9 @@ class _PaymentTypeWidget extends ResourcefulState<PaymentTypeWidget> {
                       return Expanded(
                         child: RichText(
                           text: TextSpan(
-                              text: bloc.packageItemNew!.totalPrice != 0 &&
-                                      bloc.packageItemNew!.totalPrice != null
-                                  ? '${bloc.packageItemNew!.totalPrice}'.seRagham()
+                              text: bloc.packageItemNew!.price!.totalPrice != 0 &&
+                                      bloc.packageItemNew!.price!.totalPrice != null
+                                  ? '${bloc.packageItemNew!.price!.totalPrice}'.seRagham()
                                   : intl.free,
                               style: typography.titleMedium!.copyWith(
                                   color: AppColors.priceGreenColor, fontWeight: FontWeight.w700),
