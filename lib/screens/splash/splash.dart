@@ -27,18 +27,30 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends ResourcefulState<SplashScreen> {
   late SplashBloc bloc;
 
+  late bool isShowOnBoarding;
+
   @override
   void initState() {
     super.initState();
     bloc = SplashBloc();
     bloc.getPackageInfo();
-    bloc.getUser();
+
+    getSliders();
+
     listenBloc();
+  }
+
+  void getSliders() async {
+    isShowOnBoarding = await AppSharedPreferences.isShowOnBoarding;
+
+    if (!isShowOnBoarding)
+      bloc.getSlider();
+    else
+      bloc.getUser();
   }
 
   void handleDeeplink() async {
     var fcm = await AppSharedPreferences.fcmToken;
-    bool isShowOnboarding = await AppSharedPreferences.isShowOnBoarding;
     debugPrint('fcm is => ${fcm}');
     final deeplink = await AppSharedPreferences.deeplink;
     if (MemoryApp.token.isNotNullAndEmpty) {
@@ -52,9 +64,10 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
         VxNavigator.of(context).clearAndPushAll(
             [Uri.parse(Routes.shopHome), Uri.parse(navigator.currentConfiguration!.path)]);
       }
-    } else if(isShowOnboarding) {
+    } else if (!isShowOnBoarding && !MemoryApp.sliders.isEmpty) {
       VxNavigator.of(context).clearAndPush(Uri.parse(Routes.onboarding));
-    }else   VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
+    } else
+      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
   }
 
   @override
@@ -146,48 +159,48 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-    color: Colors.white,
-    width: 100.w,
-    height: 100.h,
-    child: Stack(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ImageUtils.fromLocal(
-                  'assets/images/registry/app_logo.svg',
-                  width: 30.w,
-                  height: 30.w,
-                ),
-                Space(
-                  height: 2.h,
-                ),
-                Text(
-                  intl.appNameSplash,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ],
-            ),
-          ),
-          StreamBuilder(
-              stream: bloc.versionApp,
-              builder: (context, snapshot) {
-                return Align(
-                  child: Padding(
-                    child: Text(
-                      intl.version(snapshot.data?.toString() ?? ''),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyText1,
+          color: Colors.white,
+          width: 100.w,
+          height: 100.h,
+          child: Stack(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ImageUtils.fromLocal(
+                      'assets/images/registry/app_logo.svg',
+                      width: 30.w,
+                      height: 30.w,
                     ),
-                    padding: EdgeInsets.only(bottom: 16),
-                  ),
-                  alignment: Alignment.bottomCenter,
-                );
-              })
-        ],
-    ),
+                    Space(
+                      height: 2.h,
+                    ),
+                    Text(
+                      intl.appNameSplash,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  ],
+                ),
+              ),
+              StreamBuilder(
+                  stream: bloc.versionApp,
+                  builder: (context, snapshot) {
+                    return Align(
+                      child: Padding(
+                        child: Text(
+                          intl.version(snapshot.data?.toString() ?? ''),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        padding: EdgeInsets.only(bottom: 16),
+                      ),
+                      alignment: Alignment.bottomCenter,
+                    );
+                  })
+            ],
+          ),
         ),
       ),
     );

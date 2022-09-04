@@ -272,7 +272,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage(PaymentFailNewScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
     Routes.start: (_, __) => MaterialPage(child: routePage(FlowStarterScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),

@@ -16,29 +16,16 @@ class OnboardBloc {
   late String _path;
 
   final _waiting = BehaviorSubject<bool>();
-  final _sliders = BehaviorSubject<List<Slider>>();
   final _navigateTo = LiveEvent();
 
   String get path => _path;
 
   Stream<bool> get waiting => _waiting.stream;
 
-  Stream<List<Slider>> get sliders => _sliders.stream;
-
   Stream get navigateTo => _navigateTo.stream;
-
-  void getSlider() {
-    _waiting.safeValue = true;
-    _repository.getSliders().then((value) {
-      _sliders.safeValue = value.data!.items!;
-      }).whenComplete(() {
-        _waiting.safeValue = false;
-      });
-  }
 
   void dispose() {
     _waiting.close();
-    _sliders.close();
     _navigateTo.close();
   }
 }
