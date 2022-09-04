@@ -85,6 +85,7 @@ import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../screens/authentication/login.dart';
+import '../screens/regime/confirm_body_state.dart';
 
 class App extends StatefulWidget {
   @override
@@ -309,7 +310,7 @@ final navigator = VxNavigator(
     RegExp(r"\/(renew|revive)(\/size)"): (_, __) =>
         MaterialPage(child: routePage(BodyStateScreen())),
     RegExp(r"\/(reg|renew|revive)(\/report)"): (_, __) =>
-        MaterialPage(child: routePage(BodyStatusScreen())),
+        MaterialPage(child: routePage(ConfirmBodyStateScreen())),
     RegExp(r"\/(reg|renew|list|revive)(\/sick\/select)"): (_, __) =>
         MaterialPage(child: routePage(SicknessScreen())),
     RegExp(r"\/(reg|renew|list|revive)(\/special)"): (_, __) =>
@@ -360,7 +361,7 @@ final navigator = VxNavigator(
     Routes.listWeightAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.renewAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     Routes.reviveAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
-    RegExp(r"\/(reg|list|renew|revive|shop|subscription)(\/payment\/online\/success)"):
+    RegExp(r"\/(list|renew|revive|shop|subscription)(\/payment\/online\/success)"):
         (_, param) => MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
     RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),

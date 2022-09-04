@@ -143,6 +143,7 @@ class BillPaymentBloc {
     _discountLoading.value = true;
     Price price = new Price();
     price.code = val;
+    price.packageId=_packageItemNew!.id;
     _repository.checkCoupon(price).then((value) {
       _discountInfo = value.data;
       _packageItemNew!.price!.totalPrice = _discountInfo!.finalPrice;
@@ -178,24 +179,14 @@ class BillPaymentBloc {
   void getReservePackagePayment() {
     _waiting.safeValue = true;
     _repository.getReservePackageUser().then((value) {
-      //   _packageItem = value.data;
+        _packageItem = value.data;
       _packageItem!.index = 0;
     }).whenComplete(() {
       _waiting.safeValue = false;
     });
   }
 
-  void getPackage() {
-    _waiting.safeValue = true;
-    _repository.getPackagesList().then((value) {
-      // _list = value.data!.items!;
-      for (int i = 0; i < _list.length; i++) {
-        _list[i].index = i;
-      }
-    }).whenComplete(() {
-      _waiting.safeValue = false;
-    });
-  }
+
 
   void selectUserPayment() {
     if (!isUsedDiscount && (discountCode != null && discountCode!.trim().isNotEmpty)) {

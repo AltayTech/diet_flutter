@@ -133,8 +133,14 @@ class Price {
   @JsonKey(name: "product_id")
   int? product_id;
 
+  @JsonKey(name: "package_id")
+  int? packageId;
+
   @JsonKey(name: "discount_message")
   String? discount_message;
+
+  @JsonKey(name: "description")
+  String? description;
 
   int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
 

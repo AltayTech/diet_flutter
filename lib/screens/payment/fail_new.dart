@@ -129,7 +129,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
                         right: 10.w,
                       ),
                       Positioned(
-                        child: Text('09357947632',
+                        child: Text(MemoryApp.userInformation!=null ?MemoryApp.userInformation!.mobile! : '********',
                             textAlign: TextAlign.center,
                             softWrap: true,
                             style: Theme.of(context)
@@ -153,13 +153,16 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
                         right: 10.w,
                       ),
                       Positioned(
-                        child: Text('33543453',
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(fontWeight: FontWeight.w500)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8,right: 8),
+                          child: Text(bloc.invoice!.note!,
+                              textAlign: TextAlign.center,
+                              softWrap: true,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .copyWith(fontWeight: FontWeight.w500,fontSize: 10.sp)),
+                        ),
                         top: 18.h,
                         left: 10.w,
                         right: 10.w,
@@ -167,7 +170,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
                     ],
                   ),
                 Space(height: 3.h),
-                if (type != ProductType.SHOP) buttonRetryPayment() else buttonBackToShop(),
+               buttonRetryPayment() ,
                 Space(height: 3.h),
               ],
             ),
@@ -177,32 +180,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
     );
   }
 
-  Widget item(String? title, String? value, bool show) {
-    return Row(
-      textDirection: context.textDirectionOfLocaleInversed,
-      children: [
-        Expanded(
-          child: Text(
-            show ? '$value ${intl.toman}' : value ?? '',
-            textDirection: context.textDirectionOfLocale,
-            textAlign: TextAlign.start,
-            style: Theme.of(context)
-                .textTheme
-                .caption!
-                .copyWith(fontWeight: FontWeight.bold, color: AppColors.labelTextColor),
-          ),
-        ),
-        Expanded(
-          child: Text(
-            title ?? '',
-            textDirection: context.textDirectionOfLocale,
-            textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.caption,
-          ),
-        ),
-      ],
-    );
-  }
+
 
   Widget titlePaymentFail() {
     return Column(
@@ -216,7 +194,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
           style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.red),
         ),
         Text(
-          bloc.invoice?.note ?? intl.failForAdmin,
+         intl.failForAdmin,
           textAlign: TextAlign.center,
           softWrap: true,
           style: Theme.of(context).textTheme.caption,
@@ -225,198 +203,16 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
     );
   }
 
-  Widget noteInvoiceReject() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(245, 245, 245, 1),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 1.5.w,
-        vertical: 1.h,
-      ),
-      child: Stack(
-        children: <Widget>[
-          Container(
-            height: 8.h,
-          ),
-          Positioned(
-            top: 0,
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                color: Color.fromARGB(255, 255, 231, 231),
-                child: Container(
-                  child: ClipPath(
-                    clipper: context.isRtl ? PayDiamond() : PayDiamondEn(),
-                    child: Container(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 0,
-            bottom: 0,
-            left: 3.w,
-            right: 0.2.w,
-            child: Center(
-              child: Padding(
-                padding:
-                    EdgeInsets.only(right: context.isRtl ? 7.w : 0, left: context.isRtl ? 0 : 7.w),
-                child: Text(
-                  bloc.invoice?.note ?? intl.failForAdmin,
-                  textAlign: TextAlign.center,
-                  softWrap: true,
-                  textDirection: context.textDirectionOfLocale,
-                  style: Theme.of(context).textTheme.caption!.copyWith(
-                      color: AppColors.colorTextApp, fontWeight: FontWeight.w700, fontSize: 10.sp),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            right: 10,
-            top: 10,
-            bottom: 10,
-            child: Center(
-              child: ImageUtils.fromLocal(
-                'assets/images/bill/idea.svg',
-                fit: BoxFit.cover,
-                width: 0.08.w,
-                height: 0.08.w,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buttonShowInformation() {
-    return Directionality(
-      textDirection: context.textDirectionOfLocale,
-      child: Container(
-        width: 50.w,
-        child: TextButton.icon(
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.only(top: 8, bottom: 8, left: 4, right: 4),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
-                side: BorderSide(
-                  color: Color.fromRGBO(178, 178, 178, 1),
-                  width: 0.2.w,
-                )),
-          ),
-          onPressed: () {
-            bloc.setShowInformation();
-          },
-          icon: ImageUtils.fromLocal(
-            'assets/images/bill/info.svg',
-            width: 7.w,
-            height: 7.w,
-          ),
-          label: Text(
-            intl.paymentInformation,
-            textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.caption,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget informationInvoice() {
-    return StreamBuilder(
-      builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data == true) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(245, 245, 245, 1),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 1.5.w,
-              vertical: 2.h,
-            ),
-            child: Column(
-              children: [
-                item(intl.refId, bloc.invoice!.refId ?? '', false),
-                item(
-                    intl.paymentDate,
-                    bloc.invoice!.payedAt != null && bloc.invoice!.payedAt!.length > 0
-                        ? DateTimeUtils.gregorianToJalaliYMD(bloc.invoice!.payedAt!)
-                        : '',
-                    false),
-                item(
-                    intl.amount,
-                    bloc.invoice!.amount != null &&
-                            bloc.invoice!.amount.toString().length > 0 &&
-                            bloc.invoice!.amount! > 0
-                        ? double.parse(bloc.invoice!.amount.toString())
-                            .toStringAsFixed(0)
-                            .seRagham()
-                        : intl.free,
-                    true),
-                item(intl.mobile, MemoryApp.userInformation?.mobile ?? '', false),
-              ],
-            ),
-          );
-        } else
-          return Container();
-      },
-      stream: bloc.showInformation,
-    );
-  }
-
-  Widget buttonBackToShop() {
-    return Directionality(
-      textDirection: context.textDirectionOfLocale,
-      child: TextButton(
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.symmetric(
-            vertical: 2.h,
-            horizontal: 3.w,
-          ),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-              side: BorderSide(
-                color: AppColors.primary,
-                width: 0.25.w,
-              )),
-        ),
-        onPressed: () {
-          context.vxNav.popToRoot();
-        },
-        child: Text(
-          intl.backToShop,
-          textAlign: TextAlign.start,
-          style: Theme.of(context)
-              .textTheme
-              .button!
-              .copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
-        ),
-      ),
-    );
-  }
-
   Widget buttonRetryPayment() {
     return Directionality(
       textDirection: context.textDirectionOfLocale,
       child: ElevatedButton(
         onPressed: () {
-          if (navigator.currentConfiguration!.path.contains("subscription") ||
-              navigator.currentConfiguration!.path.contains("shop")) {
+          if (navigator.currentConfiguration!.path.contains("subscription")) {
             MemoryApp.analytics!.logEvent(name: "total_payment_fail");
-            //context.vxNav.push(Uri.parse('/${bloc.path ?? ''}'));
             context.vxNav.pop();
           } else {
-            context.vxNav.clearAndPush(Uri.parse(Routes.listView));
+            context.vxNav.push(Uri.parse(bloc.path!));
           }
         },
         child: Text(

@@ -22,7 +22,7 @@ Package _$PackageFromJson(Map<String, dynamic> json) => Package()
   ..description = json['description'] as String?
   ..package_id = json['package_id'] as int?
   ..refundDeadline = json['refund_deadline'] as int? ?? 0
-  ..type = json['type'] as int?
+  ..type = json['payment_type_id'] as int?
   ..is_suggestion = json['is_suggestion'] as bool?
   ..index = json['index'] as int?
   ..totalPrice = json['totalPrice'] as int?
@@ -38,7 +38,7 @@ Map<String, dynamic> _$PackageToJson(Package instance) => <String, dynamic>{
       'description': instance.description,
       'package_id': instance.package_id,
       'refund_deadline': instance.refundDeadline,
-      'type': instance.type,
+      'payment_type_id': instance.type,
       'is_suggestion': instance.is_suggestion,
       'index': instance.index,
       'totalPrice': instance.totalPrice,
@@ -101,6 +101,7 @@ Price _$PriceFromJson(Map<String, dynamic> json) => Price()
   ..finalPrice = json['final_price'] as int?
   ..totalPrice = json['total_price'] as int?
   ..product_id = json['product_id'] as int?
+  ..packageId = json['package_id'] as int?
   ..discount_message = json['discount_message'] as String?;
 
 Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
@@ -111,6 +112,7 @@ Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
       'final_price': instance.finalPrice,
       'total_price': instance.totalPrice,
       'product_id': instance.product_id,
+      'package_id': instance.packageId,
       'discount_message': instance.discount_message,
     };
 

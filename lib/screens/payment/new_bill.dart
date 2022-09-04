@@ -240,7 +240,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                   intl.weAreServiceMore,
                   style: typography.headline5!.copyWith(fontSize: 12.sp),
                 ),
-              if (bloc.services.isNotEmpty) Space(height: 1.h),
+              if (bloc.services.isNotEmpty) Space(height: 2.h),
               if (bloc.services.isNotEmpty)
                 ListView.builder(
                   shrinkWrap: true,
@@ -249,7 +249,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                   itemBuilder: (context, index) {
                     ServicePackage package = bloc.services[index];
                     return Padding(
-                      padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0, left: 8, right: 8),
+                      padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
                       child: PackageWidget.service(
                         onTap: () {
                           bloc.setServiceSelected(package);
