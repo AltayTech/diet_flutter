@@ -174,7 +174,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
           min: 100,
           heading: intl.height,
           unit: intl.centimeter,
-          color: AppColors.pinkRuler,
+          color: AppColors.blueRuler,
           helpClick: () =>
               DialogUtils.showBottomSheetPage(context: context, child: HelpDialog(helpId: 3)),
           iconPath: 'assets/images/diet/height_icon.svg',
@@ -196,7 +196,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
         Space(height: 0.5.h),
         InkWell(
           child: ClipRRect(
-            borderRadius: AppBorderRadius.borderRadiusDefault,
+            borderRadius: BorderRadius.circular(10),
             child: Container(
               width: double.infinity,
               height: 7.h,
@@ -270,7 +270,9 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                         ))
                   ],
                 ),
-                Space(height: 3.h,),
+                Space(
+                  height: 3.h,
+                ),
                 Expanded(
                   flex: 3,
                   child: Center(
@@ -342,6 +344,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
           children: [
             Expanded(
                 child: CheckBoxApp.icon(
+              maxHeight: 10.h,
               isSelected: gender == GenderType.Female,
               onTap: () {
                 bloc.setGender(GenderType.Female);
@@ -355,6 +358,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
             ),
             Expanded(
                 child: CheckBoxApp.icon(
+              maxHeight: 10.h,
               isSelected: gender == GenderType.Male,
               onTap: () {
                 bloc.setGender(GenderType.Male);

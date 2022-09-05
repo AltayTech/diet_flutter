@@ -53,10 +53,10 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
   Widget build(BuildContext context) {
     super.build(context);
     return Container(
-      height: 23.h,
+      height: 25.h,
       decoration: BoxDecoration(
         color: AppColors.box,
-        borderRadius: new BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(10.0),
       ),
       padding: EdgeInsets.all(16),
       child: Column(
@@ -164,10 +164,9 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                               focusedBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               counterStyle: TextStyle(fontSize: 0.sp),
-                              contentPadding: EdgeInsets.only(left: 15, bottom: 2.h, right: 15),
+                              contentPadding: EdgeInsets.only(left: 15, bottom: 16, right: 15),
                             ),
                             style: typography.caption?.apply(
-                              color: widget.color,
                             ),
                             onSubmitted: (txt) {
                               if (widget.max > int.parse(txt) && widget.min < int.parse(txt)) {
@@ -254,12 +253,15 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(
-                      '${widget.value.toString().split('.')[1]}',
-                      textAlign: TextAlign.center,
-                      softWrap: false,
-                      style: typography.caption?.apply(
-                        color: AppColors.labelColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        '${widget.value.toString().split('.')[1]}',
+                        textAlign: TextAlign.center,
+                        softWrap: false,
+                        style: typography.caption?.apply(
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),

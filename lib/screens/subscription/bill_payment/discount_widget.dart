@@ -34,7 +34,6 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
                 color: AppColors.grey,
               ),
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 1.h, left: 4.w, right: 4.w),
               padding: EdgeInsets.only(left: 6.w, right: 6.w, top: 1.h, bottom: 1.h),
               height: bloc.isWrongDisCode ? 13.5.h : 10.h,
               child: Column(
@@ -92,14 +91,16 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
                       stream: bloc.wrongDisCode,
                       builder: (context, snapshot) {
                         if (snapshot.data != null && snapshot.data == true)
-                          return Container(
-                              width: double.maxFinite,
-                              margin: EdgeInsets.all(6),
-                              child: Text(
-                                bloc.messageErrorCode ?? intl.errorCodeDiscount,
-                                textAlign: TextAlign.start,
-                                style: context.typography.overline!.copyWith(color: Colors.red),
-                              ));
+                          return Expanded(
+                            child: Container(
+                                width: double.maxFinite,
+                                margin: EdgeInsets.all(6),
+                                child: Text(
+                                  bloc.messageErrorCode ?? intl.errorCodeDiscount,
+                                  textAlign: TextAlign.start,
+                                  style: context.typography.overline!.copyWith(color: Colors.red),
+                                )),
+                          );
                         else
                           return EmptyBox();
                       })

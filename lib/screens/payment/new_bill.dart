@@ -168,6 +168,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                                 child: StepperWidget(),
                               ),
                             ),
+                            Space(height: 4.h),
                             Text(
                               intl.enterYourPackage,
                               style: typography.headline5!.copyWith(fontSize: 14.sp),
@@ -180,11 +181,9 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                               height: 2.h,
                             ),
                             packageItem(),
-                            Space(height: 1.h),
+                            Space(height: 2.h),
                             EnableDiscountBoxWidget(),
-                            Space(
-                              height: 1.h,
-                            ),
+                            Space(height: 2.h),
                             PaymentTypeWidget(),
                             rulesAndPaymentBtn()
                           ],
