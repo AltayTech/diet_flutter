@@ -1,4 +1,3 @@
-
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/memory_cache.dart';
@@ -10,12 +9,10 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -28,8 +25,7 @@ class ConfirmBodyStateScreen extends StatefulWidget {
   _ConfirmBodyStateScreenState createState() => _ConfirmBodyStateScreenState();
 }
 
-class _ConfirmBodyStateScreenState
-    extends ResourcefulState<ConfirmBodyStateScreen> {
+class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScreen> {
   late RegimeBloc regimeBloc;
   bool selectedNo = false;
   bool selectedYes = false;
@@ -69,89 +65,79 @@ class _ConfirmBodyStateScreenState
 
     return RegimeProvider(
       regimeBloc,
-      child:
-          Scaffold(appBar: Toolbar(titleBar: intl.stateOfBody), body: body()),
+      child: Scaffold(appBar: Toolbar(titleBar: intl.stateOfBody), body: body()),
     );
   }
 
   Widget body() {
-    return TouchMouseScrollable(
-        child: SingleChildScrollView(
-            child: StreamBuilder<BodyStatus>(
-                stream: regimeBloc.status,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData)
-                    return Container(
-                        width: 100.w,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 7.w, vertical: 3.h),
+    return StreamBuilder<BodyStatus>(
+        stream: regimeBloc.status,
+        builder: (context, snapshot) {
+          if (snapshot.hasData)
+            return Container(
+                width: 100.w,
+                padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 3.h),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Expanded(
+                      flex: 1,
+                      child: TouchMouseScrollable(
+                          child: SingleChildScrollView(
                         child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Space(height: 2.h),
-                              Text(
-                                intl.confirmBodyState,
-                                textDirection: context.textDirectionOfLocale,
-                                style: typography.caption!.copyWith(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                intl.youMustEnterCorrectInfoOfBodyState,
-                                textDirection: context.textDirectionOfLocale,
-                                style: typography.caption!
-                                    .copyWith(fontSize: 10.sp),
-                              ),
-                              Text(
-                                intl.thisInfoVeryImportantToReduceYourWeight,
-                                textDirection: context.textDirectionOfLocale,
-                                style: typography.caption!
-                                    .copyWith(fontSize: 10.sp),
-                              ),
-                              Space(height: 2.h),
-                              bodyInformation(),
-                              Space(height: 2.h),
-                              snapshot.data!.isPregnancy == 1
-                                  ? showWeightBmi(
-                                      snapshot.data!.daysTillChildbirth,
-                                      snapshot.data!.pregnancyWeightDiff!
-                                          .toStringAsFixed(1),
-                                      snapshot.data!.pregnancyWeight!
-                                          .toStringAsFixed(1),
-                                      snapshot.data!.isPregnancy,
-                                      snapshot.data!.bmiStatus,
-                                      snapshot.data!.bmi!.toStringAsFixed(0))
-                                  : showWeightBmi(
-                                      snapshot.data!.dietDays,
-                                      snapshot.data!.weightDifference!
-                                          .toStringAsFixed(1),
-                                      snapshot.data!.normalWeight!
-                                          .toStringAsFixed(1),
-                                      snapshot.data!.isPregnancy,
-                                      snapshot.data!.bmiStatus,
-                                      snapshot.data!.bmi!.toStringAsFixed(0)),
-                              Space(height: 5.h),
-                              SubmitButton(
-                                  color: Colors.white,
-                                  textColor: AppColors.primary,
-                                  label: intl.editPhysicalInfo,
-                                  size: Size(100.w, 6.h),
-                                  onTap: () {
-                                    context.vxNav.push(Uri.parse(Routes.bodyState));
-                                  }),
-                              Space(height: 2.h),
-                              CustomButton.withIcon(
-                                  AppColors.btnColor,
-                                  intl.confirmContinue,
-                                  Size(100.w, 6.h),
-                                  Icon(Icons.arrow_forward),
-                                  () {}),
-                            ]));
-                  else
-                    return Center(
-                        child: Container(
-                            width: 15.w, height: 80.h, child: Progress()));
-                })));
+                          children: [
+                            Space(height: 2.h),
+                            Text(
+                              intl.confirmBodyState,
+                              textDirection: context.textDirectionOfLocale,
+                              style: typography.caption!
+                                  .copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              intl.youMustEnterCorrectInfoOfBodyState,
+                              textDirection: context.textDirectionOfLocale,
+                              style: typography.caption!.copyWith(fontSize: 10.sp),
+                            ),
+                            Text(
+                              intl.thisInfoVeryImportantToReduceYourWeight,
+                              textDirection: context.textDirectionOfLocale,
+                              style: typography.caption!.copyWith(fontSize: 10.sp),
+                            ),
+                            Space(height: 2.h),
+                            bodyInformation(),
+                            Space(height: 2.h),
+                            snapshot.data!.isPregnancy == 1
+                                ? showWeightBmi(
+                                    snapshot.data!.daysTillChildbirth,
+                                    snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
+                                    snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
+                                    snapshot.data!.isPregnancy,
+                                    snapshot.data!.bmiStatus,
+                                    snapshot.data!.bmi!.toStringAsFixed(0))
+                                : showWeightBmi(
+                                    snapshot.data!.dietDays,
+                                    snapshot.data!.weightDifference!.toStringAsFixed(1),
+                                    snapshot.data!.normalWeight!.toStringAsFixed(1),
+                                    snapshot.data!.isPregnancy,
+                                    snapshot.data!.bmiStatus,
+                                    snapshot.data!.bmi!.toStringAsFixed(0)),
+                            Space(height: 5.h),
+                          ],
+                        ),
+                      ))),
+                  SubmitButton(
+                      color: Colors.white,
+                      textColor: AppColors.primary,
+                      label: intl.editPhysicalInfo,
+                      size: Size(100.w, 6.h),
+                      onTap: () {
+                        context.vxNav.push(Uri.parse(Routes.bodyState));
+                      }),
+                  Space(height: 2.h),
+                  CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue, Size(100.w, 6.h),
+                      Icon(Icons.arrow_forward), () {}),
+                ]));
+          else
+            return Center(child: Container(width: 15.w, height: 80.h, child: Progress()));
+        });
   }
 
   Widget bodyInformation() {
@@ -242,14 +228,11 @@ class _ConfirmBodyStateScreenState
                 text: TextSpan(
                   text: value,
                   style: typography.caption!.copyWith(
-                      fontSize: fontSize ?? 14.sp,
-                      fontWeight: FontWeight.w700,
-                      color: valueColor),
+                      fontSize: fontSize ?? 14.sp, fontWeight: FontWeight.w700, color: valueColor),
                   children: <TextSpan>[
                     TextSpan(
                         text: unit,
-                        style: typography.caption!
-                            .copyWith(fontSize: 10.sp, color: valueColor))
+                        style: typography.caption!.copyWith(fontSize: 10.sp, color: valueColor))
                   ],
                 ),
               )
@@ -258,8 +241,8 @@ class _ConfirmBodyStateScreenState
     );
   }
 
-  Widget showWeightBmi(int? dietDays, String? weightDiff, String? weight,
-      int? pregnancy, int? bmiStatus, String? bmi) {
+  Widget showWeightBmi(int? dietDays, String? weightDiff, String? weight, int? pregnancy,
+      int? bmiStatus, String? bmi) {
     return Container(
       height: 30.h,
       child: Column(
@@ -286,17 +269,16 @@ class _ConfirmBodyStateScreenState
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(intl.bmi,
-                                  style: typography.caption!.copyWith(
-                                      color: Colors.grey.withOpacity(0.9))),
+                                  style: typography.caption!
+                                      .copyWith(color: Colors.grey.withOpacity(0.9))),
                               Text('BMI',
-                                  style: typography.caption!.copyWith(
-                                      color: Colors.grey.withOpacity(0.9))),
+                                  style: typography.caption!
+                                      .copyWith(color: Colors.grey.withOpacity(0.9))),
                               Container(
                                 width: 30.w,
                                 height: 7.h,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: Colors.white),
+                                    borderRadius: BorderRadius.circular(10.0), color: Colors.white),
                                 child: Center(
                                     child: Text(
                                   '$bmi',
@@ -327,12 +309,10 @@ class _ConfirmBodyStateScreenState
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text('BMI',
-                                    style: typography.caption!
-                                        .copyWith(color: AppColors.redBar)),
+                                    style: typography.caption!.copyWith(color: AppColors.redBar)),
                                 Space(width: 1.w),
                                 Text(intl.what,
-                                    style: typography.caption!
-                                        .copyWith(color: AppColors.redBar)),
+                                    style: typography.caption!.copyWith(color: AppColors.redBar)),
                               ],
                             ),
                           ),
@@ -375,14 +355,12 @@ class _ConfirmBodyStateScreenState
   }
 
   Widget bmiPic(int? status) {
-    return ImageUtils.fromLocal(bmiPicPath(status),
-        width: 40.w, height: 30.h, fit: BoxFit.fill);
+    return ImageUtils.fromLocal(bmiPicPath(status), width: 40.w, height: 30.h, fit: BoxFit.fill);
   }
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog)
-      DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     regimeBloc.sendRequest();
   }
 
