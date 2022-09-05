@@ -784,5 +784,8 @@
   "dietSuitableYou": "رژیم مناسب شما رژیم ",
   "continueDietSuitableYou": " می باشد.",
   "discountMessage": "جشنواره هفتگی به اندام",
+  "normal": "نرمال",
+  "fatDegree1": "چاقی درجه 1",
+  "extraFat": "چاقی مفرط",
   "understand": "متوجه شدم"
 }

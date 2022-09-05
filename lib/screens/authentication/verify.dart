@@ -115,8 +115,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                 child: SingleChildScrollView(
                   child: LoginBackground(
                     children: [
-                      Space(height: 12.h),
-                      Expanded(child: content()),
+                      content(),
                     ],
                   ),
                 ),
@@ -131,6 +130,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
 
   Widget content() {
     return Container(
+      width: 100.w,
       height: 62.h,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -287,7 +287,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                 ],
               ),
             ),
-            Space(height: 4.h),
+            Space(height: 8.h),
             StreamBuilder(
               stream: authBloc.selectedCountry,
               builder: (_, AsyncSnapshot<Country> snapshot) {

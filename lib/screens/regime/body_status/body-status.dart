@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/regime/bmi_status.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/body_status/bloc.dart';
@@ -49,7 +50,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     bloc.showServerError.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
-     // Utils.getSnackbarMessage(context, event);
+      // Utils.getSnackbarMessage(context, event);
     });
   }
 
@@ -93,14 +94,14 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                               snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
                               snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
                               snapshot.data!.isPregnancy,
-                              snapshot.data!.bmiStatus,
+                              getBmiStatus(snapshot.data!.bmiStatus),
                               snapshot.data!.bmi!.toStringAsFixed(0))
                           : showWeightBmi(
                               snapshot.data!.dietDays,
                               snapshot.data!.weightDifference!.toStringAsFixed(1),
                               snapshot.data!.normalWeight!.toStringAsFixed(1),
                               snapshot.data!.isPregnancy,
-                              snapshot.data!.bmiStatus,
+                              getBmiStatus(snapshot.data!.bmiStatus),
                               snapshot.data!.bmi!.toStringAsFixed(0)),
                       Space(height: 2.h),
                       dietType(),
@@ -151,7 +152,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   Widget showWeightBmi(int? dietDays, String? weightDiff, String? weight, int? pregnancy,
-      int? bmiStatus, String? bmi) {
+      BmiStatus? bmiStatus, String? bmi) {
     return Container(
       height: 33.h,
       padding: EdgeInsets.only(right: 32, left: 32),
@@ -167,10 +168,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (pregnancy == 0)
-                          bmiStatus == 0
-                              ? colorfulContainer('$weightDiff', bmiStatus!, intl.lakeWeight,
+                          bmiStatus!.status == 0
+                              ? colorfulContainer('$weightDiff', bmiStatus, intl.lakeWeight,
                                   intl.kiloGr, '', AppColors.purpleRuler)
-                              : colorfulContainer('$weightDiff', bmiStatus!, intl.extraWeight,
+                              : colorfulContainer('$weightDiff', bmiStatus, intl.extraWeight,
                                   intl.kiloGr, '', AppColors.purpleRuler),
                         if (pregnancy == 1)
                           colorfulContainer('$weightDiff', bmiStatus!, intl.getWeight, intl.kiloGr,
@@ -217,10 +218,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                         Space(height: 1.h),
                         Expanded(
                           child: InkWell(
-                            onTap: () => DialogUtils.showDialogPage(
-                              context: context,
-                              child: HelpDialog(helpId: 1),
-                            ),
+                            onTap: () => DialogUtils.showBottomSheetPage(
+                                context: context, child: HelpDialog(helpId: 1)),
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -250,7 +249,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 Space(width: 3.w),
                 Expanded(
                   child: Container(
-                    child: bmiPic(bmiStatus),
+                    child: ImageUtils.fromLocal(bmiStatus!.imagePath,
+                        width: 40.w, height: 33.h, fit: BoxFit.fill),
                   ),
                 ),
               ],
@@ -262,10 +262,9 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   Widget colorfulContainer(
-      String weight, int bmiStatus, String txt2, String txt3, String txt4, Color color) {
+      String weight, BmiStatus bmiStatus, String txt2, String txt3, String txt4, Color color) {
     return Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: bmiStatusColor(bmiStatus)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: bmiStatus.color),
         child: Row(children: [
           Expanded(
             child: Padding(
@@ -274,26 +273,30 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(txt2,
+                  Text(bmiStatus.text,
                       style: typography.caption!.copyWith(fontSize: 10.sp, color: Colors.white)),
-                  RichText(
-                    textDirection: context.textDirectionOfLocale,
-                    text: TextSpan(
-                      text: weight,
-                      style: typography.caption!.copyWith(
-                          fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w700),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: ' ',
-                            style:
-                                typography.caption!.copyWith(fontSize: 12.sp, color: Colors.white)),
-                        TextSpan(
-                            text: txt3,
+                  bmiStatus.status! != 1
+                      ? RichText(
+                          textDirection: context.textDirectionOfLocale,
+                          text: TextSpan(
+                            text: weight,
                             style: typography.caption!.copyWith(
-                                fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.w700))
-                      ],
-                    ),
-                  ),
+                                fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w700),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: ' ',
+                                  style: typography.caption!
+                                      .copyWith(fontSize: 12.sp, color: Colors.white)),
+                              TextSpan(
+                                  text: txt3,
+                                  style: typography.caption!.copyWith(
+                                      fontSize: 12.sp,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700))
+                            ],
+                          ),
+                        )
+                      : Container(),
                   if (txt4.length > 0)
                     Text(txt4,
                         style: typography.caption!.copyWith(fontSize: 10.sp, color: Colors.white))
@@ -304,46 +307,51 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
         ]));
   }
 
-  Color bmiStatusColor(int? status) {
+  BmiStatus getBmiStatus(int? status) {
     switch (status) {
       case 0:
-        return AppColors.weightBoxColorBlue;
+        return BmiStatus(
+            status: status!,
+            text: intl.lakeWeight,
+            imagePath: 'assets/images/physical_report/thin.svg',
+            color: AppColors.weightBoxColorBlue);
       case 1:
-        return AppColors.weightBoxColorGreen;
+        return BmiStatus(
+            status: status!,
+            text: intl.normal,
+            imagePath: 'assets/images/physical_report/normal.svg',
+            color: AppColors.weightBoxColorGreen);
       case 2:
-        return AppColors.weightBoxColorOrange;
+        return BmiStatus(
+            status: status!,
+            text: intl.extraWeight,
+            imagePath: 'assets/images/physical_report/fat.svg',
+            color: AppColors.weightBoxColorOrange);
       case 3:
-        return AppColors.weightBoxColorRedLight;
+        return BmiStatus(
+            status: status!,
+            text: intl.fatDegree1,
+            imagePath: 'assets/images/physical_report/obesity.svg',
+            color: AppColors.weightBoxColorRedLight);
       case 4:
-        return AppColors.weightBoxColorRed;
+        return BmiStatus(
+            status: status!,
+            text: intl.extraFat,
+            imagePath: 'assets/images/physical_report/extreme_obesity.svg',
+            color: AppColors.weightBoxColorRed);
       case 5:
-        return AppColors.weightBoxColorRed;
+        return BmiStatus(
+            status: status!,
+            text: intl.extraFat,
+            imagePath: 'assets/images/physical_report/extreme_obesity.svg',
+            color: AppColors.weightBoxColorRed);
       default:
-        return AppColors.weightBoxColorRed;
+        return BmiStatus(
+            status: status!,
+            text: intl.extraFat,
+            imagePath: 'assets/images/physical_report/extreme_obesity.svg',
+            color: AppColors.weightBoxColorRed);
     }
-  }
-
-  String bmiPicPath(int? status) {
-    switch (status) {
-      case 0:
-        return 'assets/images/physical_report/thin.svg';
-      case 1:
-        return 'assets/images/physical_report/normal.svg';
-      case 2:
-        return 'assets/images/physical_report/fat.svg';
-      case 3:
-        return 'assets/images/physical_report/obesity.svg';
-      case 4:
-        return 'assets/images/physical_report/extreme_obesity.svg';
-      case 5:
-        return 'assets/images/physical_report/extreme_obesity.svg';
-      default:
-        return 'assets/images/physical_report/extreme_obesity.svg';
-    }
-  }
-
-  Widget bmiPic(int? status) {
-    return ImageUtils.fromLocal(bmiPicPath(status), width: 40.w, height: 33.h, fit: BoxFit.fill);
   }
 
   Widget dietType() {
