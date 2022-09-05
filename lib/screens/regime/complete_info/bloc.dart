@@ -31,16 +31,15 @@ class CompleteInformationBloc {
   final _selectedDietHistory = BehaviorSubject<DietHistory?>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
+  final _popDialog = LiveEvent();
 
   String get path => _path;
 
   Stream<List<ActivityData>> get activityLevel => _activityLevel.stream;
 
-  Stream<ActivityData?> get selectedActivityLevel =>
-      _selectedActivityLevel.stream;
+  Stream<ActivityData?> get selectedActivityLevel => _selectedActivityLevel.stream;
 
-  ActivityData? get selectedActivity =>
-      _selectedActivityLevel.stream.valueOrNull;
+  ActivityData? get selectedActivity => _selectedActivityLevel.stream.valueOrNull;
 
   Stream<List<DietGoal>> get dietGoals => _dietGoals.stream;
 
@@ -52,14 +51,15 @@ class CompleteInformationBloc {
 
   Stream<DietHistory?> get selectedDietHistory => _selectedDietHistory.stream;
 
-  DietHistory? get selectedDietHistoryValue =>
-      _selectedDietHistory.stream.valueOrNull;
+  DietHistory? get selectedDietHistoryValue => _selectedDietHistory.stream.valueOrNull;
 
   Stream<bool> get waiting => _waiting.stream;
 
   Stream get navigateTo => _navigateTo.stream;
 
   Stream get showServerError => _showServerError.stream;
+
+  Stream get popDialog => _popDialog.stream;
 
   void getDietPreferences() {
     _waiting.safeValue = true;
@@ -83,19 +83,25 @@ class CompleteInformationBloc {
     _selectedDietHistory.value = dietHistory;
   }
 
-  void condition() {
-    _waiting.safeValue = true;
+  void updateDietPreferences() {
     ConditionRequestData requestData = ConditionRequestData();
     requestData.activityLevelId = _selectedActivityLevel.value!.id;
+    requestData.dietHistoryId = _selectedDietHistory.value!.id;
+    requestData.dietGoalId = _selectedGoal.value!.id;
+
     _repository.setCondition(requestData).then((value) {
       debugPrint('bloc condition ${value.data}');
       if (value.data != null) _navigateTo.fire(value.next);
-    }).whenComplete(() => _waiting.safeValue = false);
+    }).catchError((onError) {
+      _popDialog.fire(true);
+      _showServerError.fire(true);
+    }).whenComplete(() => _popDialog.fire(true));
   }
 
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
+    _popDialog.close();
     _waiting.close();
     _userSickness.close();
     _activityLevel.close();

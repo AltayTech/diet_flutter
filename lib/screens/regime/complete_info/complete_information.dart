@@ -6,6 +6,7 @@ import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/complete_info/bloc.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -22,12 +23,10 @@ class CompleteInformationScreen extends StatefulWidget {
   const CompleteInformationScreen({Key? key}) : super(key: key);
 
   @override
-  _CompleteInformationScreenState createState() =>
-      _CompleteInformationScreenState();
+  _CompleteInformationScreenState createState() => _CompleteInformationScreenState();
 }
 
-class _CompleteInformationScreenState
-    extends ResourcefulState<CompleteInformationScreen> {
+class _CompleteInformationScreenState extends ResourcefulState<CompleteInformationScreen> {
   late CompleteInformationBloc bloc;
 
   @override
@@ -40,14 +39,16 @@ class _CompleteInformationScreenState
 
   void listenBloc() {
     bloc.navigateTo.listen((event) {
-      MemoryApp.isShowDialog = false;
-      Navigator.of(context).pop();
       VxNavigator.of(context).push(Uri.parse(event));
     });
+
     bloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
+    });
+
+    bloc.popDialog.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
-      Utils.getSnackbarMessage(context, event);
     });
   }
 
@@ -100,8 +101,7 @@ class _CompleteInformationScreenState
               Text(
                 intl.thisInfoHelpUsToGetYouDiet,
                 textAlign: TextAlign.start,
-                style: typography.caption!
-                    .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+                style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
               ),
               Space(height: 2.h),
               StreamBuilder<List<DietGoal>>(
@@ -115,8 +115,7 @@ class _CompleteInformationScreenState
                         );
                       } else {
                         return Container(
-                            child: Text(intl.emptySickness,
-                                style: typography.caption));
+                            child: Text(intl.emptySickness, style: typography.caption));
                       }
                     } else {
                       return Container(height: 60.h, child: Progress());
@@ -133,8 +132,7 @@ class _CompleteInformationScreenState
                         );
                       } else {
                         return Container(
-                            child: Text(intl.emptySickness,
-                                style: typography.caption));
+                            child: Text(intl.emptySickness, style: typography.caption));
                       }
                     } else {
                       return Container(height: 60.h, child: Progress());
@@ -151,16 +149,18 @@ class _CompleteInformationScreenState
                         );
                       } else {
                         return Container(
-                            child: Text(intl.emptySickness,
-                                style: typography.caption));
+                            child: Text(intl.emptySickness, style: typography.caption));
                       }
                     } else {
                       return Container(height: 60.h, child: Progress());
                     }
                   }),
               Space(height: 1.h),
-              CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue,
-                  Size(100.w, 6.h), Icon(Icons.arrow_forward), () {})
+              CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue, Size(100.w, 6.h),
+                  Icon(Icons.arrow_forward), () {
+                DialogUtils.showDialogProgress(context: context);
+                bloc.updateDietPreferences();
+              })
             ],
           ),
         )
@@ -184,31 +184,26 @@ class _CompleteInformationScreenState
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
             ),
             child: ListView.builder(
                 physics: ClampingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: DietGoalListData.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    StreamBuilder<DietGoal?>(
-                        stream: bloc.selectedGoal,
-                        builder: (context, selectedDietGoal) {
-                          if (selectedDietGoal.hasData)
-                            return boxGoalItem(
-                                DietGoalListData[index],
-                                DietGoalListData[index].id ==
-                                    selectedDietGoal.data!.id);
-                          return boxGoalItem(DietGoalListData[index], false);
-                        }))),
+                itemBuilder: (BuildContext context, int index) => StreamBuilder<DietGoal?>(
+                    stream: bloc.selectedGoal,
+                    builder: (context, selectedDietGoal) {
+                      if (selectedDietGoal.hasData)
+                        return boxGoalItem(DietGoalListData[index],
+                            DietGoalListData[index].id == selectedDietGoal.data!.id);
+                      return boxGoalItem(DietGoalListData[index], false);
+                    }))),
         header: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.15),
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    topLeft: Radius.circular(10))),
+                borderRadius:
+                    BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
             child: Column(children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -216,8 +211,7 @@ class _CompleteInformationScreenState
                 children: [
                   Expanded(
                       child: Text(title,
-                          style: typography.caption!
-                              .copyWith(fontWeight: FontWeight.bold))),
+                          style: typography.caption!.copyWith(fontWeight: FontWeight.bold))),
                 ],
               ),
               Space(height: 2.h),
@@ -262,32 +256,26 @@ class _CompleteInformationScreenState
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
             ),
             child: ListView.builder(
                 physics: ClampingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: DietHistoryListData.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    StreamBuilder<DietHistory?>(
-                        stream: bloc.selectedDietHistory,
-                        builder: (context, selectedDietHistory) {
-                          if (selectedDietHistory.hasData)
-                            return boxHistoryItem(
-                                DietHistoryListData[index],
-                                DietHistoryListData[index].id ==
-                                    selectedDietHistory.data!.id);
-                          return boxHistoryItem(
-                              DietHistoryListData[index], false);
-                        }))),
+                itemBuilder: (BuildContext context, int index) => StreamBuilder<DietHistory?>(
+                    stream: bloc.selectedDietHistory,
+                    builder: (context, selectedDietHistory) {
+                      if (selectedDietHistory.hasData)
+                        return boxHistoryItem(DietHistoryListData[index],
+                            DietHistoryListData[index].id == selectedDietHistory.data!.id);
+                      return boxHistoryItem(DietHistoryListData[index], false);
+                    }))),
         header: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.15),
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    topLeft: Radius.circular(10))),
+                borderRadius:
+                    BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
             child: Column(children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -295,8 +283,7 @@ class _CompleteInformationScreenState
                 children: [
                   Expanded(
                       child: Text(title,
-                          style: typography.caption!
-                              .copyWith(fontWeight: FontWeight.bold))),
+                          style: typography.caption!.copyWith(fontWeight: FontWeight.bold))),
                 ],
               ),
               Space(height: 2.h),
@@ -341,32 +328,26 @@ class _CompleteInformationScreenState
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
             ),
             child: ListView.builder(
                 physics: ClampingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: ActivityListData.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    StreamBuilder<ActivityData?>(
-                        stream: bloc.selectedActivityLevel,
-                        builder: (context, selectedActivityLevel) {
-                          if (selectedActivityLevel.hasData)
-                            return boxActivityItem(
-                                ActivityListData[index],
-                                ActivityListData[index].id ==
-                                    selectedActivityLevel.data!.id);
-                          return boxActivityItem(
-                              ActivityListData[index], false);
-                        }))),
+                itemBuilder: (BuildContext context, int index) => StreamBuilder<ActivityData?>(
+                    stream: bloc.selectedActivityLevel,
+                    builder: (context, selectedActivityLevel) {
+                      if (selectedActivityLevel.hasData)
+                        return boxActivityItem(ActivityListData[index],
+                            ActivityListData[index].id == selectedActivityLevel.data!.id);
+                      return boxActivityItem(ActivityListData[index], false);
+                    }))),
         header: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.15),
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    topLeft: Radius.circular(10))),
+                borderRadius:
+                    BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
             child: Column(children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -374,8 +355,7 @@ class _CompleteInformationScreenState
                 children: [
                   Expanded(
                       child: Text(title,
-                          style: typography.caption!
-                              .copyWith(fontWeight: FontWeight.bold))),
+                          style: typography.caption!.copyWith(fontWeight: FontWeight.bold))),
                 ],
               ),
             ])),
