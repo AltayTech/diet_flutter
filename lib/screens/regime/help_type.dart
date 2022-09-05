@@ -28,7 +28,6 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   void initState() {
     super.initState();
     regimeBloc = RegimeBloc();
-    listenBloc();
   }
 
   bool isInit = false;
@@ -50,12 +49,6 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   void dispose() {
     regimeBloc.dispose();
     super.dispose();
-  }
-
-  void listenBloc() {
-    regimeBloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
-    });
   }
 
   @override

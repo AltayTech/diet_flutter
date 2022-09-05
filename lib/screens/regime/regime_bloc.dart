@@ -34,7 +34,7 @@ class RegimeBloc {
   final _status = BehaviorSubject<BodyStatus>();
   final _physicalInfo = BehaviorSubject<PhysicalInfoData>();
   final _navigateToVerify = LiveEvent();
-  final _showServerError = LiveEvent();
+  final _popLoading = LiveEvent();
 
   String get path => _path;
 
@@ -58,7 +58,7 @@ class RegimeBloc {
 
   Stream get navigateToVerify => _navigateToVerify.stream;
 
-  Stream get showServerError => _showServerError.stream;
+  Stream get popLoading => _popLoading.stream;
 
   BodyStatus get bodyStatus => _status.value;
 
@@ -106,7 +106,7 @@ class RegimeBloc {
       _navigateToVerify.fire(regime);
     }).whenComplete(() {
       if (!MemoryApp.isNetworkAlertShown) {
-        _showServerError.fire(true);
+        _popLoading.fire(true);
         _waiting.safeValue = false;
       }
     });
@@ -115,8 +115,8 @@ class RegimeBloc {
   void sendInfo(PhysicalInfoData info) async {
     _repository.sendInfo(info).then((value) {
       _navigateToVerify.fire(value.next);
-    }).catchError((err) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popLoading.fire(true);
     });
   }
 
@@ -130,22 +130,22 @@ class RegimeBloc {
   void nextStep() async {
     _repository.nextStep().then((value) {
       _navigateToVerify.fire(value.next);
-    }).catchError((e) => _showServerError.fire(e));
+    }).whenComplete(() => _popLoading.fire(true));
   }
 
   void sendVisit(PhysicalInfoData info) async {
     _repository.visit(info).then((value) {
       _navigateToVerify.fire(value.next);
-    }).catchError((err) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popLoading.fire(true);
     });
   }
 
   void sendWeight(PhysicalInfoData info) async {
     _repository.editVisit(info).then((value) {
       _navigateToVerify.fire(value.next);
-    }).catchError((err) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popLoading.fire(true);
     });
   }
 
@@ -163,7 +163,7 @@ class RegimeBloc {
   }
 
   void dispose() {
-    _showServerError.close();
+    _popLoading.close();
     _navigateToVerify.close();
     _itemsList.close();
     _waiting.close();

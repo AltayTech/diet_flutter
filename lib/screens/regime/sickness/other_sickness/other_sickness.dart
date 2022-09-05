@@ -11,6 +11,7 @@ import 'package:behandam/widget/custom_button.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:marquee_widget/marquee_widget.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -222,9 +223,29 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                 height: 4.w,
               ),
               Space(width: 1.w),
-              Text(sickness.title!,
-                  style:
+              if(sickness.title!.length>25)
+              Expanded(
+                flex: 1,
+                child: Marquee(
+                  child: Text(sickness.title!,
+                      softWrap: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
+                ),
+              ),
+              if(sickness.title!.length<25)
+                Marquee(
+                  child: Text(sickness.title!,
+                      softWrap: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style:
                       typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
+                  direction: Axis.horizontal,
+                  textDirection: context.textDirectionOfContext,
+                ),
             ],
           ),
         ),

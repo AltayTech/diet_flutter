@@ -22,13 +22,13 @@ abstract class Routes {
   static const editProfile = '/profile/edit';
   static const inbox = '/inbox';
   static const showInbox = '/inbox';
-  static const ticket = '/ticket';
-  static const ticketCall = '/ticket/call';
-  static const ticketMessage = '/ticket/message';
+  static const ticket = '/support/tickets';
+  static const ticketCall = '/support/calls';
+  static const ticketMessage = '/support';
   static const replaceFood = '/list/food/replace';
   static const calendar = '/list/archive';
-  static const newTicketMessage = '/ticket/message/new';
-  static const detailsTicketMessage = '/ticket/details';
+  static const newTicketMessage = '/support/ticket/new';
+  static const detailsTicketMessage = '/support/ticket';
   static const bodyState = '/reg/size';
   static const bodyStatus = '/reg/report';
   static const sickness = '/reg/sick/select';
@@ -96,6 +96,7 @@ abstract class Routes {
   static const subscriptionPaymentCardWait = '/subscription/payment/card/wait';
 
   static const onboarding = '/onboarding';
+  static const editBodyInfo = '/edit/body-information';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

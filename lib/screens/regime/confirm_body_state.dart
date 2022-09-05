@@ -42,12 +42,11 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
   void listenBloc() {
     regimeBloc.navigateToVerify.listen((event) {
       MemoryApp.isShowDialog = false;
-      Navigator.of(context).pop();
       VxNavigator.of(context).push(
         Uri.parse('/$event'),
       );
     });
-    regimeBloc.showServerError.listen((event) {
+    regimeBloc.popLoading.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
@@ -129,11 +128,19 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
                       label: intl.editPhysicalInfo,
                       size: Size(100.w, 6.h),
                       onTap: () {
-                        context.vxNav.push(Uri.parse(Routes.bodyState));
+                        context.vxNav.waitAndPush(Uri.parse(Routes.editBodyInfo),params: false ).then((value) {
+                          if(value){
+                            regimeBloc.getStatus();
+                            regimeBloc.physicalInfoData();
+                          }
+                        });
                       }),
                   Space(height: 2.h),
                   CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue, Size(100.w, 6.h),
-                      Icon(Icons.arrow_forward), () {}),
+                      Icon(Icons.arrow_forward), () {
+                        if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+                        regimeBloc.nextStep();
+                      }),
                 ]));
           else
             return Center(child: Container(width: 15.w, height: 80.h, child: Progress()));

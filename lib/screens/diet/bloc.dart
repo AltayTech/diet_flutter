@@ -45,8 +45,6 @@ class PhysicalInfoBloc {
   void sendRequest() {
     _repository.sendInfo(_physicalInfoData.value).then((value) {
       _navigateTo.fire(value.next);
-    }).catchError((err) {
-      _showServerError.fire(true);
     }).whenComplete(() => _popLoadingDialog.fire(false));
   }
 

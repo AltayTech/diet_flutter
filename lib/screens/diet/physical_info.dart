@@ -1,4 +1,3 @@
-import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
@@ -24,8 +23,6 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../routes.dart';
-
 class PhysicalInfoScreen extends StatefulWidget {
   const PhysicalInfoScreen({Key? key}) : super(key: key);
 
@@ -35,19 +32,30 @@ class PhysicalInfoScreen extends StatefulWidget {
 
 class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
   late PhysicalInfoBloc bloc;
+  bool isInit = false;
+  bool isShowStepper = true;
 
   @override
-  void initState() {
-    super.initState();
-    bloc = PhysicalInfoBloc();
-    bloc.physicalInfo();
-    listenBloc();
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if (!isInit) {
+      isInit = true;
+      isShowStepper = ModalRoute.of(context)!.settings.arguments as bool;
+      bloc = PhysicalInfoBloc();
+      bloc.physicalInfo();
+      listenBloc();
+    }
   }
 
   void listenBloc() {
     bloc.navigateTo.listen((next) {
-      MemoryApp.page++;
-      VxNavigator.of(context).push(Uri.parse('/$next'));
+      if (isShowStepper) {
+        MemoryApp.page++;
+        VxNavigator.of(context).push(Uri.parse('/$next'));
+      } else {
+        VxNavigator.of(context).returnAndPush(true);
+      }
     });
 
     bloc.popLoadingDialog.listen((event) {
@@ -64,13 +72,9 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: Toolbar(
-          titleBar: (navigator.currentConfiguration!.path.contains(Routes.weightEnter))
-              ? intl.newVisit
-              : intl.stateOfBody),
+      appBar: Toolbar(titleBar: intl.stateOfBody),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
         width: 100.w,
@@ -85,12 +89,13 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        SizedBox(
-                          width: 90.w,
-                          child: Center(
-                            child: StepperWidget(),
+                        if (isShowStepper)
+                          SizedBox(
+                            width: 90.w,
+                            child: Center(
+                              child: StepperWidget(),
+                            ),
                           ),
-                        ),
                         Text(
                           intl.enterYourState,
                           style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
@@ -270,7 +275,9 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                         ))
                   ],
                 ),
-                Space(height: 3.h,),
+                Space(
+                  height: 3.h,
+                ),
                 Expanded(
                   flex: 3,
                   child: Center(
