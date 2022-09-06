@@ -906,7 +906,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = diseasesIds.map((e) => e.toJson()).toList();
+    final _data = diseasesIds;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)

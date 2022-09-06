@@ -616,14 +616,14 @@ class _RepositoryImpl extends Repository {
 
   @override
   ImperativeNetworkResult sendSickness(List<ObstructiveDiseaseCategory> sickness) {
-    List<dynamic> selectedItems = [];
+    List<int> selectedItems = [];
     for(int i = 0; i < sickness.length; i++) {
       if(sickness[i].isSelected! && sickness[i].disease_id>0){
         selectedItems.add(sickness[i].disease_id);
       }
       for(int j = 0; j < sickness[i].diseases!.length; j++) {
         if (sickness[i].diseases![j].isSelected!) {
-          selectedItems.add(sickness[i].diseases![j].id);
+          selectedItems.add(sickness[i].diseases![j].id!);
         }
       }
     }

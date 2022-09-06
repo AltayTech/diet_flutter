@@ -102,7 +102,8 @@ Price _$PriceFromJson(Map<String, dynamic> json) => Price()
   ..totalPrice = json['total_price'] as int?
   ..product_id = json['product_id'] as int?
   ..packageId = json['package_id'] as int?
-  ..discount_message = json['discount_message'] as String?;
+  ..discount_message = json['discount_message'] as String?
+  ..description = json['description'] as String?;
 
 Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
       'currency_name': instance.currencyName,
@@ -114,6 +115,7 @@ Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
       'product_id': instance.product_id,
       'package_id': instance.packageId,
       'discount_message': instance.discount_message,
+      'description': instance.description,
     };
 
 ServicePackage _$ServicePackageFromJson(Map<String, dynamic> json) =>

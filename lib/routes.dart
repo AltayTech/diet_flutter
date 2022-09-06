@@ -96,7 +96,7 @@ abstract class Routes {
   static const subscriptionPaymentCardWait = '/subscription/payment/card/wait';
 
   static const onboarding = '/onboarding';
-  static const editBodyInfo = '/edit/body-information';
+  static const editBodyInfo = '/reg/edit/body-information';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

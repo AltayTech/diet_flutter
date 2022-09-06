@@ -258,24 +258,31 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen>
   }
 
   void sendRequest() {
-    bool isFindErrorSingleChoiceCategory = false;
+    bool isFindOneSingleChoiceCategory = false;
+    bool isChoiceElement = false;
+    String categoryName = '';
     sicknessBloc.userCategoryDiseaseValue.forEach((category) {
-      isFindErrorSingleChoiceCategory = false;
+      isFindOneSingleChoiceCategory=false;
       if (category.isSelected! && category.hasMultiChoiceChildren.isNotNullAndFalse) {
+        isFindOneSingleChoiceCategory = true;
+        isChoiceElement = false;
         category.diseases?.forEach((element) {
           if (element.isSelected.isNotNullAndTrue) {
-            isFindErrorSingleChoiceCategory = true;
-            Utils.getSnackbarMessage(context, intl.alertDiseaseMessage(category.title!));
+            isChoiceElement = true;
             return;
+          }else {
+            categoryName=category.title!;
           }
         });
       }
     });
 
-    if (!isFindErrorSingleChoiceCategory) {
-      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-      sicknessBloc.sendSickness();
+    if (isFindOneSingleChoiceCategory && !isChoiceElement) {
+      Utils.getSnackbarMessage(context, intl.alertDiseaseMessage(categoryName));
+      return;
     }
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    sicknessBloc.sendSickness();
   }
 
   @override

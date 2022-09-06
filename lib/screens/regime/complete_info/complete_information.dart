@@ -39,11 +39,7 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
 
   void listenBloc() {
     bloc.navigateTo.listen((event) {
-      VxNavigator.of(context).push(Uri.parse(event));
-    });
-
-    bloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
+      VxNavigator.of(context).push(Uri.parse('/$event'));
     });
 
     bloc.popDialog.listen((event) {
@@ -158,8 +154,12 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
               Space(height: 1.h),
               CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue, Size(100.w, 6.h),
                   Icon(Icons.arrow_forward), () {
-                DialogUtils.showDialogProgress(context: context);
-                bloc.updateDietPreferences();
+                if(bloc.selectedActivity!=null && bloc.selectedDietHistoryValue!=null && bloc.selectedGoalValue!=null) {
+                  DialogUtils.showDialogProgress(context: context);
+                  bloc.updateDietPreferences();
+                }else {
+                  Utils.getSnackbarMessage(context, intl.errorCompleteInfo);
+                }
               })
             ],
           ),

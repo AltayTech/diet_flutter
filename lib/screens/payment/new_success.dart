@@ -1,13 +1,16 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -146,13 +149,22 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
                       right: 10.w,
                     ),
                     Positioned(
-                      child: Text('30000 تومان',
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: AppColors.priceColor)),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        text: TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: ' ${intl.toman}',
+                                  style: Theme.of(context).textTheme.caption!.copyWith(
+                                      color: AppColors.priceColor, fontWeight: FontWeight.w700))
+                            ],
+                            text: '${bloc.invoice!.amount!.toInt()}'.seRagham(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: AppColors.priceColor)),
+                      ),
                       top: 8.h,
                       left: 10.w,
                       right: 10.w,
@@ -170,7 +182,7 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
                       right: 10.w,
                     ),
                     Positioned(
-                      child: Text('33543453',
+                      child: Text(bloc.invoice!.refId!,
                           textAlign: TextAlign.center,
                           softWrap: true,
                           style: Theme.of(context)
@@ -194,7 +206,7 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
                       right: 10.w,
                     ),
                     Positioned(
-                      child: Text('1400/05/22',
+                      child: Text(DateTimeUtils.gregorianToJalali(bloc.invoice!.payedAt!),
                           textAlign: TextAlign.center,
                           softWrap: true,
                           style: Theme.of(context)
@@ -242,7 +254,7 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
                       right: 10.w,
                     ),
                     Positioned(
-                      child: Text('14:30',
+                      child: Text(MemoryApp.userInformation?.mobile ?? '******',
                           textAlign: TextAlign.center,
                           softWrap: true,
                           style: Theme.of(context)

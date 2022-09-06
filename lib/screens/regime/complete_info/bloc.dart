@@ -92,9 +92,6 @@ class CompleteInformationBloc {
     _repository.setCondition(requestData).then((value) {
       debugPrint('bloc condition ${value.data}');
       if (value.data != null) _navigateTo.fire(value.next);
-    }).catchError((onError) {
-      _popDialog.fire(true);
-      _showServerError.fire(true);
     }).whenComplete(() => _popDialog.fire(true));
   }
 

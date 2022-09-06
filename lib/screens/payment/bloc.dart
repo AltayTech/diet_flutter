@@ -236,7 +236,8 @@ class PaymentBloc {
     _repository.latestInvoice().then((value) {
       _invoice = value.data;
       _invoice!.payedAt ??= DateTime.now().toString().substring(0, 10);
-      _path = value.next!;
+      if(value.next!=null)
+      _path = '/${value.next!}';
     }).whenComplete(() => _waiting.safeValue = false);
   }
 
