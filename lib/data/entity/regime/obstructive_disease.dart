@@ -29,6 +29,12 @@ class ObstructiveDisease {
 
 @JsonSerializable()
 class ObstructiveDiseaseCategory {
+  @JsonKey(name: "disease_categories")
+  List<ObstructiveDiseaseCategory>? diseaseCategories;
+
+  @JsonKey(name: "user_disease_ids")
+  List<ObstructiveDiseaseCategory>? userDiseaseIds;
+
   @JsonKey(name: "id")
   int? id;
 
