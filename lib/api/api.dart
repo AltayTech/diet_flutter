@@ -206,7 +206,7 @@ abstract class RestClient {
   NetworkResult<List<ObstructiveDiseaseCategory>> getNotBlockingSickness();
 
   @PATCH("/user/diseases")
-  ImperativeNetworkResult setUserSickness(@Body() List<int> diseasesIds);
+  ImperativeNetworkResult setUserSickness(@Body() Map<String,dynamic> queries);
 
   @GET("/user-special")
   NetworkResult<UserSicknessSpecial> getUserSicknessSpecial();
@@ -362,7 +362,7 @@ abstract class RestClient {
   NetworkResult<InboxItem> getInboxMessage(@Path('id') int id);
 
   @GET("/user/allowed-diet-types")
-  NetworkResult<List<DietType>> getUserAllowedDietType();
+  NetworkResult<DietType> getUserAllowedDietType();
 
   @GET("/package")
   NetworkResult<Package> getPackagesNew();

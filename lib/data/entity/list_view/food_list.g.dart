@@ -250,11 +250,17 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'visit_days': instance.visitDays,
     };
 
-DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType(
-      json['id'] as int,
-      $enumDecode(_$RegimeAliasEnumMap, json['alias']),
-      json['title'] as String,
-    )..isActive = $enumDecodeNullable(_$booleanEnumMap, json['is_active']);
+DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType()
+  ..id = json['id'] as int
+  ..alias = $enumDecode(_$RegimeAliasEnumMap, json['alias'])
+  ..title = json['title'] as String
+  ..isActive = $enumDecodeNullable(_$booleanEnumMap, json['is_active'])
+  ..article = json['article'] == null
+      ? null
+      : Media.fromJson(json['article'] as Map<String, dynamic>)
+  ..dietTypes = (json['diet_types'] as List<dynamic>)
+      .map((e) => DietType.fromJson(e as Map<String, dynamic>))
+      .toList();
 
 const _$RegimeAliasEnumMap = {
   RegimeAlias.Pregnancy: 'PREGNANCY',

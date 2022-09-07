@@ -129,7 +129,7 @@ class Address {
 
 @JsonSerializable()
 class Media {
-  @JsonKey(name: "url")
+  @JsonKey(name: "original_url")
   String? url;
 
   @JsonKey(name: "id")

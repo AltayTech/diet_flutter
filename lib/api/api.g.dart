@@ -902,11 +902,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> setUserSickness(diseasesIds) async {
+  Future<NetworkResponse<dynamic>> setUserSickness(queries) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = diseasesIds;
+    final _data = <String, dynamic>{};
+    _data.addAll(queries);
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
@@ -1891,22 +1892,20 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<List<DietType>>> getUserAllowedDietType() async {
+  Future<NetworkResponse<DietType>> getUserAllowedDietType() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<List<DietType>>>(
+        _setStreamType<NetworkResponse<DietType>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/user/allowed-diet-types',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<List<DietType>>.fromJson(
+    final value = NetworkResponse<DietType>.fromJson(
       _result.data!,
-      (json) => (json as List<dynamic>)
-          .map<DietType>((i) => DietType.fromJson(i as Map<String, dynamic>))
-          .toList(),
+      (json) => DietType.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

@@ -261,7 +261,7 @@ abstract class Repository {
 
   NetworkResult<List<ObstructiveDiseaseCategory>> getBlockingSickness();
 
-  NetworkResult<List<DietType>> getUserAllowedDietType();
+  NetworkResult<DietType> getUserAllowedDietType();
 
   NetworkResult<Package> getPackages();
 }
@@ -617,17 +617,17 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult sendSickness(List<ObstructiveDiseaseCategory> sickness) {
     List<int> selectedItems = [];
-    for(int i = 0; i < sickness.length; i++) {
-      if(sickness[i].isSelected! && sickness[i].disease_id>0){
+    for (int i = 0; i < sickness.length; i++) {
+      if (sickness[i].isSelected! && sickness[i].disease_id > 0) {
         selectedItems.add(sickness[i].disease_id);
       }
-      for(int j = 0; j < sickness[i].diseases!.length; j++) {
+      for (int j = 0; j < sickness[i].diseases!.length; j++) {
         if (sickness[i].diseases![j].isSelected!) {
           selectedItems.add(sickness[i].diseases![j].id!);
         }
       }
     }
-    var response = _apiClient.setUserSickness(selectedItems);
+    var response = _apiClient.setUserSickness({'diseasesId': selectedItems});
     return response;
   }
 
@@ -1037,7 +1037,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<List<DietType>> getUserAllowedDietType() {
+  NetworkResult<DietType> getUserAllowedDietType() {
     var response = _apiClient.getUserAllowedDietType();
     return response;
   }
