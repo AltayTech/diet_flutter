@@ -36,7 +36,7 @@ class OtherSicknessBloc {
   void updateSickness(int indexSickness, int indexCategory,
       ObstructiveDisease sickness) {
     List<ObstructiveDiseaseCategory> userSickness = _userSickness.value;
-    userSickness[indexSickness].diseases![indexCategory] = sickness;
+    userSickness[indexCategory].diseases![indexSickness] = sickness;
     _userSickness.safeValue = userSickness;
   }
 

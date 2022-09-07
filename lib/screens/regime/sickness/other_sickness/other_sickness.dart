@@ -236,16 +236,12 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                 ),
               ),
               if(sickness.title!.length<25)
-                Marquee(
-                  child: Text(sickness.title!,
-                      softWrap: true,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                      typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
-                  direction: Axis.horizontal,
-                  textDirection: context.textDirectionOfContext,
-                ),
+                Text(sickness.title!,
+                    softWrap: true,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                    typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
             ],
           ),
         ),
