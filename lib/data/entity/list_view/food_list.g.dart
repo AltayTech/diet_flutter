@@ -257,7 +257,7 @@ DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType()
   ..isActive = $enumDecodeNullable(_$booleanEnumMap, json['is_active'])
   ..template = json['template'] == null
       ? null
-      : DailyMessageTemplate.fromJson(json['template'] as Map<String, dynamic>)
+      : TempTicket.fromJson(json['template'] as Map<String, dynamic>)
   ..dietTypes = (json['diet_types'] as List<dynamic>?)
       ?.map((e) => DietType.fromJson(e as Map<String, dynamic>))
       .toList();

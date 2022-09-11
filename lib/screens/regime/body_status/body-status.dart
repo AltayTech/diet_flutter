@@ -1,13 +1,14 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/daily_message.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/bmi_status.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/body_status/bloc.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
+import 'package:behandam/screens/widget/detail_screen.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/help_dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -15,11 +16,14 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
+import 'package:behandam/widget/custom_player.dart' as cPlayer;
 import 'package:behandam/widget/custom_video.dart';
 import 'package:behandam/widget/stepper_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -108,7 +112,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       Space(height: 2.h),
                       dietType(),
                       Space(height: 2.h),
-                      StreamBuilder<DailyMessageTemplate>(
+                      StreamBuilder<TempTicket>(
                           stream: bloc.template,
                           builder: (context, template) {
                             if (template.hasData) return helpDietSelect(template.requireData);
@@ -473,7 +477,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
         });
   }
 
-  Widget helpDietSelect(DailyMessageTemplate helpMedia) {
+  Widget helpDietSelect(TempTicket helpMedia) {
     return Container(
       width: 100.w,
       decoration: BoxDecoration(
@@ -481,35 +485,99 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
         borderRadius: BorderRadius.circular(10),
       ),
       margin: EdgeInsets.only(right: 32, left: 32),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Space(height: 1.h),
-          Text(
-            intl.whichDietShouldITake,
-            textDirection: context.textDirectionOfLocale,
-            style: typography.caption!.copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            '‌‌دکتر کرمانی در این ویدئو از چاقی درجه ۱ می‌گوید',
-            textDirection: context.textDirectionOfLocale,
-            style: typography.caption!.copyWith(fontSize: 10.sp),
-          ),
-          Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          ...helpMedia.data!
+              .asMap()
+              .map((index, value) => MapEntry(
+              index,
+              templateItemWidget(value)))
+              .values
+              .toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget templateItemWidget(TempItem templateItem) {
+    if (templateItem.alterText != null) {
+      return Html(
+        data: "<div style='direction:rtl'> ${templateItem.alterText} </div>",
+        shrinkWrap: true,
+        onLinkTap: (url, context, attributes, element) {
+          Utils.launchURL(url!);
+        },
+      );
+    } else {
+      if (templateItem.media!.isNotEmpty && templateItem.media![0].mediumType == MediumType.file) {
+        templateItem.media![0].progress = false;
+        String? name = templateItem.media![0].fileName;
+      }
+      MediumType? mediumType = templateItem.media![0].mediumType;
+      switch (mediumType) {
+        case MediumType.IMAGE:
+          return GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) {
+              return DetailScreen(templateItem.media![0].mediumUrls!.url);
+            })),
+            child: Container(
+              width: double.maxFinite,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.network(
+                  templateItem.media![0].mediumUrls!.url!,
+                  fit: BoxFit.fill,
+                  loadingBuilder:
+                      (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: AppColors.accentColor,
+                        valueColor: new AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        case MediumType.VIDEO:
+          return Container(
             margin: EdgeInsets.only(top: 1.h),
             child: AspectRatio(
               aspectRatio: 16 / 9,
               child: CustomVideo(
-                image: /*helpMedia.data![0].media![0].mediumUrls!.thumbUrl!*/'',
+                image: null,
                 isLooping: false,
                 isStart: false,
-                url: helpMedia.data![0].media![0].mediumUrls!.url!,
+                url: templateItem.media![0].mediumUrls!.url,
               ),
             ),
-          ),
-        ]),
-      ),
-    );
+          );
+        case MediumType.AUDIO:
+          return Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.only(left: 8, right: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.black12,
+            ),
+            child: cPlayer.CustomPlayer(
+              isAdmin: false,
+              media: cPlayer.Media.remoteExampleFile,
+              url: templateItem.media![0].mediumUrls!.url,
+            ),
+          );
+        default:
+          return Container();
+      }
+    }
   }
 
   void pregnancyWeekAlert() {

@@ -1,6 +1,7 @@
 import 'package:behandam/data/entity/daily_message.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../user/user_information.dart';
@@ -479,7 +480,7 @@ class DietType {
   boolean? isActive;
 
   @JsonKey(name: 'template')
-  DailyMessageTemplate? template;
+  TempTicket? template;
 
   @JsonKey(name: 'diet_types')
   List<DietType>? dietTypes;

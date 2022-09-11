@@ -7,6 +7,7 @@ import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/extensions/stream.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class BodyStatusBloc {
   late PhysicalInfoData _physicalInfoData;
   final _waiting = BehaviorSubject<bool>();
   final _dietTypeList = BehaviorSubject<List<DietType>>();
-  final _template = BehaviorSubject<DailyMessageTemplate>();
+  final _template = BehaviorSubject<TempTicket>();
   final _dietSelected = BehaviorSubject<DietType?>();
   final _status = BehaviorSubject<BodyStatus>();
   final _physicalInfo = BehaviorSubject<PhysicalInfoData>();
@@ -31,7 +32,7 @@ class BodyStatusBloc {
 
   Stream<List<DietType>> get dietTypeList => _dietTypeList.stream;
 
-  Stream<DailyMessageTemplate> get template => _template.stream;
+  Stream<TempTicket> get template => _template.stream;
 
   Stream<DietType?> get dietSelected => _dietSelected.stream;
 
