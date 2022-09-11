@@ -627,7 +627,7 @@ class _RepositoryImpl extends Repository {
         }
       }
     }
-    var response = _apiClient.setUserSickness({'diseasesId': selectedItems});
+    var response = _apiClient.setUserSickness({'disease_ids': selectedItems});
     return response;
   }
 

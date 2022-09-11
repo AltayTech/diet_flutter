@@ -49,8 +49,8 @@ class BodyStatusBloc {
   void getUserAllowedDietType() {
     _waiting.safeValue = true;
     _repository.getUserAllowedDietType().then((value) {
-      _dietTypeList.safeValue = value.data!.dietTypes;
-      _dietSelected.safeValue = value.data?.dietTypes[0] ?? null;
+      _dietTypeList.safeValue = value.data!.dietTypes!;
+      _dietSelected.safeValue = value.data?.dietTypes![0] ?? null;
     }).whenComplete(() => getStatus());
   }
 

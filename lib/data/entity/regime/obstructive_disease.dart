@@ -33,7 +33,7 @@ class ObstructiveDiseaseCategory {
   List<ObstructiveDiseaseCategory>? diseaseCategories;
 
   @JsonKey(name: "user_disease_ids")
-  List<ObstructiveDiseaseCategory>? userDiseaseIds;
+  List<int>? userDiseaseIds;
 
   @JsonKey(name: "id")
   int? id;
