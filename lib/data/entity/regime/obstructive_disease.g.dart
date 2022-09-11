@@ -31,8 +31,7 @@ ObstructiveDiseaseCategory _$ObstructiveDiseaseCategoryFromJson(
               ObstructiveDiseaseCategory.fromJson(e as Map<String, dynamic>))
           .toList()
       ..userDiseaseIds = (json['user_disease_ids'] as List<dynamic>?)
-          ?.map((e) =>
-              ObstructiveDiseaseCategory.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => e as int)
           .toList()
       ..id = json['id'] as int?
       ..categoryId = json['category_id'] as int?
