@@ -26,6 +26,14 @@ Map<String, dynamic> _$ObstructiveDiseaseToJson(ObstructiveDisease instance) =>
 ObstructiveDiseaseCategory _$ObstructiveDiseaseCategoryFromJson(
         Map<String, dynamic> json) =>
     ObstructiveDiseaseCategory()
+      ..diseaseCategories = (json['disease_categories'] as List<dynamic>?)
+          ?.map((e) =>
+              ObstructiveDiseaseCategory.fromJson(e as Map<String, dynamic>))
+          .toList()
+      ..userDiseaseIds = (json['user_disease_ids'] as List<dynamic>?)
+          ?.map((e) =>
+              ObstructiveDiseaseCategory.fromJson(e as Map<String, dynamic>))
+          .toList()
       ..id = json['id'] as int?
       ..categoryId = json['category_id'] as int?
       ..disease_id = json['disease_id'] as int? ?? -1
@@ -40,6 +48,8 @@ ObstructiveDiseaseCategory _$ObstructiveDiseaseCategoryFromJson(
 Map<String, dynamic> _$ObstructiveDiseaseCategoryToJson(
         ObstructiveDiseaseCategory instance) =>
     <String, dynamic>{
+      'disease_categories': instance.diseaseCategories,
+      'user_disease_ids': instance.userDiseaseIds,
       'id': instance.id,
       'category_id': instance.categoryId,
       'disease_id': instance.disease_id,

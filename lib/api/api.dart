@@ -200,10 +200,10 @@ abstract class RestClient {
   NetworkResult<UserSickness> getUserSickness();
 
   @GET("/user/blocking-disease")
-  NetworkResult<List<ObstructiveDiseaseCategory>> getBlockingSickness();
+  NetworkResult<ObstructiveDiseaseCategory> getBlockingSickness();
 
   @GET("/user/usual-diseases")
-  NetworkResult<List<ObstructiveDiseaseCategory>> getNotBlockingSickness();
+  NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness();
 
   @PATCH("/user/diseases")
   ImperativeNetworkResult setUserSickness(@Body() Map<String,dynamic> queries);

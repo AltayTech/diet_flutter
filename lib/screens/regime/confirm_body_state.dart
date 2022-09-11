@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/provider.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
@@ -148,52 +149,58 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
   }
 
   Widget bodyInformation() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          bodyInformationParam(
-              title: intl.weight,
-              value: '100',
-              unit: intl.kiloGr,
-              valueColor: AppColors.bodyStateBlueColor,
-              gradientColor: AppColors.bodyStateBlueColor),
-          bodyInformationParam(
-              title: intl.height,
-              value: '160',
-              unit: intl.centimeter,
-              valueColor: AppColors.bodyStatePurpleColor,
-              gradientColor: AppColors.bodyStatePurpleColor),
-          bodyInformationParam(
-              title: intl.birthday,
-              value: '1378/05/22',
-              unit: '',
-              valueColor: AppColors.bodyStateOrangeColor,
-              gradientColor: AppColors.bodyStateOrangeColor,
-              fontSize: 12.sp),
-        ]),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          bodyInformationParam(
-              title: intl.properWeight,
-              value: '100',
-              unit: intl.kiloGr,
-              valueColor: AppColors.bodyStateGreenColor,
-              gradientColor: AppColors.bodyStateGreenColor),
-          bodyInformationParam(
-              title: intl.extraWeight,
-              value: '45',
-              unit: intl.kiloGr,
-              valueColor: AppColors.bodyStateRedColor,
-              gradientColor: AppColors.bodyStateRedColor),
-          bodyInformationParam(
-              title: intl.necessaryTime,
-              value: '40',
-              unit: intl.day,
-              valueColor: AppColors.bodyStateDarkBlueColor,
-              gradientColor: AppColors.bodyStateDarkBlueColor),
-        ])
-      ],
-    );
+    return StreamBuilder<PhysicalInfoData>(
+        stream: regimeBloc.physicalInfo,
+        builder: (context, physicalInfo) {
+          if (physicalInfo.hasData)
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  bodyInformationParam(
+                      title: intl.weight,
+                      value: physicalInfo.requireData.weight!.toInt().toString(),
+                      unit: intl.kiloGr,
+                      valueColor: AppColors.bodyStateBlueColor,
+                      gradientColor: AppColors.bodyStateBlueColor),
+                  bodyInformationParam(
+                      title: intl.height,
+                      value: physicalInfo.requireData.height!.toString(),
+                      unit: intl.centimeter,
+                      valueColor: AppColors.bodyStatePurpleColor,
+                      gradientColor: AppColors.bodyStatePurpleColor),
+                  bodyInformationParam(
+                      title: intl.birthday,
+                      value: physicalInfo.requireData.birthDate!.toString(),
+                      unit: '',
+                      valueColor: AppColors.bodyStateOrangeColor,
+                      gradientColor: AppColors.bodyStateOrangeColor,
+                      fontSize: 12.sp),
+                ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  bodyInformationParam(
+                      title: intl.properWeight,
+                      value: '100',
+                      unit: intl.kiloGr,
+                      valueColor: AppColors.bodyStateGreenColor,
+                      gradientColor: AppColors.bodyStateGreenColor),
+                  bodyInformationParam(
+                      title: intl.extraWeight,
+                      value: '45',
+                      unit: intl.kiloGr,
+                      valueColor: AppColors.bodyStateRedColor,
+                      gradientColor: AppColors.bodyStateRedColor),
+                  bodyInformationParam(
+                      title: intl.necessaryTime,
+                      value: '40',
+                      unit: intl.day,
+                      valueColor: AppColors.bodyStateDarkBlueColor,
+                      gradientColor: AppColors.bodyStateDarkBlueColor),
+                ])
+              ],
+            );
+          return Progress();
+        });
   }
 
   Widget bodyInformationParam(
@@ -373,6 +380,7 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
 
   @override
   void onRetryLoadingPage() {
+    regimeBloc.getStatus();
     regimeBloc.physicalInfoData();
   }
 }

@@ -52,9 +52,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
       Navigator.pop(context);
-      if (!event
-          .toString()
-          .isEmptyOrNull) {
+      if (!event.toString().isEmptyOrNull) {
         check = true;
 
         if (channelSendCode == ChannelSendCode.WHATSAPP) {
@@ -64,8 +62,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               ),
               params: {"mobile": args['mobile'], 'country': args['country']});
           IntentUtils.openAppIntent(Uri.encodeFull(
-            'https://wa.me/${MemoryApp.whatsappInfo!
-                .botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
+            'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
           ));
         } else if (event.toString().contains(Routes.auth.substring(1)))
           VxNavigator.of(context).push(
@@ -79,7 +76,6 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     });
     authBloc.showServerError.listen((event) {
       Navigator.of(context).pop();
-
     });
   }
 
@@ -90,10 +86,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     super.didChangeDependencies();
     if (!isInit) {
       isInit = true;
-      args = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as Map<String, dynamic>;
+      args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
       countrySelected = args["country"];
 
@@ -136,8 +129,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       height: 62.h,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50), topLeft: Radius.circular(50)),
+          borderRadius:
+              BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
           boxShadow: [
             BoxShadow(
                 color: Colors.grey.withOpacity(0.2),
@@ -146,140 +139,149 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                 offset: Offset(0, 1))
           ]),
       child: Padding(
-          padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
-            intl.registerLogin,
-            textAlign: TextAlign.start,
-            style: typography.subtitle1!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+              intl.registerLogin,
+              textAlign: TextAlign.start,
+              style: typography.subtitle1!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
-          ),
-          Space(height: 1.h),
-          Row(
-            children: [
-              Text(
-                intl.enterPassword,
-                textAlign: TextAlign.start,
-                style: typography.caption!
-                    .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
-              ),
-            ],
-          ),
-          Space(height: 3.h),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 7.h,
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Row(children: [
-                Expanded(
-                    flex: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0,left: 8),
-                      child: Text(
-                        '+${args["mobile"]}',
-                        textAlign: TextAlign.start,
-                        textDirection: TextDirection.ltr,
-                        style: typography.caption!.copyWith(fontSize: 14.sp,fontWeight: FontWeight.w500),
-                      ),
-                    )),
-                Expanded(
-                  flex: 0,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4.0),
-                      child: ImageUtils.fromLocal(
-                         countrySelected.flag!,
-                          package: picker.countryCodePackageName,
-                          width: 7.w,
-                          fit: BoxFit.fill,
-                          height: 5.5.w),
-                    ),
+            Space(height: 1.h),
+            Row(
+              children: [
+                Text(
+                  intl.enterPassword,
+                  textAlign: TextAlign.start,
+                  style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+                ),
+                Space(width: 1.w),
+                InkWell(
+                  onTap: () {
+                    context.vxNav.clearAndPush(Uri.parse(Routes.auth));
+                  },
+                  child: Text(
+                    intl.editPhone,
+                    textAlign: TextAlign.start,
+                    style: typography.caption!.copyWith(
+                        color: AppColors.redBar, fontWeight: FontWeight.bold, fontSize: 10.sp),
                   ),
                 ),
-              ]),
+              ],
             ),
-          ),
-          Space(height: 1.h),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _text,
-              textDirection: TextDirection.ltr,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0)),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
+            Space(height: 3.h),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 7.h,
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0)),
-                // enabledBorder: OutlineInputBorder(
-                //   borderSide: BorderSide(color: Colors.grey)),
-                labelText: intl.password,
-                prefixIcon: IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility : Icons.visibility_off,
-                    color: AppColors.penColor,
+                child: Row(children: [
+                  Expanded(
+                      flex: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0, left: 8),
+                        child: Text(
+                          '+${args["mobile"]}',
+                          textAlign: TextAlign.start,
+                          textDirection: TextDirection.ltr,
+                          style: typography.caption!
+                              .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                        ),
+                      )),
+                  Expanded(
+                    flex: 0,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4.0),
+                        child: ImageUtils.fromLocal(countrySelected.flag!,
+                            package: picker.countryCodePackageName,
+                            width: 7.w,
+                            fit: BoxFit.fill,
+                            height: 5.5.w),
+                      ),
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
-                // errorText: _validate ? intl.fillAllField : null,
-                labelStyle:
-                TextStyle(color: AppColors.penColor, fontSize: 12.sp),
+                ]),
               ),
-              obscureText: !_obscureText,
-              onSubmitted: (String) {
+            ),
+            Space(height: 1.h),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _text,
+                textDirection: TextDirection.ltr,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  // enabledBorder: OutlineInputBorder(
+                  //   borderSide: BorderSide(color: Colors.grey)),
+                  labelText: intl.password,
+                  prefixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                      color: AppColors.penColor,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
+                  // errorText: _validate ? intl.fillAllField : null,
+                  labelStyle: TextStyle(color: AppColors.penColor, fontSize: 12.sp),
+                ),
+                obscureText: !_obscureText,
+                onSubmitted: (String) {
+                  clickButton();
+                },
+                onChanged: (txt) {
+                  _password = txt;
+                },
+              ),
+            ),
+            Space(height: 3.h),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: InkWell(
+                onTap: () => loginWithOtpDialog(),
+                child: Text(
+                  intl.loginWithOtp,
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  style: typography.overline!.copyWith(color: AppColors.priceGreenColor),
+                ),
+              ),
+            ),
+            Space(height: 5.h),
+            CustomButton(
+              AppColors.btnColor,
+              intl.login,
+              Size(100.w, 6.h),
+              () {
                 clickButton();
               },
-              onChanged: (txt) {
-                _password = txt;
-              },
             ),
-          ),
-          Space(height: 3.h),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: InkWell(
-              onTap: () => loginWithOtpDialog(),
-              child: Text(
-                intl.loginWithOtp,
-                textAlign: TextAlign.start,
-                textDirection: TextDirection.ltr,
-                style: typography.overline!
-                    .copyWith(color: AppColors.priceGreenColor),
-              ),
-            ),
-          ),
-          Space(height: 5.h),
-          CustomButton(
-            AppColors.btnColor,
-            intl.login,
-            Size(100.w, 6.h),
-                () {
-              clickButton();
-            },
-          ),
-          Space(height: 2.h),
-      ],
-    ),)
-    ,
+            Space(height: 2.h),
+          ],
+        ),
+      ),
     );
   }
 
@@ -307,12 +309,10 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     text: intl.textChangePass1,
-                    style:
-                    TextStyle(fontSize: 14.sp, color: AppColors.penColor),
+                    style: TextStyle(fontSize: 14.sp, color: AppColors.penColor),
                     children: <TextSpan>[
                       TextSpan(
-                          text: '${args['mobile']}',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          text: '${args['mobile']}', style: TextStyle(fontWeight: FontWeight.bold)),
                       TextSpan(text: intl.textChangePass2),
                     ],
                   ),
@@ -330,8 +330,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                         DialogUtils.showDialogProgress(context: context);
 
                         MemoryApp.forgetPass = true;
-                        authBloc.sendCodeMethod(
-                            args['mobile'], channelSendCode);
+                        authBloc.sendCodeMethod(args['mobile'], channelSendCode);
                         authBloc.setTrySendCode = true;
                       },
                       icon: Icon(
@@ -342,11 +341,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       label: Text(
                         intl.sendSMS,
                         textAlign: TextAlign.start,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
                       ),
                       style: OutlinedButton.styleFrom(
                           backgroundColor: AppColors.blueRuler,
@@ -366,16 +361,14 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                           channelSendCode = ChannelSendCode.WHATSAPP;
                           Navigator.pop(context);
                           DialogUtils.showDialogProgress(context: context);
-                          authBloc.sendCodeMethod(
-                              args['mobile'], channelSendCode);
+                          authBloc.sendCodeMethod(args['mobile'], channelSendCode);
 
                           MemoryApp.forgetPass = true;
 
                           authBloc.setTrySendCode = true;
                         } else {
                           Navigator.pop(context);
-                          Utils.getSnackbarMessage(
-                              context, intl.errorDisableWhatsApp);
+                          Utils.getSnackbarMessage(context, intl.errorDisableWhatsApp);
                         }
                       },
                       icon: Icon(
@@ -386,26 +379,22 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                       label: Text(
                         intl.sendWhatsapp,
                         textAlign: TextAlign.start,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(
+                        style: Theme.of(context).textTheme.button!.copyWith(
                             color: (MemoryApp.whatsappInfo != null &&
-                                MemoryApp.whatsappInfo!.botStatusBool)
+                                    MemoryApp.whatsappInfo!.botStatusBool)
                                 ? Colors.white
                                 : AppColors.labelTextColor),
                       ),
                       style: OutlinedButton.styleFrom(
                           backgroundColor: (MemoryApp.whatsappInfo != null &&
-                              MemoryApp.whatsappInfo!.botStatusBool)
+                                  MemoryApp.whatsappInfo!.botStatusBool)
                               ? AppColors.greenRuler
                               : AppColors.grey,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                               side: BorderSide(
                                 color: (MemoryApp.whatsappInfo != null &&
-                                    MemoryApp.whatsappInfo!.botStatusBool)
+                                        MemoryApp.whatsappInfo!.botStatusBool)
                                     ? AppColors.greenRuler
                                     : AppColors.grey,
                                 width: 0.25.w,

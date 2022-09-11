@@ -157,46 +157,48 @@ class PackageWidget extends StatelessWidget {
                     Space(
                       height: 1.h,
                     ),
-                    Row(
-                      children: [
-                        CustomPaint(
-                          painter: MyLine(),
-                          child: Text(
-                            '$price'.seRagham() + '${context.intl.toman}',
+                    Expanded(
+                      child: Row(
+                        children: [
+                          CustomPaint(
+                            painter: MyLine(),
+                            child: Text(
+                              '$price'.seRagham() + '${context.intl.toman}',
+                              softWrap: true,
+                              textAlign: TextAlign.start,
+                              style: typography!.caption!.copyWith(
+                                  letterSpacing: -0.02,
+                                  color: Colors.grey,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ),
+                          Space(
+                            width: 2.w,
+                          ),
+                          RichText(
                             softWrap: true,
                             textAlign: TextAlign.start,
-                            style: typography!.caption!.copyWith(
-                                letterSpacing: -0.02,
-                                color: Colors.grey,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                        Space(
-                          width: 2.w,
-                        ),
-                        RichText(
-                          softWrap: true,
-                          textAlign: TextAlign.start,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                  text: '${context.intl.toman}',
-                                  style: typography!.caption!.copyWith(
-                                      letterSpacing: -0.02,
-                                      color: AppColors.priceColor,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w700))
-                            ],
-                            text: '$finalPrice'.seRagham(),
-                            style: typography!.caption!.copyWith(
-                                letterSpacing: -0.02,
-                                color: AppColors.priceColor,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        )
-                      ],
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: '${context.intl.toman}',
+                                    style: typography!.caption!.copyWith(
+                                        letterSpacing: -0.02,
+                                        color: AppColors.priceColor,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w700))
+                              ],
+                              text: '$finalPrice'.seRagham(),
+                              style: typography!.caption!.copyWith(
+                                  letterSpacing: -0.02,
+                                  color: AppColors.priceColor,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),

@@ -149,7 +149,7 @@ abstract class Repository {
 
   NetworkResult<UserSickness> getSickness();
 
-  NetworkResult<List<ObstructiveDiseaseCategory>> getNotBlockingSickness();
+  NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness();
 
   ImperativeNetworkResult sendSickness(List<ObstructiveDiseaseCategory> diseasesIds);
 
@@ -259,7 +259,7 @@ abstract class Repository {
 
   NetworkResult<InboxItem> getInboxMessage(int id);
 
-  NetworkResult<List<ObstructiveDiseaseCategory>> getBlockingSickness();
+  NetworkResult<ObstructiveDiseaseCategory> getBlockingSickness();
 
   NetworkResult<DietType> getUserAllowedDietType();
 
@@ -609,7 +609,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<List<ObstructiveDiseaseCategory>> getNotBlockingSickness() {
+  NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness() {
     var response = _apiClient.getNotBlockingSickness();
     return response;
   }
@@ -1031,7 +1031,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<List<ObstructiveDiseaseCategory>> getBlockingSickness() {
+  NetworkResult<ObstructiveDiseaseCategory> getBlockingSickness() {
     var response = _apiClient.getBlockingSickness();
     return response;
   }

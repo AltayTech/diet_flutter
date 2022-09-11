@@ -856,47 +856,43 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<List<ObstructiveDiseaseCategory>>>
+  Future<NetworkResponse<ObstructiveDiseaseCategory>>
       getBlockingSickness() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<List<ObstructiveDiseaseCategory>>>(
+        _setStreamType<NetworkResponse<ObstructiveDiseaseCategory>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/user/blocking-disease',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<List<ObstructiveDiseaseCategory>>.fromJson(
+    final value = NetworkResponse<ObstructiveDiseaseCategory>.fromJson(
       _result.data!,
-      (json) => (json as List<dynamic>)
-          .map<ObstructiveDiseaseCategory>((i) =>
-              ObstructiveDiseaseCategory.fromJson(i as Map<String, dynamic>))
-          .toList(),
+      (json) =>
+          ObstructiveDiseaseCategory.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
 
   @override
-  Future<NetworkResponse<List<ObstructiveDiseaseCategory>>>
+  Future<NetworkResponse<ObstructiveDiseaseCategory>>
       getNotBlockingSickness() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NetworkResponse<List<ObstructiveDiseaseCategory>>>(
+        _setStreamType<NetworkResponse<ObstructiveDiseaseCategory>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/user/usual-diseases',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NetworkResponse<List<ObstructiveDiseaseCategory>>.fromJson(
+    final value = NetworkResponse<ObstructiveDiseaseCategory>.fromJson(
       _result.data!,
-      (json) => (json as List<dynamic>)
-          .map<ObstructiveDiseaseCategory>((i) =>
-              ObstructiveDiseaseCategory.fromJson(i as Map<String, dynamic>))
-          .toList(),
+      (json) =>
+          ObstructiveDiseaseCategory.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
