@@ -1,8 +1,10 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/daily_message.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/bmi_status.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/body_status/bloc.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
@@ -106,7 +108,12 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       Space(height: 2.h),
                       dietType(),
                       Space(height: 2.h),
-                      helpDietSelect(),
+                      StreamBuilder<DailyMessageTemplate>(
+                          stream: bloc.template,
+                          builder: (context, template) {
+                            if (template.hasData) return helpDietSelect(template.requireData);
+                            return Progress();
+                          }),
                       Space(height: 2.h),
                       Padding(
                         padding: const EdgeInsets.only(right: 32, left: 32),
@@ -154,7 +161,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   Widget showWeightBmi(int? dietDays, String? weightDiff, String? weight, int? pregnancy,
       BmiStatus? bmiStatus, String? bmi) {
     return Container(
-      height: 33.h,
+      height: 40.h,
       padding: EdgeInsets.only(right: 32, left: 32),
       child: Column(
         children: [
@@ -177,41 +184,44 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                           colorfulContainer('$weightDiff', bmiStatus!, intl.getWeight, intl.kiloGr,
                               '', AppColors.pregnantPink),
                         Space(height: 1.h),
-                        Container(
-                          width: 40.w,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: AppColors.grey,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(intl.bmi,
-                                    style: typography.caption!
-                                        .copyWith(color: Colors.grey.withOpacity(0.9))),
-                                Text('BMI',
-                                    style: typography.caption!
-                                        .copyWith(color: Colors.grey.withOpacity(0.9))),
-                                Container(
-                                  width: 30.w,
-                                  padding: EdgeInsets.only(top: 1.1.h),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      color: Colors.white),
-                                  child: Center(
-                                      child: Text(
-                                    '$bmi',
-                                    textAlign: TextAlign.center,
-                                    style: typography.caption!.copyWith(
-                                        color: AppColors.redBar,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16.sp),
-                                  )),
-                                )
-                              ],
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            width: 40.w,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: AppColors.grey,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(intl.bmi,
+                                      style: typography.caption!
+                                          .copyWith(color: Colors.grey.withOpacity(0.9))),
+                                  Text('BMI',
+                                      style: typography.caption!
+                                          .copyWith(color: Colors.grey.withOpacity(0.9))),
+                                  Container(
+                                    width: 30.w,
+                                    padding: EdgeInsets.only(top: 1.1.h),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        color: Colors.white),
+                                    child: Center(
+                                        child: Text(
+                                      '$bmi',
+                                      textAlign: TextAlign.center,
+                                      style: typography.caption!.copyWith(
+                                          color: AppColors.redBar,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 16.sp),
+                                    )),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -250,7 +260,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 Expanded(
                   child: Container(
                     child: ImageUtils.fromLocal(bmiStatus!.imagePath,
-                        width: 40.w, height: 33.h, fit: BoxFit.fill),
+                        width: 40.w, height: 40.h, fit: BoxFit.fill),
                   ),
                 ),
               ],
@@ -361,7 +371,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
           return dietTypeList.hasData
               ? Container(
                   margin: EdgeInsets.only(right: 32, left: 32),
-                  height: dietTypeList.data!.length > 2 ? 35.h : 20.h,
+                  height: dietTypeList.data!.length > 2 ? 35.h : 25.h,
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -380,12 +390,15 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       Positioned(
                         top: 2,
                         child: ImageUtils.fromLocal("assets/images/diet/spoon_fork.svg",
-                            width: 25.w, height: 25.w, fit: BoxFit.contain),
+                            width: 22.w, height: 22.w, fit: BoxFit.contain),
                       ),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Space(
+                              height: 3.h,
+                            ),
                             Text(
                               intl.dietsSuitableYou,
                               style: typography.caption!.copyWith(
@@ -394,15 +407,15 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                   fontSize: 13.sp),
                             ),
                             Space(
-                              height: 1.h,
+                              height: 3.h,
                             ),
                             StreamBuilder<DietType?>(
                                 stream: bloc.dietSelected,
                                 builder: (context, dietSelected) {
                                   if (dietTypeList.data!.length > 1) {
                                     return Wrap(
-                                      spacing: 2.w,
-                                      runSpacing: 1.h,
+                                      spacing: 5.w,
+                                      runSpacing: 3.h,
                                       textDirection: context.textDirectionOfLocale,
                                       crossAxisAlignment: WrapCrossAlignment.center,
                                       alignment: WrapAlignment.center,
@@ -413,7 +426,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                             .map((index, value) => MapEntry(
                                                 index,
                                                 SizedBox(
-                                                  width: 40.w,
+                                                  width: 35.w,
                                                   child: CheckBoxApp(
                                                       maxHeight: 8.h,
                                                       titleFontSize: 12.sp,
@@ -424,7 +437,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                                         bloc.setDietSelected =
                                                             dietTypeList.data![index];
                                                       },
-                                                      title: dietTypeList.data![index].title,
+                                                      title: dietTypeList.data![index].title!,
                                                       isSelected: dietSelected.data?.id ==
                                                           dietTypeList.data![index].id),
                                                 )))
@@ -452,7 +465,6 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                           ),
                                         ]));
                                 }),
-                            Space(height: 1.h)
                           ]),
                     ],
                   ),
@@ -461,7 +473,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
         });
   }
 
-  Widget helpDietSelect() {
+  Widget helpDietSelect(DailyMessageTemplate helpMedia) {
     return Container(
       width: 100.w,
       decoration: BoxDecoration(
@@ -488,10 +500,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
             child: AspectRatio(
               aspectRatio: 16 / 9,
               child: CustomVideo(
-                image: null,
+                image: /*helpMedia.data![0].media![0].mediumUrls!.thumbUrl!*/'',
                 isLooping: false,
                 isStart: false,
-                url: '',
+                url: helpMedia.data![0].media![0].mediumUrls!.url!,
               ),
             ),
           ),

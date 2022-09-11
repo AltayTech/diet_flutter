@@ -467,22 +467,22 @@ class DietType {
   DietType();
 
   @JsonKey(name: 'id')
-  late int id;
+  int? id;
 
   @JsonKey(name: 'alias')
-  late RegimeAlias alias;
+  RegimeAlias? alias;
 
   @JsonKey(name: 'title')
-  late String title;
+  String? title;
 
   @JsonKey(name: 'is_active')
   boolean? isActive;
 
-  @JsonKey(name: 'article')
-  Media? article;
+  @JsonKey(name: 'template')
+  DailyMessageTemplate? template;
 
   @JsonKey(name: 'diet_types')
-  late List<DietType> dietTypes;
+  List<DietType>? dietTypes;
 
   factory DietType.fromJson(Map<String, dynamic> json) => _$DietTypeFromJson(json);
 }

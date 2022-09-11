@@ -65,38 +65,44 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
     return SafeArea(
       child: Container(
         height: 100.h,
-        child: Stack(children: [
-          Column(
+        child: Stack(
+            alignment: Alignment.center,
             children: [
-              Space(height: 12.h),
-              ImageUtils.fromLocal('assets/images/diet/fill_data.png', width: 60.w, height: 60.w),
-              Space(height: 8.h),
-              Text(
-                intl.fillYourInformation,
-                textAlign: TextAlign.center,
-                textDirection: context.textDirectionOfLocale,
-                style: typography.subtitle1!.copyWith(fontWeight: FontWeight.bold),
-              ),
-              Space(height: 1.h),
-              Padding(
-                padding: const EdgeInsets.only(right: 32, left: 32),
-                child: Text(
-                  intl.getFoodProgramDescription,
+          Container(
+            height: 70.h,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ImageUtils.fromLocal('assets/images/diet/fill_data.png', width: 60.w, height: 60.w, fit: BoxFit.fill),
+                Space(height: 4.h),
+                Text(
+                  intl.fillYourInformation,
                   textAlign: TextAlign.center,
                   textDirection: context.textDirectionOfLocale,
-                  style: typography.caption!.copyWith(fontSize: 10.sp),
+                  style: typography.subtitle1!.copyWith(fontWeight: FontWeight.bold),
                 ),
-              ),
-              Space(height: 8.h),
-              Padding(
-                padding: const EdgeInsets.only(right: 32, left: 32),
-                child: CustomButton.withIcon(AppColors.btnColor, intl.getFoodProgram,
-                    Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
-                  DialogUtils.showDialogProgress(context: context);
-                  bloc.nextStep();
-                }),
-              ),
-            ],
+                Space(height: 1.h),
+                Padding(
+                  padding: const EdgeInsets.only(right: 32, left: 32),
+                  child: Text(
+                    intl.getFoodProgramDescription,
+                    textAlign: TextAlign.center,
+                    textDirection: context.textDirectionOfLocale,
+                    style: typography.caption!.copyWith(fontSize: 10.sp),
+                  ),
+                ),
+                Space(height: 4.h),
+                Padding(
+                  padding: const EdgeInsets.only(right: 32, left: 32),
+                  child: CustomButton.withIcon(AppColors.btnColor, intl.getFoodProgram,
+                      Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
+                    DialogUtils.showDialogProgress(context: context);
+                    bloc.nextStep();
+                  }),
+                ),
+              ],
+            ),
           ),
           Positioned(bottom: 0, child: BottomNav(currentTab: BottomNavItem.DIET))
         ]),

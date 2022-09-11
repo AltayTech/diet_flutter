@@ -251,15 +251,15 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
     };
 
 DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType()
-  ..id = json['id'] as int
-  ..alias = $enumDecode(_$RegimeAliasEnumMap, json['alias'])
-  ..title = json['title'] as String
+  ..id = json['id'] as int?
+  ..alias = $enumDecodeNullable(_$RegimeAliasEnumMap, json['alias'])
+  ..title = json['title'] as String?
   ..isActive = $enumDecodeNullable(_$booleanEnumMap, json['is_active'])
-  ..article = json['article'] == null
+  ..template = json['template'] == null
       ? null
-      : Media.fromJson(json['article'] as Map<String, dynamic>)
-  ..dietTypes = (json['diet_types'] as List<dynamic>)
-      .map((e) => DietType.fromJson(e as Map<String, dynamic>))
+      : DailyMessageTemplate.fromJson(json['template'] as Map<String, dynamic>)
+  ..dietTypes = (json['diet_types'] as List<dynamic>?)
+      ?.map((e) => DietType.fromJson(e as Map<String, dynamic>))
       .toList();
 
 const _$RegimeAliasEnumMap = {

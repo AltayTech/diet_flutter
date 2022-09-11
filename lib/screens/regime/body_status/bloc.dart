@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
+import 'package:behandam/data/entity/daily_message.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
+import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/extensions/stream.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,6 +19,7 @@ class BodyStatusBloc {
   late PhysicalInfoData _physicalInfoData;
   final _waiting = BehaviorSubject<bool>();
   final _dietTypeList = BehaviorSubject<List<DietType>>();
+  final _template = BehaviorSubject<DailyMessageTemplate>();
   final _dietSelected = BehaviorSubject<DietType?>();
   final _status = BehaviorSubject<BodyStatus>();
   final _physicalInfo = BehaviorSubject<PhysicalInfoData>();
@@ -27,6 +30,8 @@ class BodyStatusBloc {
   Stream<BodyStatus> get status => _status.stream;
 
   Stream<List<DietType>> get dietTypeList => _dietTypeList.stream;
+
+  Stream<DailyMessageTemplate> get template => _template.stream;
 
   Stream<DietType?> get dietSelected => _dietSelected.stream;
 
@@ -49,8 +54,9 @@ class BodyStatusBloc {
   void getUserAllowedDietType() {
     _waiting.safeValue = true;
     _repository.getUserAllowedDietType().then((value) {
-      _dietTypeList.safeValue = value.data!.dietTypes;
-      _dietSelected.safeValue = value.data?.dietTypes[0] ?? null;
+      _dietTypeList.safeValue = value.data!.dietTypes!;
+      _template.safeValue = value.data!.template!;
+      _dietSelected.safeValue = value.data?.dietTypes![0] ?? null;
     }).whenComplete(() => getStatus());
   }
 
@@ -90,6 +96,7 @@ class BodyStatusBloc {
     _navigateTo.close();
     _popDialog.close();
     _dietTypeList.close();
+    _template.close();
     _dietSelected.close();
     _waiting.close();
     _physicalInfo.close();
