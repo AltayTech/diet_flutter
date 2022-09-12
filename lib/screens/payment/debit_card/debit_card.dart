@@ -44,13 +44,13 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
       bloc = PaymentBloc();
 
-        var arg = ModalRoute.of(context)!.settings.arguments as Map;
-        bloc.setPackage = arg['package'] as PackageItem;
+      var arg = ModalRoute.of(context)!.settings.arguments as Map;
+      bloc.setPackage = arg['package'] as Package;
 
-        bloc.discountCode = arg['discountCode'] as String?;
-        if (bloc.discountCode != null) bloc.changeUseDiscount();
-        // call new service
-        bloc.getBankAccountActiveCard();
+      bloc.discountCode = arg['discountCode'] as String?;
+      if (bloc.discountCode != null) bloc.changeUseDiscount();
+      // call new service
+      bloc.getBankAccountActiveCard();
 
       listenBloc();
     }
@@ -120,7 +120,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
               registerPaymentInfo()
             ]);
           }
-          return Center(child: Progress());
+          return Container(height: 80.h, child: Center(child: Progress()));
         },
       ),
     );

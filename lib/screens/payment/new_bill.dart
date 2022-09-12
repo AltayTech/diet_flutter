@@ -311,7 +311,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
         Utils.getSnackbarMessage(context, intl.offError);
       } else {
         VxNavigator.of(context).push(Uri.parse(Routes.cardToCardSubscription),
-            params: {'package': bloc.packageItem, 'discountCode': bloc.discountCode});
+            params: {'package': bloc.packageItemNew, 'discountCode': bloc.discountCode});
       }
     } else if (bloc.type == PaymentType.cardToCard) {
       if (!bloc.isUsedDiscount &&
@@ -319,7 +319,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
         Utils.getSnackbarMessage(context, intl.offError);
       } else {
         VxNavigator.of(context).push(Uri.parse(Routes.cardToCard),
-            params: {'package': bloc.packageItem, 'discountCode': bloc.discountCode});
+            params: {'package': bloc.packageItemNew, 'discountCode': bloc.discountCode});
       }
     } else {
       DialogUtils.showDialogProgress(context: context);
