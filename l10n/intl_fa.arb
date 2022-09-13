@@ -787,5 +787,8 @@
   "normal": "نرمال",
   "fatDegree1": "چاقی درجه 1",
   "extraFat": "چاقی مفرط",
+  "nameOptional": "نام (اختیاری)",
+  "familyOptional": "نام خانوادگی (اختیاری)",
+  "passwordOptional": "رمزعبور (اختیاری)",
   "understand": "متوجه شدم"
 }

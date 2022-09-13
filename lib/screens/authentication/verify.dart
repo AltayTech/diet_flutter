@@ -94,7 +94,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
         );
       }
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       isRequest = false;
       Navigator.of(context).pop();
     });
