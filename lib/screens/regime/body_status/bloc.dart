@@ -73,7 +73,6 @@ class BodyStatusBloc {
         .then((value) {
           _physicalInfo.safeValue = value.data!;
         })
-        .catchError((e) => debugPrint('error error $e'))
         .whenComplete(() => _waiting.safeValue = false);
   }
 

@@ -13,6 +13,8 @@ class VerificationCode {
   bool? resetPass;
   @JsonKey(name: "route_name")
   String? routeName;
+  @JsonKey(name: "country_id")
+  int? countryId;
 
   VerificationCode();
 
@@ -25,9 +27,8 @@ class VerifyOutput {
   @JsonKey(name: "verified")
   bool? verified;
   @JsonKey(name: "token")
-  VerifyOutput? token;
-  @JsonKey(name: "accessToken")
-  String? accessToken;
+  String? token;
+
 
   VerifyOutput();
 

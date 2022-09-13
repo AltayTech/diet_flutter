@@ -49,6 +49,7 @@ import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
 import '../data/entity/payment/payment.dart';
+import '../data/entity/user/block_user.dart';
 
 part 'api.g.dart';
 
@@ -77,8 +78,8 @@ abstract class RestClient {
   NetworkResult<CheckStatus> sendVerificationCode(
       @Path('mobile') String? mobile, @Path('channel') String? channel);
 
-  @GET("/verify")
-  NetworkResult<VerifyOutput> verifyUser(@Queries() VerificationCode verificationCode);
+  @POST("/otp/login")
+  NetworkResult<VerifyOutput> otpLogin(@Queries() VerificationCode verificationCode);
 
   @PATCH("/reset-password")
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);
@@ -366,4 +367,7 @@ abstract class RestClient {
 
   @GET("/package")
   NetworkResult<Package> getPackagesNew();
+
+  @GET("/user/blocked-data")
+  NetworkResult<BlockUser> getBlockUserDescription();
 }

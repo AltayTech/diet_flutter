@@ -222,9 +222,8 @@ class AuthenticationBloc {
   }
 
   void verifyMethod(VerificationCode verify) {
-    _repository.verify(verify).then((value) async {
-      if (value.data!.token != null)
-        await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
+    _repository.otpLogin(verify).then((value) async {
+      await AppSharedPreferences.setAuthToken(value.data!.token);
       _showServerError.fire(true);
       _navigateToVerify.fire(value.next);
     }).catchError((onError) {

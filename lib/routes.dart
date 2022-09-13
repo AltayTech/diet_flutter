@@ -9,7 +9,7 @@ abstract class Routes {
   static const login = '/auth/login';
   static const register = '/auth/register';
   static const passVerify = '/auth/pass/verify';
-  static const authVerify = '/auth/verify';
+  static const authVerify = '/auth/otp/login';
   static const resetCode = '/profile/password';
   static const resetPass = '/auth/pass/reset';
   static const regimeType = '/diet/type';
