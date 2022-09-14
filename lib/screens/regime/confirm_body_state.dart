@@ -14,6 +14,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -171,11 +172,11 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
                       gradientColor: AppColors.bodyStatePurpleColor),
                   bodyInformationParam(
                       title: intl.birthday,
-                      value: physicalInfo.requireData.birthDate!.toString(),
+                      value: birthdateFormatted(physicalInfo.requireData.birthDate!.toString())!,
                       unit: '',
                       valueColor: AppColors.bodyStateOrangeColor,
                       gradientColor: AppColors.bodyStateOrangeColor,
-                      fontSize: 12.sp),
+                      fontSize: 10.sp),
                 ]),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   bodyInformationParam(
@@ -201,6 +202,11 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
             );
           return Progress();
         });
+  }
+
+  String? birthdateFormatted(String birthDate) {
+    var formatter = Jalali.fromDateTime(DateTime.parse(birthDate)).formatter;
+    return '${formatter.yyyy}/${formatter.mm}/${formatter.d}';
   }
 
   Widget bodyInformationParam(
@@ -308,10 +314,8 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
                       ),
                       Space(height: 1.h),
                       InkWell(
-                        onTap: () => DialogUtils.showDialogPage(
-                          context: context,
-                          child: HelpDialog(helpId: 1),
-                        ),
+                        onTap: () => DialogUtils.showBottomSheetPage(
+                          context: context, child: HelpDialog(helpId: 1)),
                         child: Container(
                           height: 6.h,
                           decoration: BoxDecoration(

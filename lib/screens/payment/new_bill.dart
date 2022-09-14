@@ -44,11 +44,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
     WidgetsBinding.instance.addObserver(this);
 
     bloc = BillPaymentBloc();
-    if (navigator.currentConfiguration!.path.contains('subscription')) {
-      bloc.getReservePackagePayment();
-    } else {
-      bloc.getPackagePayment();
-    }
+    bloc.getPackagePayment();
 
     listenBloc();
   }
@@ -142,7 +138,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
   Widget body() {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: Toolbar(titleBar: intl.paymentFinalBill),
+        appBar: Toolbar(titleBar: intl.enterYourPackage),
         backgroundColor: AppColors.newBackgroundFlow,
         body: WillPopScope(
           onWillPop: () {
@@ -256,8 +252,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                         title: package.name ?? '',
                         isSelected: package.isSelected ?? false,
                         description: package.description ?? '',
-                        price: '${package.price!.price}',
-                        finalPrice: '${package.price!.finalPrice}',
+                        price: '${package.price?.price ?? 0}',
+                        finalPrice: '${package.price?.finalPrice ?? 0}',
                         maxHeight: 15.5.h,
                         isOurSuggestion: false,
                         isBorder: true,
@@ -329,11 +325,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
 
   @override
   void onRetryLoadingPage() {
-    if (navigator.currentConfiguration!.path.contains('subscription')) {
-      bloc.getReservePackagePayment();
-    } else {
-      bloc.getPackagePayment();
-    }
+    bloc.getPackagePayment();
   }
 
   @override

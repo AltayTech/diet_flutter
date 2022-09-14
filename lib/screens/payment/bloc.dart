@@ -32,6 +32,7 @@ class PaymentBloc {
   int? _productId;
   String? discountCode;
   PackageItem? _packageItem;
+  Package? _packageItemNew;
   Price? _discountInfo;
   LatestInvoiceData? _invoice;
   bool _checkLatestInvoice = false;
@@ -63,6 +64,8 @@ class PaymentBloc {
   LatestInvoiceData? get invoice => _invoice;
 
   PackageItem? get packageItem => _packageItem;
+
+  Package? get packageItemNew => _packageItemNew;
 
   Price? get discountInfo => _discountInfo;
 
@@ -110,7 +113,7 @@ class PaymentBloc {
 
   set setDate(String date) => _date = date;
 
-  set setPackage(PackageItem package) => _packageItem = package;
+  set setPackage(Package package) => _packageItemNew = package;
 
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
@@ -126,7 +129,7 @@ class PaymentBloc {
     //paymentTypeId==1 is cardToCard
     payment.paymentTypeId = 1;
     payment.coupon = discountCode;
-    payment.packageId = packageItem!.id!;
+    payment.packageId = packageItemNew!.id!;
     payment.cardOwner = newInvoice.cardOwner;
     payment.cardNum = newInvoice.cardNum;
     payment.payedAt = newInvoice.payedAt;
@@ -167,7 +170,7 @@ class PaymentBloc {
               : isOnline
                   ? 0
                   : 1;
-      payment.packageId = packageItem!.id!;
+      payment.packageId = packageItemNew!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       }).whenComplete(() => _popLoading.fire(true));
@@ -183,7 +186,7 @@ class PaymentBloc {
               : 3;
       payment.paymentTypeId = 1;
       payment.coupon = discountCode;
-      payment.packageId = packageItem!.id!;
+      payment.packageId = packageItemNew!.id!;
       payment.cardOwner = newInvoice.cardOwner;
       payment.cardNum = newInvoice.cardNum;
       payment.payedAt = newInvoice.payedAt;

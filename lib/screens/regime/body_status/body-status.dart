@@ -165,13 +165,12 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   Widget showWeightBmi(int? dietDays, String? weightDiff, String? weight, int? pregnancy,
       BmiStatus? bmiStatus, String? bmi) {
     return Container(
-      height: 40.h,
+      height: 250,
       padding: EdgeInsets.only(right: 32, left: 32),
       child: Column(
         children: [
           Expanded(
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: Container(
@@ -189,7 +188,6 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                               '', AppColors.pregnantPink),
                         Space(height: 1.h),
                         Expanded(
-                          flex: 3,
                           child: Container(
                             width: 40.w,
                             decoration: BoxDecoration(
@@ -231,6 +229,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                         ),
                         Space(height: 1.h),
                         Expanded(
+                          flex: 0,
                           child: InkWell(
                             onTap: () => DialogUtils.showBottomSheetPage(
                                 context: context, child: HelpDialog(helpId: 1)),
@@ -263,8 +262,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 Space(width: 3.w),
                 Expanded(
                   child: Container(
-                    child: ImageUtils.fromLocal(bmiStatus!.imagePath,
-                        width: 40.w, height: 40.h, fit: BoxFit.fill),
+                    child: ImageUtils.fromLocal(bmiStatus!.imagePath),
                   ),
                 ),
               ],
@@ -549,7 +547,6 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
           );
         case MediumType.VIDEO:
           return Container(
-            margin: EdgeInsets.only(top: 1.h),
             child: AspectRatio(
               aspectRatio: 16 / 9,
               child: CustomVideo(
