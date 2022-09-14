@@ -143,7 +143,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
   Widget body() {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: Toolbar(titleBar: intl.paymentFinalBill),
+        appBar: Toolbar(titleBar: intl.enterYourPackage),
         backgroundColor: AppColors.newBackgroundFlow,
         body: WillPopScope(
           onWillPop: () {
@@ -256,8 +256,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                         title: package.name ?? '',
                         isSelected: package.isSelected ?? false,
                         description: package.description ?? '',
-                        price: '${package.price!.price}',
-                        finalPrice: '${package.price!.finalPrice}',
+                        price: '${package.price?.price ?? 0}',
+                        finalPrice: '${package.price?.finalPrice ?? 0}',
                         maxHeight: 15.5.h,
                         isOurSuggestion: false,
                         isBorder: true,
