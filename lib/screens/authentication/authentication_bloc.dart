@@ -44,7 +44,7 @@ class AuthenticationBloc {
   final _obscureTextConfirmPass = BehaviorSubject<bool>();
   final _navigateToVerify = LiveEvent();
   final _navigateTo = LiveEvent();
-  final _showServerError = LiveEvent();
+  final _popDialog = LiveEvent();
 
   List<Country> get countries {
     if (_search.isNullOrEmpty)
@@ -75,7 +75,7 @@ class AuthenticationBloc {
 
   Stream get navigateTo => _navigateTo.stream;
 
-  Stream get showServerError => _showServerError.stream;
+  Stream get popDialog => _popDialog.stream;
 
   bool get isTrySendCode => _isTrySendCode!;
 
@@ -155,7 +155,7 @@ class AuthenticationBloc {
       MemoryApp.whatsappInfo = value.data?.otpInfo?.whatsappInfo;
       _navigateToVerify.fire(value.next);
     }).whenComplete(() {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
+      if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(false);
     });
   }
 
@@ -169,12 +169,10 @@ class AuthenticationBloc {
           .then((value) => MemoryApp.userInformation = value.data)
           .whenComplete(() {
         if (!MemoryApp.isNetworkAlertShown) {
-          _showServerError.fire(false);
+          _popDialog.fire(false);
           _navigateToVerify.fire(value.next);
         }
       });
-    }).catchError((onError) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
     });
   }
 
@@ -187,20 +185,17 @@ class AuthenticationBloc {
   }
 
   void registerMethod(Register register) {
-    _waiting.safeValue = true;
+
     _repository.register(register).then((value) async {
-      await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.analytics!.logEvent(name: "register_success");
       checkFcm();
       _repository.getUser().then((value) {
         MemoryApp.userInformation = value.data;
         _navigateToVerify.fire(value.next);
       }).whenComplete(() {
-        _waiting.safeValue = false;
+        _popDialog.fire(false);
       });
-    }).catchError((onError) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
-    });
+    }).catchError((e) {_popDialog.fire(false);});
   }
 
   void sendCodeMethod(String mobile, ChannelSendCode channel) {
@@ -210,7 +205,7 @@ class AuthenticationBloc {
     }).whenComplete(() {
       MemoryApp.forgetPass = false;
     }).catchError((onError) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(false);
+      if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(false);
     });
   }
 
@@ -222,13 +217,12 @@ class AuthenticationBloc {
   }
 
   void verifyMethod(VerificationCode verify) {
-    _repository.verify(verify).then((value) async {
-      if (value.data!.token != null)
-        await AppSharedPreferences.setAuthToken(value.data!.token!.accessToken);
-      _showServerError.fire(true);
+    _repository.otpLogin(verify).then((value) async {
+      await AppSharedPreferences.setAuthToken(value.data!.token);
+      _popDialog.fire(true);
       _navigateToVerify.fire(value.next);
     }).catchError((onError) {
-      if (!MemoryApp.isNetworkAlertShown) _showServerError.fire(true);
+      if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
     });
   }
 
@@ -247,7 +241,7 @@ class AuthenticationBloc {
         _navigateToVerify.fire(value.next);
       });
     }).catchError((onError) {
-      _showServerError.fire(false);
+      _popDialog.fire(false);
     });
   }
 
@@ -282,7 +276,7 @@ class AuthenticationBloc {
   }
 
   void dispose() {
-    _showServerError.close();
+    _popDialog.close();
     _navigateToVerify.close();
     _countries.close();
     _waiting.close();

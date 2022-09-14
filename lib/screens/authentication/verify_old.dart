@@ -75,7 +75,7 @@ class _VerifyOldScreenState extends ResourcefulState<VerifyOldScreen> with CodeA
         );
       }
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       isRequest = false;
       Navigator.of(context).pop();
     });

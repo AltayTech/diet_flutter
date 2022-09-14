@@ -42,7 +42,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
     authBloc.navigateToVerify.listen((event) {
       if (event != null) context.vxNav.clearAndPush(Uri(path: '/$event'));
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       Utils.getSnackbarMessage(context, event);
     });
   }

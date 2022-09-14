@@ -19,7 +19,6 @@ import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/widget/custom_checkbox.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -243,7 +242,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
               if (bloc.services.isNotEmpty)
                 ListView.builder(
                   shrinkWrap: true,
-                  itemCount: bloc.services.length,itemExtent: 15.5.h,
+                  itemCount: bloc.services.length,
+                  itemExtent: 15.5.h,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     ServicePackage package = bloc.services[index];
@@ -300,30 +300,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
   }
 
   void next() {
-    if (navigator.currentConfiguration!.path.contains('subscription') &&
-        bloc.type != PaymentType.cardToCard) {
-      DialogUtils.showDialogProgress(context: context);
-      bloc.selectUserPaymentSubscription();
-    } else if (navigator.currentConfiguration!.path.contains('subscription') &&
-        bloc.type == PaymentType.cardToCard) {
-      if (!bloc.isUsedDiscount &&
-          (bloc.discountCode != null && bloc.discountCode!.trim().isNotEmpty)) {
-        Utils.getSnackbarMessage(context, intl.offError);
-      } else {
-        VxNavigator.of(context).push(Uri.parse(Routes.cardToCardSubscription),
-            params: {'package': bloc.packageItem, 'discountCode': bloc.discountCode});
-      }
-    } else if (bloc.type == PaymentType.cardToCard) {
-      if (!bloc.isUsedDiscount &&
-          (bloc.discountCode != null && bloc.discountCode!.trim().isNotEmpty)) {
-        Utils.getSnackbarMessage(context, intl.offError);
-      } else {
-        VxNavigator.of(context).push(Uri.parse(Routes.cardToCard),
-            params: {'package': bloc.packageItem, 'discountCode': bloc.discountCode});
-      }
-    } else {
+    if (bloc.packageItemNew != null) {
       DialogUtils.showDialogProgress(context: context);
       bloc.selectUserPayment();
+    } else {
+      Utils.getSnackbarMessage(context, intl.selectPackage);
     }
   }
 

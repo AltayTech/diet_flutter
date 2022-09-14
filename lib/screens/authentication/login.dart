@@ -3,7 +3,6 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -13,6 +12,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -74,7 +74,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       Navigator.of(context).pop();
     });
   }

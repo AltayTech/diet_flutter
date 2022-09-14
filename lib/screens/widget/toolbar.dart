@@ -29,4 +29,5 @@ class Toolbar extends AppBar {
   double? get elevation => elevationValue;
 
   bool? get centerTitle => true;
+
 }

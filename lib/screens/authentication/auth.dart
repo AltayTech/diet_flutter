@@ -60,7 +60,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
       }
     });
 
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       Navigator.pop(context);
     });
 

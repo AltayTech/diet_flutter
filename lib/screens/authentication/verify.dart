@@ -14,13 +14,14 @@ import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:country_calling_code_picker/picker.dart' as picker;
+
 import 'authentication_bloc.dart';
 
 class VerifyScreen extends StatefulWidget {
@@ -93,7 +94,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
         );
       }
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       isRequest = false;
       Navigator.of(context).pop();
     });
@@ -208,7 +209,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                   Expanded(
                       flex: 3,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0,left: 8.0),
+                        padding: const EdgeInsets.only(top: 8.0, left: 8.0),
                         child: Text(
                           _textPhone.text,
                           textAlign: TextAlign.start,
@@ -220,10 +221,9 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                     flex: 0,
                     child: Padding(
                       padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                      child:ClipRRect(
+                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
-                        child: ImageUtils.fromLocal(
-                            countrySelected.flag!,
+                        child: ImageUtils.fromLocal(countrySelected.flag!,
                             package: picker.countryCodePackageName,
                             width: 7.w,
                             fit: BoxFit.fill,
@@ -251,9 +251,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                           isRequest = true;
                           VerificationCode verification = VerificationCode();
                           verification.mobile = args['mobile'];
+                          verification.countryId = countrySelected.id;
                           verification.verifyCode = codeVerify;
-                          if (navigator.currentConfiguration!.path.contains('pass'))
-                            verification.resetPass = true;
                           DialogUtils.showDialogProgress(context: context);
                           if (isAutoVerify) {
                             MemoryApp.analytics!.logEvent(name: "auto_verify_code");
@@ -272,42 +271,45 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Row(
-                children: [
-                  ImageUtils.fromLocal('assets/images/registry/call.svg', width: 4.w, height: 4.w),
-                  Space(width: 1.w),
-                  Text(
-                    intl.forSendCodeCallMe,
-                    textAlign: TextAlign.start,
-                    textDirection: TextDirection.ltr,
-                    style: typography.overline!.copyWith(color: AppColors.priceGreenColor),
-                  ),
-                ],
-              ),
-            ),
+            StreamBuilder<bool>(
+                stream: authBloc.flag,
+                builder: (context, flag) {
+                  if (flag.hasData && flag.requireData)
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: InkWell(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(Icons.refresh_rounded, color: AppColors.priceGreenColor),
+                              Space(width: 2.w),
+                              Text(intl.notSend,
+                                  style: typography.caption!
+                                      .copyWith(color: AppColors.priceGreenColor)),
+                            ],
+                          ),
+                          onTap: () {
+                            methodSendCodeDialog();
+                          }),
+                    );
+                  else
+                    return Space();
+                }),
             Space(height: 8.h),
-            StreamBuilder(
-              stream: authBloc.selectedCountry,
-              builder: (_, AsyncSnapshot<Country> snapshot) {
-                return CustomButton(
-                  AppColors.btnColor,
-                  intl.login,
-                  Size(100.w, 6.h),
-                  () {
-                    DialogUtils.showDialogProgress(context: context);
-                    VerificationCode verification = VerificationCode();
-                    verification.mobile = args['mobile'];
-                    verification.verifyCode = codeVerify;
-                    if (navigator.currentConfiguration!.path.contains('pass'))
-                      verification.resetPass = true;
-                    debugPrint('query verify ${verification.toJson()}');
-                    authBloc.verifyMethod(verification);
+            CustomButton(
+              AppColors.btnColor,
+              intl.login,
+              Size(100.w, 6.h),
+              () {
+                DialogUtils.showDialogProgress(context: context);
+                VerificationCode verification = VerificationCode();
+                verification.mobile = args['mobile'];
+                verification.countryId = countrySelected.id;
+                verification.verifyCode = codeVerify;
+                authBloc.verifyMethod(verification);
 
-                    authBloc.setTrySendCode = false;
-                  },
-                );
+                authBloc.setTrySendCode = false;
               },
             ),
             Space(height: 2.h),
@@ -455,9 +457,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
 
       VerificationCode verification = VerificationCode();
       verification.mobile = args['mobile'];
+      verification.countryId = countrySelected.id;
       verification.verifyCode = codeVerify;
-      if (navigator.currentConfiguration!.path.contains('pass')) verification.resetPass = true;
-      debugPrint('query verify ${verification.toJson()}');
       authBloc.verifyMethod(verification);
 
       authBloc.setTrySendCode = false;

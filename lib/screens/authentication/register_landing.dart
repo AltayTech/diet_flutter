@@ -52,7 +52,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
         VxNavigator.of(context).push(Uri.parse(Routes.listView));
       }
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });

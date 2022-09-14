@@ -49,7 +49,6 @@ class StatusBloc {
         });
       }
     }).catchError((onError) {
-      debugPrint(onError);
       _visitItem = new VisitItem();
       _visitItem!.terms = [];
       _terms = [];

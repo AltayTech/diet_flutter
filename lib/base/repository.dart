@@ -47,7 +47,6 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
 import '../api/api.dart';
@@ -58,6 +57,7 @@ import '../data/entity/auth/sign_in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/user/block_user.dart';
 import 'network_response.dart';
 
 enum FoodDietPdf { TERM, WEEK }
@@ -78,7 +78,7 @@ abstract class Repository {
 
   NetworkResult<CheckStatus> verificationCode(String mobile, String channel);
 
-  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode);
+  NetworkResult<VerifyOutput> otpLogin(VerificationCode verificationCode);
 
   NetworkResult<ResetOutput> reset(Reset password);
 
@@ -264,6 +264,8 @@ abstract class Repository {
   NetworkResult<DietType> getUserAllowedDietType();
 
   NetworkResult<Package> getPackages();
+
+  NetworkResult<BlockUser> getBlockUserDescription();
 }
 
 class _RepositoryImpl extends Repository {
@@ -334,8 +336,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode) async {
-    var response = await _apiClient.verifyUser(verificationCode);
+  NetworkResult<VerifyOutput> otpLogin(VerificationCode verificationCode) async {
+    var response = await _apiClient.otpLogin(verificationCode);
     return response;
   }
 
@@ -1045,6 +1047,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Package> getPackages() {
     var response = _apiClient.getPackagesNew();
+    return response;
+  }
+
+  @override
+  NetworkResult<BlockUser> getBlockUserDescription() {
+    var response = _apiClient.getBlockUserDescription();
     return response;
   }
 }

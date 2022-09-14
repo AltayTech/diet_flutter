@@ -6,7 +6,7 @@ part of 'api.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
 class _RestClient implements RestClient {
   _RestClient(this._dio, {this.baseUrl});
@@ -99,7 +99,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<VerifyOutput>> verifyUser(verificationCode) async {
+  Future<NetworkResponse<VerifyOutput>> otpLogin(verificationCode) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(verificationCode.toJson());
@@ -107,8 +107,8 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<VerifyOutput>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/verify',
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/otp/login',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<VerifyOutput>.fromJson(
@@ -148,7 +148,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<RegisterOutput>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/register',
+                .compose(_dio.options, '/optional-register',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<RegisterOutput>.fromJson(
@@ -1921,6 +1921,25 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<Package>.fromJson(
       _result.data!,
       (json) => Package.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<BlockUser>> getBlockUserDescription() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<BlockUser>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/blocked-data',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<BlockUser>.fromJson(
+      _result.data!,
+      (json) => BlockUser.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
