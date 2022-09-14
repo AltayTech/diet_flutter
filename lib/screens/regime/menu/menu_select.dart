@@ -96,7 +96,6 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
               ),
             ),
           ),
-          BottomNav(currentTab: BottomNavItem.DIET),
         ],
       ),
     );

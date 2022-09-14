@@ -165,7 +165,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   Widget showWeightBmi(int? dietDays, String? weightDiff, String? weight, int? pregnancy,
       BmiStatus? bmiStatus, String? bmi) {
     return Container(
-      height: 250,
+      height: 270,
       padding: EdgeInsets.only(right: 32, left: 32),
       child: Column(
         children: [
@@ -206,21 +206,23 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                   Text('BMI',
                                       style: typography.caption!
                                           .copyWith(color: Colors.grey.withOpacity(0.9))),
-                                  Container(
-                                    width: 30.w,
-                                    padding: EdgeInsets.only(top: 1.1.h),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        color: Colors.white),
-                                    child: Center(
-                                        child: Text(
-                                      '$bmi',
-                                      textAlign: TextAlign.center,
-                                      style: typography.caption!.copyWith(
-                                          color: AppColors.redBar,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 16.sp),
-                                    )),
+                                  Expanded(
+                                    child: Container(
+                                      width: 30.w,
+                                      padding: EdgeInsets.only(top: 1.1.h),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          color: Colors.white),
+                                      child: Center(
+                                          child: Text(
+                                        '$bmi',
+                                        textAlign: TextAlign.center,
+                                        style: typography.caption!.copyWith(
+                                            color: AppColors.redBar,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16.sp),
+                                      )),
+                                    ),
                                   )
                                 ],
                               ),
