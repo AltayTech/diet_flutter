@@ -84,7 +84,7 @@ abstract class RestClient {
   @PATCH("/reset-password")
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);
 
-  @POST("/register")
+  @POST("/optional-register")
   NetworkResult<RegisterOutput> register(@Body() Register reg);
 
   @GET("/diet-type")

@@ -1,5 +1,4 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/memory_cache.dart';
@@ -48,7 +47,6 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -175,10 +173,9 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
                           borderRadius: BorderRadius.circular(10.0)),
-
                       hintText: intl.nameOptional,
                       hintStyle:
-                      TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
+                          TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
                       labelStyle:
                           TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
                       // errorText:
@@ -202,7 +199,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                           borderRadius: BorderRadius.circular(10.0)),
                       hintText: intl.familyOptional,
                       hintStyle:
-                      TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
+                          TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
                       labelStyle:
                           TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
                       // errorText:
@@ -227,7 +224,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                         borderRadius: BorderRadius.circular(10.0)),
                     hintText: intl.passwordOptional,
                     hintStyle:
-                    TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
+                        TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -284,13 +281,15 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   }
 
   void clickSubmit() {
-      Register register = Register();
-      register.firstName = firstName;
-      register.lastName = lastName;
-      register.password = _password;
-      register.appId = '0';
-      DialogUtils.showDialogProgress(context: context);
-      authBloc.registerMethod(register);
+    Register register = Register();
+    if (firstName != null)
+      register.firstName = firstName!.trim().length > 0 ? firstName!.trim() : null;
+    if (lastName != null) register.lastName = lastName!.trim().length > 0 ? lastName!.trim() : null;
+    if (_password != null)
+      register.password = _password!.trim().length > 0 ? _password!.trim() : null;
+    register.appId = '0';
+    DialogUtils.showDialogProgress(context: context);
+    authBloc.registerMethod(register);
   }
 
   @override

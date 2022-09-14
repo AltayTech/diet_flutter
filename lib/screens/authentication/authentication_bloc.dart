@@ -195,7 +195,7 @@ class AuthenticationBloc {
       }).whenComplete(() {
         _popDialog.fire(false);
       });
-    });
+    }).catchError((e) {_popDialog.fire(false);});
   }
 
   void sendCodeMethod(String mobile, ChannelSendCode channel) {
