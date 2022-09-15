@@ -16,7 +16,10 @@ BodyStatus _$BodyStatusFromJson(Map<String, dynamic> json) => BodyStatus()
   ..allowedWeeksNum = json['allowed_weeks_num'] as int?
   ..normalWeight = (json['normal_weight'] as num?)?.toDouble()
   ..weightDifference = (json['weight_difference'] as num?)?.toDouble()
-  ..dietDays = json['diet_days'] as int?;
+  ..dietDays = json['diet_days'] as int?
+  ..weight = (json['weight'] as num?)?.toDouble() ?? 0
+  ..height = json['height'] as int? ?? 0
+  ..birthDate = json['birth_date'] as String?;
 
 Map<String, dynamic> _$BodyStatusToJson(BodyStatus instance) =>
     <String, dynamic>{
@@ -30,4 +33,7 @@ Map<String, dynamic> _$BodyStatusToJson(BodyStatus instance) =>
       'normal_weight': instance.normalWeight,
       'weight_difference': instance.weightDifference,
       'diet_days': instance.dietDays,
+      'weight': instance.weight,
+      'height': instance.height,
+      'birth_date': instance.birthDate,
     };
