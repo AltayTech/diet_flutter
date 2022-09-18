@@ -37,7 +37,6 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
     super.initState();
     regimeBloc = RegimeBloc();
     regimeBloc.getStatus();
-    regimeBloc.physicalInfoData();
     listenBloc();
   }
 
@@ -73,8 +72,8 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
   Widget body() {
     return StreamBuilder<BodyStatus>(
         stream: regimeBloc.status,
-        builder: (context, snapshot) {
-          if (snapshot.hasData)
+        builder: (context, bodyStatus) {
+          if (bodyStatus.hasData)
             return Container(
                 width: 100.w,
                 padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 3.h),
@@ -103,23 +102,23 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
                               style: typography.caption!.copyWith(fontSize: 10.sp),
                             ),
                             Space(height: 2.h),
-                            bodyInformation(),
+                            bodyInformation(bodyStatus.requireData),
                             Space(height: 2.h),
-                            snapshot.data!.isPregnancy == 1
+                            bodyStatus.data!.isPregnancy == 1
                                 ? showWeightBmi(
-                                    snapshot.data!.daysTillChildbirth,
-                                    snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
-                                    snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
-                                    snapshot.data!.isPregnancy,
-                                    snapshot.data!.bmiStatus,
-                                    snapshot.data!.bmi!.toStringAsFixed(0))
+                                    bodyStatus.data!.daysTillChildbirth,
+                                    bodyStatus.data!.pregnancyWeightDiff!.toStringAsFixed(1),
+                                    bodyStatus.data!.pregnancyWeight!.toStringAsFixed(1),
+                                    bodyStatus.data!.isPregnancy,
+                                    bodyStatus.data!.bmiStatus,
+                                    bodyStatus.data!.bmi!.toStringAsFixed(0))
                                 : showWeightBmi(
-                                    snapshot.data!.dietDays,
-                                    snapshot.data!.weightDifference!.toStringAsFixed(1),
-                                    snapshot.data!.normalWeight!.toStringAsFixed(1),
-                                    snapshot.data!.isPregnancy,
-                                    snapshot.data!.bmiStatus,
-                                    snapshot.data!.bmi!.toStringAsFixed(0)),
+                                    bodyStatus.data!.dietDays,
+                                    bodyStatus.data!.weightDifference!.toStringAsFixed(1),
+                                    bodyStatus.data!.normalWeight!.toStringAsFixed(1),
+                                    bodyStatus.data!.isPregnancy,
+                                    bodyStatus.data!.bmiStatus,
+                                    bodyStatus.data!.bmi!.toStringAsFixed(0)),
                             Space(height: 5.h),
                           ],
                         ),
@@ -130,8 +129,10 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
                       label: intl.editPhysicalInfo,
                       size: Size(100.w, 6.h),
                       onTap: () {
-                        context.vxNav.waitAndPush(Uri.parse(Routes.editBodyInfo),params: false ).then((value) {
-                          if(value){
+                        context.vxNav
+                            .waitAndPush(Uri.parse(Routes.editBodyInfo), params: false)
+                            .then((value) {
+                          if (value) {
                             regimeBloc.getStatus();
                             regimeBloc.physicalInfoData();
                           }
@@ -140,68 +141,67 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
                   Space(height: 2.h),
                   CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue, Size(100.w, 6.h),
                       Icon(Icons.arrow_forward), () {
-                        if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-                        regimeBloc.nextStep();
-                      }),
+                    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+                    regimeBloc.nextStep();
+                  }),
                 ]));
           else
             return Center(child: Container(width: 15.w, height: 80.h, child: Progress()));
         });
   }
 
-  Widget bodyInformation() {
-    return StreamBuilder<PhysicalInfoData>(
-        stream: regimeBloc.physicalInfo,
-        builder: (context, physicalInfo) {
-          if (physicalInfo.hasData)
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  bodyInformationParam(
-                      title: intl.weight,
-                      value: physicalInfo.requireData.weight!.toInt().toString(),
-                      unit: intl.kiloGr,
-                      valueColor: AppColors.bodyStateBlueColor,
-                      gradientColor: AppColors.bodyStateBlueColor),
-                  bodyInformationParam(
-                      title: intl.height,
-                      value: physicalInfo.requireData.height!.toString(),
-                      unit: intl.centimeter,
-                      valueColor: AppColors.bodyStatePurpleColor,
-                      gradientColor: AppColors.bodyStatePurpleColor),
-                  bodyInformationParam(
-                      title: intl.birthday,
-                      value: birthdateFormatted(physicalInfo.requireData.birthDate!.toString())!,
-                      unit: '',
-                      valueColor: AppColors.bodyStateOrangeColor,
-                      gradientColor: AppColors.bodyStateOrangeColor,
-                      fontSize: 10.sp),
-                ]),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  bodyInformationParam(
-                      title: intl.properWeight,
-                      value: '100',
-                      unit: intl.kiloGr,
-                      valueColor: AppColors.bodyStateGreenColor,
-                      gradientColor: AppColors.bodyStateGreenColor),
-                  bodyInformationParam(
-                      title: intl.extraWeight,
-                      value: '45',
-                      unit: intl.kiloGr,
-                      valueColor: AppColors.bodyStateRedColor,
-                      gradientColor: AppColors.bodyStateRedColor),
-                  bodyInformationParam(
-                      title: intl.necessaryTime,
-                      value: '40',
-                      unit: intl.day,
-                      valueColor: AppColors.bodyStateDarkBlueColor,
-                      gradientColor: AppColors.bodyStateDarkBlueColor),
-                ])
-              ],
-            );
-          return Progress();
-        });
+  Widget bodyInformation(BodyStatus bodyStatus) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          bodyInformationParam(
+              title: intl.weight,
+              value: bodyStatus.weight!.toString(),
+              unit: intl.kiloGr,
+              valueColor: AppColors.bodyStateBlueColor,
+              gradientColor: AppColors.bodyStateBlueColor),
+          bodyInformationParam(
+              title: intl.height,
+              value: bodyStatus.height!.toString(),
+              unit: intl.centimeter,
+              valueColor: AppColors.bodyStatePurpleColor,
+              gradientColor: AppColors.bodyStatePurpleColor),
+          bodyInformationParam(
+              title: intl.birthday,
+              value: birthdateFormatted(bodyStatus.birthDate!.toString())!,
+              unit: '',
+              valueColor: AppColors.bodyStateOrangeColor,
+              gradientColor: AppColors.bodyStateOrangeColor,
+              fontSize: 10.sp),
+        ]),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          bodyInformationParam(
+              title: intl.properWeight,
+              value: bodyStatus.normalWeight!.toString(),
+              unit: intl.kiloGr,
+              valueColor: AppColors.bodyStateGreenColor,
+              gradientColor: AppColors.bodyStateGreenColor),
+          bodyInformationParam(
+              title: bodyStatus.weightDifference! > 0
+                  ? intl.extraWeight
+                  : bodyStatus.weightDifference! == 0
+                      ? intl.normal
+                      : intl.lakeWeight,
+              value:
+                  bodyStatus.weightDifference! == 0 ? '' : bodyStatus.weightDifference!.toString(),
+              unit: intl.kiloGr,
+              valueColor: AppColors.bodyStateRedColor,
+              gradientColor: AppColors.bodyStateRedColor),
+          bodyInformationParam(
+              title: intl.necessaryTime,
+              value: bodyStatus.dietDays!.toString(),
+              unit: intl.day,
+              valueColor: AppColors.bodyStateDarkBlueColor,
+              gradientColor: AppColors.bodyStateDarkBlueColor),
+        ])
+      ],
+    );
   }
 
   String? birthdateFormatted(String birthDate) {
@@ -315,7 +315,7 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
                       Space(height: 1.h),
                       InkWell(
                         onTap: () => DialogUtils.showBottomSheetPage(
-                          context: context, child: HelpDialog(helpId: 1)),
+                            context: context, child: HelpDialog(helpId: 1)),
                         child: Container(
                           height: 6.h,
                           decoration: BoxDecoration(

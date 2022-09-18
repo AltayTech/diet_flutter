@@ -23,6 +23,12 @@ class BodyStatus {
   double? weightDifference;
   @JsonKey(name: "diet_days")
   int? dietDays;
+  @JsonKey(name: "weight", defaultValue: 0)
+  double? weight;
+  @JsonKey(name: "height", defaultValue: 0)
+  int? height;
+  @JsonKey(name: "birth_date")
+  String? birthDate;
 
   BodyStatus();
 

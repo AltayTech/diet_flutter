@@ -175,7 +175,7 @@ class _WeekListState extends ResourcefulState<WeekList> {
                                 padding: EdgeInsets.all(1.w),
                                 child: Icon(
                                   Icons.check,
-                                  size: 5.w,
+                                  size: 15,
                                   color: isEqualToSelectedDay(weekDays, index, snapshot.requireData)
                                       ? AppColors.primary
                                       : AppColors.surface,
