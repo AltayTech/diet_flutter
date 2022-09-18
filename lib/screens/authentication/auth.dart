@@ -128,7 +128,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
             ),
             Space(height: 1.h),
             Text(
-              intl.enterCodeSent,
+              intl.enterYourMobileNumber,
               textAlign: TextAlign.start,
               style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
             ),

@@ -7,7 +7,7 @@ abstract class Routes {
   static const start = '/start';
   static const auth = '/auth';
   static const login = '/auth/login';
-  static const register = '/auth/optional/register';
+  static const register = '/auth/optional-register';
   static const passVerify = '/auth/pass/verify';
   static const authVerify = '/auth/otp/login';
   static const resetCode = '/profile/password';

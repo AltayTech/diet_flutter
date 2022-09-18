@@ -53,6 +53,8 @@ import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/regime/menu/menu_confirm.dart';
 import 'package:behandam/screens/regime/menu/menu_select.dart';
 import 'package:behandam/screens/regime/overview/overview.dart';
+import 'package:behandam/screens/regime/package/package_list.dart';
+import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/other_sickness/other_sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness_special.dart';
@@ -308,20 +310,20 @@ final navigator = VxNavigator(
         child: routePage(TicketDetails()),
         arguments: int.parse(uri.queryParameters['ticketId'].toString())),
     Routes.calendar: (_, __) => MaterialPage(child: routePage(CalendarPage())),
-    RegExp(r"\/(reg|renew|revive)(\/diet\/type)"): (_, __) =>
-        MaterialPage(child: routePage(BodyStatusScreen())),
+    RegExp(r"\/(renew|revive)(\/diet\/type)"): (_, __) =>
+        MaterialPage(child: routePage(RegimeTypeScreen())),
     RegExp(r"\/(renew|revive)(\/size)"): (_, __) =>
         MaterialPage(child: routePage(BodyStateScreen())),
     RegExp(r"\/(reg|renew|revive)(\/report)"): (_, __) =>
-        MaterialPage(child: routePage(ConfirmBodyStateScreen())),
-    RegExp(r"\/(reg|renew|list|revive)(\/sick\/select)"): (_, __) =>
+        MaterialPage(child: routePage(BodyStatusScreen())),
+    RegExp(r"\/(renew|list|revive)(\/sick\/select)"): (_, __) =>
         MaterialPage(child: routePage(SicknessScreen())),
-    RegExp(r"\/(reg|renew|list|revive)(\/special)"): (_, __) =>
+    RegExp(r"\/(renew|list|revive)(\/special)"): (_, __) =>
         MaterialPage(child: routePage(SicknessSpecialScreen())),
     Routes.advice: (_, __) => MaterialPage(child: routePage(AdvicePage())),
-    RegExp(r"\/(reg|renew|revive)(\/package)"): (_, __) =>
-        MaterialPage(child: routePage(BillPaymentNewScreen())),
-    RegExp(r"\/(reg|renew|revive)(\/payment\/bill)"): (_, params) =>
+    RegExp(r"\/(renew|revive)(\/package)"): (_, __) =>
+        MaterialPage(child: routePage(PackageListScreen())),
+    RegExp(r"\/(renew|revive)(\/payment\/bill)"): (_, params) =>
         MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
     RegExp(r"\/(reg|renew|revive)(\/payment\/card\/confirm)"): (_, __) =>
         MaterialPage(child: routePage(PaymentSuccessScreen())),
@@ -343,7 +345,7 @@ final navigator = VxNavigator(
         arguments: path.path.contains("shop") ? ProductType.SHOP : ProductType.DIET),
     RegExp(r"\/(reg|list|renew|revive|subscription)(\/payment\/card\/reject)"): (_, __) =>
         MaterialPage(child: routePage(PaymentFailScreen())),
-    RegExp(r"\/(reg|renew|revive)(\/activity)"): (_, __) =>
+    RegExp(r"\/(renew|revive)(\/activity)"): (_, __) =>
         MaterialPage(child: routePage(ActivityLevelPage())),
     RegExp(r"\/(subscription|reg|list|renew|revive)(\/payment\/card\/wait)"): (_, __) =>
         MaterialPage(child: routePage(PaymentWaitScreen())),
@@ -407,6 +409,11 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(OtherSicknessScreen()), arguments: true),
     RegExp(r"\/(reg)(\/diet\/preference)"): (_, __) =>
         MaterialPage(child: routePage(CompleteInformationScreen())),
+    RegExp(r"\/(reg)(\/diet\/type)"): (_, __) => MaterialPage(child: routePage(BodyStatusScreen())),
+    RegExp(r"\/(reg)(\/package)"): (_, __) =>
+        MaterialPage(child: routePage(BillPaymentNewScreen())),
+    RegExp(r"\/(reg)(\/report)"): (_, __) =>
+        MaterialPage(child: routePage(ConfirmBodyStateScreen())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

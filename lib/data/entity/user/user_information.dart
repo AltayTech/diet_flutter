@@ -48,7 +48,7 @@ class UserInformation {
   @JsonKey(name: "media")
   Media? media;
 
-  String get fullName => firstName == null ? '' : '$firstName $lastName';
+  String get fullName => firstName == null ? '' : '$firstName ' + (lastName==null ? '' : '$lastName');
 
   String get whatsApp =>
       (socialMedia == null || socialMedia!.length <= 0 || socialMedia![0].pivot?.link == null)
