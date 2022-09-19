@@ -18,7 +18,7 @@ class SplashBloc {
     _waiting.safeValue = false;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
 
@@ -41,6 +41,10 @@ class SplashBloc {
   int? buildNumber;
   bool forceUpdate = false;
 
+  void setRepository(){
+    _repository=Repository.getInstance();
+  }
+
   void getPackageInfo() async {
     version = await Utils.versionApp();
     _versionApp.safeValue = version ?? '';
@@ -58,6 +62,7 @@ class SplashBloc {
   }
 
   void onRetryLoadingPage() {
+    setRepository();
     getUser();
   }
 

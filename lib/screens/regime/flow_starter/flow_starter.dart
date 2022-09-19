@@ -26,7 +26,7 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
   @override
   void initState() {
     super.initState();
-    MemoryApp.page=0;
+    MemoryApp.page = 0;
     bloc = FlowStarterBloc();
     listenBloc();
   }
@@ -65,16 +65,15 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
     return SafeArea(
       child: Container(
         height: 100.h,
-        child: Stack(
-            alignment: Alignment.center,
-            children: [
+        child: Stack(alignment: Alignment.center, children: [
           Container(
             height: 70.h,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ImageUtils.fromLocal('assets/images/diet/fill_data.png', width: 60.w, height: 60.w, fit: BoxFit.fill),
+                ImageUtils.fromLocal('assets/images/diet/fill_data.png',
+                    width: 60.w, height: 60.w, fit: BoxFit.fill),
                 Space(height: 4.h),
                 Text(
                   intl.fillYourInformation,
@@ -156,7 +155,10 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
   }
 
   @override
-  void onRetryAfterNoInternet() {}
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.onRetryAfterNoInternet();
+  }
 
   @override
   void onRetryLoadingPage() {}

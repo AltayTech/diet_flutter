@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:behandam/api/error/error_observer.dart';
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/network_response.dart';
+import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/auth/status.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -163,6 +164,7 @@ class ErrorHandlerInterceptor extends Interceptor {
     if (_context == null || MemoryApp.isNetworkAlertShown) {
       return;
     }
+    Repository.setInstanceNull();
     MemoryApp.isNetworkAlertShown = true;
     await DialogUtils.showDialogPage(context: _context!, child: NetworkAlertPage());
     MemoryApp.isNetworkAlertShown = false;

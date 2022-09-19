@@ -65,6 +65,10 @@ enum FoodDietPdf { TERM, WEEK }
 abstract class Repository {
   static Repository? _instance;
 
+  static void setInstanceNull() {
+    _instance = null;
+  }
+
   static Repository getInstance() {
     _instance ??= _RepositoryImpl();
     return _instance!;
