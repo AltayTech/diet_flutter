@@ -190,11 +190,13 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
 
   @override
   void onRetryAfterNoInternet() {
+    regimeBloc.setRepository();
     clickItemList(_dietSelected);
   }
 
   @override
   void onRetryLoadingPage() {
+    regimeBloc.setRepository();
     regimeBloc.regimeTypeMethod();
   }
 }

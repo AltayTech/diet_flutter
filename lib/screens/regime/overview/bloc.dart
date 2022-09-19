@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
-import 'package:behandam/extensions/stream.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -12,7 +12,7 @@ class OverviewBloc {
     _loadContent();
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _overview = BehaviorSubject<OverviewData>();
   final _navigateTo = LiveEvent();
@@ -48,6 +48,15 @@ class OverviewBloc {
     //   debugPrint('bloc condition ${value.data}');
     //   if (value.data != null) _navigateTo.fire(value.next);
     // }).whenComplete(() => _loadingContent.safeValue = false);
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    _loadContent();
   }
 
   void dispose() {

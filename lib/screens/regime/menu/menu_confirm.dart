@@ -171,22 +171,14 @@ class _MenuConfirmPageState extends ResourcefulState<MenuConfirmPage> {
   @override
   void dispose() {
     super.dispose();
-
     bloc.dispose();
   }
 
   @override
   void onRetryAfterNoInternet() {
+    bloc.setRepository();
     if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     bloc.term();
   }
 
-  @override
-  void onRetryLoadingPage() {
-  }
-
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
-  }
 }
