@@ -522,8 +522,8 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
   }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.setProduct(product!);
+  void onRetryAfterNoInternet() {
+    bloc.setRepository();
   }
 }
 

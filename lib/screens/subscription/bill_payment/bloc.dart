@@ -19,7 +19,7 @@ class BillPaymentBloc {
     _waiting.safeValue = true;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   String? discountCode;
   Price? _discountInfo;
@@ -249,6 +249,10 @@ class BillPaymentBloc {
 
   void setMessageErrorCode(String error) {
     _messageErrorCode = error;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

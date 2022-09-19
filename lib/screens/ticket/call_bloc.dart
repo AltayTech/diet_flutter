@@ -6,9 +6,9 @@ import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CallBloc {
-  CallBloc() ;
+  CallBloc();
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _showServerError = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
   final _progressNetworkItem = BehaviorSubject<bool>();
@@ -16,6 +16,7 @@ class CallBloc {
 
   Call? _call;
   int? _callId;
+  bool isDeleteCallRequest = false;
 
   Stream get showServerError => _showServerError.stream;
 
@@ -29,13 +30,30 @@ class CallBloc {
 
   Call? get call => _call;
 
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    getCalls();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+    if (isDeleteCallRequest)
+      deleteCallRequest();
+    else
+      sendCallRequest();
+  }
+
   void getCalls() {
     _progressNetwork.value = true;
     _repository.getCalls().then((value) {
       _call = value.data;
       loadContent();
     }).whenComplete(() {
-       _progressNetwork.value = false;
+      _progressNetwork.value = false;
     });
   }
 
@@ -69,6 +87,7 @@ class CallBloc {
   }
 
   void sendCallRequest() {
+    isDeleteCallRequest = false;
     _progressNetworkItem.value = true;
     _repository.sendRequestCall().then((value) {
       getCalls();
@@ -78,6 +97,7 @@ class CallBloc {
   }
 
   void deleteCallRequest() {
+    isDeleteCallRequest = true;
     _progressNetworkItem.value = true;
     _repository.deleteRequestCall(_callId!).then((value) {
       getCalls();

@@ -238,11 +238,12 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    bloc.setRepository();
   }
 
   @override
   void onRetryLoadingPage() {
+    bloc.setRepository();
     if (navigator.currentConfiguration!.path.contains('subscription')) {
       bloc.getReservePackagePayment();
     } else {

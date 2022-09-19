@@ -113,6 +113,6 @@ class _SelectPackageSubscriptionScreenState
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
-    bloc.getPackageSubscriptionList();
+    bloc.onRetryLoadingPage();
   }
 }

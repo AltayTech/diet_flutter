@@ -28,7 +28,7 @@ class TicketBloc {
   }
 
   ImagePicker? _picker;
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _showServerError = LiveEvent();
   final _showMessage = LiveEvent();
   final _progressNetwork = BehaviorSubject<bool>();
@@ -468,6 +468,16 @@ class TicketBloc {
       _tickets.safeValue = _tempListTickets
           .where((element) => element.status == TicketStatus.values[_indexSelectedStatus.value])
           .toList();
+  }
+
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    getTickets();
   }
 
   void dispose() {
