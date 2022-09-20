@@ -26,7 +26,7 @@ class PaymentBloc {
     _invoice = LatestInvoiceData();
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String? _path;
   int? _productId;
@@ -318,6 +318,18 @@ class PaymentBloc {
 
   void changeUseDiscount() {
     _usedDiscount.value = true;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

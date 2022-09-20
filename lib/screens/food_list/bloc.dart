@@ -41,7 +41,7 @@ class FoodListBloc {
   final _showServerError = LiveEvent();
   final _navigateTo = LiveEvent();
   final _popLoading = LiveEvent();
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _foodList = BehaviorSubject<FoodListData?>();
   final _date = BehaviorSubject<String>();
@@ -308,6 +308,19 @@ class FoodListBloc {
     _adviceVideo.safeValue = _articles.firstWhere(
         (element) => _selectedWeekDay.value.gregorianDate.toString().contains(element.date!));
     adviceId = _adviceVideo.value.id;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+    onDailyMenu();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

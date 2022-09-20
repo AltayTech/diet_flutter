@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/login_background.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -175,7 +176,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   AppColors.btnColor,
                   intl.login,
                   Size(100.w, 6.h),
-                      () {
+                  () {
                     click(snapshot.requireData);
                   },
                 );
@@ -356,8 +357,17 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    authBloc.setRepository();
+
     authBloc.fetchCountries();
     click(_selectedLocation);
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    //bloc.onRetryAfterNoInternet();
   }
 }

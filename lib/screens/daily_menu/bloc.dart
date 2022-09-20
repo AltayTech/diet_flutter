@@ -13,7 +13,7 @@ class ListFoodBloc {
   ListFoodBloc() {
     _loadContent();
   }
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _listFood = BehaviorSubject<ListFoodData?>();
   final _tags = BehaviorSubject<List<Tag>?>();
@@ -160,6 +160,18 @@ class ListFoodBloc {
     debugPrint('on free food change ${_selectedFood.value?.selectedFreeFood?.toJson()}');
     _selectedFood.value = _selectedFood.value;
     // _loadingContent.safeValue = false;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

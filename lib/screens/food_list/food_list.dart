@@ -148,8 +148,15 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-    super.onRetryLoadingPage();
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
     bloc.getFoodMenu(fillFood: true);
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    //bloc.onRetryAfterNoInternet();
   }
 }

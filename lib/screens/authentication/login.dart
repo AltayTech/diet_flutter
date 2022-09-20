@@ -443,8 +443,18 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   }
 
   @override
+  void onRetryLoadingPage() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    //bloc.onRetryLoadingPage();
+  }
+
+  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
+
+    authBloc.setRepository();
+
     if (authBloc.isTrySendCode) {
       authBloc.sendCodeMethod(args['mobile'], channelSendCode);
     } else {

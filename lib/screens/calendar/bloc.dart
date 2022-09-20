@@ -13,7 +13,7 @@ class CalendarBloc {
     loadContent();
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _endDate = BehaviorSubject<String>();
   final _startDate = BehaviorSubject<String>();
@@ -35,6 +35,19 @@ class CalendarBloc {
     _repository.calendar(_startDate.value, _endDate.value).then((value) {
       _calendar.value = value.requireData;
     }).whenComplete(() => _loadingContent.safeValue = false);
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    loadContent();
   }
 
   void dispose() {

@@ -9,7 +9,7 @@ import 'package:rxdart/rxdart.dart';
 class PhysicalInfoBloc {
   PhysicalInfoBloc() {}
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _physicalInfoData = BehaviorSubject<PhysicalInfoData>();
   final _navigateTo = LiveEvent();
@@ -51,6 +51,19 @@ class PhysicalInfoBloc {
   void setGender(GenderType gender) {
     _physicalInfo.gender = gender;
     _physicalInfoData.safeValue = _physicalInfo;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+    sendRequest();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

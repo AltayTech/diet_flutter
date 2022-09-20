@@ -1,8 +1,10 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -244,18 +246,23 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    bloc.checkLastInvoice();
+  void onRetryLoadingPage() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    //bloc.onRetryLoadingPage();
   }
 
   @override
   void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
     bloc.checkLastInvoice();
   }
 
   @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+  void onRetryAfterMaintenance() {
+    bloc.checkLastInvoice();
   }
 
   @override
