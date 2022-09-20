@@ -670,12 +670,18 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    sendRequest(isPregnancy: false);
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
   }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.getUserAllowedDietType();
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
+    sendRequest(isPregnancy: false);
   }
+
 }

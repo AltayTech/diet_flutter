@@ -16,7 +16,7 @@ import 'package:rxdart/rxdart.dart';
 class BodyStatusBloc {
   BodyStatusBloc();
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   late PhysicalInfoData _physicalInfoData;
   final _waiting = BehaviorSubject<bool>();
   final _dietTypeList = BehaviorSubject<List<DietType>>();
@@ -89,6 +89,19 @@ class BodyStatusBloc {
     _repository.nextStep().then((value) {
       _navigateTo.fire(value.next);
     }).catchError((e) => _showServerError.fire(e));
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    getUserAllowedDietType();
   }
 
   void dispose() {

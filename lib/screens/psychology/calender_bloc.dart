@@ -22,7 +22,7 @@ class CalenderBloc{
     // if(MemoryApp.day == null)
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   String? start;
   String? end;
@@ -194,6 +194,18 @@ class CalenderBloc{
     });}catch(e) {
       debugPrint("Myerror:$e");
     }
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {
