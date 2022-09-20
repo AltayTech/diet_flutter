@@ -284,11 +284,13 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
 
   @override
   void onRetryAfterNoInternet() {
+    sicknessBloc.setRepository();
     sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
+    sicknessBloc.setRepository();
     sicknessBloc.getSickness();
   }
 

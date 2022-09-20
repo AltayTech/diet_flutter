@@ -6,7 +6,6 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/menu/bloc.dart';
 import 'package:behandam/screens/regime/menu/item.dart' as menuItem;
 import 'package:behandam/screens/regime/regime_bloc.dart';
-import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -255,11 +254,13 @@ class _MenuSelectPageState extends ResourcefulState<MenuSelectPage> {
 
   @override
   void onRetryAfterNoInternet() {
+    bloc.setRepository();
     sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
+    bloc.setRepository();
     bloc.loadContent();
   }
 

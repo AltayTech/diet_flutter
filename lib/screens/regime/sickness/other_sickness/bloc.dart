@@ -12,7 +12,7 @@ class OtherSicknessBloc {
     _waiting.safeValue = false;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
   late UserSickness userSicknessSelectedId;
@@ -51,6 +51,10 @@ class OtherSicknessBloc {
     _repository.sendSickness(_userSickness.value).then((value) {
       _navigateTo.fireMessage('/${value.next}');
     }).catchError((e) => _showServerError.fire(e));
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

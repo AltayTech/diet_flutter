@@ -13,7 +13,7 @@ class DietGoalBloc {
     loadContent();
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _dietGoals = BehaviorSubject<DietGoalData>();
   final _selectedGoal = BehaviorSubject<DietGoal?>();
@@ -54,6 +54,10 @@ class DietGoalBloc {
         if(value.data != null) _navigateTo.fire(value.next);
       }).whenComplete(() => _loadingContent.safeValue = false);
     }
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

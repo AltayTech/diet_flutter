@@ -10,7 +10,7 @@ class StatusBloc {
     _waiting.safeValue = true;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
   late List<TermStatus>? _terms;
@@ -55,6 +55,15 @@ class StatusBloc {
     }).whenComplete(() {
       _waiting.safeValue = false;
     });
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryLoadingPage(){
+    setRepository();
+    getVisitUser();
   }
 
   void dispose() {

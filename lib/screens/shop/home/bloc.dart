@@ -10,7 +10,7 @@ class ShopHomeBloc {
 
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
@@ -27,6 +27,10 @@ class ShopHomeBloc {
     _repository.getHomeShop().then((value) {
       _list = value.data!.items!;
     }).whenComplete(() => _loadingContent.safeValue = false);
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

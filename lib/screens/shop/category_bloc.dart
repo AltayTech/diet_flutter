@@ -10,7 +10,7 @@ import '../../base/repository.dart';
 class CategoryBloc {
   CategoryBloc();
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   int _offset = 0;
   int _totalRow = 0;
@@ -77,6 +77,10 @@ class CategoryBloc {
       _offset++;
       getProducts();
     }
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

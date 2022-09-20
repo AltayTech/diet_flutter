@@ -1550,6 +1550,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
 
   @override
   void onRetryAfterNoInternet() {
+    bloc.setRepository();
     switch (bloc.typeTicketValue) {
       case TypeTicket.MESSAGE:
         bloc.sendTicketTextDetail();
@@ -1565,6 +1566,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
 
   @override
   void onRetryLoadingPage() {
+    bloc.setRepository();
     bloc.getDetailTicket(args);
   }
 
