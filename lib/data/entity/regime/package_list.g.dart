@@ -23,7 +23,7 @@ Package _$PackageFromJson(Map<String, dynamic> json) => Package()
   ..package_id = json['package_id'] as int?
   ..refundDeadline = json['refund_deadline'] as int? ?? 0
   ..type = json['payment_type_id'] as int?
-  ..is_suggestion = json['is_suggestion'] as bool?
+  ..is_suggestion = json['is_suggestion'] as bool? ?? false
   ..index = json['index'] as int?
   ..totalPrice = json['totalPrice'] as int?
   ..isSelected = json['isSelected'] as bool? ?? false;
@@ -49,14 +49,14 @@ PackageItem _$PackageItemFromJson(Map<String, dynamic> json) => PackageItem()
   ..items = (json['items'] as List<dynamic>?)
       ?.map((e) => PackageItem.fromJson(e as Map<String, dynamic>))
       .toList()
+  ..services = (json['services'] as List<dynamic>?)
+      ?.map((e) => ServicePackage.fromJson(e as Map<String, dynamic>))
+      .toList()
   ..id = json['id'] as int?
   ..price = json['price'] == null
       ? null
       : PackagePrice.fromJson(json['price'] as Map<String, dynamic>)
   ..name = json['name'] as String?
-  ..services = (json['services'] as List<dynamic>?)
-      ?.map((e) => ServicePackage.fromJson(e as Map<String, dynamic>))
-      .toList()
   ..media = json['media'] as String?
   ..package_id = json['package_id'] as int?
   ..refundDeadline = json['refund_deadline'] as int? ?? 0
@@ -65,10 +65,10 @@ PackageItem _$PackageItemFromJson(Map<String, dynamic> json) => PackageItem()
 Map<String, dynamic> _$PackageItemToJson(PackageItem instance) =>
     <String, dynamic>{
       'items': instance.items,
+      'services': instance.services,
       'id': instance.id,
       'price': instance.price,
       'name': instance.name,
-      'services': instance.services,
       'media': instance.media,
       'package_id': instance.package_id,
       'refund_deadline': instance.refundDeadline,
@@ -139,7 +139,7 @@ PackagePriceNew _$PackagePriceNewFromJson(Map<String, dynamic> json) =>
     PackagePriceNew()
       ..id = json['id'] as int?
       ..priceableId = json['priceable_id'] as int?
-      ..price = json['amount'] as int?
+      ..price = json['amount'] as int? ?? 0
       ..finalPrice = json['sale_amount'] as int?
       ..type = json['type'] as int?
       ..totalPrice = json['totalPrice'] as int?;

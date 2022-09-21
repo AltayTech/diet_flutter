@@ -106,7 +106,6 @@ class BillPaymentBloc {
       element.isSelected = false;
     });
     _packageItemNew = packageItem;
-    _services = packageItem.servicesPackages ?? [];
     _packageItemNew!.isSelected = true;
     _refreshPackages.safeValue = true;
   }
@@ -171,6 +170,7 @@ class BillPaymentBloc {
         _list[i].index = i;
         _list[i].price!.totalPrice = _list[i].price!.finalPrice;
       }
+      _services = value.data!.servicesPackages ?? [];
     }).whenComplete(() {
       _waiting.safeValue = false;
     });

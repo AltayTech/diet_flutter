@@ -35,7 +35,7 @@ class Package {
   @JsonKey(name: "payment_type_id")
   int? type;
 
-  @JsonKey(name: "is_suggestion")
+  @JsonKey(name: "is_suggestion",defaultValue: false)
   bool? is_suggestion;
 
   int? index;
@@ -61,14 +61,15 @@ class PackageItem {
   @JsonKey(name: "items")
   List<PackageItem>? items;
 
+  @JsonKey(name: "services")
+  List<ServicePackage>? services;
+
   @JsonKey(name: "id")
   int? id;
   @JsonKey(name: "price")
   PackagePrice? price;
   @JsonKey(name: "name")
   String? name;
-  @JsonKey(name: "services")
-  List<ServicePackage>? services;
   @JsonKey(name: "media")
   String? media;
 
@@ -177,7 +178,7 @@ class PackagePriceNew {
   int? id;
   @JsonKey(name: "priceable_id")
   int? priceableId;
-  @JsonKey(name: "amount")
+  @JsonKey(name: "amount",defaultValue: 0)
   int? price;
   @JsonKey(name: "sale_amount")
   int? finalPrice;
