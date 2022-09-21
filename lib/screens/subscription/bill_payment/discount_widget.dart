@@ -18,10 +18,23 @@ class DiscountWidget extends StatefulWidget {
 class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
   late BillPaymentBloc bloc;
 
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     bloc = BillPaymentProvider.of(context);
+
+    controller.text = '';
+
     return _discountCodeBox();
   }
 
@@ -62,11 +75,20 @@ class _DiscountWidgetState extends ResourcefulState<DiscountWidget> {
                                         textDirection: context.textDirectionOfLocale,
                                         child: TextFormField(
                                           decoration: textFieldDecoration(),
-                                          initialValue: bloc.discountCode ?? null,
+                                          controller: controller,
                                           onChanged: (value) {
                                             bloc.discountCode = value;
                                             bloc.changeDiscountLoading(false);
                                             bloc.changeWrongDisCode(false);
+                                          },
+                                          onTap: () {
+                                            // fix bug click on end of text on rtl
+                                            if (controller.selection ==
+                                                TextSelection.fromPosition(TextPosition(
+                                                    offset: controller.text.length - 1))) {
+                                              controller.selection = TextSelection.fromPosition(
+                                                  TextPosition(offset: controller.text.length));
+                                            }
                                           },
                                           keyboardType: TextInputType.text,
                                           style: Theme.of(context).textTheme.caption!.copyWith(
