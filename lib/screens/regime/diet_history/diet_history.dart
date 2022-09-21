@@ -2,7 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/regime/diet_hostory/bloc.dart';
+import 'package:behandam/screens/regime/diet_history/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -28,7 +28,7 @@ class _DietHistoryPageState extends ResourcefulState<DietHistoryPage> {
     super.initState();
     bloc = DietHistoryBloc();
     bloc.navigateTo.listen((event) {
-      MemoryApp.isShowDialog=false;
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       context.vxNav.push(Uri.parse('/$event'));
     });
@@ -66,13 +66,9 @@ class _DietHistoryPageState extends ResourcefulState<DietHistoryPage> {
                         textAlign: TextAlign.center,
                       ),
                       Space(height: 2.h),
-                      ...snapshot.requireData.items
-                          .map((history) => item(history))
-                          .toList(),
+                      ...snapshot.requireData.items.map((history) => item(history)).toList(),
                       Center(
-                        child: SubmitButton(
-                            label: intl.nextStage,
-                            onTap: sendRequest),
+                        child: SubmitButton(label: intl.nextStage, onTap: sendRequest),
                       ),
                     ],
                   );
@@ -94,25 +90,23 @@ class _DietHistoryPageState extends ResourcefulState<DietHistoryPage> {
           child: Container(
             decoration: AppDecorations.boxMedium.copyWith(
               color: AppColors.greenRuler,
-              boxShadow:
-                  snapshot.hasData && snapshot.requireData!.id == history.id
-                      ? [
-                          BoxShadow(
-                            color: AppColors.greenRuler,
-                            blurRadius: 6.0,
-                            spreadRadius: 1.0,
-                          ),
-                        ]
-                      : null,
+              boxShadow: snapshot.hasData && snapshot.requireData!.id == history.id
+                  ? [
+                      BoxShadow(
+                        color: AppColors.greenRuler,
+                        blurRadius: 6.0,
+                        spreadRadius: 1.0,
+                      ),
+                    ]
+                  : null,
             ),
             margin: EdgeInsets.only(bottom: 2.h),
             child: Container(
               margin: EdgeInsets.only(right: 3.w),
               decoration: BoxDecoration(
-                color:
-                    snapshot.hasData && snapshot.requireData!.id == history.id
-                        ? AppColors.onPrimary
-                        : Colors.grey[300],
+                color: snapshot.hasData && snapshot.requireData!.id == history.id
+                    ? AppColors.onPrimary
+                    : Colors.grey[300],
                 borderRadius: BorderRadius.only(
                   bottomLeft: AppRadius.radiusMedium,
                   topLeft: AppRadius.radiusMedium,
@@ -144,22 +138,27 @@ class _DietHistoryPageState extends ResourcefulState<DietHistoryPage> {
     );
   }
 
-void sendRequest() {
-  if(bloc.selectedDietHistoryValue!=null) {
-    if(!MemoryApp.isShowDialog)
-    DialogUtils.showDialogProgress(context: context);
-    bloc.condition();
-  }else{
-    Utils.getSnackbarMessage(context, intl.errorSelectedItem);
-  }
-}
-  @override
-  void onRetryAfterNoInternet() {
-    sendRequest();
+  void sendRequest() {
+    if (bloc.selectedDietHistoryValue != null) {
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+      bloc.condition();
+    } else {
+      Utils.getSnackbarMessage(context, intl.errorSelectedItem);
+    }
   }
 
   @override
   void onRetryLoadingPage() {
-   bloc.loadContent();
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
+    sendRequest();
   }
 }

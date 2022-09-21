@@ -385,11 +385,17 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
   }
 
   @override
-  void onRetryAfterNoInternet() {}
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
+  }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.getDietPreferences();
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
   }
 
   @override

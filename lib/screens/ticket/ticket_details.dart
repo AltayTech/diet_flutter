@@ -43,7 +43,10 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
   void initState() {
     super.initState();
     print('init');
+
     controller = TextEditingController();
+    controller!.text = '';
+
     bloc = TicketBloc();
     bloc.showShowSendButton(false);
     //  bloc.getDetailTicket(args);
@@ -421,8 +424,12 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                                           child: CustomPlayer(
                                                             isAdmin: false,
                                                             media: Media.remoteExampleFile,
-                                                            url: Utils.getCompletePath(bloc.ticketDetails!.items![index]
-                                                                .messages![i].file![0].url),
+                                                            url: Utils.getCompletePath(bloc
+                                                                .ticketDetails!
+                                                                .items![index]
+                                                                .messages![i]
+                                                                .file![0]
+                                                                .url),
                                                           ),
                                                           width: 70.w,
                                                         ),
@@ -734,6 +741,15 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                         child: Padding(
                                           child: TextField(
                                             controller: controller,
+                                            onTap: () {
+                                              // fix bug click on end of text on rtl
+                                              if (controller!.selection ==
+                                                  TextSelection.fromPosition(TextPosition(
+                                                      offset: controller!.text.length - 1))) {
+                                                controller!.selection = TextSelection.fromPosition(
+                                                    TextPosition(offset: controller!.text.length));
+                                              }
+                                            },
                                             onChanged: (val) {
                                               if (val.isEmpty) {
                                                 bloc.showShowSendButton(false);
@@ -1091,6 +1107,15 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                                         child: Padding(
                                           child: TextField(
                                             controller: controller,
+                                            onTap: () {
+                                              // fix bug click on end of text on rtl
+                                              if (controller!.selection ==
+                                                  TextSelection.fromPosition(TextPosition(
+                                                      offset: controller!.text.length - 1))) {
+                                                controller!.selection = TextSelection.fromPosition(
+                                                    TextPosition(offset: controller!.text.length));
+                                              }
+                                            },
                                             onChanged: (val) {
                                               if (val.isEmpty) {
                                                 bloc.showShowSendButton(false);
@@ -1352,7 +1377,7 @@ class _TicketDetailsState extends ResourcefulState<TicketDetails> {
                     text: new LinkFile(
                       style: Theme.of(context).textTheme.caption!.copyWith(
                           decoration: TextDecoration.underline, color: Colors.lightBlueAccent),
-                      url: Utils.getCompletePath(value.url) ,
+                      url: Utils.getCompletePath(value.url),
                       text: '${value.fileName}',
                     ),
                     textAlign: TextAlign.end,

@@ -31,9 +31,15 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
   late ShopProduct? product;
   late ProductBloc bloc;
 
+  late TextEditingController controller;
+
   @override
   void initState() {
     super.initState();
+
+    controller = TextEditingController();
+    controller.text = '';
+
     WidgetsBinding.instance.addObserver(this);
     bloc = ProductBloc();
     bloc.navigateToRoute.listen((event) {
@@ -387,12 +393,21 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
                               child: Directionality(
                                 textDirection: context.textDirectionOfLocale,
                                 child: TextFormField(
+                                  controller: controller,
                                   decoration: textFieldDecoration(),
-                                  initialValue: bloc.discountCode ?? null,
                                   onChanged: (value) {
                                     bloc.discountCode = value;
                                     bloc.changeDiscountLoading(false);
                                     bloc.changeWrongDisCode(false);
+                                  },
+                                  onTap: () {
+                                    // fix bug click on end of text on rtl
+                                    if (controller.selection ==
+                                        TextSelection.fromPosition(TextPosition(
+                                            offset: controller.text.length - 1))) {
+                                      controller.selection = TextSelection.fromPosition(
+                                          TextPosition(offset: controller.text.length));
+                                    }
                                   },
                                   keyboardType: TextInputType.text,
                                   style: Theme.of(context).textTheme.caption!.copyWith(
