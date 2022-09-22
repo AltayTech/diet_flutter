@@ -16,4 +16,5 @@ DietPreferences _$DietPreferencesFromJson(Map<String, dynamic> json) =>
           .toList()
       ..dietGoal = (json['diet_goals'] as List<dynamic>?)
           ?.map((e) => DietGoal.fromJson(e as Map<String, dynamic>))
-          .toList();
+          .toList()
+      ..hasPregnancyDiet = json['has_pregnancy_diet'] as bool?;
