@@ -35,7 +35,7 @@ class Package {
   @JsonKey(name: "payment_type_id")
   int? type;
 
-  @JsonKey(name: "is_suggestion",defaultValue: false)
+  @JsonKey(name: "is_suggestion", defaultValue: false)
   bool? is_suggestion;
 
   int? index;
@@ -143,6 +143,9 @@ class Price {
   @JsonKey(name: "description")
   String? description;
 
+  @JsonKey(name: "service_ids")
+  List<int>? services;
+
   int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
 
   Price();
@@ -154,8 +157,12 @@ class Price {
 
 @JsonSerializable()
 class ServicePackage {
+  @JsonKey(name: "id")
+  int? id;
+
   @JsonKey(name: "name")
   String? name;
+
   @JsonKey(name: "description")
   String? description;
 
@@ -178,7 +185,7 @@ class PackagePriceNew {
   int? id;
   @JsonKey(name: "priceable_id")
   int? priceableId;
-  @JsonKey(name: "amount",defaultValue: 0)
+  @JsonKey(name: "amount", defaultValue: 0)
   int? price;
   @JsonKey(name: "sale_amount")
   int? finalPrice;

@@ -142,7 +142,12 @@ class BillPaymentBloc {
     _discountLoading.value = true;
     Price price = new Price();
     price.code = val;
-    price.packageId=_packageItemNew!.id;
+    price.packageId = _packageItemNew!.id;
+    List<int> serviceSelected = [];
+    _services.forEach((element) {
+      if (element.isSelected != null && element.isSelected!) serviceSelected.add(element.id!);
+    });
+    price.services = serviceSelected;
     _repository.checkCoupon(price).then((value) {
       _discountInfo = value.data;
       _packageItemNew!.price!.totalPrice = _discountInfo!.finalPrice;
@@ -179,14 +184,12 @@ class BillPaymentBloc {
   void getReservePackagePayment() {
     _waiting.safeValue = true;
     _repository.getReservePackageUser().then((value) {
-        _packageItem = value.data;
+      _packageItem = value.data;
       _packageItem!.index = 0;
     }).whenComplete(() {
       _waiting.safeValue = false;
     });
   }
-
-
 
   void selectUserPayment() {
     if (!isUsedDiscount && (discountCode != null && discountCode!.trim().isNotEmpty)) {
@@ -205,6 +208,11 @@ class BillPaymentBloc {
               : 1;
       payment.coupon = discountCode;
       payment.packageId = packageItemNew!.id!;
+      List<int> serviceSelected = [];
+      _services.forEach((element) {
+        if (element.isSelected != null && element.isSelected!) serviceSelected.add(element.id!);
+      });
+      payment.serviceIds = serviceSelected;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       }).whenComplete(() {

@@ -40,6 +40,9 @@ class Payment {
   @JsonKey(name: "url")
   String? url;
 
+  @JsonKey(name: "service_ids")
+  List<int>? serviceIds;
+
   Payment();
 
   factory Payment.fromJson(Map<String, dynamic> json) =>
