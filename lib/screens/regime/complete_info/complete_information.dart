@@ -198,7 +198,7 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
                                 icon: Icon(Icons.add),
                                 iconSize: 20,
                                 onPressed: () {
-                                  if (bloc.pregnancyWeek >= 1 && bloc.pregnancyWeek <= 42) {
+                                  if (bloc.pregnancyWeek >= 1 && bloc.pregnancyWeek <= 34) {
                                     setState(() {
                                       bloc.pregnancyWeek++;
                                     });
@@ -233,7 +233,7 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
                                 icon: Icon(Icons.remove),
                                 iconSize: 20,
                                 onPressed: () {
-                                  if (bloc.pregnancyWeek >= 1 && bloc.pregnancyWeek <= 42) {
+                                  if (bloc.pregnancyWeek >= 1 && bloc.pregnancyWeek <= 34) {
                                     setState(() {
                                       bloc.pregnancyWeek--;
                                     });
