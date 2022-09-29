@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
@@ -114,10 +115,16 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                                 return Column(
                                   children: [
                                     rulers(physicalInfo.requireData),
-                                    Space(height: 2.h),
-                                    birthDayBox(physicalInfo.requireData),
-                                    Space(height: 2.h),
-                                    genderBox(physicalInfo.requireData.gender ?? GenderType.Female),
+                                    if (!navigator.currentConfiguration!.path.contains('renew'))
+                                      Column(
+                                        children: [
+                                          Space(height: 2.h),
+                                          birthDayBox(physicalInfo.requireData),
+                                          Space(height: 2.h),
+                                          genderBox(
+                                              physicalInfo.requireData.gender ?? GenderType.Female),
+                                        ],
+                                      ),
                                     Space(
                                       height: 3.h,
                                     ),
