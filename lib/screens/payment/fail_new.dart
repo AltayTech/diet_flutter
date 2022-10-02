@@ -3,6 +3,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/pay_diamond.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
@@ -247,8 +248,16 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-    super.onRetryLoadingPage();
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
     bloc.sendRequest();
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
   }
 }

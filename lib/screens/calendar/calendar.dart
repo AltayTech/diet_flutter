@@ -892,13 +892,16 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
   }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.loadContent();
+  void onRetryAfterNoInternet() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    //bloc.onRetryAfterNoInternet();
   }
 
   @override

@@ -23,9 +23,9 @@ class ErrorHandlerInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) {
     if (err.error is SocketException) {
       if (err.requestOptions.method.contains("GET")) {
-        _isTypeRequestGet = false;
-      } else
         _isTypeRequestGet = true;
+      } else
+        _isTypeRequestGet = false;
       _handleNoInternetError();
       return super.onError(err, handler);
     }
@@ -169,8 +169,8 @@ class ErrorHandlerInterceptor extends Interceptor {
     await DialogUtils.showDialogPage(context: _context!, child: NetworkAlertPage());
     MemoryApp.isNetworkAlertShown = false;
     if (_isTypeRequestGet)
-      dioErrorObserver.retryForInternetConnectivity();
-    else
       dioErrorObserver.retryForLoadingPage();
+    else
+      dioErrorObserver.retryForInternetConnectivity();
   }
 }

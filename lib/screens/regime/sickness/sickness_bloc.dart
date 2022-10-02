@@ -41,7 +41,7 @@ class SicknessBloc {
       'tick': Color.fromRGBO(255, 160, 114, 1),
     },
   ];
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
   late List<ObstructiveDisease> _userDisease;
@@ -141,6 +141,10 @@ class SicknessBloc {
     _repository.sendSicknessSpecial(userSicknessSpecial!).then((value) {
       _navigateTo.fireMessage('/${value.next}');
     }).whenComplete(() => _popDialog.fire(true));
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

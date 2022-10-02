@@ -244,12 +244,18 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    _clickConfirm();
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
+    bloc.getTermPackage();
   }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.getTermPackage();
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
+    _clickConfirm();
   }
 }

@@ -30,7 +30,7 @@ class _ActivityLevelPageState extends ResourcefulState<ActivityLevelPage> {
     super.initState();
     bloc = ActivityBloc();
     bloc.navigateTo.listen((event) {
-      MemoryApp.isShowDialog=false;
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       context.vxNav.push(Uri.parse('/$event'));
     });
@@ -71,11 +71,10 @@ class _ActivityLevelPageState extends ResourcefulState<ActivityLevelPage> {
                               textAlign: TextAlign.center,
                             ),
                             Space(height: 2.h),
-                            ...snapshot.requireData.items.map((activity) => item(activity)).toList(),
-                            Center(
-                                child: SubmitButton(
-                                    label: intl.nextStage,
-                                    onTap: sendRequest)),
+                            ...snapshot.requireData.items
+                                .map((activity) => item(activity))
+                                .toList(),
+                            Center(child: SubmitButton(label: intl.nextStage, onTap: sendRequest)),
                           ],
                         );
                       return Center(child: Progress());
@@ -151,23 +150,26 @@ class _ActivityLevelPageState extends ResourcefulState<ActivityLevelPage> {
   }
 
   void sendRequest() {
-    if(bloc.selectedActivity!=null) {
-      if(!MemoryApp.isShowDialog)
-      DialogUtils.showDialogProgress(context: context);
+    if (bloc.selectedActivity != null) {
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
       bloc.condition();
-    }else{
+    } else {
       Utils.getSnackbarMessage(context, intl.errorSelectedItem);
     }
   }
 
   @override
-  void onRetryAfterNoInternet() {
-  sendRequest();
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
   }
 
   @override
-  void onRetryLoadingPage() {
-   bloc.loadContent();
-  }
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
 
+    bloc.onRetryAfterNoInternet();
+    sendRequest();
+  }
 }

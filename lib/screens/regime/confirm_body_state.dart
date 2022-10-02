@@ -378,12 +378,14 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
 
   @override
   void onRetryAfterNoInternet() {
+    regimeBloc.setRepository();
     if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     regimeBloc.sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
+    regimeBloc.setRepository();
     regimeBloc.getStatus();
     regimeBloc.physicalInfoData();
   }

@@ -489,11 +489,12 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    productBloc.setRepository();
   }
 
   @override
   void onRetryLoadingPage() {
+    productBloc.setRepository();
     productBloc.getProduct(int.parse(args!));
   }
 

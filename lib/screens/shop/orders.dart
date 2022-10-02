@@ -169,6 +169,7 @@ class _OrdersPageState extends ResourcefulState<OrdersPage> {
 
   @override
   void onRetryLoadingPage() {
+    ordersBloc.setRepository();
     ordersBloc.getOrders();
   }
 }

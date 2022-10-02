@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
@@ -220,7 +221,17 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
   }
 
   @override
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    profileBloc.onRetryLoadingPage();
+  }
+
+  @override
   void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    profileBloc.onRetryAfterNoInternet();
     checkPassword();
   }
 }

@@ -387,12 +387,15 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
 
   @override
   void onRetryAfterNoInternet() {
-    /*  if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-    regimeBloc.sendRequest();*/
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
   }
 
   @override
   void onRetryLoadingPage() {
-    // regimeBloc.physicalInfoData();
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
   }
 }

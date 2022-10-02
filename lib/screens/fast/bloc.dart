@@ -12,7 +12,7 @@ class FastBloc {
     _loadContent();
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _patterns = BehaviorSubject<List<FastPatternData>>();
   final _selectedPattern = BehaviorSubject<FastPatternData>();
@@ -60,6 +60,18 @@ class FastBloc {
       _fast.value = value.requireData;
       // _foodListBloc.onRefresh(invalidate: true);
     }).whenComplete(() => _loadingContent.safeValue = false);
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

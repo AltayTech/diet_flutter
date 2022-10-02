@@ -8,13 +8,11 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/complete_info/bloc.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/widget/custom_button.dart';
-import 'package:behandam/widget/sickness_dialog.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -468,11 +466,16 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
   }
 
   @override
-  void onRetryAfterNoInternet() {}
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.onRetryLoadingPage();
+  }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.getDietPreferences();
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
   }
 
   @override

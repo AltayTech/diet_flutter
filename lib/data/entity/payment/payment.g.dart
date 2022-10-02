@@ -18,7 +18,9 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) => Payment()
   ..id = json['id'] as int?
   ..amount = json['amount'] as int?
   ..ref_id = json['ref_id'] as String?
-  ..url = json['url'] as String?;
+  ..url = json['url'] as String?
+  ..serviceIds =
+      (json['service_ids'] as List<dynamic>?)?.map((e) => e as int).toList();
 
 Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'coupon': instance.coupon,
@@ -33,4 +35,5 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'amount': instance.amount,
       'ref_id': instance.ref_id,
       'url': instance.url,
+      'service_ids': instance.serviceIds,
     };

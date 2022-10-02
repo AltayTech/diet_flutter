@@ -18,7 +18,7 @@ class CompleteInformationBloc {
     _waiting.safeValue = false;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
   int pregnancyWeek = 25;
@@ -89,6 +89,19 @@ class CompleteInformationBloc {
       debugPrint('bloc condition ${value.data}');
       if (value.data != null) _navigateTo.fire(value.next);
     }).whenComplete(() => _popDialog.fire(true));
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    getDietPreferences();
   }
 
   void dispose() {

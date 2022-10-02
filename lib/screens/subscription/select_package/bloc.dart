@@ -11,7 +11,7 @@ class SelectPackageSubscriptionBloc {
   List<PackageItem>? _list;
   PackageItem? _packageItem;
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   final _progressNetwork = BehaviorSubject<bool>();
   final _navigateTo = LiveEvent();
@@ -45,6 +45,20 @@ class SelectPackageSubscriptionBloc {
     _repository.setUserReservePackage(requestData).then((value) {
       _navigateTo.fire(value.next);
     });
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    getPackageSubscriptionList();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+    sendPackage();
   }
 
   void dispose() {
