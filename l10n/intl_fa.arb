@@ -790,5 +790,9 @@
   "nameOptional": "نام (اختیاری)",
   "familyOptional": "نام خانوادگی (اختیاری)",
   "passwordOptional": "رمزعبور (اختیاری)",
+  "emptyDietGoals": "اهداف رژیم وجود ندارد",
+  "emptyDietHistory": "سابقه رژیم وجود ندارد",
+  "emptyDietActivity": "نوع فعالیت وجود ندارد",
+  "howManyPregnancyWeek": "هفته چندم بارداری هستید؟",
   "understand": "متوجه شدم"
 }
