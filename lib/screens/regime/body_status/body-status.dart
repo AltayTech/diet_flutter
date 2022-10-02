@@ -123,7 +123,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                         padding: const EdgeInsets.only(right: 32, left: 32),
                         child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
                             Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
-                          sendRequest(isPregnancy: snapshot.data!.isPregnancy! == 1);
+                          sendRequest();
                         }),
                       ),
                       Space(height: 2.h),
@@ -579,7 +579,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     }
   }
 
-  void pregnancyWeekAlert() {
+/*  void pregnancyWeekAlert() {
     DialogUtils.showDialogPage(
       context: context,
       isDismissible: true,
@@ -635,7 +635,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
         ),
       ),
     );
-  }
+  }*/
 
   Widget close() {
     return GestureDetector(
@@ -657,16 +657,12 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     );
   }
 
-  void sendRequest({required bool isPregnancy}) {
-    if (isPregnancy) {
-      pregnancyWeekAlert();
-    } else {
+  void sendRequest() {
       if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
       if (bloc.getDietSelected != null)
         bloc.updateDietType();
       else
         Utils.getSnackbarMessage(context, intl.pleaseSelectDietType);
-    }
   }
 
   @override
@@ -681,7 +677,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
 
     bloc.onRetryAfterNoInternet();
-    sendRequest(isPregnancy: false);
+    sendRequest();
   }
 
 }
