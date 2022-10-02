@@ -138,11 +138,16 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     //cache one of vitrin's image for reduce time of loading
     //precacheImage(AssetImage("assets/images/vitrin/bmi_banner.jpg"), context);
+
+    // change text scale factor for user font changes from system setting
+    MediaQueryData windowData = MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+    windowData = windowData.copyWith(textScaleFactor: 1);
+
     return Sizer(
       maxWidth: kIsWeb ? webMaxWidth : null,
       minRatio: kIsWeb ? webMinRatio : null,
       builder: (context, orientation, deviceType, constraints) {
-        return appProvider(constraints);
+        return MediaQuery(data: windowData, child: appProvider(constraints));
       },
     );
   }
