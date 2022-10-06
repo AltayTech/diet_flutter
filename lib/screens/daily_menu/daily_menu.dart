@@ -3,6 +3,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
@@ -352,12 +353,13 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    bloc.onDailyMenu();
+  void onRetryLoadingPage() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
   }
 
   @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.onRetryAfterNoInternet();
   }
 }

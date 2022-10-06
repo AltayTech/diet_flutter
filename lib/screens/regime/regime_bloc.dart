@@ -21,7 +21,7 @@ enum HelpPage { regimeType, menuType, packageType, fasting }
 class RegimeBloc {
   RegimeBloc();
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   late PhysicalInfoData _physicalInfoData;
   late String _path;
   late String _name;
@@ -160,6 +160,10 @@ class RegimeBloc {
       sendWeight(_physicalInfoData);
     else
       sendInfo(_physicalInfoData);
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

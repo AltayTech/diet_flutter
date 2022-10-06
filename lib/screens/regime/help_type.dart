@@ -194,7 +194,11 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    regimeBloc.setRepository();
+    if (helpType == HelpPage.regimeType) regimeBloc.helpMethod(1);
+    if (helpType == HelpPage.menuType) regimeBloc.helpMethod(2);
+    if (helpType == HelpPage.packageType) regimeBloc.helpMethod(3);
+    if (helpType == HelpPage.fasting) regimeBloc.helpMethod(4);
   }
 
   @override

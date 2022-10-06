@@ -29,7 +29,7 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
     super.initState();
     bloc = DietGoalBloc();
     bloc.navigateTo.listen((event) {
-      MemoryApp.isShowDialog=false;
+      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       context.vxNav.push(Uri.parse('/$event'));
     });
@@ -152,11 +152,13 @@ class _DietGoalPageState extends ResourcefulState<DietGoalPage> {
 
   @override
   void onRetryAfterNoInternet() {
+    bloc.setRepository();
     sendData();
   }
 
   @override
   void onRetryLoadingPage() {
+    bloc.setRepository();
     bloc.loadContent();
   }
 

@@ -46,7 +46,7 @@ import 'package:behandam/screens/regime/block/block.dart';
 import 'package:behandam/screens/regime/block/block_week_pergnancy.dart';
 import 'package:behandam/screens/regime/body_status/body-status.dart';
 import 'package:behandam/screens/regime/complete_info/complete_information.dart';
-import 'package:behandam/screens/regime/diet_hostory/diet_history.dart';
+import 'package:behandam/screens/regime/diet_history/diet_history.dart';
 import 'package:behandam/screens/regime/flow_starter/flow_starter.dart';
 import 'package:behandam/screens/regime/goal/diet_goal.dart';
 import 'package:behandam/screens/regime/help_type.dart';
@@ -357,7 +357,7 @@ final navigator = VxNavigator(
     Routes.dietHistory: (_, __) => MaterialPage(child: routePage(DietHistoryPage())),
     Routes.dietGoal: (_, __) => MaterialPage(child: routePage(DietGoalPage())),
     Routes.overview: (_, __) => MaterialPage(child: routePage(OverviewPage())),
-    RegExp(r"\/(reg|list|renew|revive)(\/menu\/select)"): (_, __) =>
+    RegExp(r"\/(reg|list|renew)(\/menu\/select)"): (_, __) =>
         MaterialPage(child: routePage(MenuSelectPage())),
     RegExp(r"\/(reg|list|renew|revive)(\/menu\/confirm)"): (_, param) =>
         MaterialPage(child: routePage(MenuConfirmPage()), arguments: param),
@@ -372,9 +372,9 @@ final navigator = VxNavigator(
     Routes.reviveAlert: (_, __) => MaterialPage(child: routePage(AlertFlowPage())),
     RegExp(r"\/(list|renew|revive|shop|subscription)(\/payment\/online\/success)"): (_, param) =>
         MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
-    RegExp(r"\/(reg|list|renew|revive)(\/sick\/block)"): (_, __) =>
+    RegExp(r"\/(reg|list|renew)(\/sick\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),
-    RegExp(r"\/(reg|list|renew|revive)(\/block)"): (_, __) =>
+    RegExp(r"\/(reg|list|renew)(\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),
     RegExp(r"\/list\/preg\/block"): (_, __) => MaterialPage(child: routePage(BlockPregnancy())),
     Routes.shopCategory: (_, param) =>

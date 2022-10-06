@@ -133,18 +133,18 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                             child: StreamBuilder(
                               builder: (context, AsyncSnapshot<bool> snapshot) {
                                 return textInput(
-                                    height: 6.h,
-                                    label: intl.lableTextMessage,
-                                    textController: ticketDescController,
-                                    validation: (validation) {},
-                                    bgColor: Colors.white,
-                                    onChanged: (onChanged) {
-                                      bloc.sendTicketMessage.body = onChanged;
-                                    },
-                                    enable: !(snapshot.data ?? false),
-                                    maxLine: true,
-                                    ctx: context,
-                                    textDirection: context.textDirectionOfLocale,
+                                  height: 6.h,
+                                  label: intl.lableTextMessage,
+                                  textController: ticketDescController,
+                                  validation: (validation) {},
+                                  bgColor: Colors.white,
+                                  onChanged: (onChanged) {
+                                    bloc.sendTicketMessage.body = onChanged;
+                                  },
+                                  enable: !(snapshot.data ?? false),
+                                  maxLine: true,
+                                  ctx: context,
+                                  textDirection: context.textDirectionOfLocale,
                                 );
                               },
                               stream: bloc.isShowRecorder,
@@ -264,11 +264,13 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
 
   @override
   void onRetryAfterNoInternet() {
+    bloc.setRepository();
     checkTypeTicketForSend();
   }
 
   @override
   void onRetryLoadingPage() {
+    bloc.setRepository();
     bloc.getSupportList();
   }
 

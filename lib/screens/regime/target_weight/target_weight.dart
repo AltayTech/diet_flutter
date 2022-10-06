@@ -170,12 +170,13 @@ class _TargetWeightScreenState extends ResourcefulState<TargetWeightScreen> {
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    bloc.setRepository();
+    bloc.sendVisit();
   }
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.onRetryLoadingPage();
   }
 
   @override

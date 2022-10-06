@@ -166,6 +166,13 @@ class _CallTicketState extends ResourcefulState<CallTicket> {
 
   @override
   void onRetryLoadingPage() {
-    callBloc.getCalls();
+    callBloc.onRetryLoadingPage();
   }
+@override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+    super.onRetryAfterNoInternet();
+    callBloc.onRetryAfterNoInternet();
+  }
+
 }

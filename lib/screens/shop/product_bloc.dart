@@ -18,7 +18,7 @@ import '../../base/repository.dart';
 class ProductBloc {
   ProductBloc();
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   Directory? tempDir;
 
   int _offset = 0;
@@ -253,6 +253,10 @@ class ProductBloc {
 
   void changeWrongDisCode(bool val) {
     _wrongDisCode.safeValue = val;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

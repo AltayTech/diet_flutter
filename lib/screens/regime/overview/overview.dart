@@ -73,8 +73,7 @@ class _OverviewPageState extends ResourcefulState<OverviewPage> {
                           Space(width: 3.w),
                           Expanded(
                             flex: 1,
-                            child: item(snapshot.requireData.dietHistory,
-                                intl.dietHistory),
+                            child: item(snapshot.requireData.dietHistory, intl.dietHistory),
                           ),
                         ],
                       ),
@@ -86,15 +85,16 @@ class _OverviewPageState extends ResourcefulState<OverviewPage> {
                           onTap: () {
                             //DialogUtils.showDialogProgress(context: context);
                             if (!bloc.path.isEmptyOrNull)
-                              VxNavigator.of(context)
-                                  .push(Uri(path: '/${bloc.path}'));
+                              VxNavigator.of(context).push(Uri(path: '/${bloc.path}'));
                           },
                         ),
                       ),
                       Space(height: 2.h),
                       TextButton(
                         onPressed: () {
-                          context.vxNav.clearAndPush(Uri(path: '/${navigator.currentConfiguration?.path.substring(1).split('/').first}${Routes.activity}'));
+                          context.vxNav.clearAndPush(Uri(
+                              path:
+                                  '/${navigator.currentConfiguration?.path.substring(1).split('/').first}${Routes.activity}'));
                         },
                         child: Text(
                           intl.editPhysicalStatus,
@@ -166,7 +166,7 @@ class _OverviewPageState extends ResourcefulState<OverviewPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.onRetryLoadingPage();
   }
 
   @override

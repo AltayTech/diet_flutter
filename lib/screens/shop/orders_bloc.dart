@@ -11,7 +11,7 @@ class OrdersBloc{
     _waiting.safeValue = false;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   int? _count;
   final _waiting = BehaviorSubject<bool>();
@@ -31,6 +31,10 @@ class OrdersBloc{
       _count = value.data!.count!;
       _orders.value = value.data!.items!;
     });
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

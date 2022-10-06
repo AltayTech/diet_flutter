@@ -26,6 +26,9 @@ class _CardInfoWidgetState extends ResourcefulState<CardInfoWidget> {
   @override
   void initState() {
     super.initState();
+
+    _cardOwnerNameController.text = '';
+    _cardNumberController.text = '';
   }
 
   @override
@@ -78,10 +81,19 @@ class _CardInfoWidgetState extends ResourcefulState<CardInfoWidget> {
                     border: InputBorder.none,
                     hintText: intl.cardOwnerName,
                     hintStyle:
-                        TextStyle(color: AppColors.penColor, fontSize: 10.sp),
+                    typography.overline!.copyWith(color: AppColors.penColor),
                     contentPadding: EdgeInsets.all(12),
                   ),
-                  style: TextStyle(color: AppColors.penColor, fontSize: 10.sp),
+                  style: typography.overline!.copyWith(color: AppColors.penColor),
+                  onTap: () {
+                    // fix bug click on end of text on rtl
+                    if (_cardOwnerNameController.selection ==
+                        TextSelection.fromPosition(TextPosition(
+                            offset: _cardOwnerNameController.text.length - 1))) {
+                      _cardOwnerNameController.selection = TextSelection.fromPosition(
+                          TextPosition(offset: _cardOwnerNameController.text.length));
+                    }
+                  },
                   onChanged: (val) {
                     bloc.invoice!.cardOwner = val;
                   },

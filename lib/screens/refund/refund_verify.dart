@@ -240,13 +240,18 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    DialogUtils.showDialogProgress(context: context);
-    bloc.verify();
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
+    bloc.getTermPackage();
   }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.getTermPackage();
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
+    bloc.verify();
   }
 }

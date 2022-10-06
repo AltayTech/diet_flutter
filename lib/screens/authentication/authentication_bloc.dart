@@ -32,7 +32,7 @@ class AuthenticationBloc {
     _obscureTextConfirmPass.safeValue = false;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   final _waiting = BehaviorSubject<bool>();
   final _flag = BehaviorSubject<bool>();
@@ -273,6 +273,18 @@ class AuthenticationBloc {
 
   void setObscureTextConfirmPass() {
     _obscureTextConfirmPass.safeValue = !_obscureTextConfirmPass.value;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

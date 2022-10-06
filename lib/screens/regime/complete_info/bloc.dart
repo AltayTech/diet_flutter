@@ -6,6 +6,7 @@ import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/entity/regime/diet_preferences.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:behandam/extensions/stream.dart';
@@ -17,17 +18,15 @@ class CompleteInformationBloc {
     _waiting.safeValue = false;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
+  int pregnancyWeek = 25;
   final _waiting = BehaviorSubject<bool>();
 
-  final _userSickness = BehaviorSubject<List<Sickness>>();
-  final _activityLevel = BehaviorSubject<List<ActivityData>>();
+  final _dietPreferences = BehaviorSubject<DietPreferences>();
   final _selectedActivityLevel = BehaviorSubject<ActivityData?>();
-  final _dietGoals = BehaviorSubject<List<DietGoal>>();
   final _selectedGoal = BehaviorSubject<DietGoal?>();
-  final _dietHistory = BehaviorSubject<List<DietHistory>>();
   final _selectedDietHistory = BehaviorSubject<DietHistory?>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
@@ -35,19 +34,15 @@ class CompleteInformationBloc {
 
   String get path => _path;
 
-  Stream<List<ActivityData>> get activityLevel => _activityLevel.stream;
+  Stream<DietPreferences> get dietPreferences => _dietPreferences.stream;
 
   Stream<ActivityData?> get selectedActivityLevel => _selectedActivityLevel.stream;
 
   ActivityData? get selectedActivity => _selectedActivityLevel.stream.valueOrNull;
 
-  Stream<List<DietGoal>> get dietGoals => _dietGoals.stream;
-
   Stream<DietGoal?> get selectedGoal => _selectedGoal.stream;
 
   DietGoal? get selectedGoalValue => _selectedGoal.stream.valueOrNull;
-
-  Stream<List<DietHistory>> get dietHistory => _dietHistory.stream;
 
   Stream<DietHistory?> get selectedDietHistory => _selectedDietHistory.stream;
 
@@ -64,10 +59,8 @@ class CompleteInformationBloc {
   void getDietPreferences() {
     _waiting.safeValue = true;
     _repository.getDietPreferences().then((value) {
-      _activityLevel.safeValue = value.data!.activityLevels!;
-      _dietGoals.safeValue = value.data!.dietGoal!;
-      _dietHistory.safeValue = value.data!.dietHistories!;
-      debugPrint('repository ${_activityLevel.value}');
+      _dietPreferences.safeValue = value.data!;
+      debugPrint('repository ${_dietPreferences.value}');
     }).whenComplete(() => _waiting.safeValue = false);
   }
 
@@ -88,6 +81,9 @@ class CompleteInformationBloc {
     requestData.activityLevelId = _selectedActivityLevel.value!.id;
     requestData.dietHistoryId = _selectedDietHistory.value!.id;
     requestData.dietGoalId = _selectedGoal.value!.id;
+    if (_dietPreferences.value.hasPregnancyDiet!) {
+      requestData.pregnancyWeekNumber = pregnancyWeek;
+    }
 
     _repository.setCondition(requestData).then((value) {
       debugPrint('bloc condition ${value.data}');
@@ -95,17 +91,27 @@ class CompleteInformationBloc {
     }).whenComplete(() => _popDialog.fire(true));
   }
 
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    getDietPreferences();
+  }
+
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
     _popDialog.close();
     _waiting.close();
-    _userSickness.close();
-    _activityLevel.close();
     _selectedActivityLevel.close();
-    _dietGoals.close();
     _selectedGoal.close();
-    _dietHistory.close();
+    _dietPreferences.close();
     _selectedDietHistory.close();
   }
 }

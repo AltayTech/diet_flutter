@@ -415,12 +415,8 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
+    bloc.setRepository();
     bloc.loadContent();
   }
 }

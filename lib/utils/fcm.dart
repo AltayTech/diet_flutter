@@ -206,6 +206,7 @@ class AppFcm {
     });
   }
 
+  @pragma('vm:entry-point')
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
     debugPrint('on background message');
 

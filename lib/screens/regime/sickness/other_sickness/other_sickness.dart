@@ -1,5 +1,4 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/sickness/other_sickness/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -45,7 +44,6 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
     bloc.showServerError.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
-      Utils.getSnackbarMessage(context, event);
     });
   }
 
@@ -223,25 +221,25 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                 height: 4.w,
               ),
               Space(width: 1.w),
-              if(sickness.title!.length>25)
-              Expanded(
-                flex: 1,
-                child: Marquee(
-                  child: Text(sickness.title!,
-                      softWrap: true,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
+              if (sickness.title!.length > 25)
+                Expanded(
+                  flex: 1,
+                  child: Marquee(
+                    child: Text(sickness.title!,
+                        softWrap: true,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: typography.caption!
+                            .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
+                  ),
                 ),
-              ),
-              if(sickness.title!.length<25)
+              if (sickness.title!.length < 25)
                 Text(sickness.title!,
                     softWrap: true,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style:
-                    typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
+                        typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp)),
             ],
           ),
         ),
@@ -256,11 +254,13 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
 
   @override
   void onRetryAfterNoInternet() {
+    bloc.setRepository();
     sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
+    bloc.setRepository();
     bloc.getNotBlockingSickness();
   }
 

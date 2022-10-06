@@ -293,8 +293,17 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   }
 
   @override
+  void onRetryLoadingPage() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    //bloc.onRetryLoadingPage();
+  }
+
+  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    authBloc.setRepository();
+
     clickSubmit();
   }
 }

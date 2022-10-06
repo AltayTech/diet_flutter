@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 class BlockUserBloc {
   BlockUserBloc() {}
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
 
   final _blockUser = BehaviorSubject<BlockUser>();
@@ -22,6 +22,19 @@ class BlockUserBloc {
     _repository.getBlockUserDescription().then((value) {
       _blockUser.safeValue = value.data!.items![0];
     }).whenComplete(() => _loadingContent.safeValue = false);
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    loadContent();
   }
 
   void dispose() {

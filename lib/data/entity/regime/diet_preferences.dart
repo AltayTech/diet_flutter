@@ -18,6 +18,9 @@ class DietPreferences {
   @JsonKey(name: 'diet_goals')
   List<DietGoal>? dietGoal;
 
+  @JsonKey(name: 'has_pregnancy_diet')
+  bool? hasPregnancyDiet;
+
   factory DietPreferences.fromJson(Map<String, dynamic> json) =>
       _$DietPreferencesFromJson(json);
 }

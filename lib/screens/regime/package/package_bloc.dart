@@ -12,7 +12,7 @@ class PackageBloc {
 
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
   List<PackageItem>? _list;
@@ -56,6 +56,10 @@ class PackageBloc {
     _repository.setCondition(requestData).then((value) {
       _navigateTo.fire({'url': value.next, 'params': _packageSelected});
     });
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

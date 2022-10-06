@@ -41,7 +41,7 @@ class FoodListBloc {
   final _showServerError = LiveEvent();
   final _navigateTo = LiveEvent();
   final _popLoading = LiveEvent();
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _foodList = BehaviorSubject<FoodListData?>();
   final _date = BehaviorSubject<String>();
@@ -147,19 +147,19 @@ class FoodListBloc {
     for (int i = 1; i < 7; i++) {
       data.add(
         WeekDay(
-            gregorianDate: gregorianDate.add(Duration(days: i)),
-            jalaliDate: gregorianDate.add(Duration(days: i)).toJalali(),
+            gregorianDate: gregorianDate.add(Duration(days: i, hours: 0)),
+            jalaliDate: gregorianDate.add(Duration(days: i, hours: 0)).toJalali(),
             clickable: _foodList.valueOrNull != null
                 ? gregorianDate
-                        .add(Duration(days: i))
+                        .add(Duration(days: i, hours: 0))
                         .compareTo(DateTime.parse(_foodList.value!.menu!.expiredAt!)) <=
                     0
                 : false,
             isSelected:
-                gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value),
+                gregorianDate.add(Duration(days: i, hours: 0)).toString().substring(0, 10) == _date.value),
       );
       debugPrint(
-          'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
+          'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i, hours: 0))} /');
     }
     _weekDays.safeValue = data;
     _selectedWeekDay.value = _weekDays.value!.firstWhere(
@@ -308,6 +308,19 @@ class FoodListBloc {
     _adviceVideo.safeValue = _articles.firstWhere(
         (element) => _selectedWeekDay.value.gregorianDate.toString().contains(element.date!));
     adviceId = _adviceVideo.value.id;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+    onDailyMenu();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

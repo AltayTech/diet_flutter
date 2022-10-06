@@ -9,7 +9,7 @@ import 'package:behandam/extensions/stream.dart';
 class AdviceBloc {
   AdviceBloc() ;
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _advices = BehaviorSubject<AdviceData>();
   // final _selectedPattern = BehaviorSubject<FastPatternData>();
@@ -30,6 +30,19 @@ class AdviceBloc {
       _advices.value = value.data!;
       debugPrint('advice bloc ${_advices.value}');
     }).whenComplete(() => _loadingContent.safeValue = false);
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    loadContent();
   }
 
   void dispose() {

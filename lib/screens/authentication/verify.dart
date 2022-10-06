@@ -440,18 +440,11 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-    if (authBloc.isTrySendCode) {
-      authBloc.tryCodeMethod(args['mobile'], channelSendCode);
-      authBloc.setFlag = false;
-      authBloc.setTrySendCode = true;
-    }
-  }
-
-  @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    authBloc.setRepository();
+
     if (!authBloc.isTrySendCode) {
       if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
 
@@ -462,6 +455,19 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
       authBloc.verifyMethod(verification);
 
       authBloc.setTrySendCode = false;
+    }
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    authBloc.setRepository();
+
+    if (authBloc.isTrySendCode) {
+      authBloc.tryCodeMethod(args['mobile'], channelSendCode);
+      authBloc.setFlag = false;
+      authBloc.setTrySendCode = true;
     }
   }
 

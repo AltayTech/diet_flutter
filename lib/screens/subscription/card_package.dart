@@ -272,4 +272,17 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
     );
   }
 
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+    super.onRetryLoadingPage();
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+    super.onRetryAfterNoInternet();
+    bloc.onRetryAfterNoInternet();
+  }
 }

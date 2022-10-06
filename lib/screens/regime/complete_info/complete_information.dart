@@ -3,16 +3,16 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/entity/regime/diet_preferences.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/complete_info/bloc.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/widget/custom_button.dart';
-import 'package:behandam/widget/sickness_dialog.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -83,89 +83,170 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
     return Column(
       children: [
         Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                intl.completeInformation,
-                textAlign: TextAlign.start,
-                style: typography.subtitle1!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                intl.thisInfoHelpUsToGetYouDiet,
-                textAlign: TextAlign.start,
-                style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
-              ),
-              Space(height: 2.h),
-              StreamBuilder<List<DietGoal>>(
-                  stream: bloc.dietGoals,
-                  builder: (context, dietGoals) {
-                    if (dietGoals.hasData) {
-                      if (dietGoals.requireData.length > 0) {
-                        return boxGoal(
-                          intl.whatIsYourGoal,
-                          dietGoals.requireData,
-                        );
-                      } else {
-                        return Container(
-                            child: Text(intl.emptySickness, style: typography.caption));
-                      }
-                    } else {
-                      return Container(height: 60.h, child: Progress());
-                    }
-                  }),
-              StreamBuilder<List<DietHistory>>(
-                  stream: bloc.dietHistory,
-                  builder: (context, dietHistory) {
-                    if (dietHistory.hasData) {
-                      if (dietHistory.requireData.length > 0) {
-                        return boxHistory(
-                          intl.haveYouEverBeenOnDiet,
-                          dietHistory.requireData,
-                        );
-                      } else {
-                        return Container(
-                            child: Text(intl.emptySickness, style: typography.caption));
-                      }
-                    } else {
-                      return Container(height: 60.h, child: Progress());
-                    }
-                  }),
-              StreamBuilder<List<ActivityData>>(
-                  stream: bloc.activityLevel,
-                  builder: (context, activity) {
-                    if (activity.hasData) {
-                      if (activity.requireData.length > 0) {
-                        return boxActivity(
-                          intl.howMuchIsYourDailyActivity,
-                          activity.requireData,
-                        );
-                      } else {
-                        return Container(
-                            child: Text(intl.emptySickness, style: typography.caption));
-                      }
-                    } else {
-                      return Container(height: 60.h, child: Progress());
-                    }
-                  }),
-              Space(height: 1.h),
-              CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue, Size(100.w, 6.h),
-                  Icon(Icons.arrow_forward), () {
-                if(bloc.selectedActivity!=null && bloc.selectedDietHistoryValue!=null && bloc.selectedGoalValue!=null) {
-                  DialogUtils.showDialogProgress(context: context);
-                  bloc.updateDietPreferences();
-                }else {
-                  Utils.getSnackbarMessage(context, intl.errorCompleteInfo);
+          child: StreamBuilder<DietPreferences>(
+              stream: bloc.dietPreferences,
+              builder: (context, dietPreferences) {
+                if (dietPreferences.hasData) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        intl.completeInformation,
+                        textAlign: TextAlign.start,
+                        style: typography.subtitle1!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        intl.thisInfoHelpUsToGetYouDiet,
+                        textAlign: TextAlign.start,
+                        style: typography.caption!
+                            .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+                      ),
+                      Space(height: 2.h),
+                      // pregnancy week
+                      dietPreferences.requireData.hasPregnancyDiet! ? pregnancyWeek() : Container(),//Container(),
+                      Space(height: 2.h),
+                      // diet goals
+                      dietPreferences.requireData.dietGoal!.length > 0
+                          ? boxGoal(
+                              intl.whatIsYourGoal,
+                              dietPreferences.requireData.dietGoal!,
+                            )
+                          : Container(child: Text(intl.emptyDietGoals, style: typography.caption)),
+                      // diet history
+                      dietPreferences.requireData.dietHistories!.length > 0
+                          ? boxHistory(
+                              intl.haveYouEverBeenOnDiet,
+                              dietPreferences.requireData.dietHistories!,
+                            )
+                          : Container(
+                              child: Text(intl.emptyDietHistory, style: typography.caption)),
+                      // diet activity
+                      dietPreferences.requireData.activityLevels!.length > 0
+                          ? boxActivity(
+                              intl.howMuchIsYourDailyActivity,
+                              dietPreferences.requireData.activityLevels!,
+                            )
+                          : Container(
+                              child: Text(intl.emptyDietActivity, style: typography.caption)),
+                      Space(height: 1.h),
+                      CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue,
+                          Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
+                        if (bloc.selectedActivity != null &&
+                            bloc.selectedDietHistoryValue != null &&
+                            bloc.selectedGoalValue != null) {
+                          DialogUtils.showDialogProgress(context: context);
+                          bloc.updateDietPreferences();
+                        } else {
+                          Utils.getSnackbarMessage(context, intl.errorCompleteInfo);
+                        }
+                      })
+                    ],
+                  );
+                } else {
+                  return Container(height: 60.h, child: Progress());
                 }
-              })
-            ],
-          ),
+              }),
         )
       ],
     );
+  }
+
+  Widget pregnancyWeek() {
+    return Container(
+        width: double.maxFinite,
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(intl.howManyPregnancyWeek,
+                style: typography.caption!.copyWith(fontWeight: FontWeight.bold)),
+            Space(height: 2.h),
+            Container(
+              height: 7.h,
+              padding: EdgeInsets.all(1.w),
+              decoration: BoxDecoration(
+                color: AppColors.onPrimary,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.redBar.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: IconButton(
+                                color: AppColors.redBar,
+                                padding: EdgeInsets.zero,
+                                icon: Icon(Icons.add),
+                                iconSize: 20,
+                                onPressed: () {
+                                  if (bloc.pregnancyWeek >= 1 && bloc.pregnancyWeek <= 34) {
+                                    setState(() {
+                                      bloc.pregnancyWeek++;
+                                    });
+                                  }
+                                }),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Text(
+                              '${bloc.pregnancyWeek}',
+                              textAlign: TextAlign.center,
+                              softWrap: false,
+                              style: typography.caption?.apply(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: AppColors.redBar.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: IconButton(
+                                color: AppColors.redBar,
+                                padding: EdgeInsets.zero,
+                                icon: Icon(Icons.remove),
+                                iconSize: 20,
+                                onPressed: () {
+                                  if (bloc.pregnancyWeek >= 1 && bloc.pregnancyWeek <= 34) {
+                                    setState(() {
+                                      bloc.pregnancyWeek--;
+                                    });
+                                  }
+                                }),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 
   Widget boxGoal(String title, List<DietGoal> DietGoalListData) {
@@ -385,11 +466,16 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
   }
 
   @override
-  void onRetryAfterNoInternet() {}
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.onRetryLoadingPage();
+  }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.getDietPreferences();
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
   }
 
   @override

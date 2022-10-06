@@ -286,6 +286,6 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
 
   @override
   void onRetryLoadingPage() {
-    bloc.getVisitUser();
+    bloc.onRetryLoadingPage();
   }
 }
