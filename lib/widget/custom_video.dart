@@ -143,12 +143,19 @@ class MyWidgetPlayer extends State<CustomVideo> {
         showControlsOnInitialize: true,
       );
 
+      widget.callBackListener!.call(chewieController!);
+
       if (chewieController != null && chewieController!.videoPlayerController.value.isInitialized) {
         setState(() {
           _initializeVideoPlayerFuture = true;
         });
       }
     } catch (e) {}
+  }
+
+  void pauseVideo() {
+    if (chewieController!.isPlaying)
+    _controller.pause();
   }
 
   @override
