@@ -227,56 +227,56 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                       )))
                   .values
                   .toList(),
-                StreamBuilder<Package>(
-                    stream: bloc.selectedPackage,
-                    builder: (context, selectedPackage) {
-                      if (selectedPackage.hasData) {
-                        bloc.getServicesFilteredByPackage(selectedPackage.requireData);
-                        if (bloc.servicesFilteredByPackage.length > 0) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Space(height: 2.h),
-                              Text(
-                                intl.weAreServiceMore,
-                                style: typography.headline5!.copyWith(fontSize: 12.sp),
-                              ),
-                              Space(height: 2.h),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: bloc.servicesFilteredByPackage.length,
-                                itemExtent: 15.5.h,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  ServicePackage package = bloc.services[index];
-                                  return Padding(
-                                    padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
-                                    child: PackageWidget.service(
-                                      onTap: () {
-                                        bloc.setServiceSelected(package);
-                                      },
-                                      title: package.name ?? '',
-                                      isSelected: package.isSelected ?? false,
-                                      description: package.description ?? '',
-                                      price: '${package.price?.price ?? 0}',
-                                      finalPrice: '${package.price?.finalPrice ?? 0}',
-                                      maxHeight: 15.5.h,
-                                      isOurSuggestion: false,
-                                      isBorder: true,
-                                      borderColor: null,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          );
-                        } else {
-                          return EmptyBox();
-                        }
+              StreamBuilder<Package>(
+                  stream: bloc.selectedPackage,
+                  builder: (context, selectedPackage) {
+                    if (selectedPackage.hasData) {
+                      bloc.getServicesFilteredByPackage(selectedPackage.requireData);
+                      if (bloc.servicesFilteredByPackage.length > 0) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Space(height: 2.h),
+                            Text(
+                              intl.weAreServiceMore,
+                              style: typography.headline5!.copyWith(fontSize: 12.sp),
+                            ),
+                            Space(height: 2.h),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: bloc.servicesFilteredByPackage.length,
+                              itemExtent: 15.5.h,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                ServicePackage package = bloc.services[index];
+                                return Padding(
+                                  padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
+                                  child: PackageWidget.service(
+                                    onTap: () {
+                                      bloc.setServiceSelected(package);
+                                    },
+                                    title: package.name ?? '',
+                                    isSelected: package.isSelected ?? false,
+                                    description: package.description ?? '',
+                                    price: '${package.price?.price ?? 0}',
+                                    finalPrice: '${package.price?.finalPrice ?? 0}',
+                                    maxHeight: 15.5.h,
+                                    isOurSuggestion: false,
+                                    isBorder: true,
+                                    borderColor: null,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      } else {
+                        return EmptyBox();
                       }
-                      return EmptyBox();
-                    })
+                    }
+                    return EmptyBox();
+                  })
             ],
           ),
         );
@@ -311,7 +311,15 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
   }
 
   void next() {
-    if (bloc.packageItemNew != null) {
+    if (bloc.type == PaymentType.cardToCard && bloc.packageItemNew != null) {
+      if (!bloc.isUsedDiscount &&
+          (bloc.discountCode != null && bloc.discountCode!.trim().isNotEmpty)) {
+        Utils.getSnackbarMessage(context, intl.offError);
+      } else {
+        VxNavigator.of(context).push(Uri.parse(Routes.cardToCard),
+            params: {'package': bloc.packageItemNew, 'discountCode': bloc.discountCode});
+      }
+    } else if (bloc.packageItemNew != null) {
       DialogUtils.showDialogProgress(context: context);
       bloc.selectUserPayment();
     } else {
