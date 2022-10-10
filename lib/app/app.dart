@@ -25,6 +25,7 @@ import 'package:behandam/screens/payment/fail.dart';
 import 'package:behandam/screens/payment/fail_new.dart';
 import 'package:behandam/screens/payment/new_bill.dart';
 import 'package:behandam/screens/payment/new_success.dart';
+import 'package:behandam/screens/payment/new_wait.dart';
 import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/payment/wait.dart';
 import 'package:behandam/screens/privacy_policy/privacy_policy.dart';
@@ -331,7 +332,7 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(PackageListScreen())),
     RegExp(r"\/(renew|revive)(\/payment\/bill)"): (_, params) =>
         MaterialPage(child: routePage(BillPaymentScreen()), arguments: params),
-    RegExp(r"\/(reg|renew|revive)(\/payment\/card\/confirm)"): (_, __) =>
+    RegExp(r"\/(renew|revive)(\/payment\/card\/confirm)"): (_, __) =>
         MaterialPage(child: routePage(PaymentSuccessScreen())),
     RegExp(r"\/(reg|renew|revive|subscription)(\/payment\/card)"): (_, params) =>
         MaterialPage(child: routePage(DebitCardPage()), arguments: params),
@@ -349,11 +350,11 @@ final navigator = VxNavigator(
     RegExp(r"\/(list|shop|subscription)(\/payment\/online\/fail)"): (path, params) => MaterialPage(
         child: routePage(PaymentFailScreen()),
         arguments: path.path.contains("shop") ? ProductType.SHOP : ProductType.DIET),
-    RegExp(r"\/(reg|list|renew|revive|subscription)(\/payment\/card\/reject)"): (_, __) =>
+    RegExp(r"\/(list|renew|revive|subscription)(\/payment\/card\/reject)"): (_, __) =>
         MaterialPage(child: routePage(PaymentFailScreen())),
     RegExp(r"\/(renew|revive)(\/activity)"): (_, __) =>
         MaterialPage(child: routePage(ActivityLevelPage())),
-    RegExp(r"\/(subscription|reg|list|renew|revive)(\/payment\/card\/wait)"): (_, __) =>
+    RegExp(r"\/(subscription|list|renew|revive)(\/payment\/card\/wait)"): (_, __) =>
         MaterialPage(child: routePage(PaymentWaitScreen())),
     Routes.dietHistory: (_, __) => MaterialPage(child: routePage(DietHistoryPage())),
     Routes.dietGoal: (_, __) => MaterialPage(child: routePage(DietGoalPage())),
@@ -422,6 +423,12 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(BillPaymentNewScreen())),
     RegExp(r"\/(reg)(\/report)"): (_, __) =>
         MaterialPage(child: routePage(ConfirmBodyStateScreen())),
+    RegExp(r"\/(reg)(\/payment\/card\/confirm)"): (_, __) =>
+        MaterialPage(child: routePage(PaymentSuccessNewScreen())),
+    RegExp(r"\/(reg)(\/payment\/card\/reject)"): (_, __) =>
+        MaterialPage(child: routePage(PaymentFailNewScreen())),
+    RegExp(r"\/(reg)(\/payment\/card\/wait)"): (_, __) =>
+        MaterialPage(child: routePage(PaymentWaitNewScreen ())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),
