@@ -22,6 +22,7 @@ import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/custom_player.dart' as cPlayer;
 import 'package:behandam/widget/custom_video.dart';
 import 'package:behandam/widget/stepper_widget.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:logifan/widgets/space.dart';
@@ -38,6 +39,8 @@ class BodyStatusScreen extends StatefulWidget {
 class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   late BodyStatusBloc bloc;
 
+  ChewieController? videoController;
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +51,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
 
   void listenBloc() {
     bloc.navigateToVerify.listen((event) {
+      if (videoController != null && videoController!.isPlaying) videoController!.pause();
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       MemoryApp.page++;
@@ -62,6 +66,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
 
   @override
   void dispose() {
+    if (videoController != null) videoController!.dispose();
     bloc.dispose();
     super.dispose();
   }
@@ -491,9 +496,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
         children: [
           ...helpMedia.data!
               .asMap()
-              .map((index, value) => MapEntry(
-              index,
-              templateItemWidget(value)))
+              .map((index, value) => MapEntry(index, templateItemWidget(value)))
               .values
               .toList(),
         ],
@@ -538,7 +541,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                         valueColor: new AlwaysStoppedAnimation<Color>(AppColors.primary),
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
+                                loadingProgress.expectedTotalBytes!
                             : null,
                       ),
                     );
@@ -555,7 +558,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 image: null,
                 isLooping: false,
                 isStart: false,
-                url: templateItem.media![0].mediumUrls!.url,
+                url: templateItem.media![0].mediumUrls!.url!,
+                callBackListener: (controller) {
+                  videoController = controller;
+                },
               ),
             ),
           );
@@ -658,11 +664,11 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   void sendRequest() {
-      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-      if (bloc.getDietSelected != null)
-        bloc.updateDietType();
-      else
-        Utils.getSnackbarMessage(context, intl.pleaseSelectDietType);
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (bloc.getDietSelected != null)
+      bloc.updateDietType();
+    else
+      Utils.getSnackbarMessage(context, intl.pleaseSelectDietType);
   }
 
   @override
@@ -679,5 +685,4 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     bloc.onRetryAfterNoInternet();
     sendRequest();
   }
-
 }

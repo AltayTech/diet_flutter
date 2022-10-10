@@ -23,6 +23,7 @@ Package _$PackageFromJson(Map<String, dynamic> json) => Package()
   ..package_id = json['package_id'] as int?
   ..refundDeadline = json['refund_deadline'] as int? ?? 0
   ..type = json['payment_type_id'] as int?
+  ..termDays = json['term_days'] as int?
   ..is_suggestion = json['is_suggestion'] as bool? ?? false
   ..index = json['index'] as int?
   ..totalPrice = json['totalPrice'] as int?
@@ -39,6 +40,7 @@ Map<String, dynamic> _$PackageToJson(Package instance) => <String, dynamic>{
       'package_id': instance.package_id,
       'refund_deadline': instance.refundDeadline,
       'payment_type_id': instance.type,
+      'term_days': instance.termDays,
       'is_suggestion': instance.is_suggestion,
       'index': instance.index,
       'totalPrice': instance.totalPrice,
@@ -129,7 +131,8 @@ ServicePackage _$ServicePackageFromJson(Map<String, dynamic> json) =>
       ..price = json['price'] == null
           ? null
           : PackagePriceNew.fromJson(json['price'] as Map<String, dynamic>)
-      ..isSelected = json['isSelected'] as bool? ?? false;
+      ..isSelected = json['isSelected'] as bool? ?? false
+      ..days = json['days'] as int?;
 
 Map<String, dynamic> _$ServicePackageToJson(ServicePackage instance) =>
     <String, dynamic>{
@@ -138,6 +141,7 @@ Map<String, dynamic> _$ServicePackageToJson(ServicePackage instance) =>
       'description': instance.description,
       'price': instance.price,
       'isSelected': instance.isSelected,
+      'days': instance.days,
     };
 
 PackagePriceNew _$PackagePriceNewFromJson(Map<String, dynamic> json) =>

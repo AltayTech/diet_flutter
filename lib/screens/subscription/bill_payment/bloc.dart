@@ -25,9 +25,10 @@ class BillPaymentBloc {
   Price? _discountInfo;
   PackageItem? _packageItem;
   Package? _packageItemNew;
-  Package? _serviceSelected;
+  ServicePackage? _serviceSelected;
   List<Package> _list = [];
   List<ServicePackage> _services = [];
+  List<ServicePackage> _servicesFilteredByPackage = [];
   late String _path;
   bool _checkLatestInvoice = false;
   String? _messageErrorCode;
@@ -40,6 +41,7 @@ class BillPaymentBloc {
   final _enterDiscount = BehaviorSubject<bool>();
   final _selectedPayment = BehaviorSubject<PaymentType>();
   final _checkedRules = BehaviorSubject<bool>();
+  final _selectedPackage = BehaviorSubject<Package>();
   final _navigateTo = LiveEvent();
   final _popDialog = LiveEvent();
   final _showServerError = LiveEvent();
@@ -61,6 +63,8 @@ class BillPaymentBloc {
 
   Stream<bool> get checkedRules => _checkedRules.stream;
 
+  Stream<Package> get selectedPackage => _selectedPackage.stream;
+
   Stream get navigateTo => _navigateTo.stream;
 
   Stream get popDialog => _popDialog.stream;
@@ -81,11 +85,13 @@ class BillPaymentBloc {
 
   Package? get packageItemNew => _packageItemNew;
 
-  Package? get serviceSelected => _serviceSelected;
+  ServicePackage? get serviceSelected => _serviceSelected;
 
   List<Package> get packageItems => _list;
 
   List<ServicePackage> get services => _services;
+
+  List<ServicePackage> get servicesFilteredByPackage => _servicesFilteredByPackage;
 
   String? get messageErrorCode => _messageErrorCode;
 
@@ -105,6 +111,7 @@ class BillPaymentBloc {
     _list.forEach((element) {
       element.isSelected = false;
     });
+    _selectedPackage.safeValue = packageItem;
     _packageItemNew = packageItem;
     _packageItemNew!.isSelected = true;
     _refreshPackages.safeValue = true;
@@ -181,6 +188,17 @@ class BillPaymentBloc {
     });
   }
 
+  List<ServicePackage> getServicesFilteredByPackage(Package package) {
+    if (_servicesFilteredByPackage.isNotEmpty) _servicesFilteredByPackage.clear();
+
+    for (int i = 0; i < _services.length; i++) {
+      if (package.termDays! == _services[i].days) {
+        _servicesFilteredByPackage.add(_services[i]);
+      }
+    }
+    return _servicesFilteredByPackage;
+  }
+
   void getReservePackagePayment() {
     _waiting.safeValue = true;
     _repository.getReservePackageUser().then((value) {
@@ -209,7 +227,7 @@ class BillPaymentBloc {
       payment.coupon = discountCode;
       payment.packageId = packageItemNew!.id!;
       List<int> serviceSelected = [];
-      _services.forEach((element) {
+      _servicesFilteredByPackage.forEach((element) {
         if (element.isSelected != null && element.isSelected!) serviceSelected.add(element.id!);
       });
       payment.serviceIds = serviceSelected;
@@ -272,6 +290,7 @@ class BillPaymentBloc {
   }
 
   void dispose() {
+    _selectedPackage.close();
     _discountLoading.close();
     _usedDiscount.close();
     _wrongDisCode.close();

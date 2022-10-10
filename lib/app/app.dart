@@ -76,6 +76,7 @@ import 'package:behandam/screens/ticket/new_ticket.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/screens/ticket/ticket_details.dart';
 import 'package:behandam/screens/vitrin/vitrin.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/webViewApp.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
@@ -142,14 +143,11 @@ class _AppState extends State<App> {
     //precacheImage(AssetImage("assets/images/vitrin/bmi_banner.jpg"), context);
 
     // change text scale factor for user font changes from system setting
-    MediaQueryData windowData = MediaQueryData.fromWindow(WidgetsBinding.instance.window);
-    windowData = windowData.copyWith(textScaleFactor: 1);
-
     return Sizer(
       maxWidth: kIsWeb ? webMaxWidth : null,
       minRatio: kIsWeb ? webMinRatio : null,
       builder: (context, orientation, deviceType, constraints) {
-        return MediaQuery(data: windowData, child: appProvider(constraints));
+        return appProvider(constraints);
       },
     );
   }
@@ -169,6 +167,11 @@ class _AppState extends State<App> {
 
   Widget app(Locale locale) {
     return MaterialApp.router(
+        builder: (BuildContext context, Widget? child) {
+          // don't scale font when accessibility setting of device is changing font size
+          return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), child: child ?? EmptyBox());
+        },
         useInheritedMediaQuery: true,
         // generate title from localization instead of `MaterialApp.title` property
         onGenerateTitle: (BuildContext context) => context.intl.appName,
@@ -190,8 +193,8 @@ class _AppState extends State<App> {
           scaffoldBackgroundColor: AppColors.scaffold,
           snackBarTheme: SnackBarThemeData(
               contentTextStyle: AppTypography(locale).caption.copyWith(
-                    color: Colors.white,
-                  ),
+                color: Colors.white,
+              ),
               behavior: SnackBarBehavior.floating,
               backgroundColor: Colors.black54,
               elevation: 0,
@@ -212,7 +215,6 @@ class _AppState extends State<App> {
         routeInformationParser: VxInformationParser(),
         backButtonDispatcher: RootBackButtonDispatcher(),
         routerDelegate: navigator);
-    ;
   }
 
   Widget webFrame(Locale locale, BoxConstraints constraints) {
@@ -313,9 +315,10 @@ final navigator = VxNavigator(
     Routes.helpType: (_, param) =>
         MaterialPage(child: routePage(HelpTypeScreen()), arguments: param),
     Routes.newTicketMessage: (_, __) => MaterialPage(child: routePage(NewTicket())),
-    RegExp(r"\/support\/ticket"): (uri, __) => MaterialPage(
-        child: routePage(TicketDetails()),
-        arguments: int.parse(uri.queryParameters['ticketId'].toString())),
+    RegExp(r"\/support\/ticket"): (uri, __) =>
+        MaterialPage(
+            child: routePage(TicketDetails()),
+            arguments: int.parse(uri.queryParameters['ticketId'].toString())),
     Routes.calendar: (_, __) => MaterialPage(child: routePage(CalendarPage())),
     RegExp(r"\/(renew|revive)(\/diet\/type)"): (_, __) =>
         MaterialPage(child: routePage(RegimeTypeScreen())),
@@ -376,8 +379,7 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(PaymentSuccessScreen()), arguments: param),
     RegExp(r"\/(reg|list|renew)(\/sick\/block)"): (_, __) =>
         MaterialPage(child: routePage(Block())),
-    RegExp(r"\/(reg|list|renew)(\/block)"): (_, __) =>
-        MaterialPage(child: routePage(Block())),
+    RegExp(r"\/(reg|list|renew)(\/block)"): (_, __) => MaterialPage(child: routePage(Block())),
     RegExp(r"\/list\/preg\/block"): (_, __) => MaterialPage(child: routePage(BlockPregnancy())),
     Routes.shopCategory: (_, param) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: param),
@@ -430,54 +432,57 @@ final navigator = VxNavigator(
     RegExp(r"\/(reg)(\/payment\/card\/wait)"): (_, __) =>
         MaterialPage(child: routePage(PaymentWaitNewScreen ())),
   },
-  notFoundPage: (uri, params) => MaterialPage(
-    key: ValueKey('not-found-page'),
-    child: Builder(
-      builder: (context) => Scaffold(
-        body: WillPopScope(
-          onWillPop: () {
-            return Future.value(false);
-          },
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Page ${uri.path} not found'),
-                Space(
-                  height: 2.h,
+  notFoundPage: (uri, params) =>
+      MaterialPage(
+        key: ValueKey('not-found-page'),
+        child: Builder(
+          builder: (context) =>
+              Scaffold(
+                body: WillPopScope(
+                  onWillPop: () {
+                    return Future.value(false);
+                  },
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Page ${uri.path} not found'),
+                        Space(
+                          height: 2.h,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
+                            },
+                            child: Text('رفتن به صفحه اصلی'))
+                      ],
+                    ),
+                  ),
                 ),
-                TextButton(
-                    onPressed: () {
-                      navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
-                    },
-                    child: Text('رفتن به صفحه اصلی'))
-              ],
-            ),
-          ),
+              ),
         ),
       ),
-    ),
-  ),
 );
 DateTime? currentBackPressTime;
 
-Widget routePage(Widget page) => Builder(
+Widget routePage(Widget page) =>
+    Builder(
       builder: (context) {
         return (Navigator.canPop(context))
             ? page
             : WillPopScope(
-                child: page,
-                onWillPop: () {
-                  DateTime now = DateTime.now();
-                  if (currentBackPressTime == null ||
-                      now.difference(currentBackPressTime!) > Duration(seconds: 4)) {
-                    currentBackPressTime = now;
-                    Utils.getSnackbarMessage(context, context.intl.exitAppAlert);
-                    return Future.value(false);
-                  }
-                  return Future.value(true);
-                },
-              );
+          child: page,
+          onWillPop: () {
+            DateTime now = DateTime.now();
+            if (currentBackPressTime == null ||
+                now.difference(currentBackPressTime!) > Duration(seconds: 4)) {
+              currentBackPressTime = now;
+              Utils.getSnackbarMessage(context, context.intl.exitAppAlert);
+              return Future.value(false);
+            }
+            return Future.value(true);
+          },
+        );
       },
     );

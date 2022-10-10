@@ -35,6 +35,9 @@ class Package {
   @JsonKey(name: "payment_type_id")
   int? type;
 
+  @JsonKey(name: "term_days")
+  int? termDays;
+
   @JsonKey(name: "is_suggestion", defaultValue: false)
   bool? is_suggestion;
 
@@ -171,6 +174,9 @@ class ServicePackage {
 
   @JsonKey(name: "isSelected", defaultValue: false)
   bool? isSelected;
+
+  @JsonKey(name: "days")
+  int? days;
 
   ServicePackage();
 

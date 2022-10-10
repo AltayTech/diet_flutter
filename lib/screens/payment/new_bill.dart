@@ -12,6 +12,7 @@ import 'package:behandam/screens/subscription/bill_payment/bloc.dart';
 import 'package:behandam/screens/subscription/bill_payment/enable_discount_box.dart';
 import 'package:behandam/screens/subscription/bill_payment/provider.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/package_item.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
@@ -226,42 +227,56 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                       )))
                   .values
                   .toList(),
-              Space(
-                height: 2.h,
-              ),
-              if (bloc.services.isNotEmpty)
-                Text(
-                  intl.weAreServiceMore,
-                  style: typography.headline5!.copyWith(fontSize: 12.sp),
-                ),
-              if (bloc.services.isNotEmpty) Space(height: 2.h),
-              if (bloc.services.isNotEmpty)
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: bloc.services.length,
-                  itemExtent: 15.5.h,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    ServicePackage package = bloc.services[index];
-                    return Padding(
-                      padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
-                      child: PackageWidget.service(
-                        onTap: () {
-                          bloc.setServiceSelected(package);
-                        },
-                        title: package.name ?? '',
-                        isSelected: package.isSelected ?? false,
-                        description: package.description ?? '',
-                        price: '${package.price?.price ?? 0}',
-                        finalPrice: '${package.price?.finalPrice ?? 0}',
-                        maxHeight: 15.5.h,
-                        isOurSuggestion: false,
-                        isBorder: true,
-                        borderColor: null,
-                      ),
-                    );
-                  },
-                )
+                StreamBuilder<Package>(
+                    stream: bloc.selectedPackage,
+                    builder: (context, selectedPackage) {
+                      if (selectedPackage.hasData) {
+                        bloc.getServicesFilteredByPackage(selectedPackage.requireData);
+                        if (bloc.servicesFilteredByPackage.length > 0) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Space(height: 2.h),
+                              Text(
+                                intl.weAreServiceMore,
+                                style: typography.headline5!.copyWith(fontSize: 12.sp),
+                              ),
+                              Space(height: 2.h),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: bloc.servicesFilteredByPackage.length,
+                                itemExtent: 15.5.h,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  ServicePackage package = bloc.services[index];
+                                  return Padding(
+                                    padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
+                                    child: PackageWidget.service(
+                                      onTap: () {
+                                        bloc.setServiceSelected(package);
+                                      },
+                                      title: package.name ?? '',
+                                      isSelected: package.isSelected ?? false,
+                                      description: package.description ?? '',
+                                      price: '${package.price?.price ?? 0}',
+                                      finalPrice: '${package.price?.finalPrice ?? 0}',
+                                      maxHeight: 15.5.h,
+                                      isOurSuggestion: false,
+                                      isBorder: true,
+                                      borderColor: null,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        } else {
+                          return EmptyBox();
+                        }
+                      }
+                      return EmptyBox();
+                    })
             ],
           ),
         );
