@@ -173,6 +173,8 @@ class AuthenticationBloc {
           _navigateToVerify.fire(value.next);
         }
       });
+    }).catchError((onError){
+      _popDialog.fire(false);
     });
   }
 
@@ -222,6 +224,7 @@ class AuthenticationBloc {
       _popDialog.fire(true);
       _navigateToVerify.fire(value.next);
     }).catchError((onError) {
+      _popDialog.fire(true);
       if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
     });
   }
