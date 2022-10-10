@@ -94,6 +94,7 @@ abstract class Routes {
   static const subscriptionPaymentOnlineSuccess = '/subscription/payment/online/success';
   static const subscriptionPaymentOnlineFail = '/subscription/payment/online/fail';
   static const subscriptionPaymentCardWait = '/subscription/payment/card/wait';
+  static const surveyCallSupport = '/survey-call-support';
 
   static const onboarding = '/onboarding';
   static const editBodyInfo = '/reg/edit/body-information';

@@ -207,7 +207,7 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
                 color: AppColors.box,
                 padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                 child: Text(
-                  advice?.text ?? '',
+                  advice?.cause ?? '',
                   softWrap: true,
                   textAlign: TextAlign.start,
                   style: typography.caption,

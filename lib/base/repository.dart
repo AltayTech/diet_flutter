@@ -13,6 +13,7 @@ import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
+import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
 import 'package:behandam/data/entity/psychology/booking.dart';
 import 'package:behandam/data/entity/psychology/calender.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
@@ -142,6 +143,10 @@ abstract class Repository {
   ImperativeNetworkResult sendRequestCall();
 
   ImperativeNetworkResult deleteRequestCall(int Id);
+
+  NetworkResult<PollPhrases> getCallSurveyCauses();
+
+  ImperativeNetworkResult sendCallRate(CallRateRequest callRateRequest);
 
   // NetworkResult<BodyStatus> getStatus(BodyStatus body);
 
@@ -581,6 +586,18 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult deleteRequestCall(int Id) {
     var response = _apiClient.deleteCall(Id);
+    return response;
+  }
+
+  @override
+  NetworkResult<PollPhrases> getCallSurveyCauses() {
+    var response = _apiClient.getCallSurveyCauses();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendCallRate(CallRateRequest callRateRequest) {
+    var response = _apiClient.sendCallRate(callRateRequest);
     return response;
   }
 

@@ -27,7 +27,7 @@ class _CustomTabBarState extends ResourcefulState<CustomTabBar> {
   Widget build(BuildContext context) {
     super.build(context);
     return Container(
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
         color: widget.color,
       ),
@@ -36,8 +36,8 @@ class _CustomTabBarState extends ResourcefulState<CustomTabBar> {
         child: TabBar(
           unselectedLabelColor: Colors.black87,
           labelColor: Colors.white,
-          unselectedLabelStyle:  Theme.of(context).textTheme.button!,
-          labelStyle:  Theme.of(context).textTheme.button!,
+          unselectedLabelStyle: Theme.of(context).textTheme.button!,
+          labelStyle: Theme.of(context).textTheme.button!,
           indicatorColor: AppColors.accentColor,
           labelPadding: EdgeInsets.all(8),
           indicatorSize: TabBarIndicatorSize.tab,
@@ -49,30 +49,101 @@ class _CustomTabBarState extends ResourcefulState<CustomTabBar> {
           tabs: widget.listItem
               .asMap()
               .map((index, item) => MapEntry(
-            index,
-            InkWell(
-              child: Container(
-                  height: double.maxFinite,
-                  alignment: Alignment.center,
-                  child: Text(
-                    item.title,
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                  )),
-              onTap: () {
-                debugPrint("click > ${indexItem}");
-                setState(() {
-                  indexItem = index;
-                  widget._controller.index=indexItem;
-                });
-              },
-            ),
-          ))
+                    index,
+                    InkWell(
+                      child: Container(
+                          height: double.maxFinite,
+                          alignment: Alignment.center,
+                          child: Text(
+                            item.title,
+                            textAlign: TextAlign.center,
+                            softWrap: true,
+                          )),
+                      onTap: () {
+                        debugPrint("click > ${indexItem}");
+                        setState(() {
+                          indexItem = index;
+                          widget._controller.index = indexItem;
+                        });
+                      },
+                    ),
+                  ))
               .values
               .toList(),
         ),
       ),
     );
   }
+}
 
+class CustomTabBarUnderLineIndicator extends StatefulWidget {
+  CustomTabBarUnderLineIndicator(
+      this.color, this.listItem, this._controller, this.tabIndicatorColor);
+
+  final Color color;
+  Color? tabIndicatorColor;
+  TabController _controller;
+  final List<ItemTab> listItem;
+
+  @override
+  State<CustomTabBarUnderLineIndicator> createState() =>
+      _CustomTabBarUnderLineIndicatorState();
+}
+
+class _CustomTabBarUnderLineIndicatorState
+    extends ResourcefulState<CustomTabBarUnderLineIndicator> {
+  static int indexItem = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        color: widget.color,
+      ),
+      child: DefaultTabController(
+        length: widget.listItem.length,
+        child: TabBar(
+          unselectedLabelColor: widget.tabIndicatorColor ?? Colors.grey,
+          labelColor: widget.tabIndicatorColor ?? Colors.black87,
+          unselectedLabelStyle: Theme.of(context).textTheme.button!,
+          labelStyle: Theme.of(context).textTheme.button!,
+          indicatorColor: widget.tabIndicatorColor ?? AppColors.accentColor,
+          labelPadding: EdgeInsets.all(8),
+          indicatorSize: TabBarIndicatorSize.tab,
+          indicator: UnderlineTabIndicator(
+              // color for indicator (underline)
+              borderSide: BorderSide(
+                  color: widget.tabIndicatorColor ?? AppColors.accentColor,
+                  width: 3)),
+          controller: widget._controller,
+          tabs: widget.listItem
+              .asMap()
+              .map((index, item) => MapEntry(
+                    index,
+                    InkWell(
+                      child: Container(
+                          height: double.maxFinite,
+                          alignment: Alignment.center,
+                          child: Text(
+                            item.title,
+                            textAlign: TextAlign.center,
+                            softWrap: true,
+                          )),
+                      onTap: () {
+                        debugPrint("click > ${indexItem}");
+                        setState(() {
+                          indexItem = index;
+                          widget._controller.index = indexItem;
+                        });
+                      },
+                    ),
+                  ))
+              .values
+              .toList(),
+        ),
+      ),
+    );
+  }
 }

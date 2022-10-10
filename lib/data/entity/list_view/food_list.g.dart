@@ -17,12 +17,20 @@ FoodListData _$FoodListDataFromJson(Map<String, dynamic> json) => FoodListData()
       ? null
       : DietType.fromJson(json['diet_type'] as Map<String, dynamic>)
   ..isFasting = $enumDecodeNullable(_$booleanEnumMap, json['is_fasting'])
-  ..hasPattern = $enumDecodeNullable(_$booleanEnumMap, json['has_pattern']);
+  ..hasPattern = $enumDecodeNullable(_$booleanEnumMap, json['has_pattern'])
+  ..surveyData = json['survey_data'] == null
+      ? null
+      : SurveyData.fromJson(json['survey_data'] as Map<String, dynamic>);
 
 const _$booleanEnumMap = {
   boolean.False: 0,
   boolean.True: 1,
 };
+
+SurveyData _$SurveyDataFromJson(Map<String, dynamic> json) => SurveyData(
+      json['call_id'] as int?,
+      json['survey_status'] as bool?,
+    );
 
 Meals _$MealsFromJson(Map<String, dynamic> json) => Meals(
       json['id'] as int,

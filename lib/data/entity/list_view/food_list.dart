@@ -27,7 +27,26 @@ class FoodListData {
   @JsonKey(name: 'has_pattern')
   boolean? hasPattern;
 
+  @JsonKey(name: 'survey_data')
+  SurveyData? surveyData;
+
   factory FoodListData.fromJson(Map<String, dynamic> json) => _$FoodListDataFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SurveyData {
+  SurveyData(
+      this.callId,
+      this.surveyStatus,
+      );
+
+  @JsonKey(name: 'call_id')
+  int? callId;
+
+  @JsonKey(name: 'survey_status')
+  bool? surveyStatus;
+
+  factory SurveyData.fromJson(Map<String, dynamic> json) => _$SurveyDataFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)

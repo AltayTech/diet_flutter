@@ -794,5 +794,18 @@
   "emptyDietHistory": "سابقه رژیم وجود ندارد",
   "emptyDietActivity": "نوع فعالیت وجود ندارد",
   "howManyPregnancyWeek": "هفته چندم بارداری هستید؟",
+  "surveyCallSupport": "نظرسنجی تماس پشتیبان",
+  "surveyCallSupportEmojiTitle": "از اینکه در نظرسنجی شرکت می کنید، متشکریم",
+  "surveyCallSupportEmojiDescription": "شرکت در نظرسنجی به ما در بهبود کیفیت پشتیبانی\nو جلب رضایت شما، کمک زیادی خواهد کرد",
+  "surveyCallSupportEmojiTextRate1": "پشتیبان خیلی ضعیف بود",
+  "surveyCallSupportEmojiTextRate2": "پشتیبان راضی کننده نبود",
+  "surveyCallSupportEmojiTextRate3": "پشتیبان راضی کننده بود",
+  "surveyCallSupportEmojiTextRate4": "پشتیبان خوب بود",
+  "surveyCallSupportEmojiTextRate5": "پشتیبان عالی بود",
+  "strengths": "نقاط قوت",
+  "weakness": "نقاط ضعف",
+  "noPollSurveyAvailable": "نظرسنجی وجود ندارد",
+  "isContactedToMe": "با من تماس گرفته نشد",
+  "registerSurvey": "ثبت نظرسنجی",
   "understand": "متوجه شدم"
 }

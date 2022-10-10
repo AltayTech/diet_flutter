@@ -138,6 +138,7 @@ flutter:
     - assets/images/foodlist/ramadan/
     - assets/images/flags/
     - assets/images/onboarding/
+    - assets/images/emoji/
   fonts:
     - family: Iransans
       fonts:

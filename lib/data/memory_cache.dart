@@ -31,6 +31,7 @@ class MemoryApp {
   static bool  isNetworkAlertShown = false;
   static FirebaseAnalytics? analytics;
   static List<String> fastingDates = [];
+  static SurveyData? callSurveyData = null;
   List<ArticleVideo>? _articles;
   static int page = 0;
 
