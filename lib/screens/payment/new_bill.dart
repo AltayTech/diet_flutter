@@ -316,8 +316,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
           (bloc.discountCode != null && bloc.discountCode!.trim().isNotEmpty)) {
         Utils.getSnackbarMessage(context, intl.offError);
       } else {
-        VxNavigator.of(context).push(Uri.parse(Routes.cardToCard),
-            params: {'package': bloc.packageItemNew, 'discountCode': bloc.discountCode});
+        VxNavigator.of(context).push(Uri.parse(Routes.cardToCard), params: {
+          'services': bloc.servicesFilteredByPackage,
+          'package': bloc.packageItemNew,
+          'discountCode': bloc.discountCode
+        });
       }
     } else if (bloc.packageItemNew != null) {
       DialogUtils.showDialogProgress(context: context);

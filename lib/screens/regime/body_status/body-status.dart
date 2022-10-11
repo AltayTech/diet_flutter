@@ -66,7 +66,6 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
 
   @override
   void dispose() {
-    if (videoController != null) videoController!.dispose();
     bloc.dispose();
     super.dispose();
   }
