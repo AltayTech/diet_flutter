@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/obstructive_disease.dart';
@@ -30,21 +31,23 @@ class SicknessScreen extends StatefulWidget {
 class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements ItemClick {
   late SicknessBloc sicknessBloc;
   TextEditingController controller = TextEditingController();
+  bool isShowStepper = true;
 
   @override
   void initState() {
     super.initState();
-
     sicknessBloc = SicknessBloc();
     sicknessBloc.getSickness();
+    if (navigator.currentConfiguration!.path.contains('list')) {
+      isShowStepper = false;
+    }
     listenBloc();
   }
 
   void listenBloc() {
     sicknessBloc.navigateTo.listen((event) {
       MemoryApp.isShowDialog = false;
-     if(!event.toString().contains('block'))
-       MemoryApp.page++;
+      if (!event.toString().contains('block')) MemoryApp.page++;
       VxNavigator.of(context).push(Uri.parse(event));
     });
 
@@ -60,8 +63,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     return SicknessProvider(sicknessBloc,
         child: Scaffold(
           appBar: Toolbar(
-              titleBar: intl.sickness,
-           ),
+            titleBar: intl.sickness,
+          ),
           body: WillPopScope(
               onWillPop: () {
                 MemoryApp.page--;
@@ -98,11 +101,12 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
               child: Column(
                 children: [
                   Space(height: 1.h),
-                  Container(
-                    width: 100.w,
-                    alignment: Alignment.center,
-                    child: StepperWidget(),
-                  ),
+                  if (isShowStepper)
+                    Container(
+                      width: 100.w,
+                      alignment: Alignment.center,
+                      child: StepperWidget(),
+                    ),
                   Container(
                     child: Padding(
                       padding: EdgeInsets.all(5.w),

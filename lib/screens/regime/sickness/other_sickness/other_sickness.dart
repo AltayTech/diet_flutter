@@ -1,3 +1,4 @@
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/regime/sickness/other_sickness/bloc.dart';
@@ -39,7 +40,10 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
     bloc.navigateTo.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
-      VxNavigator.of(context).push(Uri.parse(event));
+      if (navigator.currentConfiguration!.path.contains('list'))
+        VxNavigator.of(context).clearAndPush(Uri.parse(event));
+      else
+        VxNavigator.of(context).push(Uri.parse(event));
     });
     bloc.showServerError.listen((event) {
       MemoryApp.isShowDialog = false;

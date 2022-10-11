@@ -128,9 +128,7 @@ class _PaymentWaitNewScreenState extends ResourcefulState<PaymentWaitNewScreen> 
                     ),
                     Positioned(
                       child: Text(intl.amountPaid,
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                          style: typography.caption!),
+                          textAlign: TextAlign.center, softWrap: true, style: typography.caption!),
                       top: 4.h,
                       left: 10.w,
                       right: 10.w,
@@ -147,8 +145,7 @@ class _PaymentWaitNewScreenState extends ResourcefulState<PaymentWaitNewScreen> 
                                       color: AppColors.priceColor, fontWeight: FontWeight.w700))
                             ],
                             text: '${bloc.invoice!.amount!.toInt()}'.seRagham(),
-                            style: typography.headline6!
-                                .copyWith(color: AppColors.priceColor)),
+                            style: typography.headline6!.copyWith(color: AppColors.priceColor)),
                       ),
                       top: 8.h,
                       left: 10.w,
