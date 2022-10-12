@@ -105,6 +105,7 @@ Media _$MediaFromJson(Map<String, dynamic> json) => Media()
   ..name = json['name'] as String?
   ..thumbUrl = json['image_thumb_url'] as String?
   ..imageUrl = json['image_url'] as String?
+  ..originalUrl = json['original_url'] as String?
   ..tutorialUrl = json['tutorial_url'] as String?
   ..avatarUrl = json['avatar_url'] as String?
   ..collectionName = json['collection_name'] as String?
@@ -120,6 +121,7 @@ Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
       'name': instance.name,
       'image_thumb_url': instance.thumbUrl,
       'image_url': instance.imageUrl,
+      'original_url': instance.originalUrl,
       'tutorial_url': instance.tutorialUrl,
       'avatar_url': instance.avatarUrl,
       'collection_name': instance.collectionName,

@@ -44,6 +44,7 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/user/version.dart';
+import 'package:behandam/data/entity/slider/slider.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -381,4 +382,7 @@ abstract class RestClient {
 
   @GET("/user/blocked-data")
   NetworkResult<BlockUser> getBlockUserDescription();
+
+  @GET("/sliders")
+  NetworkResult<Slider> getSliders();
 }
