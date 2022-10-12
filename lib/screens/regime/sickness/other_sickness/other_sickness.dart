@@ -119,7 +119,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                             itemCount: userSickness.requireData.length,
                             itemBuilder: (BuildContext context, int index) => sicknessBox(
                                   userSickness.requireData[index].title!,
-                                  
+                              '',
                                   index,
                                   userSickness.requireData[index].diseases!,
                                 ));
