@@ -1,15 +1,10 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/home/mahdi/flutterSdk/flutter
-FLUTTER_APPLICATION_PATH=/home/mahdi/flutterProject/new-behandam-flutter
+FLUTTER_ROOT=C:\flutter
+FLUTTER_APPLICATION_PATH=D:\flutter\behandam
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
-<<<<<<< HEAD
 FLUTTER_BUILD_NAME=3.6.8
 FLUTTER_BUILD_NUMBER=368
-=======
-FLUTTER_BUILD_NAME=3.6.3
-FLUTTER_BUILD_NUMBER=363
->>>>>>> implement_rate_support_page_ui_684
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true
 TREE_SHAKE_ICONS=false

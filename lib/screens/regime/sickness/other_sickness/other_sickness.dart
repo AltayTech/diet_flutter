@@ -40,9 +40,9 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
     bloc.navigateTo.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
-      if (navigator.currentConfiguration!.path.contains('list'))
+      if (navigator.currentConfiguration!.path.contains('list')) {
         VxNavigator.of(context).clearAndPush(Uri.parse(event));
-      else
+      }else
         VxNavigator.of(context).push(Uri.parse(event));
     });
     bloc.showServerError.listen((event) {
@@ -119,7 +119,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                             itemCount: userSickness.requireData.length,
                             itemBuilder: (BuildContext context, int index) => sicknessBox(
                                   userSickness.requireData[index].title!,
-                              '',
+                              userSickness.requireData[index].url,
                                   index,
                                   userSickness.requireData[index].diseases!,
                                 ));
@@ -147,7 +147,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
     );
   }
 
-  Widget sicknessBox(String title,String imageUrl, int indexCategory, List<ObstructiveDisease> sickness) {
+  Widget sicknessBox(String title,String? imageUrl, int indexCategory, List<ObstructiveDisease> sickness) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -169,6 +169,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(flex: 0, child: ImageUtils.fromNetwork(imageUrl,width: 25,height: 25)),
+                  Space(width: 8,),
                   Expanded(child: Text(title, style: typography.caption)),
                 ],
               ),

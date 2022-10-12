@@ -38,6 +38,8 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
 
   void listen() {
     bloc.navigateTo.listen((event) {
+      MemoryApp.isShowDialog = false;
+      Navigator.of(context).pop();
       context.vxNav.push(Uri.parse('/$event'));
     });
     bloc.showServerError.listen((event) {
@@ -66,57 +68,52 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
   }
 
   Widget body() {
-    return StreamBuilder(
-      stream: bloc.loadingContent,
-      builder: (_, AsyncSnapshot<bool> snapshot) {
-        return Container(
-          height: 100.h,
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Container(
+      height: 100.h,
+      child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Stack(
                     children: [
-                      Stack(
-                        children: [
-                          FoodListAppbar(
-                            showToolbar: false,
-                            isClickable: false,
-                          ),
-                        ],
-                      ),
-                      Space(height: 7.h),
-                      ImageUtils.fromLocal(textItem!['icon'], width: 20.w, height: 20.w),
-                      Space(height: 2.h),
-                      Padding(
-                        padding: EdgeInsets.only(left: 4.w, right: 4.w),
-                        child: Text(
-                          textItem!['text'],
-                          textAlign: TextAlign.center,
-                          textDirection: context.textDirectionOfLocale,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ),
-                      Space(height: 4.h),
-                      Center(
-                        child: SubmitButton(
-                          label: textItem!['btnLabel'],
-                          onTap: () {
-                            DialogUtils.showDialogProgress(context: context);
-                            bloc.nextStep();
-                          },
-                        ),
+                      FoodListAppbar(
+                        showToolbar: false,
+                        isClickable: false,
                       ),
                     ],
                   ),
-                ),
+                  Space(height: 7.h),
+                  ImageUtils.fromLocal(textItem!['icon'], width: 20.w, height: 20.w),
+                  Space(height: 2.h),
+                  Padding(
+                    padding: EdgeInsets.only(left: 4.w, right: 4.w),
+                    child: Text(
+                      textItem!['text'],
+                      textAlign: TextAlign.center,
+                      textDirection: context.textDirectionOfLocale,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+                  Space(height: 4.h),
+                  Center(
+                    child: SubmitButton(
+                      label: textItem!['btnLabel'],
+                      onTap: () {
+                        DialogUtils.showDialogProgress(context: context);
+                        bloc.nextStep();
+                      },
+                    ),
+                  ),
+                ],
               ),
-              BottomNav(currentTab: BottomNavItem.DIET),
-            ],
+            ),
           ),
-        );
-      },
+          BottomNav(currentTab: BottomNavItem.DIET),
+        ],
+      ),
     );
   }
 

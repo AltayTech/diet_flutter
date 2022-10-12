@@ -59,6 +59,9 @@ class ObstructiveDiseaseCategory {
   @JsonKey(name: "diseases")
   List<ObstructiveDisease>? diseases;
 
+  @JsonKey(name: "media")
+  String? url;
+
   ObstructiveDiseaseCategory();
 
   factory ObstructiveDiseaseCategory.fromJson(Map<String, dynamic> json) =>

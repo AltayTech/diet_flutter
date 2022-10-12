@@ -44,8 +44,8 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
     bloc.navigateTo.listen((event) {
       if (event.contains('payment/bill')) {
-        context.vxNav.clearAndPush(Uri.parse(
-            '/${event.toString().split('/')[0]}${Routes.regimeType}'));
+        context.vxNav
+            .clearAndPush(Uri.parse('/${event.toString().split('/')[0]}${Routes.regimeType}'));
       } else if (event.contains('survey')) {
         context.vxNav.push(Uri.parse(Routes.surveyCallSupport), params: bloc.getSurveyData);
       } else if (!Routes.listView.contains(event)) {
@@ -118,9 +118,11 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                                         // _launchURL(vitrinBloc.url);
                                       },
                                       child: ImageUtils.fromLocal(
-                                        MemoryApp.userInformation!.hasFitaminService.isNullOrFalse
-                                            ? 'assets/images/vitrin/fitamin_banner.png'
-                                            : 'assets/images/vitrin/fitamin_banner_02.png',
+                                        (MemoryApp.userInformation != null &&
+                                                MemoryApp.userInformation!.hasFitaminService
+                                                    .isNullOrFalse)
+                                            ? 'assets/images/vitrin/fitamin_banner_02.png'
+                                            : 'assets/images/vitrin/fitamin_banner.png',
                                       )),
                                 ),
                               ),

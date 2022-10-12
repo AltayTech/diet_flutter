@@ -42,7 +42,8 @@ ObstructiveDiseaseCategory _$ObstructiveDiseaseCategoryFromJson(
       ..isSelected = json['selected'] as bool? ?? false
       ..diseases = (json['diseases'] as List<dynamic>?)
           ?.map((e) => ObstructiveDisease.fromJson(e as Map<String, dynamic>))
-          .toList();
+          .toList()
+      ..url = json['media'] as String?;
 
 Map<String, dynamic> _$ObstructiveDiseaseCategoryToJson(
         ObstructiveDiseaseCategory instance) =>
@@ -57,4 +58,5 @@ Map<String, dynamic> _$ObstructiveDiseaseCategoryToJson(
       'has_multichoice_children': instance.hasMultiChoiceChildren,
       'selected': instance.isSelected,
       'diseases': instance.diseases,
+      'media': instance.url,
     };
