@@ -33,6 +33,7 @@ class PaymentBloc {
   String? discountCode;
   PackageItem? _packageItem;
   Package? _packageItemNew;
+  List<ServicePackage>? _services;
   Price? _discountInfo;
   LatestInvoiceData? _invoice;
   bool _checkLatestInvoice = false;
@@ -115,6 +116,8 @@ class PaymentBloc {
 
   set setPackage(Package package) => _packageItemNew = package;
 
+  set setServices(List<ServicePackage> services) => _services = services;
+
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
   }
@@ -127,6 +130,11 @@ class PaymentBloc {
         ? 2
         : 3;
     //paymentTypeId==1 is cardToCard
+    List<int> serviceSelected = [];
+    _services?.forEach((element) {
+      if (element.isSelected != null && element.isSelected!) serviceSelected.add(element.id!);
+    });
+    payment.serviceIds = serviceSelected;
     payment.paymentTypeId = 1;
     payment.coupon = discountCode;
     payment.packageId = packageItemNew!.id!;

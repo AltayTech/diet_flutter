@@ -153,11 +153,6 @@ class MyWidgetPlayer extends State<CustomVideo> {
     } catch (e) {}
   }
 
-  void pauseVideo() {
-    if (chewieController!.isPlaying)
-    _controller.pause();
-  }
-
   @override
   void dispose() {
     _controller.dispose();
