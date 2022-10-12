@@ -21,6 +21,8 @@ import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../utils/image.dart';
+
 class SicknessScreen extends StatefulWidget {
   const SicknessScreen({Key? key}) : super(key: key);
 
@@ -229,30 +231,28 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                   ? BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
                   : BorderRadius.circular(10),
             ),
-            child: Column(children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(flex: 1, child: Text(sickness.title!, style: typography.caption)),
-                  Expanded(
-                    flex: 1,
-                    child: CustomSwitch(
-                      isSwitch: sickness.isSelected!,
-                      title: '',
-                      lableLeft: sickness.hasMultiChoiceChildren! ? intl.iHave : intl.iAm,
-                      lableRight: sickness.hasMultiChoiceChildren! ? intl.iDoNotHave : intl.iAmNot,
-                      colorSelected: AppColors.priceGreenColor,
-                      colorOff: AppColors.grey,
-                      function: (value) {
-                        sickness.isSelected = !sickness.isSelected!;
-                        sicknessBloc.updateSickness(index, sickness);
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ])),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(flex: 1, child: Text(sickness.title!, style: typography.caption)),
+                Expanded(
+                  flex: 1,
+                  child: CustomSwitch(
+                    isSwitch: sickness.isSelected!,
+                    title: '',
+                    lableLeft: sickness.hasMultiChoiceChildren! ? intl.iHave : intl.iAm,
+                    lableRight: sickness.hasMultiChoiceChildren! ? intl.iDoNotHave : intl.iAmNot,
+                    colorSelected: AppColors.priceGreenColor,
+                    colorOff: AppColors.grey,
+                    function: (value) {
+                      sickness.isSelected = !sickness.isSelected!;
+                      sicknessBloc.updateSickness(index, sickness);
+                    },
+                  ),
+                )
+              ],
+            )),
         collapsed: Container(),
       ),
     );

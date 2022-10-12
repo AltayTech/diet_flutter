@@ -189,6 +189,7 @@ class ProfileBloc {
     }).whenComplete(() {});
   }
 
+
   void getProvinces() {
     _repository.getProvinces().then((value) {
       cityProvinceModel = value.data!;

@@ -119,6 +119,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                             itemCount: userSickness.requireData.length,
                             itemBuilder: (BuildContext context, int index) => sicknessBox(
                                   userSickness.requireData[index].title!,
+                                  
                                   index,
                                   userSickness.requireData[index].diseases!,
                                 ));
@@ -146,7 +147,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
     );
   }
 
-  Widget sicknessBox(String title, int indexCategory, List<ObstructiveDisease> sickness) {
+  Widget sicknessBox(String title,String imageUrl, int indexCategory, List<ObstructiveDisease> sickness) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: ExpandablePanel(
@@ -167,6 +168,7 @@ class _OtherSicknessScreenState extends ResourcefulState<OtherSicknessScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Expanded(flex: 0, child: ImageUtils.fromNetwork(imageUrl,width: 25,height: 25)),
                   Expanded(child: Text(title, style: typography.caption)),
                 ],
               ),
