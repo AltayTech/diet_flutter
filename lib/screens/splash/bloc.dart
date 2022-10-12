@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/slider/slider.dart';
 import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -110,6 +111,14 @@ class SplashBloc {
     } else {
       _navigateTo.fire(true);
     }
+  }
+
+  void getSlider() {
+    //_waiting.safeValue = true;
+    _repository.getSliders().then((value) {
+      MemoryApp.sliders = value.data!.items!;
+      _navigateTo.fire(true);
+    });
   }
 
   void dispose() {

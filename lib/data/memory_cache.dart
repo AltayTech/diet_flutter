@@ -3,6 +3,7 @@ import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/refund.dart';
+import 'package:behandam/data/entity/slider/slider.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -32,6 +33,7 @@ class MemoryApp {
   static FirebaseAnalytics? analytics;
   static List<String> fastingDates = [];
   static SurveyData? callSurveyData = null;
+  static List<Slider> sliders = [];
   List<ArticleVideo>? _articles;
   static int page = 0;
 

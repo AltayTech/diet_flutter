@@ -38,6 +38,7 @@ import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/data/entity/slider/slider.dart';
 
 // import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -275,6 +276,8 @@ abstract class Repository {
   NetworkResult<Package> getPackages();
 
   NetworkResult<BlockUser> getBlockUserDescription();
+
+  NetworkResult<Slider> getSliders();
 }
 
 class _RepositoryImpl extends Repository {
@@ -1074,6 +1077,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<BlockUser> getBlockUserDescription() {
     var response = _apiClient.getBlockUserDescription();
+    return response;
+  }
+
+  @override
+  NetworkResult<Slider> getSliders() {
+    var response = _apiClient.getSliders();
     return response;
   }
 }
