@@ -43,7 +43,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
   void getSliders() async {
     isShowOnBoarding = await AppSharedPreferences.isShowOnBoarding;
 
-    if (!isShowOnBoarding)
+    if (isShowOnBoarding)
       bloc.getSlider();
     else
       bloc.getUser();
@@ -64,7 +64,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
         VxNavigator.of(context).clearAndPushAll(
             [Uri.parse(Routes.shopHome), Uri.parse(navigator.currentConfiguration!.path)]);
       }
-    } else if (!isShowOnBoarding && !MemoryApp.sliders.isEmpty) {
+    } else if (isShowOnBoarding && !MemoryApp.sliders.isEmpty) {
       VxNavigator.of(context).clearAndPush(Uri.parse(Routes.onboarding));
     } else
       VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));

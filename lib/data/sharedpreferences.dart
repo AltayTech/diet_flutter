@@ -93,6 +93,7 @@ abstract class AppSharedPreferences {
   }
 
   static Future<bool> get isShowOnBoarding async {
+    // when user did not see onBoarding return true
     return preference.getBool(_keyShowOnBoarding) ?? true;
   }
 

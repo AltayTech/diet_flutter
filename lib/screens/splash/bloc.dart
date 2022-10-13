@@ -114,9 +114,14 @@ class SplashBloc {
   }
 
   void getSlider() {
-    //_waiting.safeValue = true;
     _repository.getSliders().then((value) {
       MemoryApp.sliders = value.data!.items!;
+    }).whenComplete(() => getSlidersIntroduces());
+  }
+
+  void getSlidersIntroduces() {
+    _repository.getSlidersIntroduces().then((value) {
+      MemoryApp.sliderIntroduces = value.data!.items!;
       _navigateTo.fire(true);
     });
   }
