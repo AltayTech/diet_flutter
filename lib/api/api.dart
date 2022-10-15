@@ -385,4 +385,7 @@ abstract class RestClient {
 
   @GET("/sliders")
   NetworkResult<Slider> getSliders();
+
+  @GET("/slider-introduces")
+  NetworkResult<SliderIntroduces> getSlidersIntroduces();
 }

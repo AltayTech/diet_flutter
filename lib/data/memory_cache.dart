@@ -34,6 +34,7 @@ class MemoryApp {
   static List<String> fastingDates = [];
   static SurveyData? callSurveyData = null;
   static List<Slider> sliders = [];
+  static List<SliderIntroduces> sliderIntroduces = [];
   List<ArticleVideo>? _articles;
   static int page = 0;
 

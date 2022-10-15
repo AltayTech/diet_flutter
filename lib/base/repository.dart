@@ -278,6 +278,8 @@ abstract class Repository {
   NetworkResult<BlockUser> getBlockUserDescription();
 
   NetworkResult<Slider> getSliders();
+
+  NetworkResult<SliderIntroduces> getSlidersIntroduces();
 }
 
 class _RepositoryImpl extends Repository {
@@ -1083,6 +1085,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Slider> getSliders() {
     var response = _apiClient.getSliders();
+    return response;
+  }
+
+  @override
+  NetworkResult<SliderIntroduces> getSlidersIntroduces() {
+    var response = _apiClient.getSlidersIntroduces();
     return response;
   }
 }
