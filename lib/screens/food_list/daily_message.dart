@@ -1,3 +1,4 @@
+import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import '../../base/resourceful_state.dart';
@@ -68,7 +69,7 @@ class _DailyMessageState extends ResourcefulState<DailyMessage> {
                         ),
                       );
                   else
-                    return Utils.loading(30.0);
+                    return Container(height: 90.h, child: Progress());
                 }
             )
         ),
