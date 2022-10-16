@@ -1,14 +1,9 @@
-import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/shop/shop_model.dart';
-import 'package:behandam/data/entity/slider/slider.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:velocity_x/velocity_x.dart';
 import 'package:behandam/data/entity/slider/slider.dart' as sliderModel;
 
 class SliderIntroduces extends StatefulWidget {

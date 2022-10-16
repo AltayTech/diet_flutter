@@ -122,8 +122,7 @@ class SplashBloc {
   void getSlidersIntroduces() {
     _repository.getSlidersIntroduces().then((value) {
       MemoryApp.sliderIntroduces = value.data!.items!;
-      _navigateTo.fire(true);
-    });
+    }).whenComplete(() => _navigateTo.fire(true));
   }
 
   void dispose() {
