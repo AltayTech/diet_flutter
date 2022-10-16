@@ -41,7 +41,7 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
   Widget showChampion() {
     return SingleChildScrollView(
       child: Container(
-        height: 60.h,
+        height: 500,
         alignment: Alignment.center,
         child: Column(
           children: [

@@ -1,4 +1,5 @@
 import 'package:behandam/extensions/build_context.dart';
+import 'package:behandam/extensions/double.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -26,7 +27,7 @@ class _SliderIntroducesState extends State<SliderIntroduces> {
         CarouselSlider(
           carouselController: buttonCarouselController,
           options: CarouselOptions(
-              height: 50.h,
+            height: 450,
               viewportFraction: 1,
               enableInfiniteScroll: true,
               disableCenter: true,
@@ -38,9 +39,6 @@ class _SliderIntroducesState extends State<SliderIntroduces> {
           items: widget.introduces.map((value) {
             //calculate weightLoss user
             double weightLoss = value.old_weight! - value.new_weight!;
-            String weightDiff = weightLoss.toStringAsFixed(1);
-            RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
-            weightDiff = weightDiff.replaceAll(regex, '');
 
             return Padding(
               padding: const EdgeInsets.only(top: 32),
@@ -50,7 +48,7 @@ class _SliderIntroducesState extends State<SliderIntroduces> {
                     Expanded(
                       child: ImageUtils.fromNetwork(
                         value.media!.originalUrl!,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.fitWidth,
                       ),
                     ),
                     Space(height: 5.h),
@@ -100,9 +98,10 @@ class _SliderIntroducesState extends State<SliderIntroduces> {
                                     TextSpan(
                                       children: [
                                         TextSpan(
-                                            text: weightDiff,
+                                            text: weightLoss.toStringAsFixedOneWithoutZero,
                                             style: context.typography.caption!.copyWith(
                                                 fontFamily: 'yekan',
+                                                fontSize: 16.sp,
                                                 color: Colors.white,
                                                 letterSpacing: 1.0,
                                                 fontWeight: FontWeight.w900)),
