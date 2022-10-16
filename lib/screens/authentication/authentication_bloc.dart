@@ -108,7 +108,7 @@ class AuthenticationBloc {
     );
   }
 
-  setListCountry(List<picker.Country> list) {
+  void setListCountry(List<picker.Country> list) {
     _listCountry = list;
   }
 
@@ -173,7 +173,7 @@ class AuthenticationBloc {
           _navigateToVerify.fire(value.next);
         }
       });
-    }).catchError((onError){
+    }).catchError((onError) {
       _popDialog.fire(false);
     });
   }
@@ -187,7 +187,6 @@ class AuthenticationBloc {
   }
 
   void registerMethod(Register register) {
-
     _repository.register(register).then((value) async {
       MemoryApp.analytics!.logEvent(name: "register_success");
       checkFcm();
@@ -197,7 +196,9 @@ class AuthenticationBloc {
       }).whenComplete(() {
         _popDialog.fire(false);
       });
-    }).catchError((e) {_popDialog.fire(false);});
+    }).catchError((e) {
+      _popDialog.fire(false);
+    });
   }
 
   void sendCodeMethod(String mobile, ChannelSendCode channel) {

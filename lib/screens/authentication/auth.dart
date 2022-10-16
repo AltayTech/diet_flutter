@@ -40,13 +40,15 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     super.initState();
     authBloc = AuthenticationBloc();
     getlistCountry();
-    authBloc.fetchCountries();
+
 
     listenBloc();
   }
 
   void getlistCountry() async {
-    authBloc.setListCountry(await picker.getCountries(context));
+    List<picker.Country> list=await picker.getCountries(context);
+    authBloc.setListCountry(list);
+    authBloc.fetchCountries();
   }
 
   void listenBloc() {
