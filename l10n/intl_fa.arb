@@ -753,7 +753,7 @@
   "firstInfo": "اطلاعات اولیه",
   "youCanSetPasswordForEachLogin": "می‌تونید برای ورودهای بعدی، رمز عبور تعیین کنید.",
   "obstructiveDisease": "عارضه‌های ممانعتی",
-  "obstructiveCauseToLeaveDiet": "عارضه‌هایی که باعث میشن نتونید از رژیم استفاده کنید",
+  "obstructiveCauseToLeaveDiet": "عارضه\u200Cهایی که شاید باعث میشن نتونید از رژیم استفاده کنید",
   "pregnant": "باردار",
   "sex": "جنسیت",
   "iHave": "دارم",
