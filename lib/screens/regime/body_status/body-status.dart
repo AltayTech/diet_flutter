@@ -52,8 +52,6 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   void listenBloc() {
     bloc.navigateToVerify.listen((event) {
       if (videoController != null && videoController!.isPlaying) videoController!.pause();
-      MemoryApp.isShowDialog = false;
-      Navigator.of(context).pop();
       MemoryApp.page++;
       context.vxNav.push(Uri.parse('/${event}'));
     });
@@ -61,6 +59,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
       // Utils.getSnackbarMessage(context, event);
+    });
+    bloc.popDialog.listen((event) {
+      MemoryApp.isShowDialog = false;
+      Navigator.of(context).pop();
     });
   }
 
