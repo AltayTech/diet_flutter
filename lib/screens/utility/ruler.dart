@@ -169,7 +169,7 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                             ),
                             style: typography.caption?.apply(),
                             onSubmitted: (txt) {
-                              if (widget.max > int.parse(txt) && widget.min < int.parse(txt)) {
+                              if (widget.max > int.parse(txt) && widget.min <= int.parse(txt)) {
                                 if (widget.secondUnit != null)
                                   sliderKey.currentState!
                                       .scrollTo('$txt.${widget.value.toString().split('.')[1]}');
