@@ -2,7 +2,6 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/slider/slider.dart' as sliderModel;
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
-import 'package:behandam/extensions/string.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/onboard/slider_introduces.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -27,7 +26,6 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
   @override
   void initState() {
     super.initState();
-    if (pages.isEmpty) fillPage();
   }
 
   @override
@@ -113,7 +111,7 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
       back: CircleAvatar(
         child: Icon(
           Icons.arrow_forward,
-          color: MemoryApp.sliders[_index].colorCode!.hexToColor,
+          color: pages[_index].decoration.pageColor,
         ),
         backgroundColor: Colors.white,
       ),
@@ -153,13 +151,13 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
       ..new_weight = 52.0);
     MemoryApp.sliderIntroduces.add(sliderModel.SliderIntroduces()
       ..media = 'assets/images/onboarding/r2.png'
-      ..title = 'سهیل آدینه'
+      ..fullName = 'سهیل آدینه'
       ..description = '43 کیلوگرم کاهش وزن'
       ..old_weight = 132.0
       ..new_weight = 89.0);
     MemoryApp.sliderIntroduces.add(sliderModel.SliderIntroduces()
       ..media = 'assets/images/onboarding/r3.png'
-      ..title = 'گیتا محترمی'
+      ..fullName = 'گیتا محترمی'
       ..description = '30 کیلوگرم کاهش وزن'
       ..old_weight = 105.0
       ..new_weight = 75.0);
@@ -249,8 +247,6 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
               .copyWith(color: Colors.white, fontFamily: 'yekan', fontWeight: FontWeight.bold),
           bodyTextStyle: typography.caption!.copyWith(color: Colors.white, fontFamily: 'yekan')),
     ));
-
-
   }
 
 /* void fillPage(List<sliderModel.Slider> sliders) {
