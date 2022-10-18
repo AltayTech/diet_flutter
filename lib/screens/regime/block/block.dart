@@ -12,6 +12,7 @@ import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import 'bloc.dart';
 
@@ -41,7 +42,7 @@ class _BlockState extends ResourcefulState<Block> {
       appBar: Toolbar(titleBar: intl.needInvestigation),
       body: TouchMouseScrollable(
         child: SingleChildScrollView(
-          child:   Container(
+          child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
             constraints: BoxConstraints(minHeight: 80.h),
             child: StreamBuilder<BlockUser>(
@@ -76,11 +77,13 @@ class _BlockState extends ResourcefulState<Block> {
           child: Directionality(
             textDirection: TextDirection.ltr,
             child: CustomButton(AppColors.btnColor, intl.understand, Size(80.w, 6.h), () {
-              Navigator.pop(context);
+              if (Navigator.canPop(context))
+                Navigator.pop(context);
+              else
+                context.vxNav.clearAndPush(Uri.parse(Routes.listView));
             }),
           ),
         ),
-
       ],
     );
   }
