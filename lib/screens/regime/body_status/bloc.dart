@@ -20,7 +20,7 @@ class BodyStatusBloc {
   late PhysicalInfoData _physicalInfoData;
   final _waiting = BehaviorSubject<bool>();
   final _dietTypeList = BehaviorSubject<List<DietType>>();
-  final _template = BehaviorSubject<TempTicket>();
+  final _template = BehaviorSubject<TempTicket?>();
   final _dietSelected = BehaviorSubject<DietType?>();
   final _status = BehaviorSubject<BodyStatus>();
   final _physicalInfo = BehaviorSubject<PhysicalInfoData>();
@@ -32,7 +32,7 @@ class BodyStatusBloc {
 
   Stream<List<DietType>> get dietTypeList => _dietTypeList.stream;
 
-  Stream<TempTicket> get template => _template.stream;
+  Stream<TempTicket?> get template => _template.stream;
 
   Stream<DietType?> get dietSelected => _dietSelected.stream;
 
@@ -56,7 +56,7 @@ class BodyStatusBloc {
     _waiting.safeValue = true;
     _repository.getUserAllowedDietType().then((value) {
       _dietTypeList.safeValue = value.data!.dietTypes!;
-      _template.safeValue = value.data!.template!;
+      _template.safeValue = value.data!.template ?? TempTicket();
       _dietSelected.safeValue = value.data?.dietTypes![0] ?? null;
     }).whenComplete(() => getStatus());
   }

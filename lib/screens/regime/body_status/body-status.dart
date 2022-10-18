@@ -118,11 +118,18 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       Space(height: 2.h),
                       dietType(),
                       Space(height: 2.h),
-                      StreamBuilder<TempTicket>(
+                      StreamBuilder<TempTicket?>(
                           stream: bloc.template,
                           builder: (context, template) {
-                            if (template.hasData) return helpDietSelect(template.requireData);
-                            return Progress();
+                            if (template.hasData) {
+                              if (template.data != null && template.data!.data != null) {
+                                return helpDietSelect(template.requireData!);
+                              } else {
+                                return Space();
+                              }
+                            } else {
+                              return Progress();
+                            }
                           }),
                       Space(height: 2.h),
                       Padding(
