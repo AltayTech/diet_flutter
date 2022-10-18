@@ -123,6 +123,7 @@ class AuthenticationBloc {
       });
     } else {
       _countries.value = MemoryApp.countries!;
+      _filterListCountry.value =_countries.value;
       setFlagToCountry();
       selectIran();
     }
@@ -225,7 +226,6 @@ class AuthenticationBloc {
       _popDialog.fire(true);
       _navigateToVerify.fire(value.next);
     }).catchError((onError) {
-      _popDialog.fire(true);
       if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
     });
   }
@@ -255,6 +255,9 @@ class AuthenticationBloc {
 
   void searchCountry(String text) {
     // search = text;
+    if(text.trim().isEmpty || text.trim().length==0)
+      _filterListCountry.value = _countries.value;
+    else
     _filterListCountry.value = _countries.value
         .where((country) =>
             country.name!.toLowerCase().contains(text.toLowerCase()) ||

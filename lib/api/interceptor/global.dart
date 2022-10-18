@@ -22,7 +22,6 @@ class GlobalInterceptor extends Interceptor {
     options.headers['accept-language'] = languageCode;
     if (!kIsWeb) options.headers['user-agent'] = await DeviceUtils.makeUserAgent();
     options.headers['charset'] = 'UTF-8';
-    print('auth token $authToken');
     if (authToken != null && authToken.isNotEmpty) {
       options.headers['authorization'] = 'Bearer ${authToken}';
     }
@@ -38,7 +37,6 @@ class GlobalInterceptor extends Interceptor {
     options.headers['fcm-token'] = fcmToken;
     options.headers['is-emulator'] = (await DeviceUtils.isEmulator).toString();
     options.headers['time-zone'] = DateTimeUtils.timezoneOffset.toString();
-
     if (MemoryApp.needRoute) {
       options.headers['x-route'] = MemoryApp.forgetPass
           ? '${navigator.currentConfiguration?.path.substring(1)}/forget'

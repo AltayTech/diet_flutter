@@ -6,7 +6,7 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/advice/advice.dart';
-import 'package:behandam/screens/authentication/auth.dart';
+import 'package:behandam/screens/authentication/auth/auth.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';

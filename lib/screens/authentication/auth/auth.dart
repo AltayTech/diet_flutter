@@ -16,7 +16,7 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import 'authentication_bloc.dart';
+import '../authentication_bloc.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -41,12 +41,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     authBloc = AuthenticationBloc();
     getlistCountry();
 
-
     listenBloc();
   }
 
   void getlistCountry() async {
-    List<picker.Country> list=await picker.getCountries(context);
+    List<picker.Country> list = await picker.getCountries(context);
     authBloc.setListCountry(list);
     authBloc.fetchCountries();
   }
@@ -227,7 +226,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       Space(width: 2.w),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
-                        child: ImageUtils.fromLocal(_selectedLocation.flag!,
+                        child: ImageUtils.fromLocal(_selectedLocation.flag ?? '',
                             width: 6.w,
                             package: picker.countryCodePackageName,
                             height: 4.5.w,
@@ -272,9 +271,6 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
               ),
               style: TextStyle(
                   color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
-              onSubmitted: (String) {
-                click(_selectedLocation);
-              },
               onChanged: authBloc.searchCountry,
             ),
             Space(height: 2.h),
@@ -301,15 +297,16 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(2.0),
-                                      child: ImageUtils.fromLocal(
-                                          filterListCountry.data![index].flag!,
-                                          package: picker.countryCodePackageName,
-                                          width: 7.w,
-                                          fit: BoxFit.fill,
-                                          height: 5.w),
-                                    ),
+                                    if (filterListCountry.data![index].flag != null)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(2.0),
+                                        child: ImageUtils.fromLocal(
+                                            filterListCountry.data![index].flag!,
+                                            package: picker.countryCodePackageName,
+                                            width: 7.w,
+                                            fit: BoxFit.fill,
+                                            height: 5.w),
+                                      ),
                                     Space(width: 2.w),
                                     Text(
                                       '+${filterListCountry.data![index].code ?? ''}',

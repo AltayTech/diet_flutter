@@ -31,7 +31,9 @@ abstract class DeviceUtils {
   }
 
   static Future<String> get deviceId async {
-    String? androidId = await _initAndroidId();
+    String? androidId;
+    if(platform=='Android')
+      androidId= await _initAndroidId();
     return await _getDeviceInfo(
       (androidInfo) => androidId ?? androidInfo.id ?? '',
       (iosInfo) => iosInfo.identifierForVendor!,
