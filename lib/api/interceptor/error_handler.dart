@@ -94,14 +94,14 @@ class ErrorHandlerInterceptor extends Interceptor {
     try {
       if (message == null && err.response?.data != null && err.response?.data != '') {
         message = NetworkResponse<dynamic>.fromJson(
-                err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
+            err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
             .message;
       }
     } catch (e) {}
 
     try {
       message ??= NetworkResponse<dynamic>.fromJson(
-              err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
+          err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
           .error
           ?.message;
     } catch (e) {}
@@ -116,9 +116,9 @@ class ErrorHandlerInterceptor extends Interceptor {
 
   void _handleUnauthorizedError(DioError err) async {
     if (navigator.currentConfiguration!.path != Routes.login &&
-        navigator.currentConfiguration!.path != Routes.refundVerify &&
-        navigator.currentConfiguration!.path != Routes.authVerify &&
-        navigator.currentConfiguration!.path != Routes.passVerify) {
+    navigator.currentConfiguration!.path != Routes.refundVerify &&
+    navigator.currentConfiguration!.path != Routes.authVerify &&
+    navigator.currentConfiguration!.path != Routes.passVerify) {
       await AppSharedPreferences.logout();
       navigator.routeManager.clearAndPush(Uri(path: Routes.auth));
     } else {
