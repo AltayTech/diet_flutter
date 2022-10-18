@@ -34,22 +34,23 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     super.initState();
     bloc = SplashBloc();
     bloc.getPackageInfo();
-
-    getSliders();
+    bloc.getUser();
+    //getSliders();
 
     listenBloc();
   }
 
-  void getSliders() async {
-    isShowOnBoarding = await AppSharedPreferences.isShowOnBoarding;
+/*  void getSliders() async {
+
 
     if (isShowOnBoarding)
       bloc.getSlider();
     else
       bloc.getUser();
-  }
+  }*/
 
   void handleDeeplink() async {
+    isShowOnBoarding = await AppSharedPreferences.isShowOnBoarding;
     var fcm = await AppSharedPreferences.fcmToken;
     debugPrint('fcm is => ${fcm}');
     final deeplink = await AppSharedPreferences.deeplink;
@@ -64,7 +65,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
         VxNavigator.of(context).clearAndPushAll(
             [Uri.parse(Routes.shopHome), Uri.parse(navigator.currentConfiguration!.path)]);
       }
-    } else if (isShowOnBoarding && !MemoryApp.sliders.isEmpty) {
+    } else if (isShowOnBoarding) {
       VxNavigator.of(context).clearAndPush(Uri.parse(Routes.onboarding));
     } else
       VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));

@@ -46,8 +46,8 @@ class _SliderIntroducesState extends State<SliderIntroduces> {
                 child: Column(
                   children: [
                     Expanded(
-                      child: ImageUtils.fromNetwork(
-                        value.media!.originalUrl!,
+                      child: ImageUtils.fromLocal(
+                        value.media!,
                         fit: BoxFit.fitWidth,
                       ),
                     ),

@@ -47,7 +47,7 @@ class SliderIntroduces {
   @JsonKey(name: "color_code")
   String? colorCode;
   @JsonKey(name: "media")
-  Media? media;
+  String? media;
 
   SliderIntroduces();
 

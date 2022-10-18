@@ -41,9 +41,7 @@ SliderIntroduces _$SliderIntroducesFromJson(Map<String, dynamic> json) =>
       ..old_weight = (json['old_weight'] as num?)?.toDouble()
       ..new_weight = (json['new_weight'] as num?)?.toDouble()
       ..colorCode = json['color_code'] as String?
-      ..media = json['media'] == null
-          ? null
-          : Media.fromJson(json['media'] as Map<String, dynamic>);
+      ..media = json['media'] as String?;
 
 Map<String, dynamic> _$SliderIntroducesToJson(SliderIntroduces instance) =>
     <String, dynamic>{

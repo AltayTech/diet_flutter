@@ -1,18 +1,16 @@
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/slider/slider.dart' as sliderModel;
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/routes.dart';
-import 'package:behandam/screens/onboard/bloc.dart';
 import 'package:behandam/screens/onboard/slider_introduces.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/data/entity/slider/slider.dart' as sliderModel;
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class OnboardScreen extends StatefulWidget {
@@ -25,12 +23,11 @@ class OnboardScreen extends StatefulWidget {
 class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
   late List<PageViewModel> pages = [];
   int _index = 0;
-  List<sliderModel.Slider> slider = MemoryApp.sliders;
-  List<sliderModel.SliderIntroduces> sliderIntroduces = MemoryApp.sliderIntroduces;
 
   @override
   void initState() {
     super.initState();
+    if (pages.isEmpty) fillPage();
   }
 
   @override
@@ -66,7 +63,7 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
                     )),
               ],
             ),
-            SliderIntroduces(introduces: sliderIntroduces)
+            SliderIntroduces(introduces: MemoryApp.sliderIntroduces)
           ],
         ),
       ),
@@ -95,9 +92,8 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
+    if (pages.isEmpty) fillPage();
     // get data from splash for fast loading
-    if (pages.isEmpty) fillPage(slider);
 
     return IntroductionScreen(
       pages: pages,
@@ -117,7 +113,7 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
       back: CircleAvatar(
         child: Icon(
           Icons.arrow_forward,
-          color: slider[_index].colorCode!.hexToColor,
+          color: MemoryApp.sliders[_index].colorCode!.hexToColor,
         ),
         backgroundColor: Colors.white,
       ),
@@ -148,7 +144,116 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
     );
   }
 
-  void fillPage(List<sliderModel.Slider> sliders) {
+  void fillPage() {
+    MemoryApp.sliderIntroduces.add(sliderModel.SliderIntroduces()
+      ..media = 'assets/images/onboarding/r1.png'
+      ..fullName = 'سمیرا حاجیزاده'
+      ..description = '21 کیلوگرم کاهش وزن'
+      ..old_weight = 73.0
+      ..new_weight = 52.0);
+    MemoryApp.sliderIntroduces.add(sliderModel.SliderIntroduces()
+      ..media = 'assets/images/onboarding/r2.png'
+      ..title = 'سهیل آدینه'
+      ..description = '43 کیلوگرم کاهش وزن'
+      ..old_weight = 132.0
+      ..new_weight = 89.0);
+    MemoryApp.sliderIntroduces.add(sliderModel.SliderIntroduces()
+      ..media = 'assets/images/onboarding/r3.png'
+      ..title = 'گیتا محترمی'
+      ..description = '30 کیلوگرم کاهش وزن'
+      ..old_weight = 105.0
+      ..new_weight = 75.0);
+
+    pages.add(PageViewModel(
+      body:
+          "برنامه غذایی دکتر کرمانی بر اساس شرایط جسمانی خود شما تنظیم و همه شرایط شما در نظر گرفته میشه. حواسمون به عادت‌های غذایی شما هست!",
+      image: Center(
+          child: Padding(
+        padding: EdgeInsets.only(top: 10.h),
+        child: ImageUtils.fromLocal(
+          "assets/images/onboarding/1.png",
+          height: 40.h,
+          width: 70.w,
+        ),
+      )),
+      titleWidget: ImageUtils.fromLocal("assets/images/onboarding/t1.svg",
+          height: 10.h, width: 70.w, padding: EdgeInsets.only(top: 0, left: 10.w, right: 10.w)),
+      decoration: PageDecoration(
+          pageColor: Color(0xff5342C3),
+          imageFlex: 0,
+          bodyFlex: 1,
+          bodyPadding: EdgeInsets.only(top: 1.h, right: 5.w, left: 5.w),
+          imagePadding: EdgeInsets.zero,
+          titlePadding: EdgeInsets.zero,
+          titleTextStyle: typography.headline5!
+              .copyWith(color: Colors.white, fontFamily: 'yekan', fontWeight: FontWeight.bold),
+          bodyTextStyle: typography.caption!.copyWith(color: Colors.white, fontFamily: 'yekan')),
+    ));
+    pages.add(PageViewModel(
+      titleWidget: ImageUtils.fromLocal("assets/images/onboarding/t2.svg",
+          height: 15.h, width: 40.w, padding: EdgeInsets.only(left: 25.w, right: 25.w)),
+      body:
+          "با رعایت برنامه غذایی دکتر کرمانی و کمک پشتیبان‌های ما میتونی توی 3 ماه، 12 کیلو کاهش وزن داشته باشی. قهرمانای زیادی از پسش براومدن، پس تو میتونی...",
+      image: Center(
+          child: Padding(
+        padding: EdgeInsets.only(top: 10.h),
+        child: ImageUtils.fromLocal(
+          "assets/images/onboarding/2.png",
+          height: 35.h,
+          width: 70.w,
+        ),
+      )),
+      footer: InkWell(
+        onTap: () {
+          DialogUtils.showBottomSheetPageColor(
+              context: context, color: Color(0xff0E8562), child: showChampion());
+        },
+        child: ImageUtils.fromLocal(
+          "assets/images/onboarding/recorddar.png",
+          height: 10.h,
+          width: 60.w,
+        ),
+      ),
+      decoration: PageDecoration(
+          pageColor: Color(0xff33AD89),
+          imageFlex: 0,
+          bodyFlex: 1,
+          bodyPadding: EdgeInsets.only(top: 1.h, right: 5.w, left: 5.w),
+          imagePadding: EdgeInsets.only(top: 16),
+          titlePadding: EdgeInsets.zero,
+          titleTextStyle: typography.headline5!
+              .copyWith(color: Colors.white, fontFamily: 'yekan', fontWeight: FontWeight.bold),
+          bodyTextStyle: typography.caption!.copyWith(color: Colors.white, fontFamily: 'yekan')),
+    ));
+    pages.add(PageViewModel(
+      titleWidget: ImageUtils.fromLocal("assets/images/onboarding/t3.svg",
+          height: 15.h, width: 50.w, padding: EdgeInsets.only(left: 20.w, right: 20.w)),
+      body:
+          "می‌تونین غذاهایی که دوست ندارین یا بهشون حساسیت دارین رو از برنامه رژیمتون حذف کنین و یا وعده پیشنهادی در برنامه‌تون رو با غذایی که در منزل دارین عوض کنین.",
+      image: Center(
+          child: Padding(
+        padding: EdgeInsets.only(top: 15.h),
+        child: ImageUtils.fromLocal("assets/images/onboarding/3.png",
+            height: 30.h,
+            width: 70.w,
+            padding: EdgeInsets.only(left: 16, right: 16, bottom: 0, top: 0)),
+      )),
+      decoration: PageDecoration(
+          pageColor: Color(0xffFF5757),
+          imageFlex: 0,
+          bodyFlex: 1,
+          bodyPadding: EdgeInsets.only(top: 1.h, right: 5.w, left: 5.w),
+          imagePadding: EdgeInsets.zero,
+          titlePadding: EdgeInsets.zero,
+          titleTextStyle: typography.headline5!
+              .copyWith(color: Colors.white, fontFamily: 'yekan', fontWeight: FontWeight.bold),
+          bodyTextStyle: typography.caption!.copyWith(color: Colors.white, fontFamily: 'yekan')),
+    ));
+
+
+  }
+
+/* void fillPage(List<sliderModel.Slider> sliders) {
     sliders.forEach((slide) {
       pages.add(PageViewModel(
         title: slide.title!,
@@ -187,5 +292,5 @@ class _OnboardScreenState extends ResourcefulState<OnboardScreen> {
             bodyTextStyle: typography.caption!.copyWith(color: Colors.white, fontFamily: 'yekan')),
       ));
     });
-  }
+  }*/
 }
