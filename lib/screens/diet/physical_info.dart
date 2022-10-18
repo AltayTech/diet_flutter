@@ -45,6 +45,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
       isShowStepper = ModalRoute.of(context)!.settings.arguments as bool;
       bloc = PhysicalInfoBloc();
       bloc.physicalInfo();
+      initDatePicker();
       listenBloc();
     }
   }
@@ -292,10 +293,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                       function: (value) {
                         bloc.date = value;
                       },
-                      datetime:
-                          DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10))
-                              .toString()
-                              .substring(0, 10),
+                      datetime: bloc.date,
                       maxYear: Jalali.now().year,
                     ),
                   ),
@@ -383,6 +381,14 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
         ),
       ],
     );
+  }
+
+  void initDatePicker() {
+    Jalali jalali = Jalali.now();
+    Jalali j = Jalali(jalali.year - 10, jalali.month, jalali.day);
+    bloc.date = j.toDateTime()
+        .toString()
+        .substring(0, 10);
   }
 
   @override
