@@ -50,6 +50,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../api/api.dart';
 import '../data/entity/auth/country.dart';
@@ -161,7 +162,8 @@ abstract class Repository {
 
   NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness();
 
-  ImperativeNetworkResult sendSickness(List<ObstructiveDiseaseCategory> diseasesIds);
+  ImperativeNetworkResult sendSickness(
+      List<ObstructiveDiseaseCategory> diseasesIds, List<int> userObstructiveDiseaseSelected);
 
   NetworkResult<UserSicknessSpecial> getSicknessSpecial();
 
@@ -643,7 +645,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  ImperativeNetworkResult sendSickness(List<ObstructiveDiseaseCategory> sickness) {
+  ImperativeNetworkResult sendSickness(
+      List<ObstructiveDiseaseCategory> sickness, List<int> userObstructiveDiseaseSelected) {
     List<int> selectedItems = [];
     for (int i = 0; i < sickness.length; i++) {
       if (sickness[i].isSelected! && sickness[i].disease_id > 0) {
@@ -652,6 +655,14 @@ class _RepositoryImpl extends Repository {
       for (int j = 0; j < sickness[i].diseases!.length; j++) {
         if (sickness[i].diseases![j].isSelected!) {
           selectedItems.add(sickness[i].diseases![j].id!);
+        }
+      }
+    }
+    // check if userObstructiveDiseaseSelected not contain in selectedItems then add to selectedItems
+    if (userObstructiveDiseaseSelected.isNotEmpty) {
+      for (int i = 0; i < userObstructiveDiseaseSelected.length; i++) {
+        if (!selectedItems.contains(userObstructiveDiseaseSelected[i])) {
+          selectedItems.add(userObstructiveDiseaseSelected[i]);
         }
       }
     }

@@ -132,7 +132,7 @@ class SicknessBloc {
   }
 
   void sendSickness() {
-    _repository.sendSickness(_userCategoryDisease.value).then((value) {
+    _repository.sendSickness(_userCategoryDisease.value, []).then((value) {
       _navigateTo.fireMessage('/${value.next}');
     }).whenComplete(() => _popDialog.fire(true));
   }
