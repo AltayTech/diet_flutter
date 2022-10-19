@@ -137,7 +137,6 @@ flutter:
     - assets/images/shop/
     - assets/images/foodlist/pregnancy/
     - assets/images/foodlist/ramadan/
-    - assets/images/flags/
     - assets/images/onboarding/
     - assets/images/emoji/
   fonts:

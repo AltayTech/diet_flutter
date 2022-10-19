@@ -42,7 +42,6 @@ import 'package:behandam/screens/psychology/terms.dart';
 import 'package:behandam/screens/refund/refund.dart';
 import 'package:behandam/screens/refund/refund_record.dart';
 import 'package:behandam/screens/refund/refund_verify.dart';
-import 'package:behandam/screens/regime/activity/activity_level.dart';
 import 'package:behandam/screens/regime/block/block.dart';
 import 'package:behandam/screens/regime/block/block_week_pergnancy.dart';
 import 'package:behandam/screens/regime/body_status/body-status.dart';
@@ -54,11 +53,8 @@ import 'package:behandam/screens/regime/help_type.dart';
 import 'package:behandam/screens/regime/menu/menu_confirm.dart';
 import 'package:behandam/screens/regime/menu/menu_select.dart';
 import 'package:behandam/screens/regime/overview/overview.dart';
-import 'package:behandam/screens/regime/package/package_list.dart';
-import 'package:behandam/screens/regime/regime_type.dart';
 import 'package:behandam/screens/regime/sickness/other_sickness/other_sickness.dart';
 import 'package:behandam/screens/regime/sickness/sickness.dart';
-import 'package:behandam/screens/regime/sickness/sickness_special.dart';
 import 'package:behandam/screens/regime/state_of_body.dart';
 import 'package:behandam/screens/regime/target_weight/target_weight.dart';
 import 'package:behandam/screens/shop/category_page.dart';
@@ -170,7 +166,8 @@ class _AppState extends State<App> {
         builder: (BuildContext context, Widget? child) {
           // don't scale font when accessibility setting of device is changing font size
           return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), child: child ?? EmptyBox());
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: child ?? EmptyBox());
         },
         useInheritedMediaQuery: true,
         // generate title from localization instead of `MaterialApp.title` property
@@ -182,9 +179,10 @@ class _AppState extends State<App> {
         theme: ThemeData(
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              primary: AppColors.primary,
-              onPrimary: AppColors.onPrimary,
-              onSurface: AppColors.onSurface,
+              foregroundColor: AppColors.onPrimary,
+              backgroundColor: AppColors.primary,
+              disabledForegroundColor: AppColors.onSurface.withOpacity(0.38),
+              disabledBackgroundColor: AppColors.onSurface.withOpacity(0.12),
               shape: RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
             ),
           ),
@@ -193,8 +191,8 @@ class _AppState extends State<App> {
           scaffoldBackgroundColor: AppColors.scaffold,
           snackBarTheme: SnackBarThemeData(
               contentTextStyle: AppTypography(locale).caption.copyWith(
-                color: Colors.white,
-              ),
+                    color: Colors.white,
+                  ),
               behavior: SnackBarBehavior.floating,
               backgroundColor: Colors.black54,
               elevation: 0,
@@ -285,8 +283,7 @@ class MyObs extends VxObserver {
 final navigator = VxNavigator(
   routes: {
     Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
-    RegExp(r"\/(reg|renew)\/start"): (_, __) =>
-        MaterialPage(child: routePage(FlowStarterScreen())),
+    RegExp(r"\/(reg|renew)\/start"): (_, __) => MaterialPage(child: routePage(FlowStarterScreen())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
@@ -315,10 +312,9 @@ final navigator = VxNavigator(
     Routes.helpType: (_, param) =>
         MaterialPage(child: routePage(HelpTypeScreen()), arguments: param),
     Routes.newTicketMessage: (_, __) => MaterialPage(child: routePage(NewTicket())),
-    RegExp(r"\/support\/ticket"): (uri, __) =>
-        MaterialPage(
-            child: routePage(TicketDetails()),
-            arguments: int.parse(uri.queryParameters['ticketId'].toString())),
+    RegExp(r"\/support\/ticket"): (uri, __) => MaterialPage(
+        child: routePage(TicketDetails()),
+        arguments: int.parse(uri.queryParameters['ticketId'].toString())),
     Routes.calendar: (_, __) => MaterialPage(child: routePage(CalendarPage())),
     Routes.advice: (_, __) => MaterialPage(child: routePage(AdvicePage())),
     RegExp(r"\/(reg|renew|subscription)(\/payment\/card)"): (_, params) =>
@@ -401,7 +397,8 @@ final navigator = VxNavigator(
         MaterialPage(child: routePage(OtherSicknessScreen()), arguments: true),
     RegExp(r"\/(reg|renew)(\/diet\/preference)"): (_, __) =>
         MaterialPage(child: routePage(CompleteInformationScreen())),
-    RegExp(r"\/(reg|renew)(\/diet\/type)"): (_, __) => MaterialPage(child: routePage(BodyStatusScreen())),
+    RegExp(r"\/(reg|renew)(\/diet\/type)"): (_, __) =>
+        MaterialPage(child: routePage(BodyStatusScreen())),
     RegExp(r"\/(reg|renew)(\/package)"): (_, __) =>
         MaterialPage(child: routePage(BillPaymentNewScreen())),
     RegExp(r"\/(reg|renew)(\/report)"): (_, __) =>
@@ -411,59 +408,56 @@ final navigator = VxNavigator(
     RegExp(r"\/(reg|renew)(\/payment\/card\/reject)"): (_, __) =>
         MaterialPage(child: routePage(PaymentFailNewScreen())),
     RegExp(r"\/(reg|renew)(\/payment\/card\/wait)"): (_, __) =>
-        MaterialPage(child: routePage(PaymentWaitNewScreen ())),
+        MaterialPage(child: routePage(PaymentWaitNewScreen())),
   },
-  notFoundPage: (uri, params) =>
-      MaterialPage(
-        key: ValueKey('not-found-page'),
-        child: Builder(
-          builder: (context) =>
-              Scaffold(
-                body: WillPopScope(
-                  onWillPop: () {
-                    return Future.value(false);
-                  },
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Page ${uri.path} not found'),
-                        Space(
-                          height: 2.h,
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
-                            },
-                            child: Text('رفتن به صفحه اصلی'))
-                      ],
-                    ),
-                  ),
+  notFoundPage: (uri, params) => MaterialPage(
+    key: ValueKey('not-found-page'),
+    child: Builder(
+      builder: (context) => Scaffold(
+        body: WillPopScope(
+          onWillPop: () {
+            return Future.value(false);
+          },
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Page ${uri.path} not found'),
+                Space(
+                  height: 2.h,
                 ),
-              ),
+                TextButton(
+                    onPressed: () {
+                      navigator.routeManager.clearAndPush(Uri.parse(Routes.listView));
+                    },
+                    child: Text('رفتن به صفحه اصلی'))
+              ],
+            ),
+          ),
         ),
       ),
+    ),
+  ),
 );
 DateTime? currentBackPressTime;
 
-Widget routePage(Widget page) =>
-    Builder(
+Widget routePage(Widget page) => Builder(
       builder: (context) {
         return (Navigator.canPop(context))
             ? page
             : WillPopScope(
-          child: page,
-          onWillPop: () {
-            DateTime now = DateTime.now();
-            if (currentBackPressTime == null ||
-                now.difference(currentBackPressTime!) > Duration(seconds: 4)) {
-              currentBackPressTime = now;
-              Utils.getSnackbarMessage(context, context.intl.exitAppAlert);
-              return Future.value(false);
-            }
-            return Future.value(true);
-          },
-        );
+                child: page,
+                onWillPop: () {
+                  DateTime now = DateTime.now();
+                  if (currentBackPressTime == null ||
+                      now.difference(currentBackPressTime!) > Duration(seconds: 4)) {
+                    currentBackPressTime = now;
+                    Utils.getSnackbarMessage(context, context.intl.exitAppAlert);
+                    return Future.value(false);
+                  }
+                  return Future.value(true);
+                },
+              );
       },
     );

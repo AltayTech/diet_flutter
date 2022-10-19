@@ -1,7 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/utility/custom_ruler.dart';
 import 'package:behandam/screens/utility/ruler_header.dart';
-import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
@@ -54,10 +53,10 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
   Widget build(BuildContext context) {
     super.build(context);
     return Container(
-      height: 25.h,
+      height: 23.h,
       decoration: BoxDecoration(
         color: AppColors.box,
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: new BorderRadius.circular(20.0),
       ),
       padding: EdgeInsets.all(16),
       child: Column(
@@ -103,8 +102,8 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                                 color: widget.color,
                                 minValue: widget.min,
                                 maxValue: widget.max,
-                                value: widget.value ==
-                                        '${widget.rulerType == RulerType.Weight ? 0.0 : 0}'
+                                value: widget.value==
+                                    '${widget.rulerType == RulerType.Weight ? 0.0 : 0}'
                                     ? '${widget.rulerType == RulerType.Weight ? (widget.max - widget.min) / 2 : (widget.max - ((widget.max - widget.min) / 2)).round()}'
                                     : widget.value,
                                 onChanged: (val) {
@@ -167,9 +166,11 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                               counterStyle: TextStyle(fontSize: 0.sp),
                               contentPadding: EdgeInsets.only(left: 15, bottom: 16, right: 15),
                             ),
-                            style: typography.caption?.apply(),
+                            style: typography.caption?.apply(
+                              color: widget.color,
+                            ),
                             onSubmitted: (txt) {
-                              if (widget.max > int.parse(txt) && widget.min <= int.parse(txt)) {
+                              if (widget.max >= int.parse(txt) && widget.min <= int.parse(txt)) {
                                 if (widget.secondUnit != null)
                                   sliderKey.currentState!
                                       .scrollTo('$txt.${widget.value.toString().split('.')[1]}');
@@ -241,7 +242,7 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                         icon: Icon(Icons.add),
                         iconSize: 20,
                         onPressed: () {
-                          if (double.parse(widget.value.toString().split('.')[1]) < 900) {
+                          if (double.parse(widget.value.toString().split('.')[1]) < 900 && double.parse(widget.value.toString().split('.')[0])<widget.max) {
                             setState(() {
                               widget.value =
                                   '${(double.parse(widget.value) + 0.100).toStringAsFixed(1)}00';
@@ -273,7 +274,7 @@ class _CustomRulerState extends ResourcefulState<Ruler> {
                         icon: Icon(Icons.remove),
                         iconSize: 20,
                         onPressed: () {
-                          if (double.parse(widget.value.toString().split('.')[1]) > 0) {
+                          if (double.parse(widget.value.toString().split('.')[1]) > 0 ) {
                             setState(() {
                               widget.value =
                                   '${(double.parse(widget.value) - 0.100).toStringAsFixed(1)}${(double.parse(widget.value.toString().split('.')[1]) - 100 > 0) ? '00' : ''}';
@@ -339,75 +340,11 @@ class _SliderState extends State<Slider> {
   int indexSelected = 0;
   List _list = [];
   GlobalKey<ScrollSnapListState> sslKey = GlobalKey();
-  bool showProgress = true;
-  late Widget scrollList;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    init();
-  }
-
-  Future<Widget> snapScroll() async {
-    return ScrollSnapList(
-      itemSize: 5.w,
-      focusOnItemTap: true,
-      curve: Curves.ease,
-      key: sslKey,
-      initialIndex: indexSelected.toDouble(),
-      onItemFocus: (val) {
-        setState(() {
-          indexSelected = val;
-        });
-        widget.onChanged.call(_list[indexSelected]);
-      },
-      itemBuilder: (context, index) {
-        return SizedBox(
-          width: index % 10 == 0 ? 5.w : 5.w,
-          child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => sslKey.currentState!.focusToItem(index),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    color: index == indexSelected
-                        ? widget.color
-                        : Color.fromARGB(255, 174, 174, 174),
-                    width: 0.5.w,
-                    height: (index % 10 == 0 || index == indexSelected) ? 4.h : 2.h,
-                  ),
-                  Space(height: 1.w),
-                  FittedBox(
-                    child: Text(
-                      index % 10 == 0 ? _list[index].toString().split('.')[0] : ' ',
-                      style: _getTextStyle(context, index, widget.color),
-                    ),
-                  ),
-                  if (index == indexSelected) Spacer()
-                ],
-              )),
-        );
-      },
-      itemCount: _list.length,
-      reverse: false,
-    );
-  }
-
-  Future<void> init() async {
-    await initRuler().then((value) async {
-      await snapScroll().then((value) {
-        scrollList = value;
-        setState(() {
-          showProgress = false;
-        });
-      });
-    });
-  }
-
-  Future<void> initRuler() async {
     if (widget.type == RulerType.Weight) {
       for (int i = widget.minValue; i <= widget.maxValue; i++) {
         _list.add('$i.0');
@@ -425,9 +362,10 @@ class _SliderState extends State<Slider> {
     _list.forEach((element) {
       if (element == '${widget.value}') {
         indexSelected = index;
-
-        setState(() {
-          indexSelected;
+        Future.delayed(Duration(milliseconds: 500), () {
+          setState(() {
+            indexSelected;
+          });
         });
       }
       index++;
@@ -441,15 +379,55 @@ class _SliderState extends State<Slider> {
 
   @override
   build(BuildContext context) {
-    return showProgress
-        ? Progress()
-        : ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: ScrollConfiguration(
-              behavior: MyCustomScrollBehavior(),
-              child: scrollList,
-            ),
-          );
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: ScrollConfiguration(
+        behavior: MyCustomScrollBehavior(),
+        child: ScrollSnapList(
+          itemSize: 5.w,
+          focusOnItemTap: true,
+          curve: Curves.ease,
+          key: sslKey,
+          initialIndex: indexSelected.toDouble(),
+          onItemFocus: (val) {
+            setState(() {
+              indexSelected = val;
+            });
+            widget.onChanged.call(_list[indexSelected]);
+          },
+          itemBuilder: (context, index) {
+            return SizedBox(
+              width: index % 10 == 0 ? 5.w : 5.w,
+              child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () => sslKey.currentState!.focusToItem(index),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        color: index == indexSelected
+                            ? widget.color
+                            : Color.fromARGB(255, 174, 174, 174),
+                        width: 0.5.w,
+                        height: (index % 10 == 0 || index == indexSelected) ? 4.h : 2.h,
+                      ),
+                      Space(height: 1.w),
+                      FittedBox(
+                        child: Text(
+                          index % 10 == 0 ? _list[index].toString().split('.')[0] : ' ',
+                          style: _getTextStyle(context, index, widget.color),
+                        ),
+                      ),
+                      if (index == indexSelected) Spacer()
+                    ],
+                  )),
+            );
+          },
+          itemCount: _list.length,
+          reverse: false,
+        ),
+      ),
+    );
   }
 
   TextStyle _getDefaultTextStyle() {

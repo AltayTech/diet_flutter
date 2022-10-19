@@ -12,7 +12,6 @@ import 'package:shamsi_date/shamsi_date.dart';
 
 import 'entity/auth/country.dart';
 import 'entity/list_view/food_list.dart';
-import 'entity/user/user_information.dart';
 
 class MemoryApp {
   static String? token;
