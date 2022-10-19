@@ -123,7 +123,7 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
                           ],
                         ),
                       ))),
-                  SubmitButton(
+                  /*SubmitButton(
                       color: Colors.white,
                       textColor: AppColors.primary,
                       label: intl.editPhysicalInfo,
@@ -137,7 +137,7 @@ class _ConfirmBodyStateScreenState extends ResourcefulState<ConfirmBodyStateScre
                             regimeBloc.physicalInfoData();
                           }
                         });
-                      }),
+                      }),*/
                   Space(height: 2.h),
                   CustomButton.withIcon(AppColors.btnColor, intl.confirmContinue, Size(100.w, 6.h),
                       Icon(Icons.arrow_forward), () {
