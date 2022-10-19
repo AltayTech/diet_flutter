@@ -6,7 +6,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/double.dart';
 import 'package:behandam/screens/diet/bloc.dart';
 import 'package:behandam/screens/utility/custom_ruler.dart';
-import 'package:behandam/screens/utility/ruler_old.dart';
+import 'package:behandam/screens/utility/ruler.dart';
 import 'package:behandam/screens/utility/ruler_header.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/custom_date_picker.dart';

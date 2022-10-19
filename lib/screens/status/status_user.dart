@@ -43,19 +43,21 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   }
 
   Widget body() {
-    return Container(
-      width: 100.w,
-      height: 100.h,
-      child: Stack(
-        children: [
-          content(),
-          Positioned(
-            bottom: 0,
-            child: BottomNav(
-              currentTab: BottomNavItem.STATUS,
-            ),
-          )
-        ],
+    return SafeArea(
+      child: Container(
+        width: 100.w,
+        height: 100.h,
+        child: Stack(
+          children: [
+            content(),
+            Positioned(
+              bottom: 0,
+              child: BottomNav(
+                currentTab: BottomNavItem.STATUS,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

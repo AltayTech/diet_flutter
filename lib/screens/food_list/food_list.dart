@@ -81,6 +81,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
       builder: (_, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData && !snapshot.requireData)
           return Scaffold(
+            appBar: AppBar(elevation: 0, toolbarHeight: 0),
             body: SafeArea(
               child: Container(
                 height: 100.h,
