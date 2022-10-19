@@ -234,7 +234,7 @@ class BillPaymentBloc {
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
       }).whenComplete(() {
-        _popDialog.fire(false);
+        if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(false);
       });
     }
   }
@@ -258,7 +258,9 @@ class BillPaymentBloc {
       payment.packageId = packageItem!.id!;
       _repository.setPaymentTypeReservePackage(payment).then((value) {
         _navigateTo.fire(value);
-      }).whenComplete(() => _popDialog.fire(false));
+      }).whenComplete(() {
+        if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(false);
+      });
     }
   }
 
@@ -266,7 +268,9 @@ class BillPaymentBloc {
     _repository.latestInvoice().then((value) {
       _path = value.next ?? '';
       _onlinePayment.fire(value.data!.success);
-    }).whenComplete(() => _popDialog.fire(true));
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
+    });
   }
 
   void mustCheckLastInvoice() {

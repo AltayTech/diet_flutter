@@ -165,7 +165,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
       children: [
         Ruler(
           rulerType: RulerType.Weight,
-          value: physicalInfo.weight != null ? '${physicalInfo.weight!.toStringAsFixedWithoutZero(3)}' : '0.0',
+          value: physicalInfo.weight != null ? '${physicalInfo.weight!.toStringAsFixedWithOneZero(3)}' : '0.0',
           max: 210,
           min: 30,
           heading: intl.weight,

@@ -9,6 +9,7 @@ import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/stream.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -82,7 +83,9 @@ class BodyStatusBloc {
     _repository.setCondition(requestData).then((value) {
       debugPrint('bloc updateDietType ${value.data}');
       if (value.data != null) _navigateTo.fire(value.next);
-    }).whenComplete(() => _popDialog.fire(true));
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown)
+      _popDialog.fire(true);});
   }
 
   void nextStep() {

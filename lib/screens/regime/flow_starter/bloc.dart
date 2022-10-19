@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FlowStarterBloc {
@@ -28,7 +29,9 @@ class FlowStarterBloc {
   void nextStep() {
     _repository.nextStep().then((value) {
       _navigateTo.fire(value.next!);
-    }).whenComplete(() => _popDialog.fire(true));
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
+    });
   }
 
   void onRetryAfterNoInternet() {

@@ -6,6 +6,7 @@ import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/stream.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -134,13 +135,17 @@ class SicknessBloc {
   void sendSickness() {
     _repository.sendSickness(_userCategoryDisease.value, []).then((value) {
       _navigateTo.fireMessage('/${value.next}');
-    }).whenComplete(() => _popDialog.fire(true));
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
+    });
   }
 
   void sendSicknessSpecial() {
     _repository.sendSicknessSpecial(userSicknessSpecial!).then((value) {
       _navigateTo.fireMessage('/${value.next}');
-    }).whenComplete(() => _popDialog.fire(true));
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
+    });
   }
 
   void setRepository() {
