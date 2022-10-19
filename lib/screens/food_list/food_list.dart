@@ -11,8 +11,10 @@ import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -44,10 +46,11 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
     bloc.navigateTo.listen((event) {
       if (event.contains('payment/bill')) {
-        context.vxNav
-            .clearAndPush(Uri.parse('/${event.toString().split('/')[0]}${Routes.regimeType}'));
+        context.vxNav.clearAndPush(Uri.parse(
+            '/${event.toString().split('/')[0]}${Routes.regimeType}'));
       } else if (event.contains('survey')) {
-        context.vxNav.push(Uri.parse(Routes.surveyCallSupport), params: bloc.getSurveyData);
+        context.vxNav.push(Uri.parse(Routes.surveyCallSupport),
+            params: bloc.getSurveyData);
       } else if (!Routes.listView.contains(event)) {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       } else
@@ -81,7 +84,10 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
       builder: (_, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData && !snapshot.requireData)
           return Scaffold(
-            appBar: AppBar(elevation: 0, toolbarHeight: 0),
+            appBar: AppBar(
+                elevation: 0,
+                toolbarHeight: 0,
+                backgroundColor: AppColors.primary),
             body: SafeArea(
               child: Container(
                 height: 100.h,
@@ -111,16 +117,20 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 3.w),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16.0)),
                                   child: InkWell(
                                       onTap: () {
-                                        DialogUtils.showDialogProgress(context: context);
+                                        DialogUtils.showDialogProgress(
+                                            context: context);
                                         bloc.checkFitamin();
                                         // _launchURL(vitrinBloc.url);
                                       },
                                       child: ImageUtils.fromLocal(
                                         (MemoryApp.userInformation != null &&
-                                                MemoryApp.userInformation!.hasFitaminService
+                                                MemoryApp
+                                                    .userInformation!
+                                                    .hasFitaminService
                                                     .isNullOrFalse)
                                             ? 'assets/images/vitrin/fitamin_banner_02.png'
                                             : 'assets/images/vitrin/fitamin_banner.png',
@@ -156,7 +166,8 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
 
     bloc.onRetryLoadingPage();
     bloc.getFoodMenu(fillFood: true);
