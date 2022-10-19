@@ -3,9 +3,10 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/extensions/double.dart';
 import 'package:behandam/screens/diet/bloc.dart';
 import 'package:behandam/screens/utility/custom_ruler.dart';
-import 'package:behandam/screens/utility/ruler.dart';
+import 'package:behandam/screens/utility/ruler_old.dart';
 import 'package:behandam/screens/utility/ruler_header.dart';
 import 'package:behandam/screens/widget/checkbox.dart';
 import 'package:behandam/screens/widget/custom_date_picker.dart';
@@ -35,6 +36,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
   late PhysicalInfoBloc bloc;
   bool isInit = false;
   bool isShowStepper = true;
+  int maxYear = 1391;
 
   @override
   void didChangeDependencies() {
@@ -163,7 +165,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
       children: [
         Ruler(
           rulerType: RulerType.Weight,
-          value: physicalInfo.weight != null ? '${physicalInfo.weight!.toStringAsFixed(3)}' : '0.0',
+          value: physicalInfo.weight != null ? '${physicalInfo.weight!.toStringAsFixedWithoutZero(3)}' : '0.0',
           max: 210,
           min: 30,
           heading: intl.weight,
@@ -294,7 +296,7 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                         bloc.date = value;
                       },
                       datetime: bloc.date,
-                      maxYear: Jalali.now().year,
+                      maxYear: maxYear,
                     ),
                   ),
                 ),
@@ -386,6 +388,9 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
   void initDatePicker() {
     Jalali jalali = Jalali.now();
     Jalali j = Jalali(jalali.year - 10, jalali.month, jalali.day);
+
+    maxYear = j.year;
+
     bloc.date = j.toDateTime()
         .toString()
         .substring(0, 10);

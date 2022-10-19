@@ -4,4 +4,10 @@ extension DoubleExtensions on double {
     RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
     return string.replaceAll(regex, '');
   }
+
+  String toStringAsFixedWithoutZero(int fix) {
+    String string = this.toStringAsFixed(fix);
+    RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+    return string.replaceAll(regex, '');
+  }
 }
