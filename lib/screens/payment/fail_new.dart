@@ -57,7 +57,8 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
                           if (type.data != null)
                             return Column(children: [
                               Expanded(child: content(type.data!)),
-                              if (!navigator.currentConfiguration!.path.contains("subscription"))
+                              if (!navigator.currentConfiguration!.path
+                                  .contains("subscription"))
                                 BottomNav(
                                     currentTab: type == ProductType.SHOP
                                         ? BottomNavItem.SHOP
@@ -82,7 +83,8 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
       width: double.infinity,
       height: 97.h,
       decoration: BoxDecoration(
-          image: ImageUtils.decorationImage("assets/images/background.png", fit: BoxFit.fill)),
+          image: ImageUtils.decorationImage("assets/images/background.png",
+              fit: BoxFit.fill)),
       child: TouchMouseScrollable(
         child: SingleChildScrollView(
           child: Container(
@@ -130,7 +132,10 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
                         right: 10.w,
                       ),
                       Positioned(
-                        child: Text(MemoryApp.userInformation!=null ?MemoryApp.userInformation!.mobile! : '********',
+                        child: Text(
+                            MemoryApp.userInformation != null
+                                ? MemoryApp.userInformation!.mobile!
+                                : '********',
                             textAlign: TextAlign.center,
                             softWrap: true,
                             style: Theme.of(context)
@@ -148,21 +153,25 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
                             style: Theme.of(context)
                                 .textTheme
                                 .caption!
-                                .copyWith(fontWeight: FontWeight.w400, color: Color(0xff959499))),
+                                .copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff959499))),
                         top: 15.h,
                         left: 10.w,
                         right: 10.w,
                       ),
                       Positioned(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 8,right: 8),
+                          padding: const EdgeInsets.only(left: 8, right: 8),
                           child: Text(bloc.invoice!.note!,
                               textAlign: TextAlign.center,
                               softWrap: true,
                               style: Theme.of(context)
                                   .textTheme
                                   .caption!
-                                  .copyWith(fontWeight: FontWeight.w500,fontSize: 10.sp)),
+                                  .copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 10.sp)),
                         ),
                         top: 18.h,
                         left: 10.w,
@@ -171,7 +180,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
                     ],
                   ),
                 Space(height: 3.h),
-               buttonRetryPayment() ,
+                buttonRetryPayment(),
                 Space(height: 3.h),
               ],
             ),
@@ -180,8 +189,6 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
       ),
     );
   }
-
-
 
   Widget titlePaymentFail() {
     return Column(
@@ -192,10 +199,13 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
           intl.paymentFail,
           textAlign: TextAlign.center,
           softWrap: true,
-          style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.red),
+          style: Theme.of(context)
+              .textTheme
+              .headline6!
+              .copyWith(color: Colors.red),
         ),
         Text(
-         intl.failForAdmin,
+          intl.failForAdmin,
           textAlign: TextAlign.center,
           softWrap: true,
           style: Theme.of(context).textTheme.caption,
@@ -213,13 +223,21 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
             MemoryApp.analytics!.logEvent(name: "total_payment_fail");
             context.vxNav.pop();
           } else {
-            context.vxNav.push(Uri.parse(bloc.path!));
+            if (navigator.currentConfiguration!.path.contains(Routes.package))
+              VxNavigator.of(context).clearAndPushAll(
+                  [Uri.parse(Routes.start), Uri.parse(Routes.package)]);
+            else
+              VxNavigator.of(context).clearAndPushAll(
+                  [Uri.parse(Routes.start), Uri.parse(Routes.renewPackage)]);
           }
         },
         child: Text(
           intl.backToPayment,
           textAlign: TextAlign.start,
-          style: Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary),
+          style: Theme.of(context)
+              .textTheme
+              .button!
+              .copyWith(color: AppColors.primary),
         ),
         style: ButtonStyle(
           fixedSize: MaterialStateProperty.all(Size(80.w, 8.h)),
@@ -248,7 +266,8 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
 
     bloc.onRetryLoadingPage();
     bloc.sendRequest();
@@ -256,7 +275,8 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
 
     bloc.onRetryAfterNoInternet();
   }

@@ -45,9 +45,12 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
       bloc = PaymentBloc();
 
       var arg = ModalRoute.of(context)!.settings.arguments as Map;
-      if (!navigator.currentConfiguration!.path.contains('subscription'))
+      if (!navigator.currentConfiguration!.path.contains('subscription')) {
         bloc.setServices = arg['services'] as List<ServicePackage>;
-      bloc.setPackage = arg['package'] as Package;
+        bloc.setPackage = arg['package'] as Package;
+      } else {
+        bloc.setPackageItem = arg['package'] as PackageItem;
+      }
       bloc.discountCode = arg['discountCode'] as String?;
 
       if (bloc.discountCode != null) bloc.changeUseDiscount();
@@ -163,11 +166,23 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   @override
   void onRetryAfterNoInternet() {
     // TODO: implement onRetryAfterNoInternet
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
+    if (navigator.currentConfiguration!.path.contains('subscription')) {
+      bloc.userPaymentCardToCardSubscription(bloc.invoice!);
+    } else {
+      bloc.newPayment(bloc.invoice!);
+    }
   }
 
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
+    bloc.getBankAccountActiveCard();
   }
 
   @override

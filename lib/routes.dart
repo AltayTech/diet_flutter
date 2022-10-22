@@ -35,6 +35,7 @@ abstract class Routes {
   static const special_sickness = '/reg/special';
   static const advice = '/list/notice';
   static const package = '/reg/package';
+  static const renewPackage = '/renew/package';
   static const paymentBill = '/payment/bill';
   static const cardToCard = '/reg/payment/card';
   static const resetPasswordProfile = '/resetPasswordProfile';

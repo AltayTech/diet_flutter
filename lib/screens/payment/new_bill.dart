@@ -346,16 +346,17 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog && ModalRoute.of(context)!.isCurrent) {
+      DialogUtils.showDialogProgress(context: context);
 
-    bloc.onRetryLoadingPage();
-    bloc.getPackagePayment();
+      bloc.onRetryLoadingPage();
+      bloc.getPackagePayment();
+    }
   }
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
+    if (!MemoryApp.isShowDialog && ModalRoute.of(context)!.isCurrent)
     bloc.onRetryAfterNoInternet();
   }
 

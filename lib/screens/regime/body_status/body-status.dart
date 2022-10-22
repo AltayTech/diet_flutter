@@ -672,7 +672,9 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   void sendRequest() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog && ModalRoute.of(context)!.isCurrent) {
+      DialogUtils.showDialogProgress(context: context);
+    }
     if (bloc.getDietSelected != null)
       bloc.updateDietType();
     else
@@ -681,16 +683,20 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog && ModalRoute.of(context)!.isCurrent) {
+      DialogUtils.showDialogProgress(context: context);
 
-    bloc.onRetryLoadingPage();
+      bloc.onRetryLoadingPage();
+    }
   }
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog && ModalRoute.of(context)!.isCurrent) {
+      DialogUtils.showDialogProgress(context: context);
 
-    bloc.onRetryAfterNoInternet();
-    sendRequest();
+      bloc.onRetryAfterNoInternet();
+      sendRequest();
+    }
   }
 }
