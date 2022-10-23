@@ -249,7 +249,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                               itemExtent: 15.5.h,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
-                                ServicePackage package = bloc.services[index];
+                                ServicePackage package = bloc.servicesFilteredByPackage[index];
                                 return Padding(
                                   padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
                                   child: PackageWidget.service(
