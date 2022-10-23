@@ -439,6 +439,7 @@ final navigator = VxNavigator(
       ),
     ),
   ),
+
 );
 DateTime? currentBackPressTime;
 
