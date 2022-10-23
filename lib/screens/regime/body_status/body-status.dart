@@ -51,7 +51,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
 
   void listenBloc() {
     bloc.navigateToVerify.listen((event) {
-      if (videoController != null && videoController!.isPlaying) videoController!.pause();
+      if (videoController != null && videoController!.isPlaying)
+        videoController!.pause();
       MemoryApp.page++;
       context.vxNav.push(Uri.parse('/${event}'));
     });
@@ -103,14 +104,17 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       snapshot.data!.isPregnancy == 1
                           ? showWeightBmi(
                               snapshot.data!.daysTillChildbirth,
-                              snapshot.data!.pregnancyWeightDiff!.toStringAsFixed(1),
-                              snapshot.data!.pregnancyWeight!.toStringAsFixed(1),
+                              snapshot.data!.pregnancyWeightDiff!
+                                  .toStringAsFixed(1),
+                              snapshot.data!.pregnancyWeight!
+                                  .toStringAsFixed(1),
                               snapshot.data!.isPregnancy,
                               getBmiStatus(snapshot.data!.bmiStatus),
                               snapshot.data!.bmi!.toStringAsFixed(0))
                           : showWeightBmi(
                               snapshot.data!.dietDays,
-                              snapshot.data!.weightDifference!.toStringAsFixed(1),
+                              snapshot.data!.weightDifference!
+                                  .toStringAsFixed(1),
                               snapshot.data!.normalWeight!.toStringAsFixed(1),
                               snapshot.data!.isPregnancy,
                               getBmiStatus(snapshot.data!.bmiStatus),
@@ -122,7 +126,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                           stream: bloc.template,
                           builder: (context, template) {
                             if (template.hasData) {
-                              if (template.data != null && template.data!.data != null) {
+                              if (template.data != null &&
+                                  template.data!.data != null) {
                                 return helpDietSelect(template.requireData!);
                               } else {
                                 return Space();
@@ -134,8 +139,11 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       Space(height: 2.h),
                       Padding(
                         padding: const EdgeInsets.only(right: 32, left: 32),
-                        child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
-                            Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
+                        child: CustomButton.withIcon(
+                            AppColors.btnColor,
+                            intl.nextStage,
+                            Size(100.w, 6.h),
+                            Icon(Icons.arrow_forward), () {
                           sendRequest();
                         }),
                       ),
@@ -145,7 +153,9 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 ),
               );
             } else
-              return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+              return Center(
+                  child:
+                      Container(width: 15.w, height: 15.w, child: Progress()));
           }),
     );
   }
@@ -175,8 +185,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     );
   }
 
-  Widget showWeightBmi(int? dietDays, String? weightDiff, String? weight, int? pregnancy,
-      BmiStatus? bmiStatus, String? bmi) {
+  Widget showWeightBmi(int? dietDays, String? weightDiff, String? weight,
+      int? pregnancy, BmiStatus? bmiStatus, String? bmi) {
     return Container(
       height: 270,
       padding: EdgeInsets.only(right: 32, left: 32),
@@ -192,13 +202,28 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       children: [
                         if (pregnancy == 0)
                           bmiStatus!.status == 0
-                              ? colorfulContainer('$weightDiff', bmiStatus, intl.lakeWeight,
-                                  intl.kiloGr, '', AppColors.purpleRuler)
-                              : colorfulContainer('$weightDiff', bmiStatus, intl.extraWeight,
-                                  intl.kiloGr, '', AppColors.purpleRuler),
+                              ? colorfulContainer(
+                                  '$weightDiff',
+                                  bmiStatus,
+                                  intl.lakeWeight,
+                                  intl.kiloGr,
+                                  '',
+                                  AppColors.purpleRuler)
+                              : colorfulContainer(
+                                  '$weightDiff',
+                                  bmiStatus,
+                                  intl.extraWeight,
+                                  intl.kiloGr,
+                                  '',
+                                  AppColors.purpleRuler),
                         if (pregnancy == 1)
-                          colorfulContainer('$weightDiff', bmiStatus!, intl.getWeight, intl.kiloGr,
-                              '', AppColors.pregnantPink),
+                          colorfulContainer(
+                              '$weightDiff',
+                              bmiStatus!,
+                              intl.getWeight,
+                              intl.kiloGr,
+                              '',
+                              AppColors.pregnantPink),
                         Space(height: 1.h),
                         Expanded(
                           child: Container(
@@ -214,17 +239,18 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(intl.bmi,
-                                      style: typography.caption!
-                                          .copyWith(color: Colors.grey.withOpacity(0.9))),
+                                      style: typography.caption!.copyWith(
+                                          color: Colors.grey.withOpacity(0.9))),
                                   Text('BMI',
-                                      style: typography.caption!
-                                          .copyWith(color: Colors.grey.withOpacity(0.9))),
+                                      style: typography.caption!.copyWith(
+                                          color: Colors.grey.withOpacity(0.9))),
                                   Expanded(
                                     child: Container(
                                       width: 30.w,
                                       padding: EdgeInsets.only(top: 1.1.h),
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
                                           color: Colors.white),
                                       child: Center(
                                           child: Text(
@@ -258,12 +284,12 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('BMI',
-                                        style:
-                                            typography.caption!.copyWith(color: AppColors.redBar)),
+                                        style: typography.caption!
+                                            .copyWith(color: AppColors.redBar)),
                                     Space(width: 1.w),
                                     Text(intl.what,
-                                        style:
-                                            typography.caption!.copyWith(color: AppColors.redBar)),
+                                        style: typography.caption!
+                                            .copyWith(color: AppColors.redBar)),
                                   ],
                                 ),
                               ),
@@ -288,10 +314,11 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     );
   }
 
-  Widget colorfulContainer(
-      String weight, BmiStatus bmiStatus, String txt2, String txt3, String txt4, Color color) {
+  Widget colorfulContainer(String weight, BmiStatus bmiStatus, String txt2,
+      String txt3, String txt4, Color color) {
     return Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: bmiStatus.color),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: bmiStatus.color),
         child: Row(children: [
           Expanded(
             child: Padding(
@@ -301,19 +328,22 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(bmiStatus.text,
-                      style: typography.caption!.copyWith(fontSize: 10.sp, color: Colors.white)),
+                      style: typography.caption!
+                          .copyWith(fontSize: 10.sp, color: Colors.white)),
                   bmiStatus.status! != 1
                       ? RichText(
                           textDirection: context.textDirectionOfLocale,
                           text: TextSpan(
                             text: weight,
                             style: typography.caption!.copyWith(
-                                fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w700),
+                                fontSize: 16.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
                             children: <TextSpan>[
                               TextSpan(
                                   text: ' ',
-                                  style: typography.caption!
-                                      .copyWith(fontSize: 12.sp, color: Colors.white)),
+                                  style: typography.caption!.copyWith(
+                                      fontSize: 12.sp, color: Colors.white)),
                               TextSpan(
                                   text: txt3,
                                   style: typography.caption!.copyWith(
@@ -326,7 +356,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                       : Container(),
                   if (txt4.length > 0)
                     Text(txt4,
-                        style: typography.caption!.copyWith(fontSize: 10.sp, color: Colors.white))
+                        style: typography.caption!
+                            .copyWith(fontSize: 10.sp, color: Colors.white))
                 ],
               ),
             ),
@@ -392,7 +423,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: AppColors.dietTypeBoxColor, width: 1),
+                      border: Border.all(
+                          color: AppColors.dietTypeBoxColor, width: 1),
                       boxShadow: [
                         BoxShadow(
                             color: AppColors.priceGreenColor.withOpacity(0.08),
@@ -406,8 +438,11 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                     children: [
                       Positioned(
                         top: 2,
-                        child: ImageUtils.fromLocal("assets/images/diet/spoon_fork.svg",
-                            width: 22.w, height: 22.w, fit: BoxFit.contain),
+                        child: ImageUtils.fromLocal(
+                            "assets/images/diet/spoon_fork.svg",
+                            width: 22.w,
+                            height: 22.w,
+                            fit: BoxFit.contain),
                       ),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -433,8 +468,10 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                     return Wrap(
                                       spacing: 5.w,
                                       runSpacing: 3.h,
-                                      textDirection: context.textDirectionOfLocale,
-                                      crossAxisAlignment: WrapCrossAlignment.center,
+                                      textDirection:
+                                          context.textDirectionOfLocale,
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
                                       alignment: WrapAlignment.center,
                                       runAlignment: WrapAlignment.start,
                                       children: [
@@ -447,16 +484,23 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                                   child: CheckBoxApp(
                                                       maxHeight: 8.h,
                                                       titleFontSize: 12.sp,
-                                                      rowMainAxisAlignment: MainAxisAlignment.start,
+                                                      rowMainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
                                                       isBorder: true,
-                                                      iconSelectType: IconSelectType.Radio,
+                                                      iconSelectType:
+                                                          IconSelectType.Radio,
                                                       onTap: () {
                                                         bloc.setDietSelected =
-                                                            dietTypeList.data![index];
+                                                            dietTypeList
+                                                                .data![index];
                                                       },
-                                                      title: dietTypeList.data![index].title!,
-                                                      isSelected: dietSelected.data?.id ==
-                                                          dietTypeList.data![index].id),
+                                                      title: dietTypeList
+                                                          .data![index].title!,
+                                                      isSelected: dietSelected
+                                                              .data?.id ==
+                                                          dietTypeList
+                                                              .data![index].id),
                                                 )))
                                             .values
                                             .toList()
@@ -467,18 +511,20 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                                         text: TextSpan(
                                             text: intl.dietSuitableYou,
                                             style: typography.caption!.copyWith(
-                                                fontWeight: FontWeight.w400, letterSpacing: -1.5),
+                                                fontWeight: FontWeight.w400,
+                                                letterSpacing: -1.5),
                                             children: [
                                           TextSpan(
                                             text: dietTypeList.data![0].title,
                                             style: typography.caption!.copyWith(
                                                 fontWeight: FontWeight.w700,
-                                                decoration: TextDecoration.underline),
+                                                decoration:
+                                                    TextDecoration.underline),
                                           ),
                                           TextSpan(
                                             text: intl.continueDietSuitableYou,
-                                            style: typography.caption!
-                                                .copyWith(fontWeight: FontWeight.w400),
+                                            style: typography.caption!.copyWith(
+                                                fontWeight: FontWeight.w400),
                                           ),
                                         ]));
                                 }),
@@ -522,7 +568,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
         },
       );
     } else {
-      if (templateItem.media!.isNotEmpty && templateItem.media![0].mediumType == MediumType.file) {
+      if (templateItem.media!.isNotEmpty &&
+          templateItem.media![0].mediumType == MediumType.file) {
         templateItem.media![0].progress = false;
         String? name = templateItem.media![0].fileName;
       }
@@ -530,7 +577,8 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
       switch (mediumType) {
         case MediumType.IMAGE:
           return GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) {
+            onTap: () =>
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
               return DetailScreen(templateItem.media![0].mediumUrls!.url);
             })),
             child: Container(
@@ -540,13 +588,14 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
                 child: Image.network(
                   templateItem.media![0].mediumUrls!.url!,
                   fit: BoxFit.fill,
-                  loadingBuilder:
-                      (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
                     if (loadingProgress == null) return child;
                     return Center(
                       child: CircularProgressIndicator(
                         backgroundColor: AppColors.accentColor,
-                        valueColor: new AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        valueColor: new AlwaysStoppedAnimation<Color>(
+                            AppColors.primary),
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
                                 loadingProgress.expectedTotalBytes!
@@ -672,7 +721,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
   }
 
   void sendRequest() {
-    if (!MemoryApp.isShowDialog && ModalRoute.of(context)!.isCurrent) {
+    if (!MemoryApp.isShowDialog) {
       DialogUtils.showDialogProgress(context: context);
     }
     if (bloc.getDietSelected != null)
@@ -683,20 +732,18 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog && ModalRoute.of(context)!.isCurrent) {
+    if (!MemoryApp.isShowDialog)
       DialogUtils.showDialogProgress(context: context);
 
-      bloc.onRetryLoadingPage();
-    }
+    bloc.onRetryLoadingPage();
   }
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog && ModalRoute.of(context)!.isCurrent) {
+    if (!MemoryApp.isShowDialog)
       DialogUtils.showDialogProgress(context: context);
 
-      bloc.onRetryAfterNoInternet();
-      sendRequest();
-    }
+    bloc.onRetryAfterNoInternet();
+    sendRequest();
   }
 }

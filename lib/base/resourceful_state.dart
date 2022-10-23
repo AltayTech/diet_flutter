@@ -7,8 +7,9 @@ import '../entry_point.dart';
 
 export 'package:behandam/extensions/build_context.dart';
 export 'package:behandam/widget/sizer/sizer.dart';
+import 'package:need_resume/need_resume.dart';
 
-abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
+abstract class ResourcefulState<T extends StatefulWidget> extends ResumableState<T>
     with RouteAware, DioErrorListener {
   late AppLocalizations intl;
   late TextTheme typography;
@@ -47,8 +48,22 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   @override
   void initState() {
     _printEvent('initState()');
-    dioErrorObserver.subscribe(this);
     super.initState();
+  }
+
+
+  @override
+  void onReady() {
+    super.onReady();
+
+    final route = ModalRoute.of(context);
+
+    if (!route!.isCurrent)
+      dioErrorObserver.unsubscribe(this);
+    else
+      dioErrorObserver.subscribe(this);
+
+    _printEvent('onReady()');
   }
 
   @override
@@ -60,6 +75,17 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
       // if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.subscribe(this, route);
     }
     super.didChangeDependencies();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    _printEvent('didChangeAppLifecycleState()');
+    if (state == AppLifecycleState.resumed) {
+      if (mounted) {
+
+      }
+    }
   }
 
   @override
@@ -79,6 +105,8 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   void onReady() {
     _printEvent('onReady()');
   }*/
+
+
 
   @override
   @mustCallSuper
