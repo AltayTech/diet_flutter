@@ -38,12 +38,8 @@ class GlobalInterceptor extends Interceptor {
     options.headers['is-emulator'] = (await DeviceUtils.isEmulator).toString();
     options.headers['time-zone'] = DateTimeUtils.timezoneOffset.toString();
     if (MemoryApp.needRoute) {
-      options.headers['x-route'] = MemoryApp.forgetPass
-          ? '${navigator.currentConfiguration?.path.substring(1)}/forget'
-          : navigator.currentConfiguration?.path.substring(1);
+      options.headers['x-route'] = navigator.currentConfiguration?.path.substring(1);
     }
-    print(
-        'global/ ${MemoryApp.forgetPass} / ${navigator.currentConfiguration?.path} / ${MemoryApp.token != null} / ${MemoryApp.token != 'null'}');
     super.onRequest(options, handler);
   }
 }

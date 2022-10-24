@@ -134,9 +134,9 @@ class _RestClient implements RestClient {
   Future<NetworkResponse<VerifyOutput>> otpLogin(verificationCode) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(verificationCode.toJson());
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    _data.addAll(verificationCode.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<VerifyOutput>>(Options(
       method: 'POST',

@@ -85,7 +85,7 @@ abstract class RestClient {
       @Path('mobile') String? mobile, @Path('channel') String? channel);
 
   @POST("/otp/login")
-  NetworkResult<VerifyOutput> otpLogin(@Queries() VerificationCode verificationCode);
+  NetworkResult<VerifyOutput> otpLogin(@Body() VerificationCode verificationCode);
 
   @PATCH("/reset-password")
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);

@@ -58,7 +58,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
         if (channelSendCode == ChannelSendCode.WHATSAPP) {
           VxNavigator.of(context).push(
               Uri(
-                path: '${Routes.passVerify}',
+                path: '${Routes.authVerify}',
               ),
               params: {"mobile": args['mobile'], 'country': args['country']});
           IntentUtils.openAppIntent(Uri.encodeFull(
@@ -67,7 +67,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
         } else if (event.toString().contains(Routes.auth.substring(1)))
           VxNavigator.of(context).push(
               Uri(
-                path: '${Routes.passVerify}',
+                path: '${Routes.authVerify}',
               ),
               params: {"mobile": args['mobile'], 'country': args['country']});
         else
