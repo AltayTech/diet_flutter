@@ -69,7 +69,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
 
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
-      debugPrint('listen online payment ${navigator.currentConfiguration?.path}');
+      debugPrint(
+          'listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event) {
         MemoryApp.isShowDialog = false;
         if (navigator.currentConfiguration!.path.contains('subscription')) {
@@ -153,7 +154,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                   return TouchMouseScrollable(
                     child: SingleChildScrollView(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.w, vertical: 2.h),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +169,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                             Space(height: 4.h),
                             Text(
                               intl.enterYourPackage,
-                              style: typography.headline5!.copyWith(fontSize: 14.sp),
+                              style: typography.headline5!
+                                  .copyWith(fontSize: 14.sp),
                             ),
                             Text(
                               intl.enterYourPackageDescription,
@@ -231,7 +234,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                   stream: bloc.selectedPackage,
                   builder: (context, selectedPackage) {
                     if (selectedPackage.hasData) {
-                      bloc.getServicesFilteredByPackage(selectedPackage.requireData);
+                      bloc.getServicesFilteredByPackage(
+                          selectedPackage.requireData);
                       if (bloc.servicesFilteredByPackage.length > 0) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +244,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                             Space(height: 2.h),
                             Text(
                               intl.weAreServiceMore,
-                              style: typography.headline5!.copyWith(fontSize: 12.sp),
+                              style: typography.headline5!
+                                  .copyWith(fontSize: 12.sp),
                             ),
                             Space(height: 2.h),
                             ListView.builder(
@@ -249,9 +254,11 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                               itemExtent: 15.5.h,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
-                                ServicePackage package = bloc.servicesFilteredByPackage[index];
+                                ServicePackage package =
+                                    bloc.servicesFilteredByPackage[index];
                                 return Padding(
-                                  padding: EdgeInsets.only(top: (index > 0) ? 8.0 : 0.0),
+                                  padding: EdgeInsets.only(
+                                      top: (index > 0) ? 8.0 : 0.0),
                                   child: PackageWidget.service(
                                     onTap: () {
                                       bloc.setServiceSelected(package);
@@ -260,7 +267,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                                     isSelected: package.isSelected ?? false,
                                     description: package.description ?? '',
                                     price: '${package.price?.price ?? 0}',
-                                    finalPrice: '${package.price?.finalPrice ?? 0}',
+                                    finalPrice:
+                                        '${package.price?.finalPrice ?? 0}',
                                     maxHeight: 15.5.h,
                                     isOurSuggestion: false,
                                     isBorder: true,
@@ -302,7 +310,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                         if (checkedRules.requireData) {
                           next();
                         } else {
-                          Utils.getSnackbarMessage(context, intl.checkTermsAndConditions);
+                          Utils.getSnackbarMessage(
+                              context, intl.checkTermsAndConditions);
                         }
                       })
                 ],
@@ -346,7 +355,8 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
 
     bloc.onRetryLoadingPage();
     bloc.getPackagePayment();
@@ -354,8 +364,6 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     bloc.onRetryAfterNoInternet();
   }
 

@@ -102,7 +102,8 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                           ),
                         Text(
                           intl.enterYourState,
-                          style: typography.subtitle2!.copyWith(fontWeight: FontWeight.bold),
+                          style: typography.subtitle2!
+                              .copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
                           intl.enterYourStateDescription,
@@ -118,14 +119,16 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                                 return Column(
                                   children: [
                                     rulers(physicalInfo.requireData),
-                                    if (!navigator.currentConfiguration!.path.contains('renew'))
+                                    if (!navigator.currentConfiguration!.path
+                                        .contains('renew'))
                                       Column(
                                         children: [
                                           Space(height: 2.h),
                                           birthDayBox(physicalInfo.requireData),
                                           Space(height: 2.h),
                                           genderBox(
-                                              physicalInfo.requireData.gender ?? GenderType.Female),
+                                              physicalInfo.requireData.gender ??
+                                                  GenderType.Female),
                                         ],
                                       ),
                                     Space(
@@ -141,16 +144,16 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                   ),
                 )),
             Center(
-                child: CustomButton.withIcon(
-                    AppColors.btnColor, intl.nextStage, Size(100.w, 6.h), Icon(Icons.arrow_forward),
-                    () {
+                child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
+                    Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
               if (bloc.physicalInfoValue.weight == null ||
                   bloc.physicalInfoValue.height == null ||
                   bloc.physicalInfoValue.birthDate == null) {
                 Utils.getSnackbarMessage(context, intl.errorCompleteInfo);
                 return;
               }
-              if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+              if (!MemoryApp.isShowDialog)
+                DialogUtils.showDialogProgress(context: context);
               bloc.sendRequest();
             })),
             Space(height: 2.h),
@@ -165,15 +168,17 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
       children: [
         Ruler(
           rulerType: RulerType.Weight,
-          value: physicalInfo.weight != null ? '${physicalInfo.weight!.toStringAsFixedWithOneZero(3)}' : '0.0',
+          value: physicalInfo.weight != null
+              ? '${physicalInfo.weight!.toStringAsFixedWithOneZero(3)}'
+              : '0.0',
           max: 210,
           min: 30,
           heading: intl.weight,
           unit: intl.kilo,
           secondUnit: intl.gr,
           color: AppColors.purpleRuler,
-          helpClick: () =>
-              DialogUtils.showBottomSheetPage(context: context, child: HelpDialog(helpId: 2)),
+          helpClick: () => DialogUtils.showBottomSheetPage(
+              context: context, child: HelpDialog(helpId: 2)),
           iconPath: 'assets/images/diet/weight_icon.svg',
           onClick: (val) {
             physicalInfo.weight = double.parse('${val}');
@@ -190,8 +195,8 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
           heading: intl.height,
           unit: intl.centimeter,
           color: AppColors.blueRuler,
-          helpClick: () =>
-              DialogUtils.showBottomSheetPage(context: context, child: HelpDialog(helpId: 3)),
+          helpClick: () => DialogUtils.showBottomSheetPage(
+              context: context, child: HelpDialog(helpId: 3)),
           iconPath: 'assets/images/diet/height_icon.svg',
           onClick: (val) => physicalInfo.height = int.parse('${val}'),
         ),
@@ -251,7 +256,9 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
 
   String? birthdateFormatted(PhysicalInfoData physicalInfo) {
     if (!physicalInfo.birthDate.isEmptyOrNull) {
-      var formatter = Jalali.fromDateTime(DateTime.parse(physicalInfo.birthDate!)).formatter;
+      var formatter =
+          Jalali.fromDateTime(DateTime.parse(physicalInfo.birthDate!))
+              .formatter;
       return '${formatter.d} ${formatter.mN} ${formatter.yyyy}';
     }
     return null;
@@ -278,8 +285,9 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
                             child: Text(
                               intl.birthday,
                               softWrap: false,
-                              style: typography.caption!
-                                  .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
+                              style: typography.caption!.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700),
                             ),
                           ),
                         ))
@@ -363,7 +371,8 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
               },
               title: intl.womanItem,
               iconPath: 'assets/images/physical_report/female.svg',
-              iconPathSelected: 'assets/images/physical_report/female_selected.svg',
+              iconPathSelected:
+                  'assets/images/physical_report/female_selected.svg',
             )),
             Space(
               width: 2.w,
@@ -377,7 +386,8 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
               },
               title: intl.menItem,
               iconPath: 'assets/images/physical_report/male.svg',
-              iconPathSelected: 'assets/images/physical_report/male_selected.svg',
+              iconPathSelected:
+                  'assets/images/physical_report/male_selected.svg',
             )),
           ],
         ),
@@ -391,21 +401,21 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
 
     maxYear = j.year;
 
-    bloc.date = j.toDateTime()
-        .toString()
-        .substring(0, 10);
+    bloc.date = j.toDateTime().toString().substring(0, 10);
   }
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
 
     bloc.onRetryAfterNoInternet();
   }
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
 
     bloc.onRetryLoadingPage();
   }

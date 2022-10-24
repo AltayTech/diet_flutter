@@ -30,7 +30,8 @@ class SicknessScreen extends StatefulWidget {
   _SicknessScreenState createState() => _SicknessScreenState();
 }
 
-class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements ItemClick {
+class _SicknessScreenState extends ResourcefulState<SicknessScreen>
+    implements ItemClick {
   late SicknessBloc sicknessBloc;
   TextEditingController controller = TextEditingController();
   bool isShowStepper = true;
@@ -126,8 +127,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                           Text(
                             intl.obstructiveCauseToLeaveDiet,
                             textAlign: TextAlign.start,
-                            style: typography.caption!
-                                .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+                            style: typography.caption!.copyWith(
+                                fontWeight: FontWeight.w400, fontSize: 10.sp),
                           ),
                           Space(height: 2.h),
                           if (sicknessBloc.userCategoryDisease != null)
@@ -136,22 +137,29 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                                 builder: (context, userCategoryDisease) {
                                   if (userCategoryDisease.data != null &&
                                       userCategoryDisease.hasData &&
-                                      userCategoryDisease.requireData.length > 0)
+                                      userCategoryDisease.requireData.length >
+                                          0)
                                     return ListView.builder(
                                         physics: ClampingScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount: userCategoryDisease.requireData.length,
-                                        itemBuilder: (BuildContext context, int index) =>
-                                            sicknessBox(
-                                              index,
-                                              userCategoryDisease.requireData[index],
-                                            ));
+                                        itemCount: userCategoryDisease
+                                            .requireData.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) =>
+                                                sicknessBox(
+                                                  index,
+                                                  userCategoryDisease
+                                                      .requireData[index],
+                                                ));
                                   else if (userCategoryDisease.data != null &&
-                                      userCategoryDisease.requireData.length <= 0)
+                                      userCategoryDisease.requireData.length <=
+                                          0)
                                     return Container(
-                                        child: Text(intl.emptySickness, style: typography.caption));
+                                        child: Text(intl.emptySickness,
+                                            style: typography.caption));
                                   else
-                                    return Container(height: 80.h, child: Progress());
+                                    return Container(
+                                        height: 80.h, child: Progress());
                                 }),
                           Space(height: 1.h),
                         ],
@@ -165,8 +173,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
         ),
         Padding(
           padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-          child: CustomButton.withIcon(
-              AppColors.btnColor, intl.nextStage, Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
+          child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage,
+              Size(100.w, 6.h), Icon(Icons.arrow_forward), () {
             sendRequest();
           }),
         ),
@@ -190,7 +198,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
             ),
             child: sickness.diseases!.length > 0
                 ? ListView.builder(
@@ -202,11 +211,13 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                           child: CheckBoxApp.description(
                               contentPadding: 8,
                               isBorder: false,
-                              iconSelectType: sickness.hasMultiChoiceChildren.isNotNullAndTrue
+                              iconSelectType: sickness
+                                      .hasMultiChoiceChildren.isNotNullAndTrue
                                   ? IconSelectType.Checked
                                   : IconSelectType.Radio,
                               onTap: () {
-                                if (sickness.hasMultiChoiceChildren.isNotNullAndTrue)
+                                if (sickness
+                                    .hasMultiChoiceChildren.isNotNullAndTrue)
                                   sickness.diseases![index].isSelected =
                                       !sickness.diseases![index].isSelected!;
                                 else {
@@ -220,7 +231,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
                               },
                               title: sickness.diseases![index].title!,
                               isSelected: sickness.diseases![index].isSelected!,
-                              description: sickness.diseases![index].description ?? ""),
+                              description:
+                                  sickness.diseases![index].description ?? ""),
                         ))
                 : Container()),
         header: Container(
@@ -228,21 +240,29 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.15),
               borderRadius: sickness.isSelected!
-                  ? BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
+                  ? BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      topLeft: Radius.circular(10))
                   : BorderRadius.circular(10),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(flex: 1, child: Text(sickness.title!, style: typography.caption)),
+                Expanded(
+                    flex: 1,
+                    child: Text(sickness.title!, style: typography.caption)),
                 Expanded(
                   flex: 1,
                   child: CustomSwitch(
                     isSwitch: sickness.isSelected!,
                     title: '',
-                    lableLeft: sickness.hasMultiChoiceChildren! ? intl.iHave : intl.iAm,
-                    lableRight: sickness.hasMultiChoiceChildren! ? intl.iDoNotHave : intl.iAmNot,
+                    lableLeft: sickness.hasMultiChoiceChildren!
+                        ? intl.iHave
+                        : intl.iAm,
+                    lableRight: sickness.hasMultiChoiceChildren!
+                        ? intl.iDoNotHave
+                        : intl.iAmNot,
                     colorSelected: AppColors.priceGreenColor,
                     colorOff: AppColors.grey,
                     function: (value) {
@@ -264,7 +284,8 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
     String categoryName = '';
     sicknessBloc.userCategoryDiseaseValue.forEach((category) {
       isFindOneSingleChoiceCategory = false;
-      if (category.isSelected! && category.hasMultiChoiceChildren.isNotNullAndFalse) {
+      if (category.isSelected! &&
+          category.hasMultiChoiceChildren.isNotNullAndFalse) {
         isFindOneSingleChoiceCategory = true;
         isChoiceElement = false;
         category.diseases?.forEach((element) {
@@ -282,19 +303,22 @@ class _SicknessScreenState extends ResourcefulState<SicknessScreen> implements I
       Utils.getSnackbarMessage(context, intl.alertDiseaseMessage(categoryName));
       return;
     }
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
     sicknessBloc.sendSickness();
   }
 
   @override
   void onRetryAfterNoInternet() {
     sicknessBloc.setRepository();
+
     sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
     sicknessBloc.setRepository();
+
     sicknessBloc.getSickness();
   }
 
