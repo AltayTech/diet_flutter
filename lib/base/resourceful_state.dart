@@ -78,35 +78,10 @@ abstract class ResourcefulState<T extends StatefulWidget> extends ResumableState
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    _printEvent('didChangeAppLifecycleState()');
-    if (state == AppLifecycleState.resumed) {
-      if (mounted) {
-
-      }
-    }
-  }
-
-  @override
   void didUpdateWidget(covariant T oldWidget) {
     _printEvent('didUpdateWidget');
     super.didUpdateWidget(oldWidget);
   }
-
-  /*@override
-  @mustCallSuper
-  void onPause() {
-    _printEvent('onPause()');
-  }
-
-  @override
-  @mustCallSuper
-  void onReady() {
-    _printEvent('onReady()');
-  }*/
-
-
 
   @override
   @mustCallSuper
