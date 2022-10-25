@@ -21,6 +21,9 @@ class LatestInvoiceData {
   @JsonKey(name: 'payed_at')
   String? payedAt;
 
+  @JsonKey(name: 'verified_at')
+  String? verifiedAt;
+
   @JsonKey(name: 'ref_id')
   String? refId;
 

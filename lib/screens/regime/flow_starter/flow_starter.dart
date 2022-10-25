@@ -109,51 +109,6 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
     );
   }
 
-  Widget header() {
-    return Container(
-      padding: EdgeInsets.only(right: 32, left: 32),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Space(height: 1.h),
-        Container(
-          width: 100.w,
-          alignment: Alignment.center,
-          child: ProgressTimeline(
-              width: 50.w,
-              height: 7.h,
-              failedIcon: Icon(Icons.cancel),
-              checkedIcon: Icon(Icons.check_circle),
-              uncheckedIcon: Icon(Icons.circle_outlined),
-              currentIcon: Icon(
-                Icons.radio_button_checked_rounded,
-                color: AppColors.primary,
-              ),
-              connectorWidth: 1.w,
-              iconSize: 7.w,
-              connectorLength: 15.w,
-              connectorColor: AppColors.grey,
-              connectorColorSelected: AppColors.primary,
-              states: [
-                SingleState(stateTitle: "", isFailed: false),
-                SingleState(stateTitle: "", isFailed: false),
-                SingleState(stateTitle: "", isFailed: false),
-                SingleState(stateTitle: "", isFailed: false)
-              ]),
-        ),
-        Space(height: 2.h),
-        Text(
-          intl.statusReport,
-          textDirection: context.textDirectionOfLocale,
-          style: typography.subtitle1!.copyWith(fontWeight: FontWeight.bold),
-        ),
-        Text(
-          intl.thisIsFirstStatusReport,
-          textDirection: context.textDirectionOfLocale,
-          style: typography.caption!.copyWith(fontSize: 10.sp),
-        ),
-      ]),
-    );
-  }
-
   @override
   void onRetryAfterNoInternet() {
 

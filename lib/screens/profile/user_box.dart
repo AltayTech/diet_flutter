@@ -176,7 +176,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
                 hint: intl.country,
                 list: MemoryApp.countries ?? [],
                 onChange: (dynamic val) => setState(() {
-                  profileBloc.userInfo.countryId = val.categoryId;
+                  profileBloc.userInfo.countryId = val.id;
                   if (profileBloc.countryName != 'Iran') {
                     profileBloc.userInfo.cityId = null;
                     profileBloc.userInfo.provinceId = null;
@@ -201,8 +201,8 @@ class UserBoxState extends ResourcefulState<UserBox> {
                         onChange: (dynamic val) => setState(() {
                           if (profileBloc.userInfo.address == null)
                             profileBloc.userInfo.address = new Address();
-                          profileBloc.userInfo.address!.provinceId = val.categoryId;
-                          print('Province ${val.categoryId}');
+                          profileBloc.userInfo.address!.provinceId = val.id;
+                          print('Province ${val.id}');
                           profileBloc.changeProvinceCity();
                         }),
                         border: true,
@@ -226,8 +226,8 @@ class UserBoxState extends ResourcefulState<UserBox> {
                       hint: intl.city,
                       list: snapshot.data?.cities ?? List.generate(0, (index) => 0),
                       onChange: (dynamic val) => setState(() {
-                        profileBloc.userInfo.address!.cityId = val.categoryId;
-                        print('city $val.id');
+                        profileBloc.userInfo.address!.cityId = val.id;
+                        print('city ${val.id}');
                       }),
                       border: true,
                     );

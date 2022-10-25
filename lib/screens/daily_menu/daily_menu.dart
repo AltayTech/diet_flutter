@@ -41,7 +41,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   Tween<double> _tween = Tween(begin: 0.9, end: 1.3);
   WeekDay? selectedWeekDay;
   bool isInitial = false;
-  var selectedMeal;
+  Meals? selectedMeal;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
 
     refreshDailyMenu.on<ListFood>().listen((ListFood value) {
       debugPrint('return ${value}');
-      bloc.onMealFoodDaily(value, selectedMeal.categoryId);
+      bloc.onMealFoodDaily(value, selectedMeal!.id);
     });
   }
 
@@ -341,7 +341,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
     );
   }
 
-  void openFoodListPage(meal) {
+  void openFoodListPage(Meals meal) {
     selectedMeal = meal;
     VxNavigator.of(context).waitAndPush(Uri(path: Routes.listFood), params: meal).then((value) {});
   }

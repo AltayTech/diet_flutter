@@ -1,17 +1,12 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/routes.dart';
+import 'package:behandam/extensions/double.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/src/extensions.dart';
@@ -144,7 +139,9 @@ class _PaymentWaitNewScreenState extends ResourcefulState<PaymentWaitNewScreen> 
                                   style: typography.caption!.copyWith(
                                       color: AppColors.priceColor, fontWeight: FontWeight.w700))
                             ],
-                            text: '${bloc.invoice!.amount!.toInt()}'.seRagham(),
+                            text: bloc.invoice?.amount != null
+                                ? '${bloc.invoice!.amount?.setZiro().toInt()}'.seRagham()
+                                : '0',
                             style: typography.headline6!.copyWith(color: AppColors.priceColor)),
                       ),
                       top: 8.h,

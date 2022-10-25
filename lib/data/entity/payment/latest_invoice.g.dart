@@ -13,6 +13,7 @@ LatestInvoiceData _$LatestInvoiceDataFromJson(Map<String, dynamic> json) =>
       ..note = json['note'] as String?
       ..ownerName = json['owner_name'] as String?
       ..payedAt = json['payed_at'] as String?
+      ..verifiedAt = json['verified_at'] as String?
       ..refId = json['ref_id'] as String?
       ..resolved = json['resolved'] as bool?
       ..success = json['success'] as bool?
@@ -28,6 +29,7 @@ Map<String, dynamic> _$LatestInvoiceDataToJson(LatestInvoiceData instance) =>
       'note': instance.note,
       'owner_name': instance.ownerName,
       'payed_at': instance.payedAt,
+      'verified_at': instance.verifiedAt,
       'ref_id': instance.refId,
       'resolved': instance.resolved,
       'success': instance.success,

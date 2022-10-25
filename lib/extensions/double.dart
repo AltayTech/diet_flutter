@@ -16,4 +16,8 @@ extension DoubleExtensions on double {
     RegExp regex = RegExp(r'(\.0{1,})');
     return string.replaceAll(regex, '.0');
   }
+
+  double setZiro() {
+    return this == null ? 0.0 : this;
+  }
 }

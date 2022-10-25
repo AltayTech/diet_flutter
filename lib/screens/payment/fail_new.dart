@@ -223,12 +223,12 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
             MemoryApp.analytics!.logEvent(name: "total_payment_fail");
             context.vxNav.pop();
           } else {
-            if (navigator.currentConfiguration!.path.contains(Routes.package))
+            if (navigator.currentConfiguration!.path.contains('reg'))
               VxNavigator.of(context).clearAndPushAll(
-                  [Uri.parse(Routes.start), Uri.parse(Routes.package)]);
+                  [Uri.parse('${Routes.regStart}'), Uri.parse(Routes.package)]);
             else
               VxNavigator.of(context).clearAndPushAll(
-                  [Uri.parse(Routes.start), Uri.parse(Routes.renewPackage)]);
+                  [Uri.parse(Routes.renewStart), Uri.parse(Routes.renewPackage)]);
           }
         },
         child: Text(

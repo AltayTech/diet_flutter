@@ -207,7 +207,7 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
                       right: 10.w,
                     ),
                     Positioned(
-                      child: Text(DateTimeUtils.gregorianToJalali(bloc.invoice!.payedAt!),
+                      child: Text(DateTimeUtils.gregorianToJalali(bloc.invoice!.verifiedAt!),
                           textAlign: TextAlign.center,
                           softWrap: true,
                           style: Theme.of(context)
@@ -231,7 +231,7 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
                       right: 10.w,
                     ),
                     Positioned(
-                      child: Text('14:30',
+                      child: Text(DateTimeUtils.getTime(bloc.invoice!.verifiedAt!),
                           textAlign: TextAlign.center,
                           softWrap: true,
                           style: Theme.of(context)

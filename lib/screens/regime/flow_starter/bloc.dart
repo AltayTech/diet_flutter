@@ -28,6 +28,7 @@ class FlowStarterBloc {
 
   void nextStep() {
     _repository.nextStep().then((value) {
+      MemoryApp.page = 0;
       _navigateTo.fire(value.next!);
     }).whenComplete(() {
       if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
