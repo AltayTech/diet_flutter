@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/screens/widget/custom_banner.dart' as banner;
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
@@ -301,27 +302,30 @@ class PackageWidget extends StatelessWidget {
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                serviceDescription(context, description ?? '');
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    context.intl.moreDescription,
-                                    softWrap: true,
-                                    textAlign: TextAlign.start,
-                                    style: typography!.caption!.copyWith(
-                                        letterSpacing: -0.02,
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.w500),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                          description != null && description!.length > 0
+                              ? Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      serviceDescription(context, description!);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          context.intl.moreDescription,
+                                          softWrap: true,
+                                          textAlign: TextAlign.start,
+                                          style: typography!.caption!.copyWith(
+                                              letterSpacing: -0.02,
+                                              color: Colors.red,
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : EmptyBox(),
                         ],
                       ),
                     ),
@@ -340,7 +344,7 @@ class PackageWidget extends StatelessWidget {
         context: context,
         child: SingleChildScrollView(
           child: Container(
-            height: desc.length * 2,
+            height: desc.length > 150 ? desc.length * 3 : 300,
             padding: EdgeInsets.all(5.w),
             alignment: Alignment.center,
             child: Stack(children: [
