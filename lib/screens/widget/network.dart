@@ -1,3 +1,4 @@
+import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
@@ -61,12 +62,13 @@ class _NetworkAlertState extends ResourcefulState<NetworkAlertPage> {
       padding: EdgeInsets.zero,
       color: AppColors.primary,
       minWidth: double.infinity,
-      onPressed: ()async {
-         Navigator.pop(context);
+      onPressed: () async {
+        Navigator.pop(context);
         if (MemoryApp.isShowDialog) {
           MemoryApp.isShowDialog = false;
           Navigator.pop(context);
         }
+        Repository.getInstance();
       },
       shape: AppShapes.rectangleMedium,
       child: Container(

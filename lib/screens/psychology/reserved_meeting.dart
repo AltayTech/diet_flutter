@@ -170,6 +170,8 @@ class _PsychologyReservedMeetingScreenState
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
+    calenderBloc.onRetryLoadingPage();
+    calenderBloc.getHistory();
   }
 
   @override

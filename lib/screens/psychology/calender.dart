@@ -24,12 +24,10 @@ class PsychologyCalenderScreen extends StatefulWidget {
   const PsychologyCalenderScreen({Key? key}) : super(key: key);
 
   @override
-  _PsychologyCalenderScreenState createState() =>
-      _PsychologyCalenderScreenState();
+  _PsychologyCalenderScreenState createState() => _PsychologyCalenderScreenState();
 }
 
-class _PsychologyCalenderScreenState
-    extends ResourcefulState<PsychologyCalenderScreen> {
+class _PsychologyCalenderScreenState extends ResourcefulState<PsychologyCalenderScreen> {
   late Future<List<Plan>?> calender;
   late CalenderBloc calenderBloc;
 
@@ -76,38 +74,29 @@ class _PsychologyCalenderScreenState
                             height: 40.0,
                             child: StreamBuilder(
                                 stream: calenderBloc.daysAgo,
-                                builder:
-                                    (context, AsyncSnapshot<Jalali> daysAgo) {
+                                builder: (context, AsyncSnapshot<Jalali> daysAgo) {
                                   return StreamBuilder(
                                     stream: calenderBloc.daysLater,
-                                    builder: (context,
-                                        AsyncSnapshot<Jalali> daysLater) {
+                                    builder: (context, AsyncSnapshot<Jalali> daysLater) {
                                       if (daysAgo.hasData && daysLater.hasData)
                                         return Text(
                                             daysLater.data!.formatter.mN ==
-                                                    daysLater.data!
-                                                        .addDays(-10)
-                                                        .formatter
-                                                        .mN
+                                                    daysLater.data!.addDays(-10).formatter.mN
                                                 ? daysLater.data!.formatter.mN +
                                                     ' ' +
-                                                    daysLater.data!.year
-                                                        .toString()
+                                                    daysLater.data!.year.toString()
                                                 : daysAgo.data!.formatter.mN +
                                                     ' ' +
                                                     '/' +
                                                     ' ' +
                                                     daysLater.data!.formatter.mN +
                                                     ' ' +
-                                                    daysLater.data!.year
-                                                        .toString(),
+                                                    daysLater.data!.year.toString(),
                                             style: TextStyle(fontSize: 12.sp));
                                       else
                                         return Center(
                                             child: Container(
-                                                width: 15.w,
-                                                height: 15.w,
-                                                child: Progress()));
+                                                width: 15.w, height: 15.w, child: Progress()));
                                     },
                                   );
                                 })),
@@ -119,21 +108,16 @@ class _PsychologyCalenderScreenState
                                   child: StreamBuilder<CalenderOutput>(
                                       stream: calenderBloc.data,
                                       builder: (context, snapshot) {
-                                        if (snapshot.hasError)
-                                          debugPrint('${snapshot.error}');
+                                        if (snapshot.hasError) debugPrint('${snapshot.error}');
 
                                         if (snapshot.hasData &&
-                                            snapshot.data!.dates
-                                                .isNotNullOrNotEmpty) {
+                                            snapshot.data!.dates.isNotNullOrNotEmpty) {
                                           return SizedBox(
                                             height: 250,
                                             child: GridView.count(
                                                 primary: false,
                                                 padding: const EdgeInsets.only(
-                                                    top: 8,
-                                                    right: 16,
-                                                    left: 16,
-                                                    bottom: 16),
+                                                    top: 8, right: 16, left: 16, bottom: 16),
                                                 crossAxisSpacing: 2,
                                                 mainAxisSpacing: 2,
                                                 crossAxisCount: 4,
@@ -141,76 +125,51 @@ class _PsychologyCalenderScreenState
                                                   ...calenderBloc.dates!
                                                       .map(
                                                         (date) => InkWell(
-                                                          onTap: () =>
-                                                              setState(() {
-                                                            if (date
-                                                                .expertPlanning!
-                                                                .isNotEmpty) {
-                                                              calenderBloc
-                                                                  .giveInfo(date
-                                                                      .jDate!);
-                                                            } else if (date
-                                                                        .expertPlanning ==
+                                                          onTap: () => setState(() {
+                                                            if (date.expertPlanning!.isNotEmpty) {
+                                                              calenderBloc.giveInfo(date.jDate!);
+                                                            } else if (date.expertPlanning ==
                                                                     null ||
-                                                                date.expertPlanning!
-                                                                    .isEmpty) {
-                                                              calenderBloc.flag1 =
-                                                                  false;
-                                                              calenderBloc.flag2 =
-                                                                  true;
+                                                                date.expertPlanning!.isEmpty) {
+                                                              calenderBloc.flag1 = false;
+                                                              calenderBloc.flag2 = true;
                                                             }
                                                           }),
                                                           child: Container(
                                                             decoration: BoxDecoration(
                                                                 borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                                color: AppColors
-                                                                    .penColor
-                                                                    .withOpacity(
-                                                                        0.1)),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8),
+                                                                    BorderRadius.circular(10),
+                                                                color: AppColors.penColor
+                                                                    .withOpacity(0.1)),
+                                                            padding: const EdgeInsets.all(8),
                                                             child: Center(
                                                               child: Column(
                                                                 children: [
                                                                   Center(
                                                                       child: Text(
-                                                                          DateTimeUtils.dateToNamesOfDay(date
-                                                                              .date!),
+                                                                          DateTimeUtils
+                                                                              .dateToNamesOfDay(
+                                                                                  date.date!),
                                                                           style: TextStyle(
-                                                                              fontSize:
-                                                                                  8.sp))),
+                                                                              fontSize: 8.sp))),
                                                                   Text(
-                                                                      date.jDate ==
-                                                                              null
+                                                                      date.jDate == null
                                                                           ? ''
-                                                                          : date
-                                                                              .jDate
+                                                                          : date.jDate
                                                                               .toString()
-                                                                              .substring(8,
-                                                                                  10),
+                                                                              .substring(8, 10),
                                                                       style: TextStyle(
-                                                                          fontSize: 10
-                                                                              .sp,
-                                                                          color: Colors
-                                                                              .black)),
-                                                                  SizedBox(
-                                                                      height:
-                                                                          4.0),
-                                                                  Icon(
-                                                                      Icons
-                                                                          .circle,
+                                                                          fontSize: 10.sp,
+                                                                          color: Colors.black)),
+                                                                  SizedBox(height: 4.0),
+                                                                  Icon(Icons.circle,
                                                                       size: date.expertPlanning ==
                                                                                   null ||
-                                                                              date
-                                                                                  .expertPlanning!.isEmpty
+                                                                              date.expertPlanning!
+                                                                                  .isEmpty
                                                                           ? 8.0
                                                                           : 0.0,
-                                                                      color: AppColors
-                                                                          .redBar)
+                                                                      color: AppColors.redBar)
                                                                 ],
                                                               ),
                                                             ),
@@ -221,9 +180,7 @@ class _PsychologyCalenderScreenState
                                                 ]),
                                           );
                                         } else
-                                          return Center(
-                                              child: Text(
-                                                  "زمان خالی برای رزرو روانشناس برای این هفته وجود ندارد"));
+                                          return Center(child: Text(intl.psychologistNoTimeToBook));
                                       }),
                                 );
                               else
@@ -242,8 +199,7 @@ class _PsychologyCalenderScreenState
                               ),
                               RichText(
                                 text: TextSpan(
-                                  style: typography.caption!
-                                      .copyWith(color: AppColors.onSurface),
+                                  style: typography.caption!.copyWith(color: AppColors.onSurface),
                                   children: [
                                     TextSpan(text: ' '),
                                     TextSpan(text: "${intl.reserve}"),
@@ -269,26 +225,22 @@ class _PsychologyCalenderScreenState
                                       // print('statusAgo: ${snapshot.data}');
                                       return StreamBuilder(
                                           stream: calenderBloc.daysAgo,
-                                          builder: (context,
-                                              AsyncSnapshot<Jalali> previous) {
+                                          builder: (context, AsyncSnapshot<Jalali> previous) {
                                             return TextButton.icon(
                                                 onPressed: snapshot.data == true ||
                                                         snapshot.data == null
                                                     ? null
                                                     : () =>
-                                                        calenderBloc.getCalender(
-                                                            previous.data!),
+                                                        calenderBloc.getCalender(previous.data!),
                                                 icon: Icon(Icons.arrow_back,
                                                     color: snapshot.data == true
                                                         ? AppColors.strongPen
                                                         : AppColors.accentColor),
                                                 label: Text(intl.previousDays,
                                                     style: TextStyle(
-                                                        color: snapshot.data ==
-                                                                true
+                                                        color: snapshot.data == true
                                                             ? AppColors.strongPen
-                                                            : AppColors
-                                                                .accentColor)));
+                                                            : AppColors.accentColor)));
                                           });
                                     },
                                   ),
@@ -307,22 +259,18 @@ class _PsychologyCalenderScreenState
                                       // print("day: ${DateTimeUtils.convertToJalali(calenderBloc.jour)}");
                                       return StreamBuilder(
                                           stream: calenderBloc.daysLater,
-                                          builder: (context,
-                                              AsyncSnapshot<Jalali> later) {
+                                          builder: (context, AsyncSnapshot<Jalali> later) {
                                             return Directionality(
                                               textDirection: TextDirection.ltr,
                                               child: TextButton.icon(
                                                   onPressed: snapshot.data == true ||
                                                           snapshot.data == null
                                                       ? null
-                                                      : () =>
-                                                          calenderBloc.getCalender(
-                                                              later.data!),
+                                                      : () => calenderBloc.getCalender(later.data!),
                                                   icon: Icon(Icons.arrow_back,
                                                       color: snapshot.data == true
                                                           ? AppColors.strongPen
-                                                          : AppColors
-                                                              .accentColor),
+                                                          : AppColors.accentColor),
                                                   label: Text(intl.laterDays,
                                                       style: TextStyle(
                                                           color: snapshot.data == true
@@ -355,17 +303,14 @@ class _PsychologyCalenderScreenState
                                         ),
                                         child: Center(
                                           child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0, bottom: 15.0),
+                                            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
                                             child: Column(
                                               children: [
                                                 Container(
                                                     width: 18.w,
                                                     height: 8.h,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.0),
+                                                      borderRadius: BorderRadius.circular(15.0),
                                                       color: AppColors.help,
                                                     ),
                                                     child: Center(
@@ -376,15 +321,11 @@ class _PsychologyCalenderScreenState
                                                     )),
                                                 SizedBox(height: 2.h),
                                                 Text(intl.thereIsNotTime),
-                                                CustomButton(
-                                                    AppColors.btnColor,
-                                                    intl.showFirstFreeTime,
-                                                    Size(80.w, 4.h), () {
-                                                  List data = calenderBloc
-                                                      .findFirstFreeTime();
+                                                CustomButton(AppColors.btnColor,
+                                                    intl.showFirstFreeTime, Size(80.w, 4.h), () {
+                                                  List data = calenderBloc.findFirstFreeTime();
                                                   if (data.length > 0)
-                                                    showModal(context, data[0],
-                                                        data[0].times[0]);
+                                                    showModal(context, data[0], data[0].times[0]);
                                                 })
                                               ],
                                             ),
@@ -432,6 +373,8 @@ class _PsychologyCalenderScreenState
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
+    calenderBloc.onRetryLoadingPage();
+    calenderBloc.getCalender(Jalali.now());
   }
 
   @override
