@@ -179,8 +179,6 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     bloc.onRetryLoadingPage();
     bloc.getBankAccountActiveCard();
   }

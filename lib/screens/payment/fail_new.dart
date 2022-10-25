@@ -266,9 +266,6 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailNewScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog)
-      DialogUtils.showDialogProgress(context: context);
-
     bloc.onRetryLoadingPage();
     bloc.sendRequest();
   }

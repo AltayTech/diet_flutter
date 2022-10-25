@@ -414,8 +414,6 @@ class _PhysicalInfoScreenState extends ResourcefulState<PhysicalInfoScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog)
-      DialogUtils.showDialogProgress(context: context);
 
     bloc.onRetryLoadingPage();
   }

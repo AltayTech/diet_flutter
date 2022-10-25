@@ -732,9 +732,6 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog)
-      DialogUtils.showDialogProgress(context: context);
-
     bloc.onRetryLoadingPage();
   }
 

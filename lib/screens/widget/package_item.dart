@@ -2,8 +2,11 @@ import 'dart:math';
 
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/screens/widget/custom_banner.dart' as banner;
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/line.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
@@ -94,8 +97,9 @@ class PackageWidget extends StatelessWidget {
               : null,
           borderRadius: BorderRadius.circular(10),
         ),
-       // constraints: BoxConstraints(maxHeight:maxHeight ?? 8.h),
-        constraints: BoxConstraints.tightFor(height: max(maxHeight ?? 8.h, ((maxHeight ?? 8.h) + 3.h))),
+        // constraints: BoxConstraints(maxHeight:maxHeight ?? 8.h),
+        constraints:
+            BoxConstraints.tightFor(height: max(maxHeight ?? 8.h, ((maxHeight ?? 8.h) + 3.h))),
         child: Container(
           margin: EdgeInsets.only(right: 16, top: 16, left: 16, bottom: 16),
           width: double.maxFinite,
@@ -229,7 +233,7 @@ class PackageWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
-          margin: EdgeInsets.only(right: 16, top: 16, left: 16, bottom: 16),
+          padding: EdgeInsets.all(16),
           width: double.maxFinite,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -252,7 +256,6 @@ class PackageWidget extends StatelessWidget {
                 width: 2.w,
               ),
               Expanded(
-                flex: 1,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -275,32 +278,129 @@ class PackageWidget extends StatelessWidget {
                     ),
                     Container(
                       width: double.maxFinite,
-                      child: RichText(
-                        softWrap: true,
-                        textAlign: TextAlign.start,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                                text: '${context.intl.toman}',
-                                style: typography!.caption!.copyWith(
-                                    letterSpacing: -0.02,
-                                    color: Color(0xff454545),
-                                    fontSize: 9.sp,
-                                    fontWeight: FontWeight.w300))
-                          ],
-                          text: '$price'.seRagham() + '+ ',
-                          style: typography!.caption!.copyWith(
-                              letterSpacing: -0.02,
-                              color: Color(0xff454545),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500),
-                        ),
+                      child: Row(
+                        children: [
+                          RichText(
+                            softWrap: true,
+                            textAlign: TextAlign.start,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: '${context.intl.toman}',
+                                    style: typography!.caption!.copyWith(
+                                        letterSpacing: -0.02,
+                                        color: Color(0xff454545),
+                                        fontSize: 9.sp,
+                                        fontWeight: FontWeight.w300))
+                              ],
+                              text: '$price'.seRagham() + '+ ',
+                              style: typography!.caption!.copyWith(
+                                  letterSpacing: -0.02,
+                                  color: Color(0xff454545),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                serviceDescription(context, description ?? '');
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    context.intl.moreDescription,
+                                    softWrap: true,
+                                    textAlign: TextAlign.start,
+                                    style: typography!.caption!.copyWith(
+                                        letterSpacing: -0.02,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void serviceDescription(BuildContext context, String desc) {
+    DialogUtils.showBottomSheetPage(
+        context: context,
+        child: SingleChildScrollView(
+          child: Container(
+            height: desc.length * 2,
+            padding: EdgeInsets.all(5.w),
+            alignment: Alignment.center,
+            child: Stack(children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      closeDialog(context),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 32),
+                          child: Center(
+                            child: Text(
+                              context.intl.moreDescription,
+                              softWrap: true,
+                              style: context.typography.caption!
+                                  .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Space(height: 5.h),
+                  Text(
+                    desc,
+                    softWrap: true,
+                    style: context.typography.caption!
+                        .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 2,
+                child: Center(
+                    child: SubmitButton(
+                  label: context.intl.understand,
+                  onTap: () => Navigator.of(context).pop(),
+                  size: Size(80.w, 6.h),
+                )),
+              )
+            ]),
+          ),
+        ));
+  }
+
+  Widget closeDialog(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        alignment: Alignment.topRight,
+        child: Container(
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: AppColors.primary.withOpacity(0.4),
+          ),
+          padding: EdgeInsets.all(1.w),
+          child: Icon(
+            Icons.close,
+            size: 6.w,
+            color: AppColors.onPrimary,
           ),
         ),
       ),
