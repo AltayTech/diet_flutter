@@ -13,7 +13,7 @@ extension DoubleExtensions on double {
 
   String toStringAsFixedWithOneZero(int fix) {
     String string = this.toStringAsFixed(fix);
-    RegExp regex = RegExp(r'([.]*00)(?!.*\d)');
-    return string.replaceAll(regex, '');
+    RegExp regex = RegExp(r'(\.0{1,})');
+    return string.replaceAll(regex, '.0');
   }
 }
