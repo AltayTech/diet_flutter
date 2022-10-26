@@ -57,7 +57,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data == false)
                 return Container(
-                  height: 85.h,
+                  height: 100.h,
                   child: ScrollConfiguration(
                     behavior: MyCustomScrollBehavior(),
                     child: ListView.builder(

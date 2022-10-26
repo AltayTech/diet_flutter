@@ -302,8 +302,6 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     profileBloc.onRetryLoadingPage();
     profileBloc.getInformation();
   }
