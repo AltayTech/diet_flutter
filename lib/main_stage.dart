@@ -14,8 +14,8 @@ Future<void> main() async {
       "urlPrivacy": "https://debug.behaminplus.ir/#/article/5901",
       "iappsPackage": "com.kermany.behandam-iapps",
       "sibappPackage": "com.kermany.behandam-sibapp",
-      'isProduction': false,
-      'isCafeBazaar': true,
+      'isProduction': true,
+      'isCafeBazaar': false,
       'market': Market.google.value
     },
   );

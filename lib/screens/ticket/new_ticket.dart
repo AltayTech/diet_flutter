@@ -247,7 +247,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                     width: 2.w,
                   ),
 
-                  if(supportItem.ticketName!.length>20)
+                  if(supportItem.ticketName!.length>15)
                   Expanded(
                     child: FittedBox(
                       fit:BoxFit.fill ,
@@ -260,7 +260,7 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                       ),
                     ),
                   ),
-                  if(supportItem.ticketName!.length<16)
+                  if(supportItem.ticketName!.length<=15)
                     Text(
                       supportItem.ticketName ?? "",
                       softWrap: true,
