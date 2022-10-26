@@ -151,8 +151,6 @@ class _FastPatternPageState extends ResourcefulState<FastPatternPage> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     bloc.onRetryLoadingPage();
   }
 

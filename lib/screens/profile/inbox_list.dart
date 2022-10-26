@@ -227,8 +227,6 @@ class _InboxList extends ResourcefulState<InboxList> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     profileBloc.onRetryLoadingPage();
     profileBloc.getInbox();
   }

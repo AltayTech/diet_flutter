@@ -467,7 +467,6 @@ class _CompleteInformationScreenState extends ResourcefulState<CompleteInformati
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     bloc.onRetryLoadingPage();
   }
 

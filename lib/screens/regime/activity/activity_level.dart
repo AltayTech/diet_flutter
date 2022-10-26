@@ -160,8 +160,6 @@ class _ActivityLevelPageState extends ResourcefulState<ActivityLevelPage> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     bloc.onRetryLoadingPage();
   }
 

@@ -222,8 +222,6 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     profileBloc.onRetryLoadingPage();
   }
 
