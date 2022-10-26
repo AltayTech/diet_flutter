@@ -116,7 +116,6 @@ class _FlowStarterScreenState extends ResourcefulState<FlowStarterScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     bloc.onRetryAfterNoInternet();
   }
 }
