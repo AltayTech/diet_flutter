@@ -242,8 +242,6 @@ class _RefundScreenState extends ResourcefulState<RefundScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     bloc.onRetryLoadingPage();
     bloc.getTermPackage();
   }

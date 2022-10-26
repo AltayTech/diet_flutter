@@ -441,8 +441,6 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     authBloc.setRepository();
 
     if (!authBloc.isTrySendCode) {

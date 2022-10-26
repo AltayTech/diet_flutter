@@ -356,8 +356,6 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     authBloc.setRepository();
 
     authBloc.fetchCountries();

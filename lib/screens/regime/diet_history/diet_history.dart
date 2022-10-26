@@ -149,8 +149,6 @@ class _DietHistoryPageState extends ResourcefulState<DietHistoryPage> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     bloc.onRetryLoadingPage();
   }
 
