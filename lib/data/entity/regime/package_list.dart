@@ -48,6 +48,10 @@ class Package {
   @JsonKey(name: "isSelected", defaultValue: false)
   bool? isSelected;
 
+  @JsonKey(name: " selected_diet_type_id")
+  int? selectedDietTypeId;
+
+
   Package();
 
   Color get barColor => Utils.getColorPackage(index!);
@@ -148,6 +152,9 @@ class Price {
 
   @JsonKey(name: "service_ids")
   List<int>? services;
+
+  @JsonKey(name: "selected_diet_type_id")
+  int? selectedDietTypeId;
 
   int get priceDiscount => ((price ?? 0) - (finalPrice ?? 0));
 

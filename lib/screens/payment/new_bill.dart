@@ -319,6 +319,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
         VxNavigator.of(context).push(Uri.parse(Routes.cardToCard), params: {
           'services': bloc.servicesFilteredByPackage,
           'package': bloc.packageItemNew,
+          'selectedDietTypeId': bloc.selectedDietTypeId,
           'discountCode': bloc.discountCode
         });
       }

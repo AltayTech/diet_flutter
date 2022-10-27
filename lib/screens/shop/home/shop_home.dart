@@ -61,7 +61,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                   child: ScrollConfiguration(
                     behavior: MyCustomScrollBehavior(),
                     child: ListView.builder(
-                      padding: EdgeInsets.only(top: 4.w, bottom: 4.w),
+                      padding: EdgeInsets.only(top: 4.w, bottom: 2.h),
                       itemBuilder: (context, index) {
                         switch (bloc.list![index].styleType) {
                           case StyleType.slider:
