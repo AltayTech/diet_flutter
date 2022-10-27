@@ -113,10 +113,14 @@ class BillPaymentBloc {
     _list.forEach((element) {
       element.isSelected = false;
     });
+    _services.forEach((service) {
+      service.isSelected=false;
+    });
     _selectedPackage.safeValue = packageItem;
     _packageItemNew = packageItem;
     _packageItemNew!.isSelected = true;
     _refreshPackages.safeValue = true;
+    changePayment();
   }
 
   void setServiceSelected(ServicePackage packageItem) {
