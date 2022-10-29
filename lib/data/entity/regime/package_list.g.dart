@@ -61,6 +61,7 @@ PackageItem _$PackageItemFromJson(Map<String, dynamic> json) => PackageItem()
       ? null
       : PackagePrice.fromJson(json['price'] as Map<String, dynamic>)
   ..name = json['name'] as String?
+  ..description = json['description'] as String?
   ..media = json['media'] as String?
   ..package_id = json['package_id'] as int?
   ..refundDeadline = json['refund_deadline'] as int? ?? 0
@@ -73,6 +74,7 @@ Map<String, dynamic> _$PackageItemToJson(PackageItem instance) =>
       'id': instance.id,
       'price': instance.price,
       'name': instance.name,
+      'description': instance.description,
       'media': instance.media,
       'package_id': instance.package_id,
       'refund_deadline': instance.refundDeadline,

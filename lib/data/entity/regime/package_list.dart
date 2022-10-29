@@ -77,6 +77,8 @@ class PackageItem {
   PackagePrice? price;
   @JsonKey(name: "name")
   String? name;
+  @JsonKey(name: "description")
+  String? description;
   @JsonKey(name: "media")
   String? media;
 
