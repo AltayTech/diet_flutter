@@ -52,29 +52,113 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
         titleBar: intl.shop,
       ),
       body: SafeArea(
-        child: Container(
-          height: 100.h,
-          child: Stack(children: [
-            StreamBuilder(
-              stream: bloc.loadingContent,
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data == false)
-                  return TouchMouseScrollable(
-                    child: ScrollConfiguration(
-                      behavior: MyCustomScrollBehavior(),
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(top: 4.w, bottom: 2.h),
-                        itemBuilder: (context, index) {
-                          switch (bloc.list![index].styleType) {
-                            case StyleType.slider:
-                              return SliderApp(banners: bloc.list![index].items!);
-                            case StyleType.userAction:
-                              return Card(
-                                elevation: 0,
-                                margin: EdgeInsets.only(
-                                  left: 4.w,
-                                  right: 4.w,
-                                  top: 4.w,
+        child: Stack(children: [
+          StreamBuilder(
+            stream: bloc.loadingContent,
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data == false)
+                return Container(
+                  height: 100.h,
+                  child: ScrollConfiguration(
+                    behavior: MyCustomScrollBehavior(),
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(top: 4.w, bottom: 8.h),
+                      itemBuilder: (context, index) {
+                        switch (bloc.list![index].styleType) {
+                          case StyleType.slider:
+                            return SliderApp(banners: bloc.list![index].items!);
+                          case StyleType.userAction:
+                            return Card(
+                              elevation: 0,
+                              margin: EdgeInsets.only(
+                                left: 4.w,
+                                right: 4.w,
+                                top: 4.w,
+                              ),
+                              shape: AppShapes.rectangleMedium,
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Row(
+                                  textDirection: context.textDirectionOfLocale,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(3),
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        fit: StackFit.loose,
+                                        children: [
+                                          RotatedBox(
+                                            child: ImageUtils.fromLocal(
+                                                'assets/images/shop/back_rec.svg',
+                                                width: 14.w,
+                                                height: 12.w,
+                                                color: AppColors.primary),
+                                            quarterTurns:
+                                                context.isRtl ? 0 : 90,
+                                          ),
+                                          ImageUtils.fromNetwork(
+                                              Utils.getCompletePathShop(
+                                                  bloc.list![index].icon_url),
+                                              width: 7.0.w,
+                                              height: 8.w,
+                                              color: AppColors.primary)
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        bloc.list![index].title ?? '',
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                      flex: 1,
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () {
+                                        if (bloc.list![index].action_type ==
+                                            ActionType.deepLink) {
+                                          VxNavigator.of(context).push(Uri.parse(
+                                              '/${bloc.list![index].action}'));
+                                        } else if (bloc
+                                                .list![index].action_type ==
+                                            ActionType.link) {
+                                          Utils.launchURL(
+                                              bloc.list![index].action!);
+                                        }
+                                      },
+                                      child: Text(
+                                        intl.view,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .overline!
+                                            .copyWith(color: AppColors.primary),
+                                      ),
+                                    ),
+                                    Space(
+                                      width: 1.w,
+                                    ),
+                                    Stack(
+                                      children: [
+                                        Positioned(
+                                          left: context.isRtl ? 5 : null,
+                                          right: context.isRtl ? null : 5,
+                                          child: Icon(
+                                            Icons.navigate_next,
+                                            color: AppColors.primary
+                                                .withOpacity(0.6),
+                                            size: 5.w,
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.navigate_next,
+                                          color: AppColors.primary,
+                                          size: 5.w,
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
                                 shape: AppShapes.rectangleMedium,
                                 color: Colors.white,
