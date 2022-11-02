@@ -289,9 +289,9 @@ class _RepositoryImpl extends Repository {
   late RestClient _apiClient;
   late MemoryApp _cache;
 
-  static const receiveTimeout = 3 * 60 * 1000;
+  static const receiveTimeout = 15 * 1000;
   static const connectTimeout = 15 * 1000;
-  static const sendTimeout = 3 * 60 * 1000;
+  static const sendTimeout = 15 * 1000;
 
   _RepositoryImpl() {
     _dio = Dio();
@@ -302,7 +302,7 @@ class _RepositoryImpl extends Repository {
     );
     if (!kIsWeb)
       _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
-        idleTimeout: 10000,
+        idleTimeout: 15 * 1000,
         // Ignore bad certificate
         onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
       ));
