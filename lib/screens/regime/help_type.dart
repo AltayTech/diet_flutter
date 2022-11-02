@@ -110,8 +110,8 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
       margin: EdgeInsets.only(bottom: 2.h),
       child: Column(
         children: [
-          ImageUtils.fromNetwork(Utils.getCompletePath(url),
-              width: 10.w, height: 20.h),
+          if (url.isNotEmpty)
+            ImageUtils.fromNetwork(Utils.getCompletePath(url), width: 10.w, height: 20.h),
           Space(height: 2.h),
           ClipRRect(
             borderRadius: AppBorderRadius.borderRadiusSmall,
@@ -141,7 +141,13 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              ...snapshot.requireData.helpers!.mapIndexed((help, index) => item(help, snapshot.requireData.media![index].url ?? '')).toList(),
+              ...snapshot.requireData.helpers!
+                  .mapIndexed((help, index) => item(
+                      help,
+                      snapshot.requireData.media!.isNotEmpty
+                          ? snapshot.requireData.media![index].url ?? ''
+                          : ''))
+                  .toList(),
             ],
           );
         } else {
@@ -172,9 +178,8 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
           //         .toList(),
           //   ],
           // );
-          return ImageUtils.fromNetwork( Utils.getCompletePath(snapshot.data![index].url),
-              width: 10.w,
-              height: 20.h);
+          return ImageUtils.fromNetwork(Utils.getCompletePath(snapshot.data![index].url),
+              width: 10.w, height: 20.h);
         } else {
           return Container();
         }

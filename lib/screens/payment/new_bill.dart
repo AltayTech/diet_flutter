@@ -245,7 +245,6 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                             ListView.builder(
                               shrinkWrap: true,
                               itemCount: bloc.servicesFilteredByPackage.length,
-                              itemExtent: 15.5.h,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 ServicePackage package = bloc.servicesFilteredByPackage[index];
@@ -260,7 +259,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentNewScreen>
                                     description: package.description ?? '',
                                     price: '${package.price?.price ?? 0}',
                                     finalPrice: '${package.price?.finalPrice ?? 0}',
-                                    maxHeight: 15.5.h,
+                                    maxHeight: 90,
                                     isOurSuggestion: false,
                                     isBorder: true,
                                     borderColor: null,

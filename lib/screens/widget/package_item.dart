@@ -233,104 +233,114 @@ class PackageWidget extends StatelessWidget {
               : null,
           borderRadius: BorderRadius.circular(10),
         ),
+        constraints:
+        BoxConstraints.tightFor(height: max(maxHeight ?? 8.h, ((maxHeight ?? 8.h) + 3.h))),
         child: Container(
           padding: EdgeInsets.all(16),
           width: double.maxFinite,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Column(
             children: [
               Expanded(
-                flex: 0,
-                child: Container(
-                    child: ImageUtils.fromLocal(
-                      isSelected
-                          ? 'assets/images/physical_report/icon_checked.svg'
-                          : 'assets/images/physical_report/none_checked.svg',
-                      width: 5.w,
-                      height: 5.w,
-                    ),
-                    alignment: Alignment.topRight,
-                    height: double.maxFinite),
-              ),
-              Space(
-                width: 2.w,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: double.maxFinite,
-                      child: Text(
-                        title,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.start,
-                        maxLines: 1,
-                        style: typography!.caption!.copyWith(
-                            letterSpacing: -0.02,
-                            color: Colors.black,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600),
-                      ),
+                    Expanded(
+                      flex: 0,
+                      child: Container(
+                          child: ImageUtils.fromLocal(
+                            isSelected
+                                ? 'assets/images/physical_report/icon_checked.svg'
+                                : 'assets/images/physical_report/none_checked.svg',
+                            width: 5.w,
+                            height: 5.w,
+                          ),
+                          alignment: Alignment.topRight,
+                          height: double.maxFinite),
                     ),
                     Space(
-                      height: 1.h,
+                      width: 2.w,
                     ),
                     Expanded(
-                      child: Container(
-                        width: double.maxFinite,
-                        child: Row(
-                          children: [
-                            RichText(
-                              softWrap: true,
-                              textAlign: TextAlign.start,
-                              text: TextSpan(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: double.maxFinite,
+                              child: Text(
+                                title,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                maxLines: 1,
+                                style: typography!.caption!.copyWith(
+                                    letterSpacing: -0.02,
+                                    color: Colors.black,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                          Space(
+                            height: 3.h,
+                          ),
+                          Expanded(
+                            child: Container(
+                              width: double.maxFinite,
+                              child: Row(
                                 children: [
-                                  TextSpan(
-                                      text: '${context.intl.toman}',
+                                  RichText(
+                                    softWrap: true,
+                                    textAlign: TextAlign.start,
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text: '${context.intl.toman}',
+                                            style: typography!.caption!.copyWith(
+                                                letterSpacing: -0.02,
+                                                color: Color(0xff454545),
+                                                fontSize: 9.sp,
+                                                fontWeight: FontWeight.w300))
+                                      ],
+                                      text: '$price'.seRagham() + '+ ',
                                       style: typography!.caption!.copyWith(
                                           letterSpacing: -0.02,
                                           color: Color(0xff454545),
-                                          fontSize: 9.sp,
-                                          fontWeight: FontWeight.w300))
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  description != null && description!.length > 0
+                                      ? Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              serviceDescription(context, title, description!);
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  context.intl.moreDescription,
+                                                  softWrap: true,
+                                                  textAlign: TextAlign.start,
+                                                  style: typography!.caption!.copyWith(
+                                                      letterSpacing: -0.02,
+                                                      color: Colors.red,
+                                                      fontSize: 10.sp,
+                                                      fontWeight: FontWeight.w500),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : EmptyBox(),
                                 ],
-                                text: '$price'.seRagham() + '+ ',
-                                style: typography!.caption!.copyWith(
-                                    letterSpacing: -0.02,
-                                    color: Color(0xff454545),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500),
                               ),
                             ),
-                            description != null && description!.length > 0
-                                ? Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        serviceDescription(context, title, description!);
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            context.intl.moreDescription,
-                                            softWrap: true,
-                                            textAlign: TextAlign.start,
-                                            style: typography!.caption!.copyWith(
-                                                letterSpacing: -0.02,
-                                                color: Colors.red,
-                                                fontSize: 10.sp,
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                : EmptyBox(),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
