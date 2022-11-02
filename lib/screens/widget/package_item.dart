@@ -266,7 +266,9 @@ class PackageWidget extends StatelessWidget {
                       child: Text(
                         title,
                         softWrap: true,
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
+                        maxLines: 1,
                         style: typography!.caption!.copyWith(
                             letterSpacing: -0.02,
                             color: Colors.black,
@@ -307,7 +309,7 @@ class PackageWidget extends StatelessWidget {
                                 ? Expanded(
                                     child: InkWell(
                                       onTap: () {
-                                        serviceDescription(context, description!);
+                                        serviceDescription(context, title, description!);
                                       },
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
@@ -341,15 +343,14 @@ class PackageWidget extends StatelessWidget {
     );
   }
 
-  void serviceDescription(BuildContext context, String desc) {
+  void serviceDescription(BuildContext context, String title, String desc) {
     DialogUtils.showBottomSheetPage(
         context: context,
         child: SingleChildScrollView(
           child: Container(
-            height: desc.length > 150 ? desc.length * 3 : 300,
             padding: EdgeInsets.all(5.w),
             alignment: Alignment.center,
-            child: Stack(children: [
+            child: Column(children: [
               Column(
                 children: [
                   Row(
@@ -357,10 +358,10 @@ class PackageWidget extends StatelessWidget {
                       closeDialog(context),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 32),
+                          padding: const EdgeInsets.only(left: 32, right: 8),
                           child: Center(
                             child: Text(
-                              context.intl.moreDescription,
+                              title,
                               softWrap: true,
                               style: context.typography.caption!
                                   .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
@@ -370,7 +371,7 @@ class PackageWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Space(height: 5.h),
+                  Space(height: 3.h),
                   Text(
                     desc,
                     softWrap: true,
@@ -379,15 +380,15 @@ class PackageWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              Positioned(
-                bottom: 2,
-                child: Center(
-                    child: SubmitButton(
-                  label: context.intl.understand,
-                  onTap: () => Navigator.of(context).pop(),
-                  size: Size(80.w, 6.h),
-                )),
-              )
+              Space(
+                height: 2.h,
+              ),
+              Center(
+                  child: SubmitButton(
+                label: context.intl.understand,
+                onTap: () => Navigator.of(context).pop(),
+                size: Size(80.w, 6.h),
+              ))
             ]),
           ),
         ));

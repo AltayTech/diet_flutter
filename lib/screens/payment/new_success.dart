@@ -321,7 +321,6 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
 
     bloc.onRetryLoadingPage();
     bloc.sendRequest();
@@ -329,8 +328,6 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessNewScree
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
     bloc.onRetryAfterNoInternet();
   }
 }
