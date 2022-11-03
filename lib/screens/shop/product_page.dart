@@ -14,7 +14,6 @@ import 'package:behandam/widget/custom_video.dart';
 import 'package:chewie/chewie.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -64,7 +63,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
         builder: (context, snapshot) {
           return Scaffold(
               appBar: Toolbar(
-                titleBar: productBloc.toolbar ?? intl.shop,
+                titleBar: productBloc.toolbar ?? intl.myProduct,
               ),
               body: SafeArea(
                 child: TouchMouseScrollable(
@@ -108,7 +107,8 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
               padding: EdgeInsets.all(3.w),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                child: ImageUtils.fromNetwork( Utils.getCompletePathShop(shopProduct.productThambnail),
+                child: ImageUtils.fromNetwork(
+                    Utils.getCompletePathShop(shopProduct.productThambnail),
                     width: double.maxFinite,
                     height: 30.h,
                     fit: BoxFit.fill),
@@ -125,56 +125,46 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 textDirection: context.textDirectionOfLocale,
               ),
             ),
-            if (shopProduct.userOrderDate == null)
-              Padding(
-                padding: const EdgeInsets.only(right: 12.0, left: 12.0),
-                child: Line(color: AppColors.strongPen, height: 0.1.h),
-              ),
+            Padding(
+              padding: const EdgeInsets.only(right: 12.0, left: 12.0),
+              child: Line(color: AppColors.strongPen, height: 0.1.h),
+            ),
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: shopProduct.userOrderDate == null
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(shopProduct.sellingPrice.toString(),
-                                style: TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Colors.grey,
-                                    fontSize: 10.sp)),
-                            Text(shopProduct.discountPrice.toString() + intl.currency,
-                                style: TextStyle(fontSize: 12.sp))
-                          ],
-                        ),
-                        OutlinedButton(
-                            onPressed: () {
-                              VxNavigator.of(context)
-                                  .push(Uri(path: Routes.shopBill), params: shopProduct);
-                            },
-                            style: ButtonStyle(
-                              fixedSize: MaterialStateProperty.all(Size(40.w, 6.h)),
-                              backgroundColor: MaterialStateProperty.all(Colors.white),
-                              foregroundColor: MaterialStateProperty.all(AppColors.primary),
-                              shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0))),
-                              side: MaterialStateProperty.all(BorderSide(color: AppColors.primary)),
-                            ),
-                            child: Row(
-                              children: [
-                                ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
-                                    width: 2.w, height: 3.h, color: AppColors.primary),
-                                SizedBox(width: 2.w),
-                                Text(intl.buyCourse,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .button!
-                                        .copyWith(color: AppColors.primary)),
-                              ],
-                            )),
-                      ],
-                    )
-                  : Container(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Text(shopProduct.sellingPrice.toString(),
+                          style: TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                              color: Colors.grey,
+                              fontSize: 10.sp)),
+                      int.parse(shopProduct.discountPrice.toString()) == 0
+                          ? Text(intl.free, style: TextStyle(fontSize: 12.sp))
+                          : Text(shopProduct.discountPrice.toString() + intl.currency,
+                              style: TextStyle(fontSize: 12.sp))
+                    ],
+                  ),
+                  OutlinedButton(
+                    onPressed: () {
+                      VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: shopProduct);
+                    },
+                    style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all(Size(40.w, 6.h)),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      foregroundColor: MaterialStateProperty.all(AppColors.primary),
+                      shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+                      side: MaterialStateProperty.all(BorderSide(color: AppColors.primary)),
+                    ),
+                    child: Text(intl.addCourse,
+                        style:
+                            Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary)),
+                  ),
+                ],
+              ),
             )
           ],
         ),
@@ -184,7 +174,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
 
   Widget secondSection(ShopProduct shopProduct) {
     return Container(
-     constraints: BoxConstraints(minHeight: (productBloc.lessons!.length * 12.h)),
+      constraints: BoxConstraints(minHeight: (productBloc.lessons!.length * 12.h)),
       child: Card(
         child: StreamBuilder(builder: (context, snapshot) {
           return Padding(
@@ -336,7 +326,8 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                                     width: 10.w,
                                                     height: 5.h,
                                                     decoration: BoxDecoration(
-                                                        border: Border.all(color: AppColors.primary),
+                                                        border:
+                                                            Border.all(color: AppColors.primary),
                                                         borderRadius: BorderRadius.circular(15.0)),
                                                     child: Center(
                                                       child: ImageUtils.fromLocal(
@@ -358,7 +349,8 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                                                     width: 10.w,
                                                     height: 5.h,
                                                     decoration: BoxDecoration(
-                                                        border: Border.all(color: AppColors.primary),
+                                                        border:
+                                                            Border.all(color: AppColors.primary),
                                                         borderRadius: BorderRadius.circular(15.0)),
                                                     child: Center(
                                                       child: ImageUtils.fromLocal(
@@ -460,7 +452,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 Space(height: 2.h),
                 AspectRatio(
                   aspectRatio: 16 / 9,
-                  child:   CustomVideo(
+                  child: CustomVideo(
                     url: lessons.typeMediaShop == TypeMediaShop.play ? lessons.path : lessons.video,
                     image: null,
                     isFile: lessons.typeMediaShop == TypeMediaShop.play ? true : null,
@@ -477,6 +469,37 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
         ));
   }
 
+  Widget addCourseBox(ShopProduct shopProduct) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            Text(shopProduct.sellingPrice.toString(),
+                style: TextStyle(
+                    decoration: TextDecoration.lineThrough, color: Colors.grey, fontSize: 10.sp)),
+            Text(intl.free, style: TextStyle(fontSize: 12.sp))
+          ],
+        ),
+        OutlinedButton(
+          onPressed: () {
+            VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: shopProduct);
+          },
+          style: ButtonStyle(
+            fixedSize: MaterialStateProperty.all(Size(40.w, 6.h)),
+            backgroundColor: MaterialStateProperty.all(Colors.white),
+            foregroundColor: MaterialStateProperty.all(AppColors.primary),
+            shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+            side: MaterialStateProperty.all(BorderSide(color: AppColors.primary)),
+          ),
+          child: Text(intl.addCourse,
+              style: Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary)),
+        ),
+      ],
+    );
+  }
+
   @override
   void dispose() {
     productBloc.dispose();
@@ -485,7 +508,6 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     }
     super.dispose();
   }
-
 
   @override
   void onRetryAfterNoInternet() {
@@ -497,5 +519,4 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     productBloc.setRepository();
     productBloc.getProduct(int.parse(args!));
   }
-
 }

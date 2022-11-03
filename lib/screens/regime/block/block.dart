@@ -3,6 +3,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/user/block_user.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -84,6 +85,20 @@ class _BlockState extends ResourcefulState<Block> {
             }),
           ),
         ),
+        if(navigator.currentConfiguration!.path.contains('list'))
+        Space(height: 2.h),
+        if(navigator.currentConfiguration!.path.contains('list'))
+        Center(
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: CustomButton(
+              AppColors.priceGreenColor,
+              intl.callRightNow,
+              Size(80.w, 6.h),
+              () async => await IntentUtils.makePhoneCall(intl.phone),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -114,9 +129,7 @@ class _BlockState extends ResourcefulState<Block> {
 
   @override
   void onRetryLoadingPage() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
-    bloc.onRetryLoadingPage();
+      bloc.onRetryLoadingPage();
   }
 
   @override

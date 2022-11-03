@@ -96,8 +96,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                     width: 14.w,
                                                     height: 12.w,
                                                     color: AppColors.primary),
-                                                quarterTurns:
-                                                context.isRtl ? 0 : 90,
+                                                quarterTurns: context.isRtl ? 0 : 90,
                                               ),
                                               ImageUtils.fromNetwork(
                                                   Utils.getCompletePathShop(
@@ -111,11 +110,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                         Expanded(
                                           child: Text(
                                             bloc.list![index].title ?? '',
-                                            style:
-                                            Theme
-                                                .of(context)
-                                                .textTheme
-                                                .caption,
+                                            style: Theme.of(context).textTheme.caption,
                                           ),
                                           flex: 1,
                                         ),
@@ -123,19 +118,16 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                           onPressed: () {
                                             if (bloc.list![index].action_type ==
                                                 ActionType.deepLink) {
-                                              VxNavigator.of(context).push(Uri.parse(
-                                                  '/${bloc.list![index].action}'));
-                                            } else if (bloc
-                                                .list![index].action_type ==
+                                              VxNavigator.of(context)
+                                                  .push(Uri.parse('/${bloc.list![index].action}'));
+                                            } else if (bloc.list![index].action_type ==
                                                 ActionType.link) {
-                                              Utils.launchURL(
-                                                  bloc.list![index].action!);
+                                              Utils.launchURL(bloc.list![index].action!);
                                             }
                                           },
                                           child: Text(
                                             intl.view,
-                                            style: Theme
-                                                .of(context)
+                                            style: Theme.of(context)
                                                 .textTheme
                                                 .overline!
                                                 .copyWith(color: AppColors.primary),
@@ -151,8 +143,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                               right: context.isRtl ? null : 5,
                                               child: Icon(
                                                 Icons.navigate_next,
-                                                color: AppColors.primary
-                                                    .withOpacity(0.6),
+                                                color: AppColors.primary.withOpacity(0.6),
                                                 size: 5.w,
                                               ),
                                             ),
@@ -171,41 +162,32 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 4.w, right: 4.w, top: 4.w),
+                                    padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 4.w),
                                     child: Row(
-                                      textDirection:
-                                      context.textDirectionOfLocale,
+                                      textDirection: context.textDirectionOfLocale,
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            bloc.list![index].category!
-                                                .category_name ??
-                                                '',
-                                            style: Theme
-                                                .of(context)
+                                            bloc.list![index].category!.category_name ?? '',
+                                            style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1!
-                                                .copyWith(
-                                                fontWeight: FontWeight.w700),
+                                                .copyWith(fontWeight: FontWeight.w700),
                                           ),
                                           flex: 1,
                                         ),
                                         MaterialButton(
                                           onPressed: () {
                                             VxNavigator.of(context).push(Uri.parse(
-                                                '${Routes.shopCategory}/${bloc.list![index]
-                                                    .category!.id}'));
+                                                '${Routes.shopCategory}/${bloc.list![index].category!.id}'));
                                           },
                                           child: Text(
                                             intl.viewAll,
-                                            style: Theme
-                                                .of(context)
+                                            style: Theme.of(context)
                                                 .textTheme
                                                 .caption!
-                                                .copyWith(
-                                                color: AppColors.primary),
+                                                .copyWith(color: AppColors.primary),
                                           ),
                                         ),
                                       ],
@@ -216,25 +198,21 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                     width: 100.w,
                                     child: ListView.builder(
                                       shrinkWrap: true,
+                                      physics: BouncingScrollPhysics(),
                                       itemExtent: 55.w,
-                                      cacheExtent: 50,
                                       itemBuilder: (context, i) {
                                         return GestureDetector(
                                           onTap: () {
                                             VxNavigator.of(context).push(Uri.parse(
-                                                '${Routes.shopProduct}/${bloc.list![index].category!
-                                                    .products![i].id}'));
+                                                '${Routes.shopProduct}/${bloc.list![index].category!.products![i].id}'));
                                           },
                                           child: Card(
                                             color: Colors.white,
                                             margin: EdgeInsets.only(
                                                 left: i ==
-                                                    (bloc
-                                                        .list![index]
-                                                        .category!
-                                                        .products!
-                                                        .length -
-                                                        1)
+                                                        (bloc.list![index].category!.products!
+                                                                .length -
+                                                            1)
                                                     ? 4.w
                                                     : 2.w,
                                                 right: i == 0 ? 4.w : 2.w,
@@ -243,15 +221,10 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                             shape: AppShapes.rectangleDefault,
                                             child: Padding(
                                               child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  if (bloc
-                                                      .list![index]
-                                                      .category!
-                                                      .products![i]
-                                                      .userOrderDate !=
+                                                  if (bloc.list![index].category!.products![i]
+                                                          .userOrderDate !=
                                                       null)
                                                     ClipRect(
                                                       child: AspectRatio(
@@ -262,33 +235,24 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                                 .category!
                                                                 .products![i]
                                                                 .productThambnail),
-                                                            showPlaceholder:
-                                                            false,
-                                                            decoration:
-                                                            AppDecorations
-                                                                .boxMild,
+                                                            showPlaceholder: false,
+                                                            decoration: AppDecorations.boxMild,
                                                             fit: BoxFit.fill),
                                                       ),
                                                     ),
-                                                  if (bloc
-                                                      .list![index]
-                                                      .category!
-                                                      .products![i]
-                                                      .userOrderDate ==
+                                                  if (bloc.list![index].category!.products![i]
+                                                          .userOrderDate ==
                                                       null)
                                                     AspectRatio(
                                                       aspectRatio: 16 / 9,
                                                       child: ImageUtils.fromNetwork(
-                                                          Utils.getCompletePathShop(
-                                                              bloc
-                                                                  .list![index]
-                                                                  .category!
-                                                                  .products![i]
-                                                                  .productThambnail),
+                                                          Utils.getCompletePathShop(bloc
+                                                              .list![index]
+                                                              .category!
+                                                              .products![i]
+                                                              .productThambnail),
                                                           showPlaceholder: false,
-                                                          decoration:
-                                                          AppDecorations
-                                                              .boxMild,
+                                                          decoration: AppDecorations.boxMild,
                                                           fit: BoxFit.fill),
                                                     ),
                                                   Space(
@@ -296,26 +260,17 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                   ),
                                                   Expanded(
                                                     child: Text(
-                                                      bloc
-                                                          .list![index]
-                                                          .category!
-                                                          .products![i]
-                                                          .productName ??
+                                                      bloc.list![index].category!.products![i]
+                                                              .productName ??
                                                           '',
-                                                      style: Theme
-                                                          .of(context)
+                                                      style: Theme.of(context)
                                                           .textTheme
                                                           .caption!
-                                                          .copyWith(
-                                                          fontWeight:
-                                                          FontWeight
-                                                              .bold),
+                                                          .copyWith(fontWeight: FontWeight.bold),
                                                       maxLines: 2,
                                                       softWrap: true,
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
-                                                      textDirection: context
-                                                          .textDirectionOfLocale,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      textDirection: context.textDirectionOfLocale,
                                                     ),
                                                   ),
                                                   Space(
@@ -329,133 +284,12 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                                   Space(
                                                     height: 1.h,
                                                   ),
-                                                  (bloc
-                                                      .list![index]
-                                                      .category!
-                                                      .products![i]
-                                                      .userOrderDate ==
-                                                      null)
-                                                      ? Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                    children: [
-                                                      Column(
-                                                        children: [
-                                                          Text(
-                                                              '${bloc.list![index].category!
-                                                                  .products![i].sellingPrice}',
-                                                              style: TextStyle(
-                                                                  decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                  fontSize:
-                                                                  10.sp)),
-                                                          Text(
-                                                              '${bloc.list![index].category!
-                                                                  .products![i]
-                                                                  .discountPrice} ${intl.currency}',
-                                                              style: Theme
-                                                                  .of(
-                                                                  context)
-                                                                  .textTheme
-                                                                  .overline)
-                                                        ],
-                                                      ),
-                                                      MaterialButton(
-                                                        onPressed: () {
-                                                          VxNavigator.of(
-                                                              context)
-                                                              .push(Uri.parse(
-                                                              '${Routes.shopProduct}/${bloc
-                                                                  .list![index].category!
-                                                                  .products![i].id}'));
-                                                        },
-                                                        minWidth: 7.w,
-                                                        height: 7.w,
-                                                        child: bloc
-                                                            .list![
-                                                        index]
-                                                            .category!
-                                                            .products![
-                                                        i]
-                                                            .userOrderDate !=
-                                                            null
-                                                            ? Text(
-                                                            intl.view,
-                                                            style: Theme
-                                                                .of(
-                                                                context)
-                                                                .textTheme
-                                                                .button!
-                                                                .copyWith(
-                                                                color:
-                                                                AppColors.primary))
-                                                            : Container(
-                                                          padding: EdgeInsets
-                                                              .all(2
-                                                              .w),
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                              BorderRadius.circular(
-                                                                  15.0),
-                                                              color: Colors
-                                                                  .white,
-                                                              border: Border.all(
-                                                                  width:
-                                                                  0.2.w,
-                                                                  color: AppColors.primary)),
-                                                          child: ImageUtils.fromLocal(
-                                                              'assets/images/shop/add_cart.svg',
-                                                              padding:
-                                                              EdgeInsets.all(1
-                                                                  .w),
-                                                              width:
-                                                              5.w,
-                                                              height:
-                                                              5.w,
-                                                              color: AppColors
-                                                                  .primary),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                      : Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                          intl
-                                                              .buyThisCourse,
-                                                          style: Theme
-                                                              .of(
-                                                              context)
-                                                              .textTheme
-                                                              .overline!
-                                                              .copyWith(
-                                                              color: AppColors
-                                                                  .priceColor,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w700)),
-                                                      SubmitButton(
-                                                        onTap: () {
-                                                          VxNavigator.of(
-                                                              context)
-                                                              .push(Uri.parse(
-                                                              '${Routes.shopProduct}/${bloc
-                                                                  .list![index].category!
-                                                                  .products![i].id}'));
-                                                        },
-                                                        label: intl.view,
-                                                        size:
-                                                        Size(23.w, 8.w),
-                                                      ),
-                                                    ],
-                                                  )
+                                                  int.parse(bloc.list![index].category!.products![i]
+                                                              .discountPrice
+                                                              .toString()) ==
+                                                          0
+                                                      ? freeBox(index, i)
+                                                      : costBox(index, i)
                                                 ],
                                               ),
                                               padding: EdgeInsets.all(3.w),
@@ -463,26 +297,22 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                           ),
                                         );
                                       },
-                                      itemCount: bloc.list![index].category!
-                                          .products!.length,
+                                      itemCount: bloc.list![index].category!.products!.length,
                                       scrollDirection: Axis.horizontal,
                                     ),
                                   )
                                 ],
                               );
-                              break;
                             case StyleType.banner:
                               return GestureDetector(
                                 onTap: () {
                                   if (bloc.list![index].banner!.action_type ==
                                       ActionType.deepLink) {
-                                    VxNavigator.of(context).push(Uri.parse(
-                                        '/${bloc.list![index].banner!.action}'));
-                                  } else if (bloc
-                                      .list![index].banner!.action_type ==
+                                    VxNavigator.of(context)
+                                        .push(Uri.parse('/${bloc.list![index].banner!.action}'));
+                                  } else if (bloc.list![index].banner!.action_type ==
                                       ActionType.link) {
-                                    Utils.launchURL(
-                                        bloc.list![index].banner!.action!);
+                                    Utils.launchURL(bloc.list![index].banner!.action!);
                                   }
                                 },
                                 child: Container(
@@ -497,11 +327,9 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                                       fit: BoxFit.fitWidth),
                                 ),
                               );
-
                             default:
                               return Container();
                           }
-                          return Container();
                         },
                         shrinkWrap: true,
                         itemCount: bloc.list?.length ?? 0,
@@ -522,6 +350,100 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
         ),
       ),
     );
+  }
+
+  Widget freeBox(int index, int i) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            Text('${bloc.list![index].category!.products![i].sellingPrice}',
+                style: TextStyle(
+                    decoration: TextDecoration.lineThrough, color: Colors.grey, fontSize: 10.sp)),
+            Text(intl.free, style: Theme.of(context).textTheme.overline)
+          ],
+        ),
+        MaterialButton(
+          onPressed: () {
+            VxNavigator.of(context).push(
+                Uri.parse('${Routes.shopProduct}/${bloc.list![index].category!.products![i].id}'));
+          },
+          minWidth: 7.w,
+          height: 7.w,
+          child: bloc.list![index].category!.products![i].userOrderDate != null
+              ? Text(intl.view,
+                  style: Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary))
+              : Text(intl.addCourse,
+                  style: Theme.of(context)
+                      .textTheme
+                      .button!
+                      .copyWith(color: AppColors.primary, fontSize: 10.sp)),
+        ),
+      ],
+    );
+  }
+
+  Widget costBox(int index, int i) {
+    return (bloc.list![index].category!.products![i].userOrderDate == null)
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text('${bloc.list![index].category!.products![i].sellingPrice}',
+                      style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          color: Colors.grey,
+                          fontSize: 10.sp)),
+                  Text('${bloc.list![index].category!.products![i].discountPrice} ${intl.currency}',
+                      style: Theme.of(context).textTheme.overline)
+                ],
+              ),
+              MaterialButton(
+                onPressed: () {
+                  VxNavigator.of(context).push(Uri.parse(
+                      '${Routes.shopProduct}/${bloc.list![index].category!.products![i].id}'));
+                },
+                minWidth: 7.w,
+                height: 7.w,
+                child: bloc.list![index].category!.products![i].userOrderDate != null
+                    ? Text(intl.view,
+                        style:
+                            Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary))
+                    : Container(
+                        padding: EdgeInsets.all(2.w),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            color: Colors.white,
+                            border: Border.all(width: 0.2.w, color: AppColors.primary)),
+                        child: ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
+                            padding: EdgeInsets.all(1.w),
+                            width: 5.w,
+                            height: 5.w,
+                            color: AppColors.primary),
+                      ),
+              ),
+            ],
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(intl.buyThisCourse,
+                  style: Theme.of(context)
+                      .textTheme
+                      .overline!
+                      .copyWith(color: AppColors.priceColor, fontWeight: FontWeight.w700)),
+              SubmitButton(
+                onTap: () {
+                  VxNavigator.of(context).push(Uri.parse(
+                      '${Routes.shopProduct}/${bloc.list![index].category!.products![i].id}'));
+                },
+                label: intl.view,
+                size: Size(23.w, 8.w),
+              ),
+            ],
+          );
   }
 
   @override
