@@ -190,6 +190,17 @@ class ProductBloc {
     // getProduct();
   }
 
+  void freePaymentClick(int productId) {
+    Payment shopPayment = Payment();
+    shopPayment.originId = kIsWeb ? 5 : 6;
+    shopPayment.paymentTypeId = 2;
+    shopPayment.productId = productId;
+    if (discountCode != null && discountCode!.length > 0) shopPayment.coupon = discountCode;
+    _repository.shopOnlinePayment(shopPayment).then((value) {
+      _navigateToRoute.fire('freeProduct');
+    }).whenComplete(() => _popLoading.fire(false));
+  }
+
   void onlinePaymentClick(int productId) {
     Payment shopPayment = Payment();
     shopPayment.originId = kIsWeb ? 5 : 6;

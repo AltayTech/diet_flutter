@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
+import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/shop/product_bloc.dart';
 import 'package:behandam/screens/widget/centered_circular_progress.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -51,7 +52,22 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
       isInit = true;
       args = ModalRoute.of(context)!.settings.arguments as String;
       productBloc.getProduct(int.parse(args!));
+
+      listenBloc();
     }
+  }
+
+  void listenBloc() {
+    productBloc.popLoading.listen((event) {
+      Navigator.pop(context);
+    });
+
+    productBloc.navigateToRoute.listen((event) {
+      if (event.toString().contains('freeProduct')) {
+        // refresh page
+        VxNavigator.of(context).replace(Uri.parse('${Routes.shopProduct}/$args'));
+      }
+    });
   }
 
   @override
@@ -129,43 +145,49 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
               padding: const EdgeInsets.only(right: 12.0, left: 12.0),
               child: Line(color: AppColors.strongPen, height: 0.1.h),
             ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text(shopProduct.sellingPrice.toString(),
-                          style: TextStyle(
-                              decoration: TextDecoration.lineThrough,
-                              color: Colors.grey,
-                              fontSize: 10.sp)),
-                      int.parse(shopProduct.discountPrice.toString()) == 0
-                          ? Text(intl.free, style: TextStyle(fontSize: 12.sp))
-                          : Text(shopProduct.discountPrice.toString() + intl.currency,
-                              style: TextStyle(fontSize: 12.sp))
-                    ],
-                  ),
-                  OutlinedButton(
-                    onPressed: () {
-                      VxNavigator.of(context).push(Uri(path: Routes.shopBill), params: shopProduct);
-                    },
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(Size(40.w, 6.h)),
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
-                      foregroundColor: MaterialStateProperty.all(AppColors.primary),
-                      shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                      side: MaterialStateProperty.all(BorderSide(color: AppColors.primary)),
+            if (shopProduct.userOrderDate == null && shopProduct.userOrderDate.isNullOrEmpty)
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Text(shopProduct.sellingPrice.toString(),
+                            style: TextStyle(
+                                decoration: TextDecoration.lineThrough,
+                                color: Colors.grey,
+                                fontSize: 10.sp)),
+                        int.parse(shopProduct.discountPrice.toString()) == 0
+                            ? Text(intl.free, style: TextStyle(fontSize: 12.sp))
+                            : Text(shopProduct.discountPrice.toString() + intl.currency,
+                                style: typography.caption!.copyWith(fontSize: 12.sp))
+                      ],
                     ),
-                    child: Text(intl.addCourse,
-                        style:
-                            Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary)),
-                  ),
-                ],
-              ),
-            )
+                    OutlinedButton(
+                      onPressed: () {
+                        if (int.parse(shopProduct.discountPrice.toString()) == 0) {
+                          DialogUtils.showDialogProgress(context: context);
+                          productBloc.freePaymentClick(shopProduct.id!);
+                        } else {
+                          VxNavigator.of(context)
+                              .push(Uri(path: Routes.shopBill), params: shopProduct);
+                        }
+                      },
+                      style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all(Size(40.w, 6.h)),
+                        backgroundColor: MaterialStateProperty.all(Colors.white),
+                        foregroundColor: MaterialStateProperty.all(AppColors.primary),
+                        shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+                        side: MaterialStateProperty.all(BorderSide(color: AppColors.primary)),
+                      ),
+                      child: Text(intl.addCourse,
+                          style: typography.button!.copyWith(color: AppColors.primary)),
+                    ),
+                  ],
+                ),
+              )
           ],
         ),
       ),
@@ -476,9 +498,9 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
         Column(
           children: [
             Text(shopProduct.sellingPrice.toString(),
-                style: TextStyle(
+                style: typography.caption!.copyWith(
                     decoration: TextDecoration.lineThrough, color: Colors.grey, fontSize: 10.sp)),
-            Text(intl.free, style: TextStyle(fontSize: 12.sp))
+            Text(intl.free, style: typography.caption!.copyWith(fontSize: 12.sp))
           ],
         ),
         OutlinedButton(
@@ -493,8 +515,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
             side: MaterialStateProperty.all(BorderSide(color: AppColors.primary)),
           ),
-          child: Text(intl.addCourse,
-              style: Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary)),
+          child: Text(intl.addCourse, style: typography.button!.copyWith(color: AppColors.primary)),
         ),
       ],
     );
