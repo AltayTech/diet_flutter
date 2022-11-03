@@ -41,6 +41,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
   void initState() {
     super.initState();
     productBloc = ProductBloc();
+    listenBloc();
     _controller = ExpandableController();
   }
 
@@ -52,8 +53,6 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
       isInit = true;
       args = ModalRoute.of(context)!.settings.arguments as String;
       productBloc.getProduct(int.parse(args!));
-
-      listenBloc();
     }
   }
 
@@ -65,7 +64,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
     productBloc.navigateToRoute.listen((event) {
       if (event.toString().contains('freeProduct')) {
         // refresh page
-        VxNavigator.of(context).replace(Uri.parse('${Routes.shopProduct}/$args'));
+        productBloc.getProduct(int.parse(args!));
       }
     });
   }
@@ -145,7 +144,7 @@ class _ProductPageState extends ResourcefulState<ProductPage> {
               padding: const EdgeInsets.only(right: 12.0, left: 12.0),
               child: Line(color: AppColors.strongPen, height: 0.1.h),
             ),
-            if (shopProduct.userOrderDate == null && shopProduct.userOrderDate.isNullOrEmpty)
+            if (shopProduct.userOrderDate.isNullOrEmpty)
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Row(

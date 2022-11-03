@@ -365,7 +365,7 @@ class _RepositoryImpl extends Repository {
     if (_cache.date == null || _cache.foodList == null || invalidate) {
       response = await _apiClient.foodList(date);
       debugPrint('repository2 ${response.data}');
-      if (invalidate) {
+      if (invalidate && response.data != null) {
         _cache.saveNewFoodList(response.requireData!, date);
       } else {
         if (response.data != null) _cache.saveFoodList(response.requireData!, date);
