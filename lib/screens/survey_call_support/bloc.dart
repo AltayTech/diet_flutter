@@ -94,6 +94,7 @@ class SurveyCallSupportBloc {
     _repository.getCallSurveyCauses().then((value) {
       for (int i = 0; i < value.data!.surveyCauses!.length; i++) {
         PollPhrases pollPhrase = value.data!.surveyCauses![i];
+        pollPhrase.isActive = boolean.False;
         if (pollPhrase.isPositive == boolean.True) {
           listStrengths!.add(pollPhrase);
         } else {

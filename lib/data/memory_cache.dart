@@ -27,8 +27,8 @@ class MemoryApp {
   static Jalali? day;
   static bool forgetPass = false;
   static bool needRoute = true;
-  static bool  isShowDialog = false;
-  static bool  isNetworkAlertShown = false;
+  static bool isShowDialog = false;
+  static bool isNetworkAlertShown = false;
   static FirebaseAnalytics? analytics;
   static List<String> fastingDates = [];
   static SurveyData? callSurveyData = null;
@@ -51,6 +51,12 @@ class MemoryApp {
   UserInformation? get profile => _profile;
 
   List<FastPatternData>? get patterns => _patterns;
+
+  void saveNewFoodList(FoodListData data, String date) {
+    if (_foodList.isNotEmpty) _foodList.clear();
+
+    _foodList.addAll({date: data});
+  }
 
   void saveFoodList(FoodListData data, String date) {
     if (_foodList.containsKey(date)) {

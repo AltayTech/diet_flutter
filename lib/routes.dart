@@ -51,6 +51,7 @@ abstract class Routes {
   static const dietHistory = '/reg/diet/history';
   static const dietGoal = '/reg/diet/goal';
   static const paymentFail = '/reg/payment/online/fail';
+  static const renewPaymentFail = '/renew/payment/online/fail';
   static const paymentWaiting = '/reg/payment/card/wait';
   static const overview = '/reg/overview';
   static const menuSelect = '/reg/menu/select';

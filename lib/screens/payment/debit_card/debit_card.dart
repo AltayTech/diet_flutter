@@ -48,6 +48,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
       if (!navigator.currentConfiguration!.path.contains('subscription')) {
         bloc.setServices = arg['services'] as List<ServicePackage>;
         bloc.setPackage = arg['package'] as Package;
+        bloc.setSelectedDietTypeId = arg['selectedDietTypeId'] as int?;
       } else {
         bloc.setPackageItem = arg['package'] as PackageItem;
       }

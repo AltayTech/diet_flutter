@@ -16,7 +16,6 @@ class PollPhrases {
   @JsonKey(name: "cause")
   String? cause;
 
-  @JsonKey(name: "is_active")
   boolean? isActive;
 
   @JsonKey(name: "is_positive")

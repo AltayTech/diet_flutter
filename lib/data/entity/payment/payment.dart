@@ -43,6 +43,9 @@ class Payment {
   @JsonKey(name: "service_ids")
   List<int>? serviceIds;
 
+  @JsonKey(name: "selected_diet_type_id")
+  int? selectedDietTypeId;
+
   Payment();
 
   factory Payment.fromJson(Map<String, dynamic> json) =>

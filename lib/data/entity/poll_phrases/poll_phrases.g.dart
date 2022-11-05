@@ -15,7 +15,7 @@ PollPhrases _$PollPhrasesFromJson(Map<String, dynamic> json) => PollPhrases()
       .toList()
   ..id = json['id'] as int?
   ..cause = json['cause'] as String?
-  ..isActive = $enumDecodeNullable(_$booleanEnumMap, json['is_active'])
+  ..isActive = $enumDecodeNullable(_$booleanEnumMap, json['isActive'])
   ..isPositive = $enumDecodeNullable(_$booleanEnumMap, json['is_positive']);
 
 Map<String, dynamic> _$PollPhrasesToJson(PollPhrases instance) =>
@@ -24,7 +24,7 @@ Map<String, dynamic> _$PollPhrasesToJson(PollPhrases instance) =>
       'survey_rates': instance.surveyRates,
       'id': instance.id,
       'cause': instance.cause,
-      'is_active': _$booleanEnumMap[instance.isActive],
+      'isActive': _$booleanEnumMap[instance.isActive],
       'is_positive': _$booleanEnumMap[instance.isPositive],
     };
 

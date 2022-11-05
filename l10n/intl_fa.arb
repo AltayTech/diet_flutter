@@ -535,9 +535,9 @@
   "receivePdf": "دریافت لیست هفته جاری",
   "cancelPdf": "انصراف",
   "behandam": "به اندام دکتر کرمانی",
-  "shop": "فروشگاه به اندام",
+  "shop": "آموزش",
   "buyCourse": "خرید این دوره",
-  "myProduct": "محصولات من",
+  "myProduct": "دوره های من",
   "selectOneFreeFood": "یکی از آیتم های آزاد زیر رو انتخاب کن",
   "view": "مشاهده",
   "viewAll": "مشاهده همه",
@@ -547,7 +547,7 @@
   "year": "سال",
   "errorSelectedItem": "لطفا یک گزینه را انتخاب کنید",
   "receiveTermPdf": "دریافت لیست دوره جاری",
-  "shopMenu": "فروشگاه",
+  "shopMenu": "آموزش",
   "selectReplacedFood": "ابتدا غذای جایگزین رو انتخاب کن",
   "refund": "بازگشت وجه",
   "user": "کاربر",
@@ -811,5 +811,6 @@
   "kermanyChampions": "قهرمانان دکتر کرمانی",
   "psychologistNoTimeToBook": "زمان خالی برای رزرو روانشناس برای این هفته وجود ندارد",
   "moreDescription": "توضیحات بیشتر",
+  "addCourse": "شرکت در دوره",
   "understand": "متوجه شدم"
 }

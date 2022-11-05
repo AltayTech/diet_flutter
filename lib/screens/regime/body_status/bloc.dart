@@ -81,8 +81,7 @@ class BodyStatusBloc {
     ConditionRequestData requestData = ConditionRequestData();
     requestData.dietTypeId = _dietSelected.value!.id;
     _repository.setCondition(requestData).then((value) {
-      debugPrint('bloc updateDietType ${value.data}');
-      if (value.data != null) _navigateTo.fire(value.next);
+     _navigateTo.fire(value.next);
     }).whenComplete(() {
       if (!MemoryApp.isNetworkAlertShown)
       _popDialog.fire(true);});

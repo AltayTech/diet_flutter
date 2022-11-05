@@ -30,6 +30,7 @@ class PaymentBloc {
 
   late String? _path;
   int? _productId;
+  int? _selectedDietTypeId;
   String? discountCode;
   PackageItem? _packageItem;
   Package? _packageItemNew;
@@ -117,6 +118,7 @@ class PaymentBloc {
   set setPackage(Package package) => _packageItemNew = package;
 
   set setPackageItem(PackageItem package) => _packageItem = package;
+  set setSelectedDietTypeId(int? selectedDietTypeId) => _selectedDietTypeId = selectedDietTypeId;
 
   set setServices(List<ServicePackage> services) => _services = services;
 
@@ -144,6 +146,7 @@ class PaymentBloc {
     payment.cardOwner = newInvoice.cardOwner;
     payment.cardNum = newInvoice.cardNum;
     payment.payedAt = newInvoice.payedAt;
+    payment.selectedDietTypeId = _selectedDietTypeId;
     _repository.newPayment(payment).then((value) {
       MemoryApp.analytics!.logEvent(
           name:

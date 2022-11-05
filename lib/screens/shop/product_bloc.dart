@@ -97,8 +97,7 @@ class ProductBloc {
     if (_selectedProduct.valueOrNull == null)
       text = '';
     else
-      text =
-          '{"filters":[[{"field":"id","op":"=","value":"${_productId ?? ""}"}]]"}';
+      text = '{"filters":[[{"field":"id","op":"=","value":"${_productId ?? ""}"}]]"}';
 
     return text;
   }
@@ -120,7 +119,8 @@ class ProductBloc {
     else if (tempDir == null && !kIsWeb && Platform.isIOS)
       tempDir = await getApplicationDocumentsDirectory();
     else
-      tempDir = await getDownloadsDirectory();
+      tempDir = await getTemporaryDirectory();
+
     _loadingMoreProducts.safeValue = true;
     try {
       _repository.getProduct(id).then((value) {
@@ -133,14 +133,12 @@ class ProductBloc {
             if (element.video != null && element.video!.trim().length > 1) {
               bool exist = false;
               if (!kIsWeb) {
-                element.path =
-                    '${tempDir!.path}/${element.video!.split('/').last}';
+                element.path = '${tempDir!.path}/${element.video!.split('/').last}';
                 exist = await File('${element.path}').exists();
               }
               if (exist) {
                 element.typeMediaShop = TypeMediaShop.play;
-              } else if (element.isFree == 0 &&
-                  _product.value.userOrderDate == null) {
+              } else if (element.isFree == 0 && _product.value.userOrderDate == null) {
                 element.typeMediaShop = TypeMediaShop.lock;
               } else {
                 element.typeMediaShop = TypeMediaShop.downloadAndPlay;
@@ -192,16 +190,25 @@ class ProductBloc {
     // getProduct();
   }
 
+  void freePaymentClick(int productId) {
+    Payment shopPayment = Payment();
+    shopPayment.originId = kIsWeb ? 5 : 6;
+    shopPayment.paymentTypeId = 2;
+    shopPayment.productId = productId;
+    if (discountCode != null && discountCode!.length > 0) shopPayment.coupon = discountCode;
+    _repository.shopOnlinePayment(shopPayment).then((value) {
+      _navigateToRoute.fire('freeProduct');
+    }).whenComplete(() => _popLoading.fire(false));
+  }
+
   void onlinePaymentClick(int productId) {
     Payment shopPayment = Payment();
     shopPayment.originId = kIsWeb ? 5 : 6;
     shopPayment.paymentTypeId = 0;
     shopPayment.productId = productId;
-    if (discountCode != null && discountCode!.length > 0)
-      shopPayment.coupon = discountCode;
+    if (discountCode != null && discountCode!.length > 0) shopPayment.coupon = discountCode;
     _repository.shopOnlinePayment(shopPayment).then((value) {
-      if (value.data?.url != null && value.data!.url!.isNotEmpty)
-        _checkLatestInvoice = true;
+      if (value.data?.url != null && value.data!.url!.isNotEmpty) _checkLatestInvoice = true;
       _onlinePayment.fire(value.data?.url ?? null);
     }).whenComplete(() => _popLoading.fire(false));
   }
@@ -234,14 +241,12 @@ class ProductBloc {
       _discountInfo = value.data;
       _product.value.discountPrice = _discountInfo!.finalPrice;
       _usedDiscount.safeValue = true;
-      MemoryApp.analytics!.logEvent(
-          name: "discount_code_shop_success", parameters: {'code': val});
+      MemoryApp.analytics!.logEvent(name: "discount_code_shop_success", parameters: {'code': val});
     }).catchError((err) {
       debugPrint('${err.toString()}');
       _usedDiscount.safeValue = false;
       _wrongDisCode.safeValue = true;
-      MemoryApp.analytics!
-          .logEvent(name: "discount_code_shop_fail", parameters: {'code': val});
+      MemoryApp.analytics!.logEvent(name: "discount_code_shop_fail", parameters: {'code': val});
     }).whenComplete(() {
       _discountLoading.safeValue = false;
     });

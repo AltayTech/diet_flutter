@@ -31,6 +31,7 @@ class BillPaymentBloc {
   List<ServicePackage> _servicesFilteredByPackage = [];
   late String _path;
   bool _checkLatestInvoice = false;
+  int? _selectedDietTypeId;
   String? _messageErrorCode;
   final _waiting = BehaviorSubject<bool>();
   final _refreshPackages = BehaviorSubject<bool>();
@@ -98,6 +99,7 @@ class BillPaymentBloc {
   String get path => _path;
 
   bool get checkLatestInvoice => _checkLatestInvoice;
+  int? get selectedDietTypeId => _selectedDietTypeId;
 
   set setEnterDiscount(bool val) => _enterDiscount.value = val;
 
@@ -111,10 +113,14 @@ class BillPaymentBloc {
     _list.forEach((element) {
       element.isSelected = false;
     });
+    _services.forEach((service) {
+      service.isSelected=false;
+    });
     _selectedPackage.safeValue = packageItem;
     _packageItemNew = packageItem;
     _packageItemNew!.isSelected = true;
     _refreshPackages.safeValue = true;
+    changePayment();
   }
 
   void setServiceSelected(ServicePackage packageItem) {
@@ -150,6 +156,7 @@ class BillPaymentBloc {
     Price price = new Price();
     price.code = val;
     price.packageId = _packageItemNew!.id;
+    price.selectedDietTypeId = _selectedDietTypeId;
     List<int> serviceSelected = [];
     _services.forEach((element) {
       if (element.isSelected != null && element.isSelected!) serviceSelected.add(element.id!);
@@ -183,6 +190,7 @@ class BillPaymentBloc {
         _list[i].price!.totalPrice = _list[i].price!.finalPrice;
       }
       _services = value.data!.servicesPackages ?? [];
+      _selectedDietTypeId = value.data!.selectedDietTypeId!;
     }).whenComplete(() {
       _waiting.safeValue = false;
     });
@@ -226,6 +234,7 @@ class BillPaymentBloc {
               : 1;
       payment.coupon = discountCode;
       payment.packageId = packageItemNew!.id!;
+      payment.selectedDietTypeId = _selectedDietTypeId;
       List<int> serviceSelected = [];
       _servicesFilteredByPackage.forEach((element) {
         if (element.isSelected != null && element.isSelected!) serviceSelected.add(element.id!);

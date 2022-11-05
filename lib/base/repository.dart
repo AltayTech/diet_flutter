@@ -289,9 +289,9 @@ class _RepositoryImpl extends Repository {
   late RestClient _apiClient;
   late MemoryApp _cache;
 
-  static const receiveTimeout = 3 * 60 * 1000;
+  static const receiveTimeout = 15 * 1000;
   static const connectTimeout = 15 * 1000;
-  static const sendTimeout = 3 * 60 * 1000;
+  static const sendTimeout = 15 * 1000;
 
   _RepositoryImpl() {
     _dio = Dio();
@@ -302,7 +302,7 @@ class _RepositoryImpl extends Repository {
     );
     if (!kIsWeb)
       _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
-        idleTimeout: 10000,
+        idleTimeout: 15 * 1000,
         // Ignore bad certificate
         onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
       ));
@@ -365,7 +365,11 @@ class _RepositoryImpl extends Repository {
     if (_cache.date == null || _cache.foodList == null || invalidate) {
       response = await _apiClient.foodList(date);
       debugPrint('repository2 ${response.data}');
-      if (response.data != null) _cache.saveFoodList(response.requireData!, date);
+      if (invalidate && response.data != null) {
+        _cache.saveNewFoodList(response.requireData!, date);
+      } else {
+        if (response.data != null) _cache.saveFoodList(response.requireData!, date);
+      }
       debugPrint('repository ${response.data}');
     } else {
       response = NetworkResponse.withData(_cache.foodList);
