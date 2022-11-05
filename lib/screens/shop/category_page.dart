@@ -11,7 +11,6 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/src/extensions.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -90,10 +89,7 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ImageUtils.fromNetwork(Utils.getCompletePathShop(snapshot.data!.image),
-                              width: 100.w,
-                              height: 12.h,
-                              showPlaceholder: false,
-                              fit: BoxFit.fill),
+                              width: 100.w, height: 12.h, showPlaceholder: false, fit: BoxFit.fill),
                           SizedBox(height: 2.h),
                           Padding(
                             padding: const EdgeInsets.all(12.0),
@@ -157,10 +153,8 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
           children: [
             ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                child: ImageUtils.fromNetwork( Utils.getCompletePathShop(product.productThambnail),
-                    width: 20.w,
-                    height: 9.h,
-                    fit: BoxFit.fill)),
+                child: ImageUtils.fromNetwork(Utils.getCompletePathShop(product.productThambnail),
+                    width: 20.w, height: 9.h, fit: BoxFit.fill)),
             Space(
               width: 3.w,
             ),
@@ -190,8 +184,10 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
               Text(product.sellingPrice.toString().seRagham(),
                   style: TextStyle(
                       decoration: TextDecoration.lineThrough, color: Colors.grey, fontSize: 10.sp)),
-              Text(product.discountPrice.toString().seRagham() + intl.currency,
-                  style: TextStyle(fontSize: 12.sp))
+              int.parse(product.discountPrice.toString()) == 0
+                  ? Text(intl.free, style: TextStyle(fontSize: 12.sp))
+                  : Text(product.discountPrice.toString() + intl.currency,
+                      style: typography.caption!.copyWith(fontSize: 12.sp))
             ],
           ),
           OutlinedButton(
@@ -205,19 +201,8 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                 side: MaterialStateProperty.all(BorderSide(color: AppColors.primary))),
             child: product.userOrderDate == null
-                ? Row(
-                    textDirection: context.textDirectionOfLocale,
-                    children: [
-                      ImageUtils.fromLocal('assets/images/shop/add_cart.svg',
-                          width: 2.w, height: 3.h),
-                      SizedBox(width: 2.w),
-                      Text(intl.buyCourse,
-                          style: Theme.of(context)
-                              .textTheme
-                              .button!
-                              .copyWith(color: AppColors.primary)),
-                    ],
-                  )
+                ? Text(intl.addCourse,
+                    style: Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary))
                 : Text(intl.view,
                     style: Theme.of(context).textTheme.button!.copyWith(color: AppColors.primary)),
           ),
@@ -243,5 +228,4 @@ class _CategoryPageState extends ResourcefulState<CategoryPage> {
     categoryBloc.setRepository();
     categoryBloc.getCategory(args!);
   }
-
 }

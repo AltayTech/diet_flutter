@@ -437,7 +437,7 @@
   "activityLevel": "فعالیت روزانه",
   "paymentSuccess": "پرداخت موفق",
   "paymentSuccessLabel": "پرداخت شما با موفقیت انجام شد",
-  "paymentCardToCardSuccessLabel": "اطلاعات شما با موفقیت انجام شد",
+  "paymentCardToCardSuccessLabel": "اطلاعات شما با موفقیت ثبت شد",
   "paymentInformation": "اطلاعات پرداخت",
   "refId": "شماره پیگیری",
   "amount": "مبلغ",
