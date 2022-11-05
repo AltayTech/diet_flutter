@@ -40,7 +40,7 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
   }
 
   void listenBloc() {
-    regimeBloc.showServerError.listen((event) {
+    regimeBloc.popLoading.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
@@ -190,11 +190,13 @@ class _RegimeTypeScreenState extends ResourcefulState<RegimeTypeScreen> {
 
   @override
   void onRetryAfterNoInternet() {
+    regimeBloc.setRepository();
     clickItemList(_dietSelected);
   }
 
   @override
   void onRetryLoadingPage() {
+    regimeBloc.setRepository();
     regimeBloc.regimeTypeMethod();
   }
 }

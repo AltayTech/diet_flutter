@@ -27,6 +27,9 @@ class ConditionRequestData {
   @JsonKey(name: "is_prepared_menu")
   bool? isPreparedMenu;
 
+  @JsonKey(name: "pregnancy_week_number")
+  int? pregnancyWeekNumber;
+
   ConditionRequestData();
 
   Map<String, dynamic> toJson() => _$ConditionRequestDataToJson(this);

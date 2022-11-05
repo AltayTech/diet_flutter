@@ -157,8 +157,12 @@ class AppFcm {
       badge: true,
       sound: true,
     );
-    subscribeTopicAll();
     _getToken();
+    try {
+      subscribeTopicAll();
+    }catch(e){
+      debugPrint(e.toString());
+    }
     FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   }
 
@@ -202,13 +206,12 @@ class AppFcm {
     });
   }
 
+  @pragma('vm:entry-point')
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
     debugPrint('on background message');
 
     await AppSharedPreferences.initialize();
-    await Firebase.initializeApp(
-      options: await DefaultFirebaseConfig.platformOptions,
-    );
+    await Firebase.initializeApp();
     _listenAwesomeEvents();
     sendNotification(message);
   }
@@ -263,7 +266,6 @@ class AppFcm {
                 id: notifResponse.hashCode,
                 channelKey: notifResponse.channel_id ?? "behandam",
                 // displayOnBackground: true,
-                // notificationLayout: NotificationLayout.Default,
                 title: notifResponse.title,
                 notificationLayout: notifResponse.layout,
                 body: notifResponse.description,

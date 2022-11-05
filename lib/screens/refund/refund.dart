@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/refund/bloc.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -213,7 +214,7 @@ class _RefundScreenState extends ResourcefulState<RefundScreen> {
                     Container(
                         height: 6.5.h,
                         width: 55.w,
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -241,6 +242,14 @@ class _RefundScreenState extends ResourcefulState<RefundScreen> {
 
   @override
   void onRetryLoadingPage() {
+    bloc.onRetryLoadingPage();
     bloc.getTermPackage();
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
   }
 }

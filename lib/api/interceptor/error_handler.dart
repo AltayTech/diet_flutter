@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:behandam/api/error/error_observer.dart';
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/network_response.dart';
+import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/auth/status.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -22,9 +23,9 @@ class ErrorHandlerInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) {
     if (err.error is SocketException) {
       if (err.requestOptions.method.contains("GET")) {
-        _isTypeRequestGet = false;
-      } else
         _isTypeRequestGet = true;
+      } else
+        _isTypeRequestGet = false;
       _handleNoInternetError();
       return super.onError(err, handler);
     }
@@ -93,14 +94,14 @@ class ErrorHandlerInterceptor extends Interceptor {
     try {
       if (message == null && err.response?.data != null && err.response?.data != '') {
         message = NetworkResponse<dynamic>.fromJson(
-                err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
+            err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
             .message;
       }
     } catch (e) {}
 
     try {
       message ??= NetworkResponse<dynamic>.fromJson(
-              err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
+          err.response!.data, (json) => CheckStatus.fromJson(json as Map<String, dynamic>))
           .error
           ?.message;
     } catch (e) {}
@@ -115,9 +116,9 @@ class ErrorHandlerInterceptor extends Interceptor {
 
   void _handleUnauthorizedError(DioError err) async {
     if (navigator.currentConfiguration!.path != Routes.login &&
-        navigator.currentConfiguration!.path != Routes.refundVerify &&
-        navigator.currentConfiguration!.path != Routes.authVerify &&
-        navigator.currentConfiguration!.path != Routes.passVerify) {
+    navigator.currentConfiguration!.path != Routes.refundVerify &&
+    navigator.currentConfiguration!.path != Routes.authVerify &&
+    navigator.currentConfiguration!.path != Routes.passVerify) {
       await AppSharedPreferences.logout();
       navigator.routeManager.clearAndPush(Uri(path: Routes.auth));
     } else {
@@ -163,12 +164,13 @@ class ErrorHandlerInterceptor extends Interceptor {
     if (_context == null || MemoryApp.isNetworkAlertShown) {
       return;
     }
+    Repository.setInstanceNull();
     MemoryApp.isNetworkAlertShown = true;
     await DialogUtils.showDialogPage(context: _context!, child: NetworkAlertPage());
     MemoryApp.isNetworkAlertShown = false;
     if (_isTypeRequestGet)
-      dioErrorObserver.retryForInternetConnectivity();
-    else
       dioErrorObserver.retryForLoadingPage();
+    else
+      dioErrorObserver.retryForInternetConnectivity();
   }
 }

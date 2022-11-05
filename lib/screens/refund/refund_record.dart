@@ -205,7 +205,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                     Container(
                         height: 6.5.h,
                         width: 55.w,
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -244,12 +244,16 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    _clickConfirm();
+  void onRetryLoadingPage() {
+    bloc.onRetryLoadingPage();
+    bloc.getTermPackage();
   }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.getTermPackage();
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
+    _clickConfirm();
   }
 }

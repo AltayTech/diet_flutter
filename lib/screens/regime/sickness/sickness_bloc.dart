@@ -4,10 +4,13 @@ import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
+import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/extensions/stream.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:behandam/extensions/stream.dart';
+
 class SicknessBloc {
   SicknessBloc() {
     _waiting.safeValue = false;
@@ -39,24 +42,31 @@ class SicknessBloc {
       'tick': Color.fromRGBO(255, 160, 114, 1),
     },
   ];
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
-  late UserSickness _userSickness;
+  late List<ObstructiveDisease> _userDisease;
+  late ObstructiveDisease diseaseIds;
   late UserSicknessSpecial _userSicknessSpecial;
   final _waiting = BehaviorSubject<bool>();
 
   /*final _userSickness = BehaviorSubject<UserSickness>();*/
   final _helpers = BehaviorSubject<List<Help>>();
   final _status = BehaviorSubject<BodyStatus>();
+  final _userCategoryDisease = BehaviorSubject<List<ObstructiveDiseaseCategory>>();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
+  final _popDialog = LiveEvent();
 
   String get path => _path;
 
-  UserSickness? get userSickness => _userSickness;
+  Stream<List<ObstructiveDiseaseCategory>> get userCategoryDisease => _userCategoryDisease;
 
   UserSicknessSpecial? get userSicknessSpecial => _userSicknessSpecial;
+
+  List<ObstructiveDisease> get userDiseaseSickness => _userDisease;
+
+  List<ObstructiveDiseaseCategory> get userCategoryDiseaseValue => _userCategoryDisease.value;
 
   Stream<BodyStatus> get status => _status.stream;
 
@@ -68,44 +78,22 @@ class SicknessBloc {
 
   Stream get showServerError => _showServerError.stream;
 
+  Stream get popDialog => _popDialog.stream;
+
+  void updateSickness(int index, ObstructiveDiseaseCategory category) {
+    List<ObstructiveDiseaseCategory> categories = _userCategoryDisease.value;
+    if (!category.isSelected!)
+      category.diseases?.forEach((element) {
+        element.isSelected = false;
+      });
+    categories[index] = category;
+    _userCategoryDisease.safeValue = categories;
+  }
+
   void getSickness() async {
     _waiting.safeValue = true;
-    _repository.getSickness().then((value) {
-      _userSickness = value.data!;
-      int index = 0;
-      if (value.data != null) {
-        _userSickness.sickness_categories?.forEach((element) {
-          element.barColor = _illColor[index]['barColor'];
-          element.bgColor = _illColor[index]['bgColor'];
-          element.tick = _illColor[index]['tick'];
-          element.shadow = _illColor[index]['shadow'];
-          element.sicknesses!.sort((a, b) {
-            return a.order!.compareTo(b.order!);
-          });
-          element.sicknesses?.forEach((sickness) {
-            // print('Start sicknesses sick ${sickness.toJson()}');
-            _userSickness.userSicknesses?.forEach((user) {
-              //print('user sicknesses sick ${sickness.toJson()}');
-              if (user.id == sickness.id) {
-                sickness.isSelected = true;
-              }
-            });
-            sickness.children?.forEach((child) {
-              _userSickness.userSicknesses?.forEach((user) {
-                if (user.id == child.id) {
-                  sickness.isSelected = true;
-                  child.isSelected = true;
-                }
-              });
-            });
-          });
-
-          if (index == _illColor.length - 1)
-            index = 0;
-          else
-            index += 1;
-        });
-      }
+    _repository.getBlockingSickness().then((value) {
+      _userCategoryDisease.safeValue = value.data!.diseaseCategories!;
     }).whenComplete(() => _waiting.safeValue = false);
   }
 
@@ -145,25 +133,32 @@ class SicknessBloc {
   }
 
   void sendSickness() {
-    _repository
-        .sendSickness(userSickness!)
-        .then((value) {
-          _navigateTo.fireMessage('/${value.next}');
-        })
-        .catchError((e) => _showServerError.fire(e));
+    _repository.sendSickness(_userCategoryDisease.value, []).then((value) {
+      _navigateTo.fireMessage('/${value.next}');
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
+    });
   }
 
   void sendSicknessSpecial() {
     _repository.sendSicknessSpecial(userSicknessSpecial!).then((value) {
       _navigateTo.fireMessage('/${value.next}');
     }).whenComplete(() {
-      _showServerError.fire(false);
+      if (!MemoryApp.isNetworkAlertShown) _popDialog.fire(true);
     });
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {
     _showServerError.close();
     _navigateTo.close();
+    _popDialog.close();
     _waiting.close();
+    _status.close();
+    _helpers.close();
+    _userCategoryDisease.close();
   }
 }

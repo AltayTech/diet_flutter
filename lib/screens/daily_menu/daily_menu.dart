@@ -3,6 +3,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
@@ -40,7 +41,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   Tween<double> _tween = Tween(begin: 0.9, end: 1.3);
   WeekDay? selectedWeekDay;
   bool isInitial = false;
-  var selectedMeal;
+  Meals? selectedMeal;
 
   @override
   void initState() {
@@ -54,7 +55,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
 
     refreshDailyMenu.on<ListFood>().listen((ListFood value) {
       debugPrint('return ${value}');
-      bloc.onMealFoodDaily(value, selectedMeal.id);
+      bloc.onMealFoodDaily(value, selectedMeal!.id);
     });
   }
 
@@ -340,7 +341,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
     );
   }
 
-  void openFoodListPage(meal) {
+  void openFoodListPage(Meals meal) {
     selectedMeal = meal;
     VxNavigator.of(context).waitAndPush(Uri(path: Routes.listFood), params: meal).then((value) {});
   }
@@ -352,12 +353,13 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    bloc.onDailyMenu();
+  void onRetryLoadingPage() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
   }
 
   @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.onRetryAfterNoInternet();
   }
 }

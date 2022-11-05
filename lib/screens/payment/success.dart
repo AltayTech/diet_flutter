@@ -2,6 +2,7 @@ import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
@@ -116,21 +117,25 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                   height: 50.w,
                   fit: BoxFit.fitHeight,
                 ),
-                SizedBox(height: 3.h),
+                Space(height: 3.h),
                 Row(
                   textDirection: context.textDirectionOfLocaleInversed,
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      intl.paymentSuccessLabel,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: AppColors.primaryVariantLight),
+                    Expanded(
+                      flex: 0,
+                      child: Text(
+                        intl.paymentSuccessLabel,
+                        textAlign: TextAlign.start,
+                        softWrap: true,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: AppColors.primaryVariantLight,fontSize: 12.sp),
+                      ),
                     ),
-                    SizedBox(width: 3.w),
+                    Space(width: 3.w),
                     ImageUtils.fromLocal(
                       'assets/images/bill/happy_face.svg',
                       width: 7.w,
@@ -144,17 +149,19 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                 ),
                 Directionality(
                   textDirection: context.textDirectionOfLocaleInversed,
-                  child: FlatButton.icon(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 2.h,
-                      horizontal: 3.w,
+                  child: TextButton.icon(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 2.h,
+                        horizontal: 3.w,
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          side: BorderSide(
+                            color: Color.fromRGBO(178, 178, 178, 1),
+                            width: 0.2.w,
+                          )),
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        side: BorderSide(
-                          color: Color.fromRGBO(178, 178, 178, 1),
-                          width: 0.2.w,
-                        )),
                     onPressed: () {
                       bloc.setShowInformation();
                     },
@@ -323,12 +330,18 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+  void onRetryLoadingPage() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryLoadingPage();
+    bloc.sendRequest();
   }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.sendRequest();
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
   }
+
 }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/errors.dart';
@@ -10,7 +9,6 @@ import 'package:behandam/themes/locale.dart';
 import 'package:behandam/utils/crashlytics.dart';
 import 'package:behandam/utils/fcm.dart';
 import 'package:behandam/utils/firebase_options.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -38,14 +36,22 @@ Future<void> entryPoint() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
     Vx.setPathUrlStrategy();
-    _initializeDebugPrint();
-    await AppSharedPreferences.initialize();
-    AppLocale.initialize();
-    AppColors(themeAppColor: ThemeAppColor.DEFAULT);
-    _initFireBase();
-    GlobalErrorHandler.handleCaughtErrors();
+    await initialNeededApp();
     runApp(App());
   }, GlobalErrorHandler.handleUncaughtErrors);
+}
+
+Future<bool> initialNeededApp() async {
+  _initializeDebugPrint();
+  await AppSharedPreferences.initialize();
+  AppLocale.initialize();
+  AppColors(themeAppColor: ThemeAppColor.DEFAULT);
+  _initFireBase();
+  GlobalErrorHandler.handleCaughtErrors();
+  return Future.delayed(
+    Duration(milliseconds: 100),
+    () => true,
+  );
 }
 
 void _initializeDebugPrint() {
@@ -56,9 +62,7 @@ void _initializeDebugPrint() {
 
 void _initFireBase() async {
   try {
-    await Firebase.initializeApp(
-      options: await DefaultFirebaseConfig.platformOptions,
-    );
+    await Firebase.initializeApp(options: await DefaultFirebaseConfig.platformOptions);
     await AppFcm.initialize();
     await AppCrashlytics.initialize();
     if (!kIsWeb) {

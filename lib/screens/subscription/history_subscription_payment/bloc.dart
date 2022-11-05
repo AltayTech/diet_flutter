@@ -9,7 +9,7 @@ class HistorySubscriptionPaymentBloc {
 
   List<SubscriptionsItems>? subscriptions;
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   final _progressNetwork = BehaviorSubject<bool>();
 
@@ -28,6 +28,15 @@ class HistorySubscriptionPaymentBloc {
     }).whenComplete(() {
       _progressNetwork.value = false;
     });
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    getUserSubscriptions();
   }
 
   void dispose() {

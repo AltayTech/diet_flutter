@@ -13,7 +13,7 @@ class TargetWeightBloc {
     _targetWeight();
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _targetWeightData = BehaviorSubject<TargetWeight>();
   final _navigateTo = LiveEvent();
@@ -64,6 +64,15 @@ class TargetWeightBloc {
     }).catchError((err) {
       _showServerError.fire(true);
     }).whenComplete(() => _loadingContent.safeValue = false);
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryLoadingPage(){
+    setRepository();
+    _targetWeight();
   }
 
   void dispose() {

@@ -20,19 +20,21 @@ enum ProductType { SHOP, DIET, SUBSCRIPTION }
 
 class PaymentBloc {
   PaymentBloc() {
-    _waiting.safeValue = true;
+    _waiting.safeValue = false;
     _discountLoading.value = false;
     _selectedDateType.value = PaymentDate.today;
-
     _invoice = LatestInvoiceData();
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String? _path;
   int? _productId;
+  int? _selectedDietTypeId;
   String? discountCode;
   PackageItem? _packageItem;
+  Package? _packageItemNew;
+  List<ServicePackage>? _services;
   Price? _discountInfo;
   LatestInvoiceData? _invoice;
   bool _checkLatestInvoice = false;
@@ -64,6 +66,8 @@ class PaymentBloc {
   LatestInvoiceData? get invoice => _invoice;
 
   PackageItem? get packageItem => _packageItem;
+
+  Package? get packageItemNew => _packageItemNew;
 
   Price? get discountInfo => _discountInfo;
 
@@ -111,7 +115,12 @@ class PaymentBloc {
 
   set setDate(String date) => _date = date;
 
-  set setPackage(PackageItem package) => _packageItem = package;
+  set setPackage(Package package) => _packageItemNew = package;
+
+  set setPackageItem(PackageItem package) => _packageItem = package;
+  set setSelectedDietTypeId(int? selectedDietTypeId) => _selectedDietTypeId = selectedDietTypeId;
+
+  set setServices(List<ServicePackage> services) => _services = services;
 
   void mustCheckLastInvoice() {
     _checkLatestInvoice = true;
@@ -122,22 +131,31 @@ class PaymentBloc {
     payment.originId = kIsWeb
         ? 0
         : Device.get().isIos
-        ? 2
-        : 3;
+            ? 2
+            : 3;
     //paymentTypeId==1 is cardToCard
+    List<int> serviceSelected = [];
+    _services?.forEach((element) {
+      if (element.isSelected != null && element.isSelected!)
+        serviceSelected.add(element.id!);
+    });
+    payment.serviceIds = serviceSelected;
     payment.paymentTypeId = 1;
     payment.coupon = discountCode;
-    payment.packageId = packageItem!.id!;
+    payment.packageId = packageItemNew!.id!;
     payment.cardOwner = newInvoice.cardOwner;
     payment.cardNum = newInvoice.cardNum;
     payment.payedAt = newInvoice.payedAt;
+    payment.selectedDietTypeId = _selectedDietTypeId;
     _repository.newPayment(payment).then((value) {
       MemoryApp.analytics!.logEvent(
           name:
               '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
       MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
       _navigateTo.fire(value.next);
-    }).whenComplete(() => _popLoading.fire(true));
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popLoading.fire(true);
+    });
   }
 
   void getPackagePayment() {
@@ -168,29 +186,33 @@ class PaymentBloc {
               : isOnline
                   ? 0
                   : 1;
-      payment.packageId = packageItem!.id!;
+      payment.packageId = packageItemNew!.id!;
       _repository.setPaymentType(payment).then((value) {
         _navigateTo.fire(value);
-      }).whenComplete(() => _popLoading.fire(true));
+      }).whenComplete(() {
+        if (!MemoryApp.isNetworkAlertShown) _popLoading.fire(true);
+      });
     }
   }
 
   void userPaymentCardToCardSubscription(LatestInvoiceData newInvoice) {
-      Payment payment = new Payment();
-      payment.originId = kIsWeb
-          ? 0
-          : Device.get().isIos
-              ? 2
-              : 3;
-      payment.paymentTypeId = 1;
-      payment.coupon = discountCode;
-      payment.packageId = packageItem!.id!;
-      payment.cardOwner = newInvoice.cardOwner;
-      payment.cardNum = newInvoice.cardNum;
-      payment.payedAt = newInvoice.payedAt;
-      _repository.setPaymentTypeReservePackage(payment).then((value) {
-        _navigateTo.fire(value);
-      }).whenComplete(() => _popLoading.fire(true));
+    Payment payment = new Payment();
+    payment.originId = kIsWeb
+        ? 0
+        : Device.get().isIos
+            ? 2
+            : 3;
+    payment.paymentTypeId = 1;
+    payment.coupon = discountCode;
+    payment.packageId = packageItem!.id!;
+    payment.cardOwner = newInvoice.cardOwner;
+    payment.cardNum = newInvoice.cardNum;
+    payment.payedAt = newInvoice.payedAt;
+    _repository.setPaymentTypeReservePackage(payment).then((value) {
+      _navigateTo.fire(value);
+    }).whenComplete(() {
+      if (!MemoryApp.isNetworkAlertShown) _popLoading.fire(true);
+    });
   }
 
   void changeDiscountLoading(bool val) {
@@ -236,8 +258,8 @@ class PaymentBloc {
     _waiting.safeValue = true;
     _repository.latestInvoice().then((value) {
       _invoice = value.data;
-      _invoice!.payedAt = DateTime.now().toString().substring(0, 10);
-      _path = value.next!;
+      _invoice!.payedAt ??= DateTime.now().toString().substring(0, 10);
+      if (value.next != null) _path = '/${value.next!}';
     }).whenComplete(() => _waiting.safeValue = false);
   }
 
@@ -315,6 +337,18 @@ class PaymentBloc {
 
   void changeUseDiscount() {
     _usedDiscount.value = true;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

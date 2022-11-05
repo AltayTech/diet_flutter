@@ -113,7 +113,7 @@ class myDate extends ResourcefulState<CustomDate> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: Color(0xffF5F5F5),
               borderRadius: BorderRadius.circular(10),
             ),
             height: 22.h,
@@ -148,7 +148,7 @@ class myDate extends ResourcefulState<CustomDate> {
       flex: flex,
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.background,
+          color: Color(0xffF5F5F5),
           borderRadius: BorderRadius.circular(10),
         ),
         padding: EdgeInsets.symmetric(vertical: 1.h),
@@ -168,12 +168,6 @@ class myDate extends ResourcefulState<CustomDate> {
   void initState() {
     super.initState();
     Jalali jalali = Jalali.fromDateTime(new DateTime.now());
-    /* if(widget.datetime==null) {
-      jalali = Jalali.fromDateTime(new DateTime.now());
-    }else {
-      var dateSplit=widget.datetime.split("-");
-      jalali = Gregorian(int.parse(dateSplit[0]),int.parse(dateSplit[1]),int.parse(dateSplit[2])).toJalali();
-    }*/
     var dateSplit;
     Jalali date;
     if (widget.datetime != null) {

@@ -10,6 +10,8 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class HelpTypeScreen extends StatefulWidget {
   const HelpTypeScreen({Key? key}) : super(key: key);
@@ -26,7 +28,6 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   void initState() {
     super.initState();
     regimeBloc = RegimeBloc();
-    listenBloc();
   }
 
   bool isInit = false;
@@ -50,12 +51,6 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
     super.dispose();
   }
 
-  void listenBloc() {
-    regimeBloc.showServerError.listen((event) {
-      Utils.getSnackbarMessage(context, event);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -74,57 +69,66 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
   }
 
   Widget body() {
-    return SingleChildScrollView(
-      child: Card(
-        shape: AppShapes.rectangleMedium,
-        elevation: 1,
-        margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              StreamBuilder(
-                stream: regimeBloc.helpTitle,
-                builder: (_, AsyncSnapshot<String> snapshot) {
-                  return Text(
-                    snapshot.data ?? '',
-                    style: typography.subtitle2,
-                  );
-                },
-              ),
-              Space(height: 1.h),
-              // helpType == HelpPage.packageType ? media(0) : Container(),
-              Space(height: 1.h),
-              helps(),
-              Space(height: 1.h),
-              // helpType == HelpPage.packageType ? media(1) : Container(),
-              SizedBox(height: 5.h)
-            ],
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: Card(
+          shape: AppShapes.rectangleMedium,
+          elevation: 1,
+          margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                StreamBuilder(
+                  stream: regimeBloc.helpTitle,
+                  builder: (_, AsyncSnapshot<String> snapshot) {
+                    return Text(
+                      snapshot.data ?? '',
+                      style: typography.subtitle2,
+                    );
+                  },
+                ),
+                Space(height: 1.h),
+                // helpType == HelpPage.packageType ? media(0) : Container(),
+                Space(height: 1.h),
+                helps(),
+                Space(height: 1.h),
+                // helpType == HelpPage.packageType ? media(1) : Container(),
+                SizedBox(height: 5.h)
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget item(Help help) {
+  Widget item(Help help, String url) {
     return Container(
       margin: EdgeInsets.only(bottom: 2.h),
-      child: ClipRRect(
-        borderRadius: AppBorderRadius.borderRadiusSmall,
-        child: Container(
-          color: AppColors.primary.withOpacity(0.1),
-          padding: EdgeInsets.only(right: 3.w),
-          child: Container(
-            color: AppColors.box,
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-            child: Text(
-              help.body ?? '',
-              style: typography.caption,
+      child: Column(
+        children: [
+          if (url.isNotEmpty)
+            ImageUtils.fromNetwork(Utils.getCompletePath(url), width: 10.w, height: 20.h),
+          Space(height: 2.h),
+          ClipRRect(
+            borderRadius: AppBorderRadius.borderRadiusSmall,
+            child: Container(
+              color: AppColors.primary.withOpacity(0.1),
+              padding: EdgeInsets.only(right: 3.w),
+              child: Container(
+                color: AppColors.box,
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                child: Text(
+                  help.body ?? '',
+                  style: typography.caption,
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -137,13 +141,13 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              ...snapshot.requireData.helpers!.map((help) => item(help)).toList(),
-              ...snapshot.requireData.media!
-                  .map((media) => ImageUtils.fromNetwork(Utils.getCompletePath(media.url),
-                      width: 10.w, height: 20.h))
+              ...snapshot.requireData.helpers!
+                  .mapIndexed((help, index) => item(
+                      help,
+                      snapshot.requireData.media!.isNotEmpty
+                          ? snapshot.requireData.media![index].url ?? ''
+                          : ''))
                   .toList(),
-              // .map((help) => item(help))
-              // .toList(),
             ],
           );
         } else {
@@ -174,9 +178,8 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
           //         .toList(),
           //   ],
           // );
-          return ImageUtils.fromNetwork( Utils.getCompletePath(snapshot.data![index].url),
-              width: 10.w,
-              height: 20.h);
+          return ImageUtils.fromNetwork(Utils.getCompletePath(snapshot.data![index].url),
+              width: 10.w, height: 20.h);
         } else {
           return Container();
         }
@@ -196,7 +199,11 @@ class _HelpTypeScreenState extends ResourcefulState<HelpTypeScreen> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    regimeBloc.setRepository();
+    if (helpType == HelpPage.regimeType) regimeBloc.helpMethod(1);
+    if (helpType == HelpPage.menuType) regimeBloc.helpMethod(2);
+    if (helpType == HelpPage.packageType) regimeBloc.helpMethod(3);
+    if (helpType == HelpPage.fasting) regimeBloc.helpMethod(4);
   }
 
   @override

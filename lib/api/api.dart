@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
+import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
@@ -12,19 +13,21 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/psychology/booking.dart';
 import 'package:behandam/data/entity/psychology/calender.dart';
-import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
+import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
-import 'package:behandam/data/entity/regime/menu.dart';
-import 'package:behandam/data/entity/regime/overview.dart';
-import 'package:behandam/data/entity/regime/physical_info.dart';
-import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/diet_preferences.dart';
+import 'package:behandam/data/entity/regime/menu.dart';
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
+import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
+import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
@@ -37,8 +40,8 @@ import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/user/version.dart';
+import 'package:behandam/data/entity/slider/slider.dart';
 import 'package:dio/dio.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../base/network_response.dart';
@@ -48,6 +51,8 @@ import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
 import '../data/entity/payment/payment.dart';
+import '../data/entity/user/block_user.dart';
+
 part 'api.g.dart';
 
 /*enum help {
@@ -72,15 +77,16 @@ abstract class RestClient {
   NetworkResult<SignIn> signInWithPhoneNumber(@Body() User user);
 
   @POST("/send-verification-code?mobile={mobile}&channel={channel}")
-  NetworkResult<CheckStatus> sendVerificationCode(@Path('mobile') String? mobile,@Path('channel') String? channel);
+  NetworkResult<CheckStatus> sendVerificationCode(
+      @Path('mobile') String? mobile, @Path('channel') String? channel);
 
-  @GET("/verify")
-  NetworkResult<VerifyOutput> verifyUser(@Queries() VerificationCode verificationCode);
+  @POST("/otp/login")
+  NetworkResult<VerifyOutput> otpLogin(@Body() VerificationCode verificationCode);
 
   @PATCH("/reset-password")
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);
 
-  @POST("/register")
+  @PATCH("/optional-register")
   NetworkResult<RegisterOutput> register(@Body() Register reg);
 
   @GET("/diet-type")
@@ -187,6 +193,12 @@ abstract class RestClient {
   @DELETE("/calls/{id}")
   ImperativeNetworkResult deleteCall(@Path('id') int id);
 
+  @GET("/calls/survey")
+  NetworkResult<PollPhrases> getCallSurveyCauses();
+
+  @PATCH("/call-rates")
+  ImperativeNetworkResult sendCallRate(@Body() CallRateRequest callRateRequest);
+
   @GET("/psychology/v2/dates/list?start_date={startDate}&end_date={endDate}")
   NetworkResult<CalenderOutput> getCalendar(@Path() String? startDate, @Path() String? endDate);
 
@@ -196,8 +208,14 @@ abstract class RestClient {
   @GET("/user-sickness")
   NetworkResult<UserSickness> getUserSickness();
 
-  @PATCH("/user-sickness")
-  ImperativeNetworkResult setUserSickness(@Body() UserSickness userSickness);
+  @GET("/user/blocking-disease")
+  NetworkResult<ObstructiveDiseaseCategory> getBlockingSickness();
+
+  @GET("/user/usual-diseases")
+  NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness();
+
+  @PATCH("/user/diseases")
+  ImperativeNetworkResult setUserSickness(@Body() Map<String,dynamic> queries);
 
   @GET("/user-special")
   NetworkResult<UserSicknessSpecial> getUserSicknessSpecial();
@@ -247,6 +265,9 @@ abstract class RestClient {
   @GET("/psychology/latest-invoice")
   NetworkResult<LatestInvoiceData> getInvoice();
 
+  @GET("/user/diet-preferences")
+  NetworkResult<DietPreferences> getDietPreferences();
+
   @GET("/activity-level")
   NetworkResult<ActivityLevelData> activityLevel();
 
@@ -276,7 +297,6 @@ abstract class RestClient {
 
   @GET("/check-version")
   NetworkResult<Version> getVersion();
-
 
   @GET("/fitamin-url")
   NetworkResult<Fitamin> checkFitamin();
@@ -349,5 +369,19 @@ abstract class RestClient {
 
   @GET("/inbox/{id}")
   NetworkResult<InboxItem> getInboxMessage(@Path('id') int id);
-}
 
+  @GET("/user/allowed-diet-types")
+  NetworkResult<DietType> getUserAllowedDietType();
+
+  @GET("/package")
+  NetworkResult<Package> getPackagesNew();
+
+  @GET("/user/blocked-data")
+  NetworkResult<BlockUser> getBlockUserDescription();
+
+  @GET("/sliders")
+  NetworkResult<Slider> getSliders();
+
+  @GET("/slider-introduces")
+  NetworkResult<SliderIntroduces> getSlidersIntroduces();
+}

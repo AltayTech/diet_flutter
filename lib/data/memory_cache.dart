@@ -3,6 +3,7 @@ import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/refund.dart';
+import 'package:behandam/data/entity/slider/slider.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -11,7 +12,6 @@ import 'package:shamsi_date/shamsi_date.dart';
 
 import 'entity/auth/country.dart';
 import 'entity/list_view/food_list.dart';
-import 'entity/user/user_information.dart';
 
 class MemoryApp {
   static String? token;
@@ -27,11 +27,15 @@ class MemoryApp {
   static Jalali? day;
   static bool forgetPass = false;
   static bool needRoute = true;
-  static bool  isShowDialog = false;
-  static bool  isNetworkAlertShown = false;
+  static bool isShowDialog = false;
+  static bool isNetworkAlertShown = false;
   static FirebaseAnalytics? analytics;
   static List<String> fastingDates = [];
+  static SurveyData? callSurveyData = null;
+  static List<Slider> sliders = [];
+  static List<SliderIntroduces> sliderIntroduces = [];
   List<ArticleVideo>? _articles;
+  static int page = 0;
 
   static WhatsappInfo? whatsappInfo;
 
@@ -47,6 +51,12 @@ class MemoryApp {
   UserInformation? get profile => _profile;
 
   List<FastPatternData>? get patterns => _patterns;
+
+  void saveNewFoodList(FoodListData data, String date) {
+    if (_foodList.isNotEmpty) _foodList.clear();
+
+    _foodList.addAll({date: data});
+  }
 
   void saveFoodList(FoodListData data, String date) {
     if (_foodList.containsKey(date)) {

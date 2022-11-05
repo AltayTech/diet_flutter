@@ -54,51 +54,47 @@ class CustomRuler extends StatefulWidget {
 
 class _CustomRulerState extends ResourcefulState<CustomRuler> {
   bool showRuler = false;
-  late RegimeBloc bloc;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    bloc = RegimeProvider.of(context);
 
-    return RegimeProvider(
-      bloc,
-      child: Container(
-        height: 20.h,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Row(
-                children: [
+
+    return Container(
+      height: 20.h,
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: RulerHeader(
+                    iconPath: widget.iconPath,
+                    heading: widget.heading,
+                    onHelpClick: widget.helpClick,
+                  ),
+                ),
+                if (widget.rulerType == RulerType.Pregnancy) Space(width: 3.w),
+                if (widget.rulerType == RulerType.Pregnancy)
                   Expanded(
-                    child: RulerHeader(
-                      iconPath: widget.iconPath,
-                      heading: widget.heading,
-                      onHelpClick: widget.helpClick,
+                    child: Text(
+                      intl.multiBirth,
+                      style: typography.subtitle2,
                     ),
                   ),
-                  if (widget.rulerType == RulerType.Pregnancy) Space(width: 3.w),
-                  if (widget.rulerType == RulerType.Pregnancy)
-                    Expanded(
-                      child: Text(
-                        intl.multiBirth,
-                        style: typography.subtitle2,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            Space(height: 1.5.h),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                meter(),
-                if (widget.rulerType != RulerType.Normal) Space(width: 3.w),
-                if (widget.rulerType != RulerType.Normal) meter(isSecond: true),
               ],
             ),
-          ],
-        ),
+          ),
+          Space(height: 1.5.h),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              meter(),
+              if (widget.rulerType != RulerType.Normal) Space(width: 3.w),
+              if (widget.rulerType != RulerType.Normal) meter(isSecond: true),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -246,7 +242,6 @@ class Slider extends StatefulWidget {
 }
 
 class _SliderState extends State<Slider> {
-  late RegimeBloc bloc;
   late int newValue;
   // late ScrollController scrollController;
   double get itemExtent =>
@@ -260,7 +255,6 @@ class _SliderState extends State<Slider> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    bloc = RegimeProvider.of(context);
     // scrollController = ScrollController(
     //     initialScrollOffset: (value - minValue) *
     //         width /
@@ -271,75 +265,66 @@ class _SliderState extends State<Slider> {
   build(BuildContext context) {
     int itemCount = (widget.maxValue - widget.minValue) +
         (widget.type == RulerType.Normal ? 9 : 5);
-
+    newValue = widget.value;
     return NotificationListener(
       onNotification: _onNotification,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20.0),
-        child: StreamBuilder(
-          stream: bloc.physicalInfo,
-          builder: (_, AsyncSnapshot<PhysicalInfoData> snapshot) {
-            if (snapshot.hasData) {
-              newValue = widget.value;
-              return ScrollConfiguration(
-                behavior: MyCustomScrollBehavior(),
-                child: ListView.builder(
-                  controller: widget.scrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemExtent: itemExtent,
-                  itemCount: itemCount,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    int itemValue = _indexToValue(index);
-                    bool isExtra;
-                    if (widget.type == RulerType.Normal) {
-                      isExtra = index == 0 ||
-                          index == 1 ||
-                          index == 2 ||
-                          index == 3 ||
-                          index == itemCount - 4 ||
-                          index == itemCount - 1 ||
-                          index == itemCount - 2 ||
-                          index == itemCount - 3;
-                    } else {
-                      isExtra = index == 0 ||
-                          index == 1 ||
-                          index == itemCount - 1 ||
-                          index == itemCount - 2;
-                    }
-                    return isExtra
-                        ? Container() //empty first and last element
-                        : GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () => _animateTo(itemValue, durationMillis: 50),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            color: Color.fromARGB(255, 174, 174, 174),
-                            width: 0.5.w,
-                            height: 3.h,
-                          ),
-                          Space(height: 1.w),
-                          FittedBox(
-                            child: Text(
-                              widget.type == RulerType.Weight &&
-                                  widget.isSecond
-                                  ? (itemValue * 100).toString()
-                                  : itemValue.toString(),
-                              style: _getTextStyle(
-                                  context, itemValue, widget.color),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+        child: ScrollConfiguration(
+          behavior: MyCustomScrollBehavior(),
+      child: ListView.builder(
+        controller: widget.scrollController,
+        scrollDirection: Axis.horizontal,
+        itemExtent: itemExtent,
+        itemCount: itemCount,
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          int itemValue = _indexToValue(index);
+          bool isExtra;
+          if (widget.type == RulerType.Normal) {
+            isExtra = index == 0 ||
+                index == 1 ||
+                index == 2 ||
+                index == 3 ||
+                index == itemCount - 4 ||
+                index == itemCount - 1 ||
+                index == itemCount - 2 ||
+                index == itemCount - 3;
+          } else {
+            isExtra = index == 0 ||
+                index == 1 ||
+                index == itemCount - 1 ||
+                index == itemCount - 2;
+          }
+          return isExtra
+              ? Container() //empty first and last element
+              : GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => _animateTo(itemValue, durationMillis: 50),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  color: Color.fromARGB(255, 174, 174, 174),
+                  width: 0.5.w,
+                  height: 3.h,
                 ),
-              );
-            }
-            return Progress();
-          },
-        ),
+                Space(height: 1.w),
+                FittedBox(
+                  child: Text(
+                    widget.type == RulerType.Weight &&
+                        widget.isSecond
+                        ? (itemValue * 100).toString()
+                        : itemValue.toString(),
+                    style: _getTextStyle(
+                        context, itemValue, widget.color),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    ),
       ),
     );
   }

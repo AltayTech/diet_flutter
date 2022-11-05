@@ -11,6 +11,7 @@ import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -39,17 +40,25 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
   void initListener() {
     bloc.showServerError.listen((event) {
-      if (event.contains('payment/bill')) {
-        context.vxNav.clearAndPush(Uri.parse(
-            '/${event.toString().split('/')[0]}${Routes.regimeType}'));
+      Navigator.of(context).pop();
+    });
+
+    bloc.navigateTo.listen((event) {
+      if (event.contains('package')) {
+        if (event.contains('reg'))
+          context.vxNav
+              .clearAndPushAll([Uri.parse('${Routes.regStart}'), Uri.parse(Routes.package)]);
+        else
+          context.vxNav
+              .clearAndPushAll([Uri.parse(Routes.renewStart), Uri.parse(Routes.renewPackage)]);
+      } else if (event.contains('survey')) {
+        context.vxNav.push(Uri.parse(Routes.surveyCallSupport), params: bloc.getSurveyData);
       } else if (!Routes.listView.contains(event)) {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       } else
         context.vxNav.replace(Uri.parse('/$event'));
     });
-    bloc.navigateTo.listen((event) {
-      Navigator.of(context).pop();
-    });
+
     bloc.popLoading.listen((event) {
       Navigator.of(context).pop();
     });
@@ -77,6 +86,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
       builder: (_, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData && !snapshot.requireData)
           return Scaffold(
+            appBar: AppBar(elevation: 0, toolbarHeight: 0, backgroundColor: AppColors.primary),
             body: SafeArea(
               child: Container(
                 height: 100.h,
@@ -106,20 +116,19 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 3.w),
                                 child: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(16.0)),
+                                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
                                   child: InkWell(
                                       onTap: () {
-                                        DialogUtils.showDialogProgress(
-                                            context: context);
+                                        DialogUtils.showDialogProgress(context: context);
                                         bloc.checkFitamin();
                                         // _launchURL(vitrinBloc.url);
                                       },
                                       child: ImageUtils.fromLocal(
-                                        MemoryApp.userInformation!
-                                                .hasFitaminService.isNullOrFalse
-                                            ? 'assets/images/vitrin/fitamin_banner.png'
-                                            : 'assets/images/vitrin/fitamin_banner_02.png',
+                                        (MemoryApp.userInformation != null &&
+                                                MemoryApp.userInformation!.hasFitaminService
+                                                    .isNullOrFalse)
+                                            ? 'assets/images/vitrin/fitamin_banner_02.png'
+                                            : 'assets/images/vitrin/fitamin_banner.png',
                                       )),
                                 ),
                               ),
@@ -152,8 +161,13 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-    super.onRetryLoadingPage();
+    bloc.onRetryLoadingPage();
     bloc.getFoodMenu(fillFood: true);
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    //bloc.onRetryAfterNoInternet();
   }
 }

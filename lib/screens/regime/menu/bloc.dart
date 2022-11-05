@@ -16,7 +16,7 @@ class MenuSelectBloc {
   MenuSelectBloc() {
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _menuTypes = BehaviorSubject<List<MenuType>>();
   final _selectedMenu = BehaviorSubject<Menu?>();
@@ -70,6 +70,10 @@ class MenuSelectBloc {
       debugPrint("path:${value.next}");
       _navigateTo.fire(value.next);
     }).whenComplete(() => _popDialog.fire(true));
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
   }
 
   void dispose() {

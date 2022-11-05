@@ -98,20 +98,6 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
           padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.2),
-                    borderRadius: AppBorderRadius.borderRadiusDefault),
-                padding: EdgeInsets.fromLTRB(3.w, 1.h, 3.w, 1.h),
-                child: Center(
-                  child: Text(
-                    intl.tryToAlternateOneMealDaily,
-                    style: typography.overline!.copyWith(color: AppColors.primary,fontWeight: FontWeight.w700),
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                  ),
-                ),
-              ),
               Space(height: 1.h),
               TextField(
                 cursorColor: AppColors.iconsColor,

@@ -52,6 +52,7 @@ abstract class ImageUtils {
     EdgeInsets? padding,
     EdgeInsets? margin,
     String? placeholder,
+    String? package,
     bool isCircle = false,
     BoxFit fit = BoxFit.contain,
     bool backOffSizing = true,
@@ -93,6 +94,7 @@ abstract class ImageUtils {
         assetName,
         width: measuredWidth,
         height: measuredHeight,
+        package: package,
         color: color,
         fit: fit,
       );

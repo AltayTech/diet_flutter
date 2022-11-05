@@ -1,15 +1,18 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/login_background.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/custom_button.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -31,6 +34,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   bool check = false;
   ChannelSendCode channelSendCode = ChannelSendCode.SMS;
 
+  late Country countrySelected;
+
   @override
   void initState() {
     super.initState();
@@ -51,23 +56,26 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
         check = true;
 
         if (channelSendCode == ChannelSendCode.WHATSAPP) {
-          VxNavigator.of(context).push(Uri(
-              path: '${Routes.passVerify}',
-              queryParameters: {"mobile": args['mobile'], 'countryId': '${args['countryId']}'}));
+          VxNavigator.of(context).push(
+              Uri(
+                path: '${Routes.authVerify}',
+              ),
+              params: {"mobile": args['mobile'], 'country': args['country']});
           IntentUtils.openAppIntent(Uri.encodeFull(
             'https://wa.me/${MemoryApp.whatsappInfo!.botMobile!}?text=${MemoryApp.whatsappInfo!.botStartText!}',
           ));
         } else if (event.toString().contains(Routes.auth.substring(1)))
-          VxNavigator.of(context).push(Uri(
-              path: '/$event',
-              queryParameters: {"mobile": args['mobile'], 'countryId': '${args['countryId']}'}));
+          VxNavigator.of(context).push(
+              Uri(
+                path: '${Routes.authVerify}',
+              ),
+              params: {"mobile": args['mobile'], 'country': args['country']});
         else
           VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       Navigator.of(context).pop();
-      Utils.getSnackbarMessage(context, event);
     });
   }
 
@@ -79,6 +87,9 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
     if (!isInit) {
       isInit = true;
       args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+      countrySelected = args["country"];
+
       debugPrint('login args $args');
     }
   }
@@ -86,110 +97,195 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.arcColor,
-        elevation: 0.0,
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: Color(0xffb4babb),
-            onPressed: () => VxNavigator.of(context).pop()),
-      ),
-      body: SafeArea(
-        child: StreamBuilder(
-            stream: authBloc.waiting,
-            builder: (context, snapshot) {
-              if (snapshot.data == false && !check) {
-                return TouchMouseScrollable(
-                    child: SingleChildScrollView(
-                  child: Column(children: [
-                    AuthHeader(
-                      title: intl.login,
-                    ),
-                    content(),
-                  ]),
-                ));
-              } else {
-                check = false;
-                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
-              }
-            }),
+    return Scaffold(backgroundColor: Colors.white, body: body());
+  }
+
+  Widget body() {
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: StreamBuilder(
+              stream: authBloc.waiting,
+              builder: (context, snapshot) {
+                if (snapshot.data == false && !check) {
+                  return LoginBackground(
+                    children: [
+                      content(),
+                    ],
+                  );
+                } else {
+                  check = false;
+                  return Container(height: 100.h, child: Progress());
+                }
+              }),
+        ),
       ),
     );
   }
 
   Widget content() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20.0, left: 20.0),
-      child: Column(
-        children: [
-          Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
-              child: Text(
-                "+ ${args['mobile']}",
-                textDirection: TextDirection.ltr,
-                style: TextStyle(color: AppColors.penColor),
-              )),
-          Space(height: 2.h),
-          Container(
-            decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
-            child: TextField(
-              controller: _text,
-              textDirection: TextDirection.ltr,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.penColor),
-                    borderRadius: BorderRadius.circular(15.0)),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                // enabledBorder: OutlineInputBorder(
-                //   borderSide: BorderSide(color: Colors.grey)),
-                labelText: intl.password,
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility : Icons.visibility_off,
-                    color: AppColors.penColor,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
-                // errorText: _validate ? intl.fillAllField : null,
-                labelStyle: TextStyle(color: AppColors.penColor, fontSize: 12.sp),
+    return Container(
+      width: 100.w,
+      height: 62.h,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius:
+              BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 1,
+                offset: Offset(0, 1))
+          ]),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              intl.registerLogin,
+              textAlign: TextAlign.start,
+              style: typography.subtitle1!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-              obscureText: !_obscureText,
-              onSubmitted: (String) {
+            ),
+            Space(height: 1.h),
+            Row(
+              children: [
+                Text(
+                  intl.enterPassword,
+                  textAlign: TextAlign.start,
+                  style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+                ),
+                Space(width: 1.w),
+                InkWell(
+                  onTap: () {
+                    context.vxNav.clearAndPush(Uri.parse(Routes.auth));
+                  },
+                  child: Text(
+                    intl.editPhone,
+                    textAlign: TextAlign.start,
+                    style: typography.caption!.copyWith(
+                        color: AppColors.redBar, fontWeight: FontWeight.bold, fontSize: 10.sp),
+                  ),
+                ),
+              ],
+            ),
+            Space(height: 3.h),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 7.h,
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Row(children: [
+                  Expanded(
+                      flex: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0, left: 8),
+                        child: Text(
+                          '+${args["mobile"]}',
+                          textAlign: TextAlign.start,
+                          textDirection: TextDirection.ltr,
+                          style: typography.caption!
+                              .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                        ),
+                      )),
+                  Expanded(
+                    flex: 0,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4.0),
+                        child: ImageUtils.fromLocal(countrySelected.flag!,
+                            package: picker.countryCodePackageName,
+                            width: 7.w,
+                            fit: BoxFit.fill,
+                            height: 5.5.w),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+            Space(height: 1.h),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _text,
+                textDirection: TextDirection.ltr,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  // enabledBorder: OutlineInputBorder(
+                  //   borderSide: BorderSide(color: Colors.grey)),
+                  labelText: intl.password,
+                  prefixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                      color: AppColors.penColor,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
+                  // errorText: _validate ? intl.fillAllField : null,
+                  labelStyle: TextStyle(color: AppColors.penColor, fontSize: 12.sp),
+                ),
+                obscureText: !_obscureText,
+                onSubmitted: (String) {
+                  clickButton();
+                },
+                onChanged: (txt) {
+                  _password = txt;
+                },
+              ),
+            ),
+            Space(height: 3.h),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: InkWell(
+                onTap: () => loginWithOtpDialog(),
+                child: Text(
+                  intl.loginWithOtp,
+                  textAlign: TextAlign.start,
+                  textDirection: TextDirection.ltr,
+                  style: typography.overline!.copyWith(color: AppColors.priceGreenColor),
+                ),
+              ),
+            ),
+            Space(height: 5.h),
+            CustomButton(
+              AppColors.btnColor,
+              intl.login,
+              Size(100.w, 6.h),
+              () {
                 clickButton();
               },
-              onChanged: (txt) {
-                _password = txt;
-              },
             ),
-          ),
-          SizedBox(height: 8.h),
-          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), clickButton),
-          SizedBox(height: 8.h),
-          InkWell(
-              child: Text(
-                intl.forgetPassword,
-                style: TextStyle(fontSize: 16.sp, color: AppColors.penColor),
-              ),
-              onTap: () => changePassDialog())
-        ],
+            Space(height: 2.h),
+          ],
+        ),
       ),
     );
   }
 
-  void changePassDialog() {
+  void loginWithOtpDialog() {
     DialogUtils.showDialogPage(
       context: context,
       isDismissible: true,
@@ -347,8 +443,18 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   }
 
   @override
+  void onRetryLoadingPage() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    //bloc.onRetryLoadingPage();
+  }
+
+  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    if (!MemoryApp.isShowDialog)
+      DialogUtils.showDialogProgress(context: context);
+
+    authBloc.setRepository();
+
     if (authBloc.isTrySendCode) {
       authBloc.sendCodeMethod(args['mobile'], channelSendCode);
     } else {

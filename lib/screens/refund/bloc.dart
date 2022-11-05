@@ -14,7 +14,7 @@ class RefundBloc {
     _showPass.safeValue = false;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
 
@@ -115,6 +115,18 @@ class RefundBloc {
 
     _shebaBankName.safeValue =
         Sheba(shebaNumberValue!.replaceAll(' ', '')).call()?.persianName ?? '';
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

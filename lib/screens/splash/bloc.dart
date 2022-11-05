@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/slider/slider.dart';
 import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -18,7 +19,7 @@ class SplashBloc {
     _waiting.safeValue = false;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
 
@@ -41,6 +42,10 @@ class SplashBloc {
   int? buildNumber;
   bool forceUpdate = false;
 
+  void setRepository(){
+    _repository=Repository.getInstance();
+  }
+
   void getPackageInfo() async {
     version = await Utils.versionApp();
     _versionApp.safeValue = version ?? '';
@@ -58,6 +63,7 @@ class SplashBloc {
   }
 
   void onRetryLoadingPage() {
+    setRepository();
     getUser();
   }
 
@@ -105,6 +111,18 @@ class SplashBloc {
     } else {
       _navigateTo.fire(true);
     }
+  }
+
+  void getSlider() {
+    _repository.getSliders().then((value) {
+      MemoryApp.sliders = value.data!.items!;
+    }).whenComplete(() => getSlidersIntroduces());
+  }
+
+  void getSlidersIntroduces() {
+    _repository.getSlidersIntroduces().then((value) {
+      MemoryApp.sliderIntroduces = value.data!.items!;
+    }).whenComplete(() => _navigateTo.fire(true));
   }
 
   void dispose() {

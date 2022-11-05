@@ -3,6 +3,7 @@ import 'package:behandam/app/provider.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/fast/bloc.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
@@ -46,6 +47,7 @@ class _ChangeMenuState extends ResourcefulState<ChangeMenu> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     bloc = FoodListProvider.of(context);
     appBloc = AppProvider.of(context);
 

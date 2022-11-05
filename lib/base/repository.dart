@@ -13,6 +13,7 @@ import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
+import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
 import 'package:behandam/data/entity/psychology/booking.dart';
 import 'package:behandam/data/entity/psychology/calender.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
@@ -22,8 +23,10 @@ import 'package:behandam/data/entity/regime/body_status.dart' as body;
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
+import 'package:behandam/data/entity/regime/diet_preferences.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
+import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
@@ -35,6 +38,7 @@ import 'package:behandam/data/entity/status/visit_item.dart';
 import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
+import 'package:behandam/data/entity/slider/slider.dart';
 
 // import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -44,8 +48,9 @@ import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../api/api.dart';
 import '../data/entity/auth/country.dart';
@@ -55,12 +60,17 @@ import '../data/entity/auth/sign_in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
+import '../data/entity/user/block_user.dart';
 import 'network_response.dart';
 
 enum FoodDietPdf { TERM, WEEK }
 
 abstract class Repository {
   static Repository? _instance;
+
+  static void setInstanceNull() {
+    _instance = null;
+  }
 
   static Repository getInstance() {
     _instance ??= _RepositoryImpl();
@@ -75,7 +85,7 @@ abstract class Repository {
 
   NetworkResult<CheckStatus> verificationCode(String mobile, String channel);
 
-  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode);
+  NetworkResult<VerifyOutput> otpLogin(VerificationCode verificationCode);
 
   NetworkResult<ResetOutput> reset(Reset password);
 
@@ -136,6 +146,10 @@ abstract class Repository {
 
   ImperativeNetworkResult deleteRequestCall(int Id);
 
+  NetworkResult<PollPhrases> getCallSurveyCauses();
+
+  ImperativeNetworkResult sendCallRate(CallRateRequest callRateRequest);
+
   // NetworkResult<BodyStatus> getStatus(BodyStatus body);
 
   NetworkResult<CalenderOutput> getCalendar(String? startDate, String? endDate);
@@ -146,7 +160,10 @@ abstract class Repository {
 
   NetworkResult<UserSickness> getSickness();
 
-  ImperativeNetworkResult sendSickness(UserSickness sickness);
+  NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness();
+
+  ImperativeNetworkResult sendSickness(
+      List<ObstructiveDiseaseCategory> diseasesIds, List<int> userObstructiveDiseaseSelected);
 
   NetworkResult<UserSicknessSpecial> getSicknessSpecial();
 
@@ -183,6 +200,8 @@ abstract class Repository {
   NetworkResult<HistoryOutput> getHistory();
 
   NetworkResult<LatestInvoiceData> getPsychologyInvoice();
+
+  NetworkResult<DietPreferences> getDietPreferences();
 
   NetworkResult<ActivityLevelData> activityLevel();
 
@@ -251,6 +270,18 @@ abstract class Repository {
   NetworkResult<ListUserSubscriptionData> getUserSubscription();
 
   NetworkResult<InboxItem> getInboxMessage(int id);
+
+  NetworkResult<ObstructiveDiseaseCategory> getBlockingSickness();
+
+  NetworkResult<DietType> getUserAllowedDietType();
+
+  NetworkResult<Package> getPackages();
+
+  NetworkResult<BlockUser> getBlockUserDescription();
+
+  NetworkResult<Slider> getSliders();
+
+  NetworkResult<SliderIntroduces> getSlidersIntroduces();
 }
 
 class _RepositoryImpl extends Repository {
@@ -258,9 +289,9 @@ class _RepositoryImpl extends Repository {
   late RestClient _apiClient;
   late MemoryApp _cache;
 
-  static const receiveTimeout = 3 * 60 * 1000;
+  static const receiveTimeout = 15 * 1000;
   static const connectTimeout = 15 * 1000;
-  static const sendTimeout = 3 * 60 * 1000;
+  static const sendTimeout = 15 * 1000;
 
   _RepositoryImpl() {
     _dio = Dio();
@@ -269,12 +300,12 @@ class _RepositoryImpl extends Repository {
       connectTimeout: connectTimeout,
       sendTimeout: sendTimeout,
     );
-    _dio.httpClientAdapter = Http2Adapter(
-    ConnectionManager(
-    idleTimeout: 10000,
-    // Ignore bad certificate
-    onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
-    ));
+    if (!kIsWeb)
+      _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
+        idleTimeout: 15 * 1000,
+        // Ignore bad certificate
+        onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
+      ));
     _dio.interceptors.add(ErrorHandlerInterceptor());
     _dio.interceptors.add(GlobalInterceptor());
     _dio.interceptors.add(LoggingInterceptor());
@@ -321,8 +352,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode) async {
-    var response = await _apiClient.verifyUser(verificationCode);
+  NetworkResult<VerifyOutput> otpLogin(VerificationCode verificationCode) async {
+    var response = await _apiClient.otpLogin(verificationCode);
     return response;
   }
 
@@ -334,7 +365,11 @@ class _RepositoryImpl extends Repository {
     if (_cache.date == null || _cache.foodList == null || invalidate) {
       response = await _apiClient.foodList(date);
       debugPrint('repository2 ${response.data}');
-      if (response.data != null) _cache.saveFoodList(response.requireData!, date);
+      if (invalidate && response.data != null) {
+        _cache.saveNewFoodList(response.requireData!, date);
+      } else {
+        if (response.data != null) _cache.saveFoodList(response.requireData!, date);
+      }
       debugPrint('repository ${response.data}');
     } else {
       response = NetworkResponse.withData(_cache.foodList);
@@ -566,6 +601,18 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
+  NetworkResult<PollPhrases> getCallSurveyCauses() {
+    var response = _apiClient.getCallSurveyCauses();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendCallRate(CallRateRequest callRateRequest) {
+    var response = _apiClient.sendCallRate(callRateRequest);
+    return response;
+  }
+
+  @override
   NetworkResult<body.BodyStatus> getStatus() {
     var response = _apiClient.getStatus();
     return response;
@@ -596,23 +643,34 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  ImperativeNetworkResult sendSickness(UserSickness sickness) {
-    List<dynamic> selectedItems = [];
-    UserSickness userSickness = new UserSickness();
-    sickness.sickness_categories!.forEach((element) {
-      element.sicknesses!.forEach((sicknessItem) {
-        if (sicknessItem.isSelected!) {
-          if (sicknessItem.children!.length > 0) {
-            selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
-          } else {
-            selectedItems.add(sicknessItem);
-          }
+  NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness() {
+    var response = _apiClient.getNotBlockingSickness();
+    return response;
+  }
+
+  @override
+  ImperativeNetworkResult sendSickness(
+      List<ObstructiveDiseaseCategory> sickness, List<int> userObstructiveDiseaseSelected) {
+    List<int> selectedItems = [];
+    for (int i = 0; i < sickness.length; i++) {
+      if (sickness[i].isSelected! && sickness[i].disease_id > 0) {
+        selectedItems.add(sickness[i].disease_id);
+      }
+      for (int j = 0; j < sickness[i].diseases!.length; j++) {
+        if (sickness[i].diseases![j].isSelected!) {
+          selectedItems.add(sickness[i].diseases![j].id!);
         }
-      });
-    });
-    userSickness.sicknesses = selectedItems;
-    userSickness.sicknessNote = sickness.sicknessNote;
-    var response = _apiClient.setUserSickness(userSickness);
+      }
+    }
+    // check if userObstructiveDiseaseSelected not contain in selectedItems then add to selectedItems
+    if (userObstructiveDiseaseSelected.isNotEmpty) {
+      for (int i = 0; i < userObstructiveDiseaseSelected.length; i++) {
+        if (!selectedItems.contains(userObstructiveDiseaseSelected[i])) {
+          selectedItems.add(userObstructiveDiseaseSelected[i]);
+        }
+      }
+    }
+    var response = _apiClient.setUserSickness({'disease_ids': selectedItems});
     return response;
   }
 
@@ -632,12 +690,12 @@ class _RepositoryImpl extends Repository {
           sicknessItem.children?.forEach((element) {
             debugPrint("${element.toJson()}");
           });
-          Sickness sickness=Sickness();
-          sickness.id=sicknessItem.children!.singleWhere((child) => child.isSelected!).id;
+          Sickness sickness = Sickness();
+          sickness.id = sicknessItem.children!.singleWhere((child) => child.isSelected!).id;
           selectedItems.add(sickness);
         } else {
-          Sickness sickness=Sickness();
-          sickness.id=sicknessItem.id;
+          Sickness sickness = Sickness();
+          sickness.id = sicknessItem.id;
           selectedItems.add(sickness);
           debugPrint("${sickness.toJson()}");
         }
@@ -778,6 +836,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<LatestInvoiceData> getPsychologyInvoice() {
     var response = _apiClient.getInvoice();
+    return response;
+  }
+
+  @override
+  NetworkResult<DietPreferences> getDietPreferences() {
+    var response = _apiClient.getDietPreferences();
     return response;
   }
 
@@ -1006,6 +1070,42 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<InboxItem> getInboxMessage(int id) {
     var response = _apiClient.getInboxMessage(id);
+    return response;
+  }
+
+  @override
+  NetworkResult<ObstructiveDiseaseCategory> getBlockingSickness() {
+    var response = _apiClient.getBlockingSickness();
+    return response;
+  }
+
+  @override
+  NetworkResult<DietType> getUserAllowedDietType() {
+    var response = _apiClient.getUserAllowedDietType();
+    return response;
+  }
+
+  @override
+  NetworkResult<Package> getPackages() {
+    var response = _apiClient.getPackagesNew();
+    return response;
+  }
+
+  @override
+  NetworkResult<BlockUser> getBlockUserDescription() {
+    var response = _apiClient.getBlockUserDescription();
+    return response;
+  }
+
+  @override
+  NetworkResult<Slider> getSliders() {
+    var response = _apiClient.getSliders();
+    return response;
+  }
+
+  @override
+  NetworkResult<SliderIntroduces> getSlidersIntroduces() {
+    var response = _apiClient.getSlidersIntroduces();
     return response;
   }
 }

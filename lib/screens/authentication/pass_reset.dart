@@ -1,11 +1,13 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -42,7 +44,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
     authBloc.navigateToVerify.listen((event) {
       if (event != null) context.vxNav.clearAndPush(Uri(path: '/$event'));
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       Utils.getSnackbarMessage(context, event);
     });
   }
@@ -66,14 +68,14 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
             builder: (context, snapshot) {
               if (snapshot.data == false && !check) {
                 return TouchMouseScrollable(
-                    child: SingleChildScrollView(
-                      child: Column(children: [
-                        AuthHeader(
-                          title: intl.changePassword,
-                        ),
-                        Space(height: 10.h),
-                        content(),
-                      ]),
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      AuthHeader(
+                        title: intl.changePassword,
+                      ),
+                      Space(height: 10.h),
+                      content(),
+                    ]),
                   ),
                 );
               } else {
@@ -92,80 +94,80 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
           Container(
             height: 10.h,
             child: StreamBuilder<bool>(
-              initialData: false,
-              stream: authBloc.obscureTextPass,
-              builder: (context, obscureTextPass) {
-                return TextField(
-                  obscureText: !obscureTextPass.requireData,
-                  textDirection: TextDirection.ltr,
-                  decoration: InputDecoration(
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.penColor),
-                          borderRadius: BorderRadius.circular(15.0)),
-                      labelText: intl.enterNewPassword,
-                      // errorText: _validate ? intl.fillAllField : null,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          obscureTextPass.requireData ? Icons.visibility : Icons.visibility_off,
-                          color: AppColors.penColor,
+                initialData: false,
+                stream: authBloc.obscureTextPass,
+                builder: (context, obscureTextPass) {
+                  return TextField(
+                    obscureText: !obscureTextPass.requireData,
+                    textDirection: TextDirection.ltr,
+                    decoration: InputDecoration(
+                        focusedBorder:
+                            OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                        onPressed: () {
-                         authBloc.setObscureTextPass();
-                        },
-                      ),
-                      labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
-                  onChanged: (txt) {
-                    _password1 = txt.toEnglishDigit();
-                  },
-                );
-              }
-            ),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.penColor),
+                            borderRadius: BorderRadius.circular(15.0)),
+                        labelText: intl.enterNewPassword,
+                        // errorText: _validate ? intl.fillAllField : null,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            obscureTextPass.requireData ? Icons.visibility : Icons.visibility_off,
+                            color: AppColors.penColor,
+                          ),
+                          onPressed: () {
+                            authBloc.setObscureTextPass();
+                          },
+                        ),
+                        labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
+                    onChanged: (txt) {
+                      _password1 = txt.toEnglishDigit();
+                    },
+                  );
+                }),
           ),
           Space(height: 3.h),
           Container(
             height: 10.h,
             child: StreamBuilder<bool>(
-              initialData: false,
-              stream: authBloc.obscureTextConfirmPass,
-              builder: (context, obscureTextConfirmPass) {
-                return TextField(
-                  obscureText: !obscureTextConfirmPass.requireData,
-                  textDirection: TextDirection.ltr,
-                  decoration: InputDecoration(
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.penColor),
-                          borderRadius: BorderRadius.circular(15.0)),
-                      labelText: intl.repeatNewPassword,
-                      // errorText: _validate ? intl.fillAllField : null,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          obscureTextConfirmPass.requireData ? Icons.visibility : Icons.visibility_off,
-                          color: AppColors.penColor,
+                initialData: false,
+                stream: authBloc.obscureTextConfirmPass,
+                builder: (context, obscureTextConfirmPass) {
+                  return TextField(
+                    obscureText: !obscureTextConfirmPass.requireData,
+                    textDirection: TextDirection.ltr,
+                    decoration: InputDecoration(
+                        focusedBorder:
+                            OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                        onPressed: () {
-                         authBloc.setObscureTextConfirmPass();
-                        },
-                      ),
-                      labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
-                  onChanged: (txt) {
-                    _password2 = txt.toEnglishDigit();
-                  },
-                );
-              }
-            ),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.penColor),
+                            borderRadius: BorderRadius.circular(15.0)),
+                        labelText: intl.repeatNewPassword,
+                        // errorText: _validate ? intl.fillAllField : null,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            obscureTextConfirmPass.requireData
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: AppColors.penColor,
+                          ),
+                          onPressed: () {
+                            authBloc.setObscureTextConfirmPass();
+                          },
+                        ),
+                        labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0)),
+                    onChanged: (txt) {
+                      _password2 = txt.toEnglishDigit();
+                    },
+                  );
+                }),
           ),
           Space(height: 3.h),
-          button(AppColors.btnColor, intl.setNewPassword, Size(100.w, 8.h), () {
+          CustomButton(AppColors.btnColor, intl.setNewPassword, Size(100.w, 8.h), () {
             if (_password1 != _password2)
               Utils.getSnackbarMessage(context, intl.notEqualPassword);
             else if (_password1 == null || _password2 == null)
@@ -184,8 +186,17 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
   }
 
   @override
+  void onRetryLoadingPage() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    //bloc.onRetryLoadingPage();
+  }
+
+  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    authBloc.setRepository();
+
     Reset pass = Reset();
     pass.password = _password1;
     authBloc.resetPasswordMethod(pass);

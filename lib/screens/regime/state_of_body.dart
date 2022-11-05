@@ -47,12 +47,11 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
   void listenBloc() {
     regimeBloc.navigateToVerify.listen((event) {
       MemoryApp.isShowDialog = false;
-      Navigator.of(context).pop();
       VxNavigator.of(context).push(
         Uri.parse('/$event'),
       );
     });
-    regimeBloc.showServerError.listen((event) {
+    regimeBloc.popLoading.listen((event) {
       MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
@@ -174,20 +173,6 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
                 DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 3)),
             iconPath: 'assets/images/diet/height_icon.svg',
             onClick: (val) => physicalInfo.height = val,
-          ),
-        if (!navigator.currentConfiguration!.path.contains('weight'))
-          CustomRuler(
-            rulerType: RulerType.Normal,
-            value: physicalInfo.wrist!,
-            max: 40,
-            min: 10,
-            heading: intl.wrist,
-            unit: intl.centimeter,
-            color: AppColors.blueRuler,
-            helpClick: () =>
-                DialogUtils.showDialogPage(context: context, child: HelpDialog(helpId: 4)),
-            iconPath: 'assets/images/diet/wrist_icon.svg',
-            onClick: (val) => physicalInfo.wrist = val,
           ),
         if (physicalInfo.dietTypeAlias == RegimeAlias.Pregnancy &&
             !navigator.currentConfiguration!.path.contains('enter'))
@@ -478,12 +463,14 @@ class _BodyStateScreenState extends ResourcefulState<BodyStateScreen> {
 
   @override
   void onRetryAfterNoInternet() {
+    regimeBloc.setRepository();
     if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
     regimeBloc.sendRequest();
   }
 
   @override
   void onRetryLoadingPage() {
+    regimeBloc.setRepository();
     regimeBloc.physicalInfoData();
   }
 }

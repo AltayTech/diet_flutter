@@ -227,7 +227,7 @@ class UserBoxState extends ResourcefulState<UserBox> {
                       list: snapshot.data?.cities ?? List.generate(0, (index) => 0),
                       onChange: (dynamic val) => setState(() {
                         profileBloc.userInfo.address!.cityId = val.id;
-                        print('city $val.id');
+                        print('city ${val.id}');
                       }),
                       border: true,
                     );

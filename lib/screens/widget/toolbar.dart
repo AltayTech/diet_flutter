@@ -15,7 +15,7 @@ class Toolbar extends AppBar {
       textAlign: TextAlign.center,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 13.sp,
+        fontSize: 14.sp,
       ),
     );
   }
@@ -29,4 +29,5 @@ class Toolbar extends AppBar {
   double? get elevation => elevationValue;
 
   bool? get centerTitle => true;
+
 }

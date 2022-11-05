@@ -1,6 +1,8 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/advice/bloc.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -225,7 +227,14 @@ class _AdvicePageState extends ResourcefulState<AdvicePage> {
 
   @override
   void onRetryLoadingPage() {
-    bloc.loadContent();
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.onRetryLoadingPage();
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.onRetryAfterNoInternet();
   }
 
 }

@@ -10,7 +10,7 @@ class RegimeType {
   int? count;
   @JsonKey(name: "items")
   List<RegimeType>? items;
-  @JsonKey(name: "alias")
+  @JsonKey(name: "alias", unknownEnumValue: RegimeAlias.WeightLoss)
   RegimeAlias? alias;
   @JsonKey(name: "calories_count")
   int? caloriesCount;

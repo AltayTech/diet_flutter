@@ -127,20 +127,7 @@ class _HistorySubscriptionPaymentScreenState
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
-  }
-
-  @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.onRetryLoadingPage();
   }
-
-  @override
-  void onShowMessage(String value) {}
 }

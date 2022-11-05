@@ -11,7 +11,8 @@ RegimeType _$RegimeTypeFromJson(Map<String, dynamic> json) => RegimeType()
   ..items = (json['items'] as List<dynamic>?)
       ?.map((e) => RegimeType.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..alias = $enumDecodeNullable(_$RegimeAliasEnumMap, json['alias'])
+  ..alias = $enumDecodeNullable(_$RegimeAliasEnumMap, json['alias'],
+      unknownValue: RegimeAlias.WeightLoss)
   ..caloriesCount = json['calories_count'] as int?
   ..isActive = json['is_active'] as String?
   ..id = json['id'] as String?

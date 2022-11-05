@@ -10,7 +10,7 @@ class StatusBloc {
     _waiting.safeValue = true;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
 
   late String _path;
   late List<TermStatus>? _terms;
@@ -49,13 +49,21 @@ class StatusBloc {
         });
       }
     }).catchError((onError) {
-      debugPrint(onError);
       _visitItem = new VisitItem();
       _visitItem!.terms = [];
       _terms = [];
     }).whenComplete(() {
       _waiting.safeValue = false;
     });
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryLoadingPage(){
+    setRepository();
+    getVisitUser();
   }
 
   void dispose() {

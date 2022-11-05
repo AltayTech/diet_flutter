@@ -210,7 +210,7 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
                             Container(
                                 height: 6.5.h,
                                 width: 55.w,
-                                child: FlatButton(
+                                child: TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
@@ -240,13 +240,16 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    DialogUtils.showDialogProgress(context: context);
-    bloc.verify();
+  void onRetryLoadingPage() {
+    bloc.onRetryLoadingPage();
+    bloc.getTermPackage();
   }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.getTermPackage();
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
+    bloc.verify();
   }
 }

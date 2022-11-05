@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
@@ -15,9 +13,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -31,16 +27,30 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends ResourcefulState<SplashScreen> {
   late SplashBloc bloc;
 
+  late bool isShowOnBoarding;
+
   @override
   void initState() {
     super.initState();
     bloc = SplashBloc();
     bloc.getPackageInfo();
     bloc.getUser();
+    //getSliders();
+
     listenBloc();
   }
 
+/*  void getSliders() async {
+
+
+    if (isShowOnBoarding)
+      bloc.getSlider();
+    else
+      bloc.getUser();
+  }*/
+
   void handleDeeplink() async {
+    isShowOnBoarding = await AppSharedPreferences.isShowOnBoarding;
     var fcm = await AppSharedPreferences.fcmToken;
     debugPrint('fcm is => ${fcm}');
     final deeplink = await AppSharedPreferences.deeplink;
@@ -55,6 +65,8 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
         VxNavigator.of(context).clearAndPushAll(
             [Uri.parse(Routes.shopHome), Uri.parse(navigator.currentConfiguration!.path)]);
       }
+    } else if (isShowOnBoarding) {
+      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.onboarding));
     } else
       VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
   }
@@ -119,7 +131,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                       ),
                       if (!bloc.forceUpdate) SizedBox(width: 2.w),
                       if (!bloc.forceUpdate)
-                        FlatButton(
+                        TextButton(
                           child: Text(
                             intl.later,
                             style: Theme.of(context)
@@ -131,7 +143,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                             Navigator.of(context).pop();
                             handleDeeplink();
                           },
-                          color: Colors.white,
+                        style: TextButton.styleFrom(backgroundColor:  Colors.white,),
                         ),
                     ],
                   )
@@ -148,48 +160,48 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-    color: Colors.white,
-    width: 100.w,
-    height: 100.h,
-    child: Stack(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ImageUtils.fromLocal(
-                  'assets/images/registry/app_logo.svg',
-                  width: 30.w,
-                  height: 30.w,
-                ),
-                Space(
-                  height: 2.h,
-                ),
-                Text(
-                  intl.appNameSplash,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ],
-            ),
-          ),
-          StreamBuilder(
-              stream: bloc.versionApp,
-              builder: (context, snapshot) {
-                return Align(
-                  child: Padding(
-                    child: Text(
-                      intl.version(snapshot.data?.toString() ?? ''),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyText1,
+          color: Colors.white,
+          width: 100.w,
+          height: 100.h,
+          child: Stack(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ImageUtils.fromLocal(
+                      'assets/images/registry/app_logo.svg',
+                      width: 30.w,
+                      height: 30.w,
                     ),
-                    padding: EdgeInsets.only(bottom: 16),
-                  ),
-                  alignment: Alignment.bottomCenter,
-                );
-              })
-        ],
-    ),
+                    Space(
+                      height: 2.h,
+                    ),
+                    Text(
+                      intl.appNameSplash,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  ],
+                ),
+              ),
+              StreamBuilder(
+                  stream: bloc.versionApp,
+                  builder: (context, snapshot) {
+                    return Align(
+                      child: Padding(
+                        child: Text(
+                          intl.version(snapshot.data?.toString() ?? ''),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        padding: EdgeInsets.only(bottom: 16),
+                      ),
+                      alignment: Alignment.bottomCenter,
+                    );
+                  })
+            ],
+          ),
         ),
       ),
     );

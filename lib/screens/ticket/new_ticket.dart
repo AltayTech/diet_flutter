@@ -133,18 +133,18 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                             child: StreamBuilder(
                               builder: (context, AsyncSnapshot<bool> snapshot) {
                                 return textInput(
-                                    height: 6.h,
-                                    label: intl.lableTextMessage,
-                                    textController: ticketDescController,
-                                    validation: (validation) {},
-                                    bgColor: Colors.white,
-                                    onChanged: (onChanged) {
-                                      bloc.sendTicketMessage.body = onChanged;
-                                    },
-                                    enable: !(snapshot.data ?? false),
-                                    maxLine: true,
-                                    ctx: context,
-                                    textDirection: context.textDirectionOfLocale,
+                                  height: 6.h,
+                                  label: intl.lableTextMessage,
+                                  textController: ticketDescController,
+                                  validation: (validation) {},
+                                  bgColor: Colors.white,
+                                  onChanged: (onChanged) {
+                                    bloc.sendTicketMessage.body = onChanged;
+                                  },
+                                  enable: !(snapshot.data ?? false),
+                                  maxLine: true,
+                                  ctx: context,
+                                  textDirection: context.textDirectionOfLocale,
                                 );
                               },
                               stream: bloc.isShowRecorder,
@@ -222,6 +222,9 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Space(
+                    width: 1.w,
+                  ),
                   supportItem.isSelected
                       ? ImageUtils.fromString(
                           """<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -243,12 +246,30 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
                   Space(
                     width: 2.w,
                   ),
-                  Text(
-                    supportItem.displayName ?? "",
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: typography.caption,
+
+                  if(supportItem.ticketName!.length>15)
+                  Expanded(
+                    child: FittedBox(
+                      fit:BoxFit.fill ,
+                      child: Text(
+                        supportItem.ticketName ?? "",
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                        style: typography.caption,
+                      ),
+                    ),
+                  ),
+                  if(supportItem.ticketName!.length<=15)
+                    Text(
+                      supportItem.ticketName ?? "",
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: typography.caption,
+                    ),
+                  Space(
+                    width: 1.w,
                   ),
                 ],
               ),
@@ -264,11 +285,13 @@ class _NewTicketState extends ResourcefulState<NewTicket> {
 
   @override
   void onRetryAfterNoInternet() {
+    bloc.setRepository();
     checkTypeTicketForSend();
   }
 
   @override
   void onRetryLoadingPage() {
+    bloc.setRepository();
     bloc.getSupportList();
   }
 

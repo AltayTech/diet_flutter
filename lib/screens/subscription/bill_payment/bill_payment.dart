@@ -214,7 +214,7 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
         Utils.getSnackbarMessage(context, intl.offError);
       } else {
         VxNavigator.of(context).push(Uri.parse(Routes.cardToCard),
-            params: {'package': bloc.packageItem, 'discountCode': bloc.discountCode});
+            params: {'package': bloc.packageItemNew, 'discountCode': bloc.discountCode});
       }
     } else {
       DialogUtils.showDialogProgress(context: context);
@@ -238,11 +238,12 @@ class _BillPaymentScreenState extends ResourcefulState<BillPaymentScreen>
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    bloc.setRepository();
   }
 
   @override
   void onRetryLoadingPage() {
+    bloc.setRepository();
     if (navigator.currentConfiguration!.path.contains('subscription')) {
       bloc.getReservePackagePayment();
     } else {

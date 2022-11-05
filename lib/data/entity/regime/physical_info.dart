@@ -13,12 +13,10 @@ enum GenderType {
 
 @JsonSerializable()
 class PhysicalInfoData {
-  @JsonKey(name: "weight", defaultValue: 70.5)
+  @JsonKey(name: "weight", defaultValue: 0)
   double? weight;
-  @JsonKey(name: "height", defaultValue: 170)
+  @JsonKey(name: "height", defaultValue: 0)
   int? height;
-  @JsonKey(name: "wrist", defaultValue: 20)
-  int? wrist;
   @JsonKey(name: "waist")
   int? waist;
   @JsonKey(name: "birth_date")
@@ -31,7 +29,7 @@ class PhysicalInfoData {
   double? bmi;
   @JsonKey(name: "whr")
   double? whr;
-  @JsonKey(name: "gender")
+  @JsonKey(name: "gender", defaultValue: GenderType.Female)
   GenderType? gender;
   @JsonKey(name: "multi_birth_num", defaultValue: 1)
   int? multiBirth;

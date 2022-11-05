@@ -1,5 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/subscription_widget.dart';
@@ -300,12 +301,16 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   }
 
   @override
-  void onRetryAfterNoInternet() {
+  void onRetryLoadingPage() {
+    profileBloc.onRetryLoadingPage();
     profileBloc.getInformation();
   }
 
   @override
-  void onRetryLoadingPage() {
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    profileBloc.onRetryAfterNoInternet();
     profileBloc.getInformation();
   }
 }

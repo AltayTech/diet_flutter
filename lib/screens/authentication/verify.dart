@@ -1,16 +1,20 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/authentication/auth_header.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/widget/login_background.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/utils/image.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -27,7 +31,10 @@ class VerifyScreen extends StatefulWidget {
 
 class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFill {
   late AuthenticationBloc authBloc;
-  late TextEditingController textEditingController = TextEditingController();
+
+  late TextEditingController _textCode = TextEditingController();
+  late TextEditingController _textPhone = TextEditingController();
+
   var args;
   String? firstP;
   String? secondP;
@@ -41,11 +48,27 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   bool isRequest = false;
   bool isAutoVerify = false;
 
+  bool isInit = false;
+
+  late Country countrySelected;
+
   @override
   void dispose() {
     authBloc.dispose();
     if (!kIsWeb) unregisterListener();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!isInit) {
+      isInit = true;
+
+      args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      countrySelected = args["country"];
+      _textPhone.text = '+${args["mobile"]}';
+    }
   }
 
   @override
@@ -67,15 +90,11 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
         debugPrint('verifiy ${navigator.currentConfiguration!.path} / $event');
         context.vxNav.replace(
           Uri(path: '/$event'),
-          params: {
-            "mobile": args['mobile'],
-            "code": codeVerify,
-            'id': int.parse(args['countryId'])
-          },
+          params: {"mobile": args['mobile'], "code": codeVerify, "country": countrySelected},
         );
       }
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       isRequest = false;
       Navigator.of(context).pop();
     });
@@ -84,132 +103,218 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    args = ModalRoute.of(context)!.settings.arguments;
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: StreamBuilder(
-              stream: authBloc.waiting,
-              builder: (context, snapshot) {
-                if (snapshot.data == false && !check) {
-                  return TouchMouseScrollable(
-                    child: SingleChildScrollView(
-                      child: Column(children: [
-                        AuthHeader(
-                          title: navigator.currentConfiguration!.path.contains('pass')
-                              ? intl.changePassword
-                              : intl.register,
-                        ),
-                        Space(height: 70.0),
-                        content(),
-                      ]),
-                    ),
-                  );
-                } else {
-                  check = false;
-                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
-                }
-              }),
-        ));
+    return Scaffold(backgroundColor: Colors.white, body: body());
+  }
+
+  Widget body() {
+    return SafeArea(
+      child: StreamBuilder(
+          stream: authBloc.waiting,
+          builder: (context, snapshot) {
+            if (snapshot.data == false && !check) {
+              return TouchMouseScrollable(
+                child: SingleChildScrollView(
+                  child: LoginBackground(
+                    children: [
+                      content(),
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              check = false;
+              return Container(height: 100.h, child: Progress());
+            }
+          }),
+    );
   }
 
   Widget content() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-      child: Column(
-        children: [
-          Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
-              child: Text(
-                "+ ${args['mobile']}",
-                textDirection: TextDirection.ltr,
-                style: TextStyle(color: AppColors.penColor),
-              )),
-          Space(height: 5.h),
-          Text(intl.smsCode, style: typography.caption),
-          Space(height: 2.h),
-          Container(
-            child: Directionality(
-              textDirection: TextDirection.ltr,
-              child: pinCodeInput(
-                widthSpace: MediaQuery.of(context).size.width,
-                onDone: (val) {
-                  if (!isRequest) {
-                    codeVerify = val;
-                    debugPrint('verifyMethod => $codeVerify');
-                    if (codeVerify!.length == 4) {
-                      isRequest = true;
-                      VerificationCode verification = VerificationCode();
-                      verification.mobile = args['mobile'];
-                      verification.verifyCode = codeVerify;
-                      if (navigator.currentConfiguration!.path.contains('pass'))
-                        verification.resetPass = true;
-                      DialogUtils.showDialogProgress(context: context);
-                      if (isAutoVerify) {
-                        MemoryApp.analytics!.logEvent(name: "auto_verify_code");
-                      } else {
-                        MemoryApp.analytics!.logEvent(name: "manual_verify_code");
-                      }
-                      authBloc.verifyMethod(verification);
-
-                      authBloc.setTrySendCode = false;
-                    }
-                  }
-                },
-                textController: textEditingController,
-                context: context,
+    return Container(
+      width: 100.w,
+      height: 62.h,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius:
+              BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 1,
+                offset: Offset(0, 1))
+          ]),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              intl.registerLogin,
+              textAlign: TextAlign.start,
+              style: typography.subtitle1!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
-          ),
-          Space(height: 8.h),
-          Container(
-              child: StreamBuilder<bool>(
-                  stream: authBloc.flag,
-                  builder: (context, flag) {
-                    if (flag.hasData && flag.requireData)
-                      return InkWell(
+            Space(height: 1.h),
+            Row(
+              children: [
+                Text(
+                  intl.enterCodeSent,
+                  textAlign: TextAlign.start,
+                  style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+                ),
+                Space(width: 1.w),
+                InkWell(
+                  onTap: () {
+                    context.vxNav.clearAndPush(Uri.parse(Routes.auth));
+                  },
+                  child: Text(
+                    intl.editPhone,
+                    textAlign: TextAlign.start,
+                    style: typography.caption!.copyWith(
+                        color: AppColors.redBar, fontWeight: FontWeight.bold, fontSize: 10.sp),
+                  ),
+                ),
+              ],
+            ),
+            Space(height: 3.h),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Row(children: [
+                  Expanded(
+                    child: Container(
+                      width: 15.w,
+                      height: 7.h,
+                      padding: EdgeInsets.only(top: 4),
+                      child: StreamBuilder<int>(
+                          stream: authBloc.start,
+                          builder: (context, start) {
+                            if (start.hasData)
+                              return Center(
+                                child: Text('${DateTimeUtils.timerFormat(start.requireData)}',
+                                    style: TextStyle(fontSize: 12.sp)),
+                              );
+                            else
+                              return Text('');
+                          }),
+                    ),
+                  ),
+                  Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                        child: Text(
+                          _textPhone.text,
+                          textAlign: TextAlign.start,
+                          textDirection: TextDirection.ltr,
+                          style: typography.caption!.copyWith(fontSize: 14.sp),
+                        ),
+                      )),
+                  Expanded(
+                    flex: 0,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4.0),
+                        child: ImageUtils.fromLocal(countrySelected.flag!,
+                            package: picker.countryCodePackageName,
+                            width: 7.w,
+                            fit: BoxFit.fill,
+                            height: 5.5.w),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+            Space(height: 1.h),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: pinCodeInput(
+                    widthSpace: 85.w,
+                    height: 7.h,
+                    onDone: (val) {
+                      if (!isRequest) {
+                        codeVerify = val;
+                        debugPrint('verifyMethod => $codeVerify');
+                        if (codeVerify!.length == 4) {
+                          isRequest = true;
+                          VerificationCode verification = VerificationCode();
+                          verification.mobile = args['mobile'];
+                          verification.countryId = countrySelected.id;
+                          verification.verifyCode = codeVerify;
+                          DialogUtils.showDialogProgress(context: context);
+                          if (isAutoVerify) {
+                            MemoryApp.analytics!.logEvent(name: "auto_verify_code");
+                          } else {
+                            MemoryApp.analytics!.logEvent(name: "manual_verify_code");
+                          }
+                          authBloc.verifyMethod(verification);
+
+                          authBloc.setTrySendCode = false;
+                        }
+                      }
+                    },
+                    textController: _textCode,
+                    context: context,
+                  ),
+                ),
+              ),
+            ),
+            StreamBuilder<bool>(
+                stream: authBloc.flag,
+                builder: (context, flag) {
+                  if (flag.hasData && flag.requireData)
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: InkWell(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.reset_tv, color: AppColors.penColor),
+                              Icon(Icons.refresh_rounded, color: AppColors.priceGreenColor),
                               Space(width: 2.w),
-                              Text(intl.notSend, style: TextStyle(fontSize: 14.0)),
+                              Text(intl.notSend,
+                                  style: typography.caption!
+                                      .copyWith(color: AppColors.priceGreenColor)),
                             ],
                           ),
                           onTap: () {
                             methodSendCodeDialog();
-                          });
-                    else
-                      return StreamBuilder<int>(
-                          stream: authBloc.start,
-                          builder: (context, start) {
-                            if (start.hasData)
-                              return Text(
-                                  intl.sendAgain +
-                                      '${DateTimeUtils.timerFormat(start.requireData)}',
-                                  style: TextStyle(fontSize: 14.0));
-                            else
-                              return Text('');
-                          });
-                  })),
-          Space(height: 8.h),
-          button(AppColors.btnColor, intl.confirmContinue, Size(100.w, 8.h), () {
-            DialogUtils.showDialogProgress(context: context);
-            VerificationCode verification = VerificationCode();
-            verification.mobile = args['mobile'];
-            verification.verifyCode = codeVerify;
-            if (navigator.currentConfiguration!.path.contains('pass'))
-              verification.resetPass = true;
-            debugPrint('query verify ${verification.toJson()}');
-            authBloc.verifyMethod(verification);
+                          }),
+                    );
+                  else
+                    return Space();
+                }),
+            Space(height: 8.h),
+            CustomButton(
+              AppColors.btnColor,
+              intl.login,
+              Size(100.w, 6.h),
+              () {
+                DialogUtils.showDialogProgress(context: context);
+                VerificationCode verification = VerificationCode();
+                verification.mobile = args['mobile'];
+                verification.countryId = countrySelected.id;
+                verification.verifyCode = codeVerify;
+                authBloc.verifyMethod(verification);
 
-            authBloc.setTrySendCode = false;
-          }),
-          Space(height: 5.h),
-        ],
+                authBloc.setTrySendCode = false;
+              },
+            ),
+            Space(height: 2.h),
+          ],
+        ),
       ),
     );
   }
@@ -335,8 +440,28 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   }
 
   @override
+  void onRetryLoadingPage() {
+    authBloc.setRepository();
+
+    if (!authBloc.isTrySendCode) {
+      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+      VerificationCode verification = VerificationCode();
+      verification.mobile = args['mobile'];
+      verification.countryId = countrySelected.id;
+      verification.verifyCode = codeVerify;
+      authBloc.verifyMethod(verification);
+
+      authBloc.setTrySendCode = false;
+    }
+  }
+
+  @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    authBloc.setRepository();
+
     if (authBloc.isTrySendCode) {
       authBloc.tryCodeMethod(args['mobile'], channelSendCode);
       authBloc.setFlag = false;
@@ -345,26 +470,9 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   }
 
   @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-    if (!authBloc.isTrySendCode) {
-      if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-
-      VerificationCode verification = VerificationCode();
-      verification.mobile = args['mobile'];
-      verification.verifyCode = codeVerify;
-      if (navigator.currentConfiguration!.path.contains('pass')) verification.resetPass = true;
-      debugPrint('query verify ${verification.toJson()}');
-      authBloc.verifyMethod(verification);
-
-      authBloc.setTrySendCode = false;
-    }
-  }
-
-  @override
   void codeUpdated() {
     unregisterListener();
     isAutoVerify = true;
-    textEditingController.text = code!;
+    _textCode.text = code!;
   }
 }

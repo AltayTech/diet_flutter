@@ -29,7 +29,7 @@ class ProfileBloc {
     _obscureTextConfirmPass.safeValue=false;
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   ImagePicker? _picker;
   XFile? image;
   late CityProvinceModel cityProvinceModel;
@@ -188,6 +188,7 @@ class ProfileBloc {
       }
     }).whenComplete(() {});
   }
+
 
   void getProvinces() {
     _repository.getProvinces().then((value) {
@@ -387,6 +388,18 @@ class ProfileBloc {
 
   void setObscureTextConfirmPass() {
     _obscureTextConfirmPass.safeValue = !_obscureTextConfirmPass.value;
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
   }
 
   void dispose() {

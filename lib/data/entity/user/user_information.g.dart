@@ -98,6 +98,7 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
 
 Media _$MediaFromJson(Map<String, dynamic> json) => Media()
   ..url = json['url'] as String?
+  ..originalUrl = json['original_url'] as String?
   ..id = json['id'] as int?
   ..modelId = json['model_id'] as int?
   ..fileName = json['file_name'] as String?
@@ -112,6 +113,7 @@ Media _$MediaFromJson(Map<String, dynamic> json) => Media()
 
 Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
       'url': instance.url,
+      'original_url': instance.originalUrl,
       'id': instance.id,
       'model_id': instance.modelId,
       'file_name': instance.fileName,

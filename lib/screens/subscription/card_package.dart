@@ -104,14 +104,21 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
                                 softWrap: true,
                                 maxLines: 2,
                                 textDirection: context.textDirectionOfLocale,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1!
+                                style: typography.subtitle1!
                                     .copyWith(letterSpacing: -0.2, fontSize: 12.sp),
                               ),
-                              if (pack.services != null && pack.services!.length > 0)
-                                ...pack.services!.map(
-                                    (product) => _itemOption(product.name ?? '', pack.barColor)),
+                              Text(
+                                pack.description ?? '',
+                                textAlign: TextAlign.start,
+                                softWrap: true,
+                                maxLines: 2,
+                                textDirection: context.textDirectionOfLocale,
+                                style: typography.subtitle1!.copyWith(
+                                    letterSpacing: -0.2,
+                                    color: Colors.black.withOpacity(0.7),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 9.sp),
+                              ),
                             ],
                           )),
                     ],
@@ -272,4 +279,16 @@ class _CardPackageState extends ResourcefulState<CardPackage> {
     );
   }
 
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+    super.onRetryLoadingPage();
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+    super.onRetryAfterNoInternet();
+    bloc.onRetryAfterNoInternet();
+  }
 }

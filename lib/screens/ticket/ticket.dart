@@ -253,6 +253,6 @@ class _TicketState extends ResourcefulState<Ticket> {
 
   @override
   void onRetryLoadingPage() {
-    ticketBloc.getTickets();
+    ticketBloc.onRetryLoadingPage();
   }
 }

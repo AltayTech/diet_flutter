@@ -9,7 +9,7 @@ part of 'language.dart';
 Map<String, dynamic> _$ChangeLanguageRequestDataToJson(
         ChangeLanguageRequestData instance) =>
     <String, dynamic>{
-      'Language': _$UserLanguageEnumMap[instance.language],
+      'Language': _$UserLanguageEnumMap[instance.language]!,
     };
 
 const _$UserLanguageEnumMap = {

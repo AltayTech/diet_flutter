@@ -76,9 +76,13 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
       debugPrint('listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event)
         VxNavigator.of(context).clearAndPush(Uri.parse("/${bloc.path}"));
-      else if (event != null && !event)
-        VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
-      else
+      else if (event != null && !event) {
+        if (navigator.currentConfiguration!.path.contains('reg')) {
+          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
+        } else {
+          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.renewPaymentFail));
+        }
+      } else
         Navigator.of(context).pop();
     });
     bloc.showServerError.listen((event) {
@@ -148,7 +152,10 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                   child: Text(
                     intl.paymentFinalBill,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.caption,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .caption,
                   ),
                 ),
                 Space(height: 1.h),
@@ -175,7 +182,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                         child: Text(
                           intl.typePaymentLabel,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
+                          style: Theme
+                              .of(context)
                               .textTheme
                               .headline6!
                               .copyWith(color: AppColors.labelTextColor),
@@ -208,8 +216,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                       label: bloc.packageItem!.price!.totalPrice == 0
                           ? intl.confirmContinue
                           : bloc.isOnline
-                              ? intl.onlinePayment
-                              : intl.cardToCardPayment,
+                          ? intl.onlinePayment
+                          : intl.cardToCardPayment,
                     );
                   },
                   stream: bloc.onlineStream,
@@ -239,7 +247,11 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
               messageError ?? intl.offErrorResult,
               textAlign: TextAlign.start,
               textDirection: context.textDirectionOfLocale,
-              style: Theme.of(context).textTheme.overline!.copyWith(color: Colors.red),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .overline!
+                  .copyWith(color: Colors.red),
             ),
             SizedBox(width: 2.w),
             ImageUtils.fromLocal(
@@ -313,7 +325,10 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                 Text(
                   intl.totalPayment,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subtitle1,
                 ),
                 StreamBuilder(
                   builder: (context, snapshot) {
@@ -322,9 +337,11 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                       child: Text(
                         bloc.packageItem!.price!.totalPrice == 0
                             ? intl.free
-                            : '${bloc.packageItem!.price!.totalPrice.toString().seRagham()} ${intl.toman}',
+                            : '${bloc.packageItem!.price!.totalPrice.toString().seRagham()} ${intl
+                            .toman}',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
+                        style: Theme
+                            .of(context)
                             .textTheme
                             .subtitle1!
                             .copyWith(color: AppColors.primary, fontWeight: FontWeight.bold),
@@ -353,7 +370,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
             child: Text(
               price.seRagham(),
               textAlign: TextAlign.end,
-              style: Theme.of(context)
+              style: Theme
+                  .of(context)
                   .textTheme
                   .caption!
                   .copyWith(color: Color.fromRGBO(87, 192, 159, 1)),
@@ -366,7 +384,10 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
           child: Text(
             title,
             textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme
+                .of(context)
+                .textTheme
+                .caption,
           ),
         ),
       ],
@@ -387,7 +408,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                     'assets/images/bill/online.svg',
                     intl.online,
                     intl.descriptionOnline,
-                    () {
+                        () {
                       bloc.setOnline();
                     },
                   ), () {
@@ -404,11 +425,11 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                   'assets/images/bill/credit.svg',
                   intl.cardToCard,
                   intl.descriptionCardToCard,
-                  () {
+                      () {
                     bloc.setCardToCard();
                   },
                 ),
-                () {
+                    () {
                   bloc.setCardToCard();
                 },
                 bloc.isCardToCard,
@@ -495,14 +516,18 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                   Text(
                     title,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.caption,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .caption,
                   ),
                   Space(height: 1.h),
                   Flexible(
                     child: Text(subTitle,
                         textAlign: TextAlign.center,
                         softWrap: true,
-                        style: Theme.of(context)
+                        style: Theme
+                            .of(context)
                             .textTheme
                             .overline!
                             .copyWith(color: AppColors.labelTextColor)),

@@ -4,7 +4,7 @@ import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/screens/authentication/auth_header.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:behandam/widget/custom_button.dart';
 import 'package:behandam/widget/gender_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -52,7 +52,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
         VxNavigator.of(context).push(Uri.parse(Routes.listView));
       }
     });
-    authBloc.showServerError.listen((event) {
+    authBloc.popDialog.listen((event) {
       Navigator.of(context).pop();
       Utils.getSnackbarMessage(context, event);
     });
@@ -217,7 +217,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
             ),
           ),
           SizedBox(height: 20.0),
-          button(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
+          CustomButton(AppColors.btnColor, intl.register, Size(100.w, 8.h), () {
             // setState(() {
             //   _text.text.isEmpty ? _validate = true : _validate = false;
             // });

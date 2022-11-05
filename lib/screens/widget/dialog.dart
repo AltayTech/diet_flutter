@@ -38,6 +38,35 @@ abstract class DialogUtils {
     );
   }
 
+  static Future<T?> showBottomSheetPageColor<T>({
+    required BuildContext context,
+    required Widget child,
+    required Color color,
+    bool enableDrag = true,
+    bool isDismissible = true,
+    bool isScrollControlled = true,
+  }) {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: isScrollControlled,
+      isDismissible: isDismissible,
+      backgroundColor: Colors.transparent,
+      enableDrag: enableDrag,
+      builder: (context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 0.5,sigmaY: 0.5),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+              padding: EdgeInsets.all(16),
+              child: Wrap(children: [child])),
+        );
+      },
+    );
+  }
+
   /* static Future<T?> showDialogPage<T>({
     required BuildContext context,
     required Widget child,

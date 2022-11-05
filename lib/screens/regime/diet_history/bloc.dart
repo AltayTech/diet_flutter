@@ -14,7 +14,7 @@ class DietHistoryBloc {
     loadContent();
   }
 
-  final _repository = Repository.getInstance();
+  Repository _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _dietHistory = BehaviorSubject<DietHistoryData>();
   final _selectedDietHistory = BehaviorSubject<DietHistory?>();
@@ -55,6 +55,19 @@ class DietHistoryBloc {
         if(value.data != null) _navigateTo.fire(value.next);
       }).whenComplete(() => _loadingContent.safeValue = false);
     }
+  }
+
+  void setRepository() {
+    _repository = Repository.getInstance();
+  }
+
+  void onRetryAfterNoInternet() {
+    setRepository();
+  }
+
+  void onRetryLoadingPage() {
+    setRepository();
+    loadContent();
   }
 
   void dispose() {

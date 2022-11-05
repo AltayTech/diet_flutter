@@ -44,13 +44,19 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
 
       bloc = PaymentBloc();
 
-        var arg = ModalRoute.of(context)!.settings.arguments as Map;
-        bloc.setPackage = arg['package'] as PackageItem;
+      var arg = ModalRoute.of(context)!.settings.arguments as Map;
+      if (!navigator.currentConfiguration!.path.contains('subscription')) {
+        bloc.setServices = arg['services'] as List<ServicePackage>;
+        bloc.setPackage = arg['package'] as Package;
+        bloc.setSelectedDietTypeId = arg['selectedDietTypeId'] as int?;
+      } else {
+        bloc.setPackageItem = arg['package'] as PackageItem;
+      }
+      bloc.discountCode = arg['discountCode'] as String?;
 
-        bloc.discountCode = arg['discountCode'] as String?;
-        if (bloc.discountCode != null) bloc.changeUseDiscount();
-        // call new service
-        bloc.getBankAccountActiveCard();
+      if (bloc.discountCode != null) bloc.changeUseDiscount();
+      // call new service
+      bloc.getBankAccountActiveCard();
 
       listenBloc();
     }
@@ -120,7 +126,7 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
               registerPaymentInfo()
             ]);
           }
-          return Center(child: Progress());
+          return Container(height: 80.h, child: Center(child: Progress()));
         },
       ),
     );
@@ -161,11 +167,21 @@ class _DebitCardPageState extends ResourcefulState<DebitCardPage> {
   @override
   void onRetryAfterNoInternet() {
     // TODO: implement onRetryAfterNoInternet
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
+    if (navigator.currentConfiguration!.path.contains('subscription')) {
+      bloc.userPaymentCardToCardSubscription(bloc.invoice!);
+    } else {
+      bloc.newPayment(bloc.invoice!);
+    }
   }
 
   @override
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
+    bloc.onRetryLoadingPage();
+    bloc.getBankAccountActiveCard();
   }
 
   @override

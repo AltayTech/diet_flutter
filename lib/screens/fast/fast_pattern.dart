@@ -1,7 +1,9 @@
 import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/fast/bloc.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
@@ -148,14 +150,17 @@ class _FastPatternPageState extends ResourcefulState<FastPatternPage> {
   }
 
   @override
-  void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
+  void onRetryLoadingPage() {
+    bloc.onRetryLoadingPage();
   }
 
   @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+  void onRetryAfterNoInternet() {
+    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+
+    bloc.onRetryAfterNoInternet();
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

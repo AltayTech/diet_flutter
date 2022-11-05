@@ -4,11 +4,13 @@ final GlobalKey<ScaffoldMessengerState> navigatorMessengerKey = GlobalKey();
 
 abstract class Routes {
   // static const home = '/home';
+  static const regStart = '/reg/start';
+  static const renewStart = '/renew/start';
   static const auth = '/auth';
   static const login = '/auth/login';
-  static const register = '/auth/register';
+  static const register = '/auth/optional-register';
   static const passVerify = '/auth/pass/verify';
-  static const authVerify = '/auth/verify';
+  static const authVerify = '/auth/otp/login';
   static const resetCode = '/profile/password';
   static const resetPass = '/auth/pass/reset';
   static const regimeType = '/diet/type';
@@ -21,19 +23,20 @@ abstract class Routes {
   static const editProfile = '/profile/edit';
   static const inbox = '/inbox';
   static const showInbox = '/inbox';
-  static const ticket = '/ticket';
-  static const ticketCall = '/ticket/call';
-  static const ticketMessage = '/ticket/message';
+  static const ticket = '/support/tickets';
+  static const ticketCall = '/support/calls';
+  static const ticketMessage = '/support';
   static const replaceFood = '/list/food/replace';
   static const calendar = '/list/archive';
-  static const newTicketMessage = '/ticket/message/new';
-  static const detailsTicketMessage = '/ticket/details';
+  static const newTicketMessage = '/support/ticket/new';
+  static const detailsTicketMessage = '/support/ticket';
   static const bodyState = '/reg/size';
   static const bodyStatus = '/reg/report';
   static const sickness = '/reg/sick/select';
   static const special_sickness = '/reg/special';
   static const advice = '/list/notice';
   static const package = '/reg/package';
+  static const renewPackage = '/renew/package';
   static const paymentBill = '/payment/bill';
   static const cardToCard = '/reg/payment/card';
   static const resetPasswordProfile = '/resetPasswordProfile';
@@ -48,6 +51,7 @@ abstract class Routes {
   static const dietHistory = '/reg/diet/history';
   static const dietGoal = '/reg/diet/goal';
   static const paymentFail = '/reg/payment/online/fail';
+  static const renewPaymentFail = '/renew/payment/online/fail';
   static const paymentWaiting = '/reg/payment/card/wait';
   static const overview = '/reg/overview';
   static const menuSelect = '/reg/menu/select';
@@ -93,6 +97,10 @@ abstract class Routes {
   static const subscriptionPaymentOnlineSuccess = '/subscription/payment/online/success';
   static const subscriptionPaymentOnlineFail = '/subscription/payment/online/fail';
   static const subscriptionPaymentCardWait = '/subscription/payment/card/wait';
+  static const surveyCallSupport = '/survey-call-support';
+
+  static const onboarding = '/onboarding';
+  static const editBodyInfo = '/reg/edit/body-information';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

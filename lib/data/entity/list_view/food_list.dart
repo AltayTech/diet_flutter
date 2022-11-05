@@ -1,6 +1,10 @@
+import 'package:behandam/data/entity/daily_message.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
+import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../user/user_information.dart';
 
 part 'food_list.g.dart';
 
@@ -23,7 +27,26 @@ class FoodListData {
   @JsonKey(name: 'has_pattern')
   boolean? hasPattern;
 
+  @JsonKey(name: 'survey_data')
+  SurveyData? surveyData;
+
   factory FoodListData.fromJson(Map<String, dynamic> json) => _$FoodListDataFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class SurveyData {
+  SurveyData(
+      this.callId,
+      this.surveyStatus,
+      );
+
+  @JsonKey(name: 'call_id')
+  int? callId;
+
+  @JsonKey(name: 'survey_status')
+  bool? surveyStatus;
+
+  factory SurveyData.fromJson(Map<String, dynamic> json) => _$SurveyDataFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
@@ -461,20 +484,25 @@ class Visit {
 
 @JsonSerializable(createToJson: false)
 class DietType {
-  DietType(
-    this.id,
-    this.alias,
-    this.title,
-  );
+  DietType();
 
   @JsonKey(name: 'id')
-  final int id;
+  int? id;
 
   @JsonKey(name: 'alias')
-  final RegimeAlias alias;
+  RegimeAlias? alias;
 
   @JsonKey(name: 'title')
-  final String title;
+  String? title;
+
+  @JsonKey(name: 'is_active')
+  boolean? isActive;
+
+  @JsonKey(name: 'template')
+  TempTicket? template;
+
+  @JsonKey(name: 'diet_types')
+  List<DietType>? dietTypes;
 
   factory DietType.fromJson(Map<String, dynamic> json) => _$DietTypeFromJson(json);
 }

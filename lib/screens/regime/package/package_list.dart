@@ -167,7 +167,8 @@ class _PackageListScreenState extends ResourcefulState<PackageListScreen> {
 
   @override
   void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
+    bloc.setRepository();
+    bloc.getPackage();
   }
 
   @override
