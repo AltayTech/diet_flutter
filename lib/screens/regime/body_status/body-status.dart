@@ -53,7 +53,7 @@ class _BodyStatusScreenState extends ResourcefulState<BodyStatusScreen> {
     bloc.navigateToVerify.listen((event) {
       if (videoController != null && videoController!.isPlaying)
         videoController!.pause();
-      MemoryApp.page++;
+      if (!event.toString().contains('block')) MemoryApp.page++;
       context.vxNav.push(Uri.parse('/${event}'));
     });
     bloc.showServerError.listen((event) {
