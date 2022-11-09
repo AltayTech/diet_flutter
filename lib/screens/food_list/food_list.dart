@@ -11,6 +11,7 @@ import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/screens/widget/toolbar_empty.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +87,7 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
       builder: (_, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData && !snapshot.requireData)
           return Scaffold(
-            appBar: AppBar(elevation: 0, toolbarHeight: 0, backgroundColor: AppColors.primary),
+            appBar: ToolbarEmpty(),
             body: SafeArea(
               child: Container(
                 height: 100.h,

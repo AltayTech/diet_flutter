@@ -5,6 +5,7 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/login_background.dart';
 import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/toolbar_empty.dart';
 import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
@@ -54,11 +55,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     authBloc.navigateToVerify.listen((event) async {
       if (event != null) {
         if (event.toString().contains('verify'))
-          context.vxNav
-              .push(Uri(path: '/$event'), params: {"mobile": number, "country": _selectedLocation});
+          context.vxNav.push(Uri(path: '/$event'),
+              params: {"mobile": number, "country": _selectedLocation});
         else
-          context.vxNav
-              .push(Uri(path: '/$event'), params: {"mobile": number, "country": _selectedLocation});
+          context.vxNav.push(Uri(path: '/$event'),
+              params: {"mobile": number, "country": _selectedLocation});
       }
     });
 
@@ -80,7 +81,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(body: body());
+    return Scaffold(appBar: ToolbarEmpty(), body: body());
   }
 
   Widget body() {
@@ -112,8 +113,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
       height: 45.h,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius:
-            BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(50), topLeft: Radius.circular(50)),
       ),
       child: Padding(
         padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
@@ -132,7 +133,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
             Text(
               intl.enterYourMobileNumber,
               textAlign: TextAlign.start,
-              style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
+              style: typography.caption!
+                  .copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
             ),
             Space(height: 3.h),
             Flexible(
@@ -157,9 +159,12 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       labelText: intl.phoneNumber,
                       // errorText: _validate ? intl.fillAllField : null,
                       labelStyle: TextStyle(
-                          color: Colors.grey, fontSize: 12.sp, fontWeight: FontWeight.w500),
+                          color: Colors.grey,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500),
                       suffixIcon: selectCountry(),
-                      suffixIconConstraints: BoxConstraints(maxWidth: 34.w, minWidth: 25.w)),
+                      suffixIconConstraints:
+                          BoxConstraints(maxWidth: 34.w, minWidth: 25.w)),
                   onSubmitted: (String) {
                     click(_selectedLocation);
                   },
@@ -194,7 +199,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     return Container(
       height: 7.h,
       margin: EdgeInsets.all(8),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.grey[200]),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0), color: Colors.grey[200]),
       child: StreamBuilder(
         stream: authBloc.selectedCountry,
         builder: (_, AsyncSnapshot<Country> snapshot) {
@@ -209,7 +215,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                     children: [
                       Expanded(
                         flex: 0,
-                        child: Icon(Icons.keyboard_arrow_down, color: Colors.orange, size: 20),
+                        child: Icon(Icons.keyboard_arrow_down,
+                            color: Colors.orange, size: 20),
                       ),
                       Expanded(
                         flex: 1,
@@ -226,7 +233,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       Space(width: 2.w),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
-                        child: ImageUtils.fromLocal(_selectedLocation.flag ?? '',
+                        child: ImageUtils.fromLocal(
+                            _selectedLocation.flag ?? '',
                             width: 6.w,
                             package: picker.countryCodePackageName,
                             height: 4.5.w,
@@ -267,10 +275,14 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 // errorText: _validate ? intl.fillAllField : null,
                 label: Text(intl.search),
                 labelStyle: TextStyle(
-                    color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
+                    color: AppColors.penColor,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w400),
               ),
               style: TextStyle(
-                  color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
+                  color: AppColors.penColor,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w400),
               onChanged: authBloc.searchCountry,
             ),
             Space(height: 2.h),
@@ -285,8 +297,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                           // shrinkWrap: true,
                           itemBuilder: (_, index) => GestureDetector(
                             onTap: () {
-                              authBloc.setCountry(filterListCountry.data![index]);
-                              _selectedLocation = filterListCountry.data![index];
+                              authBloc
+                                  .setCountry(filterListCountry.data![index]);
+                              _selectedLocation =
+                                  filterListCountry.data![index];
                               Navigator.of(context).pop();
                             },
                             child: Container(
@@ -297,12 +311,16 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (filterListCountry.data![index].flag != null)
+                                    if (filterListCountry.data![index].flag !=
+                                        null)
                                       ClipRRect(
-                                        borderRadius: BorderRadius.circular(2.0),
+                                        borderRadius:
+                                            BorderRadius.circular(2.0),
                                         child: ImageUtils.fromLocal(
-                                            filterListCountry.data![index].flag!,
-                                            package: picker.countryCodePackageName,
+                                            filterListCountry
+                                                .data![index].flag!,
+                                            package:
+                                                picker.countryCodePackageName,
                                             width: 7.w,
                                             fit: BoxFit.fill,
                                             height: 5.w),
