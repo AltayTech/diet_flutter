@@ -1,11 +1,11 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/home/mahdi/flutterSdk/flutter"
-export "FLUTTER_APPLICATION_PATH=/home/mahdi/flutterProject/new-behandam-flutter"
+export "FLUTTER_ROOT=/Users/zahrahosseini/SDK/FlutterSdk"
+export "FLUTTER_APPLICATION_PATH=/Users/zahrahosseini/projects/new-behandam-flutter"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
-export "FLUTTER_BUILD_NAME=4.0.0"
-export "FLUTTER_BUILD_NUMBER=400"
+export "FLUTTER_BUILD_NAME=4.0.3"
+export "FLUTTER_BUILD_NUMBER=403"
 export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=true"
 export "TREE_SHAKE_ICONS=false"

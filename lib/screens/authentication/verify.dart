@@ -8,6 +8,7 @@ import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/login_background.dart';
 import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/toolbar_empty.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
@@ -103,7 +104,8 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(backgroundColor: Colors.white, body: body());
+    return Scaffold(
+        appBar: ToolbarEmpty(), backgroundColor: Colors.white, body: body());
   }
 
   Widget body() {
