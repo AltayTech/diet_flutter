@@ -8,7 +8,6 @@ import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/utils/deep_link.dart';
-import 'package:behandam/utils/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -41,72 +40,13 @@ class AppFcm {
     if (!kIsWeb) _listenFcmEvents();
   }
 
+
   static void _listenAwesomeEvents() {
-    AwesomeNotifications().actionStream.listen((event) async {
-      debugPrint('event = $event');
-      ActionsItem? action;
-      if (event.buttonKeyPressed == '') {
-        // push only tapped, no button is pressed
-        final json = await AppSharedPreferences.fcmPushAction;
-        debugPrint('json = $json');
-
-        action = json != null ? ActionsItem.fromJson(jsonDecode(json)) : null;
-        await AppSharedPreferences.setFcmPushAction(null);
-      } else {
-        // a button on push is pressed
-        final json = await AppSharedPreferences.fcmButtonActions;
-        debugPrint('json = $json');
-        Notif notif = Notif.fromJson2(jsonDecode(json!));
-        action = json != null
-            ? notif.actions!.where((element) {
-                return element.key == event.buttonKeyPressed;
-              }).single
-            : null;
-        await AppSharedPreferences.setFcmButtonActions(null);
-      }
-      debugPrint('event = $event');
-      debugPrint('action = ${action.toString()}');
-      if (action == null) {
-        return;
-      }
-      _handleAction(action);
-    });
-  }
-
-  static void _handleAction(ActionsItem action) {
-    switch (actionType.values[int.parse(action.actionType!)]) {
-      case actionType.OpenApp:
-        MemoryApp.analytics!.logEvent(name: 'notification_open_app');
-        IntentUtils.launchURL(action.action!);
-        break;
-      case actionType.OpenPage:
-        MemoryApp.analytics!.logEvent(name: 'notification_open_page');
-        DeepLinkUtils.navigateDeepLink(action.action!);
-        break;
-      case actionType.OpenEspecialApp:
-        MemoryApp.analytics!.logEvent(name: 'notification_open_special_app');
-        IntentUtils.openApp(action.action!);
-        break;
-      case actionType.OpenEspecialApp:
-        IntentUtils.openAppIntent(action.action!);
-        break;
-      case actionType.OpenInstagramPage:
-        MemoryApp.analytics!.logEvent(name: 'notification_instagram_page');
-        IntentUtils.openInstagram(action.action!);
-        break;
-      case actionType.OpenTelegramChannal:
-        MemoryApp.analytics!.logEvent(name: 'notification_telegram_channel');
-        IntentUtils.launchURL(action.action!);
-        break;
-
-      case actionType.OpenWebUrl:
-        MemoryApp.analytics!.logEvent(name: 'notification_open_url');
-        IntentUtils.launchURL(action.action!);
-        break;
-      case actionType.CallService:
-        // TODO: Handle this case.
-        break;
-    }
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: (ReceivedAction receivedAction) async {
+       NotificationController.onActionReceivedMethod(receivedAction);
+      },
+    );
   }
 
   static Future<void> _initializeAwesome() async {
@@ -160,7 +100,7 @@ class AppFcm {
     _getToken();
     try {
       subscribeTopicAll();
-    }catch(e){
+    } catch (e) {
       debugPrint(e.toString());
     }
     FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
@@ -267,13 +207,13 @@ class AppFcm {
                 channelKey: notifResponse.channel_id ?? "behandam",
                 // displayOnBackground: true,
                 title: notifResponse.title,
-                notificationLayout: notifResponse.layout,
+                notificationLayout: notifResponse.layout ?? NotificationLayout.Default,
                 body: notifResponse.description,
                 customSound: "default",
                 largeIcon: notifResponse.icon,
                 showWhen: true,
                 hideLargeIconOnExpand: true,
-                autoCancel: bool.fromEnvironment(notifResponse.autoCancel!)
+                autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
                 //autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
                 ),
             actionButtons: buttonActions);
@@ -292,6 +232,94 @@ class AppFcm {
           //  autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
         ),
       );
+    }
+  }
+}
+class NotificationController {
+
+  /// Use this method to detect when a new notification or a schedule is created
+  @pragma("vm:entry-point")
+  static Future <void> onNotificationCreatedMethod(ReceivedNotification receivedNotification) async {
+    // Your code goes here
+  }
+
+  /// Use this method to detect every time that a new notification is displayed
+  @pragma("vm:entry-point")
+  static Future <void> onNotificationDisplayedMethod(ReceivedNotification receivedNotification) async {
+    // Your code goes here
+  }
+
+  /// Use this method to detect if the user dismissed a notification
+  @pragma("vm:entry-point")
+  static Future <void> onDismissActionReceivedMethod(ReceivedAction receivedAction) async {
+    // Your code goes here
+  }
+
+  /// Use this method to detect when the user taps on a notification or action button
+  @pragma("vm:entry-point")
+  static Future <void> onActionReceivedMethod(ReceivedAction receivedAction) async {
+    debugPrint('event = $receivedAction');
+    ActionsItem? action;
+    if (receivedAction.buttonKeyPressed == '') {
+      // push only tapped, no button is pressed
+      final json = await AppSharedPreferences.fcmPushAction;
+      debugPrint('json = $json');
+
+      action = json != null ? ActionsItem.fromJson(jsonDecode(json)) : null;
+      await AppSharedPreferences.setFcmPushAction(null);
+    } else {
+      // a button on push is pressed
+      final json = await AppSharedPreferences.fcmButtonActions;
+      debugPrint('json = $json');
+      Notif notif = Notif.fromJson2(jsonDecode(json!));
+      action = json != null
+          ? notif.actions!.where((element) {
+        return element.key == receivedAction.buttonKeyPressed;
+      }).single
+          : null;
+      await AppSharedPreferences.setFcmButtonActions(null);
+    }
+    debugPrint('event = $receivedAction');
+    debugPrint('action = ${action.toString()}');
+    if (action == null) {
+      return;
+    }
+    _handleAction(action);
+  }
+
+  static void _handleAction(ActionsItem action) {
+    switch (actionType.values[int.parse(action.actionType!)]) {
+      case actionType.OpenApp:
+        MemoryApp.analytics!.logEvent(name: 'notification_open_app');
+        IntentUtils.launchURL(action.action!);
+        break;
+      case actionType.OpenPage:
+        MemoryApp.analytics!.logEvent(name: 'notification_open_page');
+        DeepLinkUtils.navigateDeepLink(action.action!);
+        break;
+      case actionType.OpenEspecialApp:
+        MemoryApp.analytics!.logEvent(name: 'notification_open_special_app');
+        IntentUtils.openApp(action.action!);
+        break;
+      case actionType.OpenEspecialApp:
+        IntentUtils.openAppIntent(action.action!);
+        break;
+      case actionType.OpenInstagramPage:
+        MemoryApp.analytics!.logEvent(name: 'notification_instagram_page');
+        IntentUtils.openInstagram(action.action!);
+        break;
+      case actionType.OpenTelegramChannal:
+        MemoryApp.analytics!.logEvent(name: 'notification_telegram_channel');
+        IntentUtils.launchURL(action.action!);
+        break;
+
+      case actionType.OpenWebUrl:
+        MemoryApp.analytics!.logEvent(name: 'notification_open_url');
+        IntentUtils.launchURL(action.action!);
+        break;
+      case actionType.CallService:
+      // TODO: Handle this case.
+        break;
     }
   }
 }
