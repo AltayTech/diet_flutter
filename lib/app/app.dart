@@ -90,9 +90,9 @@ class _AppState extends State<App> {
 
     navigator.addListener(() {
       print('routeName is => ${navigator.currentConfiguration!.path}');
-      if (MemoryApp.analytics != null)
+     /* if (MemoryApp.analytics != null)
         MemoryApp.analytics!
-            .logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));
+            .logEvent(name: navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1));*/
     });
   }
 
@@ -104,7 +104,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     //cache one of vitrin's image for reduce time of loading
-    precacheImage(AssetImage("assets/images/vitrin/bmi_banner.jpg"), context);
+    precacheImage(const AssetImage("assets/images/vitrin/bmi_banner.jpg"), context);
     return Sizer(
       builder: (context, orientation, deviceType) {
         return app();

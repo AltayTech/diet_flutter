@@ -38,7 +38,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
     bloc.navigateToVerify.listen((event) {
       // Navigator.of(context).pop();
       if (event) {
-        MemoryApp.analytics!.logEvent(name: "shop_payment_success");
+       /* MemoryApp.analytics!.logEvent(name: "shop_payment_success");*/
         VxNavigator.of(context)
             .clearAndPush(Uri(path: Routes.shopPaymentOnlineSuccess), params: "shop");
       } else

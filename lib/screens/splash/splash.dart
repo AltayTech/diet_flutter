@@ -101,7 +101,8 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                       ),
                       if (!bloc.forceUpdate) SizedBox(width: 2.w),
                       if (!bloc.forceUpdate)
-                        FlatButton(
+                        ElevatedButton(
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
                           child: Text(
                             intl.later,
                             style: Theme.of(context)
@@ -114,7 +115,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                             Navigator.of(context).pop();
                             VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
                           },
-                          color: Colors.white,
+
                         ),
                     ],
                   )

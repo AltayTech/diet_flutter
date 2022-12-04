@@ -5,13 +5,13 @@ import 'package:app_settings/app_settings.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
-import 'package:behandam/data/entity/user/user_information.dart';
+
 import 'package:behandam/themes/colors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
-import 'package:flutter_sound_lite/public/flutter_sound_recorder.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+
 import 'package:image/image.dart' as Img;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -171,7 +171,7 @@ class TicketBloc {
     start = 0;
     if (_myRecorder == null) {
       _myRecorder = FlutterSoundRecorder();
-      _myRecorder!.openAudioSession().then((value) {
+      _myRecorder!.openRecorder().then((value) {
         _mRecorderIsInited = true;
       });
     }

@@ -1,14 +1,15 @@
-import 'package:android_intent/android_intent.dart';
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:behandam/utils/device.dart';
 import 'package:behandam/utils/file.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:open_file/open_file.dart';
 import 'package:open_store/open_store.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
-import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart' as urlLauncher;
+import 'package:url_launcher/url_launcher_string.dart';
 
 abstract class IntentUtils {
   static Future<void> launchCustomTabs(BuildContext context, String url) {
@@ -37,8 +38,8 @@ abstract class IntentUtils {
   }
 
   static void launchURL(String url) async {
-    if (await urlLauncher.canLaunch(url)) {
-      await urlLauncher.launch(url);
+    if (await urlLauncher.canLaunchUrl(Uri.parse(url))) {
+      await urlLauncher.launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $url';
     }
@@ -83,14 +84,33 @@ abstract class IntentUtils {
     }
   }
 
+  /*static void openInstagram(String data) async {
+    if (Device.get().isAndroid) {
+      try {
+        AndroidIntent intent = AndroidIntent(
+          action: 'action_view',
+          package: "com.instagram.android",
+          data: data, // eg. https://www.instagram.com/_u/zirehapp/
+        );
+        await intent.launch();
+      } catch (ActivityNotFoundException) {
+        debugPrint("can't open url");
+        launchURL(data);
+      }
+    } else {
+      launchURL(data);
+    }
+  }*/
+
   static void openApp(String package) async {
     if (Device.get().isAndroid) {
       try {
         bool isInstalled = await DeviceApps.isAppInstalled(package);
         if (isInstalled) {
           DeviceApps.openApp(package); // eg. com.application.karsu
-        }else
+        } else {
           openStore(package);
+        }
       } catch (ActivityNotFoundException) {
         debugPrint("can't open app");
         openStore(package);
@@ -106,9 +126,9 @@ abstract class IntentUtils {
       path: mail,
     );
     final url = emailLaunchUri.toString();
-    final result = await urlLauncher.canLaunch(url);
+    final result = await urlLauncher.canLaunchUrl(emailLaunchUri);
     if (result) {
-      await urlLauncher.launch(url);
+      await urlLauncher.launchUrl(emailLaunchUri);
       return true;
     } else {
       return false;
@@ -118,18 +138,20 @@ abstract class IntentUtils {
   /// Open file in corresponding viewer in system
   static Future<OpenResult> openFile(String fileName) async {
     String path = await FileUtils.filePath(fileName);
-   var r= await OpenFile.open(path);
-   return r;
+    var r = await OpenFile.open(path);
+    return r;
   }
+
   static Future<ResultType> openFilePath(String path) async {
     var r;
     try {
       r = await OpenFile.open(path);
-    }catch(e){
-      r=ResultType.noAppToOpen;
+    } catch (e) {
+      r = ResultType.noAppToOpen;
     }
     return r;
   }
+
   static Future<void> shareText(String text) async {
     return await Share.share(text);
   }

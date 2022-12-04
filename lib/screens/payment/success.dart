@@ -137,17 +137,22 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
               ),
               Directionality(
                 textDirection: context.textDirectionOfLocaleInversed,
-                child: FlatButton.icon(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 2.h,
-                    horizontal: 3.w,
+                child: ElevatedButton.icon(
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(
+                        vertical: 3.h,
+                        horizontal: 3.w,
+                      ),
+                    ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        side: BorderSide(
+                          color: Color.fromRGBO(178, 178, 178, 1),
+                          width: 0.2.w,
+                        ))),
                   ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      side: BorderSide(
-                        color: Color.fromRGBO(178, 178, 178, 1),
-                        width: 0.2.w,
-                      )),
+
                   onPressed: () {
                     bloc.setShowInformation();
                   },
@@ -234,7 +239,8 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                           SubmitButton(
                               label: intl.viewProduct,
                               onTap: () {
-                                MemoryApp.analytics!.logEvent(name: "total_shop_payment_online_success");
+                               /* MemoryApp.analytics!.logEvent(name: "total_shop_payment_online_success");*/
+
                                 context.vxNav.clearAndPushAll([
                                   Uri.parse(Routes.shopHome),
                                   Uri.parse(Routes.shopOrders),
@@ -247,8 +253,8 @@ class _PaymentSuccessScreenState extends ResourcefulState<PaymentSuccessScreen> 
                   : SubmitButton(
                       label: intl.confirmContinue,
                       onTap: () {
-                        MemoryApp.analytics!.logEvent(name: "total_payment_success");
-                        MemoryApp.analytics!.logEvent(name: "total_payment_online_success");
+                        /*MemoryApp.analytics!.logEvent(name: "total_payment_success");
+                        MemoryApp.analytics!.logEvent(name: "total_payment_online_success");*/
                         VxNavigator.of(context).clearAndPush(Uri.parse('/${bloc.path}'));
                       },
                     ),

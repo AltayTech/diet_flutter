@@ -111,7 +111,7 @@ class AuthenticationBloc {
     _waiting.value = true;
     _repository.register(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-      MemoryApp.analytics!.logEvent(name: "register_success");
+     /* MemoryApp.analytics!.logEvent(name: "register_success");*/
       _repository
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)
@@ -154,7 +154,7 @@ class AuthenticationBloc {
     _repository.landingReg(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
       MemoryApp.token = value.requireData.token;
-      MemoryApp.analytics!.logEvent(name: "register_success");
+      /*MemoryApp.analytics!.logEvent(name: "register_success");*/
       _repository
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)

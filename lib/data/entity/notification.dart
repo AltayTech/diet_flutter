@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'notification.g.dart';
@@ -18,8 +19,8 @@ class NotifResponse {
 
 @JsonSerializable(anyMap: true)
 class Notif {
-  @JsonKey(name: "chanel_id")
-  String? chanel_id;
+  @JsonKey(name: "channel_id")
+  String? channel_id;
   @JsonKey(name: "description")
   String? description;
   @JsonKey(name: "auto_cancel")
@@ -41,10 +42,13 @@ class Notif {
   @JsonKey(name: "actionType")
   String? actionType;
 
+  @JsonKey(name: "layoutType", defaultValue: NotificationLayout.Default)
+  NotificationLayout? layout;
+
   Notif();
 
   factory Notif.fromJson(Map<String, dynamic> json) => Notif()
-    ..chanel_id = json['channel_id'] as String?
+    ..channel_id = json['channel_id'] as String?
     ..description = json['description'] as String?
     ..autoCancel = json['auto_cancel'] as String?
     ..action = json['action'] as String?
@@ -53,6 +57,7 @@ class Notif {
     ..icon = json['icon'] as String?
     ..title = json['title'] as String?
     ..visible = json['visible'] as String?
+    ..layout = $enumDecodeNullable(_$ActionTypeEnumMap, json['layoutType'])
     ..actionType = json['action_type'] as String?
     ..actions = (jsonDecode(json['actions']) as List<dynamic>?)
         ?.map((e) => e == null
@@ -62,8 +67,9 @@ class Notif {
     )))
         .cast<ActionsItem>()
         .toList();
+
   factory Notif.fromJson2(Map<String, dynamic> json) => Notif()
-    ..chanel_id = json['channel_id'] as String?
+    ..channel_id = json['channel_id'] as String?
     ..description = json['description'] as String?
     ..autoCancel = json['auto_cancel'] as String?
     ..action = json['action'] as String?
@@ -72,6 +78,7 @@ class Notif {
     ..icon = json['icon'] as String?
     ..title = json['title'] as String?
     ..visible = json['visible'] as String?
+    ..layout = $enumDecodeNullable(_$ActionTypeStringEnumMap, json['layoutType'])
     ..actionType = json['action_type'] as String?
     ..actions = (json['actions'] as List<dynamic>?)
         ?.map((e) => e == null
@@ -85,6 +92,24 @@ class Notif {
   Map<String, dynamic> toJson() => _$NotifToJson(this);
 }
 
+const _$ActionTypeEnumMap = {
+  NotificationLayout.Default: '0',
+  NotificationLayout.BigPicture: '1',
+  NotificationLayout.BigText: '2',
+  NotificationLayout.Inbox: '3',
+  NotificationLayout.ProgressBar: '4',
+  NotificationLayout.Messaging: '5',
+  NotificationLayout.MediaPlayer: '6',
+};
+const _$ActionTypeStringEnumMap = {
+  NotificationLayout.Default: 'Default',
+  NotificationLayout.BigPicture: 'BigPicture',
+  NotificationLayout.BigText: 'BigText',
+  NotificationLayout.Inbox: 'Inbox',
+  NotificationLayout.ProgressBar: 'ProgressBar',
+  NotificationLayout.Messaging: 'Messaging',
+  NotificationLayout.MediaPlayer: 'MediaPlayer',
+};
 @JsonSerializable(anyMap: true)
 class ActionsItem {
   @JsonKey(name: "title")

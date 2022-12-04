@@ -10,7 +10,6 @@ import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class RefundVerifyScreen extends StatefulWidget {
@@ -182,7 +181,7 @@ class _RefundVerifyScreenState extends ResourcefulState<RefundVerifyScreen> {
                           Container(
                               height: 6.5.h,
                               width: 55.w,
-                              child: FlatButton(
+                              child: ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },

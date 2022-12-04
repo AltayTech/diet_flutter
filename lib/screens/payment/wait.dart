@@ -226,17 +226,22 @@ class _PaymentWaitScreenState extends ResourcefulState<PaymentWaitScreen> {
               Space(height: 3.h),
               Directionality(
                 textDirection: context.textDirectionOfLocale,
-                child: FlatButton.icon(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 2.h,
-                    horizontal: 2.w,
+                child: ElevatedButton.icon(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(
+                        vertical: 2.h,
+                        horizontal: 2.w,
+                      ),
+                    ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        side: BorderSide(
+                          color: Color.fromRGBO(178, 178, 178, 1),
+                          width: 0.25.w,
+                        ))),
                   ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      side: BorderSide(
-                        color: Color.fromRGBO(178, 178, 178, 1),
-                        width: 0.25.w,
-                      )),
                   onPressed: () {
                     bloc.checkLastInvoice();
                   },

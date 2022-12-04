@@ -39,7 +39,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
   void blocListener() {
     bloc.navigateTo.listen((event) {
       Utils.getSnackbarMessage(context, intl.successRequest);
-      MemoryApp.analytics!.logEvent(name: "click_refund_record");
+     /* MemoryApp.analytics!.logEvent(name: "click_refund_record");*/
       Timer(Duration(milliseconds: 1500), () {
         VxNavigator.of(context).popToRoot();
       });
@@ -195,7 +195,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                           Container(
                               height: 6.5.h,
                               width: 55.w,
-                              child: FlatButton(
+                              child: ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },

@@ -1,26 +1,16 @@
-import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/pay_diamond.dart';
-
-import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 import 'package:logifan/widgets/space.dart';
-
-import 'package:sizer/sizer.dart';
-import 'package:persian_number_utility/src/extensions.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../routes.dart';
 import 'bloc.dart';
 import 'provider.dart';
 
@@ -105,7 +95,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
                     textAlign: TextAlign.center,
                     softWrap: true,
                     style:
-                    Theme.of(context).textTheme.headline6!.copyWith(color: Color(0xffFE5757)),
+                        Theme.of(context).textTheme.headline6!.copyWith(color: Color(0xffFE5757)),
                   ),
                   SizedBox(width: 3.w),
                   ImageUtils.fromLocal(
@@ -194,19 +184,23 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
               Space(height: 3.h),
               Directionality(
                 textDirection: context.textDirectionOfLocale,
-                child: FlatButton.icon(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 3.h,
-                    horizontal: 3.w,
+                child: ElevatedButton.icon(
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(
+                        vertical: 3.h,
+                        horizontal: 3.w,
+                      ),
+                    ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        side: BorderSide(
+                          color: Color.fromRGBO(178, 178, 178, 1),
+                          width: 0.25.w,
+                        ))),
                   ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      side: BorderSide(
-                        color: Color.fromRGBO(178, 178, 178, 1),
-                        width: 0.25.w,
-                      )),
                   onPressed: () {
-                    MemoryApp.analytics!.logEvent(name: "total_payment_fail");
+                    /*MemoryApp.analytics!.logEvent(name: "total_payment_fail");*/
                     context.vxNav.push(Uri.parse('/${bloc.path ?? ''}'));
                   },
                   icon: Icon(
@@ -215,7 +209,7 @@ class _PaymentFailScreenState extends ResourcefulState<PaymentFailScreen> {
                     color: Color.fromRGBO(178, 178, 178, 1),
                   ),
                   label: Text(
-                      intl.retryPayment,
+                    intl.retryPayment,
                     textAlign: TextAlign.start,
                     style: Theme.of(context)
                         .textTheme

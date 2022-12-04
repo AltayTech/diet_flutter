@@ -85,7 +85,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
         else
           context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
       } else if (bloc.isOnline) {
-        MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
+        /*MemoryApp.analytics!.logEvent(name: "total_payment_online_select");*/
         bloc.mustCheckLastInvoice();
         Utils.launchURL(result!.url!);
       } else {

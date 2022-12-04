@@ -9,11 +9,9 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/gender_switch.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 
@@ -26,7 +24,7 @@ enum gender{
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen(){
-    MemoryApp.analytics!.logEvent(name: "register_start");
+    /*MemoryApp.analytics!.logEvent(name: "register_start");*/
   }
 
   @override
@@ -115,7 +113,6 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   }
   Widget header(){
     return  Stack(
-      overflow: Overflow.visible,
       children: [
         RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
         Positioned(

@@ -6,14 +6,14 @@ import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:behandam/widget/gender_switch.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:velocity_x/velocity_x.dart';
-import 'package:rolling_switch/rolling_switch.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+
 
 import '../../routes.dart';
 
@@ -107,7 +107,6 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
   }
   Widget header(){
     return  Stack(
-      overflow: Overflow.visible,
       children: [
         RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
         Positioned(
@@ -115,7 +114,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
           right: 0.0,
           left: 0.0,
           child: Center(
-              child: Text(intl.register, style: TextStyle(
+              child: Text(intl.register, style: const TextStyle(
                   color: AppColors.penColor,
                   fontSize: 22.0,
                   fontFamily: 'Iransans-Bold',
@@ -262,12 +261,12 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
                   inactiveBgColor: Colors.grey,
                   inactiveFgColor: Colors.white,
                   totalSwitches: 2,
-                  icons: [
-                    Icons.person,
-                    Icons.person_outline,
+                  icons:  const [
+                    'assets/images/registery/gender_man.svg',
+                    'assets/images/registery/gender_female.svg',
                   ],
                   iconSize: 30.0,
-                  activeBgColors: [[Colors.red, Colors.pinkAccent], [Color(0xff3b5998), Color(0xff8b9dc3)]],
+                  activeBgColors: const [[Colors.red, Colors.pinkAccent], [Color(0xff3b5998), Color(0xff8b9dc3)]],
                   animate: true, // with just animate set to true, default curve = Curves.easeIn
                   curve: Curves.bounceInOut, // animate must be set to true when using custom curve
                   onToggle: (index) {

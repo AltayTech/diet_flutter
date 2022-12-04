@@ -12,7 +12,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 late Locale appInitialLocale;
@@ -25,15 +24,15 @@ Future<void> entryPoint() async {
     await AppSharedPreferences.initialize();
     AppLocale.initialize();
     AppColors(themeAppColor: ThemeAppColor.DEFAULT);
-    _initFireBase();
-    _handleCaughtErrors();
+   // _initFireBase();
+   // _handleCaughtErrors();
     runApp(App());
   }, (Object error, StackTrace stack)async {
     if (error is DioError || error is HttpException) {
       /// this kind of error is already handled in DioErrorHandlerInterceptor
       return;
     }
-    FirebaseCrashlytics.instance.recordError(error, stack);
+ //   FirebaseCrashlytics.instance.recordError(error, stack);
   });
 }
 
@@ -52,7 +51,7 @@ void _initFireBase() async {
     print("not install firebase");
   }
   try {
-    MemoryApp.analytics = FirebaseAnalytics.instance;
+ /*   MemoryApp.analytics = FirebaseAnalytics.instance;*/
     // firebaseAnalyticsObserver = FirebaseAnalyticsObserver(analytics: MemoryApp.analytics!);
   } catch (Exception) {
     print("not install FirebaseAnalytics");

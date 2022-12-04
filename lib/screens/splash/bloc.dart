@@ -51,10 +51,10 @@ class SplashBloc {
     _waiting.value = true;
     _repository.getUser().then((value) {
       MemoryApp.userInformation = value.data;
-      MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
-      FirebaseCrashlytics.instance.setUserIdentifier(MemoryApp.userInformation!.userId.toString());
-      MemoryApp.analytics!
-          .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);
+     // MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
+      //FirebaseCrashlytics.instance.setUserIdentifier(MemoryApp.userInformation!.userId.toString());
+      /*MemoryApp.analytics!
+          .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);*/
     }).whenComplete(() {
       _waiting.value = false;
       getVersionApp();

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:behandam/data/entity/payment/payment.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/extensions/bool.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
@@ -146,12 +145,12 @@ class ProductBloc {
   }
 
   void setProduct(ShopProduct product) {
-    _product.value =ShopProduct();
-    _product.value.id=product.id;
-    _product.value.discountPrice=product.discountPrice;
-    _product.value.sellingPrice=product.sellingPrice;
-    _product.value.shortDescription=product.shortDescription;
-    _product.value.productName=product.productName;
+    _product.value = ShopProduct();
+    _product.value.id = product.id;
+    _product.value.discountPrice = product.discountPrice;
+    _product.value.sellingPrice = product.sellingPrice;
+    _product.value.shortDescription = product.shortDescription;
+    _product.value.productName = product.productName;
   }
 
   void downloadFile(Lessons value) async {
@@ -215,12 +214,12 @@ class ProductBloc {
       _discountInfo = value.data;
       _product.value.discountPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
-      MemoryApp.analytics!.logEvent(name: "discount_code_shop_success", parameters: {'code': val});
+      /* MemoryApp.analytics!.logEvent(name: "discount_code_shop_success", parameters: {'code': val});*/
     }).catchError((err) {
       debugPrint('${err.toString()}');
       _usedDiscount.value = false;
       _wrongDisCode.value = true;
-      MemoryApp.analytics!.logEvent(name: "discount_code_shop_fail", parameters: {'code': val});
+      /*  MemoryApp.analytics!.logEvent(name: "discount_code_shop_fail", parameters: {'code': val});*/
     }).whenComplete(() {
       _discountLoading.value = false;
     });

@@ -1,11 +1,7 @@
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/utility/modal.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
-import 'package:behandam/screens/authentication/auth.dart';
-import 'package:behandam/screens/widget/bottom_nav.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
@@ -13,7 +9,6 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:behandam/screens/utility/arc.dart';
@@ -121,9 +116,6 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
 
   Widget header() {
     return Stack(
-      // alignment: Alignment.center,
-      // fit: StackFit.loose,
-      overflow: Overflow.visible,
       children: [
         RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
         Positioned(

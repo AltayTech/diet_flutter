@@ -1,4 +1,4 @@
-package com.kermany.behandam.behandam
+package com.kermanydiet
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.plugins.GeneratedPluginRegistrant

@@ -7,7 +7,6 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/utils/date_time.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class RefundScreen extends StatefulWidget {
@@ -182,7 +181,7 @@ class _RefundScreenState extends ResourcefulState<RefundScreen> {
                                 Container(
                                     height: 6.5.h,
                                     width: 55.w,
-                                    child: FlatButton(
+                                    child: ElevatedButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },

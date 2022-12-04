@@ -226,7 +226,7 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'expired_at': instance.expiredAt,
       'activity_level_id': instance.activityLevelId,
       'calory_id': instance.calorieId,
-      'is_active': _$booleanEnumMap[instance.isActive],
+      'is_active': _$booleanEnumMap[instance.isActive]!,
       'deleted_at': instance.deletedAt,
       'calory_value': instance.calorieValue,
       'visit_days': instance.visitDays,

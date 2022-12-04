@@ -88,10 +88,10 @@ class PaymentBloc {
   void newPayment(LatestInvoiceData newInvoice) {
     _waiting.value = true;
     _repository.newPayment(newInvoice).then((value) {
-      MemoryApp.analytics!.logEvent(
+      /*MemoryApp.analytics!.logEvent(
           name:
               '${navigator.currentConfiguration!.path.replaceAll("/", "_").substring(1).split("_")[0]}_payment_cart_record');
-      MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");
+      MemoryApp.analytics!.logEvent(name: "total_payment_cart_record");*/
       _navigateTo.fire(value.next);
     }).whenComplete(() => _waiting.value = false);
   }
@@ -135,7 +135,7 @@ class PaymentBloc {
   }
 
   void checkCode(String val) {
-    MemoryApp.analytics!.logEvent(name: "discount_code");
+    /*MemoryApp.analytics!.logEvent(name: "discount_code");*/
     _discountLoading.value = true;
     Price price = new Price();
     price.code = val;
@@ -144,11 +144,11 @@ class PaymentBloc {
       _packageItem!.price!.totalPrice = _discountInfo!.finalPrice;
       _usedDiscount.value = true;
       _online.value = true;
-      MemoryApp.analytics!.logEvent(name: "discount_code_success");
+    /*  MemoryApp.analytics!.logEvent(name: "discount_code_success");*/
     }).catchError((err) {
       _usedDiscount.value = false;
       _wrongDisCode.value = true;
-      MemoryApp.analytics!.logEvent(name: "discount_code_fail");
+    /*  MemoryApp.analytics!.logEvent(name: "discount_code_fail");*/
     }).whenComplete(() {
       _discountLoading.value = false;
     });

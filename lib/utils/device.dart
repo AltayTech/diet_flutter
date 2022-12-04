@@ -2,8 +2,11 @@ import 'dart:io';
 import 'dart:math' as Math;
 import 'dart:ui' as ui;
 
+import 'package:android_id/android_id.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/extensions/string.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -23,16 +26,35 @@ abstract class DeviceUtils {
     return await _getDeviceInfo(
       (androidInfo) => androidInfo.version.sdkInt!.toString(),
       (iosInfo) => iosInfo.systemVersion!,
-          (webDeviceInfo) => webDeviceInfo.hardwareConcurrency.toString(),
+      (webDeviceInfo) => webDeviceInfo.hardwareConcurrency.toString(),
     );
   }
 
   static Future<String> get deviceId async {
+    String? androidId;
+    if(platform=='Android')
+      androidId= await _initAndroidId();
     return await _getDeviceInfo(
-      (androidInfo) => androidInfo.androidId!,
+      (androidInfo) => androidId ?? androidInfo.id ?? '',
       (iosInfo) => iosInfo.identifierForVendor!,
       (webDeviceInfo) => webDeviceInfo.vendor!,
     );
+  }
+
+  static Future<String?> _initAndroidId() async {
+    String? androidId;
+    const _androidIdPlugin = AndroidId();
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
+    try {
+      androidId = await _androidIdPlugin.getId();
+    } on PlatformException {
+      androidId = null;
+    }
+    return androidId;
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
   }
 
   static Future<String> get deviceName async {
@@ -65,24 +87,27 @@ abstract class DeviceUtils {
     if (kIsWeb) {
       final webBrowserInfo = await deviceInfo.webBrowserInfo;
       userAgent = 'Behandam/$appVersion (Web/${webBrowserInfo.userAgent})';
-    }else if (Platform.isIOS) {
+    } else if (Platform.isIOS) {
       print('is ios');
       var iosInfo = await deviceInfo.iosInfo;
       var systemName = iosInfo.systemName;
       var iosVersion = iosInfo.systemVersion;
       var name = iosInfo.name;
-      userAgent = 'Behandam/$appVersion{${packageInfo.buildNumber}} $systemName/$iosVersion (Apple/${iosInfo.utsname.machine})';
+      userAgent =
+          'Behandam/${FlavorConfig.instance.variables['market']}/$appVersion{${packageInfo.buildNumber}} $systemName/$iosVersion (Apple/${iosInfo.utsname.machine})';
       print('user agent $userAgent');
     } else if (Platform.isAndroid) {
       var androidInfo = await deviceInfo.androidInfo;
       var release = androidInfo.version.release;
       var model = androidInfo.model;
       var brand = androidInfo.brand;
-      userAgent = 'Behandam/$appVersion Android/$release ($brand/$model)';
+      userAgent =
+          'Behandam/${FlavorConfig.instance.variables['market']}/$appVersion Android/$release ($brand/$model)';
       print('user agent $userAgent');
     }
     return userAgent;
   }
+
   static Future<String> _getDeviceInfo(
     String Function(AndroidDeviceInfo) androidDeviceInfo,
     String Function(IosDeviceInfo) iosDeviceInfo,
@@ -93,8 +118,7 @@ abstract class DeviceUtils {
     if (kIsWeb) {
       final webBrowserInfo = await deviceInfo.webBrowserInfo;
       identifier = webDeviceInfo.call(webBrowserInfo);
-    }
-    if (Platform.isAndroid) {
+    } else if (Platform.isAndroid) {
       final androidInfo = await deviceInfo.androidInfo;
       identifier = androidDeviceInfo.call(androidInfo);
     } else if (Platform.isIOS) {

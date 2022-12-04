@@ -2,23 +2,32 @@ import 'dart:convert';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:behandam/data/entity/notification.dart';
+
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
+import 'package:behandam/utils/analytics.dart';
 import 'package:behandam/utils/deep_link.dart';
-import 'package:behandam/utils/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 enum actionType {
+  @JsonValue(0)
   OpenApp,
+  @JsonValue(1)
   OpenWebUrl,
+  @JsonValue(2)
   OpenEspecialApp,
+  @JsonValue(3)
   OpenPage,
+  @JsonValue(4)
   OpenTelegramChannal,
+  @JsonValue(5)
   OpenInstagramPage,
+  @JsonValue(6)
   CallService
 }
 
@@ -27,9 +36,9 @@ class AppFcm {
 
   static Future<void> initialize() async {
     _initializeAwesome();
-    _listenAwesomeEvents();
+    if (!kIsWeb) _listenAwesomeEvents();
     _registerOnFirebase();
-    _listenFcmEvents();
+    if (!kIsWeb) _listenFcmEvents();
   }
 
   static void _listenAwesomeEvents() {
@@ -67,25 +76,31 @@ class AppFcm {
   static void _handleAction(ActionsItem action) {
     switch (actionType.values[int.parse(action.actionType!)]) {
       case actionType.OpenApp:
+        AppAnalytics.logEvent(name: 'notification_open_app');
         IntentUtils.launchURL(action.action!);
         break;
       case actionType.OpenPage:
+        AppAnalytics.logEvent(name: 'notification_open_page');
         DeepLinkUtils.navigateDeepLink(action.action!);
         break;
       case actionType.OpenEspecialApp:
+        AppAnalytics.logEvent(name: 'notification_open_special_app');
         IntentUtils.openApp(action.action!);
         break;
       case actionType.OpenEspecialApp:
         IntentUtils.openAppIntent(action.action!);
         break;
       case actionType.OpenInstagramPage:
+        AppAnalytics.logEvent(name: 'notification_instagram_page');
         IntentUtils.openInstagram(action.action!);
         break;
       case actionType.OpenTelegramChannal:
+        AppAnalytics.logEvent(name: 'notification_telegram_channel');
         IntentUtils.launchURL(action.action!);
         break;
 
       case actionType.OpenWebUrl:
+        AppAnalytics.logEvent(name: 'notification_open_url');
         IntentUtils.launchURL(action.action!);
         break;
       case actionType.CallService:
@@ -95,8 +110,21 @@ class AppFcm {
   }
 
   static Future<void> _initializeAwesome() async {
-    await AwesomeNotifications().initialize(
-      null, // this makes you use your default icon, if you haven't one
+    if (kIsWeb) {
+      NotificationSettings settings = await _firebaseMessaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
+      return;
+    }
+
+    AwesomeNotifications().initialize(
+      null,
       [
         NotificationChannel(
           channelKey: 'campaign',
@@ -106,12 +134,12 @@ class AppFcm {
           ledColor: AppColors.primary,
         ),
         NotificationChannel(
-          channelKey: 'behandam',
-          channelName: 'behandam',
-          channelDescription: 'behandam',
-          defaultColor: AppColors.primary,
-          ledColor: AppColors.primary,
-        ),
+            channelKey: 'behandam',
+            channelName: 'behandam',
+            channelDescription: 'behandam',
+            defaultColor: AppColors.primary,
+            ledColor: AppColors.primary,
+            importance: NotificationImportance.High),
       ],
     );
   }
@@ -122,8 +150,12 @@ class AppFcm {
       badge: true,
       sound: true,
     );
-    subscribeTopicAll();
     _getToken();
+    try {
+      subscribeTopicAll();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
     FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   }
 
@@ -139,10 +171,19 @@ class AppFcm {
 
   static void _getToken() {
     try {
-      _firebaseMessaging.getToken().then((token) {
-        AppSharedPreferences.setFcmToken(token);
-        debugPrint('Your fcm token is: $token');
-      });
+      if (!kIsWeb) {
+        _firebaseMessaging.getToken().then((token) {
+          AppSharedPreferences.setFcmToken(token);
+          debugPrint('Your fcm token is: $token');
+        });
+      } else {
+        _firebaseMessaging
+            .getToken(vapidKey: "AIzaSyBnqcxB9tpxsOu9PNKTvd0OuXi7k7zx0NE")
+            .then((token) {
+          AppSharedPreferences.setFcmToken(token);
+          debugPrint('Your fcm token is: $token');
+        });
+      }
     } catch (e) {
       debugPrint('Firebase service is not available');
     }
@@ -150,73 +191,89 @@ class AppFcm {
 
   static void _listenFcmEvents() async {
     FirebaseMessaging.onMessage.listen((event) {
-      debugPrint('on message');
-
-      sendNotification(event.data);
+      debugPrint('onMessage');
+      sendNotification(event);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      debugPrint('on message opened app');
-      sendNotification(event.data);
+      debugPrint('onMessageOpenedApp');
+      sendNotification(event);
     });
   }
 
+  @pragma('vm:entry-point')
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
     debugPrint('on background message');
 
     await AppSharedPreferences.initialize();
-    await Firebase.initializeApp(
-      options: await DefaultFirebaseConfig.platformOptions,
-    );
+    await Firebase.initializeApp();
     _listenAwesomeEvents();
-    sendNotification(message.data);
+    sendNotification(message);
   }
 
   static List<ActionsItem> actionList = [];
 
-  static void sendNotification(Map<String, dynamic> message) async {
+  static void sendNotification(RemoteMessage message) async {
     // debugPrint("data >> $message");
-    Notif notifResponse = Notif.fromJson(message);
-    debugPrint("notifResponse =>> ${notifResponse.toJson()}");
-    if (notifResponse.action != null) {
-      ActionsItem actionsItem = ActionsItem();
-      actionsItem.action = notifResponse.action;
-      actionsItem.actionType = notifResponse.actionType;
-      await AppSharedPreferences.setFcmPushAction(jsonEncode(actionsItem.toJson()));
-    }
-    final List<NotificationActionButton> buttonActions = [];
-    if (notifResponse.actions != null && notifResponse.actions!.length > 0) {
-      int i = 0;
-      actionList.clear();
-      for (ActionsItem actions in notifResponse.actions!) {
-        buttonActions.add(NotificationActionButton(
-          key: "10$i",
-          label: actions.title ?? '',
-          enabled: true,
-        ));
-        actions.key = "10$i";
-        print("actions =>> ${actions.toJson()}");
-        actionList.add(actions);
-        i++;
+    try {
+      Notif notifResponse = Notif.fromJson(message.data);
+      debugPrint("notifResponse =>> ${notifResponse.toJson()}");
+      if (notifResponse.action != null) {
+        ActionsItem actionsItem = ActionsItem();
+        actionsItem.action = notifResponse.action;
+        actionsItem.actionType = notifResponse.actionType;
+        await AppSharedPreferences.setFcmPushAction(jsonEncode(actionsItem.toJson()));
+      }
+      final List<NotificationActionButton> buttonActions = [];
+      if (notifResponse.actions != null && notifResponse.actions!.length > 0) {
+        int i = 0;
+        actionList.clear();
+        for (ActionsItem actions in notifResponse.actions!) {
+          buttonActions.add(NotificationActionButton(
+            key: "10$i",
+            label: actions.title ?? '',
+            enabled: true,
+          ));
+          actions.key = "10$i";
+          print("actions =>> ${actions.toJson()}");
+          actionList.add(actions);
+          i++;
+        }
+
+        await AppSharedPreferences.setFcmButtonActions(jsonEncode(notifResponse.toJson()));
       }
 
-      await AppSharedPreferences.setFcmButtonActions(jsonEncode(notifResponse.toJson()));
-    }
+      if (notifResponse.visible == "true") {
 
-    if (notifResponse.visible == "true")
+        await AwesomeNotifications().createNotification(
+            content: NotificationContent(
+                id: notifResponse.hashCode,
+                channelKey: notifResponse.channel_id ?? "behandam",
+                displayOnBackground: true,
+                title: notifResponse.title,
+                notificationLayout: notifResponse.layout ?? NotificationLayout.Default,
+                body: notifResponse.description,
+                largeIcon: notifResponse.icon,
+                showWhen: true,
+                autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
+                //autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
+                ),
+            actionButtons: buttonActions);
+      }
+    } catch (e) {
+      debugPrint('e => $e');
       AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: 1,
-              channelKey: notifResponse.chanel_id ?? 'com.kermany.behandam',
-              displayOnBackground: true,
-              title: notifResponse.title,
-              body: notifResponse.description,
-              customSound: "default",
-              largeIcon: notifResponse.icon,
-              showWhen: true,
-              autoCancel: bool.fromEnvironment(notifResponse.autoCancel!)
-              //  autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
-              ),
-          actionButtons: buttonActions);
+        content: NotificationContent(
+          id: 1,
+          displayOnBackground: true,
+          channelKey: "behandam",
+          title: message.notification!.title,
+          body: message.notification!.body,
+          customSound: "default",
+          showWhen: true,
+          //  autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
+        ),
+      );
+    }
   }
 }

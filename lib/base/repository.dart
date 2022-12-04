@@ -40,6 +40,8 @@ import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_http2_adapter/dio_http2_adapter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
@@ -236,11 +238,13 @@ class _RepositoryImpl extends Repository {
 
   _RepositoryImpl() {
     _dio = Dio();
-    _dio.options = BaseOptions(
-      receiveTimeout: receiveTimeout,
-      connectTimeout: connectTimeout,
-      sendTimeout: sendTimeout,
-    );
+    if (!kIsWeb) {
+      _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
+        idleTimeout: 15 * 1000,
+        // Ignore bad certificate
+        onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
+      ));
+    }
 
     _dio.interceptors.add(ErrorHandlerInterceptor());
     _dio.interceptors.add(GlobalInterceptor());

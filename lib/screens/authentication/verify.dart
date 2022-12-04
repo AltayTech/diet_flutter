@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -14,7 +13,7 @@ import 'package:behandam/widget/button.dart';
 import 'package:behandam/widget/pin_code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -142,9 +141,6 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
 
   Widget header() {
     return Stack(
-      // alignment: Alignment.center,
-      // fit: StackFit.loose,
-      overflow: Overflow.visible,
       children: [
         RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
         Positioned(

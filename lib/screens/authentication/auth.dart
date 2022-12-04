@@ -1,7 +1,6 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
-import 'package:behandam/routes.dart';
 import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -11,8 +10,6 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -134,7 +131,6 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
 
   Widget header() {
     return Stack(
-      overflow: Overflow.visible,
       children: [
         RotatedBox(quarterTurns: 90, child: MyArc(diameter: 250)),
         Positioned(
