@@ -56,6 +56,7 @@ import 'package:behandam/screens/shop/product_page.dart';
 import 'package:behandam/screens/splash/splash.dart';
 import 'package:behandam/screens/status/status_user.dart';
 import 'package:behandam/screens/ticket/new_ticket.dart';
+import 'package:behandam/screens/ticket/support.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/screens/ticket/ticket_details.dart';
 import 'package:behandam/screens/vitrin/vitrin.dart';
@@ -249,7 +250,7 @@ final navigator = VxNavigator(
     Routes.showInbox: (_, param) =>
         MaterialPage(child: routePage(ShowInboxItem()), arguments: param),
     Routes.ticketMessage: (_, param) =>
-        MaterialPage(child: routePage(TicketTab()), name: 'message'),
+        MaterialPage(child: routePage(Support()), name: 'message'),
     Routes.ticketCall: (_, param) => VxRoutePage(child: routePage(TicketTab()), pageName: 'call'),
     Routes.helpType: (_, param) =>
         MaterialPage(child: routePage(HelpTypeScreen()), arguments: param),

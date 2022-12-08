@@ -66,7 +66,7 @@ class SplashBloc {
     _repository.getVersion().then((value) async {
       if (!kIsWeb) {
         if (Platform.isIOS) {
-          if (value.data?.ios != null && int.parse(value.data!.ios!.versionCode!) > buildNumber!) {
+          if (value.data?.ios != null && value.data!.ios!.versionCode! > buildNumber!) {
             if (value.data!.ios!.forceUpdate == 1) forceUpdate = true;
             if (value.data!.ios!.versionCode != null &&
                 value.data!.ios!.forceUpdateVersion! > buildNumber!) forceUpdate = true;
@@ -77,7 +77,7 @@ class SplashBloc {
         } else if (Platform.isAndroid) {
           print('onError = > ${value.data!.android!.toJson()} // $buildNumber');
           if (value.data?.android != null &&
-              int.parse(value.data!.android!.versionCode!) > buildNumber!) {
+              value.data!.android!.versionCode! > buildNumber!) {
             if (value.data!.android!.forceUpdate == 1) forceUpdate = true;
             if (value.data!.android!.versionCode != null &&
                 value.data!.android!.forceUpdateVersion! > buildNumber!) forceUpdate = true;

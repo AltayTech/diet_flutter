@@ -107,7 +107,7 @@ abstract class ImageUtils {
     double? measuredHeight = height ?? (backOffSizing ? width : null);
     double? measuredWidth = width ?? (backOffSizing ? height : null);
     Widget placeholderImage = fromLocal(
-      placeholder ?? 'assets/images/registry/app_logo.svg',
+      placeholder ?? 'assets/images/registry/app_logo.png',
       width: width,
       height: height,
       decoration: decoration,

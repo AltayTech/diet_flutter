@@ -139,7 +139,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
           left: 0.0,
           child: Center(
               child: ImageUtils.fromLocal(
-            'assets/images/registry/app_logo.svg',
+            'assets/images/registry/app_logo.png',
             width: 50.0,
             height: 50.0,
           )),

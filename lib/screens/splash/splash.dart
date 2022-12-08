@@ -142,7 +142,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ImageUtils.fromLocal(
-                    'assets/images/registry/app_logo.svg',
+                    'assets/images/registry/app_logo.png',
                     width: 30.w,
                     height: 30.w,
                   ),
@@ -167,7 +167,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
-                      padding: EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.only(bottom: 16),
                     ),
                     alignment: Alignment.bottomCenter,
                   );

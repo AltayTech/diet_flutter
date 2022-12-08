@@ -21,7 +21,7 @@ Map<String, dynamic> _$VersionDataToJson(VersionData instance) =>
     };
 
 Version _$VersionFromJson(Map<String, dynamic> json) => Version()
-  ..versionCode = json['version_code'] as String?
+  ..versionCode = json['version_code'] as int?
   ..forceUpdate = json['force_update'] as int?
   ..forceUpdateVersion = json['force_update_version'] as int? ?? 1
   ..title = json['title'] as String?

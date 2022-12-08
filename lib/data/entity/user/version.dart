@@ -19,7 +19,7 @@ class VersionData {
 @JsonSerializable()
 class Version {
   @JsonKey(name: "version_code")
-  String? versionCode;
+  int? versionCode;
 
   @JsonKey(name: "force_update")
   int? forceUpdate;
