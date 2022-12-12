@@ -25,6 +25,7 @@ class _SupportState extends ResourcefulState<Support> {
   void initState() {
     super.initState();
     bloc = SupportBloc();
+    bloc.getCalls();
   }
 
   @override
@@ -41,7 +42,7 @@ class _SupportState extends ResourcefulState<Support> {
                 child: StreamBuilder<bool>(
                   stream: bloc.progressNetwork,
                   builder: (context, snapshot) {
-                    if(snapshot.hasData)
+                    if(snapshot.hasData && snapshot.data==false)
                     return Container(
                         color: const Color.fromARGB(255, 245, 245, 245),
                         padding: EdgeInsets.only(

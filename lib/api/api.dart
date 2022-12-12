@@ -311,7 +311,7 @@ abstract class RestClient {
   @POST("/check-coupon-shop")
   NetworkResult<Price?> checkCouponShop(@Body() Price price);
 
-  @GET("/support_expert_mobile")
+  @GET("/user/support_expert_mobile")
   NetworkResult<CallSupport> getCallSupport();
 }
 
