@@ -2211,7 +2211,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              '/support_expert_mobile',
+              '/user/support_expert_mobile',
               queryParameters: queryParameters,
               data: _data,
             )
