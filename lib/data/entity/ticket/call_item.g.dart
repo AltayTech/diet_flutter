@@ -6,6 +6,18 @@ part of 'call_item.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+CallSupport _$CallSupportFromJson(Map<String, dynamic> json) => CallSupport()
+  ..firstName = json['first_name'] as String?
+  ..mobile = json['mobile'] as String?
+  ..lastName = json['last_name'] as String?;
+
+Map<String, dynamic> _$CallSupportToJson(CallSupport instance) =>
+    <String, dynamic>{
+      'first_name': instance.firstName,
+      'mobile': instance.mobile,
+      'last_name': instance.lastName,
+    };
+
 Call _$CallFromJson(Map<String, dynamic> json) => Call()
   ..totalCallNumber = json['total_call_num'] as int?
   ..remainingCallNumber = json['remaining_call_num'] as int?
