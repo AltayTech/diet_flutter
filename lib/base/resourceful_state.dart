@@ -6,9 +6,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../entry_point.dart';
 
 export 'package:behandam/extensions/build_context.dart';
-export 'package:sizer/sizer.dart';
+export 'package:behandam/widget/sizer/sizer.dart';
+import 'package:need_resume/need_resume.dart';
 
-abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
+abstract class ResourcefulState<T extends StatefulWidget> extends ResumableState<T>
     with RouteAware, DioErrorListener {
   late AppLocalizations intl;
   late TextTheme typography;
@@ -39,7 +40,7 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   void dispose() {
     _printEvent('dispose()');
     routeObserver.unsubscribe(this);
- //   if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.unsubscribe(this);
+    //   if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.unsubscribe(this);
     dioErrorObserver.unsubscribe(this);
     super.dispose();
   }
@@ -47,8 +48,22 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   @override
   void initState() {
     _printEvent('initState()');
-    dioErrorObserver.subscribe(this);
     super.initState();
+  }
+
+
+  @override
+  void onReady() {
+    super.onReady();
+
+    final route = ModalRoute.of(context);
+
+    if (!route!.isCurrent)
+      dioErrorObserver.unsubscribe(this);
+    else
+      dioErrorObserver.subscribe(this);
+
+    _printEvent('onReady()');
   }
 
   @override
@@ -57,7 +72,7 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
     final route = ModalRoute.of(context);
     if (route is PageRoute) {
       routeObserver.subscribe(this, route);
-     // if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.subscribe(this, route);
+      // if (firebaseAnalyticsObserver != null) firebaseAnalyticsObserver!.subscribe(this, route);
     }
     super.didChangeDependencies();
   }
@@ -67,25 +82,6 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
     _printEvent('didUpdateWidget');
     super.didUpdateWidget(oldWidget);
   }
-
-  @override
-  @mustCallSuper
-  void onResume() {
-    super.setState(() {});
-    _printEvent('onResume()');
-  }
-
-  /*@override
-  @mustCallSuper
-  void onPause() {
-    _printEvent('onPause()');
-  }
-
-  @override
-  @mustCallSuper
-  void onReady() {
-    _printEvent('onReady()');
-  }*/
 
   @override
   @mustCallSuper
@@ -110,4 +106,16 @@ abstract class ResourcefulState<T extends StatefulWidget> extends State<T>
   void didPopNext() {
     _printEvent('didPopNext()');
   }
+
+  @override
+  void onRetryAfterMaintenance() {}
+
+  @override
+  void onRetryAfterNoInternet() {}
+
+  @override
+  void onRetryLoadingPage() {}
+
+  @override
+  void onShowMessage(String value) {}
 }

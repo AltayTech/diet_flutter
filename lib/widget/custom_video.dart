@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:chewie/chewie.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:video_player/video_player.dart';
 
 abstract class CallBackListener {
@@ -176,20 +174,21 @@ istener(() {
                       // transform: Matrix4.translationValues(0.0, -35.0, 0.0),
                       borderRadius: BorderRadius.circular(10),
                       child: Chewie(
-                        key: new PageStorageKey(url!),
+                        key: PageStorageKey(url!),
                         controller: chewieController!,
                       ))),
             ),
           ],
         ),
       );
-    } else
+    } else {
       return Center(
         child: SpinKitCircle(
           color: AppColors.primary,
           size: 7.w,
         ),
       );
+    }
   }
 
   @override

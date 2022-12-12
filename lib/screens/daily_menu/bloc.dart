@@ -11,7 +11,7 @@ import 'package:behandam/extensions/string.dart';
 
 class ListFoodBloc {
   ListFoodBloc() {
-    _loadContent();
+   // _loadContent();
   }
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();

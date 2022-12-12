@@ -4,7 +4,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ShowInboxItem extends StatefulWidget {

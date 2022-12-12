@@ -10,7 +10,7 @@ import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/src/extensions/context_ext.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

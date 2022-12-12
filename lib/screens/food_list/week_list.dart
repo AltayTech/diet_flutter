@@ -8,7 +8,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:behandam/extensions/iterable.dart';
 
 import 'provider.dart';

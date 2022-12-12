@@ -31,6 +31,7 @@ class MemoryApp {
   static Jalali? day;
   static bool forgetPass = false;
   static bool needRoute = true;
+  static bool isShowDialog = false;
   static FirebaseAnalytics? analytics;
 
   Map<String, FoodListData> _foodList = {};

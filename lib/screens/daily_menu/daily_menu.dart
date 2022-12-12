@@ -1,24 +1,30 @@
 import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
+import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
 import 'package:behandam/screens/food_list/week_day.dart';
 import 'package:behandam/screens/food_list/week_list.dart';
+import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/food_list_curve.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
-import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/image.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:behandam/extensions/string.dart';
+
 import '../../routes.dart';
+
+EventBus refreshDailyMenu = EventBus();
 
 class DailyMenuPage extends StatefulWidget {
   const DailyMenuPage({Key? key}) : super(key: key);
@@ -40,23 +46,23 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   void initState() {
     super.initState();
     // bloc = FoodListBloc(false);
-    _animationController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this, value: 1);
-    _animation =
-        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
+    _animationController =
+        AnimationController(duration: const Duration(milliseconds: 2000), vsync: this, value: 1);
+    _animation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
     _animation = _tween.animate(_animation);
     _animationController.repeat();
-  }
 
+    refreshDailyMenu.on<ListFood>().listen((ListFood value) {
+      debugPrint('return ${value}');
+      bloc.onMealFoodDaily(value);
+    });
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(!isInitial) {
-      bloc = ModalRoute
-          .of(context)
-          ?.settings
-          .arguments as FoodListBloc;
+    if (!isInitial) {
+      bloc = ModalRoute.of(context)?.settings.arguments as FoodListBloc;
       isInitial = true;
     }
   }
@@ -90,45 +96,45 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   }
 
   Widget content() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          weekList(),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
-            child: StreamBuilder(
-              stream: bloc.selectedWeekDay,
-              builder: (_, AsyncSnapshot<WeekDay> snapshot) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      snapshot.hasData
-                          ? intl.selectFood(
-                              '${snapshot.requireData.jalaliDate.formatter.wN} ${snapshot.requireData.jalaliDate.formatter.d} ${snapshot.requireData.jalaliDate.formatter.mN}')
-                          : '',
-                      style: typography.subtitle2,
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                    ),
-                    if (snapshot.data?.gregorianDate
-                            .toString()
-                            .substring(0, 10) ==
-                        DateTime.now().toString().substring(0, 10))
+    return TouchMouseScrollable(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            weekList(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
+              child: StreamBuilder(
+                stream: bloc.selectedWeekDay,
+                builder: (_, AsyncSnapshot<WeekDay> snapshot) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                       Text(
-                        snapshot.hasData ? intl.notShowingPastMeals : '',
-                        style: typography.caption,
+                        snapshot.hasData
+                            ? intl.selectFood(
+                                '${snapshot.requireData.jalaliDate.formatter.wN} ${snapshot.requireData.jalaliDate.formatter.d} ${snapshot.requireData.jalaliDate.formatter.mN}')
+                            : '',
+                        style: typography.subtitle2,
                         softWrap: true,
                         textAlign: TextAlign.center,
                       ),
-                  ],
-                );
-              },
+                      if (snapshot.data?.gregorianDate.toString().substring(0, 10) ==
+                          DateTime.now().toString().substring(0, 10))
+                        Text(
+                          snapshot.hasData ? intl.notShowingPastMeals : '',
+                          style: typography.caption,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                        ),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-          Space(height: 2.h),
-          selectingMeals(),
-        ],
+            Space(height: 2.h),
+            selectingMeals(),
+          ],
+        ),
       ),
     );
   }
@@ -157,9 +163,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
             if (snapshot.hasData)
               return Column(
                 children: [
-                  ...snapshot.requireData!.meals!
-                      .map((meal) => mealItem(meal))
-                      .toList(),
+                  ...snapshot.requireData!.meals!.map((meal) => mealItem(meal)).toList(),
                   Space(height: 10.h),
                 ],
               );
@@ -175,141 +179,116 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
     int index = 0;
     debugPrint('is past ${isPastMeal(meal)} / ${meal.title}');
     return StreamBuilder(
-            stream: bloc.selectedWeekDay,
-            builder: (_, AsyncSnapshot<WeekDay> snapshot) {
-              if (snapshot.hasData)
-                return snapshot.data?.gregorianDate
-                                .toString()
-                                .substring(0, 10) ==
-                            DateTime.now().toString().substring(0, 10) &&
-                        isPastMeal(meal)
-                    ? EmptyBox()
-                    : Card(
-                        margin: EdgeInsets.only(bottom: 2.h),
-                        shape: AppShapes.rectangleMild,
-                        elevation: 2,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 3.w, vertical: 1.h),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: <Widget>[
-                                  Container(
-                                    width: 12.w,
-                                    height: 12.w,
-                                    decoration: AppDecorations.circle.copyWith(
-                                      color: AppColors.primary,
-                                    ),
-                                    // child: ImageUtils(),
-                                  ),
-                                  Space(width: 2.w),
-                                  Expanded(
-                                    child: Text(
-                                      meal.title,
-                                      style: typography.caption?.apply(
-                                        fontSizeDelta: 1,
-                                        fontWeightDelta: 1,
-                                      ),
-                                      softWrap: true,
-                                    ),
-                                  ),
-                                ],
+      stream: bloc.selectedWeekDay,
+      builder: (_, AsyncSnapshot<WeekDay> snapshot) {
+        if (snapshot.hasData)
+          return snapshot.data?.gregorianDate.toString().substring(0, 10) ==
+                      DateTime.now().toString().substring(0, 10) &&
+                  isPastMeal(meal)
+              ? EmptyBox()
+              : Card(
+                  margin: EdgeInsets.only(bottom: 2.h),
+                  shape: AppShapes.rectangleMild,
+                  elevation: 2,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              width: 12.w,
+                              height: 12.w,
+                              decoration: AppDecorations.circle.copyWith(
+                                color: AppColors.primary,
                               ),
-                              Space(height: 1.h),
-                              GestureDetector(
-                                onTap: () {
-                                  VxNavigator.of(context)
-                                      .waitAndPush(Uri(path: Routes.listFood),
-                                          params: meal)
-                                      .then((value) {
-                                    debugPrint('returen ${value}');
-                                    bloc.onMealFood(value, meal.id);
-                                  });
-                                },
-                                child: Container(
-                                  decoration: AppDecorations.boxMedium.copyWith(
-                                    color: Colors.grey[100],
+                              // child: ImageUtils(),
+                            ),
+                            Space(width: 2.w),
+                            Expanded(
+                              child: Text(
+                                meal.title,
+                                style: typography.caption?.apply(
+                                  fontSizeDelta: 1,
+                                  fontWeightDelta: 1,
+                                ),
+                                softWrap: true,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Space(height: 1.h),
+                        GestureDetector(
+                          onTap: () => openFoodListPage(meal),
+                          child: Container(
+                            decoration: AppDecorations.boxMedium.copyWith(
+                              color: Colors.grey[100],
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: AppDecorations.boxMild.copyWith(
+                                    color: AppColors.onPrimary,
                                   ),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 3.w, vertical: 1.h),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        decoration:
-                                            AppDecorations.boxMild.copyWith(
-                                          color: AppColors.onPrimary,
-                                        ),
-                                        padding: EdgeInsets.all(3.w),
-                                        child: ScaleTransition(
-                                          scale: _animation,
-                                          alignment: Alignment.center,
-                                          child: Icon(
-                                            meal.newFood == null
-                                                ? Icons.add
-                                                : Icons.edit,
-                                            size: 6.w,
-                                            color: Colors.grey[600],
-                                          ),
-                                        ),
-                                      ),
-                                      Space(width: 2.w),
-                                      Expanded(
-                                        child: meal.newFood == null
-                                            ? Text(
-                                                intl.addFood,
-                                                style: typography.caption,
-                                              )
-                                            : Wrap(
-                                                crossAxisAlignment:
-                                                    WrapCrossAlignment.center,
-                                                children: [
-                                                  ...items.map(
-                                                    (i) {
-                                                      final widget;
-                                                      if (i % 2 == 0)
-                                                        widget = Chip(
-                                                          backgroundColor:
-                                                              AppColors
-                                                                  .onPrimary,
-                                                          label: Text(
-                                                            meal
-                                                                    .newFood
-                                                                    ?.foodItems?[
-                                                                        index]
-                                                                    .title ??
-                                                                '',
-                                                            style: typography
-                                                                .caption,
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            softWrap: true,
-                                                          ),
-                                                        );
-                                                      else {
-                                                        widget = Icon(
-                                                          Icons.add,
-                                                          size: 6.w,
-                                                        );
-                                                        index++;
-                                                      }
-                                                      return widget;
-                                                    },
-                                                  ).toList(),
-                                                ],
-                                              ),
-                                      ),
-                                    ],
+                                  padding: EdgeInsets.all(3.w),
+                                  child: ScaleTransition(
+                                    scale: _animation,
+                                    alignment: Alignment.center,
+                                    child: Icon(
+                                      meal.newFood == null ? Icons.add : Icons.edit,
+                                      size: 6.w,
+                                      color: Colors.grey[600],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Space(width: 2.w),
+                                Expanded(
+                                  child: meal.newFood == null
+                                      ? Text(
+                                          intl.addFood,
+                                          style: typography.caption,
+                                        )
+                                      : Wrap(
+                                          crossAxisAlignment: WrapCrossAlignment.center,
+                                          children: [
+                                            ...items.map(
+                                              (i) {
+                                                final widget;
+                                                if (i % 2 == 0)
+                                                  widget = Chip(
+                                                    backgroundColor: AppColors.onPrimary,
+                                                    label: Text(
+                                                      meal.newFood?.foodItems?[index].title ?? '',
+                                                      style: typography.caption,
+                                                      textAlign: TextAlign.center,
+                                                      softWrap: true,
+                                                    ),
+                                                  );
+                                                else {
+                                                  widget = Icon(
+                                                    Icons.add,
+                                                    size: 6.w,
+                                                  );
+                                                  index++;
+                                                }
+                                                return widget;
+                                              },
+                                            ).toList(),
+                                          ],
+                                        ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      );
-              return EmptyBox();
-            },
-          );
+                      ],
+                    ),
+                  ),
+                );
+        return EmptyBox();
+      },
+    );
   }
 
   bool isPastMeal(Meals meal) {
@@ -342,8 +321,8 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
               }
             });
             if (isValid) {
+              DialogUtils.showDialogProgress(context: context);
               bloc.onDailyMenu();
-              VxNavigator.of(context).pop();
             } else {
               Utils.getSnackbarMessage(context, intl.selectFoodForAllMeals);
             }
@@ -361,6 +340,11 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
     );
   }
 
+  void openFoodListPage(Meals meal) {
+    bloc.selectedMeal = meal;
+    VxNavigator.of(context).waitAndPush(Uri(path: Routes.listFood), params: meal).then((value) {});
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -368,21 +352,13 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   }
 
   @override
-  void onRetryAfterMaintenance() {
-    // TODO: implement onRetryAfterMaintenance
+  void onRetryLoadingPage() {
+    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
   }
 
   @override
   void onRetryAfterNoInternet() {
-    // TODO: implement onRetryAfterNoInternet
-  }
-
-  @override
-  void onRetryLoadingPage() {
-    // TODO: implement onRetryLoadingPage
-  }
-  @override
-  void onShowMessage(String value) {
-    // TODO: implement onShowMessage
+/*    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.onRetryAfterNoInternet();*/
   }
 }

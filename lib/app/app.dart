@@ -60,15 +60,18 @@ import 'package:behandam/screens/ticket/support.dart';
 import 'package:behandam/screens/ticket/ticketTabs.dart';
 import 'package:behandam/screens/ticket/ticket_details.dart';
 import 'package:behandam/screens/vitrin/vitrin.dart';
+import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/typography.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:sizer/sizer.dart';
+import 'package:flutter_web_frame/flutter_web_frame.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 import '../screens/authentication/auth.dart';
@@ -82,12 +85,15 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   late AppBloc bloc;
   late String token;
-
+  static late double webMaxWidth = 500;
+  static late double webMinRatio = 1 / 2; // minimum aspect ratio for application size
+  static late double webMaxHeight = 700;
   @override
   void initState() {
     super.initState();
     bloc = AppBloc();
-    getToken();
+    bloc.changeTheme(ThemeAppColor.BLUE);
+    setTokenToMemoryApp();
 
     navigator.addListener(() {
       print('routeName is => ${navigator.currentConfiguration!.path}');
@@ -97,75 +103,101 @@ class _AppState extends State<App> {
     });
   }
 
-  getToken() async {
+  void setTokenToMemoryApp() async {
     MemoryApp.token = await AppSharedPreferences.authToken;
     debugPrint('init token ${MemoryApp.token}');
   }
+
 
   @override
   Widget build(BuildContext context) {
     //cache one of vitrin's image for reduce time of loading
     precacheImage(const AssetImage("assets/images/vitrin/bmi_banner.jpg"), context);
     return Sizer(
-      builder: (context, orientation, deviceType) {
-        return app();
+      maxWidth: kIsWeb ? webMaxWidth : null,
+      minRatio: kIsWeb ? webMinRatio : null,
+      builder: (context, orientation, deviceType, constraints) {
+        return appProvider(constraints);
       },
     );
   }
 
-  Widget app() {
+  Widget appProvider(BoxConstraints constraints) {
     return AppProvider(
       bloc,
       child: StreamBuilder(
         stream: bloc.locale,
         builder: (context, AsyncSnapshot<Locale> snapshot) {
           final locale = snapshot.data ?? appInitialLocale;
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle(
-              statusBarColor: AppColors.primaryColorDark,
-              statusBarBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.light,
-            ),
-            child: MaterialApp.router(
-                useInheritedMediaQuery: true,
-                // generate title from localization instead of `MaterialApp.title` property
-                onGenerateTitle: (BuildContext context) => context.intl.appName,
-                debugShowCheckedModeBanner: false,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocale.supportedLocales,
-                theme: ThemeData(
-                  elevatedButtonTheme: ElevatedButtonThemeData(
-                    style: ElevatedButton.styleFrom(
-                      primary: AppColors.primary,
-                      onPrimary: AppColors.onPrimary,
-                      onSurface: AppColors.onSurface,
-                      shape:
-                          RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
-                    ),
-                  ),
-                  primaryColor: AppColors.primary,
-                  primaryColorDark: AppColors.primaryColorDark,
-                  scaffoldBackgroundColor: AppColors.scaffold,
-                  textTheme: buildTextTheme(locale),
-                  appBarTheme: AppBarTheme(
-                    backgroundColor: AppColors.primary,
-                  ),
-                  colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
-                      .copyWith(secondary: AppColors.primary),
-                ),
-                locale: locale,
-                localeResolutionCallback: resolveLocale,
-                scaffoldMessengerKey: navigatorMessengerKey,
-                //navigatorObservers: [routeObserver],
-                // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
-                // routes: Routes.all,
-
-                routeInformationParser: VxInformationParser(),
-                backButtonDispatcher: RootBackButtonDispatcher(),
-                routerDelegate: navigator),
-          );
+          return kIsWeb ? webFrame(locale, constraints) : app(locale);
         },
       ),
+    );
+  }
+
+  Widget app(Locale locale) {
+    return MaterialApp.router(
+        builder: (BuildContext context, Widget? child) {
+          // don't scale font when accessibility setting of device is changing font size
+          return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: child ?? EmptyBox());
+        },
+        useInheritedMediaQuery: true,
+        // generate title from localization instead of `MaterialApp.title` property
+        onGenerateTitle: (BuildContext context) => context.intl.appName,
+        debugShowCheckedModeBanner: false,
+        color: AppColors.background,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocale.supportedLocales,
+        theme: ThemeData(
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.onPrimary,
+              backgroundColor: AppColors.primary,
+              disabledForegroundColor: AppColors.onSurface.withOpacity(0.38),
+              disabledBackgroundColor: AppColors.onSurface.withOpacity(0.12),
+              shape: RoundedRectangleBorder(borderRadius: AppBorderRadius.borderRadiusMedium),
+            ),
+          ),
+          primaryColor: AppColors.primary,
+          primaryColorDark: AppColors.primaryColorDark,
+          scaffoldBackgroundColor: AppColors.scaffold,
+          snackBarTheme: SnackBarThemeData(
+              contentTextStyle: AppTypography(locale).caption.copyWith(
+                color: Colors.white,
+              ),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.black54,
+              elevation: 0,
+              shape: AppShapes.rectangleDefault),
+          textTheme: buildTextTheme(locale),
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.primary,
+          ),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: AppMaterialColors.primary)
+              .copyWith(secondary: AppColors.primary),
+        ),
+        locale: locale,
+        localeResolutionCallback: resolveLocale,
+        scaffoldMessengerKey: navigatorMessengerKey,
+        //navigatorObservers: [routeObserver],
+        // initialRoute: (MemoryApp.token!='null' && MemoryApp.token!.isNotEmpty) ? Routes.home : Routes.auth,
+        // routes: Routes.all,
+        routeInformationParser: VxInformationParser(),
+        backButtonDispatcher: RootBackButtonDispatcher(),
+        routerDelegate: navigator);
+  }
+
+  Widget webFrame(Locale locale, BoxConstraints constraints) {
+    return FlutterWebFrame(
+      builder: (context) => app(locale),
+      maximumSize: Size(
+        constraints.maxWidth < webMaxWidth ? constraints.maxWidth : webMaxWidth,
+        webMaxHeight,
+      ),
+      enabled: kIsWeb,
+      backgroundColor: AppColors.primary.withOpacity(0.1),
     );
   }
 

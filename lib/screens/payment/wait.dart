@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/src/extensions.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 import 'bloc.dart';

@@ -1,5 +1,6 @@
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+
 
 abstract class AppShapes {
   /// 1 percent of width

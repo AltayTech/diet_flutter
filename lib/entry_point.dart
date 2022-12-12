@@ -23,7 +23,7 @@ Future<void> entryPoint() async {
     WidgetsFlutterBinding.ensureInitialized(); // Initialize flutter engine before mutating anything
     await AppSharedPreferences.initialize();
     AppLocale.initialize();
-    AppColors(themeAppColor: ThemeAppColor.DEFAULT);
+    AppColors(themeAppColor: ThemeAppColor.BLUE);
    // _initFireBase();
    // _handleCaughtErrors();
     runApp(App());

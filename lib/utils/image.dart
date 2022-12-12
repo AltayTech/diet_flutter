@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+
 
 abstract class ImageUtils {
   /// [backOffSizing] determine whether to use backOff dimension if not set

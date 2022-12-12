@@ -6,7 +6,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/sizes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+
 
 enum BottomNavItem { PROFILE, SUPPORT, DIET, SHOP, STATUS }
 

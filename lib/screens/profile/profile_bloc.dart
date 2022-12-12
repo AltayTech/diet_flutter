@@ -109,8 +109,8 @@ class ProfileBloc {
         _progressNetwork.value = false;
       });
     }
-    getUnreadInbox();
-    getTermPackage();
+   // getUnreadInbox();
+   // getTermPackage();
   }
 
   void getUnreadInbox() {

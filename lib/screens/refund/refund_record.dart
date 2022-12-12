@@ -12,7 +12,7 @@ import 'package:behandam/utils/card_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 class RefundRecordScreen extends StatefulWidget {

@@ -10,7 +10,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:velocity_x/src/extensions/context_ext.dart';
 import 'package:velocity_x/velocity_x.dart';
 

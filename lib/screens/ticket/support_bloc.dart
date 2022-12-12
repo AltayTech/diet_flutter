@@ -7,7 +7,6 @@ import 'package:rxdart/rxdart.dart';
 
 class SupportBloc {
   SupportBloc() {
-    getCalls();
   }
 
   final _repository = Repository.getInstance();

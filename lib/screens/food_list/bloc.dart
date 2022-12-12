@@ -43,9 +43,13 @@ class FoodListBloc {
   final _selectedWeekDay = BehaviorSubject<WeekDay>();
   final _weekDays = BehaviorSubject<List<WeekDay?>?>();
   final AppBloc _appBloc = AppBloc();
+
+  late Meals selectedMeal;
   String? _pdfPath;
 
   String? get pdfPath => _pdfPath;
+
+
 
   Stream<bool> get loadingContent => _loadingContent.stream;
 
@@ -168,6 +172,7 @@ class FoodListBloc {
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     debugPrint(
         'newfood ${_foodList.valueOrNull?.meals?[index!].title} / ${_foodList.valueOrNull?.meals?[index!].newFood?.toJson()}');
+    onReplacingFood(mealId);
   }
 
   onDailyMenu() {
@@ -225,6 +230,16 @@ class FoodListBloc {
       _navigateTo.fire(false);
     });
   }
+
+  void onMealFoodDaily(ListFood newFood) {
+    debugPrint('newfood1 ${newFood.toJson()}');
+    final index = _foodList.valueOrNull?.meals
+        ?.indexWhere((element) => element.id == selectedMeal.id);
+    // _foodList.valueOrNull?.meals[index!].food = newFood;
+    _foodList.valueOrNull?.meals?[index!].newFood = newFood;
+    // _foodList.safeValue=_foodList.valueOrNull;
+  }
+
   void dispose() {
     _loadingContent.close();
     _foodList.close();

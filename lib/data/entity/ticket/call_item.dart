@@ -4,6 +4,24 @@ import 'package:json_annotation/json_annotation.dart';
 part 'call_item.g.dart';
 
 @JsonSerializable()
+class CallSupport {
+  @JsonKey(name: "first_name")
+  String? firstName;
+
+  @JsonKey(name: "mobile")
+  String? mobile;
+
+  @JsonKey(name: "last_name")
+  String? lastName;
+
+  CallSupport();
+
+  factory CallSupport.fromJson(Map<String, dynamic> json) => _$CallSupportFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CallSupportToJson(this);
+}
+
+@JsonSerializable()
 class Call {
   @JsonKey(name: "total_call_num")
   int? totalCallNumber;

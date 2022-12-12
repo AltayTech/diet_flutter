@@ -225,6 +225,8 @@ abstract class Repository {
   NetworkResult<ShopCategory> getProducts(String filter);
 
   NetworkResult<Price?> checkCouponShop(Price price);
+
+  NetworkResult<CallSupport> getCallSupport();
 }
 
 class _RepositoryImpl extends Repository {
@@ -596,7 +598,9 @@ class _RepositoryImpl extends Repository {
     sickness.specials!.forEach((sicknessItem) {
       if (sicknessItem.isSelected!) {
         if (sicknessItem.children!.length > 0) {
-          sicknessItem.children?.forEach((element) { debugPrint("${element.toJson()}"); });
+          sicknessItem.children?.forEach((element) {
+            debugPrint("${element.toJson()}");
+          });
 
           selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
         } else {
@@ -870,6 +874,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<Price?> checkCouponShop(Price price) {
     var response = _apiClient.checkCouponShop(price);
+    return response;
+  }
+
+  @override
+  NetworkResult<CallSupport> getCallSupport() {
+    var response = _apiClient.getCallSupport();
     return response;
   }
 }

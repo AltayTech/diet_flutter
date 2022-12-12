@@ -11,7 +11,7 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -193,92 +193,9 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
   }
 
   void manipulateFoodDialog(Meals meal) {
-    DialogUtils.showDialogPage(
-      context: context,
-      isDismissible: true,
-      child: Center(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 5.w),
-          padding: EdgeInsets.symmetric(vertical: 1.h),
-          width: double.maxFinite,
-          decoration: AppDecorations.boxLarge.copyWith(
-            color: AppColors.onPrimary,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: close(),
-              ),
-              Text(
-                intl.alternating(meal.title),
-                style: typography.bodyText2,
-                textAlign: TextAlign.center,
-              ),
-              Space(height: 2.h),
-              Stack(
-                children: [
-                  Container(height: 13.h),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    top: 2.5.h,
-                    child: Container(
-                      color: AppColors.primary.withOpacity(0.3),
-                      padding: EdgeInsets.fromLTRB(3.w, 1.h, 3.w, 0),
-                      child: Center(
-                        child: Text(
-                          intl.tryToAlternateOneMealDaily,
-                          style: typography.subtitle2,
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    child: Center(
-                      child: Icon(
-                        Icons.info,
-                        color: AppColors.primary,
-                        size: 9.w,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Space(height: 1.h),
-              Container(
-                alignment: Alignment.center,
-                child: SubmitButton(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    VxNavigator.of(context)
-                        .push(Uri(path: Routes.replaceFood), params: {'meal': meal, 'bloc': bloc});
-                  },
-                  label: intl.manipulateFood,
-                ),
-              ),
-              Space(height: 1.h),
-              GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child: Text(
-                  intl.alternatingFoodLater,
-                  style: typography.caption,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    VxNavigator.of(context).waitAndPush(Uri(path: Routes.listFood), params: meal).then((value) {
+      bloc.onMealFood(value, meal.id);
+    });
   }
 
   Widget close() {

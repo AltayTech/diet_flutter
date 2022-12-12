@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 enum RulerType { Weight, Normal, Pregnancy }

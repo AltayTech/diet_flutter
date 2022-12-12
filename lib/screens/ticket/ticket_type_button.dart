@@ -6,7 +6,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+
 
 class TicketTypeButton extends StatefulWidget {
   TicketTypeButton();

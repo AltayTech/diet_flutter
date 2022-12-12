@@ -4,7 +4,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:sizer/sizer.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SliderApp extends StatefulWidget {

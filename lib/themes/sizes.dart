@@ -1,4 +1,5 @@
-import 'package:sizer/sizer.dart';
+
+import 'package:behandam/widget/sizer/sizer.dart';
 
 abstract class AppSizes {
   static late double appbarHeight = 7.3.h;
