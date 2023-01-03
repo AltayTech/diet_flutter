@@ -49,7 +49,9 @@ Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['menu_term_id'] as int?,
       json['started_at'] as String?,
       json['expired_at'] as String?,
-    );
+    )..foods = (json['foods'] as List<dynamic>?)
+        ?.map((e) => Food.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Food _$FoodFromJson(Map<String, dynamic> json) => Food(
       json['id'] as int?,
@@ -62,7 +64,7 @@ Food _$FoodFromJson(Map<String, dynamic> json) => Food(
       (json['food_items'] as List<dynamic>?)
           ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-    );
+    )..mealId = json['meal_id'] as int?;
 
 Map<String, dynamic> _$FoodToJson(Food instance) => <String, dynamic>{
       'id': instance.id,
@@ -71,6 +73,7 @@ Map<String, dynamic> _$FoodToJson(Food instance) => <String, dynamic>{
       'free_food': instance.freeFood,
       'free_foods_items': instance.freeFoodsItems,
       'food_items': instance.foodItems,
+      'meal_id': instance.mealId,
     };
 
 Ratio _$RatioFromJson(Map<String, dynamic> json) => Ratio(
@@ -208,8 +211,6 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       json['calory_id'] as int,
       $enumDecode(_$booleanEnumMap, json['is_active']),
       json['deleted_at'] as String?,
-      json['calory_value'] as int,
-      json['visit_days'] as int,
     );
 
 Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
@@ -228,8 +229,6 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'calory_id': instance.calorieId,
       'is_active': _$booleanEnumMap[instance.isActive]!,
       'deleted_at': instance.deletedAt,
-      'calory_value': instance.calorieValue,
-      'visit_days': instance.visitDays,
     };
 
 DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType(

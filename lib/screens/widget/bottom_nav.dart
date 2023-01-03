@@ -56,7 +56,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
             break;
           case BottomNavItem.SHOP:
             if (widget.currentTab != BottomNavItem.SHOP)
-              navigator.routeManager.clearAndPush(Uri.parse(Routes.shopHome));
+              navigator.routeManager.clearAndPush(Uri.parse(Routes.vitrin));
             break;
           case BottomNavItem.STATUS:
             if (widget.currentTab != BottomNavItem.STATUS)
@@ -142,7 +142,7 @@ class _BottomNavState extends ResourcefulState<BottomNav> {
         Expanded(
             flex: 1,
             child: item(
-                'assets/images/tab/menu_shop.svg', BottomNavItem.SHOP, intl.shopMenu, context)),
+                'assets/images/tab/tools_menu_icon.svg', BottomNavItem.SHOP, intl.vitrin, context)),
         Expanded(
             flex: 1,
             child: item('assets/images/tab/status_menu_icon.svg', BottomNavItem.STATUS, intl.status,

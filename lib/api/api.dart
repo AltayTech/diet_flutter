@@ -98,7 +98,7 @@ abstract class RestClient {
   @GET("/body-status")
   NetworkResult<BodyStatus> getStatus();
 
-  @GET("/user/menu?date={date}")
+  @GET("/user/menuapp?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);
 
   @GET("/profile")

@@ -208,12 +208,14 @@ Widget optionUi(IconData icon, String text, int action) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(
-            text,
-            textAlign: TextAlign.end,
-            style: TextStyle(
-              fontSize: 4.5.w,
-              color: Color.fromARGB(255, 152, 152, 152),
+          Expanded(
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 10.sp,
+                color: Color.fromARGB(255, 152, 152, 152),
+              ),
             ),
           ),
           Space(
@@ -223,6 +225,9 @@ Widget optionUi(IconData icon, String text, int action) {
             icon,
             color: Color.fromARGB(255, 255, 151, 156),
             size: 7.w,
+          ),
+          Space(
+            width: 2.w,
           ),
         ],
       ),

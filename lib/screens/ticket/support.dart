@@ -42,8 +42,8 @@ class _SupportState extends ResourcefulState<Support> {
                 child: StreamBuilder<bool>(
                   stream: bloc.progressNetwork,
                   builder: (context, snapshot) {
-                    if(snapshot.hasData && snapshot.data==false)
-                    return Container(
+                    if(snapshot.hasData && snapshot.data==false) {
+                      return Container(
                         color: const Color.fromARGB(255, 245, 245, 245),
                         padding: EdgeInsets.only(
                           left: 4.w,
@@ -97,7 +97,7 @@ class _SupportState extends ResourcefulState<Support> {
                                     backgroundColor: MaterialStateProperty.all(AppColors.accentColor)),
                               ),
                             ]));
-                    else return Progress();
+                    } else return Progress();
                   }
                 )),
             BottomNav(currentTab: BottomNavItem.SUPPORT),

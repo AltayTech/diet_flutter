@@ -81,61 +81,62 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                           InkWell(
                               onTap: () => VxNavigator.of(context)
                                   .push(Uri.parse(Routes.bodyState)),
-                              child: ImageUtils.fromLocal(
-                                  'assets/images/vitrin/bmi_banner.jpg',
-                                  width: 100.w,
-                                  height: 15.h)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                                child: ImageUtils.fromLocal(
+                                    'assets/images/vitrin/dr1.jpg',
+                                    width: 100.w,
+                                    fit: BoxFit.fill,
+                                    height: 15.h),
+                              )),
                           SizedBox(height: 2.h),
                           InkWell(
                               onTap: () => VxNavigator.of(context)
                                   .push(Uri.parse(Routes.psychologyIntro)),
-                              child: ImageUtils.fromLocal(
-                                  'assets/images/vitrin/psy_banner.png',
-                                  width: 100.w,
-                                  height: 15.h)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                                child: ImageUtils.fromLocal(
+                                    'assets/images/vitrin/dr2.jpg',
+                                    width: 100.w,
+                                    fit: BoxFit.fill,
+                                    height: 15.h),
+                              )),
                           SizedBox(height: 2.h),
                           InkWell(
                               onTap: () => _launchURL('https://kermany.com'),
-                              child: ImageUtils.fromLocal(
-                                  'assets/images/vitrin/magazine_banner.jpg',
-                                  width: 100.w,
-                                  height: 15.h)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                                child: ImageUtils.fromLocal(
+                                    'assets/images/vitrin/dr3.jpg',
+                                    width: 100.w,
+                                    fit: BoxFit.fill,
+                                    height: 15.h),
+                              )),
                           SizedBox(height: 2.h),
                           InkWell(
                               onTap: () => _launchURL(
                                   'https://www.instagram.com/accounts/login/?next=/drkermany/'),
-                              child: ImageUtils.fromLocal(
-                                  'assets/images/vitrin/instagram_banner.jpg',
-                                  width: 100.w,
-                                  height: 15.h)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                                child: ImageUtils.fromLocal(
+                                    'assets/images/vitrin/dr4.png',
+                                    width: 100.w,
+                                    fit: BoxFit.fill,
+                                    height: 15.h),
+                              )),
                           SizedBox(height: 2.h),
-                          InkWell(
-                              onTap: () => _launchURL('https://t.me/drkermany'),
-                              child: ImageUtils.fromLocal(
-                                  'assets/images/vitrin/telegram_banner.jpg',
-                                  width: 100.w,
-                                  height: 15.h)),
-                          SizedBox(height: 2.h),
-                          InkWell(
-                              onTap: () {
-                                vitrinBloc.checkFitamin();
-                                // _launchURL(vitrinBloc.url);
-                              },
-                              child: ImageUtils.fromLocal(
-                                  'assets/images/vitrin/fitamin_banner.png',
-                                  width: 100.w,
-                                  height: 15.h)),
                         ],
                       ),
                     ),
                   ),
                 ),
               ),
-              BottomNav(
-                currentTab: BottomNavItem.SHOP,
-              )
+
             ],
           ),
+        ),
+        bottomNavigationBar: BottomNav(
+          currentTab: BottomNavItem.SHOP,
         ),
       ),
     );

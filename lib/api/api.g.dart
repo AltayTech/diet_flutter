@@ -380,7 +380,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              '/user/menu?date=${date}',
+              '/user/menuapp?date=${date}',
               queryParameters: queryParameters,
               data: _data,
             )

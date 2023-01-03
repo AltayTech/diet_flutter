@@ -9,8 +9,8 @@ abstract class AppLocale {
   static const en = Locale('en');
   static const fa = Locale('fa');
 
-  static const defaultLocale = fa;
-  static const defaultLocaleForPreview = fa;
+  static const defaultLocale = ar;
+  static const defaultLocaleForPreview = ar;
   static const supportedLocales = [
     ar,
     en,
@@ -19,7 +19,7 @@ abstract class AppLocale {
 
   static Future<Locale> get currentLocale async => Locale(await AppSharedPreferences.localeCode);
 
-  static Future<bool> get isLocaleFreeOfDietCharge async => (await currentLocale) != AppLocale.fa;
+  static Future<bool> get isLocaleFreeOfDietCharge async => (await currentLocale) != AppLocale.ar;
 
   static Future<List<Locale>> get otherLocales async {
     final current = await currentLocale;

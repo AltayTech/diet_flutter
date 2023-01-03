@@ -130,136 +130,147 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
       right: 0,
       left: 0,
       top: 10.h,
-      child: Container(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(right: 4.w, left: 4.w, top: 6.h),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              textDirection: context.textDirectionOfLocale,
-              children: <Widget>[
-                ToolsBox(),
-                Space(height: 2.h),
-                fitaminBanner(),
-                attachBox(),
-                Space(height: 3.h),
-                Column(
-                  children: <Widget>[
-                    WidgetIconTextProgress(
-                        countShow: false,
-                        title: intl.help,
-                        listIcon: 'assets/images/profile/guide.svg',
-                        index: 0),
-                    StreamBuilder(
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data == true)
-                          return Space(height: 2.h);
-                        else
-                          return Container();
-                      },
-                      stream: profileBloc.showRefund,
-                    ),
-                    StreamBuilder(
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data == true)
-                          return WidgetIconTextProgress(
-                              countShow: false,
-                              title: intl.requestBackPayment,
-                              listIcon: 'assets/images/diet/dollar_symbol.svg',
-                              index: 3);
-                        else
-                          return Container();
-                      },
-                      stream: profileBloc.showRefund,
-                    ),
-                    StreamBuilder(
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data == true)
-                          return Space(height: 2.h);
-                        else
-                          return Container();
-                      },
-                      stream: profileBloc.showPdf,
-                    ),
-                    StreamBuilder(
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.requireData == true)
-                          return WidgetIconTextProgress(
-                              countShow: false,
-                              title: intl.getPdfTerm,
-                              listIcon: 'assets/images/foodlist/share/downloadPdf.svg',
-                              index: 2);
-                        else
-                          return Container();
-                      },
-                      stream: profileBloc.showPdf,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(right: 4.w, left: 4.w, top: 6.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            textDirection: context.textDirectionOfLocale,
+            children: <Widget>[
+              ToolsBox(),
+              Space(height: 3.h),
+              Column(
+                children: <Widget>[
+                  WidgetIconTextProgress(
+                      countShow: false,
+                      title: intl.help,
+                      listIcon: 'assets/images/profile/guide.svg',
+                      index: 0),
+                  StreamBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data == true)
+                        return Space(height: 2.h);
+                      else
+                        return Container();
+                    },
+                    stream: profileBloc.showRefund,
+                  ),
+                  StreamBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data == true)
+                        return WidgetIconTextProgress(
+                            countShow: false,
+                            title: intl.requestBackPayment,
+                            listIcon: 'assets/images/diet/dollar_symbol.svg',
+                            index: 3);
+                      else
+                        return Container();
+                    },
+                    stream: profileBloc.showRefund,
+                  ),
+                  StreamBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data == true)
+                        return Space(height: 2.h);
+                      else
+                        return Container();
+                    },
+                    stream: profileBloc.showPdf,
+                  ),
+                  StreamBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.requireData == true)
+                        return WidgetIconTextProgress(
+                            countShow: false,
+                            title: intl.getPdfTerm,
+                            listIcon: 'assets/images/foodlist/share/downloadPdf.svg',
+                            index: 2);
+                      else
+                        return Container();
+                    },
+                    stream: profileBloc.showPdf,
+                  ),
+                ],
+              ),
+              Space(height: 2.h),
+              // ContactAbout(),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromARGB(255, 246, 246, 246),
+                      spreadRadius: 7.0,
+                      blurRadius: 12.0,
                     ),
                   ],
                 ),
-                Space(height: 2.h),
-                // ContactAbout(),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromARGB(255, 246, 246, 246),
-                        spreadRadius: 7.0,
-                        blurRadius: 12.0,
+                padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Expanded(
+                      child: CrossItemProfile(
+                        imageAddress: 'assets/images/profile/contact.svg',
+                        text: intl.contactMe,
+                        space: false,
+                        url:
+                            'http://wa.me/+201278839008',
+                        context: context,
                       ),
-                    ],
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Expanded(
-                        child: CrossItemProfile(
-                          imageAddress: 'assets/images/profile/contact.svg',
-                          text: intl.contactMe,
-                          space: false,
-                          url:
-                              'https://kermany.com/%d8%aa%d9%85%d8%a7%d8%b3-%d8%a8%d8%a7-%d9%85%d8%a7/',
-                          context: context,
-                        ),
-                        flex: 1,
+                      flex: 1,
+                    ),
+                    Container(
+                      width: 1.w,
+                      height: 2.h,
+                      color: Color.fromARGB(255, 237, 237, 237),
+                    ),
+                    Expanded(
+                      child: CrossItemProfile(
+                        imageAddress: 'assets/images/profile/about_us.svg',
+                        text: intl.aboutMe,
+                        space: false,
+                        context: context,
+                        url:
+                            'https://www.instagram.com/drkermanidiet',
                       ),
-                      Container(
-                        width: 1.w,
-                        height: 2.h,
-                        color: Color.fromARGB(255, 237, 237, 237),
+                      flex: 1,
+                    ),
+                    Container(
+                      width: 1.w,
+                      height: 2.h,
+                      color: Color.fromARGB(255, 237, 237, 237),
+                    ),
+                    Expanded(
+                      child: CrossItemProfile(
+                        imageAddress: 'assets/images/profile/magazine.svg',
+                        text: intl.magazine,
+                        space: false,
+                        context: context,
+                        url:
+                        'https://drkermanidiet.com/',
                       ),
-                      Expanded(
-                        child: CrossItemProfile(
-                          imageAddress: 'assets/images/profile/about_us.svg',
-                          text: intl.aboutMe,
-                          space: false,
-                          context: context,
-                          url:
-                              'https://kermany.com/%d8%af%d8%b1%d8%a8%d8%a7%d8%b1%d9%87-%d8%af%da%a9%d8%aa%d8%b1-%da%a9%d8%b1%d9%85%d8%a7%d9%86%db%8c/',
-                        ),
-                        flex: 1,
-                      ),
-                    ],
-                  ),
+                      flex: 1,
+                    ),
+                  ],
                 ),
-                Space(height: 2.h),
-                SubmitButton(
-                  onTap: () {
-                    AppSharedPreferences.logout();
-                    VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
-                  },
-                  label: intl.exit,
-                ),
-                Space(height: 2.h),
-              ],
-            ),
+              ),
+              Space(height: 2.h),
+              SubmitButton(
+                onTap: () {
+                  AppSharedPreferences.logout();
+                  VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
+                },
+                label: intl.exit,
+              ),
+              Space(height: 2.h),
+            ],
           ),
-          scrollDirection: Axis.vertical,
         ),
+        scrollDirection: Axis.vertical,
       ),
     );
   }

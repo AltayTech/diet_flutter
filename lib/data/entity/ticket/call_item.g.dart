@@ -8,14 +8,19 @@ part of 'call_item.dart';
 
 CallSupport _$CallSupportFromJson(Map<String, dynamic> json) => CallSupport()
   ..firstName = json['first_name'] as String?
-  ..mobile = json['mobile'] as String?
-  ..lastName = json['last_name'] as String?;
+  ..supportEMobile = json['support_expert_mobile'] == null
+      ? null
+      : CallSupport.fromJson(
+          json['support_expert_mobile'] as Map<String, dynamic>)
+  ..lastName = json['last_name'] as String?
+  ..mobile = json['mobile'] as String?;
 
 Map<String, dynamic> _$CallSupportToJson(CallSupport instance) =>
     <String, dynamic>{
       'first_name': instance.firstName,
-      'mobile': instance.mobile,
+      'support_expert_mobile': instance.supportEMobile,
       'last_name': instance.lastName,
+      'mobile': instance.mobile,
     };
 
 Call _$CallFromJson(Map<String, dynamic> json) => Call()

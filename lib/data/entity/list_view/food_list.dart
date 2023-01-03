@@ -126,6 +126,9 @@ class Menu {
   @JsonKey(name: 'expired_at')
   final String? expiredAt;
 
+  @JsonKey(name: 'foods')
+  List<Food>? foods;
+
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }
 
@@ -157,6 +160,10 @@ class Food {
 
   @JsonKey(name: 'food_items')
   final List<FoodItem>? foodItems;
+
+  @JsonKey(name: 'meal_id')
+  int? mealId;
+
 
   factory Food.fromJson(Map<String, dynamic> json) => _$FoodFromJson(json);
 
@@ -399,8 +406,6 @@ class Visit {
     this.calorieId,
     this.isActive,
     this.deletedAt,
-    this.calorieValue,
-    this.visitDays,
   );
 
   @JsonKey(name: 'id')
@@ -449,11 +454,6 @@ class Visit {
   @JsonKey(name: 'deleted_at')
   final String? deletedAt;
 
-  @JsonKey(name: 'calory_value')
-  final int calorieValue;
-
-  @JsonKey(name: 'visit_days')
-  final int visitDays;
 
   factory Visit.fromJson(Map<String, dynamic> json) => _$VisitFromJson(json);
 }

@@ -1,12 +1,595 @@
 {
-  "appName": "کارسو",
-  "login": "ورود",
-  "register": "ثبت نام",
-  "mobileOrEmail": "شماره موبایل / ایمیل",
-  "password": "کلمه عبور",
-  "confirmPassword": "تکرار کلمه عبور",
-  "forgetPassword": "رمز عبورت رو فراموش کردی؟",
-  "farsi": "فارسی",
+  "appName": "DrDiet",
+  "login": "الدخول",
+  "register": "التسجيل",
+  "mobileOrEmail": "رقم الهاتف / البريد الإلكتروني",
+  "password": "كلمة السر",
+  "confirmPassword": "كرر كلمة السر",
+  "forgetPassword": "نسيت كلمة السر؟",
+  "farsi": "العربية",
   "english": "English",
-  "arabic": "العربية"
+  "serverInternalError": "حدث خطأ ما! تعذر الاتصال بالخادم حالياً. يرجى المحاولة مرة أخرى",
+  "httpErrorWithCode": "حدث خطأ في الكود {code} ، إذا استمرت المشكلة فاتصل بالدعم",
+  "@httpErrorWithCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "profile": "الملف الشخصي",
+  "editProfile": "تعديل الملف الشخصي",
+  "changePassword": "تغيير كلمة السر",
+  "exit": "خروج",
+  "requestBackPayment": "طلب الاسترجاع المبلغ",
+  "getPdfTerm": "تحميل نسخة pdf",
+  "help": "دليل",
+  "mySportProgram": "برنامج التمارين الرياضية",
+  "contactMe": "اتصل بنا",
+  "aboutMe": "من نحن",
+  "name": "اسم",
+  "lastName": "اسم الثلاثي",
+  "email": "البريد الإلكتروني",
+  "address": "عنوان",
+  "callNumber": "رقم الهاتف",
+  "whatsApp": "رقم الواتساب",
+  "skype": "رقم سكايب",
+  "zipCode": "رمز بريدي",
+  "foodList": "ثقافتك الغذائية",
+  "noResultFound": "لا توجد نتائج",
+  "foodNotFoundMessage": "لم يتم العثور على الطعام الذي تريده في القائمة",
+  "manipulateFood": "استبدال الطعام",
+  "recipe": "طريقة التحضير {food}",
+  "@recipe": {
+    "placeholders": {
+      "food": {
+        "type": "String"
+      }
+    }
+  },
+  "iFastToday": "انا صائم اليوم",
+  "selectDailyMenu": "القائمة اليومية",
+  "todayAdvicesForYou": "لدينا نصيحة عملية لك. تأكد من قراءتهم!",
+  "viewingMenu": "أنت تشاهد قائمة الطعام يوم {date}",
+  "@viewingMenu": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "showAdvices": "عرض التوصيات",
+  "goToToday": "اذهب الى اليوم",
+  "selectAllFoodYourself": "هل تريد أن تختار بنفسك جميع أطباق هذا اليوم؟",
+  "yesGoToSelectFoodPage": "نعم ، انتقل إلى صفحة اختيار الطعام",
+  "cancel": "إلغاء",
+  "fastingModel": "نمط الصيام",
+  "convertToFast": "مع هذا الاختيار ستتغير وجباتك إلى وجبات صيام",
+  "iFast": "أصوم",
+  "iRegret": "ندمت",
+  "alternating": "استبدال {meal}",
+  "@alternating": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "alternatingFoodLater": "سأستبدلها لاحقًا",
+  "selectDailyMenuFoods": "اختيار الأطباق قائمة اليومية",
+  "selectFood": "اختيار الأطعمة {date}",
+  "@selectFood": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "notShowingPastMeals": "لا يتم عرض الوجبات منتهية الصلاحية!",
+  "addFood": "أضف الطعام...",
+  "fastPatterns": "أنماط الصيام",
+  "selectFastPattern": "اختر نمط الصيام الذي تريده",
+  "fast": "صيام",
+  "youSeeFastingPatterns": "أنت الآن تشاهد وجبات الصيام",
+  "changePattern": "تغيير النمط",
+  "iDoNotFast": "لا اصوم",
+  "selectFoodIn": "اختيار الطعام في الوجبة {meal}",
+  "@selectFoodIn": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "whatFoodAreYouLookingFor": "عن أي طعام تبحث؟",
+  "country": "بلد",
+  "province": "محافظة",
+  "city": "مدينة",
+  "textChangePass1": " لتغيير كلمة السر ، سيتم إرسال رمز تأكيد إلى الرقم ",
+  "textChangePass2": " ثم يمكنك تغيير كلمة السر الخاصة بك ",
+  "yes": "نعم",
+  "no": "لا",
+  "enterYourMobileNumber": "أدخل رقم هاتفك المحمول",
+  "registerOrLogin": "التسجيل والدخول",
+  "woman": "امرأة",
+  "man": "رجل",
+  "enterNewPassword": "أدخل كلمة السر الجديدة",
+  "repeatNewPassword": "كرر كلمة السر الجديدة",
+  "setNewPassword": "سجل كلمة سر جديدة",
+  "smsCode": "أدخل رمز SMS هنا",
+  "notSend": "تعذر إرسال الرمز ، يرجى إرساله مرة أخرى",
+  "sendAgain": " إمكانية إعادة الإرسال بعد : ",
+  "confirmNewPassword": "قم بتعيين كلمة السر الجديدة الخاصة بك",
+  "notEqualPassword": "إعادة كلمة السر ليست هي نفسها",
+  "fillAllField": "تأكد من ملء جميع الحقول",
+  "minimumPasswordLength": "أدخل كلمة السر مكونة من أربعة أرقام",
+  "regimeReceive": "حصول على النظام الغذائي",
+  "selectYourRegime": "اختر النظام الغذائي الذي تريده",
+  "whichRegime": "ما هو النظام الغذائي المناسب لي؟",
+  "pickImage": "افتح صورة من:",
+  "selectGallery": "معرض",
+  "selectCamera": "كاميرا",
+  "newTicket": "سؤال جديد",
+  "addToList": "أضف إلى القائمة",
+  "saveDailyMenu": "احفظ وجبات القائمة اليومية",
+  "and": "و",
+  "selectFoodForAllMeals": "اختر الطعام لجميع الوجبات",
+  "timeOfTheMeal": "الوقت المناسب لتناول هذه الوجبة هو من {start} إلى {end} ساعة.",
+  "@timeOfTheMeal": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "tryToAlternateOneMealDaily": "حاول استبدال وجبة واحدة فقط في اليوم",
+  "currentMeal": "الوجبة {meal} الحالية",
+  "@currentMeal": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "replacedMeal": "وجبة {meal} بديلة",
+  "@replacedMeal": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "replaceMeal": "استبدال وجبة {meal} ",
+  "@replaceMeal": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "replaceFood": "استبدل",
+  "calendar": "التقويم",
+  "saturday": "السبت",
+  "sunday": "الأحد",
+  "monday": "الاثنين",
+  "tuesday": "الثلاثاء",
+  "wednesday": "الأربعاء",
+  "thursday": "الخميس",
+  "friday": "الجمعة",
+  "termStart": "بداية الدورة",
+  "termEnd": "نهاية الدورة",
+  "newTerm": "تمديد الدورة",
+  "newList": "قائمة جديدة",
+  "visit": "إعلان الوزن",
+  "visitDelay": "تأخير في إعلان الوزن",
+  "menuDelay": "تأخير في اختيار القائمة",
+  "newMenu": "احصل على قائمة جديدة",
+  "termShouldBeRenewed": "عزيزي {user} \n يجب تمديد نظامك الغذائي في الوقت المحدد",
+  "@termShouldBeRenewed": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "listShouldBeRenewed": "عزيزي {user} \n لم تستلم قائمة الطعام الجديدة بعد. سنخبرك في يوم استلام القائمة",
+  "@listShouldBeRenewed": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "visitShouldBeRenewed": "عزيزي {user} \n لم تصل إلى وقت إعلان الوزن بعد. سنبلغك في يوم إعلان الوزن",
+  "@visitShouldBeRenewed": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "youDidNotGetNewMenu": "عزيزي {user} \n أنت لم تختر قائمة الطعام في الوقت المحدد!",
+  "@youDidNotGetNewMenu": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "youDidNotSubmitWeight": "عزيزي {user} \n أنت لم تتعلن وزنك في الوقت المحدد!",
+  "@youDidNotSubmitWeight": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "gotIt": "فهمت",
+  "ticket": "الدعم",
+  "status": "حالة",
+  "vitrin": "المعرض",
+  "diet": "فائمة الطعام",
+  "titleQuestionTicket": "أي جزء يتعلق به سؤال؟",
+  "ok": "موافق",
+  "subject": "عنوان الرسالة",
+  "endRecord": "نهاية التسجيل",
+  "startRecord": "ابدأ التسجيل",
+  "soundMessage": "رسالة صوتية",
+  "lableTextMessage": "أدخل النص هنا",
+  "errorDepartment": "الرجاء تحديد القسم الذي تريده",
+  "errorFillItem": "أدخل جميع المعلومات المطلوبة",
+  "closedTicket": "هذه التذكرة مغلقة. إذا أجبت عليه ، فسيتم فتحه مرة أخرى.",
+  "stateOfBody": "حالة الفيزيائية",
+  "enterYourState": "أدخل معلوماتك البدنية",
+  "weight": "الوزن",
+  "height": "الطول",
+  "wrist": "حول المعصم",
+  "birthday": "تاريخ الولادة",
+  "confirmContinue": "تأكيد و متابعة",
+  "centimeter": "سنتيمتر",
+  "kilo": "كيلو",
+  "kiloGr": "كجم",
+  "gr": "جرام",
+  "edit": "تعديل",
+  "reserveCall": "حجز مكالمة",
+  "accept": "تأكيد",
+  "cancelCall": "إلغاء المكالمة",
+  "cancelCallRequest": "طلب إلغاء المكالمة",
+  "cancelCallRequestForYou": "هل تريد إرسال طلب إلغاء مكالمتك إلى الدعم؟",
+  "callRequest": "اطلب مكالمة صوتية",
+  "noAccessCallRequest": "ليس يتوفّر لديك تسجيل المكالمة",
+  "addCallRequestForYou": "إرسال طلب الاتصال الخاص بك لدعم؟",
+  "callDone": "تمت المحادثة",
+  "callProgressLabel": "سيتم التواصل معكم من قبل الخبراء في اقرب وقت ممكن",
+  "callNumberIs": "اتصال رقم ",
+  "callNumberOne": "الاتصال الأول",
+  "callNumberTwo": "الاتصال الثاني",
+  "callNumberThree": "الاتصال الثالث",
+  "callNumberFour": "الاتصال الرابع",
+  "callNumberFive": "الاتصال الخامس",
+  "callNumberSix": "الاتصال السادس",
+  "callNumberSeven": "الاتصال السابع",
+  "callNumberEight": "الاتصال الثامن",
+  "callNumberNine": "الاتصال التاسع",
+  "callNumberTen": "الاتصال العاشر",
+  "callNumberEleven": "الاتصال الحادي عشر",
+  "callNumberTwelve": "الاتصال الثاني عشر",
+  "callNumberThirteen": "الاتصال الثالث عشر",
+  "callNumberFourteen": "تالاتصال الرابع عشر",
+  "callNumberFifteen": "الاتصال الخامس عشر",
+  "callNumberSixteen": "الاتصال السادس عشر",
+  "callNumberSeventeen": "الاتصال السابع عشر",
+  "callNumberEighteen": "الاتصال الثامن عشر",
+  "callNumberNineteen": "الاتصال التاسع عشر",
+  "callNumberTwenty": "الاتصال العشرون",
+  "descriptionCallService": "إذا كنت بحاجة إلى استشارة هاتفية من قبل خبرائنا ، يمكنك حجز مكالمة في هذا القسم حتى نتواصل معك في أقرب وقت ممكن.",
+  "pregnancyWeek": "أسبوع الحمل",
+  "week": "أسبوع",
+  "multiBirth": "عدد التوأم",
+  "multi": "توأم",
+  "statusReport": "تقرير الحالة الفيزيائية",
+  "firstStatusReport": "تقرير أولي عن الحالة البدنية",
+  "day": "يوم",
+  "appropriateWeight": "للوزن المناسب",
+  "untilReach": "حتى الوصول ",
+  "extraWeight": "زيادة الوزن",
+  "lakeWeight": "نقص الوزن",
+  "yourAppropriateWeight": "وزنك المناسب",
+  "bmi": "مؤشر كتلة الجسم",
+  "what": "ماذا؟",
+  "itIsNotPossible": "لا يمكن توفير نظام غذائي لك",
+  "itIsDeny": "يمنع الأطفال دون سن 10 سنوات من اتباع نظام غذائي",
+  "appropriateWeightPregnancy": "الوزن المناسب للحمل",
+  "untilBeingMom": " أن تصبحي أماً",
+  "getWeight": "تحتاج إلى زيادة الوزن",
+  "comingSoon": "قريباً",
+  "sicknessLabelUser": "هل لديك مضاعفات أو مرض الذي تعاني منه؟",
+  "sicknessDescriptionUser": "المزيد من التفاصيل",
+  "sicknessSpecialLabelUser": "هل لديك شروط خاصة؟",
+  "sicknessSpecial": "حالة خاصة",
+  "sickness": "المضاعفات أو المرض",
+  "birthdateIsAMust": "مطلوب تاريخ الميلاد",
+  "advices": "التوصيات",
+  "beAdvisedTo": "من المستحسن:",
+  "forSomethingBeAdvisedTo": "بالنسبة إلى \"{المرض} \" ، يوصى :",
+  "@forSomethingBeAdvisedTo": {
+    "placeholders": {
+      "sickness": {
+        "type": "String"
+      }
+    }
+  },
+  "adminAdvice": "نصائح الخبیرة",
+  "dietAdvice": "توصيات عامة",
+  "sicknessAdvice": "توصيات المرض",
+  "specialAdvice": "توصيات خاصة",
+  "selectPackage": "اختر الباقة",
+  "selectPackageToolbar": "اختيار الحزمة",
+  "toman": "دولار",
+  "free": "مجاني",
+  "differentPackages": "ما الفرق بين الباقات؟",
+  "paymentFinalBill": "الفاتورة النهائية",
+  "totalPayment": "مجموع",
+  "discount": "تخفيض",
+  "acceptCode": "تسجيل الكود",
+  "yourDiscount": "دولار خصم",
+  "hintDiscountCode": "أدخل كود الخصم الخاص بك",
+  "typePaymentLabel": "اختر طريقة الدفع",
+  "online": "متصل",
+  "onlinePayment": "الدفع الالكتروني",
+  "cardToCard": "البطاقة",
+  "cardToCardPayment": "دفع عبر البطاقة",
+  "descriptionCardToCard": "دفع عن طریق الایبان",
+  "descriptionOnline": "جميع البنوك العربیة",
+  "sendMessage": "إرسال رسالة",
+  "acceptEdit": "سجل التغييرات",
+  "paymentCardToCard": "الدفع من بطاقة",
+  "depositTheAmount": "قم بإيداع مبلغ {amount} دولار على رقم البطاقة التالي من خلال التحويل المصرفي أو التطبيقات المصرفية.",
+  "@depositTheAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "inNameOf": "بأسم {name}",
+  "@inNameOf": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "share": "شارك",
+  "copy": "نسخ",
+  "debitCardInfo": "رقم إيبان {cardNumber} \n باسم {ownerName} \n مبلغ {amount} دولار",
+  "@debitCardInfo": {
+    "placeholders": {
+      "cardNumber": {
+        "type": "String"
+      },
+      "ownerName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "copied": "تم النسخ",
+  "clickFollowingButtonAfterPayment": "بعد الإيداع ، اضغط على الزر",
+  "deposited": "دفعت",
+  "nowFillFollowingInformation": "الآن قم بملء المعلومات التالية بعناية",
+  "accountOwnerName": "اسم صاحب الحساب",
+  "fourLastNumberOfCard": "آخر 4 أرقام من رقم الحساب",
+  "nameOfWhoPayed": "اسم مالك البطاقة التي قمت بالدفع بها",
+  "fourLastCardNumberOfWhoPayed": "الأرقام الأربعة الأخيرة من البطاقة التي قمت بالدفع بها",
+  "submitOfflinePayment": "تسجيل معلومات الدفع",
+  "paymentDate": "تاريخ الدفع",
+  "psy": "استشارة د.دايت",
+  "whoNeedPsySession": "من هو المناسب للجلسات النفسية؟",
+  "stepsOfPsy": "ما هي خطوات الاستشارة؟",
+  "sessionReserve": "احجز جلسة نفسية",
+  "determineTime": "حدد وقت الاستشارة",
+  "reserve": "محجوز",
+  "previousDays": "الايام الماضية",
+  "laterDays": "الايام القادمة",
+  "seeTime": "لعرض الأوقات القابلة للحجز ، حدد تاريخًا من التقويم أعلاه",
+  "thereIsNotTime": "مواعيد الاستشارة محجوزة لهذا اليوم",
+  "min": "دقيقة",
+  "currency": "دولار",
+  "selectYourPhoneSession": "اختر وقت الاستشارة عبر الهاتف:",
+  "sessionDuration": "مدة الاستشارة",
+  "time": "وقت",
+  "date": "تاریخ",
+  "price": "مبلغ",
+  "reserveThisTime": "احجز هذه الساعة",
+  "iDoNot": "لا اريد",
+  "showFirstFreeTime": "أرني أقرب ساعة",
+  "term1": " .",
+  "term2": " .",
+  "term3": " .",
+  "term4": " . ",
+  "term5": ".",
+  "attention": " ",
+  "condition": "",
+  "rulesConfirm": " .",
+  "readRules": " ",
+  "thanks": " ",
+  "factor": "الفاتورة النهائية",
+  "sum": " ",
+  "cartPay": " ",
+  "adviserName": " ",
+  "off": " ",
+  "myMeeting": " ",
+  "meetingWith": "  :",
+  "hour": " ",
+  "onlinePay": " ",
+  "activityLevel": " ",
+  "paymentSuccess": " ",
+  "paymentSuccessLabel": " ",
+  "paymentInformation": "معلومات الدفع",
+  "refId": "الرقم",
+  "amount": "مبلغ",
+  "mobile": "رقم الهاتف",
+  "useFromList": "لاستخدام البرنامج ، أكمل باقي الخطوات للحصول على النظام الغذائي",
+  "howMuchIsYourDailyActivity": "كم هو نشاطك اليومي؟",
+  "nextStage": "المرحلة التالية",
+  "selectSomething": "اختر واحدًا",
+  "dietHistory": "تاريخ النظام الغذائي",
+  "haveYouEverBeenOnDiet": "هل لديك تاريخ في النظام الغذائي؟",
+  "dietGoal": "الغرض من النظام الغذائي",
+  "whatIsYourGoal": "ما هو هدفك في الرجيم؟",
+  "paymentFail": "فشل عملية الدفع",
+  "paymentFailLabel": "كان الدفع الخاص بك غير ناجح",
+  "failForAdmin": "تم رفض الدفع الخاص بك من قبل الدعم",
+  "offError": "أولاً ، قم بتسجيل رمز الخصم الخاص بك",
+  "paymentWait": "تحقق من الدفع عبر البطاقة",
+  "paymentWaitLabel": "تم تسجيل دفعتك بنجاح",
+  "checkPayment": "إعادة التحقق من الدفع",
+  "retryPayment": "ادفع مجددًا",
+  "aGlanceToBodyState": "حالتك الجسدية",
+  "physicalActivity": "النشاط البدني",
+  "viewFoodList": "عرض قائمة الطعام",
+  "selectYourMenu": "اختر قائمة الطعام التي تريدها",
+  "waitingForSuccessPayment": "انتظر حتى تأكيد الدفع",
+  "paymentStatusForLastTime": "سيتم تفعيل البرنامج الخاص بك في غضون 1-2 ساعة القادمة",
+  "statusBodyTermUser": "الحالة البدنية في الفترة الحالية",
+  "remainingWeight": "الوزن المتبقي",
+  "lostWeight": "فقدان الوزن",
+  "addedWeight": "زیادة الوزن",
+  "firstWeight": "الوزن الابتدائي",
+  "none": "??",
+  "age": "عمر",
+  "old": "سنة",
+  "dietType": "نوع النظام الغذائي",
+  "weightLoss": "فقدان الوزن",
+  "weightGain": "زيادة الوزن",
+  "pregnancy": "حمل",
+  "notrica": " ",
+  "sport": "الرياضة",
+  "diabetes": "السكري",
+  "ketogenic": "الكيتو",
+  "stabilization": "تثبيت الوزن",
+  "noChangeWeight": "أنت لم تتغير",
+  "pregnancyIdealWeight": "الوزن المناسب عند الولادة",
+  "idealWeightBasedOnPervVisit": "الوزن المناسب للزيارة الأخيرة",
+  "daysTillChildbirth": "عدد الأيام المتبقية حتى الحمل",
+  "chartWeightName": "مخطط تغيير الوزن",
+  "whichMenuList": "أي قائمة طعام يجب أن أختار؟",
+  "confirmMenuList": "استلام قائمة الطعام",
+  "areYouSureAboutMenu": "هل أنت متأكد من تحديد هذه القائمة؟",
+  "yesWantThisMenu": "نعم",
+  "noWannaChange": "لا",
+  "inbox": "مخزن الرسائل",
+  "notFoundInbox": "لا توجد رسائل لعرضها",
+  "discountForYou": "الخصم الخاص بك",
+  "totalAmount": "المبلغ النهائي",
+  "newVisit": "اعلان الوزن الجديد",
+  "userNotricaRegime": "يمكنك استخدام نظام الغذائي الخاص بالأعمار من 10 إلى 16 عامًا",
+  "getNewList": "قائمة جديدة",
+  "reviveDiet": "تمديد الحمية",
+  "continues": "استمرار",
+  "descriptionNewList": "انتهى وقت قائمة طعامك وتحتاج إلى الحصول على قائمة جديدة!",
+  "descriptionVisit": "يجب أن تدخل وزنك الجديد",
+  "descriptionRenew": "لقد انتهى وقت نظامك الغذائي! انقر علی الزر أدناه لتمديد فترة النظام الغذائي",
+  "descriptionRevive": "لقد كنت بعيدًا عن نظامك الغذائي لفترة طويلة! \n انقر علی الزر أدناه لتمديد فترة النظام الغذائي",
+  "yesSaveList": "احفظ هذه القائمة",
+  "appNameSplash": "د.دايت بأشراف دكتور كرماني",
+  "later": "لاحقا",
+  "update": "تحديث",
+  "version": "الأصدار {versionName}",
+  "@version": {
+    "placeholders": {
+      "versionName": {
+        "type": "String"
+      }
+    }
+  },
+  "needInvestigation": "بحاجة للتأكد",
+  "blockApology": "نعتذر ، لمزيد من المعلومات، انتظر التواصل من قبل خبراء دكتور دايت.",
+  "blockText": "وفقًا للحالة البدنية والمعلومات التي أدخلتها ، لا يمكن الحصول على النظام الغذائي.",
+  "selectAnotherRegime": "اختر حمية أخرى",
+  "editPhysicalInfo": "تعديل المعلومات البدنية",
+  "editPhysicalStatus": "تعديل الحالة البدنية",
+  "callRightNow": "اتصل الان عبرالواتساب",
+  "phone": "wa.me/+201278839008",
+  "editSickness": "تعديل الأمراض",
+  "whichPackage": "ما هي الباقة التي يجب أن أختارها؟",
+  "receiveList": "استلام قائمة الطعام",
+  "pdfTxt": "من هذا القسم ، يمكنك الحصول على نسخة PDF من قائمة طعامك لطباعتها أو حفظها",
+  "receivePdf": "احصل على قائمة الأسبوع الجاري",
+  "cancelPdf": "إلغاء",
+  "behandam": "د.دايت بأشراف دكتور كرماني",
+  "shop": "معرض",
+  "buyCourse": "شراء هذه الدورة",
+  "myProduct": "منتجاتي",
+  "selectOneFreeFood": "اختر أحد المواد الغذائية الحرة",
+  "view": "عرض",
+  "viewAll": "عرض الكل",
+  "notRegister": "غير مسجل",
+  "errorMobileCondition": "أدخل رقمك بشكل صحيح",
+  "month": "شهر",
+  "year": "سنة",
+  "errorSelectedItem": "يرجى تحديد أحد الخيارات",
+  "receiveTermPdf": "احصل على قائمة الدورات الحالية",
+  "shopMenu": "معرض",
+  "selectReplacedFood": "اختر أولاً الوجبة البديل",
+  "refund": "استرجاع المبلغ",
+  "user": "المستخدم",
+  "babe": "",
+  "dietDiscontent": "في حالة عدم الرضا عن النظام الغذائي ، يمكنك على الأكثر في غضون ",
+  "validationPass": "أدخل كلمة السر مكونة من 4 أحرف على الأقل",
+  "requestRefundPaymentLabel": "إرسال طلب استرداد. بعد التحقق من قبل خبرائنا ، سيتم إرجاع المبلغ المدفوع إلى حسابك.",
+  "acceptRefundPayment": "طلب تسجيل استرجاع المبلغ",
+  "pleaseFillInformation": "الرجاء إكمال المعلومات التالية بعناية",
+  "pleaseFillAllParams": "يرجى ملء جميع الخيارات",
+  "cardNumberFull": "رقم حسابك",
+  "cardNumber": "رقم البطاقة",
+  "cardNumberOwner": "صاحب رقم البطاقة",
+  "validationCardNumber": "يجب ألا يقل رقم البطاقة عن 16 رقمًا",
+  "back": "عودة",
+  "successRequest": "تم تسجيل طلبك بنجاح",
+  "descriptionRefund": "الحد الأقصى لوقت تقديم طلب استرداد الأموال هو {date}. إذا كنت غير راضٍ عن أي من خدماتنا ، يمكنك الاتصال على +96170067492 وإبلاغ خبرائنا بعدم رضاك.",
+  "@descriptionRefund": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "test": "تست",
+  "person": "شخص",
+  "courseTime": "فترة زمنية",
+  "buyThisCourse": "مُشترى",
+  "aboutThis": "حول هذه الدورة",
+  "viewCompletely": "عرض كامل",
+  "viewAllCourse": "عرض جميع الجلسات",
+  "downloadAll": "تحميل جميع الحلقات",
+  "productPrice": "سعر المنتج",
+  "productPriceWithOff": "السعر المخفَّض",
+  "expand": "عرض كامل",
+  "collapse": "عودة",
+  "clickHereToUseProduct": "انقر علی الزر لاستخدام المنتج",
+  "viewProduct": "عرض المنتج",
+  "enterNewWeight": "أدخل وزنك الجديد",
+  "weighEnterCallText": "إذا كنت بحاجة إلى استشارة هاتفية من قبل خبرائنا ، فيمكنك اختيار نعم من القسم أدناه حتى نتواصل معك في أقرب وقت ممكن",
+  "shouldWeCallYou": "هل نتواصل معك",
+  "exitAppAlert": "انقر مرة أخرى للخروج",
+  "programNotFoundForOpen": "لم يتم العثور على برنامج لفتح الملف.",
+  "fileNotFound": "هذا الملف غير موجود",
+  "more": "المزيد",
+  "emptyProduct": "لا توجد منتجات للعرض",
+  "offErrorResult": "كود الخصم غير صحيح",
+  "errorDescriptionTicket": "يرجى ملء نص التذكرة",
+  "close": "إغلاق",
+  "newMessage": "رسالة جديدة",
+  "messageNotFound": "لا توجد رسائل للعرض",
+  "supporter": "أخصائيك هي",
+  "callWithSupport": "تواصل بأخصائيك من هنا",
+  "magazine": "موقع د. كرماني",
+  "understand": "فهمت"
 }

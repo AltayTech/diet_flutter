@@ -32,7 +32,7 @@ class ToolbarProfileState extends ResourcefulState<ToolbarProfile> {
           top: 0,
           right: 0,
           left: 0,
-          child: Container(
+          child: SizedBox(
               height: 18.h,
               child: Container(
                 color: Colors.transparent,

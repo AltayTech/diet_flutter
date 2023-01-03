@@ -22,7 +22,7 @@ class SupportBloc {
   void getCalls() {
     _progressNetwork.value = true;
     _repository.getCallSupport().then((value) {
-      linkWhatsApp = "http://wa.me/${value.data?.mobile}";
+      linkWhatsApp = "http://wa.me/${value.data?.supportEMobile?.mobile}";
     }).whenComplete(() {
       _progressNetwork.value = false;
     });

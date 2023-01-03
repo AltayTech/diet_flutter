@@ -8,11 +8,15 @@ class CallSupport {
   @JsonKey(name: "first_name")
   String? firstName;
 
-  @JsonKey(name: "mobile")
-  String? mobile;
+  @JsonKey(name: "support_expert_mobile")
+  CallSupport? supportEMobile;
 
   @JsonKey(name: "last_name")
   String? lastName;
+
+  @JsonKey(name: "mobile")
+  String? mobile;
+
 
   CallSupport();
 
@@ -34,6 +38,7 @@ class Call {
 
   @JsonKey(name: "items")
   List<CallItem>? items;
+
 
   Call();
 
