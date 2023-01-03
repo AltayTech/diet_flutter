@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/screens/utility/arc.dart';
+import 'package:behandam/screens/widget/custom_button.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
@@ -149,7 +150,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
           right: 0.0,
           left: 0.0,
           child: Center(
-              child: Text('به اندام دکتر کرمانی',
+              child: Text(intl.appNameSplash,
                   style: TextStyle(
                       color: AppColors.penColor,
                       fontSize: 22.0,
@@ -302,7 +303,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
           child: StreamBuilder(
             stream: authBloc.selectedCountry,
             builder: (_, AsyncSnapshot<Country> snapshot) {
-              return button(
+              return CustomButton(
                 AppColors.btnColor,
                 intl.registerOrLogin,
                 Size(100.w, 8.h),

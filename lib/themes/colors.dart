@@ -27,6 +27,8 @@ class AppColors {
   static late Color labelTab;
   static late Color warning = Colors.orange.shade100;
 
+  static const btnColorsGradient =
+  LinearGradient(colors: [Color(0xff67DAFF), Color(0xff03A9F4)]);
   static const penColor = Color(0xff666666);
   static const redBar = Color(0xffFF5757);
   static const looseType = Color(0xfff6ded5);
@@ -75,7 +77,7 @@ class AppColors {
       case ThemeAppColor.DEFAULT:
         accentColor = Color.fromRGBO(250, 114, 126, 1);
         primaryColorDark = Color.fromARGB(255, 255, 55, 87);
-        primary = Color.fromARGB(255, 255, 87, 87);
+        primary = Color(0xff03A9F4);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
         iconsColor = Color(0xff646464);
@@ -85,7 +87,7 @@ class AppColors {
         onScaffold = onSurface;
         shadowColor = Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
+        btnColor = Color(0xff03A9F4);
         labelColor = Color(0xf48e8e8e);
         labelTab = Color(0xffffffff);
         statusTicketClose = Colors.grey[700]!;
@@ -114,7 +116,7 @@ class AppColors {
         onScaffold = onSurface;
         shadowColor = Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
+        btnColor = Color(0xff03A9F4);
         labelColor = Color(0xf48e8e8e);
         labelTab = Color(0xffffffff);
         statusTicketClose = primaryVariantLight;
@@ -143,7 +145,7 @@ class AppColors {
         onScaffold = onSurface;
         shadowColor = Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
+        btnColor = Color(0xff03A9F4);
         labelColor = Color(0xf48e8e8e);
         labelTab = Color(0xffffffff);
         statusTicketClose = Colors.grey[700]!;
@@ -170,7 +172,7 @@ class AppColors {
         onScaffold = onSurface;
         shadowColor = Color.fromARGB(255, 246, 246, 246);
         arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
+        btnColor = Color(0xff03A9F4);
         labelColor = Color(0xf48e8e8e);
         labelTab = Color(0xffffffff);
         statusTicketClose = primaryVariantLight;

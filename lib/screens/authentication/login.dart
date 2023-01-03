@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
+import 'package:behandam/screens/widget/custom_button.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
@@ -202,7 +203,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             ),
           ),
           SizedBox(height: 10.h),
-          button(AppColors.btnColor, intl.login, Size(100.w, 8.h), () {
+          CustomButton(AppColors.btnColor, intl.login, Size(100.w, 8.h), () {
             DialogUtils.showDialogProgress(context: context);
             if (_password.length > 0) {
               User user = User();
