@@ -35,7 +35,7 @@ class _SubmitButtonState extends ResourcefulState<SubmitButton> {
                 fixedSize: MaterialStateProperty.all(widget.size ?? Size(70.w, 6.h)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
-                    side: BorderSide(color: AppColors.primaryColorDark)))),
+                    ))),
             onPressed: widget.onTap,
 
             icon: widget.icon!,
@@ -52,7 +52,7 @@ class _SubmitButtonState extends ResourcefulState<SubmitButton> {
                 fixedSize: MaterialStateProperty.all(widget.size ?? Size(70.w, 6.h)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
-                    side: BorderSide(color: AppColors.primaryColorDark)))),
+                    ))),
             onPressed: widget.onTap,
             child: Text(
               widget.label,

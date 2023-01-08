@@ -4,6 +4,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/screens/vitrin/vitrin_bloc.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
@@ -60,9 +61,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-            backgroundColor: AppColors.redBar,
-            title: Text(intl.behandam, textAlign: TextAlign.center)),
+        appBar: Toolbar(titleBar: intl.behandam),
         body: Container(
           height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.all(12.0),

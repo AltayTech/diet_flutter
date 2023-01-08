@@ -2,6 +2,7 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
+import 'package:behandam/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -51,7 +52,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
               children: <Widget>[
                 Expanded(
                   flex: 1,
-                  child: _callCard('شماره موبایل : ', profileBloc.userInfo.mobile!),
+                  child: _callCard('${intl.mobile}: ', profileBloc.userInfo.mobile!),
                 ),
                 Container(
                   width: double.maxFinite,
@@ -62,7 +63,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                 Expanded(
                   flex: 1,
                   child:
-                      _callCard('شماره تماس دوم: ', profileBloc.userInfo.callNumber ?? intl.notRegister),
+                      _callCard('${intl.mobileTwo}: ', profileBloc.userInfo.callNumber ?? intl.notRegister),
                 ),
                 Container(
                   width: double.maxFinite,
@@ -72,7 +73,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: _callCard('شماره واتساپ : ',
+                  child: _callCard('${intl.whatsApp}: ',
                       profileBloc.userInfo.socialMedia!.length>0 ? profileBloc.userInfo.socialMedia![0].pivot!.link ?? intl.notRegister :intl.notRegister),
                 ),
                 Container(
@@ -83,7 +84,7 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: _callCard('شماره اسکایپ : ',
+                  child: _callCard('${intl.skype}: ',
                       profileBloc.userInfo.socialMedia!.length>0 ? profileBloc.userInfo.socialMedia![2].pivot!.link ?? intl.notRegister:intl.notRegister),
                 ),
               ],
@@ -139,11 +140,11 @@ class _CallBoxProfileState extends ResourcefulState<CallBoxProfile> {
                       color: Color.fromARGB(255, 243, 243, 243),
                     ),
                     child: Text(
-                      'ویرایش',
+                      intl.edit,
                       textAlign: TextAlign.right,
                       textDirection: TextDirection.rtl,
                       style: TextStyle(
-                        color: Colors.red,
+                        color: AppColors.primary,
                         fontSize: 12.sp,
                       ),
                     ),

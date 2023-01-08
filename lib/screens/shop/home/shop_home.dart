@@ -52,7 +52,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
       body: StreamBuilder(
         stream: bloc.loadingContent,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data == false)
+          if (snapshot.hasData && snapshot.data == false) {
             return Container(
               height: 85.h,
               child: ListView.builder(
@@ -355,7 +355,7 @@ class _ShopHomeScreenState extends ResourcefulState<ShopHomeScreen> {
                 itemCount: bloc.list?.length ?? 0,
               ),
             );
-          else
+          } else
             return Progress();
         },
       ),

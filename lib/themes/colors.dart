@@ -76,11 +76,11 @@ class AppColors {
     switch (this.themeAppColor) {
       case ThemeAppColor.DEFAULT:
         accentColor = Color.fromRGBO(250, 114, 126, 1);
-        primaryColorDark = Color.fromARGB(255, 255, 55, 87);
+        primaryColorDark = Color(0xff67DAFF);
         primary = Color(0xff03A9F4);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
-        iconsColor = Color(0xff646464);
+        iconsColor = Color(0xffC2C2C2);
         surface = Colors.white;
         onSurface = Colors.black;
         scaffold = Color(0xFFF5F8FE);
@@ -109,7 +109,7 @@ class AppColors {
         primaryColorDark = Color(0x0ff000c21);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
-        iconsColor = Color(0xff646464);
+        iconsColor = Color(0xffC2C2C2);
         surface = Colors.white;
         onSurface = Colors.black;
         scaffold = Color(0xFFF5F8FE);
@@ -138,7 +138,7 @@ class AppColors {
         primaryColorDark = Color(0x0ff000c21);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
-        iconsColor = Color(0xff646464);
+        iconsColor = Color(0xffC2C2C2);
         surface = Colors.white;
         onSurface = Colors.black;
         scaffold = Color(0xFFF5F8FE);
@@ -165,7 +165,7 @@ class AppColors {
         primary = Color(0xFF0D83DD);
         onPrimary = Colors.white;
         primaryVariantLight = Color(0xFF0E8DEE);
-        iconsColor = Color(0xff646464);
+        iconsColor = Color(0xffC2C2C2);
         surface = Colors.white;
         onSurface = Colors.black;
         scaffold = Color(0xFFF5F8FE);

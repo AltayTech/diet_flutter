@@ -9,12 +9,14 @@ class Toolbar extends AppBar {
 
   Toolbar({required this.titleBar}) {
     color = AppColors.primary;
-    item = Text(
-      titleBar,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 13.sp,
+    item = Center(
+      child: Text(
+        titleBar,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 13.sp,
+        ),
       ),
     );
   }
