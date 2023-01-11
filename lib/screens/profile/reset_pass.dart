@@ -41,9 +41,8 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.redBar,
-        body: Stack(
-    children: [
+        backgroundColor: AppColors.primary,
+        body: Stack(children: [
           Positioned(
             top: 20.h,
             right: 0,
@@ -53,13 +52,14 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(35.0),
-                      topLeft: Radius.circular(35.0))),
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(35.0), topLeft: Radius.circular(35.0))),
               child: Column(
                 children: [
                   SizedBox(height: 8.h),
-                  Text(intl.changePassword,style: TextStyle(fontSize: 16.sp),),
+                  Text(
+                    intl.changePassword,
+                    style: TextStyle(fontSize: 16.sp),
+                  ),
                   SizedBox(height: 8.h),
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0, right: 30.0),
@@ -70,23 +70,18 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
                           child: TextField(
                             obscureText: !_obscureText1,
                             decoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: AppColors.penColor)),
+                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: AppColors.penColor),
+                                    borderSide: BorderSide(color: AppColors.penColor),
                                     borderRadius: BorderRadius.circular(15.0)),
                                 labelText: intl.enterNewPassword,
                                 // errorText: _validate ? intl.fillAllField : null,
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _obscureText1
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
+                                    _obscureText1 ? Icons.visibility : Icons.visibility_off,
                                     color: AppColors.penColor,
                                   ),
                                   onPressed: () {
@@ -95,8 +90,7 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
                                     });
                                   },
                                 ),
-                                labelStyle: TextStyle(
-                                    color: AppColors.penColor, fontSize: 14.sp)),
+                                labelStyle: TextStyle(color: AppColors.penColor, fontSize: 14.sp)),
                             onChanged: (txt) {
                               _password1 = txt;
                             },
@@ -108,23 +102,18 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
                           child: TextField(
                             obscureText: !_obscureText2,
                             decoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: AppColors.penColor)),
+                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.penColor)),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: AppColors.penColor),
+                                    borderSide: BorderSide(color: AppColors.penColor),
                                     borderRadius: BorderRadius.circular(15.0)),
                                 labelText: intl.repeatNewPassword,
                                 // errorText: _validate ? intl.fillAllField : null,
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _obscureText2
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
+                                    _obscureText2 ? Icons.visibility : Icons.visibility_off,
                                     color: AppColors.penColor,
                                   ),
                                   onPressed: () {
@@ -133,26 +122,20 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
                                     });
                                   },
                                 ),
-                                labelStyle: TextStyle(
-                                    color: AppColors.penColor, fontSize: 14.sp)),
+                                labelStyle: TextStyle(color: AppColors.penColor, fontSize: 14.sp)),
                             onChanged: (txt) {
                               _password2 = txt;
                             },
                           ),
                         ),
                         SizedBox(height: 20.0),
-                        button(AppColors.btnColor, intl.setNewPassword,
-                            Size(100.w, 8.h), () {
+                        button(AppColors.btnColor, intl.setNewPassword, Size(100.w, 8.h), () {
                           if (_password1 != _password2)
-                            Utils.getSnackbarMessage(
-                                context, intl.notEqualPassword);
+                            Utils.getSnackbarMessage(context, intl.notEqualPassword);
                           else if (_password1 == null || _password2 == null)
-                            Utils.getSnackbarMessage(
-                                context, intl.fillAllField);
-                          else if (_password1!.length < 4 ||
-                              _password1!.length > 4)
-                            Utils.getSnackbarMessage(
-                                context, intl.minimumPasswordLength);
+                            Utils.getSnackbarMessage(context, intl.fillAllField);
+                          else if (_password1!.length < 4 || _password1!.length > 4)
+                            Utils.getSnackbarMessage(context, intl.minimumPasswordLength);
                           else if (_password1 == _password2) {
                             Reset pass = Reset();
                             pass.password = _password1;
@@ -176,8 +159,7 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
               width: 30.w,
               height: 15.h,
               decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.white, width: 3, style: BorderStyle.solid),
+                border: Border.all(color: Colors.white, width: 3, style: BorderStyle.solid),
                 borderRadius: BorderRadius.circular(15.0),
                 boxShadow: [
                   BoxShadow(
@@ -193,6 +175,7 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
                 padding: const EdgeInsets.all(8.0),
                 child: SvgPicture.asset(
                   'assets/images/profile/pass_lock.svg',
+                  color: AppColors.primary,
                   // width: 12.w,
                   // height: 5.h
                 ),
@@ -203,15 +186,16 @@ class _ResetPasswordScreenState extends ResourcefulState<ResetPasswordProfile> {
               top: 10.h,
               right: 5.w,
               child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: Colors.white.withOpacity(0.2),
-                ),
-                child: Center(child: IconButton( icon: Icon(Icons.arrow_back_ios),
-                    alignment: Alignment.centerLeft,
-                    color: Colors.white,
-                    onPressed: () => VxNavigator.of(context).pop()))
-              ))
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: Colors.white.withOpacity(0.2),
+                  ),
+                  child: Center(
+                      child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios),
+                          alignment: Alignment.centerLeft,
+                          color: Colors.white,
+                          onPressed: () => VxNavigator.of(context).pop()))))
         ]),
       ),
     );

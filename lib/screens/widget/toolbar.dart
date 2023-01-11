@@ -9,14 +9,12 @@ class Toolbar extends AppBar {
 
   Toolbar({required this.titleBar}) {
     color = AppColors.primary;
-    item = Center(
-      child: Text(
-        titleBar,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 13.sp,
-        ),
+    item = Text(
+      titleBar,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 13.sp,
       ),
     );
   }
@@ -25,5 +23,9 @@ class Toolbar extends AppBar {
   // TODO: implement title
   Widget? get title => item;
 
+  @override
   Color? get backgroundColor => color;
+
+  @override
+  bool? get centerTitle => true;
 }

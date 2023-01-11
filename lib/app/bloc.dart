@@ -2,6 +2,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AppBloc {
@@ -17,6 +18,18 @@ class AppBloc {
 
   void changeTheme(ThemeAppColor themeAppColor){
     AppColors(themeAppColor: themeAppColor);
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: AppColors.primary,
+      // status bar color
+      statusBarBrightness: Brightness.dark,
+      //status bar brigtness
+      statusBarIconBrightness: Brightness.light,
+      //status barIcon Brightness
+      systemNavigationBarDividerColor: Colors.transparent,
+      //Navigation bar divider color
+      systemNavigationBarIconBrightness: Brightness.light, //navigation bar icon
+    ));
   }
 
   TextTheme buildTextTheme(Locale locale) {
