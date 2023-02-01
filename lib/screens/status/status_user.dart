@@ -81,7 +81,8 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                       padding: EdgeInsets.all(4.w),
                       child: Column(
                         children: [
-                          itemUi('', getDietTypeString(), intl.dietType),
+                          itemUi(
+                              '', bloc.visitItem?.dietTypeName?.persianName ?? '??', intl.dietType),
                           SizedBox(height: 1.h),
                           itemUi(
                               intl.old,
@@ -196,7 +197,7 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
   }
 
   String getDietTypeString() {
-    if(bloc.visitItem!=null) {
+    if (bloc.visitItem != null) {
       switch (bloc.visitItem?.dietType) {
         case RegimeAlias.Pregnancy:
           return intl.pregnancy;
@@ -221,7 +222,8 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
         default:
           return intl.none;
       }
-    }else return intl.none;
+    } else
+      return intl.none;
   }
 
   @override

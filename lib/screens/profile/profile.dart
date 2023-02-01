@@ -8,6 +8,7 @@ import 'package:behandam/screens/profile/toolbar_profile.dart';
 import 'package:behandam/screens/profile/tools_box.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
+import 'package:behandam/screens/widget/call_bax_profile.dart';
 import 'package:behandam/screens/widget/cross_item_profile.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -138,7 +139,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             textDirection: context.textDirectionOfLocale,
             children: <Widget>[
-              ToolsBox(),
+              CallBoxProfile(),
               Space(height: 3.h),
               Column(
                 children: <Widget>[
@@ -258,7 +259,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                   ],
                 ),
               ),
-              Space(height: 2.h),
+              Space(height: 6.h),
               SubmitButton(
                 onTap: () {
                   AppSharedPreferences.logout();

@@ -12,6 +12,9 @@ class VisitItem {
   @JsonKey(name: 'diet_type')
   RegimeAlias? dietType;
 
+  @JsonKey(name: 'diet_type_name')
+  RegimeTypeName? dietTypeName;
+
   @JsonKey(name: 'physical_info')
   PhysicalInfoData? physicalInfo;
 

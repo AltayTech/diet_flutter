@@ -78,8 +78,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                       child: Column(
                         children: [
                           InkWell(
-                              onTap: () => VxNavigator.of(context)
-                                  .push(Uri.parse(Routes.bodyState)),
+                              onTap: () => _launchURL('https://user.drkermanidiet.com/user/#/list/takhsisvazn'),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.all(Radius.circular(16)),
                                 child: ImageUtils.fromLocal(
@@ -90,8 +89,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                               )),
                           SizedBox(height: 2.h),
                           InkWell(
-                              onTap: () => VxNavigator.of(context)
-                                  .push(Uri.parse(Routes.psychologyIntro)),
+                              onTap: () => _launchURL('https://www.youtube.com/@drkermanidiet'),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.all(Radius.circular(16)),
                                 child: ImageUtils.fromLocal(
@@ -102,7 +100,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                               )),
                           SizedBox(height: 2.h),
                           InkWell(
-                              onTap: () => _launchURL('https://kermany.com'),
+                              onTap: () => _launchURL('https://user.drkermanidiet.com/user/#/list/takhsisvazn'),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.all(Radius.circular(16)),
                                 child: ImageUtils.fromLocal(
@@ -114,7 +112,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                           SizedBox(height: 2.h),
                           InkWell(
                               onTap: () => _launchURL(
-                                  'https://www.instagram.com/accounts/login/?next=/drkermany/'),
+                                  'https://user.drkermanidiet.com/user/#/list/practice'),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.all(Radius.circular(16)),
                                 child: ImageUtils.fromLocal(
@@ -124,6 +122,37 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                                     height: 15.h),
                               )),
                           SizedBox(height: 2.h),
+                          Row(children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap: (){
+                                  _launchURL(
+                                      'https://user.drkermanidiet.com/user/#/food');
+                                },
+                                child: ClipRRect(
+                                  borderRadius:BorderRadius.all( Radius.circular(12)),
+                                  child: Container(
+                                    height: 100,
+                                    color: Colors.deepOrange.shade500,
+                                    padding: EdgeInsets.all(8),
+                                    child: ImageUtils.fromLocal("assets/images/vitrin/food.svg"),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 16,),
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius:BorderRadius.all( Radius.circular(12)),
+                                child: Container(
+                                  color: Colors.red.shade300,
+                                  padding: EdgeInsets.all(8),
+                                  height: 100,
+                                  child: ImageUtils.fromLocal("assets/images/vitrin/calorie.svg"),
+                                ),
+                              ),
+                            ),
+                          ],)
                         ],
                       ),
                     ),

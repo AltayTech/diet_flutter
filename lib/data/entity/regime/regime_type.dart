@@ -33,10 +33,25 @@ class RegimeType {
 
   String get icon => Utils.getIcon(alias);
 
-  factory RegimeType.fromJson(Map<String, dynamic> json) =>
-      _$RegimeTypeFromJson(json);
+  factory RegimeType.fromJson(Map<String, dynamic> json) => _$RegimeTypeFromJson(json);
 
   Map<String, dynamic> toJson() => _$RegimeTypeToJson(this);
+}
+
+@JsonSerializable()
+class RegimeTypeName {
+  @JsonKey(name: "index")
+  int? index;
+  @JsonKey(name: "name")
+  String? name;
+  @JsonKey(name: "persian_name")
+  String? persianName;
+
+  RegimeTypeName();
+
+  factory RegimeTypeName.fromJson(Map<String, dynamic> json) => _$RegimeTypeNameFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RegimeTypeNameToJson(this);
 }
 
 enum RegimeAlias {

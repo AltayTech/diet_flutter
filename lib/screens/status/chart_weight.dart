@@ -64,7 +64,7 @@ class ChartWeightState extends ResourcefulState<ChartWeight> {
                 LineSeries<Visit, String>(
                     // Bind data source
                     dataSource: _bloc.visits,
-                    xValueMapper: (Visit v, _) => DateTimeUtils.gregorianToJalali(v.visitedAt)
+                    xValueMapper: (Visit v, _) => v.visitedAt
                         .substring(5, 10)
                         .replaceAll('-', '/'),
                     yValueMapper: (Visit v, _) => v.weight,

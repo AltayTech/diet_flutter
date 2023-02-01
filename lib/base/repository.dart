@@ -240,13 +240,13 @@ class _RepositoryImpl extends Repository {
 
   _RepositoryImpl() {
     _dio = Dio();
-    if (!kIsWeb) {
+/*    if (!kIsWeb) {
       _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
         idleTimeout: 15 * 1000,
         // Ignore bad certificate
         onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
       ));
-    }
+    }*/
 
     _dio.interceptors.add(ErrorHandlerInterceptor());
     _dio.interceptors.add(GlobalInterceptor());

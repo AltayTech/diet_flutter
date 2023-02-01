@@ -8,6 +8,9 @@ part of 'visit_item.dart';
 
 VisitItem _$VisitItemFromJson(Map<String, dynamic> json) => VisitItem()
   ..dietType = $enumDecodeNullable(_$RegimeAliasEnumMap, json['diet_type'])
+  ..dietTypeName = json['diet_type_name'] == null
+      ? null
+      : RegimeTypeName.fromJson(json['diet_type_name'] as Map<String, dynamic>)
   ..physicalInfo = json['physical_info'] == null
       ? null
       : PhysicalInfoData.fromJson(json['physical_info'] as Map<String, dynamic>)
@@ -19,6 +22,7 @@ VisitItem _$VisitItemFromJson(Map<String, dynamic> json) => VisitItem()
 
 Map<String, dynamic> _$VisitItemToJson(VisitItem instance) => <String, dynamic>{
       'diet_type': _$RegimeAliasEnumMap[instance.dietType],
+      'diet_type_name': instance.dietTypeName,
       'physical_info': instance.physicalInfo,
       'visits': instance.visits,
       'weight_difference': instance.weightDifference,
