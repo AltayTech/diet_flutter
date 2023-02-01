@@ -14,6 +14,7 @@ import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -243,7 +244,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
               child: Column(
                 children: [
                   Text(
-                    weekDays[index]!.jalaliDate.formatter.wN,
+                    DateTimeUtils.weekDayArabicName(weekDays[index]!.jalaliDate.formatter.wN),
                     textAlign: TextAlign.center,
                     style: typography.caption?.apply(
                       color: AppColors.surface,

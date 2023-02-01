@@ -9,6 +9,7 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/dialog_close.dart';
 import 'package:flutter/material.dart';
@@ -146,16 +147,16 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
           child: Column(
             children: [
               Text(
-                jalali.month == Jalali.now().month
-                    ? jalali.formatter.wN
-                    : jalali.withDay(1).formatter.wN,
+                jalali.toGregorian().month == Jalali.now().toGregorian().month
+                    ? DateTimeUtils.weekDayArabicName(jalali.toGregorian().formatter.wN)
+                    : DateTimeUtils.weekDayArabicName(jalali.toGregorian().withDay(1).formatter.wN),
                 style: typography.caption,
                 textAlign: TextAlign.center,
               ),
               Text(
-                jalali.month == Jalali.now().month
-                    ? jalali.day.toString()
-                    : jalali.withDay(1).day.toString(),
+                jalali.toGregorian().month == Jalali.now().toGregorian().month
+                    ? jalali.toGregorian().day.toString()
+                    : jalali.toGregorian().withDay(1).day.toString(),
                 style: typography.caption,
                 textAlign: TextAlign.center,
               ),
@@ -165,7 +166,7 @@ class _CalendarPageState extends ResourcefulState<CalendarPage> {
         Space(width: 2.w),
         Expanded(
           child: Text(
-            '${jalali.formatter.mN} ${jalali.formatter.yyyy}',
+            '${jalali.toGregorian().formatter.mN} ${jalali.toGregorian().formatter.yyyy}',
             style: typography.caption,
             textAlign: TextAlign.start,
           ),

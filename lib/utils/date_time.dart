@@ -89,6 +89,28 @@ abstract class DateTimeUtils {
     int second=time%60;
     return '$min:$second';
   }
+
+  static String weekDayArabicName(String name) {
+    switch (name) {
+      case 'Saturday':
+        return 'سبت';
+      case 'Sunday':
+        return 'أحد';
+      case 'Monday':
+        return 'أثنين';
+      case 'Tuesday':
+        return 'ثلاثاء';
+      case 'Wednesday':
+        return 'أربعاء';
+      case 'Tuesday':
+        return 'خميس';
+      case 'Friday':
+        return 'جمعه';
+      default:
+        return 'سبت';
+    }
+  }
+
 }
 
 enum Meal {

@@ -4,6 +4,7 @@ class WeekDay{
   WeekDay({required this.gregorianDate, required this.jalaliDate, this.isSelected});
 
   final DateTime gregorianDate;
-  final Jalali jalaliDate;
+  final Gregorian jalaliDate;
+
   bool? isSelected;
 }

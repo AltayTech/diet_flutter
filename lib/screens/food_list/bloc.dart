@@ -108,7 +108,7 @@ class FoodListBloc {
       gregorianDate = DateTime.parse(_foodList.value!.menu!.startedAt!).toUtc().toLocal();
     else
       gregorianDate = DateTime.now().toUtc().toLocal();
-    Jalali jalaliDate = Jalali.fromDateTime(gregorianDate);
+    Gregorian jalaliDate = Gregorian.fromDateTime(gregorianDate);
     List<WeekDay> data = [];
     debugPrint(
         'date2 $gregorianDate / $jalaliDate / ${WeekDay(gregorianDate: gregorianDate, jalaliDate: jalaliDate)}');
@@ -120,7 +120,7 @@ class FoodListBloc {
     for (int i = 1; i < 7; i++) {
       data.add(WeekDay(
           gregorianDate: gregorianDate.add(Duration(days: i)),
-          jalaliDate: gregorianDate.add(Duration(days: i)).toJalali(),
+          jalaliDate: gregorianDate.add(Duration(days: i)).toGregorian(),
           isSelected:
               gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
       debugPrint(

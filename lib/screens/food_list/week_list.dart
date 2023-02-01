@@ -6,6 +6,7 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 
@@ -84,7 +85,7 @@ class _WeekListState extends ResourcefulState<WeekList> {
               child: Column(
                 children: [
                   Text(
-                    weekDayArabicName(weekDays[index]!.jalaliDate.formatter.wN),
+                    DateTimeUtils.weekDayArabicName(weekDays[index]!.jalaliDate.formatter.wN),
                     textAlign: TextAlign.center,
                     style: typography.caption?.apply(
                       color: AppColors.surface,
@@ -158,26 +159,7 @@ class _WeekListState extends ResourcefulState<WeekList> {
     );
   }
 
-  String weekDayArabicName(String name) {
-    switch (name) {
-      case 'شنبه':
-        return 'السبت';
-      case 'یک شنبه':
-        return 'الأحد';
-      case 'دو شنبه':
-        return 'الأثنين';
-      case 'سه شنبه':
-        return 'الثلاثاء';
-        case 'چهار شنبه':
-        return 'الأربعاء';
-        case 'پنج شنبه':
-        return 'الخميس';
-        case 'جمعه':
-        return 'الجمعه';
-      default:
-        return 'السبت';
-    }
-  }
+
 
   bool isAfterToday(WeekDay day) {
     return day.gregorianDate.isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));

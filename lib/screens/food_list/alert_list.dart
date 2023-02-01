@@ -10,6 +10,7 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -213,7 +214,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
       text = intl.todayAdvicesForYou;
     } else {
       text = intl.viewingMenu(
-          '${weekday.jalaliDate.formatter.wN} ${weekday.jalaliDate.formatter.d} ${weekday.jalaliDate.formatter.mN}');
+          '${DateTimeUtils.weekDayArabicName(weekday.jalaliDate.formatter.wN)} ${weekday.jalaliDate.formatter.d} ${weekday.jalaliDate.formatter.mN}');
     }
     return text;
   }
