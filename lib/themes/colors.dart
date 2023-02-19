@@ -23,6 +23,8 @@ class AppColors {
   static late Color btnColor;
   static late Color onScaffold;
   static late Color labelColor;
+  static late Color labelColorFood;
+  static late Color backLabelColorFood;
   static late Color labelTextColor;
   static late Color labelTab;
   static late Color warning = Colors.orange.shade100;
@@ -89,6 +91,8 @@ class AppColors {
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xff03A9F4);
         labelColor = Color(0xf48e8e8e);
+        backLabelColorFood = Color.fromARGB(19,48,159,140);
+        labelColorFood = Color(0xff309F8C);
         labelTab = Color(0xffffffff);
         statusTicketClose = Colors.grey[700]!;
         statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
@@ -128,7 +132,8 @@ class AppColors {
         background = Color.fromARGB(255, 245, 245, 245);
         colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
         colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
-        labelTextColor = Color(0xff7f7f7f);
+        backLabelColorFood = Color.fromARGB(19,48,159,140);
+        labelColorFood = Color(0xff309F8C);
         colorCardGray = Color.fromRGBO(245, 245, 245, 1);
         colorTextApp = Color.fromRGBO(147, 147, 147, 1);
         break;
@@ -157,7 +162,8 @@ class AppColors {
         background = Color.fromARGB(255, 245, 245, 245);
         colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
         colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
-        labelTextColor = Color(0xff7f7f7f);
+        backLabelColorFood = Color.fromARGB(19,48,159,140);
+        labelColorFood = Color(0xff309F8C);
         colorCardGray = Color.fromRGBO(245, 245, 245, 1);
         colorTextApp = Color.fromRGBO(147, 147, 147, 1);
         break;
@@ -184,6 +190,81 @@ class AppColors {
         break;
     }
   }
+
+  static var mealColors = [
+    {
+      'color': Color.fromRGBO(255, 125, 112, 1),
+      'bgColor': Color.fromRGBO(254, 223, 214, 1),
+    },
+    {
+      'color': Color.fromRGBO(141, 79, 255, 1),
+      'bgColor': Color.fromRGBO(233, 221, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+    {
+      'color': Color.fromRGBO(66, 192, 230, 1),
+      'bgColor': Color.fromRGBO(224, 248, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(220, 127, 148, 1),
+      'bgColor': Color.fromRGBO(240, 225, 228, 1),
+    },
+    {
+      'color': Color.fromRGBO(255, 125, 112, 1),
+      'bgColor': Color.fromRGBO(254, 223, 214, 1),
+    },
+    {
+      'color': Color.fromRGBO(141, 79, 255, 1),
+      'bgColor': Color.fromRGBO(233, 221, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+    {
+      'color': Color.fromRGBO(141, 79, 255, 1),
+      'bgColor': Color.fromRGBO(233, 221, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+    {
+      'color': Color.fromRGBO(66, 192, 230, 1),
+      'bgColor': Color.fromRGBO(224, 248, 255, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+    {
+      'color': Color.fromRGBO(67, 210, 208, 1),
+      'bgColor': Color.fromRGBO(224, 246, 245, 1),
+    },
+    {
+      'color': Color.fromRGBO(228, 125, 155, 1),
+      'bgColor': Color.fromRGBO(255, 231, 238, 1),
+    },
+  ];
 }
 
 abstract class AppMaterialColors {

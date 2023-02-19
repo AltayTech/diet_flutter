@@ -59,6 +59,9 @@ class Meals {
 
   ListFood? newFood;
 
+  var color;
+  var bgColor;
+
   factory Meals.fromJson(Map<String, dynamic> json) => _$MealsFromJson(json);
 }
 

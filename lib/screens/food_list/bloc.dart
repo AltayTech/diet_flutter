@@ -18,19 +18,21 @@ import 'week_day.dart';
 
 class FoodListBloc {
   FoodListBloc(bool fillFood) {
-    if (_date.valueOrNull == null && MemoryApp.selectedDate == null)
+    if (_date.valueOrNull == null && MemoryApp.selectedDate == null) {
       _date.value = DateTime.now().toString().substring(0, 10);
-    else if (_date.valueOrNull == null && MemoryApp.selectedDate != null)
+    } else if (_date.valueOrNull == null && MemoryApp.selectedDate != null) {
       _date.value = MemoryApp.selectedDate!;
+    }
     debugPrint('bloc foodlist ${_date.value} / ${MemoryApp.selectedDate}');
     _loadContent(invalidate: true, fillFood: fillFood);
   }
 
   FoodListBloc.fillWeek() {
-    if (_date.valueOrNull == null && MemoryApp.selectedDate == null)
+    if (_date.valueOrNull == null && MemoryApp.selectedDate == null) {
       _date.value = DateTime.now().toString().substring(0, 10);
-    else if (_date.valueOrNull == null && MemoryApp.selectedDate != null)
+    } else if (_date.valueOrNull == null && MemoryApp.selectedDate != null) {
       _date.value = MemoryApp.selectedDate!;
+    }
     fillWeekDays();
   }
 
@@ -72,7 +74,13 @@ class FoodListBloc {
       if (value.data?.menu != null) {
         debugPrint('food list ${value.data?.menu?.title} / $fillFood');
         _foodList.value = value.data;
-        _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
+        if (_foodList.value?.meals != null) {
+          _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
+          for (int i = 0; i < _foodList.value!.meals!.length; i++) {
+            _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
+            _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
+          }
+        }
         setTheme();
         fillWeekDays();
       } else {
@@ -94,20 +102,22 @@ class FoodListBloc {
   void setTheme() {
     debugPrint(
         'theme ${_foodList.value?.isFasting} / ${_foodList.value?.isFasting == boolean.True}');
-    if (_foodList.value?.isFasting == boolean.True)
+    if (_foodList.value?.isFasting == boolean.True) {
       _appBloc.changeTheme(ThemeAppColor.DARK);
-    else if(_foodList.value?.dietType?.alias == RegimeAlias.Pregnancy)
+    } else if(_foodList.value?.dietType?.alias == RegimeAlias.Pregnancy) {
       _appBloc.changeTheme(ThemeAppColor.PURPLE);
-    else
+    } else {
       _appBloc.changeTheme(ThemeAppColor.DEFAULT);
+    }
   }
 
   void fillWeekDays() {
     DateTime gregorianDate;
-    if (_foodList.hasValue)
+    if (_foodList.hasValue) {
       gregorianDate = DateTime.parse(_foodList.value!.menu!.startedAt!).toUtc().toLocal();
-    else
+    } else {
       gregorianDate = DateTime.now().toUtc().toLocal();
+    }
     Gregorian jalaliDate = Gregorian.fromDateTime(gregorianDate);
     List<WeekDay> data = [];
     debugPrint(
@@ -144,8 +154,9 @@ class FoodListBloc {
           element.isSelected = true;
           _selectedWeekDay.value = element;
           debugPrint('change date 2 ${_selectedWeekDay.value.isSelected} / ${element.isSelected}');
-        } else
+        } else {
           element.isSelected = false;
+        }
       });
       _foodList.value = null;
       _previousWeekDay = _selectedWeekDay.value;
@@ -161,6 +172,11 @@ class FoodListBloc {
       debugPrint('food list ${value.data}');
       _foodList.value = value.data;
       _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
+      if (_foodList.value?.meals != null)
+        for (int i = 0; i < _foodList.value!.meals!.length; i++) {
+          _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
+          _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
+        }
       setTheme();
     }).whenComplete(() => _loadingContent.value = false);
   }

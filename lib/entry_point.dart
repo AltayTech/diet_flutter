@@ -28,6 +28,8 @@ Future<void> entryPoint() async {
    // _handleCaughtErrors();
     runApp(App());
   }, (Object error, StackTrace stack)async {
+    print('error StackTrace => ${stack.toString()}');
+    print('error error => ${error.toString()}');
     if (error is DioError || error is HttpException) {
       /// this kind of error is already handled in DioErrorHandlerInterceptor
       return;

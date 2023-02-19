@@ -7,11 +7,11 @@ Future<void> main() async {
     color: Colors.green,
     name: 'Preview',
     variables: {
-      'baseUrl': 'https://behandam.kermany.com/behandam-diet/api',
-      "baseUrlFile": "https://behandam.kermany.com/helia-service",
-      "baseUrlFileShop": "https://behandam.kermany.com/shop-service",
-      "iappsPackage": "com.kermany.behandam-iapps",
-      "sibappPackage": "com.kermany.behandam-sibapp",
+      'baseUrl': 'https://user.drkermanidiet.com/behandam-diet/api',
+      "baseUrlFile": "https://user.drkermanidiet.com/behandam-diet/api/helia-service",
+      "baseUrlFileShop": "https://user.drkermanidiet.com/shop-service",
+      "iappsPackage": "com.kermanydiet",
+      "sibappPackage": "com.kermanydiet",
       'isProduction': false
     },
   );

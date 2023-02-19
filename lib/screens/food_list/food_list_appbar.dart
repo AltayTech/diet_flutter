@@ -1,24 +1,18 @@
 import 'package:behandam/base/errors.dart';
-import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/extensions/iterable.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/provider.dart';
-import 'package:behandam/screens/profile/profile_bloc.dart';
-import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/food_list_curve.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
-import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/date_time.dart';
-import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -58,7 +52,11 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
       child: ClipPath(
         clipper: FoodListCurve(),
         child: Container(
-          color: AppColors.primary,
+          decoration: AppDecorations.boxNoRadius.copyWith(
+              gradient: LinearGradient(
+                  colors: [AppColors.primary,AppColors.primary, AppColors.primary.withOpacity(0.2)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter)),
           padding: EdgeInsets.symmetric(vertical: 2.h),
           child: Column(
             children: [
@@ -67,11 +65,6 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                   padding: EdgeInsets.symmetric(horizontal: 3.w),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.dark_mode,
-                        size: 6.w,
-                        color: Colors.transparent,
-                      ),
                       Expanded(
                         child: StreamBuilder(
                           stream: bloc.foodList,
@@ -84,7 +77,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                           ),
                         ),
                       ),
-                     /* InkWell(
+                      /* InkWell(
                         onTap: () => DialogUtils.showDialogPage(
                             context: context,
                             child: Center(
@@ -265,9 +258,9 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                             border: isAfterToday(weekDays[index]!)
                                 ? null
                                 : Border.all(
-                                    color: AppColors.surface,
-                                    width: 0.4,
-                                  ),
+                              color: AppColors.surface,
+                              width: 0.4,
+                            ),
                             color: isEqualToSelectedDay(weekDays, index, snapshot.requireData)
                                 ? AppColors.surface
                                 : null,
@@ -295,7 +288,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                             decoration: AppDecorations.circle.copyWith(
                               color: isEqualToSelectedDay(weekDays, index, snapshot.requireData)
                                   ? AppColors.surface
-                                  : AppColors.primary,
+                                  : AppColors.primary.withOpacity(0.2),
                             ),
                             padding: EdgeInsets.all(1.w),
                             child: Icon(

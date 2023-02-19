@@ -93,13 +93,13 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                           decoration: AppDecorations.circle.copyWith(
                             color: isCurrentMeal && isToday(snapshot.data)
                                 ? AppColors.onPrimary
-                                : AppColors.primary,
+                                : meal.bgColor,
                           ),
                           child: ImageUtils.fromLocal(
                             'assets/images/foodlist/${meal.icon}.svg',
                             color: isCurrentMeal && isToday(snapshot.data)
-                                ? AppColors.primary
-                                : AppColors.onPrimary,
+                                ? meal.color
+                                : meal.color,
                             padding: EdgeInsets.all(2.w)
                           ),
                         ),
@@ -240,36 +240,38 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
               final widget;
               if (i % 2 == 0) {
                 debugPrint('even item ${!meal.food!.freeFood.isNullOrEmpty} / $i');
-                if (!meal.food!.freeFood.isNullOrEmpty && i == items.length - 1)
+                if (!meal.food!.freeFood.isNullOrEmpty && i == items.length - 1) {
                   widget = Chip(
                     backgroundColor: isCurrentMeal
                         ? AppColors.primary.withOpacity(0.2)
-                        : AppColors.labelColor.withOpacity(0.2),
+                        : AppColors.backLabelColorFood,
                     label: FittedBox(
                       child: Text(
                         '${meal.food!.freeFood}',
-                        style: typography.caption,
+                        style: typography.caption!.copyWith(color: AppColors.labelColorFood),
                         textAlign: TextAlign.center,
+
                         // softWrap: true,
                         overflow: TextOverflow.visible,
                       ),
                     ),
                   );
-                else
+                } else {
                   widget = Chip(
                     backgroundColor: isCurrentMeal
                         ? AppColors.primary.withOpacity(0.2)
-                        : AppColors.labelColor.withOpacity(0.2),
+                        : AppColors.backLabelColorFood.withOpacity(0.2),
                     label: FittedBox(
                       child: Text(
                         '${meal.food!.foodItems![index].amount} ${meal.food!.foodItems![index].title}',
-                        style: typography.caption,
+                        style: typography.caption!.copyWith(color: AppColors.labelColorFood),
                         textAlign: TextAlign.center,
                         // softWrap: true,
                         overflow: TextOverflow.visible,
                       ),
                     ),
                   );
+                }
               } else {
                 widget = Icon(
                   Icons.add,
