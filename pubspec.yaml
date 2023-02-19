@@ -138,10 +138,10 @@ flutter:
   fonts:
     - family: Iransans
       fonts:
-        - asset: fonts/iransans.ttf
+        - asset: fonts/Roboto_05_Medium.ttf
     - family: Iransans-Bold
       fonts:
-        - asset: fonts/iransans_bold.ttf
+        - asset: fonts/Roboto_06_Bold.ttf
     - family: Iransans-Ultralight
       fonts:
-        - asset: fonts/iransans_ultralight.ttf
+        - asset: fonts/Roboto_04_Regular.ttf

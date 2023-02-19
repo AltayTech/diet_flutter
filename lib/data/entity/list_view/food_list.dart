@@ -25,45 +25,34 @@ class FoodListData {
 
 @JsonSerializable(createToJson: false)
 class Meals {
-  Meals(
-    this.id,
-    this.title,
-    this.mealTypeId,
-    this.icon,
-    this.isForFasting,
-    this.order,
-    this.startAt,
-    this.endAt,
-    this.description,
-    this.food,
-  );
+  Meals();
 
   @JsonKey(name: 'id')
-  final int id;
+  late  int id;
 
   @JsonKey(name: 'title')
-  final String title;
+  late String title;
 
   @JsonKey(name: 'meal_type_id')
-  final int mealTypeId;
+  late int mealTypeId;
 
   @JsonKey(name: 'icon')
-  final String? icon;
+   String? icon;
 
   @JsonKey(name: 'is_for_fasting')
-  final boolean isForFasting;
+  late boolean isForFasting;
 
   @JsonKey(name: 'order')
-  final int order;
+  late int order;
 
   @JsonKey(name: 'start_at')
-  final String? startAt;
+   String? startAt;
 
   @JsonKey(name: 'end_at')
-  final String? endAt;
+   String? endAt;
 
   @JsonKey(name: 'description')
-  final String? description;
+   String? description;
 
   @JsonKey(name: 'food')
   Food? food;
@@ -126,22 +115,15 @@ class Menu {
   @JsonKey(name: 'expired_at')
   final String? expiredAt;
 
-  @JsonKey(name: 'foods')
-  List<Food>? foods;
+/*  @JsonKey(name: 'foods')
+  List<Food>? foods;*/
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }
 
 @JsonSerializable()
 class Food {
-  Food(
-    this.id,
-    this.title,
-    this.description,
-    this.freeFood,
-    this.freeFoodsItems,
-    this.foodItems,
-  );
+  Food();
 
   @JsonKey(name: 'id')
   int? id;
@@ -150,16 +132,16 @@ class Food {
   String? title;
 
   @JsonKey(name: 'description')
-  final String? description;
+   String? description;
 
   @JsonKey(name: 'free_food')
-  final String? freeFood;
+   String? freeFood;
 
   @JsonKey(name: 'free_foods_items')
-  final List<FoodItem>? freeFoodsItems;
+   List<FoodItem>? freeFoodsItems;
 
   @JsonKey(name: 'food_items')
-  final List<FoodItem>? foodItems;
+   List<FoodItem>? foodItems;
 
   @JsonKey(name: 'meal_id')
   int? mealId;
@@ -316,7 +298,7 @@ class FoodItem {
     // this.id,
     this.title,
     this.order,
-    this.amount,
+    this.amount
     // this.fats,
     // this.proteins,
     // this.pivot,

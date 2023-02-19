@@ -23,22 +23,22 @@ const _$booleanEnumMap = {
   boolean.True: 1,
 };
 
-Meals _$MealsFromJson(Map<String, dynamic> json) => Meals(
-      json['id'] as int,
-      json['title'] as String,
-      json['meal_type_id'] as int,
-      json['icon'] as String?,
-      $enumDecode(_$booleanEnumMap, json['is_for_fasting']),
-      json['order'] as int,
-      json['start_at'] as String?,
-      json['end_at'] as String?,
-      json['description'] as String?,
-      json['food'] == null
-          ? null
-          : Food.fromJson(json['food'] as Map<String, dynamic>),
-    )..newFood = json['newFood'] == null
-        ? null
-        : ListFood.fromJson(json['newFood'] as Map<String, dynamic>);
+Meals _$MealsFromJson(Map<String, dynamic> json) => Meals()
+  ..id = json['id'] as int
+  ..title = json['title'] as String
+  ..mealTypeId = json['meal_type_id'] as int
+  ..icon = json['icon'] as String?
+  ..isForFasting = $enumDecode(_$booleanEnumMap, json['is_for_fasting'])
+  ..order = json['order'] as int
+  ..startAt = json['start_at'] as String?
+  ..endAt = json['end_at'] as String?
+  ..description = json['description'] as String?
+  ..food = json['food'] == null
+      ? null
+      : Food.fromJson(json['food'] as Map<String, dynamic>)
+  ..newFood = json['newFood'] == null
+      ? null
+      : ListFood.fromJson(json['newFood'] as Map<String, dynamic>);
 
 Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['id'] as int,
@@ -49,22 +49,20 @@ Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['menu_term_id'] as int?,
       json['started_at'] as String?,
       json['expired_at'] as String?,
-    )..foods = (json['foods'] as List<dynamic>?)
-        ?.map((e) => Food.fromJson(e as Map<String, dynamic>))
-        .toList();
+    );
 
-Food _$FoodFromJson(Map<String, dynamic> json) => Food(
-      json['id'] as int?,
-      json['title'] as String?,
-      json['description'] as String?,
-      json['free_food'] as String?,
-      (json['free_foods_items'] as List<dynamic>?)
-          ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      (json['food_items'] as List<dynamic>?)
-          ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    )..mealId = json['meal_id'] as int?;
+Food _$FoodFromJson(Map<String, dynamic> json) => Food()
+  ..id = json['id'] as int?
+  ..title = json['title'] as String?
+  ..description = json['description'] as String?
+  ..freeFood = json['free_food'] as String?
+  ..freeFoodsItems = (json['free_foods_items'] as List<dynamic>?)
+      ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..foodItems = (json['food_items'] as List<dynamic>?)
+      ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..mealId = json['meal_id'] as int?;
 
 Map<String, dynamic> _$FoodToJson(Food instance) => <String, dynamic>{
       'id': instance.id,

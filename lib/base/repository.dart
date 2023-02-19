@@ -240,7 +240,7 @@ class _RepositoryImpl extends Repository {
 
   _RepositoryImpl() {
     _dio = Dio();
-/*    if (!kIsWeb) {
+   /* if (!kIsWeb) {
       _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
         idleTimeout: 15 * 1000,
         // Ignore bad certificate

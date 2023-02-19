@@ -170,7 +170,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                     },
                     stream: profileBloc.showRefund,
                   ),
-                  StreamBuilder(
+                /*  StreamBuilder(
                     builder: (context, snapshot) {
                       if (snapshot.hasData && snapshot.data == true)
                         return Space(height: 2.h);
@@ -191,7 +191,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                         return Container();
                     },
                     stream: profileBloc.showPdf,
-                  ),
+                  ),*/
                 ],
               ),
               Space(height: 2.h),
@@ -219,7 +219,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                         text: intl.contactMe,
                         space: false,
                         url:
-                            'http://wa.me/+201278839008',
+                            'https://drkermanidiet.com/vip/',
                         context: context,
                       ),
                       flex: 1,
@@ -236,7 +236,7 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                         space: false,
                         context: context,
                         url:
-                            'https://www.instagram.com/drkermanidiet',
+                            'https://drkermanidiet.com/%d9%85%d9%86-%d9%86%d8%ad%d9%86%d8%9f/',
                       ),
                       flex: 1,
                     ),
@@ -273,36 +273,6 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
         ),
         scrollDirection: Axis.vertical,
       ),
-    );
-  }
-
-  Widget fitaminBanner() {
-    return Column(
-      children: [
-        if (profileBloc.userInfo != null &&
-            profileBloc.userInfo.hasFitaminService != null &&
-            profileBloc.userInfo.hasFitaminService!)
-          Container(
-            width: 70.w,
-            child: GestureDetector(
-              onTap: () {
-                DialogUtils.showDialogProgress(context: context);
-                profileBloc.checkFitamin();
-              },
-              child: card(
-                  'assets/images/profile/box_blue_bg.svg',
-                  'assets/images/profile/fitamin.svg',
-                  intl.mySportProgram,
-                  Color(0xff66D4C9),
-                  Color.fromARGB(255, 243, 233, 248),
-                  context.textDirectionOfLocale),
-            ),
-          ),
-        if (profileBloc.userInfo != null &&
-            (profileBloc.userInfo.hasFitaminService != null &&
-                profileBloc.userInfo.hasFitaminService!))
-          Space(height: 3.h),
-      ],
     );
   }
 

@@ -58,7 +58,7 @@
       }
     }
   },
-  "showAdvices": "عرض التوصيات",
+  "showAdvices": "عرض الملاحظات",
   "goToToday": "اذهب الى اليوم",
   "selectAllFoodYourself": "هل تريد أن تختار بنفسك جميع أطباق هذا اليوم؟",
   "yesGoToSelectFoodPage": "نعم ، انتقل إلى صفحة اختيار الطعام",
@@ -134,7 +134,7 @@
   "saveDailyMenu": "احفظ وجبات القائمة اليومية",
   "and": "و",
   "selectFoodForAllMeals": "اختر الطعام لجميع الوجبات",
-  "timeOfTheMeal": "الوقت المناسب لتناول هذه الوجبة هو من {start} إلى {end} ساعة.",
+  "timeOfTheMeal": "أفضل وقت لتناول هذه الوجبة من الساعة {start} حتى الساعة {end} .",
   "@timeOfTheMeal": {
     "placeholders": {
       "start": {
@@ -313,7 +313,7 @@
   "sickness": "المضاعفات أو المرض",
   "birthdateIsAMust": "مطلوب تاريخ الميلاد",
   "advices": "التوصيات",
-  "beAdvisedTo": "من المستحسن:",
+  "beAdvisedTo": "يُنصح:",
   "forSomethingBeAdvisedTo": "بالنسبة إلى \"{المرض} \" ، يوصى :",
   "@forSomethingBeAdvisedTo": {
     "placeholders": {
@@ -589,7 +589,7 @@
   "close": "إغلاق",
   "newMessage": "رسالة جديدة",
   "messageNotFound": "لا توجد رسائل للعرض",
-  "supporter": "أخصائيك هي",
+  "supporter": "أخصائيتك الخاصة",
   "callWithSupport": "تواصل بأخصائيك من هنا",
   "magazine": "موقع د. كرماني",
   "understand": "فهمت"

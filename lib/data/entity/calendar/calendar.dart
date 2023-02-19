@@ -20,23 +20,14 @@ class Term {
     this.userId,
     this.dietTypeId,
     this.packageId,
-    this.paymentId,
-    this.dietHistoryId,
-    this.dietGoalId,
-    this.fileNumber,
-    this.callNum,
     this.startedAt,
     this.expiredAt,
     this.extraDays,
     this.isStopped,
     this.isActive,
     this.remainingVisits,
-    this.originId,
     this.refundedAt,
     this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
-    this.isCallEnabled,
     this.visits,
     this.menus,
   );
@@ -53,20 +44,7 @@ class Term {
   @JsonKey(name: 'package_id')
   final int packageId;
 
-  @JsonKey(name: 'payment_id')
-  final int paymentId;
 
-  @JsonKey(name: 'diet_history_id')
-  final int? dietHistoryId;
-
-  @JsonKey(name: 'diet_goal_id')
-  final int? dietGoalId;
-
-  @JsonKey(name: 'file_number')
-  final int fileNumber;
-
-  @JsonKey(name: 'call_num')
-  final int callNum;
 
   @JsonKey(name: 'started_at')
   final String startedAt;
@@ -86,23 +64,12 @@ class Term {
   @JsonKey(name: 'remaining_visits')
   final int remainingVisits;
 
-  @JsonKey(name: 'origin_id')
-  final int originId;
-
   @JsonKey(name: 'refunded_at')
   final String? refundedAt;
 
   @JsonKey(name: 'created_at')
   final String createdAt;
 
-  @JsonKey(name: 'updated_at')
-  final String updatedAt;
-
-  @JsonKey(name: 'deleted_at')
-  final String? deletedAt;
-
-  @JsonKey(name: 'is_call_enabled')
-  final bool isCallEnabled;
 
   @JsonKey(name: 'visits')
   List<Visit>? visits;
@@ -117,38 +84,13 @@ class Term {
 class Visit {
   Visit(
     this.id,
-    this.termId,
-    this.weight,
-    this.targetWeight,
-    this.wrist,
-    this.height,
-    this.pregnancyWeekNumber,
     this.visitedAt,
     this.expiredAt,
-    this.isActive,
-    this.visitDays,
   );
 
   @JsonKey(name: 'id')
   final int id;
 
-  @JsonKey(name: 'term_id')
-  final int termId;
-
-  @JsonKey(name: 'weight')
-  final double weight;
-
-  @JsonKey(name: 'target_weight')
-  final double targetWeight;
-
-  @JsonKey(name: 'height')
-  final int height;
-
-  @JsonKey(name: 'wrist')
-  final int wrist;
-
-  @JsonKey(name: 'pregnancy_week_number')
-  final int? pregnancyWeekNumber;
 
   @JsonKey(name: 'visited_at')
   final String visitedAt;
@@ -156,11 +98,6 @@ class Visit {
   @JsonKey(name: 'expired_at')
   final String expiredAt;
 
-  @JsonKey(name: 'is_active')
-  final int isActive;
-
-  @JsonKey(name: 'visit_days')
-  final int visitDays;
 
   factory Visit.fromJson(Map<String, dynamic> json) => _$VisitFromJson(json);
 }
@@ -170,13 +107,11 @@ class Menu {
   Menu(
     this.id,
     this.menuId,
-    this.termId,
     this.fromDay,
     this.toDay,
     this.startedAt,
     this.expiredAt,
-    this.menuDays,
-    this.menuTitle,
+    this.menuDays
   );
 
   @JsonKey(name: 'id')
@@ -184,9 +119,6 @@ class Menu {
 
   @JsonKey(name: 'menu_id')
   final int menuId;
-
-  @JsonKey(name: 'term_id')
-  final int termId;
 
   @JsonKey(name: 'from_day')
   final int fromDay;
@@ -202,9 +134,6 @@ class Menu {
 
   @JsonKey(name: 'menu_days')
   final int menuDays;
-
-  @JsonKey(name: 'menu_title')
-  final String menuTitle;
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }

@@ -84,7 +84,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                           ),
                         ),
                       ),
-                      InkWell(
+                     /* InkWell(
                         onTap: () => DialogUtils.showDialogPage(
                             context: context,
                             child: Center(
@@ -142,7 +142,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
                             )),
                         child: ImageUtils.fromLocal('assets/images/foodlist/share/pdf.svg',
                             width: 2.w, height: 4.h),
-                      )
+                      )*/
                     ],
                   ),
                 ),

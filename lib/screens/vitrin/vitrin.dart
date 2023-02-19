@@ -122,7 +122,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                                     height: 15.h),
                               )),
                           SizedBox(height: 2.h),
-                          Row(children: [
+                       /*   Row(children: [
                             Expanded(
                               child: InkWell(
                                 onTap: (){
@@ -152,7 +152,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                                 ),
                               ),
                             ),
-                          ],)
+                          ],)*/
                         ],
                       ),
                     ),

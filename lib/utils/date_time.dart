@@ -102,7 +102,7 @@ abstract class DateTimeUtils {
         return 'ثلاثاء';
       case 'Wednesday':
         return 'أربعاء';
-      case 'Tuesday':
+      case 'Thursday':
         return 'خميس';
       case 'Friday':
         return 'جمعه';
