@@ -1,16 +1,18 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
-import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/custom_button.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
+import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 import 'authentication_bloc.dart';
@@ -22,19 +24,29 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends ResourcefulState<AuthScreen> {
   final _text = TextEditingController();
+  final _textSearchCountryCode = TextEditingController();
+  final _textCountryCode = TextEditingController();
   String dropdownValue = 'One';
   bool _validate = false;
   late String phoneNumber;
   late String number;
   late AuthenticationBloc authBloc;
-  late Country _selectedLocation;
+  Country? _selectedLocation;
   bool check = false;
 
   @override
   void initState() {
     super.initState();
+
     authBloc = AuthenticationBloc();
+    getlistCountry();
     listenBloc();
+  }
+
+  void getlistCountry() async {
+    List<picker.Country> list = await picker.getCountries(context);
+    authBloc.setListCountry(list);
+    authBloc.fetchCountries();
   }
 
   void listenBloc() {
@@ -42,12 +54,16 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
       if (event != null) {
         context.vxNav.push(
           Uri(path: '/$event'),
-          params: {'mobile': number, 'countryId': _selectedLocation.id},
+          params: {'mobile': number, 'countryId': _selectedLocation?.id},
         );
       }
     });
     authBloc.showServerError.listen((event) {
       Navigator.pop(context);
+    });
+
+    authBloc.selectedCountry.listen((event) {
+      _textCountryCode.text = '+${event.code}';
     });
   }
 
@@ -57,124 +73,79 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     super.dispose();
   }
 
-  // StreamBuilder _dropDownMenu() {
-  //   return StreamBuilder(
-  //     stream: authBloc.subjectList,
-  //     builder: (context, snapshot) {
-  //       if (snapshot.hasError) print(snapshot.error);
-  //
-  //       if (snapshot.hasData) {
-  //         print(snapshot.error);
-  //         return Directionality(
-  //           textDirection: TextDirection.ltr,
-  //           child: DropdownButtonHideUnderline(
-  //             child: DropdownButton<Country>(
-  //               isExpanded: true,
-  //               icon: Icon(Icons.arrow_drop_down, color: AppColors.penColor),
-  //               iconSize: 26,
-  //               value: _selectedLocation = authBloc.subject,
-  //               alignment: Alignment.center,
-  //               onChanged: (Country? newValue) {
-  //                 setState(() {
-  //                   _selectedLocation = newValue!;
-  //                   authBloc.setSubject(newValue);
-  //                 });
-  //               },
-  //               items: snapshot.data
-  //                   .map<DropdownMenuItem<Country>>((Country data) {
-  //                 return DropdownMenuItem<Country>(
-  //                     child: Padding(
-  //                       padding: const EdgeInsets.only(top: 6.0),
-  //                       child: Center(
-  //                           child: Text("+ ${data.code}",
-  //                               textAlign: TextAlign.center,
-  //                               textDirection: TextDirection.ltr,
-  //                               style: TextStyle(
-  //                                   color: AppColors.penColor,
-  //                                   fontSize: 16.0))),
-  //                     ),
-  //                     value: data);
-  //               }).toList(),
-  //             ),
-  //           ),
-  //         );
-  //       } else {
-  //         return Center(
-  //             child: Container(width: 7.w, height: 7.w, child: Progress()));
-  //       }
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return SafeArea(
       child: Scaffold(
-          backgroundColor: Colors.white,
-          body: StreamBuilder(
-              stream: authBloc.waiting,
-              builder: (context, snapshot) {
-                if (snapshot.data == false && !check) {
-                  return SingleChildScrollView(
-                    child: Column(children: [
-                      header(),
-                      content(),
-                    ]),
-                  );
-                } else {
-                  check = false;
-                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
-                }
-              })),
+          body: Container(
+        decoration: AppDecorations.boxNoRadius.copyWith(
+            gradient: const RadialGradient(
+                colors: [Color(0xff6C98FF), Color(0xff364C80)],
+                center: Alignment(0.0, 0.0),
+                stops: [0.0, 1.0],
+                focal: Alignment(0.0, 0.1),
+                focalRadius: 0,
+                radius: 1,
+                tileMode: TileMode.clamp)),
+        width: double.infinity,
+        height: double.infinity,
+        child: StreamBuilder(
+            stream: authBloc.waiting,
+            builder: (context, snapshot) {
+              if (snapshot.data == false && !check) {
+                return SingleChildScrollView(
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Space(
+                          height: 15.h,
+                        ),
+                        header(),
+                        content(),
+                      ]),
+                );
+              } else {
+                check = false;
+                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+              }
+            }),
+      )),
     );
   }
 
   Widget header() {
-    return Stack(
-      children: [
-        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 250)),
-        Positioned(
-          top: 10.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-              child: ImageUtils.fromLocal(
-            'assets/images/registry/app_logo.png',
-            width: 50.0,
-            height: 50.0,
-          )),
-        ),
-        Positioned(
-          top: 70.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-              child: Text(intl.appNameSplash,
-                  style: TextStyle(
-                      color: AppColors.penColor,
-                      fontSize: 22.0,
-                      fontFamily: 'Iransans-Bold',
-                      fontWeight: FontWeight.w700))),
-        ),
-        Positioned(
-          top: 120.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-            child: ImageUtils.fromLocal(
-              'assets/images/registry/profile_logo.svg',
-              width: 120.0,
-              height: 120.0,
-            ),
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ImageUtils.fromLocal(
+            'assets/images/logo_app.svg',
+            width: 250,
+            height: 250,
           ),
-        ),
-      ],
+          Space(
+            height: 2.h,
+          ),
+          Text(
+            intl.appNameSplash,
+            textAlign: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .caption!
+                .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+          ),
+        ],
+      ),
     );
   }
 
   Widget content() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.all(20.0),
@@ -182,148 +153,73 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Flexible(
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: _text,
                     textDirection: TextDirection.ltr,
                     keyboardType: TextInputType.phone,
+                    style: typography.caption!.copyWith(color: Color(0xff454545)),
                     decoration: InputDecoration(
+                        fillColor: const Color.fromRGBO(255, 255, 255, 0.48),
+                        filled: true,
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.penColor),
-                            borderRadius: BorderRadius.circular(15.0)),
+                            borderSide: BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10.0)),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: BorderSide(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        // enabledBorder: OutlineInputBorder(
-                        //   borderSide: BorderSide(color: Colors.grey)),
-                        labelText: intl.enterYourMobileNumber,
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10.0)),
+                        labelText: intl.mobile,
                         // errorText: _validate ? intl.fillAllField : null,
                         labelStyle: TextStyle(
-                            color: AppColors.penColor,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600)),
+                            color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w500),
+                        suffixIcon: selectCountry(),
+                        suffixIconConstraints: BoxConstraints(maxWidth: 20.w, minWidth: 10.w)),
+                    onSubmitted: (String) {
+                      click(_selectedLocation!);
+                    },
                     onChanged: (txt) {
                       phoneNumber = txt;
                     },
                   ),
                 ),
-              ),
-              Container(
-                decoration: AppDecorations.boxMild.copyWith(
-                  color: AppColors.box,
-                ),
-                width: 25.w,
-                height: 8.h,
-                padding: EdgeInsets.all(3.w),
-                margin: EdgeInsets.only(right: 3.w),
-                child: StreamBuilder(
-                  stream: authBloc.selectedCountry,
-                  builder: (_, AsyncSnapshot<Country> snapshot) {
-                    if (snapshot.hasData) {
-                      _selectedLocation = snapshot.requireData;
-                      return GestureDetector(
-                        onTap: () => DialogUtils.showBottomSheetPage(
-                          context: context,
-                          child: Container(
-                            height: 32.h,
-                            padding: EdgeInsets.all(5.w),
-                            alignment: Alignment.center,
-                            child: Column(
-                              children: [
-                                Space(height: 2.h),
-                                Expanded(
-                                  child: ListView.builder(
-                                    // shrinkWrap: true,
-                                    itemBuilder: (_, index) => GestureDetector(
-                                      onTap: () {
-                                        authBloc.setCountry(authBloc.countries[index]);
-                                        _selectedLocation = authBloc.countries[index];
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        child: Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                '+${authBloc.countries[index].code}',
-                                                style: typography.caption,
-                                              ),
-                                              Space(width: 3.w),
-                                              Expanded(
-                                                  child: Text(
-                                                authBloc.countries[index].name ?? '',
-                                                style: typography.caption,
-                                              )),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    itemCount: authBloc.countries.length,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                '+${snapshot.requireData.code}',
-                                style: typography.caption,
-                                textAlign: TextAlign.center,
-                                textDirection: TextDirection.ltr,
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                            Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.grey,
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                    return Progress();
-                  },
-                ),
               )
             ],
           ),
         ),
-        SizedBox(height: 10.h),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: StreamBuilder(
             stream: authBloc.selectedCountry,
             builder: (_, AsyncSnapshot<Country> snapshot) {
               return CustomButton(
-                AppColors.btnColor,
+                Colors.white,
+                AppColors.primary,
                 intl.registerOrLogin,
                 Size(100.w, 8.h),
                 () {
-                  if (snapshot.requireData.code == '98') {
-                    while (phoneNumber.startsWith('0')) {
-                      phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
-                    }
-                    if ((phoneNumber.length) != 10) {
+                  if (phoneNumber.isNotEmpty) {
+                    if (snapshot.requireData.code == '98') {
+                      while (phoneNumber.startsWith('0')) {
+                        phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
+                      }
+                      if ((phoneNumber.length) != 10) {
+                        Utils.getSnackbarMessage(context, intl.errorMobileCondition);
+                        return;
+                      }
+                    } else if ((snapshot.requireData.code!.length + phoneNumber.length) < 7 ||
+                        (snapshot.requireData.code!.length + phoneNumber.length) > 15) {
                       Utils.getSnackbarMessage(context, intl.errorMobileCondition);
                       return;
                     }
-                  } else if ((snapshot.requireData.code!.length + phoneNumber.length) < 7 ||
-                      (snapshot.requireData.code!.length + phoneNumber.length) > 15) {
-                    Utils.getSnackbarMessage(context, intl.errorMobileCondition);
-                    return;
-                  }
-                  number = snapshot.requireData.code! + phoneNumber;
-                  DialogUtils.showDialogProgress(context: context);
-                  authBloc.loginMethod(number);
+                    number = snapshot.requireData.code! + phoneNumber;
+                    DialogUtils.showDialogProgress(context: context);
+                    authBloc.loginMethod(number);
+                  } else {}
                 },
               );
             },
@@ -331,6 +227,165 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
         ),
       ],
     );
+  }
+
+  Widget selectCountry() {
+    return Container(
+      height: 7.h,
+      margin: EdgeInsets.only(right: 8),
+      decoration: BoxDecoration(
+          borderRadius:
+              BorderRadius.only(bottomLeft: Radius.circular(10), topLeft: Radius.circular(10)),
+          color: const Color.fromRGBO(255, 255, 255, 0.1),
+          border: Border(right: BorderSide.none)),
+      child: StreamBuilder(
+        stream: authBloc.selectedCountry,
+        builder: (_, AsyncSnapshot<Country> snapshot) {
+          if (snapshot.hasData) {
+            _selectedLocation = snapshot.requireData;
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                  onTap: () => countryDialog(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        flex: 0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50.0),
+                          child: ImageUtils.fromLocal(_selectedLocation?.flag ?? '',
+                              width: 6.w,
+                              package: picker.countryCodePackageName,
+                              height: 6.w,
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                      const Spacer(),
+                      const Expanded(
+                        flex: 0,
+                        child: Icon(Icons.keyboard_arrow_down, color: Colors.grey, size: 20),
+                      ),
+                    ],
+                  )),
+            );
+          }
+          return Progress();
+        },
+      ),
+    );
+  }
+
+  countryDialog() {
+    DialogUtils.showBottomSheetPage(
+      context: context,
+      child: Container(
+        height: 64.h,
+        padding: EdgeInsets.all(3.w),
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            TextField(
+              controller: _textSearchCountryCode,
+              textDirection: TextDirection.ltr,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.penColor),
+                    borderRadius: BorderRadius.circular(15.0)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                // enabledBorder: OutlineInputBorder(
+                //   borderSide: BorderSide(color: Colors.grey)),
+                // errorText: _validate ? intl.fillAllField : null,
+                label: Text(intl.search),
+                labelStyle: TextStyle(
+                    color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
+              ),
+              style: TextStyle(
+                  color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
+              onChanged: authBloc.searchCountry,
+            ),
+            Space(height: 2.h),
+            StreamBuilder<List<Country>>(
+                stream: authBloc.filterListCountry,
+                builder: (context, filterListCountry) {
+                  if (filterListCountry.hasData)
+                    return Expanded(
+                      child: ScrollConfiguration(
+                        behavior: MyCustomScrollBehavior(),
+                        child: ListView.builder(
+                          // shrinkWrap: true,
+                          itemBuilder: (_, index) => GestureDetector(
+                            onTap: () {
+                              authBloc.setCountry(filterListCountry.data![index]);
+                              _selectedLocation = filterListCountry.data![index];
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              height: 5.h,
+                              child: Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (filterListCountry.data![index].flag != null)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(2.0),
+                                        child: ImageUtils.fromLocal(
+                                            filterListCountry.data![index].flag!,
+                                            package: picker.countryCodePackageName,
+                                            width: 7.w,
+                                            fit: BoxFit.fill,
+                                            height: 5.w),
+                                      ),
+                                    Space(width: 2.w),
+                                    Text(
+                                      '+${filterListCountry.data![index].code ?? ''}',
+                                      style: typography.caption,
+                                    ),
+                                    Space(width: 3.w),
+                                    Expanded(
+                                        child: Text(
+                                      filterListCountry.data![index].name ?? '',
+                                      style: typography.caption,
+                                    )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          itemCount: filterListCountry.data!.length,
+                        ),
+                      ),
+                    );
+                  return Center(child: Progress());
+                }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void click(Country countryCode) {
+    if (countryCode.code == '98') {
+      while (phoneNumber != null && phoneNumber!.startsWith('0')) {
+        phoneNumber = phoneNumber!.replaceFirst(RegExp(r'0'), '');
+      }
+      if (phoneNumber == null || phoneNumber.length != 10) {
+        Utils.getSnackbarMessage(context, intl.errorMobileCondition);
+        return;
+      }
+    } else if ((countryCode.code!.length + phoneNumber!.length) < 7 ||
+        (countryCode.code!.length + phoneNumber!.length) > 15) {
+      Utils.getSnackbarMessage(context, intl.errorMobileCondition);
+      return;
+    }
+    number = countryCode.code! + phoneNumber!;
+    DialogUtils.showDialogProgress(context: context);
+    authBloc.loginMethod(number.toEnglishDigit());
   }
 
   @override

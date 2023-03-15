@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 
 class CustomButton extends StatefulWidget {
-  CustomButton(this.btnColor, this.txt, this.size, this.press) : super();
+  CustomButton(this.btnColor, this.textColor, this.txt, this.size, this.press) : super();
 
-  CustomButton.withIcon(this.btnColor, this.txt, this.size, this.icon, this.press)
+  CustomButton.withIcon(this.btnColor, this.textColor, this.txt, this.size, this.icon, this.press)
       : super();
 
   final Color btnColor;
+  Color? textColor;
   final String txt;
   final Size size;
   final Function press;
@@ -27,40 +28,37 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
   Widget build(BuildContext context) {
     super.build(context);
     return widget.icon == null
-        ? button(widget.btnColor, widget.txt, widget.size, widget.press)
-        : buttonWithIcon(widget.btnColor, widget.txt, widget.size, widget.press,
-            widget.icon!);
+        ? button(widget.btnColor, widget.txt, widget.size, widget.press, widget.textColor)
+        : buttonWithIcon(
+            widget.btnColor, widget.txt, widget.size, widget.press, widget.icon!, widget.textColor);
   }
 
-  Widget button(Color btnColor, String txt, Size size, Function press) {
+  Widget button(Color btnColor, String txt, Size size, Function press, Color? txtColor) {
     return ElevatedButton(
         style: ButtonStyle(
             elevation: MaterialStateProperty.all(0),
-            backgroundColor: MaterialStateProperty.all(btnColor),
+            backgroundColor: MaterialStateProperty.all<Color>(btnColor),
             fixedSize: MaterialStateProperty.all(size),
             padding: MaterialStateProperty.all(EdgeInsets.zero),
             // padding: MaterialStateProperty.all(
             //     EdgeInsets.fromLTRB(50, 20, 50, 20)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(35),
             ))),
         child: Ink(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                gradient: AppColors.btnColorsGradient),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(35)),
             child: Container(
               width: size.width,
               height: size.height,
               alignment: Alignment.center,
-              child: Text(txt,
-                  style: typography.caption!.copyWith(color: Colors.white)),
+              child:
+                  Text(txt, style: typography.caption!.copyWith(color: txtColor ?? Colors.white)),
             )),
         onPressed: () => press.call());
   }
 
   Widget buttonWithIcon(
-      Color btnColor, String txt, Size size, Function press, Icon icon) {
+      Color btnColor, String txt, Size size, Function press, Icon icon, Color? textColor) {
     return ElevatedButton(
         style: ButtonStyle(
             elevation: MaterialStateProperty.all(0),
@@ -69,14 +67,12 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
             padding: MaterialStateProperty.all(EdgeInsets.zero),
             // padding: MaterialStateProperty.all(
             //     EdgeInsets.fromLTRB(50, 20, 50, 20)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(35),
             ))),
         child: Ink(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                gradient: AppColors.btnColorsGradient),
+                borderRadius: BorderRadius.circular(35), gradient: AppColors.btnColorsGradient),
             child: Container(
                 width: size.width,
                 height: size.height,
@@ -85,9 +81,7 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(txt,
-                        style:
-                            typography.caption!.copyWith(color: Colors.white)),
+                    Text(txt, style: typography.caption!.copyWith(color: Colors.white)),
                     Space(width: 2.w),
                     icon,
                   ],
@@ -96,7 +90,7 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
   }
 
   Widget buttonWithCustomColor(
-      Color btnColor, String txt, Size size, Function press, Icon icon) {
+      Color btnColor, String txt, Size size, Function press, Icon icon, Color? txtColor) {
     return ElevatedButton(
         style: ButtonStyle(
             elevation: MaterialStateProperty.all(0),
@@ -105,14 +99,12 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
             padding: MaterialStateProperty.all(EdgeInsets.zero),
             // padding: MaterialStateProperty.all(
             //     EdgeInsets.fromLTRB(50, 20, 50, 20)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(35),
-                ))),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(35),
+            ))),
         child: Ink(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                gradient: AppColors.btnColorsGradient),
+                borderRadius: BorderRadius.circular(35), gradient: AppColors.btnColorsGradient),
             child: Container(
                 width: size.width,
                 height: size.height,
@@ -121,9 +113,7 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(txt,
-                        style:
-                        typography.caption!.copyWith(color: Colors.white)),
+                    Text(txt, style: typography.caption!.copyWith(color: txtColor ?? Colors.white)),
                     Space(width: 2.w),
                     icon,
                   ],

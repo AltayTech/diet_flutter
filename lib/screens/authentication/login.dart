@@ -8,14 +8,12 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/button.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:flutter/material.dart';
+import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import 'package:behandam/screens/utility/arc.dart';
-
 import '../../routes.dart';
-
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -33,8 +31,15 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    getlistCountry();
     authBloc = AuthenticationBloc();
     listenBloc();
+  }
+
+  void getlistCountry() async {
+    List<picker.Country> list = await picker.getCountries(context);
+    authBloc.setListCountry(list);
+    authBloc.fetchCountries();
   }
 
   @override
@@ -48,9 +53,11 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
       Navigator.pop(context);
       if (!event.toString().isEmptyOrNull) {
         check = true;
-        if(event.toString().contains(Routes.auth))
-          VxNavigator.of(context).push(Uri.parse('/$event'), params: {"mobile": args['mobile'], 'countryId': args['countryId']});
-        else VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
+        if (event.toString().contains(Routes.auth))
+          VxNavigator.of(context).push(Uri.parse('/$event'),
+              params: {"mobile": args['mobile'], 'countryId': args['countryId']});
+        else
+          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
       }
     });
     authBloc.showServerError.listen((event) {
@@ -59,6 +66,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   }
 
   bool isInit = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -75,75 +83,82 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: StreamBuilder(
-            stream: authBloc.waiting,
-            builder: (context, snapshot) {
-              if (snapshot.data == false && !check) {
-                return NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverAppBar(
-                        backgroundColor: AppColors.arcColor,
-                        elevation: 0.0,
-                        leading: IconButton(
-                            icon: Icon(Icons.arrow_back_ios),
-                            color: Color(0xffb4babb),
-                            onPressed: () => VxNavigator.of(context).pop()),
-                        // floating: true,
-                        forceElevated: innerBoxIsScrolled,
-                      ),
-                    ];
-                  },
-                  body: SingleChildScrollView(
-                    child: Column(children: [
-                      header(),
-                      SizedBox(height: 80.0),
-                      content(),
-                    ]),
-                  ),
-                );
-              } else {
-                check = false;
-                return Center(
-                    child: Container(
-                        width: 15.w, height: 15.w, child: Progress()));
-              }
-            }),
+        body: Container(
+          decoration: AppDecorations.boxNoRadius.copyWith(
+              gradient: const RadialGradient(
+                  colors: [Color(0xff6C98FF), Color(0xff364C80)],
+                  center: Alignment(0.0, 0.0),
+                  stops: [0.0, 1.0],
+                  focal: Alignment(0.0, 0.1),
+                  focalRadius: 0,
+                  radius: 1,
+                  tileMode: TileMode.clamp)),
+          width: double.infinity,
+          height: double.infinity,
+          child: StreamBuilder(
+              stream: authBloc.waiting,
+              builder: (context, snapshot) {
+                if (snapshot.data == false && !check) {
+                  return NestedScrollView(
+                    headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                      return <Widget>[
+                        SliverAppBar(
+                          backgroundColor: Color(0xff364C80),
+                          elevation: 0.0,
+                          leading: IconButton(
+                              icon: Icon(Icons.arrow_back_ios),
+                              color: Colors.white,
+                              onPressed: () => VxNavigator.of(context).pop()),
+                          // floating: true,
+                          forceElevated: innerBoxIsScrolled,
+                        ),
+                      ];
+                    },
+                    body: SingleChildScrollView(
+                      child: Column(children: [
+                        Space(
+                          height: 10.h,
+                        ),
+                        header(),
+                        SizedBox(height: 80.0),
+                        content(),
+                      ]),
+                    ),
+                  );
+                } else {
+                  check = false;
+                  return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
+                }
+              }),
+        ),
       ),
     );
   }
 
   Widget header() {
-    return Stack(
-      children: [
-        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
-        Positioned(
-          top: 0.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-              child: Text(intl.login,
-                  style: TextStyle(
-                      color: AppColors.penColor,
-                      fontSize: 22.0,
-                      fontFamily: 'Iransans-Bold',
-                      fontWeight: FontWeight.w700))),
-        ),
-        Positioned(
-          top: 60.0,
-          right: 0.0,
-          left: 0.0,
-          child: Center(
-            child: ImageUtils.fromLocal(
-              'assets/images/registry/profile_logo.svg',
-              width: 120.0,
-              height: 120.0,
-            ),
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ImageUtils.fromLocal(
+            'assets/images/logo_app.svg',
+            width: 150,
+            height: 150,
           ),
-        ),
-      ],
+          Space(
+            height: 2.h,
+          ),
+          Text(
+            intl.appNameSplash,
+            textAlign: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .caption!
+                .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+          ),
+        ],
+      ),
     );
   }
 
@@ -156,8 +171,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
@@ -165,21 +179,21 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               )),
           SizedBox(height: 2.h),
           Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                color: AppColors.arcColor),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
             child: TextField(
               obscureText: !_obscureText,
               controller: _text,
               textDirection: TextDirection.ltr,
               decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.penColor)),
+                fillColor: const Color.fromRGBO(255, 255, 255, 0.48),
+                filled: true,
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.penColor),
+                    borderSide: BorderSide(color: Colors.grey),
                     borderRadius: BorderRadius.circular(15.0)),
                 labelText: intl.password,
                 suffixIcon: IconButton(
@@ -193,8 +207,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                     });
                   },
                 ),
-                labelStyle:
-                    TextStyle(color: AppColors.penColor, fontSize: 18.0),
+                labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0),
                 // errorText: _validate ? intl.fillAllField : null
               ),
               onChanged: (txt) {
@@ -203,7 +216,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
             ),
           ),
           SizedBox(height: 10.h),
-          CustomButton(AppColors.btnColor, intl.login, Size(100.w, 8.h), () {
+          CustomButton(Colors.white, AppColors.primary, intl.login, Size(100.w, 8.h), () {
             DialogUtils.showDialogProgress(context: context);
             if (_password.length > 0) {
               User user = User();
@@ -241,7 +254,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(intl.changePassword,style: typography.bodyText2),
+            Text(intl.changePassword, style: typography.bodyText2),
             Container(
               width: 70.w,
               child: RichText(
@@ -251,8 +264,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                   style: TextStyle(fontSize: 14.sp, color: AppColors.penColor),
                   children: <TextSpan>[
                     TextSpan(
-                        text: '${args['mobile']}',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                        text: '${args['mobile']}', style: TextStyle(fontWeight: FontWeight.bold)),
                     TextSpan(text: intl.textChangePass2),
                   ],
                 ),
@@ -272,12 +284,11 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                   ),
                   child:
-                  Text(intl.no, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
+                      Text(intl.no, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
                 ),
                 ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.btnColor),
+                        backgroundColor: MaterialStateProperty.all(AppColors.btnColor),
                         fixedSize: MaterialStateProperty.all(Size(10.0, 20.0))),
                     child: Text(
                       intl.yes,
@@ -312,6 +323,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
+
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

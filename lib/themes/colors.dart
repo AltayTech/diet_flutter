@@ -108,8 +108,8 @@ class AppColors {
         colorTextApp = Color.fromRGBO(147, 147, 147, 1);
         break;
       case ThemeAppColor.BLUE:
-        primary = Color(0x0ff011230);
-        accentColor = Color(0xff092a49);
+        primary = Color(0xff364C80);
+        accentColor = Color(0xff6C98FF);
         primaryColorDark = Color(0x0ff000c21);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);

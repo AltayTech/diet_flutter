@@ -197,14 +197,8 @@ Widget optionUi(IconData icon, String text, int action) {
       height: 6.h,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(30.0),
-          boxShadow: [
-            BoxShadow(
-                color: Color.fromARGB(255, 248, 233, 233),
-                blurRadius: 4.0,
-                spreadRadius: 3.0,
-                offset: Offset(0.0, 0.35.w)),
-          ]),
+          borderRadius: BorderRadius.circular(15.0),
+       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -220,14 +214,6 @@ Widget optionUi(IconData icon, String text, int action) {
           ),
           Space(
             width: 1.w,
-          ),
-          Icon(
-            icon,
-            color: AppColors.primary,
-            size: 7.w,
-          ),
-          Space(
-            width: 2.w,
           ),
         ],
       ),

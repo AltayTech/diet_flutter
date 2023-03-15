@@ -5,24 +5,18 @@ import 'package:behandam/routes.dart';
 import 'package:behandam/screens/profile/profile_bloc.dart';
 import 'package:behandam/screens/profile/profile_provider.dart';
 import 'package:behandam/screens/profile/toolbar_profile.dart';
-import 'package:behandam/screens/profile/tools_box.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
-import 'package:behandam/screens/widget/call_bax_profile.dart';
+import 'package:behandam/screens/widget/widget_box.dart';
 import 'package:behandam/screens/widget/cross_item_profile.dart';
-import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
-import 'package:behandam/screens/widget/toolbar.dart';
-import 'package:behandam/screens/widget/widget_box.dart';
-import 'package:behandam/screens/widget/widget_icon_text_progress.dart';
+
 import 'package:behandam/themes/colors.dart';
-import 'package:external_app_launcher/external_app_launcher.dart';
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -40,8 +34,13 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   void initState() {
     super.initState();
     profileBloc = ProfileBloc();
-    profileBloc.getInformation();
+    getlistCountry();
     listenBloc();
+  }
+
+  void getlistCountry() async {
+    List<picker.Country> list = await picker.getCountries(context);
+    profileBloc.getInformation(list);
   }
 
   void listenBloc() {
@@ -74,7 +73,6 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
     return ProfileProvider(profileBloc,
         child: SafeArea(
           child: Scaffold(
-            appBar: Toolbar(titleBar: intl.profile),
             body: body(),
           ),
         ));
@@ -102,9 +100,8 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
                       stream: profileBloc.userInformationStream,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return Stack(
-                            fit: StackFit.expand,
-                            children: <Widget>[content(), ToolbarProfile()],
+                          return Column(
+                            children: <Widget>[ ToolbarProfile(), content(),],
                           );
                         } else {
                           return Center(
@@ -126,153 +123,106 @@ class _ProfileScreenState extends ResourcefulState<ProfileScreen> {
   }
 
   Widget content() {
-    return Positioned(
-      bottom: 0,
-      right: 0,
-      left: 0,
-      top: 10.h,
-      child: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(right: 4.w, left: 4.w, top: 6.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            textDirection: context.textDirectionOfLocale,
-            children: <Widget>[
-              CallBoxProfile(),
-              Space(height: 3.h),
-              Column(
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(right: 4.w, left: 4.w, top: 6.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          textDirection: context.textDirectionOfLocale,
+          children: <Widget>[
+
+            Flexible(
+              flex: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  WidgetIconTextProgress(
-                      countShow: false,
-                      title: intl.help,
-                      listIcon: 'assets/images/profile/guide.svg',
-                      index: 0),
-                  StreamBuilder(
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data == true)
-                        return Space(height: 2.h);
-                      else
-                        return Container();
-                    },
-                    stream: profileBloc.showRefund,
-                  ),
-                  StreamBuilder(
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data == true)
-                        return WidgetIconTextProgress(
-                            countShow: false,
-                            title: intl.requestBackPayment,
-                            listIcon: 'assets/images/diet/dollar_symbol.svg',
-                            index: 3);
-                      else
-                        return Container();
-                    },
-                    stream: profileBloc.showRefund,
-                  ),
-                /*  StreamBuilder(
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data == true)
-                        return Space(height: 2.h);
-                      else
-                        return Container();
-                    },
-                    stream: profileBloc.showPdf,
-                  ),
-                  StreamBuilder(
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.requireData == true)
-                        return WidgetIconTextProgress(
-                            countShow: false,
-                            title: intl.getPdfTerm,
-                            listIcon: 'assets/images/foodlist/share/downloadPdf.svg',
-                            index: 2);
-                      else
-                        return Container();
-                    },
-                    stream: profileBloc.showPdf,
-                  ),*/
+                  Expanded(
+                      flex: 1,
+                      child: optionUi(
+                          Icons.edit, intl.editProfile, 2)),
+                  Space(width: 5.w),
+                  Expanded(
+                      flex: 1,
+                      child: optionUi(
+                          Icons.lock, intl.changePassword, 0)),
                 ],
               ),
-              Space(height: 2.h),
-              // ContactAbout(),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromARGB(255, 246, 246, 246),
-                      spreadRadius: 7.0,
-                      blurRadius: 12.0,
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Expanded(
-                      child: CrossItemProfile(
-                        imageAddress: 'assets/images/profile/contact.svg',
-                        text: intl.contactMe,
-                        space: false,
-                        url:
-                            'https://drkermanidiet.com/vip/',
-                        context: context,
-                      ),
-                      flex: 1,
-                    ),
-                    Container(
-                      width: 1.w,
-                      height: 2.h,
-                      color: Color.fromARGB(255, 237, 237, 237),
-                    ),
-                    Expanded(
-                      child: CrossItemProfile(
-                        imageAddress: 'assets/images/profile/about_us.svg',
-                        text: intl.aboutMe,
-                        space: false,
-                        context: context,
-                        url:
-                            'https://drkermanidiet.com/%d9%85%d9%86-%d9%86%d8%ad%d9%86%d8%9f/',
-                      ),
-                      flex: 1,
-                    ),
-                    Container(
-                      width: 1.w,
-                      height: 2.h,
-                      color: Color.fromARGB(255, 237, 237, 237),
-                    ),
-                    Expanded(
-                      child: CrossItemProfile(
-                        imageAddress: 'assets/images/profile/magazine.svg',
-                        text: intl.magazine,
-                        space: false,
-                        context: context,
-                        url:
-                        'https://drkermanidiet.com/',
-                      ),
-                      flex: 1,
-                    ),
-                  ],
-                ),
+            ),
+            Space(height: 4.h),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(255, 246, 246, 246),
+                    spreadRadius: 7.0,
+                    blurRadius: 12.0,
+                  ),
+                ],
               ),
-              Space(height: 6.h),
-              SubmitButton(
-                onTap: () {
-                  AppSharedPreferences.logout();
-                  VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
-                },
-                label: intl.exit,
+              padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: CrossItemProfile(
+                      imageAddress: 'assets/images/profile/contact.svg',
+                      text: intl.contactMe,
+                      space: false,
+                      url: 'https://drkermanidiet.com/vip/',
+                      context: context,
+                    ),
+                    flex: 1,
+                  ),
+                  Container(
+                    width: 1.w,
+                    height: 2.h,
+                    color: Color.fromARGB(255, 237, 237, 237),
+                  ),
+                  Expanded(
+                    child: CrossItemProfile(
+                      imageAddress: 'assets/images/profile/about_us.svg',
+                      text: intl.aboutMe,
+                      space: false,
+                      context: context,
+                      url: 'https://drkermanidiet.com/%d9%85%d9%86-%d9%86%d8%ad%d9%86%d8%9f/',
+                    ),
+                    flex: 1,
+                  ),
+                  Container(
+                    width: 1.w,
+                    height: 2.h,
+                    color: Color.fromARGB(255, 237, 237, 237),
+                  ),
+                  Expanded(
+                    child: CrossItemProfile(
+                      imageAddress: 'assets/images/profile/magazine.svg',
+                      text: intl.magazine,
+                      space: false,
+                      context: context,
+                      url: 'https://drkermanidiet.com/',
+                    ),
+                    flex: 1,
+                  ),
+                ],
               ),
-              Space(height: 2.h),
-            ],
-          ),
+            ),
+            Space(height: 4.h),
+            SubmitButton(
+              onTap: () {
+                AppSharedPreferences.logout();
+                VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
+              },
+              label: intl.exit,
+            ),
+            Space(height: 2.h),
+          ],
         ),
-        scrollDirection: Axis.vertical,
       ),
+      scrollDirection: Axis.vertical,
     );
   }
 

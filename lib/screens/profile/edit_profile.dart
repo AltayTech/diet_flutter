@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
-
+import 'package:country_calling_code_picker/picker.dart' as picker;
 
 class EditProfileScreen extends StatefulWidget {
   EditProfileScreen();
@@ -27,12 +27,15 @@ class _EditProfileScreenState extends ResourcefulState<EditProfileScreen> {
     // TODO: implement initState
     super.initState();
     profileBloc = ProfileBloc();
-    profileBloc.getInformation();
+    getlistCountry();
     /* profileBloc.showServerError.listen((event) {
 
     });*/
   }
-
+  void getlistCountry() async {
+    List<picker.Country> list = await picker.getCountries(context);
+    profileBloc.getInformation(list);
+  }
   @override
   Widget build(BuildContext context) {
     super.build(context);

@@ -38,7 +38,9 @@ Meals _$MealsFromJson(Map<String, dynamic> json) => Meals()
       : Food.fromJson(json['food'] as Map<String, dynamic>)
   ..newFood = json['newFood'] == null
       ? null
-      : ListFood.fromJson(json['newFood'] as Map<String, dynamic>);
+      : ListFood.fromJson(json['newFood'] as Map<String, dynamic>)
+  ..color = json['color']
+  ..bgColor = json['bgColor'];
 
 Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['id'] as int,

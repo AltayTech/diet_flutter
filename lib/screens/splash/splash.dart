@@ -13,7 +13,6 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
-
 import 'package:velocity_x/velocity_x.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -102,7 +101,8 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                       if (!bloc.forceUpdate) SizedBox(width: 2.w),
                       if (!bloc.forceUpdate)
                         ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+                          style:
+                              ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
                           child: Text(
                             intl.later,
                             style: Theme.of(context)
@@ -115,7 +115,6 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                             Navigator.of(context).pop();
                             VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
                           },
-
                         ),
                     ],
                   )
@@ -132,7 +131,15 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
     return SafeArea(
         child: Scaffold(
       body: Container(
-        color: Colors.white,
+        decoration: AppDecorations.boxNoRadius.copyWith(
+            gradient: const RadialGradient(
+                colors: [Color(0xff6C98FF), Color(0xff364C80)],
+                center: Alignment(0.0, 0.0),
+                stops: [0.0,1.0],
+                focal: Alignment(0.0, 0.1),
+                focalRadius: 0,
+                radius: 1,
+                tileMode: TileMode.clamp)),
         width: double.infinity,
         height: double.infinity,
         child: Stack(
@@ -142,9 +149,9 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ImageUtils.fromLocal(
-                    'assets/images/registry/app_logo.png',
-                    width: 30.w,
-                    height: 30.w,
+                    'assets/images/logo_app.svg',
+                    width: 250,
+                    height: 250,
                   ),
                   Space(
                     height: 2.h,
@@ -152,7 +159,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                   Text(
                     intl.appNameSplash,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.white,fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
@@ -165,7 +172,7 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                       child: Text(
                         intl.version(snapshot.data?.toString() ?? ''),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),
                       ),
                       padding: const EdgeInsets.only(bottom: 16),
                     ),

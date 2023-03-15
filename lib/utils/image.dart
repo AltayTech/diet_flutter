@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logifan/widgets/space.dart';
 
-
 abstract class ImageUtils {
   /// [backOffSizing] determine whether to use backOff dimension if not set
   /// eg. if width is not set, use height instead
@@ -52,6 +51,8 @@ abstract class ImageUtils {
     BoxDecoration? decoration,
     EdgeInsets? padding,
     EdgeInsets? margin,
+    String? placeholder,
+    String? package,
     bool isCircle = false,
     BoxFit fit = BoxFit.contain,
     bool backOffSizing = true,
@@ -67,8 +68,25 @@ abstract class ImageUtils {
         width: measuredWidth,
         color: color,
         fit: fit,
+        /* errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            placeholder ?? "assets/images/registry/app_logo.svg",
+            width: measuredWidth,
+            height: measuredHeight,
+            color: color,
+            fit: fit,
+          );
+        },*/
         placeholderBuilder: (context) {
-          return Space(width: measuredWidth, height: measuredHeight);
+          return placeholder != null
+              ? SvgPicture.asset(
+                  placeholder,
+                  width: measuredWidth,
+                  height: measuredHeight,
+                  color: color,
+                  fit: fit,
+                )
+              : Space(width: measuredWidth, height: measuredHeight);
         },
       );
     } else {
@@ -76,6 +94,7 @@ abstract class ImageUtils {
         assetName,
         width: measuredWidth,
         height: measuredHeight,
+        package: package,
         color: color,
         fit: fit,
       );
@@ -108,7 +127,7 @@ abstract class ImageUtils {
     double? measuredHeight = height ?? (backOffSizing ? width : null);
     double? measuredWidth = width ?? (backOffSizing ? height : null);
     Widget placeholderImage = fromLocal(
-      placeholder ?? 'assets/images/registry/app_logo.png',
+      placeholder ?? 'assets/images/registry/app_logo.svg',
       width: width,
       height: height,
       decoration: decoration,
@@ -158,6 +177,58 @@ abstract class ImageUtils {
       },
       errorWidget: (context, url, _) => showPlaceholder ? placeholderImage : emptySpace,
       placeholder: (context, url) => showPlaceholder ? placeholderImage : emptySpace,
+    );
+  }
+
+  static Widget fromString(
+      String assetName, {
+        double? width,
+        double? height,
+        Color? color,
+        BoxDecoration? decoration,
+        EdgeInsets? padding,
+        EdgeInsets? margin,
+        String? placeholder,
+        bool isCircle = false,
+        BoxFit fit = BoxFit.contain,
+        bool backOffSizing = true,
+      }) {
+
+    double? measuredHeight = height ?? (backOffSizing ? width : null);
+    double? measuredWidth = width ?? (backOffSizing ? height : null);
+    Widget image;
+      image = SvgPicture.string(
+        assetName,
+        height: measuredHeight,
+        width: measuredWidth,
+        color: color,
+        fit: fit,
+        /* errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            placeholder ?? "assets/images/registry/app_logo.svg",
+            width: measuredWidth,
+            height: measuredHeight,
+            color: color,
+            fit: fit,
+          );
+        },*/
+        placeholderBuilder: (context) {
+          return placeholder != null
+              ? SvgPicture.asset(
+            placeholder,
+            width: measuredWidth,
+            height: measuredHeight,
+            color: color,
+            fit: fit,
+          )
+              : Space(width: measuredWidth, height: measuredHeight);
+        },
+      );
+    return Container(
+      padding: padding,
+      margin: margin,
+      decoration: isCircle == true ? AppDecorations.circle : decoration,
+      child: image,
     );
   }
 

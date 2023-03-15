@@ -9,13 +9,13 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:country_calling_code_picker/picker.dart' as picker;
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
 class AuthenticationBloc {
   AuthenticationBloc() {
-    fetchCountries();
+    //fetchCountries();
     _waiting.value = false;
   }
 
@@ -27,6 +27,8 @@ class AuthenticationBloc {
   final _navigateToVerify = LiveEvent();
   final _navigateTo = LiveEvent();
   final _showServerError = LiveEvent();
+  final _filterListCountry = BehaviorSubject<List<Country>>();
+  final _flag = BehaviorSubject<bool>();
 
   List<Country> get countries {
     if (_search.isNullOrEmpty)
@@ -36,6 +38,10 @@ class AuthenticationBloc {
           .where((element) => element.name!.contains(_search!) || element.code!.contains(_search!))
           .toList();
   }
+
+  Stream<bool> get flag => _flag.stream;
+
+  Stream<List<Country>> get filterListCountry => _filterListCountry.stream;
 
   Stream get countriesStream => _countries.stream;
 
@@ -51,31 +57,51 @@ class AuthenticationBloc {
 
   String? _search;
 
+  late List<picker.Country> _listCountry;
+
+  void setListCountry(List<picker.Country> list) {
+    _listCountry = list;
+  }
+
   void fetchCountries() {
     if (MemoryApp.countries == null) {
-      _repository.country().then((value) {
-        MemoryApp.countries = value.data!;
+      _repository.country().then((value) async {
         _countries.value = value.data!;
-        value.data!.forEach((element) {
-          if (element.code == "98") {
-            _selectedCountry.value = element;
-          }
-        });
+        MemoryApp.countries = _countries.valueOrNull;
+        setFlagToCountry();
+        _filterListCountry.value = _countries.value;
+        selectIran();
       });
     } else {
       _countries.value = MemoryApp.countries!;
-      _countries.value.forEach((element) {
-        if (element.code == "98") {
-          _selectedCountry.value = element;
+      _filterListCountry.value = _countries.value;
+      setFlagToCountry();
+      selectIran();
+    }
+  }
+
+  void selectIran() {
+    _countries.value.forEach((element) {
+      if (element.code == "98") {
+        _selectedCountry.value = element;
+      }
+    });
+  }
+
+  void setFlagToCountry() {
+    if(_listCountry!=null)
+    _countries.value.forEach((country) {
+      _listCountry.forEach((flagCountry) {
+        if (country.isoCode == flagCountry.countryCode) {
+          country.flag = flagCountry.flag;
         }
       });
-    }
+    });
   }
 
   void setCountry(Country value) {
     _selectedCountry.value = value;
   }
-
   void loginMethod(String phoneNumber) {
     _repository.status(phoneNumber).then((value) {
       _navigateToVerify.fire(value.next);
@@ -169,6 +195,18 @@ class AuthenticationBloc {
 
   void onCountrySearch(String search) {
     _search = search;
+  }
+
+  void searchCountry(String text) {
+    // search = text;
+    if (text.trim().isEmpty || text.trim().length == 0)
+      _filterListCountry.value = _countries.value;
+    else
+      _filterListCountry.value = _countries.value
+          .where((country) =>
+      country.name!.toLowerCase().contains(text.toLowerCase()) ||
+          country.code!.contains(text))
+          .toList();
   }
 
   void dispose() {

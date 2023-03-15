@@ -13,9 +13,9 @@ import 'package:sms_autofill/sms_autofill.dart';
 class SplashBloc {
   SplashBloc() {
     _waiting.value = false;
-     SmsAutoFill().getAppSignature.then((value) {
+    /* SmsAutoFill().getAppSignature.then((value) {
        debugPrint('package is $value');
-     });
+     });*/
   }
 
   final _repository = Repository.getInstance();
@@ -51,13 +51,11 @@ class SplashBloc {
     _waiting.value = true;
     _repository.getUser().then((value) {
       MemoryApp.userInformation = value.data;
-     // MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
-      //FirebaseCrashlytics.instance.setUserIdentifier(MemoryApp.userInformation!.userId.toString());
-      /*MemoryApp.analytics!
-          .setUserProperty(name: 'full_name', value: MemoryApp.userInformation!.fullName);*/
+      getVersionApp();
     }).whenComplete(() {
       _waiting.value = false;
-      getVersionApp();
+
+    }).catchError((onError){
     });
   }
 

@@ -73,11 +73,14 @@ class ProfileBloc {
 
   Stream<CityProvinceModel> get cityProvinceModelStream => _cityProvinceModelStream.stream;
 
-  bool? get isProgressNetwork => _progressNetwork.value;
+  bool get isProgressNetwork => _progressNetwork.valueOrNull ?? true;
 
-  void getInformation() {
+  void getInformation(list) {
     if (loginRegisterBloc == null) {
       loginRegisterBloc = AuthenticationBloc();
+      loginRegisterBloc?.setListCountry(list);
+      loginRegisterBloc?.fetchCountries();
+
     }
     fetchUserInformation();
   }

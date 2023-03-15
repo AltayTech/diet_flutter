@@ -13,6 +13,8 @@ extension StringExtensions on String {
     }
   }
 
+
+
   bool get isValidMobile {
     final regex = RegExp(r'^\+?[0-9]+$'); // accepts both +989... and 09...
     return regex.hasMatch(this.toEnglishDigit());
@@ -33,4 +35,5 @@ extension StringNullableExtensions on String? {
     final input = this?.replaceAll(',', '.') ?? '0';
     return double.tryParse(input) ?? 0.0;
   }
+
 }
