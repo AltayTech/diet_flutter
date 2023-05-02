@@ -314,7 +314,7 @@
   "birthdateIsAMust": "مطلوب تاريخ الميلاد",
   "advices": "التوصيات",
   "beAdvisedTo": "يُنصح:",
-  "forSomethingBeAdvisedTo": "بالنسبة إلى \"{المرض} \" ، يوصى :",
+  "forSomethingBeAdvisedTo": "بالنسبة إلى \" {sickness} \" ، يوصى :",
   "@forSomethingBeAdvisedTo": {
     "placeholders": {
       "sickness": {

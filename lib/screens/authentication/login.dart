@@ -169,33 +169,33 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
         children: [
           Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                  borderRadius: BorderRadius.circular(10.0), color: AppColors.arcColor),
               child: Text(
                 "+ ${args['mobile']}",
                 textDirection: TextDirection.ltr,
-                style: TextStyle(color: AppColors.penColor),
+                style: const TextStyle(color: AppColors.penColor),
               )),
           SizedBox(height: 2.h),
           Container(
             decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: AppColors.arcColor),
+                BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: AppColors.arcColor),
             child: TextField(
               obscureText: !_obscureText,
               controller: _text,
               textDirection: TextDirection.ltr,
               decoration: InputDecoration(
-                fillColor: const Color.fromRGBO(255, 255, 255, 0.48),
+                fillColor: AppColors.arcColor,
                 filled: true,
                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(15.0)),
-                labelText: intl.password,
+                    borderRadius: BorderRadius.circular(10.0)),
+                hintText: intl.password,
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -207,7 +207,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                     });
                   },
                 ),
-                labelStyle: TextStyle(color: AppColors.penColor, fontSize: 18.0),
+                hintStyle: const TextStyle(color: Colors.black, fontSize: 18.0),
                 // errorText: _validate ? intl.fillAllField : null
               ),
               onChanged: (txt) {
@@ -215,8 +215,8 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
               },
             ),
           ),
-          SizedBox(height: 10.h),
-          CustomButton(Colors.white, AppColors.primary, intl.login, Size(100.w, 8.h), () {
+          SizedBox(height: 5.h),
+          CustomButton(Colors.white, AppColors.primary, intl.login, Size(100.w, 7.h), () {
             DialogUtils.showDialogProgress(context: context);
             if (_password.length > 0) {
               User user = User();
@@ -229,7 +229,7 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
           InkWell(
             child: Text(
               intl.forgetPassword,
-              style: TextStyle(fontSize: 16.sp, color: AppColors.penColor),
+              style: TextStyle(fontSize: 16.sp, color: Colors.white),
             ),
             onTap: () => DialogUtils.showDialogPage(
               context: context,
@@ -284,15 +284,15 @@ class _LoginScreenState extends ResourcefulState<LoginScreen> {
                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                   ),
                   child:
-                      Text(intl.no, style: TextStyle(color: AppColors.penColor, fontSize: 16.sp)),
+                      Text(intl.no, style: TextStyle(color: AppColors.penColor, fontSize: 10.sp)),
                 ),
                 ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(AppColors.btnColor),
-                        fixedSize: MaterialStateProperty.all(Size(10.0, 20.0))),
+                        fixedSize: MaterialStateProperty.all(Size(20.0, 20.0))),
                     child: Text(
                       intl.yes,
-                      style: TextStyle(fontSize: 22.0),
+                      style: TextStyle(fontSize: 10.sp),
                     ),
                     onPressed: () {
                       Navigator.pop(context);

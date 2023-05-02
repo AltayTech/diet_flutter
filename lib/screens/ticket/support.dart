@@ -92,7 +92,7 @@ class _SupportState extends ResourcefulState<Support> {
                                   intl.whatsApp,
                                   style: typography.button,
                                 ),
-                                icon: const Icon(Icons.whatsapp, color: Colors.white),
+                                icon: ImageUtils.fromLocal('assets/images/bill/whats_app.svg'),
                                 style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(AppColors.primary)),
                               ),

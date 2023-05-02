@@ -70,38 +70,45 @@ class AuthenticationBloc {
         MemoryApp.countries = _countries.valueOrNull;
         setFlagToCountry();
         _filterListCountry.value = _countries.value;
-        selectIran();
+        selectDefaultCountry();
       });
     } else {
       _countries.value = MemoryApp.countries!;
       _filterListCountry.value = _countries.value;
       setFlagToCountry();
-      selectIran();
+      selectDefaultCountry();
     }
   }
 
-  void selectIran() {
+  Country findCountryByIp(String countryFlag) {
+    Country c;
+    c = _countries.value.where((country) => country.isoCode!.contains(countryFlag)).toList().first;
+    return c;
+  }
+
+  void selectDefaultCountry() {
     _countries.value.forEach((element) {
-      if (element.code == "98") {
+      if (element.code == "971") {
         _selectedCountry.value = element;
       }
     });
   }
 
   void setFlagToCountry() {
-    if(_listCountry!=null)
-    _countries.value.forEach((country) {
-      _listCountry.forEach((flagCountry) {
-        if (country.isoCode == flagCountry.countryCode) {
-          country.flag = flagCountry.flag;
-        }
+    if (_listCountry != null)
+      _countries.value.forEach((country) {
+        _listCountry.forEach((flagCountry) {
+          if (country.isoCode == flagCountry.countryCode) {
+            country.flag = flagCountry.flag;
+          }
+        });
       });
-    });
   }
 
   void setCountry(Country value) {
     _selectedCountry.value = value;
   }
+
   void loginMethod(String phoneNumber) {
     _repository.status(phoneNumber).then((value) {
       _navigateToVerify.fire(value.next);
@@ -120,7 +127,7 @@ class AuthenticationBloc {
         _showServerError.fire(false);
         _navigateToVerify.fire(value.next);
       });
-    }).catchError((onError){
+    }).catchError((onError) {
       _showServerError.fire(false);
     });
   }
@@ -137,7 +144,7 @@ class AuthenticationBloc {
     _waiting.value = true;
     _repository.register(register).then((value) async {
       await AppSharedPreferences.setAuthToken(value.data!.token);
-     /* MemoryApp.analytics!.logEvent(name: "register_success");*/
+      /* MemoryApp.analytics!.logEvent(name: "register_success");*/
       _repository
           .getUser()
           .then((value) => MemoryApp.userInformation = value.data)
@@ -145,7 +152,7 @@ class AuthenticationBloc {
         _waiting.value = false;
         _navigateToVerify.fire(value.next);
       });
-    }).catchError((onError){
+    }).catchError((onError) {
       _showServerError.fire(false);
     });
   }
@@ -188,7 +195,7 @@ class AuthenticationBloc {
         _waiting.value = false;
         _navigateToVerify.fire(value.next);
       });
-    }).catchError((onError){
+    }).catchError((onError) {
       _showServerError.fire(false);
     });
   }
@@ -204,8 +211,8 @@ class AuthenticationBloc {
     else
       _filterListCountry.value = _countries.value
           .where((country) =>
-      country.name!.toLowerCase().contains(text.toLowerCase()) ||
-          country.code!.contains(text))
+              country.name!.toLowerCase().contains(text.toLowerCase()) ||
+              country.code!.contains(text))
           .toList();
   }
 

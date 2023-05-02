@@ -9,6 +9,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:country_calling_code_picker/picker.dart' as picker;
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
@@ -27,6 +28,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   final _textSearchCountryCode = TextEditingController();
   final _textCountryCode = TextEditingController();
   String dropdownValue = 'One';
+  late String myGeo;
   bool _validate = false;
   late String phoneNumber;
   late String number;
@@ -49,6 +51,14 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     authBloc.fetchCountries();
   }
 
+  void findCountryCodeByIp() async {
+    final geo = await Ipify.geo('at_5GgRPPGVt1ya5sUIHp35cieN97IvN');
+    myGeo = geo.location?.country ?? 'IR';
+    Country country = authBloc.findCountryByIp(myGeo);
+    authBloc.setCountry(country);
+    _selectedLocation = country;
+  }
+
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) async {
       if (event != null) {
@@ -60,6 +70,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
     });
     authBloc.showServerError.listen((event) {
       Navigator.pop(context);
+    });
+
+    authBloc.countriesStream.listen((event) {
+      findCountryCodeByIp();
     });
 
     authBloc.selectedCountry.listen((event) {
@@ -161,7 +175,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                     keyboardType: TextInputType.phone,
                     style: typography.caption!.copyWith(color: Color(0xff454545)),
                     decoration: InputDecoration(
-                        fillColor: const Color.fromRGBO(255, 255, 255, 0.48),
+                        fillColor: Colors.white,
                         filled: true,
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
@@ -173,10 +187,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                             borderRadius: BorderRadius.circular(10.0)),
-                        labelText: intl.mobile,
+                        hintText: intl.mobile,
                         // errorText: _validate ? intl.fillAllField : null,
-                        labelStyle: TextStyle(
-                            color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w500),
+                        hintStyle: TextStyle(
+                            color: AppColors.primary, fontSize: 12.sp, fontWeight: FontWeight.w500),
                         suffixIcon: selectCountry(),
                         suffixIconConstraints: BoxConstraints(maxWidth: 20.w, minWidth: 10.w)),
                     onSubmitted: (String) {
@@ -192,7 +206,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 30.0),
           child: StreamBuilder(
             stream: authBloc.selectedCountry,
             builder: (_, AsyncSnapshot<Country> snapshot) {
@@ -200,10 +214,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 Colors.white,
                 AppColors.primary,
                 intl.registerOrLogin,
-                Size(100.w, 8.h),
+                Size(100.w, 7.h),
                 () {
                   if (phoneNumber.isNotEmpty) {
-                    if (snapshot.requireData.code == '98') {
+                    if (phoneNumber.startsWith('0')) {
                       while (phoneNumber.startsWith('0')) {
                         phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
                       }
@@ -311,7 +325,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
             StreamBuilder<List<Country>>(
                 stream: authBloc.filterListCountry,
                 builder: (context, filterListCountry) {
-                  if (filterListCountry.hasData)
+                  if (filterListCountry.hasData) {
                     return Expanded(
                       child: ScrollConfiguration(
                         behavior: MyCustomScrollBehavior(),
@@ -361,6 +375,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                         ),
                       ),
                     );
+                  }
                   return Center(child: Progress());
                 }),
           ],

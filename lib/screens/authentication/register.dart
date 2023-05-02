@@ -123,7 +123,7 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
               child: Text(intl.register, style: TextStyle(
                   color: AppColors.penColor,
                   fontSize: 22.0,
-                  fontFamily: 'Iransans-Bold',
+                  fontFamily: 'Cairo-bold',
                   fontWeight: FontWeight.w700))
           ),
         ),

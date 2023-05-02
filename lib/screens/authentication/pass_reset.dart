@@ -103,7 +103,7 @@ class _PasswordResetScreenState extends ResourcefulState<PasswordResetScreen> {
               child: Text(intl.changePassword, style: TextStyle(
                   color: AppColors.penColor,
                   fontSize: 22.0,
-                  fontFamily: 'Iransans-Bold',
+                  fontFamily: 'Cairo-bold',
                   fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center)
           ),

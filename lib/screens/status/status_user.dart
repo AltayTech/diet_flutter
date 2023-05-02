@@ -123,13 +123,17 @@ class _StatusUserScreenState extends ResourcefulState<StatusUserScreen> {
                   ],
                 ),
               );
-            } else
-              return Center(
-                child: SpinKitCircle(
-                  color: AppColors.primary,
-                  size: 7.w,
+            } else {
+              return Container(
+                constraints: BoxConstraints(minHeight: 80.h, minWidth: 100.w),
+                child: Center(
+                  child: SpinKitCircle(
+                    color: AppColors.primary,
+                    size: 7.w,
+                  ),
                 ),
               );
+            }
           },
           stream: bloc.waiting,
         ),

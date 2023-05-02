@@ -155,7 +155,7 @@ class _VerifyScreenState extends ResourcefulState<VerifyScreen> with CodeAutoFil
                   style: TextStyle(
                       color: AppColors.penColor,
                       fontSize: 22.0,
-                      fontFamily: 'Iransans-Bold',
+                      fontFamily: 'Cairo-bold',
                       fontWeight: FontWeight.w700))),
         ),
         Positioned(

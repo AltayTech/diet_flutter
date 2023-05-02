@@ -43,10 +43,10 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
             // padding: MaterialStateProperty.all(
             //     EdgeInsets.fromLTRB(50, 20, 50, 20)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(35),
+              borderRadius: BorderRadius.circular(10),
             ))),
         child: Ink(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(35)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: Container(
               width: size.width,
               height: size.height,
@@ -68,11 +68,11 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
             // padding: MaterialStateProperty.all(
             //     EdgeInsets.fromLTRB(50, 20, 50, 20)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(35),
+              borderRadius: BorderRadius.circular(10),
             ))),
         child: Ink(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35), gradient: AppColors.btnColorsGradient),
+                borderRadius: BorderRadius.circular(10), gradient: AppColors.btnColorsGradient),
             child: Container(
                 width: size.width,
                 height: size.height,
@@ -100,11 +100,11 @@ class _CustomButtonState extends ResourcefulState<CustomButton> {
             // padding: MaterialStateProperty.all(
             //     EdgeInsets.fromLTRB(50, 20, 50, 20)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(35),
+              borderRadius: BorderRadius.circular(10),
             ))),
         child: Ink(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35), gradient: AppColors.btnColorsGradient),
+                borderRadius: BorderRadius.circular(10), gradient: AppColors.btnColorsGradient),
             child: Container(
                 width: size.width,
                 height: size.height,

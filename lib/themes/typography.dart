@@ -104,8 +104,8 @@ class AppTypography {
   /// decide which fontFamily to apply with current locale of app
   String getFontFamily() {
     if (locale == AppLocale.fa || locale == AppLocale.ar) {
-      return 'Iransans';
+      return 'Cairo-regular';
     }
-    return 'Iransans';
+    return 'Cairo-regular';
   }
 }
