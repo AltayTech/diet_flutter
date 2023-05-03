@@ -8,6 +8,7 @@ Future<void> main() async {
     name: 'Preview',
     variables: {
       'baseUrl': 'https://user.drkermanidiet.com/behandam-diet/api',
+      'baseUrlCrm': 'https://crm.drdietapp.com/api/diet/landings',
       "baseUrlFile": "https://user.drkermanidiet.com/behandam-diet/api/helia-service",
       "baseUrlFileShop": "https://user.drkermanidiet.com/shop-service",
       "iappsPackage": "com.kermanydiet",

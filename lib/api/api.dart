@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:behandam/data/entity/auth/user_crm.dart';
 import 'package:behandam/data/entity/fitamin.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
@@ -313,5 +314,8 @@ abstract class RestClient {
 
   @GET("/user/support-expert")
   NetworkResult<CallSupport> getCallSupport();
+
+  @POST('/land-data')
+  NetworkResult<UserCrmResponse> sendUserToCrm(@Body() UserCrm userCrm);
 }
 

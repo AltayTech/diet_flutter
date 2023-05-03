@@ -6,6 +6,7 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/build_context.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/advice/advice.dart';
+import 'package:behandam/screens/authentication/crm_register_user/crm_register_user.dart';
 import 'package:behandam/screens/authentication/pass_reset.dart';
 import 'package:behandam/screens/authentication/register.dart';
 import 'package:behandam/screens/authentication/verify.dart';
@@ -359,6 +360,7 @@ final navigator = VxNavigator(
     Routes.shopHome: (_, __) => MaterialPage(child: routePage(ShopHomeScreen())),
     Routes.refund: (_, __) => MaterialPage(child: routePage(RefundScreen())),
     Routes.refundVerify: (_, __) => MaterialPage(child: routePage(RefundVerifyScreen())),
+    Routes.userCrm: (_, __) => MaterialPage(child: routePage(CrmRegisterUser())),
     Routes.refundRecord: (_, __) => MaterialPage(child: routePage(RefundRecordScreen())),
     RegExp(r"\/shop\/product\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(ProductPage()), arguments: uri.pathSegments[2]),

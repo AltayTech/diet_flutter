@@ -4,6 +4,7 @@ import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/api/interceptor/logger.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
+import 'package:behandam/data/entity/auth/user_crm.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/fitamin.dart';
@@ -59,10 +60,16 @@ enum FoodDietPdf { TERM, WEEK }
 
 abstract class Repository {
   static Repository? _instance;
+  static Repository? _instanceCrm;
 
-  static Repository getInstance() {
-    _instance ??= _RepositoryImpl();
+  static Repository getInstance({String? url}) {
+    _instance ??= _RepositoryImpl(url);
     return _instance!;
+  }
+
+  static Repository getInstanceCrm() {
+    _instanceCrm ??= _RepositoryImpl(FlavorConfig.instance.variables['baseUrlCrm']);
+    return _instanceCrm!;
   }
 
   NetworkResult<List<Country>?> country();
@@ -227,6 +234,8 @@ abstract class Repository {
   NetworkResult<Price?> checkCouponShop(Price price);
 
   NetworkResult<CallSupport> getCallSupport();
+
+  NetworkResult<UserCrmResponse> sendUserToCrm(UserCrm userCrm);
 }
 
 class _RepositoryImpl extends Repository {
@@ -238,7 +247,7 @@ class _RepositoryImpl extends Repository {
   static const connectTimeout = 60 * 1000;
   static const sendTimeout = 5 * 60 * 1000;
 
-  _RepositoryImpl() {
+  _RepositoryImpl(String? url) {
     _dio = Dio();
    /* if (!kIsWeb) {
       _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
@@ -249,9 +258,9 @@ class _RepositoryImpl extends Repository {
     }*/
 
     _dio.interceptors.add(ErrorHandlerInterceptor());
-    _dio.interceptors.add(GlobalInterceptor());
+    _dio.interceptors.add(GlobalInterceptor(url));
     _dio.interceptors.add(LoggingInterceptor());
-    _apiClient = RestClient(_dio, baseUrl: FlavorConfig.instance.variables['baseUrl']);
+    _apiClient = RestClient(_dio, baseUrl: url ?? FlavorConfig.instance.variables['baseUrl']);
     _cache = MemoryApp();
   }
 
@@ -880,6 +889,12 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<CallSupport> getCallSupport() {
     var response = _apiClient.getCallSupport();
+    return response;
+  }
+
+  @override
+  NetworkResult<UserCrmResponse> sendUserToCrm(UserCrm userCrm) async {
+    var response = await _apiClient.sendUserToCrm(userCrm);
     return response;
   }
 }

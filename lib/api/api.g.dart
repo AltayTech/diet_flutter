@@ -23,7 +23,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<List<Country>>>(Options(
       method: 'GET',
@@ -39,20 +39,22 @@ class _RestClient implements RestClient {
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<List<Country>>.fromJson(
       _result.data!,
-      (json) => (json as List<dynamic>)
-          .map<Country>((i) => Country.fromJson(i as Map<String, dynamic>))
-          .toList(),
+      (json) => json is List<dynamic>
+          ? json
+              .map<Country>((i) => Country.fromJson(i as Map<String, dynamic>))
+              .toList()
+          : List.empty(),
     );
     return value;
   }
 
   @override
-  Future<NetworkResponse<CheckStatus>> checkUserStatus(mobile) async {
+  Future<NetworkResponse<CheckStatus>> checkUserStatus(String? mobile) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<CheckStatus>>(Options(
       method: 'GET',
@@ -74,7 +76,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<SignIn>> signInWithPhoneNumber(user) async {
+  Future<NetworkResponse<SignIn>> signInWithPhoneNumber(User user) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -101,12 +103,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<VerificationCode>> sendVerificationCode(mobile) async {
+  Future<NetworkResponse<VerificationCode>> sendVerificationCode(
+      String? mobile) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<VerificationCode>>(Options(
       method: 'POST',
@@ -128,12 +131,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<VerifyOutput>> verifyUser(verificationCode) async {
+  Future<NetworkResponse<VerifyOutput>> verifyUser(
+      VerificationCode verificationCode) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(verificationCode.toJson());
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<VerifyOutput>>(Options(
       method: 'GET',
@@ -155,7 +159,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<ResetOutput>> resetPassword(password) async {
+  Future<NetworkResponse<ResetOutput>> resetPassword(Reset password) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -182,7 +186,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<RegisterOutput>> register(reg) async {
+  Future<NetworkResponse<RegisterOutput>> register(Register reg) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -213,7 +217,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<RegimeType>>(Options(
       method: 'GET',
@@ -235,11 +239,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<Help>> helpDietType(id) async {
+  Future<NetworkResponse<Help>> helpDietType(int id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Help>>(Options(
       method: 'GET',
@@ -261,11 +265,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<Help>> helpBodyState(id) async {
+  Future<NetworkResponse<Help>> helpBodyState(int id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Help>>(Options(
       method: 'GET',
@@ -287,7 +291,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> setCondition(requestData) async {
+  Future<NetworkResponse<dynamic>> setCondition(
+      Map<String, dynamic> requestData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -314,7 +319,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<PhysicalInfoData>> sendInfo(info) async {
+  Future<NetworkResponse<PhysicalInfoData>> sendInfo(
+      PhysicalInfoData info) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -345,7 +351,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<BodyStatus>>(Options(
       method: 'GET',
@@ -367,11 +373,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<FoodListData>> foodList(date) async {
+  Future<NetworkResponse<FoodListData>> foodList(String date) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<FoodListData>>(Options(
       method: 'GET',
@@ -397,7 +403,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<UserInformation>>(Options(
       method: 'GET',
@@ -423,7 +429,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<UserInformation>>(Options(
       method: 'GET',
@@ -449,7 +455,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<UserInformation>>(Options(
       method: 'GET',
@@ -475,7 +481,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<CityProvinceModel>>(Options(
       method: 'GET',
@@ -498,8 +504,8 @@ class _RestClient implements RestClient {
 
   @override
   Future<NetworkResponse<Media>> sendMedia(
-    media,
-    info,
+    File media,
+    String info,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -538,7 +544,7 @@ class _RestClient implements RestClient {
 
   @override
   Future<NetworkResponse<UserInformation>> updateProfile(
-      userInformation) async {
+      UserInformationEdit userInformation) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -569,7 +575,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Inbox>>(Options(
       method: 'GET',
@@ -595,7 +601,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Inbox>>(Options(
       method: 'GET',
@@ -621,7 +627,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<TicketModel>>(Options(
       method: 'GET',
@@ -647,7 +653,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<List<FastPatternData>>>(Options(
       method: 'GET',
@@ -663,16 +669,19 @@ class _RestClient implements RestClient {
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NetworkResponse<List<FastPatternData>>.fromJson(
       _result.data!,
-      (json) => (json as List<dynamic>)
-          .map<FastPatternData>(
-              (i) => FastPatternData.fromJson(i as Map<String, dynamic>))
-          .toList(),
+      (json) => json is List<dynamic>
+          ? json
+              .map<FastPatternData>(
+                  (i) => FastPatternData.fromJson(i as Map<String, dynamic>))
+              .toList()
+          : List.empty(),
     );
     return value;
   }
 
   @override
-  Future<NetworkResponse<FastMenuRequestData>> changeToFast(requestData) async {
+  Future<NetworkResponse<FastMenuRequestData>> changeToFast(
+      FastMenuRequestData requestData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -699,11 +708,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<ListFoodData>> listFood(filter) async {
+  Future<NetworkResponse<ListFoodData>> listFood(String filter) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ListFoodData>>(Options(
       method: 'GET',
@@ -725,7 +734,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<bool>> dailyMenu(date) async {
+  Future<NetworkResponse<bool>> dailyMenu(DailyMenuRequestData date) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -753,13 +762,13 @@ class _RestClient implements RestClient {
 
   @override
   Future<NetworkResponse<CalendarData>> calendar(
-    start,
-    end,
+    String start,
+    String end,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<CalendarData>>(Options(
       method: 'GET',
@@ -785,7 +794,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<SupportModel>>(Options(
       method: 'GET',
@@ -807,7 +816,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> sendTicketMessage(sendTicket) async {
+  Future<NetworkResponse<dynamic>> sendTicketMessage(
+      SendTicket sendTicket) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -834,7 +844,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> sendTicketMessageDetail(sendTicket) async {
+  Future<NetworkResponse<dynamic>> sendTicketMessageDetail(
+      SendTicket sendTicket) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -862,11 +873,11 @@ class _RestClient implements RestClient {
 
   @override
   Future<NetworkResponse<dynamic>> sendTicketFile(
-    media,
-    is_voice,
-    has_attachment,
-    department_id,
-    title,
+    File media,
+    int is_voice,
+    int has_attachment,
+    String department_id,
+    String title,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -917,11 +928,11 @@ class _RestClient implements RestClient {
 
   @override
   Future<NetworkResponse<dynamic>> sendTicketFileDetail({
-    media,
-    is_voice,
-    ticket_id,
-    body,
-    has_attachment,
+    File? media,
+    int? is_voice,
+    int? ticket_id,
+    String? body,
+    int? has_attachment,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -982,11 +993,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<TicketModel>> getTicketDetails(id) async {
+  Future<NetworkResponse<TicketModel>> getTicketDetails(int id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<TicketModel>>(Options(
       method: 'GET',
@@ -1012,7 +1023,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Call>>(Options(
       method: 'GET',
@@ -1038,7 +1049,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(Options(
       method: 'POST',
@@ -1060,11 +1071,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> deleteCall(id) async {
+  Future<NetworkResponse<dynamic>> deleteCall(int id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(Options(
       method: 'DELETE',
@@ -1087,14 +1098,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<NetworkResponse<CalenderOutput>> getCalendar(
-    startDate,
-    endDate,
+    String? startDate,
+    String? endDate,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<CalenderOutput>>(Options(
       method: 'GET',
@@ -1120,7 +1131,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<PhysicalInfoData>>(Options(
       method: 'GET',
@@ -1146,7 +1157,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<UserSickness>>(Options(
       method: 'GET',
@@ -1168,7 +1179,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> setUserSickness(userSickness) async {
+  Future<NetworkResponse<dynamic>> setUserSickness(
+      UserSickness userSickness) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1199,7 +1211,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<UserSicknessSpecial>>(Options(
       method: 'GET',
@@ -1221,7 +1233,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> setUserSicknessSpecial(userSickness) async {
+  Future<NetworkResponse<dynamic>> setUserSicknessSpecial(
+      UserSickness userSickness) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1252,7 +1265,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<AdviceData>>(Options(
       method: 'GET',
@@ -1278,7 +1291,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<PackageItem>>(Options(
       method: 'GET',
@@ -1304,7 +1317,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<PackageItem>>(Options(
       method: 'GET',
@@ -1326,7 +1339,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<Price?>> checkCoupon(price) async {
+  Future<NetworkResponse<Price?>> checkCoupon(Price price) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1354,7 +1367,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<Payment>> selectPayment(payment) async {
+  Future<NetworkResponse<Payment>> selectPayment(Payment payment) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1385,7 +1398,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(Options(
       method: 'GET',
@@ -1411,7 +1424,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<LatestInvoiceData>>(Options(
       method: 'GET',
@@ -1433,7 +1446,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<LatestInvoiceData>> newPayment(requestData) async {
+  Future<NetworkResponse<LatestInvoiceData>> newPayment(
+      LatestInvoiceData requestData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1460,7 +1474,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<BookingOutput>> getBook(booking) async {
+  Future<NetworkResponse<BookingOutput>> getBook(Booking booking) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1491,7 +1505,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<HistoryOutput>>(Options(
       method: 'GET',
@@ -1517,7 +1531,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<LatestInvoiceData>>(Options(
       method: 'GET',
@@ -1543,7 +1557,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ActivityLevelData>>(Options(
       method: 'GET',
@@ -1569,7 +1583,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<DietHistoryData>>(Options(
       method: 'GET',
@@ -1595,7 +1609,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<DietGoalData>>(Options(
       method: 'GET',
@@ -1621,7 +1635,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<OverviewData>>(Options(
       method: 'GET',
@@ -1647,7 +1661,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<VisitItem>>(Options(
       method: 'GET',
@@ -1673,7 +1687,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<MenuData>>(Options(
       method: 'GET',
@@ -1699,7 +1713,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Term>>(Options(
       method: 'PATCH',
@@ -1721,7 +1735,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> menuSelect(conditionRequestData) async {
+  Future<NetworkResponse<dynamic>> menuSelect(
+      ConditionRequestData conditionRequestData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1748,7 +1763,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> visit(requestData) async {
+  Future<NetworkResponse<dynamic>> visit(
+      Map<String, dynamic> requestData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1779,7 +1795,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<VersionData>>(Options(
       method: 'GET',
@@ -1805,7 +1821,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Fitamin>>(Options(
       method: 'GET',
@@ -1827,7 +1843,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<RegisterOutput>> landingReg(reg) async {
+  Future<NetworkResponse<RegisterOutput>> landingReg(Register reg) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1858,7 +1874,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ShopModel>>(Options(
       method: 'GET',
@@ -1880,11 +1896,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<ShopCategory>> getCategory(id) async {
+  Future<NetworkResponse<ShopCategory>> getCategory(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ShopCategory>>(Options(
       method: 'GET',
@@ -1910,7 +1926,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<Orders>>(Options(
       method: 'GET',
@@ -1932,11 +1948,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<ShopProduct>> getProduct(id) async {
+  Future<NetworkResponse<ShopProduct>> getProduct(int id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ShopProduct>>(Options(
       method: 'GET',
@@ -1962,7 +1978,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<TermPackage>>(Options(
       method: 'GET',
@@ -1988,7 +2004,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<RefundItem>>(Options(
       method: 'GET',
@@ -2010,7 +2026,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> editVisit(requestData) async {
+  Future<NetworkResponse<dynamic>> editVisit(
+      PhysicalInfoData requestData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -2037,12 +2054,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> verifyPassword(mobile) async {
+  Future<NetworkResponse<dynamic>> verifyPassword(String? mobile) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<dynamic>>(Options(
       method: 'GET',
@@ -2064,7 +2081,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<dynamic>> setRefund(refundVerify) async {
+  Future<NetworkResponse<dynamic>> setRefund(RefundVerify refundVerify) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -2091,7 +2108,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<Payment>> shopOnlinePayment(requestData) async {
+  Future<NetworkResponse<Payment>> shopOnlinePayment(
+      Payment requestData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -2122,7 +2140,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<LatestInvoiceData>>(Options(
       method: 'GET',
@@ -2144,11 +2162,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<ShopCategory>> getProducts(filter) async {
+  Future<NetworkResponse<ShopCategory>> getProducts(String filter) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<ShopCategory>>(Options(
       method: 'GET',
@@ -2170,7 +2188,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NetworkResponse<Price?>> checkCouponShop(price) async {
+  Future<NetworkResponse<Price?>> checkCouponShop(Price price) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -2202,7 +2220,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkResponse<CallSupport>>(Options(
       method: 'GET',
@@ -2219,6 +2237,34 @@ class _RestClient implements RestClient {
     final value = NetworkResponse<CallSupport>.fromJson(
       _result.data!,
       (json) => CallSupport.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkResponse<UserCrmResponse>> sendUserToCrm(
+      UserCrm userCrm) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(userCrm.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkResponse<UserCrmResponse>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/land-data',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NetworkResponse<UserCrmResponse>.fromJson(
+      _result.data!,
+      (json) => UserCrmResponse.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

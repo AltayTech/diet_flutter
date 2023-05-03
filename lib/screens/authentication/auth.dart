@@ -1,6 +1,7 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/country.dart';
+import 'package:behandam/routes.dart';
 import 'package:behandam/screens/widget/custom_button.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
@@ -68,6 +69,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
         );
       }
     });
+
+    authBloc.navigateTo.listen((event) {
+      context.vxNav.clearAndPush(Uri.parse(Routes.userCrm));
+    });
+
     authBloc.showServerError.listen((event) {
       Navigator.pop(context);
     });

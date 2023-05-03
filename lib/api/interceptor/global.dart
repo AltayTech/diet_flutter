@@ -10,6 +10,12 @@ import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class GlobalInterceptor extends Interceptor {
+  String? alternativeUrl;
+
+  GlobalInterceptor(String? url) {
+    alternativeUrl = url;
+  }
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final authToken = await AppSharedPreferences.authToken;
@@ -22,8 +28,13 @@ class GlobalInterceptor extends Interceptor {
     options.headers['accept-language'] = languageCode;
     if (!kIsWeb) options.headers['user-agent'] = await DeviceUtils.makeUserAgent();
     options.headers['charset'] = 'UTF-8';
-    if (authToken != null && authToken.isNotEmpty) {
-      options.headers['authorization'] = 'Bearer $authToken';
+
+    if (alternativeUrl != null && alternativeUrl == FlavorConfig.instance.variables['baseUrlCrm']) {
+      options.headers['token'] = 'nz9XS54cGdjV7nfPfJ7nEHuUmQP3kGm2rymF';
+    } else {
+      if (authToken != null && authToken.isNotEmpty) {
+        options.headers['authorization'] = 'Bearer ${authToken}';
+      }
     }
 
     options.headers['app'] = '0';

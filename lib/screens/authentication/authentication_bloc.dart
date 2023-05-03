@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/entity/auth/reset.dart';
+import 'package:behandam/data/entity/auth/user_crm.dart';
 import 'package:behandam/data/entity/auth/user_info.dart';
 import 'package:behandam/data/entity/auth/verify.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/string.dart';
+import 'package:behandam/routes.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:country_calling_code_picker/picker.dart' as picker;
 import '../../base/live_event.dart';
@@ -20,6 +22,7 @@ class AuthenticationBloc {
   }
 
   final _repository = Repository.getInstance();
+  final _repositoryCrm = Repository.getInstanceCrm();
 
   final _waiting = BehaviorSubject<bool>();
   final _countries = BehaviorSubject<List<Country>>();
@@ -111,7 +114,20 @@ class AuthenticationBloc {
 
   void loginMethod(String phoneNumber) {
     _repository.status(phoneNumber).then((value) {
-      _navigateToVerify.fire(value.next);
+      if (value.next!.contains('verify') || value.next!.contains('register')) {
+        UserCrm userCrm = UserCrm();
+        userCrm.mobile = phoneNumber;
+        userCrm.repository = 27;
+        // diet topic
+        userCrm.topic = 21;
+        _repositoryCrm.sendUserToCrm(userCrm).then((value) {
+
+        }).whenComplete(() {
+          _navigateTo.fire(true);
+        });
+      } else {
+        _navigateToVerify.fire(value.next);
+      }
       print('value: ${value.data!.isExist}');
     }).whenComplete(() => _showServerError.fire(false));
   }
