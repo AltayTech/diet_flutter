@@ -57,10 +57,8 @@ class _CrmRegisterUserState extends ResourcefulState<CrmRegisterUser> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Space(height: 10.h),
-        alertText(),
-        Space(height: 3.h),
         Text(
-          intl.callRightNow,
+          intl.userCrmMessageSuccess,
           style: typography.caption,
           softWrap: true,
           textAlign: TextAlign.center,
@@ -78,28 +76,6 @@ class _CrmRegisterUserState extends ResourcefulState<CrmRegisterUser> {
           ),
         ),
         Space(height: 2.h),
-      ],
-    );
-  }
-
-  Widget alertText() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(
-          Icons.edit,
-          size: 5.w,
-          color: AppColors.primary,
-        ),
-        Space(width: 3.w),
-        Expanded(
-          child: Text(
-            intl.blockText,
-            style: typography.caption,
-            softWrap: true,
-            textAlign: TextAlign.start,
-          ),
-        ),
       ],
     );
   }
