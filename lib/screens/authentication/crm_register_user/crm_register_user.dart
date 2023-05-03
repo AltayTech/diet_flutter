@@ -26,7 +26,7 @@ class _CrmRegisterUserState extends ResourcefulState<CrmRegisterUser> {
     super.build(context);
 
     return Scaffold(
-      appBar: Toolbar(titleBar: intl.needInvestigation),
+      appBar: Toolbar(titleBar: ''),
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
