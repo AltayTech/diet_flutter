@@ -221,10 +221,6 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       while (phoneNumber.startsWith('0')) {
                         phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
                       }
-                      if ((phoneNumber.length) != 10) {
-                        Utils.getSnackbarMessage(context, intl.errorMobileCondition);
-                        return;
-                      }
                     } else if ((snapshot.requireData.code!.length + phoneNumber.length) < 7 ||
                         (snapshot.requireData.code!.length + phoneNumber.length) > 15) {
                       Utils.getSnackbarMessage(context, intl.errorMobileCondition);
@@ -385,20 +381,20 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   }
 
   void click(Country countryCode) {
-    if (countryCode.code == '98') {
-      while (phoneNumber != null && phoneNumber!.startsWith('0')) {
-        phoneNumber = phoneNumber!.replaceFirst(RegExp(r'0'), '');
+    if (phoneNumber.startsWith('0')) {
+      while (phoneNumber != null && phoneNumber.startsWith('0')) {
+        phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
       }
-      if (phoneNumber == null || phoneNumber.length != 10) {
+      if (phoneNumber == null) {
         Utils.getSnackbarMessage(context, intl.errorMobileCondition);
         return;
       }
-    } else if ((countryCode.code!.length + phoneNumber!.length) < 7 ||
-        (countryCode.code!.length + phoneNumber!.length) > 15) {
+    } else if ((countryCode.code!.length + phoneNumber.length) < 7 ||
+        (countryCode.code!.length + phoneNumber.length) > 15) {
       Utils.getSnackbarMessage(context, intl.errorMobileCondition);
       return;
     }
-    number = countryCode.code! + phoneNumber!;
+    number = countryCode.code! + phoneNumber;
     DialogUtils.showDialogProgress(context: context);
     authBloc.loginMethod(number.toEnglishDigit());
   }
