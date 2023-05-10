@@ -67,14 +67,14 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    event.title!,
+                    event.title ?? '',
                     textAlign: TextAlign.center,
                     textDirection: context.textDirectionOfLocale,
                     style: Theme.of(context).textTheme.caption,
                   ),
                   Space(height: 2.h),
                   Text(
-                    event.description!,
+                    event.description ?? '',
                     textDirection: context.textDirectionOfLocale,
                     style: Theme.of(context).textTheme.caption,
                   ),

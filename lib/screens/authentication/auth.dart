@@ -53,11 +53,17 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   }
 
   void findCountryCodeByIp() async {
-    final geo = await Ipify.geo('at_5GgRPPGVt1ya5sUIHp35cieN97IvN');
-    myGeo = geo.location?.country ?? 'IR';
-    Country country = authBloc.findCountryByIp(myGeo);
-    authBloc.setCountry(country);
-    _selectedLocation = country;
+    final geo = await Ipify.geo('at_5GgRPPGVt1ya5sUIHp35cieN97IvN').then((value) {
+      myGeo = value.location?.country ?? 'KW';
+      Country country = authBloc.findCountryByIp(myGeo);
+      authBloc.setCountry(country);
+      _selectedLocation = country;
+    }).onError((error, stackTrace) {
+      myGeo = 'KW';
+      Country country = authBloc.findCountryByIp(myGeo);
+      authBloc.setCountry(country);
+      _selectedLocation = country;
+    });
   }
 
   void listenBloc() {
