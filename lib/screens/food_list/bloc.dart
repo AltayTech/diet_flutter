@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:alarm/alarm.dart';
+import 'package:alarm/service/notification.dart';
 import 'package:behandam/app/bloc.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
@@ -51,11 +53,10 @@ class FoodListBloc {
 
   String? get pdfPath => _pdfPath;
 
-
-
   Stream<bool> get loadingContent => _loadingContent.stream;
 
   Stream get showServerError => _showServerError.stream;
+
   Stream get navigateTo => _navigateTo.stream;
 
   Stream<FoodListData?> get foodList => _foodList.stream;
@@ -79,6 +80,19 @@ class FoodListBloc {
           for (int i = 0; i < _foodList.value!.meals!.length; i++) {
             _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
             _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
+
+            if (_foodList.value!.meals![i].startAt != null) {
+              setAlarmMeals(
+                  i,
+                  _foodList.value!.meals![i].title,
+                  _foodList.value!.meals![i].food!.title!,
+                  DateTime(
+                      int.parse(_date.value.substring(0, 4)),
+                      int.parse(_date.value.substring(5, 7)),
+                      int.parse(_date.value.substring(8, 10)),
+                      int.parse(_foodList.value!.meals![i].startAt!.substring(0, 2)),
+                      int.parse(_foodList.value!.meals![i].startAt!.substring(3, 5))));
+            }
           }
         }
         setTheme();
@@ -87,6 +101,22 @@ class FoodListBloc {
         _showServerError.fire(value.next);
       }
     }).whenComplete(() => _loadingContent.value = false);
+  }
+
+  Future<void> setAlarmMeals(int id, String title, String body, DateTime dateTime) async {
+    final alarmSettings = AlarmSettings(
+      id: id,
+      dateTime: dateTime,
+      assetAudioPath: 'assets/notif_sound/notification-sound.mp3',
+      //loopAudio: true,
+      vibrate: true,
+      fadeDuration: 3.0,
+      notificationTitle: title,
+      notificationBody: body,
+      enableNotificationOnKill: true,
+    );
+
+    await Alarm.set(alarmSettings: alarmSettings);
   }
 
   bool checkDefaultUnit(RatioFoodItem ratioFoodItem) {
@@ -104,7 +134,7 @@ class FoodListBloc {
         'theme ${_foodList.value?.isFasting} / ${_foodList.value?.isFasting == boolean.True}');
     if (_foodList.value?.isFasting == boolean.True) {
       _appBloc.changeTheme(ThemeAppColor.DARK);
-    } else if(_foodList.value?.dietType?.alias == RegimeAlias.Pregnancy) {
+    } else if (_foodList.value?.dietType?.alias == RegimeAlias.Pregnancy) {
       _appBloc.changeTheme(ThemeAppColor.PURPLE);
     } else {
       _appBloc.changeTheme(ThemeAppColor.DEFAULT);
@@ -121,7 +151,8 @@ class FoodListBloc {
     Gregorian jalaliDate = Gregorian.fromDateTime(gregorianDate);
     List<WeekDay> data = [];
     debugPrint(
-        'date2 $gregorianDate / $jalaliDate / ${WeekDay(gregorianDate: gregorianDate, jalaliDate: jalaliDate)}');
+        'date2 $gregorianDate / $jalaliDate / ${WeekDay(
+            gregorianDate: gregorianDate, jalaliDate: jalaliDate)}');
     data.add(WeekDay(
         gregorianDate: gregorianDate,
         jalaliDate: jalaliDate,
@@ -132,13 +163,14 @@ class FoodListBloc {
           gregorianDate: gregorianDate.add(Duration(days: i)),
           jalaliDate: gregorianDate.add(Duration(days: i)).toGregorian(),
           isSelected:
-              gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
+          gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
       debugPrint(
-          'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
+          'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(
+              Duration(days: i))} /');
     }
     _weekDays.value = data;
     _selectedWeekDay.value = _weekDays.value!.firstWhere(
-        (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
+            (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
     _previousWeekDay = _selectedWeekDay.value;
   }
 
@@ -187,7 +219,8 @@ class FoodListBloc {
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     debugPrint(
-        'newfood ${_foodList.valueOrNull?.meals?[index!].title} / ${_foodList.valueOrNull?.meals?[index!].newFood?.toJson()}');
+        'newfood ${_foodList.valueOrNull?.meals?[index!].title} / ${_foodList.valueOrNull
+            ?.meals?[index!].newFood?.toJson()}');
     onReplacingFood(mealId);
   }
 
@@ -199,7 +232,9 @@ class FoodListBloc {
     debugPrint('newfood3 ${_foodList.valueOrNull?.meals?[0].newFood?.id}');
     _foodList.valueOrNull?.meals?.forEach((meal) {
       debugPrint('daily menu newfood ${meal.id} / ${meal.title} / ${meal.newFood?.toJson()}');
-      if (meal.newFood?.id != null) foods.add(DailyFood(meal.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
+      if (meal.newFood?.id != null)
+        foods.add(DailyFood(
+            meal.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
       debugPrint('daily menu change ${foods.last.toJson()}');
     });
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
@@ -216,7 +251,8 @@ class FoodListBloc {
     int day = _weekDays.value!
         .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
     final meal = _foodList.value?.meals?.firstWhere((element) => element.id == mealId);
-    foods.add(DailyFood(meal!.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
+    foods.add(DailyFood(
+        meal!.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
     debugPrint('replace Food ${foods.last.toJson()}');
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
     _repository.dailyMenu(requestData).then((value) {
@@ -228,16 +264,19 @@ class FoodListBloc {
   }
 
   void makingFoodEmpty(int mealId) {
-    _foodList.valueOrNull?.meals?.firstWhere((element) => element.id == mealId).newFood = null;
+    _foodList.valueOrNull?.meals
+        ?.firstWhere((element) => element.id == mealId)
+        .newFood = null;
   }
 
-  void nextStep(){
+  void nextStep() {
     _repository.nextStep().then((value) {
       _navigateTo.fire(value.next);
     }).whenComplete(() {
       _showServerError.fire(false);
     });
   }
+
   void getPdfMeal(FoodDietPdf type) {
     _repository.getPdfUrl(type).then((value) {
       Utils.launchURL(value.data!.url!);
@@ -249,8 +288,8 @@ class FoodListBloc {
 
   void onMealFoodDaily(ListFood newFood) {
     debugPrint('newfood1 ${newFood.toJson()}');
-    final index = _foodList.valueOrNull?.meals
-        ?.indexWhere((element) => element.id == selectedMeal.id);
+    final index =
+    _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == selectedMeal.id);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     // _foodList.safeValue=_foodList.valueOrNull;

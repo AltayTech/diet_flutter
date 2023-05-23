@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:alarm/alarm.dart';
 import 'package:behandam/app/app.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/data/sharedpreferences.dart';
@@ -24,6 +25,7 @@ Future<void> entryPoint() async {
     await AppSharedPreferences.initialize();
     AppLocale.initialize();
     AppColors(themeAppColor: ThemeAppColor.BLUE);
+    await Alarm.init();
    // _initFireBase();
    // _handleCaughtErrors();
     runApp(App());
