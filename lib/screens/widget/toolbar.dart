@@ -6,16 +6,15 @@ class Toolbar extends AppBar {
   late Widget item;
   late String titleBar;
   Color? color;
-  double? elevationValue;
 
-  Toolbar({required this.titleBar, this.elevationValue}) {
+  Toolbar({required this.titleBar}) {
     color = AppColors.primary;
     item = Text(
       titleBar,
       textAlign: TextAlign.center,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 14.sp,
+        fontSize: 13.sp,
       ),
     );
   }
@@ -24,10 +23,9 @@ class Toolbar extends AppBar {
   // TODO: implement title
   Widget? get title => item;
 
+  @override
   Color? get backgroundColor => color;
 
-  double? get elevation => elevationValue;
-
+  @override
   bool? get centerTitle => true;
-
 }

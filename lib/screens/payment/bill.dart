@@ -3,11 +3,10 @@ import 'package:behandam/base/network_response.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/routes.dart';
+import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/payment/discount_widget.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
@@ -15,9 +14,11 @@ import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/bottom_triangle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:persian_number_utility/src/extensions.dart';
-import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
+
+import 'package:velocity_x/src/extensions/context_ext.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'bloc.dart';
@@ -35,18 +36,19 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
   late PaymentBloc bloc;
   String? inputDiscountCode;
   String? messageError;
-  bool isInitial = false;
-  int? packageType;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
+    bloc = PaymentBloc();
+    bloc.getPackagePayment();
+    listenBloc();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     bloc.dispose();
     super.dispose();
   }
@@ -58,31 +60,15 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!isInitial) {
-      bloc = PaymentBloc();
-      bloc.getPackagePayment();
-
-      listenBloc();
-
-      isInitial = true;
-    }
-  }
-
   void listenBloc() {
     bloc.onlinePayment.listen((event) {
-      debugPrint('listen online payment ${navigator.currentConfiguration?.path}');
+      debugPrint(
+          'listen online payment ${navigator.currentConfiguration?.path}');
       if (event != null && event)
         VxNavigator.of(context).clearAndPush(Uri.parse("/${bloc.path}"));
-      else if (event != null && !event) {
-        if (navigator.currentConfiguration!.path.contains('reg')) {
-          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
-        } else {
-          VxNavigator.of(context).clearAndPush(Uri.parse(Routes.renewPaymentFail));
-        }
-      } else
+      else if (event != null && !event)
+        VxNavigator.of(context).clearAndPush(Uri.parse(Routes.paymentFail));
+      else
         Navigator.of(context).pop();
     });
     bloc.showServerError.listen((event) {
@@ -99,7 +85,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
         else
           context.vxNav.clearAndPush(Uri(path: '/${event.next}'));
       } else if (bloc.isOnline) {
-        MemoryApp.analytics!.logEvent(name: "total_payment_online_select");
+        /*MemoryApp.analytics!.logEvent(name: "total_payment_online_select");*/
         bloc.mustCheckLastInvoice();
         Utils.launchURL(result!.url!);
       } else {
@@ -122,7 +108,10 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
             if (snapshot.hasData && snapshot.data == false) {
               return content();
             } else {
-              return Progress();
+              return SpinKitCircle(
+                size: 7.w,
+                color: AppColors.primary,
+              );
             }
           },
         ),
@@ -133,100 +122,94 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
   Widget content() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: TouchMouseScrollable(
-        child: SingleChildScrollView(
-          child: Container(
-            constraints: BoxConstraints(
-              minHeight: 80.h,
-            ),
-            decoration: AppDecorations.boxSmall.copyWith(
-              color: Colors.white,
-            ),
-            padding: EdgeInsets.only(left: 5.w, right: 5.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              textDirection: context.textDirectionOfLocale,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
-                  child: Text(
-                    intl.paymentFinalBill,
-                    textAlign: TextAlign.center,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .caption,
-                  ),
+      child: SingleChildScrollView(
+        child: Container(
+          constraints: BoxConstraints(
+            minHeight: 80.h,
+          ),
+          decoration: AppDecorations.boxSmall.copyWith(
+            color: Colors.white,
+          ),
+          padding: EdgeInsets.only(left: 5.w, right: 5.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            textDirection: context.textDirectionOfLocale,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
+                child: Text(
+                  intl.paymentFinalBill,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.caption,
                 ),
-                Space(height: 1.h),
-                _priceBox(),
-                Space(height: 1.h),
-                DiscountWidget(),
-                Space(height: 1.h),
-                StreamBuilder(
-                  builder: (context, snapshot) {
-                    if (snapshot.data == null || snapshot.data == false) {
-                      return Container();
-                    } else
-                      return _errorBox();
-                  },
-                  stream: bloc.wrongDisCode,
-                ),
-                Space(
-                  height: 3.h,
-                ),
-                StreamBuilder(
-                  builder: (context, snapshot) {
-                    if (bloc.packageItem!.price!.totalPrice! > 0)
-                      return Center(
-                        child: Text(
-                          intl.typePaymentLabel,
-                          textAlign: TextAlign.center,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: AppColors.labelTextColor),
-                        ),
-                      );
-                    else
-                      return Container();
-                  },
-                  stream: bloc.onlineStream,
-                ),
-                Space(
-                  height: 1.h,
-                ),
-                StreamBuilder(
-                  builder: (context, snapshot) {
-                    if (bloc.packageItem!.price!.totalPrice! > 0)
-                      return _paymentBox();
-                    else
-                      return Container();
-                  },
-                  stream: bloc.onlineStream,
-                ),
-                StreamBuilder(
-                  builder: (context, snapshot) {
-                    return SubmitButton(
-                      onTap: () {
-                        DialogUtils.showDialogProgress(context: context);
-                        bloc.selectUserPayment();
-                      },
-                      label: bloc.packageItem!.price!.totalPrice == 0
-                          ? intl.confirmContinue
-                          : bloc.isOnline
-                          ? intl.onlinePayment
-                          : intl.cardToCardPayment,
+              ),
+              Space(height: 1.h),
+              _priceBox(),
+              Space(height: 1.h),
+              DiscountWidget(),
+              Space(height: 1.h),
+              StreamBuilder(
+                builder: (context, snapshot) {
+                  if (snapshot.data == null || snapshot.data == false) {
+                    return Container();
+                  } else
+                    return _errorBox();
+                },
+                stream: bloc.wrongDisCode,
+              ),
+              Space(
+                height: 3.h,
+              ),
+              StreamBuilder(
+                builder: (context, snapshot) {
+                  if (bloc.packageItem!.price!.totalPrice! > 0)
+                    return Center(
+                      child: Text(
+                        intl.typePaymentLabel,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: AppColors.labelTextColor),
+                      ),
                     );
-                  },
-                  stream: bloc.onlineStream,
-                ),
-                Space(
-                  height: 2.h,
-                ),
-              ],
-            ),
+                  else
+                    return Container();
+                },
+                stream: bloc.onlineStream,
+              ),
+              Space(
+                height: 1.h,
+              ),
+              StreamBuilder(
+                builder: (context, snapshot) {
+                  if (bloc.packageItem!.price!.totalPrice! > 0)
+                    return _paymentBox();
+                  else
+                    return Container();
+                },
+                stream: bloc.onlineStream,
+              ),
+              StreamBuilder(
+                builder: (context, snapshot) {
+                  return SubmitButton(
+                    onTap: () {
+                      DialogUtils.showDialogProgress(context: context);
+                      bloc.selectUserPayment();
+                    },
+                    label: bloc.packageItem!.price!.totalPrice == 0
+                        ? intl.confirmContinue
+                        : bloc.isOnline
+                            ? intl.onlinePayment
+                            : intl.cardToCardPayment,
+                  );
+                },
+                stream: bloc.onlineStream,
+              ),
+              Space(
+                height: 2.h,
+              ),
+            ],
           ),
         ),
       ),
@@ -247,8 +230,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
               messageError ?? intl.offErrorResult,
               textAlign: TextAlign.start,
               textDirection: context.textDirectionOfLocale,
-              style: Theme
-                  .of(context)
+              style: Theme.of(context)
                   .textTheme
                   .overline!
                   .copyWith(color: Colors.red),
@@ -286,9 +268,11 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
             ),
             child: Column(
               children: <Widget>[
-                _rowItems(bloc.packageItem!.price!.amount.toString(), bloc.packageItem!.name!),
+                _rowItems(bloc.packageItem!.price!.price.toString(),
+                    bloc.packageItem!.name!),
                 Divider(),
-                _rowItems(bloc.packageItem!.price!.priceDiscount.toString(), intl.discount),
+                _rowItems(bloc.packageItem!.price!.priceDiscount.toString(),
+                    intl.discount),
                 StreamBuilder(
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data == true)
@@ -302,7 +286,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data == true)
                       return _rowItems(
-                          bloc.discountInfo!.discount!.toString().seRagham(), intl.discountForYou);
+                          bloc.discountInfo!.discount!.toString().seRagham(),
+                          intl.discountForYou);
                     else
                       return Container();
                   },
@@ -325,10 +310,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                 Text(
                   intl.totalPayment,
                   textAlign: TextAlign.center,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .subtitle1,
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
                 StreamBuilder(
                   builder: (context, snapshot) {
@@ -337,14 +319,11 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                       child: Text(
                         bloc.packageItem!.price!.totalPrice == 0
                             ? intl.free
-                            : '${bloc.packageItem!.price!.totalPrice.toString().seRagham()} ${intl
-                            .toman}',
+                            : '${bloc.packageItem!.price!.totalPrice.toString().seRagham()} ${intl.toman}',
                         textAlign: TextAlign.center,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .subtitle1!
-                            .copyWith(color: AppColors.primary, fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold),
                       ),
                     );
                   },
@@ -370,8 +349,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
             child: Text(
               price.seRagham(),
               textAlign: TextAlign.end,
-              style: Theme
-                  .of(context)
+              style: Theme.of(context)
                   .textTheme
                   .caption!
                   .copyWith(color: Color.fromRGBO(87, 192, 159, 1)),
@@ -384,10 +362,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
           child: Text(
             title,
             textAlign: TextAlign.start,
-            style: Theme
-                .of(context)
-                .textTheme
-                .caption,
+            style: Theme.of(context).textTheme.caption,
           ),
         ),
       ],
@@ -408,7 +383,7 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                     'assets/images/bill/online.svg',
                     intl.online,
                     intl.descriptionOnline,
-                        () {
+                    () {
                       bloc.setOnline();
                     },
                   ), () {
@@ -425,11 +400,11 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                   'assets/images/bill/credit.svg',
                   intl.cardToCard,
                   intl.descriptionCardToCard,
-                      () {
+                  () {
                     bloc.setCardToCard();
                   },
                 ),
-                    () {
+                () {
                   bloc.setCardToCard();
                 },
                 bloc.isCardToCard,
@@ -442,7 +417,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
     );
   }
 
-  Widget paymentItemWithTick(Widget child, Function selectPaymentType, bool tickOn) {
+  Widget paymentItemWithTick(
+      Widget child, Function selectPaymentType, bool tickOn) {
     return Column(
       children: <Widget>[
         Container(width: 35.w, height: 43.w, child: child),
@@ -470,7 +446,8 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
     );
   }
 
-  Widget paymentItem(String iconAdrs, String title, String subTitle, Function selectPaymentType) {
+  Widget paymentItem(String iconAdrs, String title, String subTitle,
+      Function selectPaymentType) {
     return GestureDetector(
       onTap: () {
         selectPaymentType();
@@ -516,18 +493,14 @@ class _PaymentBillScreenState extends ResourcefulState<PaymentBillScreen>
                   Text(
                     title,
                     textAlign: TextAlign.center,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .caption,
+                    style: Theme.of(context).textTheme.caption,
                   ),
                   Space(height: 1.h),
                   Flexible(
                     child: Text(subTitle,
                         textAlign: TextAlign.center,
                         softWrap: true,
-                        style: Theme
-                            .of(context)
+                        style: Theme.of(context)
                             .textTheme
                             .overline!
                             .copyWith(color: AppColors.labelTextColor)),

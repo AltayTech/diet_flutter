@@ -1,11 +1,6 @@
-import 'package:behandam/data/entity/daily_message.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
-import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import '../user/user_information.dart';
-
 part 'food_list.g.dart';
 
 @JsonSerializable(createToJson: false)
@@ -24,72 +19,40 @@ class FoodListData {
   @JsonKey(name: 'is_fasting')
   boolean? isFasting;
 
-  @JsonKey(name: 'has_pattern')
-  boolean? hasPattern;
-
-  @JsonKey(name: 'survey_data')
-  SurveyData? surveyData;
-
-  factory FoodListData.fromJson(Map<String, dynamic> json) => _$FoodListDataFromJson(json);
-}
-
-@JsonSerializable(createToJson: false)
-class SurveyData {
-  SurveyData(
-      this.callId,
-      this.surveyStatus,
-      );
-
-  @JsonKey(name: 'call_id')
-  int? callId;
-
-  @JsonKey(name: 'survey_status')
-  bool? surveyStatus;
-
-  factory SurveyData.fromJson(Map<String, dynamic> json) => _$SurveyDataFromJson(json);
+  factory FoodListData.fromJson(Map<String, dynamic> json) =>
+      _$FoodListDataFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
 class Meals {
-  Meals(
-    this.id,
-    this.title,
-    this.mealTypeId,
-    this.icon,
-    this.isForFasting,
-    this.order,
-    this.startAt,
-    this.endAt,
-    this.description,
-    this.food,
-  );
+  Meals();
 
   @JsonKey(name: 'id')
-  final int id;
+  late  int id;
 
   @JsonKey(name: 'title')
-  final String title;
+  late String title;
 
   @JsonKey(name: 'meal_type_id')
-  final int mealTypeId;
+  late int mealTypeId;
 
   @JsonKey(name: 'icon')
-  final String? icon;
+   String? icon;
 
   @JsonKey(name: 'is_for_fasting')
-  final boolean isForFasting;
+  late boolean isForFasting;
 
   @JsonKey(name: 'order')
-  final int order;
+  late int order;
 
   @JsonKey(name: 'start_at')
-  final String? startAt;
+   String? startAt;
 
   @JsonKey(name: 'end_at')
-  final String? endAt;
+   String? endAt;
 
   @JsonKey(name: 'description')
-  final String? description;
+   String? description;
 
   @JsonKey(name: 'food')
   Food? food;
@@ -111,19 +74,16 @@ class Menu {
     this.dietTypeId,
     this.menuTypeId,
     this.menuTermId,
-    this.isPublic,
-    this.theme,
-    this.fastingDates,
+    // this.isCalorieBased,
+    // this.isPrepared,
+    // this.order,
+    // this.menuDays,
     this.startedAt,
     this.expiredAt,
-    this.hex,
   );
 
   @JsonKey(name: 'id')
   final int id;
-
-  @JsonKey(name: 'is_public')
-  final int isPublic;
 
   @JsonKey(name: 'title')
   final String title;
@@ -140,34 +100,33 @@ class Menu {
   @JsonKey(name: 'menu_term_id')
   final int? menuTermId;
 
+  // @JsonKey(name: 'is_calory_based')
+  // final boolean isCalorieBased;
+  //
+  // @JsonKey(name: 'is_prepared')
+  // final boolean isPrepared;
+  //
+  // @JsonKey(name: 'order')
+  // final int order;
+  //
+  // @JsonKey(name: 'menu_days')
+  // final int menuDays;
+
   @JsonKey(name: 'started_at')
   final String? startedAt;
 
   @JsonKey(name: 'expired_at')
   final String? expiredAt;
 
-  @JsonKey(name: 'theme')
-  final TypeTheme? theme;
-
-  @JsonKey(name: 'hex')
-  final String? hex;
-
-  @JsonKey(name: 'fasting_dates')
-  final List<String>? fastingDates;
+/*  @JsonKey(name: 'foods')
+  List<Food>? foods;*/
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 }
 
 @JsonSerializable()
 class Food {
-  Food(
-    this.id,
-    this.title,
-    this.description,
-    this.freeFood,
-    this.freeFoodsItems,
-    this.foodItems,
-  );
+  Food();
 
   @JsonKey(name: 'id')
   int? id;
@@ -176,16 +135,20 @@ class Food {
   String? title;
 
   @JsonKey(name: 'description')
-  final String? description;
+   String? description;
 
   @JsonKey(name: 'free_food')
-  final String? freeFood;
+   String? freeFood;
 
   @JsonKey(name: 'free_foods_items')
-  final List<FoodItem>? freeFoodsItems;
+   List<FoodItem>? freeFoodsItems;
 
   @JsonKey(name: 'food_items')
-  final List<FoodItem>? foodItems;
+   List<FoodItem>? foodItems;
+
+  @JsonKey(name: 'meal_id')
+  int? mealId;
+
 
   factory Food.fromJson(Map<String, dynamic> json) => _$FoodFromJson(json);
 
@@ -239,7 +202,8 @@ class RatioFoodItem {
   @JsonKey(name: 'unit_title', defaultValue: '')
   String unitTitle;
 
-  factory RatioFoodItem.fromJson(Map<String, dynamic> json) => _$RatioFoodItemFromJson(json);
+  factory RatioFoodItem.fromJson(Map<String, dynamic> json) =>
+      _$RatioFoodItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$RatioFoodItemToJson(this);
 }
@@ -254,7 +218,8 @@ class RatioAmount {
   @JsonKey(name: 'second_unit')
   DefaultUnit? secondUnit;
 
-  factory RatioAmount.fromJson(Map<String, dynamic> json) => _$RatioAmountFromJson(json);
+  factory RatioAmount.fromJson(Map<String, dynamic> json) =>
+      _$RatioAmountFromJson(json);
 
   Map<String, dynamic> toJson() => _$RatioAmountToJson(this);
 }
@@ -284,7 +249,8 @@ class DefaultUnit {
   @JsonKey(name: 'representational')
   final dynamic representational;
 
-  factory DefaultUnit.fromJson(Map<String, dynamic> json) => _$DefaultUnitFromJson(json);
+  factory DefaultUnit.fromJson(Map<String, dynamic> json) =>
+      _$DefaultUnitFromJson(json);
 
   Map<String, dynamic> toJson() => _$DefaultUnitToJson(this);
 }
@@ -335,7 +301,7 @@ class FoodItem {
     // this.id,
     this.title,
     this.order,
-    this.amount,
+    this.amount
     // this.fats,
     // this.proteins,
     // this.pivot,
@@ -362,7 +328,8 @@ class FoodItem {
   // @JsonKey(name: 'pivot')
   // final FoodItemPivot? pivot;
 
-  factory FoodItem.fromJson(Map<String, dynamic> json) => _$FoodItemFromJson(json);
+  factory FoodItem.fromJson(Map<String, dynamic> json) =>
+      _$FoodItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$FoodItemToJson(this);
 }
@@ -400,7 +367,8 @@ class FoodItemPivot {
   @JsonKey(name: 'max_calories')
   final int maxCalorie;
 
-  factory FoodItemPivot.fromJson(Map<String, dynamic> json) => _$FoodItemPivotFromJson(json);
+  factory FoodItemPivot.fromJson(Map<String, dynamic> json) =>
+      _$FoodItemPivotFromJson(json);
 
   Map<String, dynamic> toJson() => _$FoodItemPivotToJson(this);
 }
@@ -423,8 +391,6 @@ class Visit {
     this.calorieId,
     this.isActive,
     this.deletedAt,
-    this.calorieValue,
-    this.visitDays,
   );
 
   @JsonKey(name: 'id')
@@ -473,38 +439,29 @@ class Visit {
   @JsonKey(name: 'deleted_at')
   final String? deletedAt;
 
-  @JsonKey(name: 'calory_value')
-  final int calorieValue;
-
-  @JsonKey(name: 'visit_days')
-  final int visitDays;
 
   factory Visit.fromJson(Map<String, dynamic> json) => _$VisitFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
 class DietType {
-  DietType();
+  DietType(
+    this.id,
+    this.alias,
+    this.title,
+  );
 
   @JsonKey(name: 'id')
-  int? id;
+  final int id;
 
   @JsonKey(name: 'alias')
-  RegimeAlias? alias;
+  final RegimeAlias alias;
 
   @JsonKey(name: 'title')
-  String? title;
+  final String title;
 
-  @JsonKey(name: 'is_active')
-  boolean? isActive;
-
-  @JsonKey(name: 'template')
-  TempTicket? template;
-
-  @JsonKey(name: 'diet_types')
-  List<DietType>? dietTypes;
-
-  factory DietType.fromJson(Map<String, dynamic> json) => _$DietTypeFromJson(json);
+  factory DietType.fromJson(Map<String, dynamic> json) =>
+      _$DietTypeFromJson(json);
 }
 
 enum boolean {
@@ -512,17 +469,4 @@ enum boolean {
   False,
   @JsonValue(1)
   True,
-}
-
-enum TypeTheme {
-  @JsonValue("FASTING")
-  FASTING,
-  @JsonValue("FASTING2")
-  FASTING2,
-  @JsonValue("DEFAULT")
-  DEFAULT,
-  @JsonValue("RAMADAN")
-  RAMADAN,
-  @JsonValue("PREGNANCY")
-  PREGNANCY,
 }

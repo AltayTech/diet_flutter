@@ -1,21 +1,15 @@
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/extensions/build_context.dart';
-import 'package:behandam/extensions/string.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/bottom_triangle.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 
 class MenuItem extends StatelessWidget {
-  const MenuItem({
-    Key? key,
-    required this.onClick,
-    required this.menu,
-  }): super(key: key);
+  const MenuItem({Key? key, required this.onClick, required this.menu,}) : super(key: key);
 
   final Function onClick;
   final Menu menu;
@@ -26,81 +20,50 @@ class MenuItem extends StatelessWidget {
     TextTheme typography = context.typography;
 
     return GestureDetector(
-        onTap: () => onClick.call(),
-        child: Stack(
+      onTap: () => onClick.call(),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 2.h),
+        decoration: AppDecorations.boxLarge.copyWith(
+          color: AppColors.onPrimary,
+        ),
+        padding:
+        EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: AppBorderRadius.borderRadiusLarge,
-              child: Container(
-                decoration: AppDecorations.boxLarge.copyWith(
-                  color: AppColors.onPrimary,
-                ),
-                child: ClipPath(
-                  clipper: TopTriangle(),
-                  child: Container(
-                    width: double.infinity,
-                    // height: double.infinity,
-                    color: menu.hex == null
-                        ? AppColors.menuColorDefault.withAlpha(50)
-                        : menu.hex!.hexToColor.withAlpha(50),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 1.w,
-                      vertical: 3.h,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 2.w,
-                        vertical: 2.h,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 2.h),
-              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-              child: Row(
+            Expanded(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          menu.title,
-                          style: typography.caption,
-                          textAlign: TextAlign.start,
-                        ),
-                        Space(height: 0.2.h),
-                        Text(
-                          menu.description ?? '',
-                          style: typography.caption?.apply(
-                            fontSizeDelta: -2,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.start,
-                          softWrap: true,
-                        ),
-                      ],
-                    ),
+                  Text(
+                    menu.title,
+                    style: typography.caption,
+                    textAlign: TextAlign.start,
                   ),
-                  Space(width: 2.w),
-                  helpBox(),
+                  Space(height: 0.2.h),
+                  Text(
+                    menu.description ?? '',
+                    style: typography.caption?.apply(
+                      fontSizeDelta: -2,
+                    ),
+                    textAlign: TextAlign.start,
+                    softWrap: true,
+                  ),
                 ],
               ),
             ),
+            Space(width: 2.w),
+            helpBox(),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Widget helpBox() {
     return Container(
       decoration: AppDecorations.boxMedium.copyWith(
-        color: menu.hex == null
-            ? AppColors.menuColorDefault.withAlpha(30)
-            : menu.hex!.hexToColor.withAlpha(30),
+        color: AppColors.primary.withOpacity(0.2),
       ),
       width: 15.w,
       height: 15.w,
@@ -108,7 +71,7 @@ class MenuItem extends StatelessWidget {
         child: ImageUtils.fromLocal(
           'assets/images/diet/help_icon.svg',
           width: 6.w,
-          color: menu.hex == null ? AppColors.menuColorDefault : menu.hex!.hexToColor,
+          color: AppColors.iconsColor,
         ),
       ),
     );

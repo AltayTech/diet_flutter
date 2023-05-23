@@ -5,15 +5,14 @@ import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/refund/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
-import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/screens/widget/widget_box.dart';
-import 'package:behandam/utils/sheba.dart';
-import 'package:easy_mask/easy_mask.dart';
+import 'package:behandam/utils/card_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 class RefundRecordScreen extends StatefulWidget {
@@ -40,7 +39,7 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
   void blocListener() {
     bloc.navigateTo.listen((event) {
       Utils.getSnackbarMessage(context, intl.successRequest);
-      MemoryApp.analytics!.logEvent(name: "click_refund_record");
+     /* MemoryApp.analytics!.logEvent(name: "click_refund_record");*/
       Timer(Duration(milliseconds: 1500), () {
         VxNavigator.of(context).popToRoot();
       });
@@ -65,37 +64,18 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
       appBar: Toolbar(
         titleBar: intl.refund,
       ),
-      body: body(),
-    ));
-  }
-
-  Widget body() {
-    return SingleChildScrollView(
-      child: Container(
-        color: Color.fromARGB(255, 245, 245, 245),
-        width: 100.w,
-        padding: EdgeInsets.only(
-          left: 4.w,
-          right: 3.w,
-          top: 3.h,
-          bottom: 6.h,
-        ),
-        child: content(),
-      ),
-    );
-  }
-
-  Widget content() {
-    return Column(
-      textDirection: context.textDirectionOfLocale,
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Color.fromARGB(255, 245, 245, 245),
+          width: 100.w,
+          padding: EdgeInsets.only(
+            left: 4.w,
+            right: 3.w,
+            top: 3.h,
+            bottom: 6.h,
           ),
-          padding: EdgeInsets.symmetric(horizontal: 4.w),
           child: Column(
+            textDirection: context.textDirectionOfLocale,
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
@@ -104,37 +84,43 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Space(height: 2.h),
-                    Image.asset(
-                      'assets/images/diet/refund.png',
-                      width: 25.w,
-                      height: 25.w,
-                      fit: BoxFit.cover,
-                    ),
-                    Space(height: 2.h),
-                    Text(intl.pleaseFillInformation, style: Theme.of(context).textTheme.caption),
-                    Space(height: 4.h),
                     Container(
-                      width: double.infinity,
-                      child: Text(intl.cardNumberFull,
-                          textDirection: context.textDirectionOfLocale,
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    Space(height: 1.h),
-                    StreamBuilder<String?>(
-                        stream: bloc.shebaNumber,
-                        builder: (context, snapshot) {
-                          return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Space(height: 2.h),
+                          Image.asset(
+                            'assets/images/diet/refund.png',
+                            width: 25.w,
+                            height: 25.w,
+                            fit: BoxFit.cover,
+                          ),
+                          Space(height: 2.h),
+                          Text(intl.pleaseFillInformation,
+                              style: Theme.of(context).textTheme.caption),
+                          Space(height: 4.h),
+                          Container(
+                            width: double.infinity,
+                            child: Text(intl.cardNumberFull,
+                                textDirection: context.textDirectionOfLocale,
+                                style: Theme.of(context).textTheme.caption),
+                          ),
+                          Space(height: 1.h),
+                          Container(
                               height: 9.h,
                               child: Directionality(
                                 textDirection: TextDirection.ltr,
                                 child: TextFormField(
-                                  initialValue: snapshot.data,
+                                  initialValue: bloc.cardNumber ?? null,
                                   decoration: inputDecoration.copyWith(
                                     labelText: '',
-                                    hintText: 'IR00 0000 0000 0000 0000 0000 00',
+                                    hintText: intl.cardNumber,
                                     hintStyle: Theme.of(context)
                                         .textTheme
                                         .overline!
@@ -146,114 +132,112 @@ class _RefundRecordScreenState extends ResourcefulState<RefundRecordScreen> {
                                   ),
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly,
-                                    new LengthLimitingTextInputFormatter(24),
-                                    TextInputMask(
-                                      mask: 'IR99 9999 9999 9999 9999 9999 99',
-                                    )
+                                    new LengthLimitingTextInputFormatter(16),
+                                    new CardNumberInputFormatter()
                                   ],
                                   keyboardType: TextInputType.phone,
                                   onChanged: (val) {
-                                    bloc.setCardNumber(val.replaceAll(' - ', ''));
+                                    setState(() => bloc.cardNumber = val.replaceAll(' - ', ''));
                                   },
-                                  onSaved: (val) => bloc.setCardNumber(val!.replaceAll(' - ', '')),
+                                  onSaved: (val) => bloc.cardNumber = val,
                                   textAlign: TextAlign.start,
                                   style: Theme.of(context)
                                       .textTheme
                                       .caption!
                                       .copyWith(color: Colors.black87),
                                 ),
-                              ));
-                        }),
-                    StreamBuilder<String?>(
-                        stream: bloc.shebaBankName,
-                        builder: (context, shebaBankName) {
-                          if (shebaBankName.hasData)
-                            return Container(height: 4.h, child: Text(shebaBankName.data ?? ''));
-                          else {
-                            return EmptyBox();
-                          }
-                        }),
-                    Space(height: 2.h),
-                    Container(
-                      width: double.infinity,
-                      child: Text(intl.cardNumberOwner,
-                          textDirection: context.textDirectionOfLocale,
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    Space(height: 1.h),
-                    textInput(
-                      value: bloc.cardOwner ?? '',
-                      label: intl.accountOwnerName,
-                      onChanged: (val) {
-                        bloc.cardOwner = val;
-                      },
-                      maxLine: false,
-                      textInputType: TextInputType.text,
-                      ctx: context,
-                      enable: true,
-                      height: 8.h,
-                      textDirection: context.textDirectionOfLocale,
-                      textController: _textEditingController,
-                      validation: (value) {},
-                    ),
-                    Space(height: 2.h),
-                    SubmitButton(
-                      label: intl.confirmContinue,
-                      onTap: _clickConfirm,
-                    ),
-                    Space(height: 2.h),
-                    Container(
-                        height: 6.5.h,
-                        width: 55.w,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            intl.cancel,
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                            textDirection: context.textDirectionOfLocale,
-                            style: Theme.of(context).textTheme.caption!,
+                              )),
+                          Space(height: 2.h),
+                          Container(
+                            width: double.infinity,
+                            child: Text(intl.cardNumberOwner,
+                                textDirection: context.textDirectionOfLocale,
+                                style: Theme.of(context).textTheme.caption),
                           ),
-                        )),
-                    Space(height: 3.h),
+                          Space(height: 1.h),
+                          textInput(
+                            value: bloc.cardOwner ?? '',
+                            label: intl.accountOwnerName,
+                            onChanged: (val) {
+                              // _textEditingController.text = val;
+                              // _textEditingController.selection = TextSelection.fromPosition(
+                              //     TextPosition(offset: _textEditingController.text.length));
+                              bloc.cardOwner = val;
+                            },
+                            maxLine: false,
+                            textInputType: TextInputType.text,
+                            ctx: context,
+                            enable: true,
+                            height: 8.h,
+                            textDirection: context.textDirectionOfLocale,
+                            textController: _textEditingController,
+                            validation: (value) {},
+                          ),
+                          Space(height: 2.h),
+                          SubmitButton(
+                            label: intl.confirmContinue,
+                            onTap: () {
+                              if (bloc.cardNumber != null && bloc.cardNumber!.length > 15) {
+                                if (bloc.cardOwner != null && bloc.cardOwner!.isNotEmpty) {
+                                  DialogUtils.showDialogProgress(context: context);
+                                  bloc.record();
+                                } else
+                                  Utils.getSnackbarMessage(context, intl.pleaseFillAllParams);
+                              } else {
+                                Utils.getSnackbarMessage(
+                                  context,
+                                  intl.validationCardNumber,
+                                );
+                              }
+                            },
+                          ),
+                          Space(height: 2.h),
+                          Container(
+                              height: 6.5.h,
+                              width: 55.w,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  intl.cancel,
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                  textDirection: context.textDirectionOfLocale,
+                                  style: Theme.of(context).textTheme.caption!,
+                                ),
+                              )),
+                          Space(height: 3.h),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
             ],
           ),
         ),
-      ],
-    );
-  }
-
-  void _clickConfirm() {
-    if (Sheba(bloc.shebaNumberValue!.replaceAll(' ', '')).isValid) {
-      if (bloc.cardOwner != null && bloc.cardOwner!.isNotEmpty) {
-        DialogUtils.showDialogProgress(context: context);
-        bloc.record();
-      } else
-        Utils.getSnackbarMessage(context, intl.pleaseFillAllParams);
-    } else {
-      Utils.getSnackbarMessage(
-        context,
-        intl.validationCardNumber,
-      );
-    }
+      ),
+    ));
   }
 
   @override
-  void onRetryLoadingPage() {
-    bloc.onRetryLoadingPage();
-    bloc.getTermPackage();
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
   }
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    // TODO: implement onRetryAfterNoInternet
+  }
 
-    bloc.onRetryAfterNoInternet();
-    _clickConfirm();
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
   }
 }

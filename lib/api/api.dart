@@ -1,8 +1,7 @@
 import 'dart:io';
 
+import 'package:behandam/data/entity/auth/user_crm.dart';
 import 'package:behandam/data/entity/fitamin.dart';
-import 'package:behandam/data/entity/list_food/article.dart';
-import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
@@ -13,35 +12,31 @@ import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
-import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/psychology/booking.dart';
 import 'package:behandam/data/entity/psychology/calender.dart';
+import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
-import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
-import 'package:behandam/data/entity/regime/help.dart';
-import 'package:behandam/data/entity/regime/diet_preferences.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
-import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
-import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
+import 'package:behandam/data/entity/regime/body_status.dart';
+import 'package:behandam/data/entity/regime/help.dart';
+import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
-import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
-import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
 import 'package:behandam/data/entity/user/inbox.dart';
 import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:behandam/data/entity/user/version.dart';
-import 'package:behandam/data/entity/slider/slider.dart';
 import 'package:dio/dio.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../base/network_response.dart';
@@ -51,14 +46,12 @@ import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
 import '../data/entity/payment/payment.dart';
-import '../data/entity/user/block_user.dart';
-
 part 'api.g.dart';
 
-/*enum help {
+enum help {
   @JsonValue(1)
   dietType
-}*/
+}
 
 typedef NetworkResult<T> = Future<NetworkResponse<T>>;
 typedef ImperativeNetworkResult = NetworkResult<dynamic>;
@@ -76,17 +69,16 @@ abstract class RestClient {
   @POST("/login")
   NetworkResult<SignIn> signInWithPhoneNumber(@Body() User user);
 
-  @POST("/send-verification-code?mobile={mobile}&channel={channel}")
-  NetworkResult<CheckStatus> sendVerificationCode(
-      @Path('mobile') String? mobile, @Path('channel') String? channel);
+  @POST("/send-verification-code?mobile={mobile}")
+  NetworkResult<VerificationCode> sendVerificationCode(@Path('mobile') String? mobile);
 
-  @POST("/otp/login")
-  NetworkResult<VerifyOutput> otpLogin(@Body() VerificationCode verificationCode);
+  @GET("/verify")
+  NetworkResult<VerifyOutput> verifyUser(@Queries() VerificationCode verificationCode);
 
   @PATCH("/reset-password")
   NetworkResult<ResetOutput> resetPassword(@Body() Reset password);
 
-  @PATCH("/optional-register")
+  @POST("/register")
   NetworkResult<RegisterOutput> register(@Body() Register reg);
 
   @GET("/diet-type")
@@ -101,26 +93,23 @@ abstract class RestClient {
   @PATCH("/condition")
   NetworkResult<dynamic> setCondition(@Body() Map<String, dynamic> requestData);
 
-  @PATCH("/user/reserve-package")
-  NetworkResult<dynamic> setUserReservePackage(@Body() Map<String, dynamic> requestData);
-
   @PATCH("/physical-info")
   NetworkResult<PhysicalInfoData> sendInfo(@Body() PhysicalInfoData info);
 
   @GET("/body-status")
   NetworkResult<BodyStatus> getStatus();
 
-  @GET("/user/menu?date={date}")
+  @GET("/user/menuappnew?date={date}")
   NetworkResult<FoodListData> foodList(@Path() String date);
 
   @GET("/profile")
   NetworkResult<UserInformation> getProfile();
 
   @GET("/user/menu/all/pdf")
-  NetworkResult<Media> getPdfTermUrl();
+  NetworkResult<UserInformation> getPdfTermUrl();
 
   @GET("/user/menu/pdf")
-  NetworkResult<Media> getPdfWeekUrl();
+  NetworkResult<UserInformation> getPdfWeekUrl();
 
   @GET("/province")
   NetworkResult<CityProvinceModel> getProvinces();
@@ -170,7 +159,6 @@ abstract class RestClient {
       @Part(name: "is_voice") int is_voice,
       @Part(name: "has_attachment") int has_attachment,
       @Part(name: "department_id") String department_id,
-      @Part(name: "body") String body,
       @Part(name: "title") String title);
 
   @POST("/message")
@@ -193,12 +181,6 @@ abstract class RestClient {
   @DELETE("/calls/{id}")
   ImperativeNetworkResult deleteCall(@Path('id') int id);
 
-  @GET("/calls/survey")
-  NetworkResult<PollPhrases> getCallSurveyCauses();
-
-  @PATCH("/call-rates")
-  ImperativeNetworkResult sendCallRate(@Body() CallRateRequest callRateRequest);
-
   @GET("/psychology/v2/dates/list?start_date={startDate}&end_date={endDate}")
   NetworkResult<CalenderOutput> getCalendar(@Path() String? startDate, @Path() String? endDate);
 
@@ -208,14 +190,8 @@ abstract class RestClient {
   @GET("/user-sickness")
   NetworkResult<UserSickness> getUserSickness();
 
-  @GET("/user/blocking-disease")
-  NetworkResult<ObstructiveDiseaseCategory> getBlockingSickness();
-
-  @GET("/user/usual-diseases")
-  NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness();
-
-  @PATCH("/user/diseases")
-  ImperativeNetworkResult setUserSickness(@Body() Map<String,dynamic> queries);
+  @PATCH("/user-sickness")
+  ImperativeNetworkResult setUserSickness(@Body() UserSickness userSickness);
 
   @GET("/user-special")
   NetworkResult<UserSicknessSpecial> getUserSicknessSpecial();
@@ -232,29 +208,20 @@ abstract class RestClient {
   @GET("/user/package")
   NetworkResult<PackageItem> getPackageUser();
 
-  @GET("/user/reserve-package")
-  NetworkResult<PackageItem> getReservePackageUser();
-
   @POST("/check-coupon")
   NetworkResult<Price?> checkCoupon(@Body() Price price);
 
   @POST("/payment")
   NetworkResult<Payment> selectPayment(@Body() Payment payment);
 
-  @POST("/user/reserve-package")
-  NetworkResult<Payment> selectPaymentReservePackage(@Body() Payment payment);
-
   @GET("/next-step")
   ImperativeNetworkResult nextStep();
-
-  @GET("/bank-account/active-card")
-  NetworkResult<LatestInvoiceData> bankAccountActiveCard();
 
   @GET("/latest-invoice")
   NetworkResult<LatestInvoiceData> latestInvoice();
 
-  @POST("/user/payment/card2card")
-  NetworkResult<Payment> newPayment(@Body() Payment requestData);
+  @PATCH("/latest-invoice")
+  NetworkResult<LatestInvoiceData> newPayment(@Body() LatestInvoiceData requestData);
 
   @POST("/psychology/v2/booking")
   NetworkResult<BookingOutput> getBook(@Body() Booking booking);
@@ -265,8 +232,6 @@ abstract class RestClient {
   @GET("/psychology/latest-invoice")
   NetworkResult<LatestInvoiceData> getInvoice();
 
-  @GET("/user/diet-preferences")
-  NetworkResult<DietPreferences> getDietPreferences();
 
   @GET("/activity-level")
   NetworkResult<ActivityLevelData> activityLevel();
@@ -296,7 +261,8 @@ abstract class RestClient {
   NetworkResult<dynamic> visit(@Body() Map<String, dynamic> requestData);
 
   @GET("/check-version")
-  NetworkResult<Version> getVersion();
+  NetworkResult<VersionData> getVersion();
+
 
   @GET("/fitamin-url")
   NetworkResult<Fitamin> checkFitamin();
@@ -346,42 +312,10 @@ abstract class RestClient {
   @POST("/check-coupon-shop")
   NetworkResult<Price?> checkCouponShop(@Body() Price price);
 
-  @GET("/inbox/{id}")
-  NetworkResult<Inbox> getInboxItem(@Path('id') int id);
+  @GET("/user/support-expert")
+  NetworkResult<CallSupport> getCallSupport();
 
-  @POST("/firebase-token")
-  ImperativeNetworkResult addFcmToken(@Body() SignIn signIn);
-
-  @GET("/logout")
-  ImperativeNetworkResult logout();
-
-  @GET("/user/date/articles")
-  NetworkResult<List<ArticleVideo>> getArticles(@Queries(encoded: false) TimeRequest articleVideo);
-
-  @GET("/template/{id}?need-log=1")
-  NetworkResult<TempTicket> getDailyMessage(@Path('id') int id);
-
-  @GET("/target-weight")
-  NetworkResult<TargetWeight> targetWeight();
-
-  @GET("/user/subscription/history")
-  NetworkResult<ListUserSubscriptionData> getUserSubscription();
-
-  @GET("/inbox/{id}")
-  NetworkResult<InboxItem> getInboxMessage(@Path('id') int id);
-
-  @GET("/user/allowed-diet-types")
-  NetworkResult<DietType> getUserAllowedDietType();
-
-  @GET("/package")
-  NetworkResult<Package> getPackagesNew();
-
-  @GET("/user/blocked-data")
-  NetworkResult<BlockUser> getBlockUserDescription();
-
-  @GET("/sliders")
-  NetworkResult<Slider> getSliders();
-
-  @GET("/slider-introduces")
-  NetworkResult<SliderIntroduces> getSlidersIntroduces();
+  @POST('/land-data')
+  NetworkResult<UserCrmResponse> sendUserToCrm(@Body() UserCrm userCrm);
 }
+

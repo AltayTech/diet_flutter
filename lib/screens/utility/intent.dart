@@ -108,8 +108,9 @@ abstract class IntentUtils {
         bool isInstalled = await DeviceApps.isAppInstalled(package);
         if (isInstalled) {
           DeviceApps.openApp(package); // eg. com.application.karsu
-        } else
+        } else {
           openStore(package);
+        }
       } catch (ActivityNotFoundException) {
         debugPrint("can't open app");
         openStore(package);

@@ -125,25 +125,25 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
             backgroundColor: AppColors.primary,
             child: loading
                 ? SpinKitCircle(
-                    size: 70.0,
-                    itemBuilder: (BuildContext context, index) {
-                      return DecoratedBox(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors.accentColor,
-                                width: 3,
-                              ),
-                              color: Colors.white,
-                              shape: BoxShape.circle));
-                    },
-                  )
+              size: 70.0,
+              itemBuilder: (BuildContext context, index) {
+                return DecoratedBox(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppColors.accentColor,
+                          width: 3,
+                        ),
+                        color: Colors.white,
+                        shape: BoxShape.circle));
+              },
+            )
                 : Icon(
-                    _isPlaying
-                        ? Icons.pause_outlined
-                        : Icons.play_arrow_outlined,
-                    color: Colors.white,
-                    size: 6.w,
-                  ),
+              _isPlaying
+                  ? Icons.pause_outlined
+                  : Icons.play_arrow_outlined,
+              color: Colors.white,
+              size: 6.w,
+            ),
           ),
         ),
         Expanded(
@@ -198,7 +198,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     await _myPlayer!.closePlayer();
     // _isAudioPlayer = withUI;
     await _myPlayer!.openPlayer(
-        /*withUI: withUI,
+      /*withUI: withUI,
         focus: AudioFocus.requestFocusAndStopOthers,
         category: SessionCategory.playAndRecord,
         mode: SessionMode.modeDefault,
@@ -211,7 +211,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
   Future<void> init() async {
     try {
       await _myPlayer!.openPlayer(
-          /*focus: AudioFocus.requestFocusAndStopOthers,
+        /*focus: AudioFocus.requestFocusAndStopOthers,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
           device: AudioDevice.speaker*/);
@@ -219,7 +219,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     }catch(err){
 
     }
-   // await _initializeExample(false);
+    // await _initializeExample(false);
     //onStartPlayerPressed();
     /*   if ((!kIsWeb) && Platform.isAndroid) {
       await copyAssets();
@@ -269,7 +269,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     Uint8List? bytes;
     await audioFile.readAsBytes().then((value) {
       bytes = Uint8List.fromList(value);
-     // Fimber.d('reading of bytes is completed');
+      // Fimber.d('reading of bytes is completed');
     });
     return bytes;
   }
@@ -317,25 +317,25 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
           //Fimber.d("_myPlayer >> Start");
           await _myPlayer!
               .startPlayer(
-                  fromURI: audioFilePath,
-                  codec: codec,
-                  sampleRate: tSAMPLERATE,
-                  whenFinished: () {
-                    isStopped = true;
-                    stopPlayer();
-                    setState(() {
-                      _isPlaying = false;
-                    });
-                  })
+              fromURI: audioFilePath,
+              codec: codec,
+              sampleRate: tSAMPLERATE,
+              whenFinished: () {
+                isStopped = true;
+                stopPlayer();
+                setState(() {
+                  _isPlaying = false;
+                });
+              })
               .then((value) => {
-                    setState(() {
-                      //Fimber.d("_myPlayer >> Start End");
-                      _isPlaying = true;
-                      loading = false;
-                      isInit = true;
-                      if (isStopped) pauseResumePlayer();
-                    })
-                  });
+            setState(() {
+              //Fimber.d("_myPlayer >> Start End");
+              _isPlaying = true;
+              loading = false;
+              isInit = true;
+              if (isStopped) pauseResumePlayer();
+            })
+          });
         } else if (dataBuffer != null) {
           if (codec == Codec.pcm16) {
             dataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
@@ -359,9 +359,9 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
       }
       _addListeners();
       setState(() {});
-     // Fimber.d('<--- startPlayer');
+      // Fimber.d('<--- startPlayer');
     } on Exception {
-     // Fimber.d('error: $err');
+      // Fimber.d('error: $err');
     }
   }
 
@@ -375,10 +375,10 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
       var file = File(path);
       file.openRead();
       var contents = await file.readAsBytes();
-     // Fimber.d('The file is ${contents.length} bytes long.');
+      // Fimber.d('The file is ${contents.length} bytes long.');
       return contents;
     } on Exception {
-     // Fimber.d("error Exception",ex: e);
+      // Fimber.d("error Exception",ex: e);
       return null;
     }
   }
@@ -388,14 +388,14 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
   Future<void> stopPlayer() async {
     try {
       await _myPlayer!.stopPlayer();
-    //  Fimber.d('stopPlayer');
+      //  Fimber.d('stopPlayer');
       if (_playerSubscription != null) {
         await _playerSubscription!.cancel();
         _playerSubscription = null;
       }
       onStartPlayerPressed();
     } on Exception {
-     // Fimber.d('error: $err');
+      // Fimber.d('error: $err');
     }
     setState(() {
       _isPlaying = false;
@@ -407,7 +407,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
 
   void pauseResumePlayer() {
     if (_myPlayer!.isPlaying) {
-     // Fimber.d("_myPlayer >> Pause");
+      // Fimber.d("_myPlayer >> Pause");
       _myPlayer!.pausePlayer();
       _isPlaying = false;
     } else {
@@ -434,7 +434,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
     if (_media == Media.file ||
         _media == Media.stream ||
         _media == Media.buffer) // A file must be already recorded to play it
-    {
+        {
 
       if (url == null) return null;
     }
@@ -444,7 +444,7 @@ class MyWidgetPlayer extends ResourcefulState<CustomPlayer> {
             _codec ==
                 Codec
                     .pcm16WAV) ) // in this example we use just a remote mp3 or upus file
-    {
+        {
       return null;
     }
 

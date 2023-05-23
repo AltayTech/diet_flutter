@@ -86,6 +86,7 @@ abstract class Routes {
   static const refundRecord = '/refund/record';
   static const shopProduct = '/shop/product';
   static const shopBill = '/shop/payment/bill';
+  static const userCrm = '/user-crm';
   static const shopPaymentOnlineSuccess = '/shop/payment/online/success';
   static const shopPaymentOnlineFail = '/shop/payment/online/fail';
   static const dailyMessage = '/daily-message';

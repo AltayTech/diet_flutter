@@ -5,6 +5,28 @@ part 'call_item.g.dart';
 enum UiCallType { None, Reserve, Reserved, Done }
 
 @JsonSerializable()
+class CallSupport {
+  @JsonKey(name: "first_name")
+  String? firstName;
+
+  @JsonKey(name: "support_expert_mobile")
+  CallSupport? supportEMobile;
+
+  @JsonKey(name: "last_name")
+  String? lastName;
+
+  @JsonKey(name: "mobile")
+  String? mobile;
+
+
+  CallSupport();
+
+  factory CallSupport.fromJson(Map<String, dynamic> json) => _$CallSupportFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CallSupportToJson(this);
+}
+
+@JsonSerializable()
 class Call {
   @JsonKey(name: "total_call_num")
   int? totalCallNumber;
@@ -17,6 +39,7 @@ class Call {
 
   @JsonKey(name: "items")
   List<CallItem>? items;
+
 
   Call();
 

@@ -1,17 +1,21 @@
-import 'package:behandam/data/entity/auth/status.dart';
+
+
 import 'package:behandam/data/entity/calendar/calendar.dart';
-import 'package:behandam/data/entity/fast/fast.dart';
-import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/refund.dart';
-import 'package:behandam/data/entity/slider/slider.dart';
-import 'package:behandam/data/entity/user/city_provice_model.dart';
-import 'package:behandam/data/entity/user/user_information.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
 import 'entity/auth/country.dart';
+
+import 'package:behandam/data/entity/fast/fast.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
+
 import 'entity/list_view/food_list.dart';
+import 'entity/user/user_information.dart';
+
+import 'package:behandam/data/entity/user/city_provice_model.dart';
+import 'package:behandam/data/entity/user/user_information.dart';
 
 class MemoryApp {
   static String? token;
@@ -28,40 +32,19 @@ class MemoryApp {
   static bool forgetPass = false;
   static bool needRoute = true;
   static bool isShowDialog = false;
-  static bool isNetworkAlertShown = false;
   static FirebaseAnalytics? analytics;
-  static List<String> fastingDates = [];
-  static SurveyData? callSurveyData = null;
-  static List<Slider> sliders = [];
-  static List<SliderIntroduces> sliderIntroduces = [];
-  List<ArticleVideo>? _articles;
-  static int page = 0;
-
-  static WhatsappInfo? whatsappInfo;
 
   Map<String, FoodListData> _foodList = {};
   Map<String, int> _selectedFastPatten = {};
   String? _date;
   UserInformation? _profile;
   List<FastPatternData>? _patterns;
-
   // FastPatternData? _selectedPattern;
-  String? get date => _date;
-
-  UserInformation? get profile => _profile;
-
-  List<FastPatternData>? get patterns => _patterns;
-
-  void saveNewFoodList(FoodListData data, String date) {
-    if (_foodList.isNotEmpty) _foodList.clear();
-
-    _foodList.addAll({date: data});
-  }
 
   void saveFoodList(FoodListData data, String date) {
-    if (_foodList.containsKey(date)) {
+    if(_foodList.containsKey(date)) {
       _foodList.update(date, (value) => data);
-    } else {
+    }else {
       _foodList.addAll({date: data});
     }
     debugPrint('cache $_foodList');
@@ -81,39 +64,35 @@ class MemoryApp {
   }
 
   void saveSelectedPattern(int patternIndex) {
-    if (_selectedFastPatten.containsKey(_date)) {
+    if(_selectedFastPatten.containsKey(_date)) {
       _selectedFastPatten.update(_date!, (value) => patternIndex);
-    } else {
+    }else {
       _selectedFastPatten.addAll({_date!: patternIndex});
     }
     debugPrint('patterns $_selectedFastPatten');
   }
 
-  FoodListData? get foodList {
+  FoodListData? get foodList{
     FoodListData? foodListData;
     _foodList.forEach((key, value) {
-      if (key == _date) foodListData = value;
+      if(key == _date) foodListData = value;
     });
     return foodListData;
   }
 
+  String? get date => _date;
+
+  UserInformation? get profile => _profile;
+
+  List<FastPatternData>? get patterns => _patterns;
+
   int? get selectedPattern {
     int? patternIndex;
     _selectedFastPatten.forEach((key, value) {
-      if (key == _date) patternIndex = value;
+      if(key == _date) patternIndex = value;
     });
     debugPrint('selected pattern $patternIndex');
-    void saveDate(String date) {
-      _date = date;
-      debugPrint('save date $date');
-    }
-
     return patternIndex;
   }
 
-  void saveArticle(List<ArticleVideo> articles) {
-    _articles = articles;
-  }
-
-  List<ArticleVideo>? get articles => _articles;
 }

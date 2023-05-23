@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:logifan/widgets/space.dart';
-// import 'package:behandam/utils/image.dart';
-// import 'package:behandam/widgets/sized_box/space.dart';
+
 
 class SearchNoResult extends StatefulWidget {
   SearchNoResult([this.message]);

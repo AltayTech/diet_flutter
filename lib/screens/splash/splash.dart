@@ -1,19 +1,17 @@
-import 'package:behandam/app/app.dart';
+import 'dart:io';
+
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/user/version.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/data/sharedpreferences.dart';
-import 'package:behandam/extensions/string.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/screens/splash/bloc.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
-import 'package:behandam/utils/deep_link.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -27,48 +25,14 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends ResourcefulState<SplashScreen> {
   late SplashBloc bloc;
 
-  late bool isShowOnBoarding;
-
   @override
   void initState() {
     super.initState();
     bloc = SplashBloc();
     bloc.getPackageInfo();
     bloc.getUser();
-    //getSliders();
 
     listenBloc();
-  }
-
-/*  void getSliders() async {
-
-
-    if (isShowOnBoarding)
-      bloc.getSlider();
-    else
-      bloc.getUser();
-  }*/
-
-  void handleDeeplink() async {
-    isShowOnBoarding = await AppSharedPreferences.isShowOnBoarding;
-    var fcm = await AppSharedPreferences.fcmToken;
-    debugPrint('fcm is => ${fcm}');
-    final deeplink = await AppSharedPreferences.deeplink;
-    if (MemoryApp.token.isNotNullAndEmpty) {
-      if (deeplink != null) {
-        debugPrint('deeplink is => ${deeplink}');
-        DeepLinkUtils.navigateDeepLink(deeplink);
-      } else if (navigator.currentConfiguration?.path == Routes.splash) {
-        VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
-      } else {
-        debugPrint('notDeeplink is => ${navigator.currentConfiguration!.path}');
-        VxNavigator.of(context).clearAndPushAll(
-            [Uri.parse(Routes.shopHome), Uri.parse(navigator.currentConfiguration!.path)]);
-      }
-    } else if (isShowOnBoarding) {
-      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.onboarding));
-    } else
-      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.auth));
   }
 
   @override
@@ -79,14 +43,14 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
 
   void listenBloc() {
     bloc.showUpdate.listen((event) {
-      if (navigator.currentConfiguration?.path == Routes.splash) showUpdate(event);
+      showUpdate(event);
     });
     bloc.navigateTo.listen((event) {
-      handleDeeplink();
+      VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
     });
   }
 
-  void showUpdate(Version version) {
+  void showUpdate(Version event) {
     DialogUtils.showDialogPage(
         context: context,
         child: Center(
@@ -103,14 +67,14 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    version.title!,
+                    event.title ?? '',
                     textAlign: TextAlign.center,
                     textDirection: context.textDirectionOfLocale,
                     style: Theme.of(context).textTheme.caption,
                   ),
                   Space(height: 2.h),
                   Text(
-                    version.description!,
+                    event.description ?? '',
                     textDirection: context.textDirectionOfLocale,
                     style: Theme.of(context).textTheme.caption,
                   ),
@@ -125,13 +89,20 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                         child: SubmitButton(
                           label: intl.update,
                           onTap: () {
-                            Utils.launchURL(version.url!);
+                            Utils.launchURL(Platform.isIOS
+                                ? (bloc.packageName!
+                                        .contains(FlavorConfig.instance.variables["iappsPackage"]))
+                                    ? event.iapps!
+                                    : event.sibapp!
+                                : event.google!);
                           },
                         ),
                       ),
                       if (!bloc.forceUpdate) SizedBox(width: 2.w),
                       if (!bloc.forceUpdate)
-                        TextButton(
+                        ElevatedButton(
+                          style:
+                              ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
                           child: Text(
                             intl.later,
                             style: Theme.of(context)
@@ -140,10 +111,10 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
                                 .copyWith(color: AppColors.primary),
                           ),
                           onPressed: () {
+                            print('later');
                             Navigator.of(context).pop();
-                            handleDeeplink();
+                            VxNavigator.of(context).clearAndPush(Uri.parse(Routes.listView));
                           },
-                        style: TextButton.styleFrom(backgroundColor:  Colors.white,),
                         ),
                     ],
                   )
@@ -157,58 +128,80 @@ class _SplashScreenState extends ResourcefulState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          color: Colors.white,
-          width: 100.w,
-          height: 100.h,
-          child: Stack(
-            children: [
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ImageUtils.fromLocal(
-                      'assets/images/registry/app_logo.svg',
-                      width: 30.w,
-                      height: 30.w,
-                    ),
-                    Space(
-                      height: 2.h,
-                    ),
-                    Text(
-                      intl.appNameSplash,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                  ],
-                ),
+    return SafeArea(
+        child: Scaffold(
+      body: Container(
+        decoration: AppDecorations.boxNoRadius.copyWith(
+            gradient: const RadialGradient(
+                colors: [Color(0xff6C98FF), Color(0xff364C80)],
+                center: Alignment(0.0, 0.0),
+                stops: [0.0,1.0],
+                focal: Alignment(0.0, 0.1),
+                focalRadius: 0,
+                radius: 1,
+                tileMode: TileMode.clamp)),
+        width: double.infinity,
+        height: double.infinity,
+        child: Stack(
+          children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ImageUtils.fromLocal(
+                    'assets/images/logo_app.svg',
+                    width: 250,
+                    height: 250,
+                  ),
+                  Space(
+                    height: 2.h,
+                  ),
+                  Text(
+                    intl.appNameSplash,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.white,fontWeight: FontWeight.w700),
+                  ),
+                ],
               ),
-              StreamBuilder(
-                  stream: bloc.versionApp,
-                  builder: (context, snapshot) {
-                    return Align(
-                      child: Padding(
-                        child: Text(
-                          intl.version(snapshot.data?.toString() ?? ''),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        padding: EdgeInsets.only(bottom: 16),
+            ),
+            StreamBuilder(
+                stream: bloc.versionApp,
+                builder: (context, snapshot) {
+                  return Align(
+                    child: Padding(
+                      child: Text(
+                        intl.version(snapshot.data?.toString() ?? ''),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),
                       ),
-                      alignment: Alignment.bottomCenter,
-                    );
-                  })
-            ],
-          ),
+                      padding: const EdgeInsets.only(bottom: 16),
+                    ),
+                    alignment: Alignment.bottomCenter,
+                  );
+                })
+          ],
         ),
       ),
-    );
+    ));
+  }
+
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
   }
 
   @override
   void onRetryLoadingPage() {
-    bloc.onRetryLoadingPage();
+    // TODO: implement onRetryLoadingPage
+  }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
   }
 }

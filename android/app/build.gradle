@@ -6,14 +6,6 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-} else {
-    throw new GradleException("Signing key and/or properties file not found, ask project maintainer")
-}
-
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
@@ -31,8 +23,8 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+//apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.firebase.crashlytics'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
@@ -41,22 +33,24 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
+    packagingOptions {
+        exclude 'AndroidManifest.xml'
+    }
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.kermany.behandam"
-        minSdkVersion 19
-        targetSdkVersion 30
+        applicationId "com.kermanydiet"
+        minSdkVersion 21
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
     }
     signingConfigs {
         release {
-            keyAlias keystoreProperties['release_keyAlias']
-            keyPassword keystoreProperties['release_keyPassword']
-            storeFile file(keystoreProperties['nonDebug_storeFile'])
-            storePassword keystoreProperties['nonDebug_storePassword']
+            storeFile file(".\\KeyBehandam.jks")
+            storePassword "Behandam@110"
+            keyAlias "Behandam"
+            keyPassword "Behandam110"
         }
     }
     lintOptions {
@@ -79,33 +73,33 @@ android {
         }
         releaseApp {
             dimension "app"
+            applicationIdSuffix ".app"
         }
     }
     buildTypes {
         release {
             minifyEnabled false // add this
             shrinkResources false
-            useProguard true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'// add this
             signingConfig signingConfigs.release // this is default for release
         }
 
         debug {
             minifyEnabled false // a
-            shrinkResources false
-            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
             signingConfig signingConfigs.debug // this is default for release
         }
-        /*    develop {
-                minifyEnabled false // a
-                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
-                signingConfig signingConfigs.debug // this is default for release
-            }
-            stage {
-                minifyEnabled false // a
-                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
-                signingConfig signingConfigs.debug // this is default for release
-            }*/
+    /*    develop {
+            minifyEnabled false // a
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
+            signingConfig signingConfigs.debug // this is default for release
+        }
+        stage {
+            minifyEnabled false // a
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' // add this
+            signingConfig signingConfigs.debug // this is default for release
+        }*/
     }
 
 }
@@ -116,6 +110,8 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.multidex:multidex:2.0.1'
-
+/*    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    implementation 'com.google.firebase:firebase-analytics'*/
 }

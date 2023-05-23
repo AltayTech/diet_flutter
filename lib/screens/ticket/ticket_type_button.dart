@@ -1,14 +1,12 @@
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/ticket/ticket_bloc.dart';
 import 'package:behandam/screens/ticket/ticket_provider.dart';
-import 'package:behandam/screens/widget/dialog.dart';
-import 'package:behandam/screens/widget/line.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:behandam/widget/custom_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:logifan/widgets/space.dart';
+
 
 class TicketTypeButton extends StatefulWidget {
   TicketTypeButton();
@@ -39,138 +37,44 @@ class TicketTypeButtonState extends ResourcefulState<TicketTypeButton> {
         switch (snapshot.data) {
           case TypeTicket.MESSAGE:
             if (!kIsWeb)
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              return Column(
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                          width: 30.w,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
+                  Container(
+                      width: 80.w,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
                             topRight: Radius.circular(16),
                             topLeft: Radius.circular(16),
                           )),
-                          child: Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                bloc.sendTicketMessage.body = null;
-                                bloc.changeType(TypeTicket.RECORD);
-                                bloc.createRecord();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                                ),
-                                padding: EdgeInsets.all(2.w),
-                                child: ImageUtils.fromLocal(
-                                  'assets/images/ticket/recorder.svg',
-                                  height: 6.w,
-                                  width: 6.w,
-                                  color: Colors.white,
-                                ),
-                              ),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            bloc.sendTicketMessage.body=null;
+                            bloc.changeType(TypeTicket.RECORD);
+                            bloc.createRecord();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
                             ),
-                          )),
-                      Center(
-                        child: Text(
-                          intl.soundMessage,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                          width: 30.w,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(16),
-                            topLeft: Radius.circular(16),
-                          )),
-                          child: Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                DialogUtils.showBottomSheetPage(
-                                    context: context,
-                                    child: Container(
-                                      width: 100.w,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(12),
-                                            topRight: Radius.circular(12)),
-                                        color: AppColors.surface,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Space(
-                                            height: 2.h,
-                                          ),
-                                          Text(
-                                            intl.pickImage,
-                                            style: Theme.of(context).textTheme.bodyText2,
-                                          ),
-                                          Space(
-                                            height: 2.h,
-                                          ),
-                                          MaterialButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              bloc.selectGallery();
-                                            },
-                                            minWidth: 80.w,
-                                            height: 7.h,
-                                            child: Text(
-                                              intl.selectGallery,
-                                              style: Theme.of(context).textTheme.caption,
-                                            ),
-                                          ),
-                                          Line(
-                                            width: 80.w,
-                                            height: 0.1.h,
-                                            color: AppColors.labelColor,
-                                          ),
-                                          MaterialButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                bloc.selectCamera();
-                                              },
-                                              minWidth: 80.w,
-                                              height: 7.h,
-                                              child: Text(
-                                                intl.selectCamera,
-                                                style: Theme.of(context).textTheme.caption,
-                                              )),
-                                        ],
-                                      ),
-                                    ));
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                                ),
-                                padding: EdgeInsets.all(2.w),
-                                child: ImageUtils.fromLocal(
-                                  'assets/images/ticket/attach.svg',
-                                  height: 6.w,
-                                  width: 6.w,
-                                  color: Colors.white,
-                                ),
-                              ),
+                            padding: EdgeInsets.all(2.w),
+                            child: ImageUtils.fromLocal(
+                              'assets/images/ticket/recorder.svg',
+                              height: 6.w,
+                              width: 6.w,
+                              color: Colors.white,
                             ),
-                          )),
-                      Center(
-                        child: Text(
-                          intl.selectedFile,
-                          style: Theme.of(context).textTheme.caption,
+                          ),
                         ),
-                      )
-                    ],
+                      )),
+                  Center(
+                    child: Text(
+                      intl.soundMessage,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
                   )
                 ],
               );
@@ -185,7 +89,7 @@ class TicketTypeButtonState extends ResourcefulState<TicketTypeButton> {
                 child: Row(children: [
                   GestureDetector(
                     onTap: () async {
-                      bloc.sendTicketMessage.body = null;
+                      bloc.sendTicketMessage.body=null;
                       bloc.changeType(TypeTicket.MESSAGE);
                     },
                     child: Padding(
@@ -304,69 +208,12 @@ class TicketTypeButtonState extends ResourcefulState<TicketTypeButton> {
                         );
                       }
                     },
-                    stream: bloc.isShowFileAudio,
+                    stream: bloc.isShowFile,
                   )
                 ]));
           case TypeTicket.IMAGE:
-            return StreamBuilder(
-              builder: (context, snapshot) {
-                if (snapshot.data != null && snapshot.data == true) {
-                  return Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(16),
-                            topLeft: Radius.circular(16),
-                          )),
-                      padding: EdgeInsets.all(16),
-                      child: Row(
-                        textDirection: context.textDirectionOfLocale,
-                        children: [
-                          Text(
-                            '${bloc.imageFile!.lengthSync() ~/ 1024} KB',
-                            style: Theme.of(context).textTheme.overline,
-                            textDirection: context.textDirectionOfLocaleInversed,
-                          ),
-                          Expanded(
-                            child: Padding(
-                              child: Text(
-                                bloc.image!.path.split('/').last,
-                                textAlign: TextAlign.start,
-                                softWrap: false,
-                                overflow: TextOverflow.ellipsis,
-                                textDirection: context.textDirectionOfLocale,
-                                style: Theme.of(context).textTheme.overline,
-                              ),
-                              padding: EdgeInsets.only(left: 3.w, right: 3.w),
-                            ),
-                          ),
-                          Container(
-                            width: 11.w,
-                            height: 5.3.h,
-                            margin: EdgeInsets.only(left: 8),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.delete_outline,
-                                color: Colors.white,
-                                size: 6.w,
-                              ),
-                              onPressed: () async {
-                                bloc.stopAndStart();
-                                bloc.changeType(TypeTicket.MESSAGE);
-                              },
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          )
-                        ],
-                      ));
-                } else {
-                  return Container();
-                }
-              },
-              stream: bloc.isShowImage,
+            return Container(
+              color: Colors.green,
             );
           default:
             return Container(
@@ -392,7 +239,6 @@ class TicketTypeButtonState extends ResourcefulState<TicketTypeButton> {
   void onRetryLoadingPage() {
     // TODO: implement onRetryLoadingPage
   }
-
   @override
   void onShowMessage(String value) {
     // TODO: implement onShowMessage

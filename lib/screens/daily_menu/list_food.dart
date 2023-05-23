@@ -10,11 +10,9 @@ import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
-import 'package:behandam/screens/widget/web_scroll.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/themes/sizes.dart';
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
@@ -215,19 +213,16 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
             return EmptyBox();
           }
           debugPrint('food length ${snapshot.requireData!.length}');
-          return ScrollConfiguration(
-            behavior: MyCustomScrollBehavior(),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, index) {
-                if (index == snapshot.requireData!.length) {
-                  return loadMoreProgress();
-                }
-                return foodItem(snapshot.requireData![index]);
-              },
-              itemCount: snapshot.requireData!.length + 1,
-            ),
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (_, index) {
+              if (index == snapshot.requireData!.length) {
+                return loadMoreProgress();
+              }
+              return foodItem(snapshot.requireData![index]);
+            },
+            itemCount: snapshot.requireData!.length + 1,
           );
         }
         return Center(child: Progress());
@@ -262,9 +257,9 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
               decoration: AppDecorations.boxMild.copyWith(
                 border: snapshot.data?.id == food.id
                     ? Border.all(
-                        color: AppColors.primary,
-                        width: 0.3,
-                      )
+                  color: AppColors.primary,
+                  width: 0.3,
+                )
                     : null,
                 color: snapshot.data?.id == food.id ? AppColors.onPrimary : Colors.grey[200],
               ),
@@ -293,16 +288,16 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
                             width: 0.5,
                           ),
                           color:
-                              snapshot.data?.id == food.id ? AppColors.primary : Colors.grey[200],
+                          snapshot.data?.id == food.id ? AppColors.primary : Colors.grey[200],
                         ),
                         width: 7.w,
                         height: 7.w,
                         child: snapshot.data?.id == food.id
                             ? Icon(
-                                Icons.check,
-                                size: 6.w,
-                                color: AppColors.onPrimary,
-                              )
+                          Icons.check,
+                          size: 6.w,
+                          color: AppColors.onPrimary,
+                        )
                             : Container(),
                       ),
                     ],
@@ -417,7 +412,7 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
       child: Card(
         color: AppColors.onPrimary,
         elevation: selectedFood?.selectedFreeFood != null &&
-                freeFood.id == selectedFood!.selectedFreeFood!.id
+            freeFood.id == selectedFood!.selectedFreeFood!.id
             ? 0
             : 2,
         shape: AppShapes.rectangleLarge,
@@ -425,8 +420,8 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
           decoration: AppDecorations.boxLarge.copyWith(
             border: Border.all(
               color: selectedFood != null &&
-                      selectedFood.selectedFreeFood != null &&
-                      freeFood.id == selectedFood.selectedFreeFood!.id
+                  selectedFood.selectedFreeFood != null &&
+                  freeFood.id == selectedFood.selectedFreeFood!.id
                   ? AppColors.primary
                   : Colors.transparent,
             ),
@@ -436,8 +431,8 @@ class _ListFoodPageState extends ResourcefulState<ListFoodPage> {
             freeFood.title,
             style: typography.caption?.apply(
               color: selectedFood != null &&
-                      selectedFood.selectedFreeFood != null &&
-                      freeFood.id == selectedFood.selectedFreeFood!.id
+                  selectedFood.selectedFreeFood != null &&
+                  freeFood.id == selectedFood.selectedFreeFood!.id
                   ? AppColors.primary
                   : null,
               heightDelta: -10,

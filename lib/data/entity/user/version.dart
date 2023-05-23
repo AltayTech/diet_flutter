@@ -5,7 +5,7 @@ part 'version.g.dart';
 @JsonSerializable()
 class Version {
   @JsonKey(name: "version_code")
-  String? versionCode;
+  int? versionCode;
 
   @JsonKey(name: "force_update")
   bool? forceUpdate;

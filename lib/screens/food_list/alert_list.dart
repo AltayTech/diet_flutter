@@ -1,6 +1,5 @@
 import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
 import 'package:behandam/screens/food_list/provider.dart';
@@ -11,9 +10,11 @@ import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -38,12 +39,9 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
 
   void listen() {
     bloc.navigateTo.listen((event) {
-      MemoryApp.isShowDialog = false;
-      Navigator.of(context).pop();
       context.vxNav.push(Uri.parse('/$event'));
     });
     bloc.showServerError.listen((event) {
-      MemoryApp.isShowDialog = false;
       Navigator.of(context).pop();
     });
   }
@@ -68,52 +66,58 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
   }
 
   Widget body() {
-    return Container(
-      height: 100.h,
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Stack(
+    return StreamBuilder(
+      stream: bloc.loadingContent,
+      builder: (_, AsyncSnapshot<bool> snapshot) {
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      FoodListAppbar(
-                        showToolbar: false,
-                        isClickable: false,
+                      Stack(
+                        children: [
+                          FoodListAppbar(
+                            showToolbar: false,
+                            isClickable: false,
+                          ),
+                          appbarStackBox(),
+                        ],
+                      ),
+                      Space(height: 7.h),
+                      ImageUtils.fromLocal(textItem!['icon'], width: 20.w, height: 20.w),
+                      Space(height: 2.h),
+                      Padding(
+                        padding: EdgeInsets.only(left: 4.w, right: 4.w),
+                        child: Text(
+                          textItem!['text'],
+                          textAlign: TextAlign.center,
+                          textDirection: context.textDirectionOfLocale,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
+                      Space(height: 4.h),
+                      Center(
+                        child: SubmitButton(
+                          label: textItem!['btnLabel'],
+                          onTap: () {
+                            DialogUtils.showDialogProgress(context: context);
+                            bloc.nextStep();
+                          },
+                        ),
                       ),
                     ],
                   ),
-                  Space(height: 7.h),
-                  ImageUtils.fromLocal(textItem!['icon'], width: 20.w, height: 20.w),
-                  Space(height: 2.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 4.w, right: 4.w),
-                    child: Text(
-                      textItem!['text'],
-                      textAlign: TextAlign.center,
-                      textDirection: context.textDirectionOfLocale,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ),
-                  Space(height: 4.h),
-                  Center(
-                    child: SubmitButton(
-                      label: textItem!['btnLabel'],
-                      onTap: () {
-                        DialogUtils.showDialogProgress(context: context);
-                        bloc.nextStep();
-                      },
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              BottomNav(currentTab: BottomNavItem.DIET),
+            ],
           ),
-          BottomNav(currentTab: BottomNavItem.DIET),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -188,7 +192,9 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
                     SubmitButton(
                       label: isToday(snapshot.requireData!) ? intl.showAdvices : intl.goToToday,
                       size: Size(40.w, 5.h),
-                      onTap: () {},
+                      onTap: () {
+
+                      },
                     ),
                   ],
                 );
@@ -208,7 +214,7 @@ class _AlertFlowPageState extends ResourcefulState<AlertFlowPage> {
       text = intl.todayAdvicesForYou;
     } else {
       text = intl.viewingMenu(
-          '${weekday.jalaliDate.formatter.wN} ${weekday.jalaliDate.formatter.d} ${weekday.jalaliDate.formatter.mN}');
+          '${DateTimeUtils.weekDayArabicName(weekday.jalaliDate.formatter.wN)} ${weekday.jalaliDate.formatter.d} ${weekday.jalaliDate.formatter.mN}');
     }
     return text;
   }

@@ -2,7 +2,6 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/payment/bloc.dart';
 import 'package:behandam/screens/shop/product_bloc.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -31,38 +30,25 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
   late ShopProduct? product;
   late ProductBloc bloc;
 
-  late TextEditingController controller;
-
   @override
   void initState() {
     super.initState();
-
-    controller = TextEditingController();
-    controller.text = '';
-
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
     bloc = ProductBloc();
-    bloc.navigateToRoute.listen((event) {
+    bloc.navigateToVerify.listen((event) {
       // Navigator.of(context).pop();
       if (event) {
-        MemoryApp.analytics!.logEvent(name: "shop_payment_success");
-        VxNavigator.of(context).popToRoot();
+       /* MemoryApp.analytics!.logEvent(name: "shop_payment_success");*/
         VxNavigator.of(context)
-            .clearAndPush(Uri(path: Routes.shopPaymentOnlineSuccess), params: ProductType.SHOP);
-      } else {
+            .clearAndPush(Uri(path: Routes.shopPaymentOnlineSuccess), params: "shop");
+      } else
         VxNavigator.of(context).popToRoot();
-        VxNavigator.of(context)
-            .push(Uri(path: Routes.shopPaymentOnlineFail), params: ProductType.SHOP);
-      }
     });
     bloc.onlinePayment.listen((event) {
       if (event != null) {
         bloc.mustCheckLastInvoice();
         IntentUtils.launchURL(event);
       }
-    });
-    bloc.popLoading.listen((event) {
-      Navigator.of(context).pop();
     });
   }
 
@@ -75,15 +61,17 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
     }
   }
 
-  bool isInit = false;
-
+  bool isInit=false;
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    if (!isInit) {
-      isInit = true;
-      product = ModalRoute.of(context)!.settings.arguments as ShopProduct?;
+    if(!isInit) {
+      isInit=true;
+      product = ModalRoute
+          .of(context)!
+          .settings
+          .arguments as ShopProduct?;
       bloc.setProduct(product!);
     }
   }
@@ -101,52 +89,53 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
             discount(),
             priceWithDiscount(),
             StreamBuilder(
-                stream: bloc.usedDiscount,
-                builder: (context, snapshot) {
-                  return Card(
-                    margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                    shape: AppShapes.rectangleMild,
-                    elevation: 2,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            intl.totalAmount,
-                            style: typography.caption?.apply(
-                              fontWeightDelta: 1,
-                              fontSizeDelta: 1,
-                            ),
-                            textAlign: TextAlign.center,
+              stream: bloc.usedDiscount,
+              builder: (context, snapshot) {
+                return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                  shape: AppShapes.rectangleMild,
+                  elevation: 2,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          intl.totalAmount,
+                          style: typography.caption?.apply(
+                            fontWeightDelta: 1,
+                            fontSizeDelta: 1,
                           ),
-                          Space(height: 0.5.h),
-                          Text(
-                            '${bloc.productValue?.discountPrice.toString().seRagham()} ${intl.toman}',
-                            style: typography.caption?.apply(
-                              fontWeightDelta: 1,
-                              fontSizeDelta: 4,
-                              color: AppColors.primary,
-                            ),
-                            textAlign: TextAlign.center,
+                          textAlign: TextAlign.center,
+                        ),
+                        Space(height: 0.5.h),
+                        Text(
+                          '${bloc.productValue?.discountPrice.toString().seRagham()} ${intl.toman}',
+                          style: typography.caption?.apply(
+                            fontWeightDelta: 1,
+                            fontSizeDelta: 4,
+                            color: AppColors.primary,
                           ),
-                        ],
-                      ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                  );
-                }),
+                  ),
+                );
+              }
+            ),
             Space(height: 3.h),
             SubmitButton(
               label: intl.onlinePayment,
               onTap: product == null
                   ? null
                   : () {
-                      if (!bloc.discountCode.isEmptyOrNull && !bloc.isUsedDiscount) {
-                        Utils.getSnackbarMessage(context, intl.offError);
-                      } else {
-                        DialogUtils.showDialogProgress(context: context);
-                        bloc.onlinePaymentClick(product!.id!);
-                      }
+                if(!bloc.discountCode.isEmptyOrNull && !bloc.isUsedDiscount) {
+                 Utils.getSnackbarMessage(context, intl.offError);
+                }else{
+                  DialogUtils.showDialogProgress(context: context);
+                  bloc.onlinePaymentClick(product!.id!);
+                }
                     },
             ),
           ],
@@ -172,7 +161,8 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
                     // width: 30.w,
                     fit: BoxFit.fitWidth,
                   )
-                : ImageUtils.fromNetwork(Utils.getCompletePathShop(product!.productThambnail),
+                : ImageUtils.fromNetwork(
+                    FlavorConfig.instance.variables["baseUrlFileShop"] + product!.productThambnail,
                     decoration: AppDecorations.boxMedium,
                     width: 30.w,
                     fit: BoxFit.fill,
@@ -319,8 +309,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
           '${amount.seRagham()}',
           style: typography.caption?.apply(
             fontWeightDelta: 1,
-            color: AppColors.primary,
-          ),
+            color: AppColors.primary,),
           textDirection: TextDirection.ltr,
         ),
         Space(width: 1.w),
@@ -360,94 +349,85 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
             Space(width: 2.w),
             Expanded(
                 child: StreamBuilder(
-              builder: (context, snapshot) {
-                if (snapshot.data == null || snapshot.data == false)
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 3.w),
-                    height: 7.h,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      textDirection: context.textDirectionOfLocaleInversed,
-                      children: <Widget>[
-                        StreamBuilder(
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData && snapshot.data == true) {
-                              return ImageUtils.fromLocal(
-                                'assets/images/bill/mark.svg',
-                                fit: BoxFit.fill,
-                                width: 5.w,
-                                height: 5.w,
-                              );
-                            } else
-                              return Container();
-                          },
-                          stream: bloc.wrongDisCode,
+                  builder: (context, snapshot) {
+                    if (snapshot.data == null || snapshot.data == false)
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
                         ),
-                        StreamBuilder(
-                          builder: (context, snapshot) {
-                            return Expanded(
-                              child: Directionality(
-                                textDirection: context.textDirectionOfLocale,
-                                child: TextFormField(
-                                  controller: controller,
-                                  decoration: textFieldDecoration(),
-                                  onChanged: (value) {
-                                    bloc.discountCode = value;
-                                    bloc.changeDiscountLoading(false);
-                                    bloc.changeWrongDisCode(false);
-                                  },
-                                  onTap: () {
-                                    // fix bug click on end of text on rtl
-                                    if (controller.selection ==
-                                        TextSelection.fromPosition(TextPosition(
-                                            offset: controller.text.length - 1))) {
-                                      controller.selection = TextSelection.fromPosition(
-                                          TextPosition(offset: controller.text.length));
-                                    }
-                                  },
-                                  keyboardType: TextInputType.text,
-                                  style: Theme.of(context).textTheme.caption!.copyWith(
+                        padding: EdgeInsets.symmetric(horizontal: 3.w),
+                        height: 7.h,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          textDirection: context.textDirectionOfLocaleInversed,
+                          children: <Widget>[
+                            StreamBuilder(
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData && snapshot.data == true) {
+                                  return ImageUtils.fromLocal(
+                                    'assets/images/bill/mark.svg',
+                                    fit: BoxFit.fill,
+                                    width: 5.w,
+                                    height: 5.w,
+                                  );
+                                } else
+                                  return Container();
+                              },
+                              stream: bloc.wrongDisCode,
+                            ),
+                            StreamBuilder(
+                              builder: (context, snapshot) {
+                                return Expanded(
+                                  child: Directionality(
+                                    textDirection: context.textDirectionOfLocale,
+                                    child: TextFormField(
+                                      decoration: textFieldDecoration(),
+                                      initialValue: bloc.discountCode ?? null,
+                                      onChanged: (value) {
+                                        bloc.discountCode = value;
+                                        bloc.changeDiscountLoading(false);
+                                        bloc.changeWrongDisCode(false);
+                                      },
+                                      keyboardType: TextInputType.text,
+                                      style: Theme.of(context).textTheme.caption!.copyWith(
                                         color: bloc.isWrongDisCode ? Colors.red : Colors.black,
                                       ),
-                                ),
-                              ),
-                            );
-                          },
-                          stream: bloc.wrongDisCode,
+                                    ),
+                                  ),
+                                );
+                              },
+                              stream: bloc.wrongDisCode,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                else {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 3.w),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: FittedBox(
-                        child: Text(
-                          '${bloc.discountInfo?.discount.toString().seRagham()} ${intl.yourDiscount}',
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.start,
-                          style: Theme.of(context)
-                              .textTheme
-                              .overline!
-                              .copyWith(color: Color.fromRGBO(87, 206, 121, 1)),
+                      );
+                    else {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                      ),
-                    ),
-                  );
-                }
-              },
-              stream: bloc.usedDiscount,
-            )),
+                        padding: EdgeInsets.symmetric(horizontal: 3.w),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: FittedBox(
+                            child: Text(
+                              '${bloc.discountInfo?.discount.toString().seRagham()} ${intl.yourDiscount}',
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .overline!
+                                  .copyWith(color: Color.fromRGBO(87, 206, 121, 1)),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  stream: bloc.usedDiscount,
+                )),
             Space(width: 2.w),
             StreamBuilder(
                 stream: bloc.usedDiscount,
@@ -461,7 +441,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
                       color: bloc.isUsedDiscount ? Color.fromRGBO(87, 206, 121, 1) : null,
                     );
                   else {
-                    return StreamBuilder(
+                    return  StreamBuilder(
                       builder: (context, snapshot) {
                         if (snapshot.data == null || snapshot.data == false)
                           return submitDiscountBtn();
@@ -475,6 +455,7 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
                     );
                   }
                 }),
+
           ],
         ),
       ),
@@ -537,8 +518,23 @@ class _ShopBillPageState extends ResourcefulState<ShopBillPage> with WidgetsBind
   }
 
   @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
   void onRetryAfterNoInternet() {
-    bloc.setRepository();
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
   }
 }
 

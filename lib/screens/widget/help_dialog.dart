@@ -8,6 +8,7 @@ import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 
+
 import 'progress.dart';
 
 class HelpDialog extends StatefulWidget {
@@ -27,6 +28,9 @@ class _HelpDialogState extends ResourcefulState<HelpDialog> {
     super.initState();
     bloc = RegimeBloc();
     bloc.helpBodyState(widget.helpId);
+    bloc.showServerError.listen((event) {
+      Navigator.of(context).pop();
+    });
   }
 
   @override
@@ -82,4 +86,23 @@ class _HelpDialogState extends ResourcefulState<HelpDialog> {
         });
   }
 
+  @override
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
+  }
+
+  @override
+  void onRetryAfterNoInternet() {
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
+  }
 }

@@ -4,22 +4,21 @@ import 'dart:io';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
-import 'package:behandam/data/entity/slider/slider.dart';
-import 'package:behandam/data/entity/user/version.dart';
 import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/data/sharedpreferences.dart';
-import 'package:behandam/extensions/stream.dart';
-import 'package:behandam/extensions/string.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class SplashBloc {
   SplashBloc() {
-    _waiting.safeValue = false;
+    _waiting.value = false;
+    /* SmsAutoFill().getAppSignature.then((value) {
+       debugPrint('package is $value');
+     });*/
   }
 
-  Repository _repository = Repository.getInstance();
+  final _repository = Repository.getInstance();
 
   late String _path;
 
@@ -31,7 +30,6 @@ class SplashBloc {
   String get path => _path;
 
   Stream<bool> get waiting => _waiting.stream;
-
   Stream<String> get versionApp => _versionApp.stream;
 
   Stream get showUpdate => _showUpdate.stream;
@@ -42,87 +40,58 @@ class SplashBloc {
   int? buildNumber;
   bool forceUpdate = false;
 
-  void setRepository(){
-    _repository=Repository.getInstance();
-  }
-
   void getPackageInfo() async {
     version = await Utils.versionApp();
-    _versionApp.safeValue = version ?? '';
+    _versionApp.value = version??'';
     buildNumber = await Utils.buildNumber();
     packageName = await Utils.packageName();
   }
 
-  void checkFcm() async {
-    String fcm = await AppSharedPreferences.fcmToken;
-    bool sendFcm = await AppSharedPreferences.sendFcmToken;
-    if (fcm != 'null' && !sendFcm)
-      _repository.addFcmToken(fcm).then((value) async {
-        await AppSharedPreferences.setSendFcmToken(true);
-      });
-  }
-
-  void onRetryLoadingPage() {
-    setRepository();
-    getUser();
-  }
-
   void getUser() {
-    _waiting.safeValue = true;
-    if (MemoryApp.token.isNotNullAndEmpty) {
-      checkFcm();
+    _waiting.value = true;
+    _repository.getUser().then((value) {
+      MemoryApp.userInformation = value.data;
+      getVersionApp();
+    }).whenComplete(() {
+      _waiting.value = false;
 
-      _repository.getUser().then((value) {
-        MemoryApp.userInformation = value.data;
-        MemoryApp.analytics!.setUserId(id: MemoryApp.userInformation!.userId.toString());
-      }).whenComplete(() {
-        if (!MemoryApp.isNetworkAlertShown) getVersionUpdate();
-        _waiting.safeValue = false;
-      });
-    } else {
-      getVersionUpdate();
-    }
+    }).catchError((onError){
+    });
   }
 
-  void getVersionUpdate() {
-    if (!kIsWeb) {
-      _waiting.safeValue = true;
-      if (MemoryApp.token.isNotNullAndEmpty) {
-        _repository.getVersion().then((value) async {
-          checkVersionForceUpdate(value.data);
-        }).catchError((onError) {
-
-        }).whenComplete(() {
-          _waiting.safeValue = false;
-        });
-      } else
+  void getVersionApp() {
+    _waiting.value = true;
+    _repository.getVersion().then((value) async {
+      if (!kIsWeb) {
+        if (Platform.isIOS) {
+          if (value.data?.ios != null && value.data!.ios!.versionCode! > buildNumber!) {
+            if (value.data!.ios!.forceUpdate == 1) forceUpdate = true;
+            if (value.data!.ios!.versionCode != null &&
+                value.data!.ios!.forceUpdateVersion! > buildNumber!) forceUpdate = true;
+            _showUpdate.fire(value.data!.ios);
+          } else {
+            _navigateTo.fire(true);
+          }
+        } else if (Platform.isAndroid) {
+          print('onError = > ${value.data!.android!.toJson()} // $buildNumber');
+          if (value.data?.android != null &&
+              value.data!.android!.versionCode! > buildNumber!) {
+            if (value.data!.android!.forceUpdate == 1) forceUpdate = true;
+            if (value.data!.android!.versionCode != null &&
+                value.data!.android!.forceUpdateVersion! > buildNumber!) forceUpdate = true;
+            _showUpdate.fire(value.data!.android);
+          } else {
+            _navigateTo.fire(true);
+          }
+        }
+      } else {
         _navigateTo.fire(true);
-    } else {
-      _navigateTo.fire(true);
-    }
-  }
-
-  void checkVersionForceUpdate(Version? version) {
-    if (version != null && int.parse(version.versionCode!) > buildNumber!) {
-      if (version.forceUpdate!) forceUpdate = true;
-      if (version.forceUpdateVersion != null &&  int.parse(version.forceUpdateVersion!) > buildNumber!)
-        forceUpdate = true;
-      _showUpdate.fire(version);
-    } else {
-      _navigateTo.fire(true);
-    }
-  }
-
-  void getSlider() {
-    _repository.getSliders().then((value) {
-      MemoryApp.sliders = value.data!.items!;
-    }).whenComplete(() => getSlidersIntroduces());
-  }
-
-  void getSlidersIntroduces() {
-    _repository.getSlidersIntroduces().then((value) {
-      MemoryApp.sliderIntroduces = value.data!.items!;
-    }).whenComplete(() => _navigateTo.fire(true));
+      }
+    }).catchError((onError) {
+      print('onError = > ${onError}');
+    }).whenComplete(() {
+      _waiting.value = false;
+    });
   }
 
   void dispose() {

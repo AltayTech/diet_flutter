@@ -56,6 +56,7 @@ const _$NotificationLayoutEnumMap = {
   NotificationLayout.Inbox: 'Inbox',
   NotificationLayout.ProgressBar: 'ProgressBar',
   NotificationLayout.Messaging: 'Messaging',
+  NotificationLayout.MessagingGroup: 'MessagingGroup',
   NotificationLayout.MediaPlayer: 'MediaPlayer',
 };
 

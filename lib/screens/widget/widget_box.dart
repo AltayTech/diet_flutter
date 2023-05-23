@@ -1,17 +1,17 @@
 import 'package:behandam/app/app.dart';
-import 'package:behandam/base/utils.dart';
 import 'package:behandam/routes.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+void fieldFocusChange(
+    BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
   currentFocus.unfocus();
-  FocusManager.instance.primaryFocus?.requestFocus(nextFocus);
+  FocusScope.of(context).requestFocus(nextFocus);
 }
 
 const inputDecoration = InputDecoration(
@@ -31,7 +31,7 @@ const inputDecoration = InputDecoration(
       width: 1.0,
     ),
   ),
-  labelText: '',
+  labelText: 'شماره موبایلت رو وارد کن',
   labelStyle: TextStyle(
     color: Color.fromARGB(255, 195, 194, 194),
     fontSize: 18.0,
@@ -122,10 +122,11 @@ Widget attachBox() {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () {
-                    debugPrint('assistant clicked');
-                    Utils.launchURL('http://support.kermany.com/');
+                    print('assistant clicked');
+                    launchURL('http://support.kermany.com/');
                   },
-                  child: attachCard('assets/images/profile/assistant.svg', 'دستیار'),
+                  child: attachCard(
+                      'assets/images/profile/assistant.svg', 'دستیار'),
                 ),
               ),
               Container(
@@ -136,8 +137,9 @@ Widget attachBox() {
               Expanded(
                 flex: 1,
                 child: GestureDetector(
-                  onTap: () => Utils.launchURL('https://kermany.com/'),
-                  child: attachCard('assets/images/profile/magazine.svg', 'مجله دکتر کرمانی'),
+                  onTap: () => launchURL('https://kermany.com/'),
+                  child: attachCard(
+                      'assets/images/profile/magazine.svg', 'مجله دکتر کرمانی'),
                 ),
               ),
             ],
@@ -181,13 +183,11 @@ Widget attachBox() {
   );
 }
 
-Widget optionButtonUi(IconData icon, String text, int action, TextDirection textDirection) {
+Widget optionUi(IconData icon, String text, int action) {
   return GestureDetector(
     onTap: () {
       if (action == 2) {
         navigator.routeManager.push(Uri.parse(Routes.editProfile));
-      } else if (action == 1) {
-        navigator.routeManager.push(Uri.parse(Routes.billSubscriptionHistory));
       } else if (action == 0) {
         navigator.routeManager.push(Uri.parse(Routes.resetCode));
       }
@@ -195,38 +195,25 @@ Widget optionButtonUi(IconData icon, String text, int action, TextDirection text
     child: Container(
 //        width: _widthSpace / 3.25,
       height: 6.h,
-      padding: EdgeInsets.only(left: 8, right: 8),
-      decoration:
-          BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30.0), boxShadow: [
-        BoxShadow(
-            color: Color.fromARGB(255, 248, 233, 233),
-            blurRadius: 3.0,
-            spreadRadius: 2.5,
-            offset: Offset(0.0, 0.3.w)),
-      ]),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15.0),
+       ),
       child: Row(
-        textDirection: textDirection,
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            flex: 0,
-            child: Icon(
-              icon,
-              color: Color.fromARGB(255, 255, 151, 156),
-              size: 5.w,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 10.sp,
+                color: Color.fromARGB(255, 152, 152, 152),
+              ),
             ),
           ),
           Space(
             width: 1.w,
-          ),
-          Text(
-            text,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 10.sp,
-              color: Color.fromARGB(255, 152, 152, 152),
-            ),
           ),
         ],
       ),
@@ -234,8 +221,8 @@ Widget optionButtonUi(IconData icon, String text, int action, TextDirection text
   );
 }
 
-Widget cardLeftOrRightColor(String bgAdrs, String iconAdrs, String text, Color textColor,
-    Color shadow, TextDirection textDirection, bool isRight) {
+Widget card(String bgAdrs, String iconAdrs, String text, Color textColor,
+    Color shadow, TextDirection textDirection) {
   return Container(
     width: 70.w,
     height: 10.h,
@@ -254,21 +241,22 @@ Widget cardLeftOrRightColor(String bgAdrs, String iconAdrs, String text, Color t
       textDirection: textDirection,
       children: <Widget>[
         Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (isRight)
-                Expanded(
-                  child: Container(
-                    width: 1.5.w,
-                    decoration: BoxDecoration(
-                        color: Color(0xff66D4C9),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(12), topRight: Radius.circular(12))),
-                  ),
-                  flex: 0,
+              Expanded(
+                child: Container(
+                  width: 1.5.w,
+                  decoration: BoxDecoration(
+                      color: Color(0xff66D4C9),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(12),
+                          topRight: Radius.circular(12))),
                 ),
+                flex: 0,
+              ),
               Expanded(
                   flex: 1,
                   child: Padding(
@@ -277,17 +265,6 @@ Widget cardLeftOrRightColor(String bgAdrs, String iconAdrs, String text, Color t
                         "",
                         textAlign: TextAlign.right,
                       ))),
-              if (!isRight)
-                Expanded(
-                  child: Container(
-                    width: 1.5.w,
-                    decoration: BoxDecoration(
-                        color: Color(0xff66D4C9),
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(12), topLeft: Radius.circular(12))),
-                  ),
-                  flex: 0,
-                ),
             ],
           ),
         ),
@@ -333,66 +310,81 @@ Widget textInput(
     required Function onChanged,
     String? value,
     String? label,
-    Color? bgColor,
     required bool enable,
     required bool maxLine,
     required BuildContext ctx,
     TextInputAction? action,
     required TextDirection textDirection,
     TextAlign? textAlign,
-    bool? endCursorPosition,
+      bool? endCursorPosition,
     TextEditingController? textController,
-    List<TextInputFormatter>? formatters,
-    IconData? icon}) {
+      List<TextInputFormatter>? formatters}) {
   TextEditingController controller = TextEditingController();
   controller.text = value ?? '';
   //controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
   return Container(
     height: height,
     child: TextFormField(
-      inputFormatters: formatters != null ? formatters : null,
+      inputFormatters: formatters != null
+          ? formatters
+          : null,
       textInputAction: action,
       maxLines: maxLine ? 4 : 1,
-      controller: textController ?? controller,
+      controller: controller,
       enabled: enable,
       decoration: inputDecoration.copyWith(
-          labelText: label,
-          fillColor: bgColor,
-          labelStyle: Theme.of(ctx).textTheme.subtitle1!.copyWith(color: AppColors.labelColor),
-          prefixIcon: icon != null ? Icon(icon) : null),
+        labelText: label,
+        labelStyle: Theme.of(ctx)
+            .textTheme
+            .subtitle1!
+            .copyWith(color: AppColors.labelColor),
+      ),
       keyboardType: textInputType,
       textDirection: textDirection,
       onChanged: (val) {
-        if (textController != null) {
-          TextSelection previousSelection = textController.selection;
-          onChanged(val);
-          textController.text = val;
-          textController.selection = previousSelection;
-        } else {
-          TextSelection previousSelection = controller.selection;
-          controller.text = onChanged(val);
-          controller.selection = previousSelection;
-        }
+        controller.text = val;
+        controller.selection = TextSelection.fromPosition(
+            TextPosition(offset: controller.text.length));
+        onChanged(val);
       },
-      onTap: () {
-        // fix bug click on end of text on rtl
-        if (textController != null) {
-          if (textController.selection ==
-              TextSelection.fromPosition(TextPosition(offset: textController.text.length - 1))) {
-            textController.selection =
-                TextSelection.fromPosition(TextPosition(offset: textController.text.length));
-          }
-        } else {
-          if (controller.selection ==
-              TextSelection.fromPosition(TextPosition(offset: controller.text.length - 1))) {
-            controller.selection =
-                TextSelection.fromPosition(TextPosition(offset: controller.text.length));
-          }
-        }
-      },
-      style: Theme.of(ctx).textTheme.bodyText1,
-      // textAlign: TextAlign.start,
+      style: Theme.of(ctx).textTheme.subtitle2,
+      textAlign: TextAlign.start,
       validator: (val) => validation(val),
     ),
   );
+}
+
+void launchURL(String url) async {
+  // url = Uri.encodeFull(url).toString();
+  if (await canLaunch(url)) {
+    print('can launch');
+    await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+      enableJavaScript: true,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    );
+  } else {
+    // throw 'Could not launch $url';
+    print('url lanuch error');
+  }
+  /*url = Uri.encodeFull(url).toString();
+    print('url $url');
+    // Uri.encodeComponent(url);
+    // print('scheme url ${url.substring(8, url.length - 1)}');
+    // final Uri _openUrl = Uri(
+    //     scheme: 'https',
+    //     path: url.substring(8, url.length - 1),
+    //     // queryParameters: {
+    //     //   'subject': 'Example Subject & Symbols are allowed!'
+    //     // }
+    // );
+    if (await canLaunch(url)) {
+       await launch(url, forceSafariVC: false,
+         forceWebView: false,);
+    } else {
+      showSnackbar('$url', SizeConfig.blockSizeHorizontal, true, _scaffoldKey);
+      throw 'Could not launch $url';
+    }*/
 }

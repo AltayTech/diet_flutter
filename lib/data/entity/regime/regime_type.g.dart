@@ -44,3 +44,16 @@ const _$RegimeAliasEnumMap = {
   RegimeAlias.Notrica: 'NOTRICA',
   RegimeAlias.WeightStabilization: 'WEIGHT_STABILIZATION',
 };
+
+RegimeTypeName _$RegimeTypeNameFromJson(Map<String, dynamic> json) =>
+    RegimeTypeName()
+      ..index = json['index'] as int?
+      ..name = json['name'] as String?
+      ..persianName = json['persian_name'] as String?;
+
+Map<String, dynamic> _$RegimeTypeNameToJson(RegimeTypeName instance) =>
+    <String, dynamic>{
+      'index': instance.index,
+      'name': instance.name,
+      'persian_name': instance.persianName,
+    };

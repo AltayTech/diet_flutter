@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-enum ThemeAppColor { DEFAULT, BLUE, DARK, PURPLE, FASTTING, FASTTINGLIST }
+enum ThemeAppColor { DEFAULT, BLUE, DARK, PURPLE }
 
 class AppColors {
   late ThemeAppColor themeAppColor;
@@ -24,12 +23,14 @@ class AppColors {
   static late Color btnColor;
   static late Color onScaffold;
   static late Color labelColor;
+  static late Color labelColorFood;
+  static late Color backLabelColorFood;
   static late Color labelTextColor;
   static late Color labelTab;
   static late Color warning = Colors.orange.shade100;
 
   static const btnColorsGradient =
-      LinearGradient(colors: [Color(0xfff7879d), Color(0xffff5757)]);
+  LinearGradient(colors: [Color(0xff67DAFF), Color(0xff03A9F4)]);
   static const penColor = Color(0xff666666);
   static const redBar = Color(0xffFF5757);
   static const looseType = Color(0xfff6ded5);
@@ -54,34 +55,14 @@ class AppColors {
   static late Color colorTextApp;
   static late Color colorSelectDepartmentTicket;
   static const grey = Color(0xffF5F5F5);
-  static const priceGreyColor = Color(0xff454545);
-  static const priceDiscountColor = Color(0xffED4C67);
-  static const priceGreenColor = Color(0xff1ABC9C);
-  static const priceColor = Color.fromRGBO(86, 195, 180, 1);
   static const purpleRuler = Color(0xff927DFC);
   static const pinkRuler = Color(0xffEC4CA2);
-  static const blueRuler = Color(0xff45AAF2);
+  static const blueRuler = Color(0xff65A8E0);
   static const greenRuler = Color(0xff59CBB1);
   static const box = Color.fromARGB(255, 245, 245, 245);
   static const pregnantPink = Color(0xffFE92A3);
   static const chartBorder = Color.fromARGB(255, 255, 87, 87);
   static const pinkPass = Color(0xffFFE2E2);
-  static const redDate = Color(0xffFF5757);
-  static const greyDate = Color(0xff454545);
-  static const alertCallTextColor = Color(0xff5282a5);
-  static const suggestion = Color(0xff1DD1A1);
-  static const weightBoxColorRedLight = Color(0xffff7373 );
-  static const weightBoxColorGreen = Color(0xff8BC384);
-  static const weightBoxColorOrange = Color(0xffFFAC6F);
-  static const weightBoxColorRed = Color(0xffbb0101);
-  static const weightBoxColorBlue = Color(0xff84C8D0);
-  static const dietTypeBoxColor = Color(0xffddf5f0);
-  static const bodyStateBlueColor = Color(0xff3498db);
-  static const bodyStatePurpleColor = Color(0xff686de0);
-  static const bodyStateOrangeColor = Color(0xfff8924f);
-  static const bodyStateGreenColor = Color(0xff1abc9c);
-  static const bodyStateRedColor = Color(0xffed4c67);
-  static const bodyStateDarkBlueColor = Color(0xff273c75);
   static var colorPackages = [
     {
       'barColor': Color.fromARGB(255, 249, 203, 202),
@@ -92,6 +73,124 @@ class AppColors {
       'priceColor': Color.fromRGBO(86, 195, 180, 1),
     },
   ];
+
+  AppColors({required this.themeAppColor}) {
+    switch (this.themeAppColor) {
+      case ThemeAppColor.DEFAULT:
+        accentColor = Color.fromRGBO(250, 114, 126, 1);
+        primaryColorDark = Color(0xff67DAFF);
+        primary = Color(0xff03A9F4);
+        onPrimary = Colors.white;
+        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
+        iconsColor = Color(0xffC2C2C2);
+        surface = Colors.white;
+        onSurface = Colors.black;
+        scaffold = Color(0xFFF5F8FE);
+        onScaffold = onSurface;
+        shadowColor = Color.fromARGB(255, 246, 246, 246);
+        arcColor = Color(0xFAEDECEC);
+        btnColor = Color(0xff03A9F4);
+        labelColor = Color(0xf48e8e8e);
+        backLabelColorFood = Color.fromARGB(19,48,159,140);
+        labelColorFood = Color(0xff309F8C);
+        labelTab = Color(0xffffffff);
+        statusTicketClose = Colors.grey[700]!;
+        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
+        statusTicketPendingAdminResponse = Colors.lightBlue;
+        statusTicketPendingUserResponse = Colors.pinkAccent;
+        statusTicketOnHold = primaryVariantLight;
+        statusTicketGlobalIssue = Color(0xFFF3543C);
+        background = Color.fromARGB(255, 245, 245, 245);
+        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
+        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
+        labelTextColor = Color(0xff7f7f7f);
+        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
+        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
+        break;
+      case ThemeAppColor.BLUE:
+        primary = Color(0xff364C80);
+        accentColor = Color(0xff6C98FF);
+        primaryColorDark = Color(0x0ff000c21);
+        onPrimary = Colors.white;
+        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
+        iconsColor = Color(0xffC2C2C2);
+        surface = Colors.white;
+        onSurface = Colors.black;
+        scaffold = Color(0xFFF5F8FE);
+        onScaffold = onSurface;
+        shadowColor = Color.fromARGB(255, 246, 246, 246);
+        arcColor = Color(0xFAEDECEC);
+        btnColor = Color(0xff03A9F4);
+        labelColor = Color(0xf48e8e8e);
+        labelTab = Color(0xffffffff);
+        statusTicketClose = primaryVariantLight;
+        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
+        statusTicketPendingAdminResponse = Colors.lightBlue;
+        statusTicketPendingUserResponse = Colors.pinkAccent;
+        statusTicketOnHold = Colors.grey[700]!;
+        statusTicketGlobalIssue = Color(0xFFF3543C);
+        background = Color.fromARGB(255, 245, 245, 245);
+        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
+        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
+        backLabelColorFood = Color.fromARGB(19,48,159,140);
+        labelColorFood = Color(0xff309F8C);
+        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
+        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
+        break;
+      case ThemeAppColor.DARK:
+        primary = Color(0x0ff011230);
+        accentColor = Color(0xff092a49);
+        primaryColorDark = Color(0x0ff000c21);
+        onPrimary = Colors.white;
+        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
+        iconsColor = Color(0xffC2C2C2);
+        surface = Colors.white;
+        onSurface = Colors.black;
+        scaffold = Color(0xFFF5F8FE);
+        onScaffold = onSurface;
+        shadowColor = Color.fromARGB(255, 246, 246, 246);
+        arcColor = Color(0xFAEDECEC);
+        btnColor = Color(0xff03A9F4);
+        labelColor = Color(0xf48e8e8e);
+        labelTab = Color(0xffffffff);
+        statusTicketClose = Colors.grey[700]!;
+        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
+        statusTicketPendingAdminResponse = Colors.lightBlue;
+        statusTicketPendingUserResponse = Colors.pinkAccent;
+        statusTicketOnHold = primaryVariantLight;
+        statusTicketGlobalIssue = Color(0xFFF3543C);
+        background = Color.fromARGB(255, 245, 245, 245);
+        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
+        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
+        backLabelColorFood = Color.fromARGB(19,48,159,140);
+        labelColorFood = Color(0xff309F8C);
+        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
+        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
+        break;
+      case ThemeAppColor.PURPLE:
+        primary = Color(0xFF0D83DD);
+        onPrimary = Colors.white;
+        primaryVariantLight = Color(0xFF0E8DEE);
+        iconsColor = Color(0xffC2C2C2);
+        surface = Colors.white;
+        onSurface = Colors.black;
+        scaffold = Color(0xFFF5F8FE);
+        onScaffold = onSurface;
+        shadowColor = Color.fromARGB(255, 246, 246, 246);
+        arcColor = Color(0xFAEDECEC);
+        btnColor = Color(0xff03A9F4);
+        labelColor = Color(0xf48e8e8e);
+        labelTab = Color(0xffffffff);
+        statusTicketClose = primaryVariantLight;
+        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
+        statusTicketPendingAdminResponse = Colors.lightBlue;
+        statusTicketPendingUserResponse = Colors.pinkAccent;
+        statusTicketOnHold = Colors.grey[700]!;
+        statusTicketGlobalIssue = Color(0xFFF3543C);
+        break;
+    }
+  }
+
   static var mealColors = [
     {
       'color': Color.fromRGBO(255, 125, 112, 1),
@@ -166,207 +265,6 @@ class AppColors {
       'bgColor': Color.fromRGBO(255, 231, 238, 1),
     },
   ];
-
-  static late Color replaceFoodButton;
-  static late Color helpFastingButton;
-  static late Color menuColorDefault=Color.fromRGBO(250, 114, 126, 1.0);
-  static late Color menuColorFasting=Color(0xff65A8E0);
-  static late Color newBackground=Color(0xffF5F5F5);
-  static late Color newBackgroundFlow=Color(0xffffffff);
-
-  AppColors({required this.themeAppColor}) {
-    switch (this.themeAppColor) {
-      case ThemeAppColor.DEFAULT:
-        accentColor = Color.fromRGBO(250, 114, 126, 1);
-        primaryColorDark = Color.fromARGB(255, 255, 55, 87);
-        primary = Color.fromARGB(255, 255, 87, 87);
-        onPrimary = Colors.white;
-        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
-        iconsColor = Color(0xff646464);
-        surface = Colors.white;
-        onSurface = Colors.black;
-        scaffold = Color(0xFFF5F8FE);
-        onScaffold = onSurface;
-        shadowColor = Color.fromARGB(255, 246, 246, 246);
-        arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
-        labelColor = Color(0xf48e8e8e);
-        labelTab = Color(0xffffffff);
-        statusTicketClose = Colors.grey[700]!;
-        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
-        statusTicketPendingAdminResponse = Colors.lightBlue;
-        statusTicketPendingUserResponse = Colors.pinkAccent;
-        statusTicketOnHold = primaryVariantLight;
-        statusTicketGlobalIssue = Color(0xFFF3543C);
-        background = Color.fromARGB(255, 255, 255, 255);
-        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
-        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
-        labelTextColor = Color(0xff7f7f7f);
-        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
-        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
-        replaceFoodButton = onPrimary;
-        helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
-        break;
-      case ThemeAppColor.BLUE:
-        primary = Color(0x0ff011230);
-        accentColor = Color(0xff092a49);
-        primaryColorDark = Color(0x0ff000c21);
-        onPrimary = Colors.white;
-        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
-        iconsColor = Color(0xff646464);
-        surface = Colors.white;
-        onSurface = Colors.black;
-        scaffold = Color(0xFFF5F8FE);
-        onScaffold = onSurface;
-        shadowColor = Color.fromARGB(255, 246, 246, 246);
-        arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
-        labelColor = Color(0xf48e8e8e);
-        labelTab = Color(0xffffffff);
-        statusTicketClose = primaryVariantLight;
-        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
-        statusTicketPendingAdminResponse = Colors.lightBlue;
-        statusTicketPendingUserResponse = Colors.pinkAccent;
-        statusTicketOnHold = Colors.grey[700]!;
-        statusTicketGlobalIssue = Color(0xFFF3543C);
-        background = Color.fromARGB(255, 245, 245, 245);
-        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
-        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
-        labelTextColor = Color(0xff7f7f7f);
-        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
-        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
-        replaceFoodButton = onPrimary;
-        helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
-        break;
-      case ThemeAppColor.DARK:
-        primary = Color(0x0ff011230);
-        accentColor = Color(0xff092a49);
-        primaryColorDark = Color(0x0ff000c21);
-        onPrimary = Colors.white;
-        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
-        iconsColor = Color(0xff646464);
-        surface = Colors.white;
-        onSurface = Colors.black;
-        scaffold = Color(0xFFF5F8FE);
-        onScaffold = onSurface;
-        shadowColor = Color.fromARGB(255, 246, 246, 246);
-        arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
-        labelColor = Color(0xf48e8e8e);
-        labelTab = Color(0xffffffff);
-        statusTicketClose = Colors.grey[700]!;
-        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
-        statusTicketPendingAdminResponse = Colors.lightBlue;
-        statusTicketPendingUserResponse = Colors.pinkAccent;
-        statusTicketOnHold = primaryVariantLight;
-        statusTicketGlobalIssue = Color(0xFFF3543C);
-        background = Color.fromARGB(255, 245, 245, 245);
-        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
-        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
-        labelTextColor = Color(0xff7f7f7f);
-        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
-        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
-        replaceFoodButton = onPrimary;
-        helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
-        break;
-      case ThemeAppColor.PURPLE:
-        primary = Color(0xFF0D83DD);
-        onPrimary = Colors.white;
-        primaryVariantLight = Color(0xFF0E8DEE);
-        iconsColor = Color(0xff646464);
-        surface = Colors.white;
-        onSurface = Colors.black;
-        scaffold = Color(0xFFF5F8FE);
-        onScaffold = onSurface;
-        shadowColor = Color.fromARGB(255, 246, 246, 246);
-        arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
-        labelColor = Color(0xf48e8e8e);
-        labelTab = Color(0xffffffff);
-        statusTicketClose = primaryVariantLight;
-        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
-        statusTicketPendingAdminResponse = Colors.lightBlue;
-        statusTicketPendingUserResponse = Colors.pinkAccent;
-        statusTicketOnHold = Colors.grey[700]!;
-        statusTicketGlobalIssue = Color(0xFFF3543C);
-        replaceFoodButton = onPrimary;
-        helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
-        break;
-      case ThemeAppColor.FASTTING:
-        accentColor = Color.fromRGBO(72, 157, 220, 1);
-        primaryColorDark = Color.fromARGB(255, 16, 95, 149);
-        primary = Color.fromARGB(255, 53, 144, 214);
-        onPrimary = Colors.white;
-        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
-        iconsColor = Color(0xff646464);
-        surface = Colors.white;
-        onSurface = Colors.black;
-        scaffold = Color(0xFFF5F8FE);
-        onScaffold = onSurface;
-        shadowColor = Color.fromARGB(255, 246, 246, 246);
-        arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
-        labelColor = Color(0xf48e8e8e);
-        labelTab = Color(0xffffffff);
-        statusTicketClose = Colors.grey[700]!;
-        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
-        statusTicketPendingAdminResponse = Colors.lightBlue;
-        statusTicketPendingUserResponse = Colors.pinkAccent;
-        statusTicketOnHold = primaryVariantLight;
-        statusTicketGlobalIssue = Color(0xFFF3543C);
-        background = Color.fromARGB(255, 245, 245, 245);
-        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
-        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
-        labelTextColor = Color(0xff7f7f7f);
-        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
-        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
-        replaceFoodButton = Color.fromRGBO(254, 223, 214, 1);
-        helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
-        break;
-      case ThemeAppColor.FASTTINGLIST:
-        accentColor = Color.fromRGBO(15, 92, 150, 1);
-        primaryColorDark = Color.fromARGB(255, 11, 63, 99);
-        primary = Color.fromARGB(255, 15, 92, 150);
-        onPrimary = Colors.white;
-        primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
-        iconsColor = Color(0xff646464);
-        surface = Colors.white;
-        onSurface = Colors.black;
-        scaffold = Color(0xFFF5F8FE);
-        onScaffold = onSurface;
-        shadowColor = Color.fromARGB(255, 246, 246, 246);
-        arcColor = Color(0xFAEDECEC);
-        btnColor = Color(0xfffd5d5f);
-        labelColor = Color(0xf48e8e8e);
-        labelTab = Color(0xffffffff);
-        statusTicketClose = Colors.grey[700]!;
-        statusTicketResolved = Color.fromRGBO(235, 197, 69, 1);
-        statusTicketPendingAdminResponse = Colors.lightBlue;
-        statusTicketPendingUserResponse = Colors.pinkAccent;
-        statusTicketOnHold = primaryVariantLight;
-        statusTicketGlobalIssue = Color(0xFFF3543C);
-        background = Color.fromARGB(255, 245, 245, 245);
-        colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
-        colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
-        labelTextColor = Color(0xff7f7f7f);
-        colorCardGray = Color.fromRGBO(245, 245, 245, 1);
-        colorTextApp = Color.fromRGBO(147, 147, 147, 1);
-        replaceFoodButton = Color.fromRGBO(212, 240, 255, 1);
-        helpFastingButton = Color.fromRGBO(255, 138, 55, 1);
-        break;
-    }
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: AppColors.primaryColorDark,
-      // status bar color
-      statusBarBrightness: Brightness.dark,
-      //status bar brigtness
-      statusBarIconBrightness: Brightness.light,
-      //status barIcon Brightness
-      systemNavigationBarDividerColor: Colors.transparent,
-      //Navigation bar divider color
-      systemNavigationBarIconBrightness: Brightness.light, //navigation bar icon
-    ));
-  }
 }
 
 abstract class AppMaterialColors {

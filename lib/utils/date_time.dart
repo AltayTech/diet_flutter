@@ -85,27 +85,32 @@ abstract class DateTimeUtils {
   }
 
   static String timerFormat(int time){
-    int min=time~/60;
+    int min=(time/60).toInt();
     int second=time%60;
     return '$min:$second';
   }
 
-  static String formatTodayDate() {
-    Jalali jalali = Jalali.fromDateTime(DateTime.parse(Jalali.now().toDateTime().toString().substring(0, 10)));
-    final f = jalali.formatter;
-    return '${f.dd} ${f.mN} ${f.yyyy}';
+  static String weekDayArabicName(String name) {
+    switch (name) {
+      case 'Saturday':
+        return 'سبت';
+      case 'Sunday':
+        return 'أحد';
+      case 'Monday':
+        return 'أثنين';
+      case 'Tuesday':
+        return 'ثلاثاء';
+      case 'Wednesday':
+        return 'أربعاء';
+      case 'Thursday':
+        return 'خميس';
+      case 'Friday':
+        return 'جمعه';
+      default:
+        return 'سبت';
+    }
   }
 
-  static String formatCustomDate(String date) {
-    Jalali jalali = Jalali.fromDateTime(DateTime.parse(date));
-    final f = jalali.formatter;
-    return '${f.dd} ${f.mN} ${f.yyyy}';
-  }
-
-  static String jalaliToGregorian(String date) {
-    Jalali jalali = Jalali.fromDateTime(DateTime.parse(date));
-    return DateTime.parse(jalali.toDateTime().toString().substring(0, 10)).toString().substring(0, 10);
-  }
 }
 
 enum Meal {

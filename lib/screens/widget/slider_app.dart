@@ -1,10 +1,10 @@
 import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
+import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SliderApp extends StatefulWidget {
@@ -23,16 +23,17 @@ class _SliderAppState extends State<SliderApp> {
     return CarouselSlider(
       options: CarouselOptions(
           // height: 20.h,
-          viewportFraction: 0.7,
-          enableInfiniteScroll: true,
+          autoPlayInterval: Duration(milliseconds: 500),
           disableCenter: true,
           enlargeCenterPage: true,
           aspectRatio: 16 / 9,
-          initialPage: 1,
-          pageSnapping: true,
+          enableInfiniteScroll: false,
           scrollDirection: Axis.horizontal),
       items: widget.banners
-          .map((value) => GestureDetector(
+          .asMap()
+          .map((key, value) => MapEntry(
+              key,
+              GestureDetector(
                 onTap: () {
                   if (value.action_type == ActionType.deepLink) {
                     VxNavigator.of(context).push(Uri.parse('/${value.action}'));
@@ -45,12 +46,14 @@ class _SliderAppState extends State<SliderApp> {
                   margin: EdgeInsets.all(5.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    child: ImageUtils.fromNetwork(Utils.getCompletePathShop(value.sliderImg),
+                    child: ImageUtils.fromNetwork(
+                        FlavorConfig.instance.variables['baseUrlFileShop'] + value.sliderImg,
                         showPlaceholder: false,
                         fit: BoxFit.fill),
                   ),
                 ),
-              ))
+              )))
+          .values
           .toList(),
     );
   }

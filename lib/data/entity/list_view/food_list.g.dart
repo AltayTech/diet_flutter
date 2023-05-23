@@ -16,41 +16,31 @@ FoodListData _$FoodListDataFromJson(Map<String, dynamic> json) => FoodListData()
   ..dietType = json['diet_type'] == null
       ? null
       : DietType.fromJson(json['diet_type'] as Map<String, dynamic>)
-  ..isFasting = $enumDecodeNullable(_$booleanEnumMap, json['is_fasting'])
-  ..hasPattern = $enumDecodeNullable(_$booleanEnumMap, json['has_pattern'])
-  ..surveyData = json['survey_data'] == null
-      ? null
-      : SurveyData.fromJson(json['survey_data'] as Map<String, dynamic>);
+  ..isFasting = $enumDecodeNullable(_$booleanEnumMap, json['is_fasting']);
 
 const _$booleanEnumMap = {
   boolean.False: 0,
   boolean.True: 1,
 };
 
-SurveyData _$SurveyDataFromJson(Map<String, dynamic> json) => SurveyData(
-      json['call_id'] as int?,
-      json['survey_status'] as bool?,
-    );
-
-Meals _$MealsFromJson(Map<String, dynamic> json) => Meals(
-      json['id'] as int,
-      json['title'] as String,
-      json['meal_type_id'] as int,
-      json['icon'] as String?,
-      $enumDecode(_$booleanEnumMap, json['is_for_fasting']),
-      json['order'] as int,
-      json['start_at'] as String?,
-      json['end_at'] as String?,
-      json['description'] as String?,
-      json['food'] == null
-          ? null
-          : Food.fromJson(json['food'] as Map<String, dynamic>),
-    )
-      ..newFood = json['newFood'] == null
-          ? null
-          : ListFood.fromJson(json['newFood'] as Map<String, dynamic>)
-      ..color = json['color']
-      ..bgColor = json['bgColor'];
+Meals _$MealsFromJson(Map<String, dynamic> json) => Meals()
+  ..id = json['id'] as int
+  ..title = json['title'] as String
+  ..mealTypeId = json['meal_type_id'] as int
+  ..icon = json['icon'] as String?
+  ..isForFasting = $enumDecode(_$booleanEnumMap, json['is_for_fasting'])
+  ..order = json['order'] as int
+  ..startAt = json['start_at'] as String?
+  ..endAt = json['end_at'] as String?
+  ..description = json['description'] as String?
+  ..food = json['food'] == null
+      ? null
+      : Food.fromJson(json['food'] as Map<String, dynamic>)
+  ..newFood = json['newFood'] == null
+      ? null
+      : ListFood.fromJson(json['newFood'] as Map<String, dynamic>)
+  ..color = json['color']
+  ..bgColor = json['bgColor'];
 
 Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['id'] as int,
@@ -59,36 +49,22 @@ Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['diet_type_id'] as int?,
       json['menu_type_id'] as int?,
       json['menu_term_id'] as int?,
-      json['is_public'] as int,
-      $enumDecodeNullable(_$TypeThemeEnumMap, json['theme']),
-      (json['fasting_dates'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
       json['started_at'] as String?,
       json['expired_at'] as String?,
-      json['hex'] as String?,
     );
 
-const _$TypeThemeEnumMap = {
-  TypeTheme.FASTING: 'FASTING',
-  TypeTheme.FASTING2: 'FASTING2',
-  TypeTheme.DEFAULT: 'DEFAULT',
-  TypeTheme.RAMADAN: 'RAMADAN',
-  TypeTheme.PREGNANCY: 'PREGNANCY',
-};
-
-Food _$FoodFromJson(Map<String, dynamic> json) => Food(
-      json['id'] as int?,
-      json['title'] as String?,
-      json['description'] as String?,
-      json['free_food'] as String?,
-      (json['free_foods_items'] as List<dynamic>?)
-          ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      (json['food_items'] as List<dynamic>?)
-          ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+Food _$FoodFromJson(Map<String, dynamic> json) => Food()
+  ..id = json['id'] as int?
+  ..title = json['title'] as String?
+  ..description = json['description'] as String?
+  ..freeFood = json['free_food'] as String?
+  ..freeFoodsItems = (json['free_foods_items'] as List<dynamic>?)
+      ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..foodItems = (json['food_items'] as List<dynamic>?)
+      ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..mealId = json['meal_id'] as int?;
 
 Map<String, dynamic> _$FoodToJson(Food instance) => <String, dynamic>{
       'id': instance.id,
@@ -97,6 +73,7 @@ Map<String, dynamic> _$FoodToJson(Food instance) => <String, dynamic>{
       'free_food': instance.freeFood,
       'free_foods_items': instance.freeFoodsItems,
       'food_items': instance.foodItems,
+      'meal_id': instance.mealId,
     };
 
 Ratio _$RatioFromJson(Map<String, dynamic> json) => Ratio(
@@ -234,8 +211,6 @@ Visit _$VisitFromJson(Map<String, dynamic> json) => Visit(
       json['calory_id'] as int,
       $enumDecode(_$booleanEnumMap, json['is_active']),
       json['deleted_at'] as String?,
-      json['calory_value'] as int,
-      json['visit_days'] as int,
     );
 
 Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
@@ -254,21 +229,13 @@ Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'calory_id': instance.calorieId,
       'is_active': _$booleanEnumMap[instance.isActive]!,
       'deleted_at': instance.deletedAt,
-      'calory_value': instance.calorieValue,
-      'visit_days': instance.visitDays,
     };
 
-DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType()
-  ..id = json['id'] as int?
-  ..alias = $enumDecodeNullable(_$RegimeAliasEnumMap, json['alias'])
-  ..title = json['title'] as String?
-  ..isActive = $enumDecodeNullable(_$booleanEnumMap, json['is_active'])
-  ..template = json['template'] == null
-      ? null
-      : TempTicket.fromJson(json['template'] as Map<String, dynamic>)
-  ..dietTypes = (json['diet_types'] as List<dynamic>?)
-      ?.map((e) => DietType.fromJson(e as Map<String, dynamic>))
-      .toList();
+DietType _$DietTypeFromJson(Map<String, dynamic> json) => DietType(
+      json['id'] as int,
+      $enumDecode(_$RegimeAliasEnumMap, json['alias']),
+      json['title'] as String,
+    );
 
 const _$RegimeAliasEnumMap = {
   RegimeAlias.Pregnancy: 'PREGNANCY',
@@ -279,5 +246,4 @@ const _$RegimeAliasEnumMap = {
   RegimeAlias.Ketogenic: 'KETOGENIC',
   RegimeAlias.Sport: 'SPORTS',
   RegimeAlias.Notrica: 'NOTRICA',
-  RegimeAlias.WeightStabilization: 'WEIGHT_STABILIZATION',
 };

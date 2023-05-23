@@ -1,30 +1,30 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/auth/country.dart';
+import 'package:behandam/base/utils.dart';
 import 'package:behandam/data/entity/auth/register.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/screens/authentication/authentication_bloc.dart';
-import 'package:behandam/screens/widget/dialog.dart';
+import 'package:behandam/screens/utility/arc.dart';
 import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/screens/widget/toolbar.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
-import 'package:behandam/widget/custom_button.dart';
+import 'package:behandam/widget/gender_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-enum gender {
-  @JsonValue(0)
+
+enum gender{
+@JsonValue(0)
   woman,
-  @JsonValue(1)
+@JsonValue(1)
   man
 }
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen() {
-    MemoryApp.analytics!.logEvent(name: "register_start");
+  RegisterScreen(){
+    /*MemoryApp.analytics!.logEvent(name: "register_start");*/
   }
 
   @override
@@ -32,21 +32,22 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
+  final _text = TextEditingController();
   var args;
-
+  bool _validate = false;
   String? firstName;
   String? lastName;
   String? _password;
   late AuthenticationBloc authBloc;
+  bool  switchValue = false;
   bool _obscureText = false;
   bool check = false;
-  late Country countrySelected;
-
-  bool isInit = false;
 
   @override
   void initState() {
     super.initState();
+    authBloc  = AuthenticationBloc();
+    listenBloc();
   }
 
   @override
@@ -57,253 +58,261 @@ class _RegisterScreenState extends ResourcefulState<RegisterScreen> {
 
   void listenBloc() {
     authBloc.navigateToVerify.listen((event) {
-      print('event:$event');
-      if (event != null) {
+      if(event != null){
         check = true;
         VxNavigator.of(context).push(Uri.parse('/$event'));
       }
     });
-    authBloc.popDialog.listen((event) {
-      Navigator.of(context).pop();
+    authBloc.showServerError.listen((event) {
+      Utils.getSnackbarMessage(context, event);
     });
   }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!isInit) {
-      isInit = true;
-      args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      countrySelected = args["country"];
-      authBloc = AuthenticationBloc();
-      listenBloc();
-    }
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    args = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
-        appBar: Toolbar(titleBar: intl.register),
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: StreamBuilder(
-              stream: authBloc.waiting,
-              builder: (context, snapshot) {
-                if (snapshot.data == false && !check) {
-                  return TouchMouseScrollable(
-                    child: SingleChildScrollView(
-                      child: Column(children: [
-                        Space(height: 1.h),
+      backgroundColor: Colors.white,
+      body: StreamBuilder(
+          stream: authBloc.waiting,
+          builder: (context, snapshot){
+            if (snapshot.data == false && !check) {
+              return NestedScrollView(
+                headerSliverBuilder:  (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                      backgroundColor: AppColors.arcColor,
+                      elevation: 0.0,
+                      leading: IconButton( icon: Icon(Icons.arrow_back_ios),
+                          color: Color(0xffb4babb),
+                          onPressed: () => VxNavigator.of(context).pop()),
+                      // floating: true,
+                      forceElevated: innerBoxIsScrolled,
+                    ),
+                  ];
+                },
+                body: SingleChildScrollView(
+                  child: Column(
+                      children: [
+                        header(),
+                        Space(height: 80.0),
                         content(),
                       ]),
-                    ),
-                  );
-                } else {
-                  check = false;
-                  return Center(child: Container(width: 15.w, height: 80.h, child: Progress()));
-                }
-              }),
-        ));
+                ),
+              );}
+            else{
+              check = false;
+              return Center(
+                  child: Container(
+                      width:15.w,
+                      height: 15.w,
+                      child: Progress()));
+            }
+          }));
   }
-
-  Widget content() {
-    return Stack(children: [
-      Container(
-        height: 80.h,
-        child: Padding(
-          padding: EdgeInsets.all(5.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                intl.firstInfo,
-                textAlign: TextAlign.start,
-                style: typography.subtitle1!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              Space(height: 1.h),
-              Text(
-                intl.pleaseFillInformation,
-                textAlign: TextAlign.start,
-                style: typography.caption!.copyWith(fontWeight: FontWeight.w400, fontSize: 10.sp),
-              ),
-              Space(height: 2.h),
-              Container(
-                height: 7.h,
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Row(children: [
-                  Expanded(
-                      flex: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          '+${args["mobile"]}',
-                          textAlign: TextAlign.start,
-                          textDirection: TextDirection.ltr,
-                          style: typography.caption!.copyWith(fontSize: 14.sp),
-                        ),
-                      )),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                      child: ImageUtils.fromLocal(
-                          'assets/images/flags/${countrySelected.isoCode?.toLowerCase() ?? ''}.png',
-                          width: 7.w,
-                          height: 7.w),
-                    ),
-                  ),
-                ]),
-              ),
-              Space(height: 2.h),
-              TextField(
-                  decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                          borderRadius: BorderRadius.circular(10.0)),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                          borderRadius: BorderRadius.circular(10.0)),
-                      hintText: intl.nameOptional,
-                      hintStyle:
-                          TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
-                      labelStyle:
-                          TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
-                      // errorText:
-                      // _validate ? intl.fillAllField : null,
-                      suffixStyle: TextStyle(color: Colors.green)),
-                  onChanged: (txt) {
-                    firstName = txt;
-                  }),
-              Space(height: 2.h),
-              TextField(
-                  decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                          borderRadius: BorderRadius.circular(10.0)),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                          borderRadius: BorderRadius.circular(10.0)),
-                      hintText: intl.familyOptional,
-                      hintStyle:
-                          TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
-                      labelStyle:
-                          TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
-                      // errorText:
-                      // _validate ? intl.fillAllField : null,
-                      suffixStyle: TextStyle(color: Colors.green)),
-                  onChanged: (txt) {
-                    lastName = txt;
-                  }),
-              Space(height: 2.h),
-              TextField(
-                obscureText: !_obscureText,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    hintText: intl.passwordOptional,
-                    hintStyle:
-                        TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 16.0),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
-                        color: AppColors.penColor.withOpacity(0.5),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
-                    labelStyle:
-                        TextStyle(color: AppColors.penColor.withOpacity(0.5), fontSize: 18.0)),
-                onChanged: (txt) {
-                  _password = txt;
-                },
-              ),
-              Space(height: 1.h),
-              Container(
-                height: 5.h,
-                decoration: BoxDecoration(
-                    color: AppColors.priceGreenColor.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.info_outline, color: AppColors.priceGreenColor),
-                      Space(width: 1.w),
-                      Text(
-                        intl.youCanSetPasswordForEachLogin,
-                        textAlign: TextAlign.start,
-                        style: typography.overline!.copyWith(color: AppColors.priceGreenColor),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+  Widget header(){
+    return  Stack(
+      children: [
+        RotatedBox(quarterTurns: 90, child: MyArc(diameter: 150)),
+        Positioned(
+          top: 0.0,
+          right: 0.0,
+          left: 0.0,
+          child: Center(
+              child: Text(intl.register, style: TextStyle(
+                  color: AppColors.penColor,
+                  fontSize: 22.0,
+                  fontFamily: 'Cairo-bold',
+                  fontWeight: FontWeight.w700))
           ),
         ),
-      ),
-      Positioned(
-        right: 4,
-        left: 4,
-        bottom: 0,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16),
-          child: CustomButton.withIcon(AppColors.btnColor, intl.nextStage, Size(100.w, 6.h),
-              Icon(Icons.arrow_forward), clickSubmit),
+        Positioned(
+          top: 60.0,
+          right: 0.0,
+          left: 0.0,
+          child: Center(
+            child: ImageUtils.fromLocal('assets/images/registry/profile_logo.svg',
+              width: 120.0,
+              height: 120.0,),
+          ),
         ),
-      )
-    ]);
+      ],
+    );
   }
 
-  void clickSubmit() {
-    Register register = Register();
-    if (firstName != null)
-      register.firstName = firstName!.trim().length > 0 ? firstName!.trim() : null;
-    if (lastName != null) register.lastName = lastName!.trim().length > 0 ? lastName!.trim() : null;
-    if (_password != null)
-      register.password = _password!.trim().length > 0 ? _password!.trim() : null;
-    register.appId = '0';
-    DialogUtils.showDialogProgress(context: context);
-    authBloc.registerMethod(register);
+  Widget content(){
+    return Padding(
+      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+      child: Column(
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(15.0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: AppColors.arcColor),
+              child: Text("+ ${args['mobile']}",textDirection: TextDirection.ltr,
+                  style: TextStyle(color: AppColors.penColor))),
+          SizedBox(height: 20.0),
+          Container(
+            height: 60.0,
+            child: TextField(
+                decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.penColor),
+                        borderRadius: BorderRadius.circular(15.0)
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.penColor),
+                        borderRadius: BorderRadius.circular(15.0)
+                    ),
+                    labelText: intl.name,
+                    labelStyle: TextStyle(color: AppColors.penColor,fontSize: 16.0),
+                    // errorText:
+                    // _validate ? intl.fillAllField : null,
+                    suffixStyle: TextStyle(color: Colors.green)),
+                onChanged: (txt) {
+                  firstName = txt;
+                }
+            ),
+          ),
+          SizedBox(height: 20.0),
+          Container(
+            height: 60.0,
+            child: TextField(
+                decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.penColor),
+                        borderRadius: BorderRadius.circular(15.0)
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.penColor),
+                        borderRadius: BorderRadius.circular(15.0)
+                    ),
+                    labelText: intl.lastName,
+                    labelStyle: TextStyle(color: AppColors.penColor,fontSize: 16.0),
+                    // errorText:
+                    // _validate ? intl.fillAllField : null,
+                    suffixStyle: TextStyle(color: Colors.green)),
+                onChanged: (txt) {
+                  lastName = txt;
+                }
+            ),
+          ),
+          SizedBox(height: 20.0),
+          Container(
+            height: 60.0,
+            child: TextField(
+              obscureText: !_obscureText,
+              decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.penColor)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.penColor),
+                      borderRadius: BorderRadius.circular(15.0)),
+                  labelText: intl.password,
+                  // errorText:
+                  // _validate ? intl.fillAllField : null,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: AppColors.penColor,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
+                  labelStyle: TextStyle(color: AppColors.penColor,fontSize: 18.0)),
+              onChanged: (txt) {
+                _password = txt;
+              },
+            ),
+          ),
+          SizedBox(height: 20.0),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(intl.woman, style: TextStyle(fontSize: 14.0,color: AppColors.penColor)),
+                SizedBox(width: 10.0),
+                ToggleSwitch(
+                  minWidth: 90.0,
+                  minHeight: 45.0,
+                  initialLabelIndex: 0,
+                  cornerRadius: 25.0,
+                  activeFgColor: AppColors.primary,
+                  inactiveBgColor: Colors.grey,
+                  inactiveFgColor: Colors.white,
+                  totalSwitches: 2,
+                  icons: [
+                    'assets/images/registry/gender_woman.svg',
+                    'assets/images/registry/gender_man.svg',
+                    'assets/images/registry/gender_woman_selected.svg',
+                    'assets/images/registry/gender_man_selected.svg',
+                  ],
+                  iconSize: 30.0,
+                  activeBgColors: [[Colors.red, Colors.pinkAccent], [Color(0xff3b5998), Color(0xff8b9dc3)]],
+                  animate: true, // with just animate set to true, default curve = Curves.easeIn
+                  animationDuration: 200,
+                  curve: Curves.bounceInOut, // animate must be set to true when using custom curve
+                  onToggle: (index) {
+                    index == gender.man.index
+                        ?switchValue = true
+                        : switchValue = false;
+                  },
+                ),
+                SizedBox(width: 10.0),
+                Text(intl.man, style: TextStyle(fontSize: 14.0,
+                    color: AppColors.penColor)),
+              ],
+            ),
+          ),
+          SizedBox(height: 10.h),
+          SubmitButton(label: intl.register,size: Size(100.w,8.h), onTap:(){
+          setState(() {
+          _text.text.isEmpty ? _validate = true : _validate = false;
+          });
+          Register register = Register();
+          register.firstName = firstName;
+          register.lastName = lastName;
+          register.mobile = args['mobile'];
+          register.password = _password;
+          register.gender = switchValue;
+          register.verifyCode = args['code'];
+          register.countryId = args['id'];
+          register.appId = '0';
+          authBloc.registerMethod(register);
+          }),
+        ],
+      ),
+    );
   }
 
   @override
-  void onRetryLoadingPage() {
-    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-    //bloc.onRetryLoadingPage();
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
   }
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    // TODO: implement onRetryAfterNoInternet
+  }
 
-    authBloc.setRepository();
-
-    clickSubmit();
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
   }
 }

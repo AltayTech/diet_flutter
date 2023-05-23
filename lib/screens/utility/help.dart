@@ -2,9 +2,11 @@ import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/regime/regime_bloc.dart';
 import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/widget/custom_button.dart';
+import 'package:behandam/widget/button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:logifan/widgets/space.dart';
+
 
 class Help extends StatefulWidget {
   const Help({Key? key}) : super(key: key);
@@ -54,7 +56,7 @@ class _HelpState extends ResourcefulState<Help> {
                           // Space(height: 2.h),
                           // Text(snapshot.data![0].body!,style: TextStyle(fontSize: 16.0)),
                           Space(height: 2.h),
-                          CustomButton(AppColors.btnColor, intl.understand,Size(100.w,8.h),
+                          button(AppColors.btnColor, intl.understand,Size(100.w,8.h),
                                   () => Navigator.of(context).pop())
                         ],
                       ),

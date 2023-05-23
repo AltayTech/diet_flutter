@@ -4,41 +4,35 @@ import 'package:behandam/api/interceptor/error_handler.dart';
 import 'package:behandam/api/interceptor/global.dart';
 import 'package:behandam/api/interceptor/logger.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
+import 'package:behandam/data/entity/auth/user_crm.dart';
 import 'package:behandam/data/entity/calendar/calendar.dart';
 import 'package:behandam/data/entity/fast/fast.dart';
 import 'package:behandam/data/entity/fitamin.dart';
-import 'package:behandam/data/entity/list_food/article.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/payment/latest_invoice.dart';
 import 'package:behandam/data/entity/payment/payment.dart';
-import 'package:behandam/data/entity/poll_phrases/poll_phrases.dart';
 import 'package:behandam/data/entity/psychology/booking.dart';
 import 'package:behandam/data/entity/psychology/calender.dart';
 import 'package:behandam/data/entity/psychology/reserved_meeting.dart';
 import 'package:behandam/data/entity/refund.dart';
 import 'package:behandam/data/entity/regime/activity_level.dart';
-import 'package:behandam/data/entity/regime/body_status.dart' as body;
+import 'package:behandam/data/entity/regime/body_status.dart';
 import 'package:behandam/data/entity/regime/condition.dart';
 import 'package:behandam/data/entity/regime/diet_goal.dart';
 import 'package:behandam/data/entity/regime/diet_history.dart';
-import 'package:behandam/data/entity/regime/diet_preferences.dart';
 import 'package:behandam/data/entity/regime/help.dart';
 import 'package:behandam/data/entity/regime/menu.dart';
-import 'package:behandam/data/entity/regime/obstructive_disease.dart';
 import 'package:behandam/data/entity/regime/overview.dart';
 import 'package:behandam/data/entity/regime/package_list.dart';
 import 'package:behandam/data/entity/regime/physical_info.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
-import 'package:behandam/data/entity/regime/target_weight.dart';
 import 'package:behandam/data/entity/regime/user_sickness.dart';
 import 'package:behandam/data/entity/shop/shop_model.dart';
 import 'package:behandam/data/entity/status/visit_item.dart';
-import 'package:behandam/data/entity/subscription/user_subscription.dart';
 import 'package:behandam/data/entity/ticket/call_item.dart';
 import 'package:behandam/data/entity/ticket/ticket_item.dart';
-import 'package:behandam/data/entity/slider/slider.dart';
 
 // import 'package:behandam/data/entity/ticket/ticket_item.dart';
 import 'package:behandam/data/entity/user/city_provice_model.dart';
@@ -49,8 +43,8 @@ import 'package:behandam/data/memory_cache.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import '../api/api.dart';
 import '../data/entity/auth/country.dart';
@@ -60,21 +54,22 @@ import '../data/entity/auth/sign_in.dart';
 import '../data/entity/auth/status.dart';
 import '../data/entity/auth/user_info.dart';
 import '../data/entity/auth/verify.dart';
-import '../data/entity/user/block_user.dart';
 import 'network_response.dart';
 
 enum FoodDietPdf { TERM, WEEK }
 
 abstract class Repository {
   static Repository? _instance;
+  static Repository? _instanceCrm;
 
-  static void setInstanceNull() {
-    _instance = null;
+  static Repository getInstance({String? url}) {
+    _instance ??= _RepositoryImpl(url);
+    return _instance!;
   }
 
-  static Repository getInstance() {
-    _instance ??= _RepositoryImpl();
-    return _instance!;
+  static Repository getInstanceCrm() {
+    _instanceCrm ??= _RepositoryImpl(FlavorConfig.instance.variables['baseUrlCrm']);
+    return _instanceCrm!;
   }
 
   NetworkResult<List<Country>?> country();
@@ -83,9 +78,9 @@ abstract class Repository {
 
   NetworkResult<SignIn> signIn(User user);
 
-  NetworkResult<CheckStatus> verificationCode(String mobile, String channel);
+  NetworkResult<VerificationCode> verificationCode(String mobile);
 
-  NetworkResult<VerifyOutput> otpLogin(VerificationCode verificationCode);
+  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode);
 
   NetworkResult<ResetOutput> reset(Reset password);
 
@@ -99,7 +94,7 @@ abstract class Repository {
 
   NetworkResult<Help> helpBodyState(int id);
 
-  NetworkResult<UserInformation> getUser({bool invalidate = false});
+  NetworkResult<UserInformation> getUser();
 
   NetworkResult<Media> getPdfUrl(FoodDietPdf foodDietPdf);
 
@@ -146,24 +141,17 @@ abstract class Repository {
 
   ImperativeNetworkResult deleteRequestCall(int Id);
 
-  NetworkResult<PollPhrases> getCallSurveyCauses();
-
-  ImperativeNetworkResult sendCallRate(CallRateRequest callRateRequest);
-
   // NetworkResult<BodyStatus> getStatus(BodyStatus body);
 
   NetworkResult<CalenderOutput> getCalendar(String? startDate, String? endDate);
 
-  NetworkResult<body.BodyStatus> getStatus();
+  NetworkResult<BodyStatus> getStatus();
 
   NetworkResult<PhysicalInfoData> physicalInfo();
 
   NetworkResult<UserSickness> getSickness();
 
-  NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness();
-
-  ImperativeNetworkResult sendSickness(
-      List<ObstructiveDiseaseCategory> diseasesIds, List<int> userObstructiveDiseaseSelected);
+  ImperativeNetworkResult sendSickness(UserSickness sickness);
 
   NetworkResult<UserSicknessSpecial> getSicknessSpecial();
 
@@ -175,33 +163,23 @@ abstract class Repository {
 
   NetworkResult setCondition(ConditionRequestData requestData);
 
-  NetworkResult setUserReservePackage(ConditionRequestData requestData);
-
   NetworkResult<PackageItem> getPackagePayment();
-
-  NetworkResult<PackageItem> getReservePackageUser();
 
   NetworkResult<Price?> checkCoupon(Price price);
 
   NetworkResult<Payment> setPaymentType(Payment payment);
 
-  NetworkResult<Payment> setPaymentTypeReservePackage(Payment payment);
-
   ImperativeNetworkResult nextStep();
-
-  NetworkResult<LatestInvoiceData> bankAccountActiveCard();
 
   NetworkResult<LatestInvoiceData> latestInvoice();
 
-  NetworkResult<Payment> newPayment(Payment requestData);
+  NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData);
 
   NetworkResult<BookingOutput> getBook(Booking booking);
 
   NetworkResult<HistoryOutput> getHistory();
 
   NetworkResult<LatestInvoiceData> getPsychologyInvoice();
-
-  NetworkResult<DietPreferences> getDietPreferences();
 
   NetworkResult<ActivityLevelData> activityLevel();
 
@@ -225,7 +203,7 @@ abstract class Repository {
 
   ImperativeNetworkResult menuSelect(ConditionRequestData conditionRequestData);
 
-  NetworkResult<Version> getVersion();
+  NetworkResult<VersionData> getVersion();
 
   NetworkResult<ShopModel> getHomeShop();
 
@@ -255,33 +233,9 @@ abstract class Repository {
 
   NetworkResult<Price?> checkCouponShop(Price price);
 
-  ImperativeNetworkResult seenInbox(int id);
+  NetworkResult<CallSupport> getCallSupport();
 
-  ImperativeNetworkResult addFcmToken(String token);
-
-  ImperativeNetworkResult logout();
-
-  NetworkResult<List<ArticleVideo>> getArticles(TimeRequest articleVideo);
-
-  NetworkResult<TempTicket> getDailyMessage(int id);
-
-  NetworkResult<TargetWeight> targetWeight();
-
-  NetworkResult<ListUserSubscriptionData> getUserSubscription();
-
-  NetworkResult<InboxItem> getInboxMessage(int id);
-
-  NetworkResult<ObstructiveDiseaseCategory> getBlockingSickness();
-
-  NetworkResult<DietType> getUserAllowedDietType();
-
-  NetworkResult<Package> getPackages();
-
-  NetworkResult<BlockUser> getBlockUserDescription();
-
-  NetworkResult<Slider> getSliders();
-
-  NetworkResult<SliderIntroduces> getSlidersIntroduces();
+  NetworkResult<UserCrmResponse> sendUserToCrm(UserCrm userCrm);
 }
 
 class _RepositoryImpl extends Repository {
@@ -289,27 +243,24 @@ class _RepositoryImpl extends Repository {
   late RestClient _apiClient;
   late MemoryApp _cache;
 
-  static const receiveTimeout = 15 * 1000;
-  static const connectTimeout = 15 * 1000;
-  static const sendTimeout = 15 * 1000;
+  static const receiveTimeout = 5 * 60 * 1000;
+  static const connectTimeout = 60 * 1000;
+  static const sendTimeout = 5 * 60 * 1000;
 
-  _RepositoryImpl() {
+  _RepositoryImpl(String? url) {
     _dio = Dio();
-    _dio.options = BaseOptions(
-      receiveTimeout: receiveTimeout,
-      connectTimeout: connectTimeout,
-      sendTimeout: sendTimeout,
-    );
-    if (!kIsWeb)
+   /* if (!kIsWeb) {
       _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
         idleTimeout: 15 * 1000,
         // Ignore bad certificate
         onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
       ));
+    }*/
+
     _dio.interceptors.add(ErrorHandlerInterceptor());
-    _dio.interceptors.add(GlobalInterceptor());
+    _dio.interceptors.add(GlobalInterceptor(url));
     _dio.interceptors.add(LoggingInterceptor());
-    _apiClient = RestClient(_dio, baseUrl: FlavorConfig.instance.variables['baseUrl']);
+    _apiClient = RestClient(_dio, baseUrl: url ?? FlavorConfig.instance.variables['baseUrl']);
     _cache = MemoryApp();
   }
 
@@ -346,14 +297,14 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<CheckStatus> verificationCode(String mobile, String channel) async {
-    var response = await _apiClient.sendVerificationCode(mobile, channel);
+  NetworkResult<VerificationCode> verificationCode(String mobile) async {
+    var response = await _apiClient.sendVerificationCode(mobile);
     return response;
   }
 
   @override
-  NetworkResult<VerifyOutput> otpLogin(VerificationCode verificationCode) async {
-    var response = await _apiClient.otpLogin(verificationCode);
+  NetworkResult<VerifyOutput> verify(VerificationCode verificationCode) async {
+    var response = await _apiClient.verifyUser(verificationCode);
     return response;
   }
 
@@ -365,11 +316,7 @@ class _RepositoryImpl extends Repository {
     if (_cache.date == null || _cache.foodList == null || invalidate) {
       response = await _apiClient.foodList(date);
       debugPrint('repository2 ${response.data}');
-      if (invalidate && response.data != null) {
-        _cache.saveNewFoodList(response.requireData!, date);
-      } else {
-        if (response.data != null) _cache.saveFoodList(response.requireData!, date);
-      }
+      if (response.data != null) _cache.saveFoodList(response.requireData!, date);
       debugPrint('repository ${response.data}');
     } else {
       response = NetworkResponse.withData(_cache.foodList);
@@ -528,13 +475,9 @@ class _RepositoryImpl extends Repository {
   @override
   ImperativeNetworkResult sendTicketFile(SendTicket sendTicket, File file) {
     sendTicket.hasAttachment = true;
-    var response = _apiClient.sendTicketFile(
-        file,
-        sendTicket.isVoice ? 1 : 0,
-        sendTicket.hasAttachment ? 1 : 0,
-        sendTicket.departmentId.toString(),
-        sendTicket.body ?? '',
-        sendTicket.title!);
+    sendTicket.isVoice = true;
+    var response = _apiClient.sendTicketFile(file, sendTicket.isVoice ? 1 : 0,
+        sendTicket.hasAttachment ? 1 : 0, sendTicket.departmentId.toString(), sendTicket.title!);
     return response;
   }
 
@@ -601,19 +544,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<PollPhrases> getCallSurveyCauses() {
-    var response = _apiClient.getCallSurveyCauses();
-    return response;
-  }
-
-  @override
-  ImperativeNetworkResult sendCallRate(CallRateRequest callRateRequest) {
-    var response = _apiClient.sendCallRate(callRateRequest);
-    return response;
-  }
-
-  @override
-  NetworkResult<body.BodyStatus> getStatus() {
+  NetworkResult<BodyStatus> getStatus() {
     var response = _apiClient.getStatus();
     return response;
   }
@@ -643,34 +574,23 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<ObstructiveDiseaseCategory> getNotBlockingSickness() {
-    var response = _apiClient.getNotBlockingSickness();
-    return response;
-  }
-
-  @override
-  ImperativeNetworkResult sendSickness(
-      List<ObstructiveDiseaseCategory> sickness, List<int> userObstructiveDiseaseSelected) {
-    List<int> selectedItems = [];
-    for (int i = 0; i < sickness.length; i++) {
-      if (sickness[i].isSelected! && sickness[i].disease_id > 0) {
-        selectedItems.add(sickness[i].disease_id);
-      }
-      for (int j = 0; j < sickness[i].diseases!.length; j++) {
-        if (sickness[i].diseases![j].isSelected!) {
-          selectedItems.add(sickness[i].diseases![j].id!);
+  ImperativeNetworkResult sendSickness(UserSickness sickness) {
+    List<dynamic> selectedItems = [];
+    UserSickness userSickness = new UserSickness();
+    sickness.sickness_categories!.forEach((element) {
+      element.sicknesses!.forEach((sicknessItem) {
+        if (sicknessItem.isSelected!) {
+          if (sicknessItem.children!.length > 0) {
+            selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
+          } else {
+            selectedItems.add(sicknessItem);
+          }
         }
-      }
-    }
-    // check if userObstructiveDiseaseSelected not contain in selectedItems then add to selectedItems
-    if (userObstructiveDiseaseSelected.isNotEmpty) {
-      for (int i = 0; i < userObstructiveDiseaseSelected.length; i++) {
-        if (!selectedItems.contains(userObstructiveDiseaseSelected[i])) {
-          selectedItems.add(userObstructiveDiseaseSelected[i]);
-        }
-      }
-    }
-    var response = _apiClient.setUserSickness({'disease_ids': selectedItems});
+      });
+    });
+    userSickness.sicknesses = selectedItems;
+    userSickness.sicknessNote = sickness.sicknessNote;
+    var response = _apiClient.setUserSickness(userSickness);
     return response;
   }
 
@@ -690,14 +610,11 @@ class _RepositoryImpl extends Repository {
           sicknessItem.children?.forEach((element) {
             debugPrint("${element.toJson()}");
           });
-          Sickness sickness = Sickness();
-          sickness.id = sicknessItem.children!.singleWhere((child) => child.isSelected!).id;
-          selectedItems.add(sickness);
+
+          selectedItems.add(sicknessItem.children!.singleWhere((child) => child.isSelected!));
         } else {
-          Sickness sickness = Sickness();
-          sickness.id = sicknessItem.id;
-          selectedItems.add(sickness);
-          debugPrint("${sickness.toJson()}");
+          selectedItems.add(sicknessItem);
+          debugPrint("${sicknessItem.toJson()}");
         }
       }
     });
@@ -743,37 +660,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult setUserReservePackage(ConditionRequestData requestData) {
-    Map<String, dynamic> body = {
-      if (requestData.packageId != null) 'package_id': requestData.packageId,
-      if (requestData.reservePackageId != null) 'reserve_package_id': requestData.reservePackageId,
-      if (requestData.activityLevelId != null) 'activity_level_id': requestData.activityLevelId,
-      if (requestData.dietHistoryId != null) 'diet_history_id': requestData.dietHistoryId,
-      if (requestData.dietTypeId != null) 'diet_type_id': requestData.dietTypeId,
-      if (requestData.dietGoalId != null) 'diet_goal_id': requestData.dietGoalId,
-      if (requestData.isPreparedMenu != null) 'is_prepared_menu': requestData.isPreparedMenu,
-      if (requestData.menuId != null) 'menu_id': requestData.menuId,
-    };
-    debugPrint('bloc condition2 $body');
-    var response;
-    try {
-      response = _apiClient.setUserReservePackage(body);
-      debugPrint('condition ${response.toString()}');
-    } catch (e) {
-      debugPrint('condition error ${e}');
-    }
-    return response;
-  }
-
-  @override
   NetworkResult<PackageItem> getPackagePayment() {
     var response = _apiClient.getPackageUser();
-    return response;
-  }
-
-  @override
-  NetworkResult<PackageItem> getReservePackageUser() {
-    var response = _apiClient.getReservePackageUser();
     return response;
   }
 
@@ -790,21 +678,8 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<Payment> setPaymentTypeReservePackage(Payment payment) {
-    var response = _apiClient.selectPaymentReservePackage(payment);
-    return response;
-  }
-
-  @override
   ImperativeNetworkResult nextStep() {
     var response = _apiClient.nextStep();
-    return response;
-  }
-
-  @override
-  NetworkResult<LatestInvoiceData> bankAccountActiveCard() {
-    var response = _apiClient.bankAccountActiveCard();
-    debugPrint('advice repo ${response}');
     return response;
   }
 
@@ -816,7 +691,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<Payment> newPayment(Payment requestData) {
+  NetworkResult<LatestInvoiceData> newPayment(LatestInvoiceData requestData) {
     var response = _apiClient.newPayment(requestData);
     return response;
   }
@@ -836,12 +711,6 @@ class _RepositoryImpl extends Repository {
   @override
   NetworkResult<LatestInvoiceData> getPsychologyInvoice() {
     var response = _apiClient.getInvoice();
-    return response;
-  }
-
-  @override
-  NetworkResult<DietPreferences> getDietPreferences() {
-    var response = _apiClient.getDietPreferences();
     return response;
   }
 
@@ -916,7 +785,7 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  NetworkResult<Version> getVersion() {
+  NetworkResult<VersionData> getVersion() {
     var response = _apiClient.getVersion();
     return response;
   }
@@ -1018,94 +887,14 @@ class _RepositoryImpl extends Repository {
   }
 
   @override
-  ImperativeNetworkResult seenInbox(int id) {
-    var response = _apiClient.getInboxItem(id);
+  NetworkResult<CallSupport> getCallSupport() {
+    var response = _apiClient.getCallSupport();
     return response;
   }
 
   @override
-  ImperativeNetworkResult addFcmToken(String token) {
-    SignIn signIn = SignIn();
-    signIn.token = token;
-    var response = _apiClient.addFcmToken(signIn);
-    return response;
-  }
-
-  @override
-  ImperativeNetworkResult logout() {
-    var response = _apiClient.logout();
-    return response;
-  }
-
-  @override
-  NetworkResult<List<ArticleVideo>> getArticles(TimeRequest articleVideo) async {
-    NetworkResponse<List<ArticleVideo>> response;
-    if (_cache.articles == null) {
-      response = await _apiClient.getArticles(articleVideo);
-      _cache.saveArticle(response.data ?? []);
-    } else
-      response = NetworkResponse.withData(_cache.articles);
-
-    return response;
-  }
-
-  @override
-  NetworkResult<TempTicket> getDailyMessage(int id) {
-    var response = _apiClient.getDailyMessage(id);
-    return response;
-  }
-
-  @override
-  NetworkResult<TargetWeight> targetWeight() {
-    var response = _apiClient.targetWeight();
-    return response;
-  }
-
-  @override
-  NetworkResult<ListUserSubscriptionData> getUserSubscription() {
-    var response = _apiClient.getUserSubscription();
-    return response;
-  }
-
-  @override
-  NetworkResult<InboxItem> getInboxMessage(int id) {
-    var response = _apiClient.getInboxMessage(id);
-    return response;
-  }
-
-  @override
-  NetworkResult<ObstructiveDiseaseCategory> getBlockingSickness() {
-    var response = _apiClient.getBlockingSickness();
-    return response;
-  }
-
-  @override
-  NetworkResult<DietType> getUserAllowedDietType() {
-    var response = _apiClient.getUserAllowedDietType();
-    return response;
-  }
-
-  @override
-  NetworkResult<Package> getPackages() {
-    var response = _apiClient.getPackagesNew();
-    return response;
-  }
-
-  @override
-  NetworkResult<BlockUser> getBlockUserDescription() {
-    var response = _apiClient.getBlockUserDescription();
-    return response;
-  }
-
-  @override
-  NetworkResult<Slider> getSliders() {
-    var response = _apiClient.getSliders();
-    return response;
-  }
-
-  @override
-  NetworkResult<SliderIntroduces> getSlidersIntroduces() {
-    var response = _apiClient.getSlidersIntroduces();
+  NetworkResult<UserCrmResponse> sendUserToCrm(UserCrm userCrm) async {
+    var response = await _apiClient.sendUserToCrm(userCrm);
     return response;
   }
 }

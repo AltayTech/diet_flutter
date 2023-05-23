@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:behandam/data/entity/notification.dart';
-import 'package:behandam/data/memory_cache.dart';
+
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/screens/utility/intent.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
+import 'package:behandam/utils/analytics.dart';
 import 'package:behandam/utils/deep_link.dart';
-import 'package:behandam/utils/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -76,31 +76,31 @@ class AppFcm {
   static void _handleAction(ActionsItem action) {
     switch (actionType.values[int.parse(action.actionType!)]) {
       case actionType.OpenApp:
-        MemoryApp.analytics!.logEvent(name: 'notification_open_app');
+        AppAnalytics.logEvent(name: 'notification_open_app');
         IntentUtils.launchURL(action.action!);
         break;
       case actionType.OpenPage:
-        MemoryApp.analytics!.logEvent(name: 'notification_open_page');
+        AppAnalytics.logEvent(name: 'notification_open_page');
         DeepLinkUtils.navigateDeepLink(action.action!);
         break;
       case actionType.OpenEspecialApp:
-        MemoryApp.analytics!.logEvent(name: 'notification_open_special_app');
+        AppAnalytics.logEvent(name: 'notification_open_special_app');
         IntentUtils.openApp(action.action!);
         break;
       case actionType.OpenEspecialApp:
         IntentUtils.openAppIntent(action.action!);
         break;
       case actionType.OpenInstagramPage:
-        MemoryApp.analytics!.logEvent(name: 'notification_instagram_page');
+        AppAnalytics.logEvent(name: 'notification_instagram_page');
         IntentUtils.openInstagram(action.action!);
         break;
       case actionType.OpenTelegramChannal:
-        MemoryApp.analytics!.logEvent(name: 'notification_telegram_channel');
+        AppAnalytics.logEvent(name: 'notification_telegram_channel');
         IntentUtils.launchURL(action.action!);
         break;
 
       case actionType.OpenWebUrl:
-        MemoryApp.analytics!.logEvent(name: 'notification_open_url');
+        AppAnalytics.logEvent(name: 'notification_open_url');
         IntentUtils.launchURL(action.action!);
         break;
       case actionType.CallService:
@@ -140,13 +140,6 @@ class AppFcm {
             defaultColor: AppColors.primary,
             ledColor: AppColors.primary,
             importance: NotificationImportance.High),
-        NotificationChannel(
-          channelKey: 'miscellaneous',
-          channelName: 'miscellaneous',
-          channelDescription: 'miscellaneous',
-          defaultColor: AppColors.primary,
-          ledColor: AppColors.primary,
-        ),
       ],
     );
   }
@@ -160,7 +153,7 @@ class AppFcm {
     _getToken();
     try {
       subscribeTopicAll();
-    }catch(e){
+    } catch (e) {
       debugPrint(e.toString());
     }
     FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
@@ -198,10 +191,12 @@ class AppFcm {
 
   static void _listenFcmEvents() async {
     FirebaseMessaging.onMessage.listen((event) {
+      debugPrint('onMessage');
       sendNotification(event);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      debugPrint('onMessageOpenedApp');
       sendNotification(event);
     });
   }
@@ -249,31 +244,18 @@ class AppFcm {
       }
 
       if (notifResponse.visible == "true") {
-        /* AwesomeNotifications().createNotificationFromJsonData(jsonDecode('''
-        {   "actionKey": "OpenDeeplink",
-            "actionValue": "https://web.zirehapp.com/link/water",
-            "content": {
-            "id": "200",
-            "channelKey": "behandam",
-            "title": "کاربر عزیز زیره",
-            "body": "آپشن های مختلف نوتیف رو میتونی اینجا ببینی",
-            "autoCancel": "true"
-            }
-        }'''));*/
 
         await AwesomeNotifications().createNotification(
             content: NotificationContent(
                 id: notifResponse.hashCode,
                 channelKey: notifResponse.channel_id ?? "behandam",
-                // displayOnBackground: true,
+                displayOnBackground: true,
                 title: notifResponse.title,
-                notificationLayout: notifResponse.layout,
+                notificationLayout: notifResponse.layout ?? NotificationLayout.Default,
                 body: notifResponse.description,
-                customSound: "default",
                 largeIcon: notifResponse.icon,
                 showWhen: true,
-                hideLargeIconOnExpand: true,
-                autoCancel: bool.fromEnvironment(notifResponse.autoCancel!)
+                autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
                 //autoDismissible: bool.fromEnvironment(notifResponse.autoCancel!)
                 ),
             actionButtons: buttonActions);

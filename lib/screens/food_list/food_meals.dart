@@ -5,12 +5,13 @@ import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -40,13 +41,12 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     return StreamBuilder(
         stream: bloc.foodList,
         builder: (_, AsyncSnapshot<FoodListData?> snapshot) {
-          if (snapshot.error is NoResultFoundError ) {
+          if (snapshot.error is NoResultFoundError) {
             return SearchNoResult(intl.foodNotFoundMessage);
           }
           if (!snapshot.hasData || snapshot.hasError) {
             return EmptyBox();
           }
-
           return Column(
             children: [
               ...snapshot.requireData!.meals!.map((meal) => mealItem(meal)).toList(),
@@ -60,7 +60,6 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
       builder: (_, AsyncSnapshot<WeekDay> snapshot) {
-        debugPrint("meal.icon = > ${meal.icon} / ${meal.color} / ${meal.bgColor}");
         return Card(
           margin: EdgeInsets.only(bottom: 2.h),
           shape: AppShapes.rectangleMild,
@@ -77,12 +76,10 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                   borderRadius: BorderRadius.only(
                     topLeft: AppRadius.radiusSmall,
                     topRight: AppRadius.radiusSmall,
-                    bottomRight: (meal.food != null && meal.food!.description.isNullOrEmpty)
-                        ? AppRadius.radiusSmall
-                        : Radius.zero,
-                    bottomLeft: (meal.food != null && meal.food!.description.isNullOrEmpty)
-                        ? AppRadius.radiusSmall
-                        : Radius.zero,
+                    bottomRight:
+                        (meal.food!=null && meal.food!.description.isNullOrEmpty) ? AppRadius.radiusSmall : Radius.zero,
+                    bottomLeft:
+                    (meal.food!=null && meal.food!.description.isNullOrEmpty) ? AppRadius.radiusSmall : Radius.zero,
                   ),
                 ),
                 child: Column(
@@ -95,14 +92,16 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                           height: 12.w,
                           decoration: AppDecorations.circle.copyWith(
                             color: isCurrentMeal && isToday(snapshot.data)
-                                ? meal.bgColor
+                                ? AppColors.onPrimary
                                 : meal.bgColor,
                           ),
-                          child: ImageUtils.fromLocal('assets/images/foodlist/${meal.icon}.svg',
-                              placeholder: "assets/images/foodlist/meal-1.svg",
-                              color:
-                                  isCurrentMeal && isToday(snapshot.data) ? meal.color : meal.color,
-                              padding: EdgeInsets.all(2.w)),
+                          child: ImageUtils.fromLocal(
+                            'assets/images/foodlist/${meal.icon}.svg',
+                            color: isCurrentMeal && isToday(snapshot.data)
+                                ? meal.color
+                                : meal.color,
+                            padding: EdgeInsets.all(2.w)
+                          ),
                         ),
                         Space(width: 2.w),
                         Expanded(
@@ -119,21 +118,12 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                         alternateFood(meal),
                       ],
                     ),
-                    if (meal.startAt.isNotNullAndEmpty && meal.startAt.isNotNullAndEmpty)
                     Space(height: 0.5.h),
                     if (meal.startAt.isNotNullAndEmpty && meal.startAt.isNotNullAndEmpty)
                       Text(
                         intl.timeOfTheMeal(
                             meal.startAt!.substring(0, 5), meal.endAt!.substring(0, 5)),
-                        style: typography.overline,
-                        softWrap: true,
-                      ),
-                    if (meal.description.isNotNullAndEmpty)
-                    Space(height: 1.h),
-                    if (meal.description.isNotNullAndEmpty)
-                      Text(
-                        meal.description!,
-                        style: typography.overline,
+                        style: typography.caption,
                         softWrap: true,
                       ),
                     Space(height: 1.h),
@@ -172,7 +162,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
       builder: (_, AsyncSnapshot<WeekDay> snapshot) {
-        if (snapshot.hasData && (isToday(snapshot.requireData) || isAfterToday(snapshot.requireData)) )
+        if (snapshot.hasData && isToday(snapshot.requireData))
           return GestureDetector(
             onTap: () => manipulateFoodDialog(meal),
             child: Container(
@@ -182,7 +172,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                   color: AppColors.onSurface,
                   width: 0.4,
                 ),
-                color: AppColors.replaceFoodButton,
+                color: AppColors.onPrimary,
               ),
               child: Text(
                 intl.manipulateFood,
@@ -202,106 +192,10 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
             weekDay.gregorianDate.toString().substring(0, 10);
   }
 
-  bool isAfterToday(WeekDay day) {
-    return day.gregorianDate.isAfter(DateTime.parse(DateTime.now().toString().substring(0, 10)));
-  }
-  
   void manipulateFoodDialog(Meals meal) {
-    VxNavigator.of(context)
-        .waitAndPush(Uri(path: Routes.listFood), params: meal)
-        .then((value) {
+    VxNavigator.of(context).waitAndPush(Uri(path: Routes.listFood), params: meal).then((value) {
       bloc.onMealFood(value, meal.id);
     });
-   /* DialogUtils.showDialogPage(
-      context: context,
-      isDismissible: true,
-      child: Center(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 5.w),
-          padding: EdgeInsets.symmetric(vertical: 1.h),
-          width: double.maxFinite,
-          decoration: AppDecorations.boxLarge.copyWith(
-            color: AppColors.onPrimary,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: close(),
-              ),
-              Text(
-                intl.alternating(meal.title),
-                style: typography.bodyText2,
-                textAlign: TextAlign.center,
-              ),
-              Space(height: 2.h),
-              Stack(
-                children: [
-                  Container(height: 15.h),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    top: 2.5.h,
-                    child: Container(
-                      color: AppColors.primary.withOpacity(0.3),
-                      padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 0),
-                      child: Center(
-                        child: Text(
-                          intl.tryToAlternateOneMealDaily,
-                          style: typography.subtitle2,
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    child: Center(
-                      child: Icon(
-                        Icons.info,
-                        color: AppColors.primary,
-                        size: 9.w,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Space(height: 1.h),
-              Container(
-                alignment: Alignment.center,
-                child: SubmitButton(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    VxNavigator.of(context)
-                        .waitAndPush(Uri(path: Routes.listFood), params: meal)
-                        .then((value) {
-                      bloc.onMealFood(value, meal.id);
-
-                    });
-                  },
-                  label: intl.manipulateFood,
-                ),
-              ),
-              Space(height: 1.h),
-              GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child: Text(
-                  intl.alternatingFoodLater,
-                  style: typography.caption,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );*/
   }
 
   Widget close() {
@@ -346,36 +240,38 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
               final widget;
               if (i % 2 == 0) {
                 debugPrint('even item ${!meal.food!.freeFood.isNullOrEmpty} / $i');
-                if (!meal.food!.freeFood.isNullOrEmpty && i == items.length - 1)
+                if (!meal.food!.freeFood.isNullOrEmpty && i == items.length - 1) {
                   widget = Chip(
                     backgroundColor: isCurrentMeal
                         ? AppColors.primary.withOpacity(0.2)
-                        : AppColors.labelColor.withOpacity(0.2),
+                        : AppColors.backLabelColorFood,
                     label: FittedBox(
                       child: Text(
                         '${meal.food!.freeFood}',
-                        style: typography.caption,
+                        style: typography.caption!.copyWith(color: AppColors.labelColorFood),
                         textAlign: TextAlign.center,
+
                         // softWrap: true,
                         overflow: TextOverflow.visible,
                       ),
                     ),
                   );
-                else
+                } else {
                   widget = Chip(
                     backgroundColor: isCurrentMeal
                         ? AppColors.primary.withOpacity(0.2)
-                        : AppColors.labelColor.withOpacity(0.2),
+                        : AppColors.backLabelColorFood.withOpacity(0.2),
                     label: FittedBox(
                       child: Text(
                         '${meal.food!.foodItems![index].amount} ${meal.food!.foodItems![index].title}',
-                        style: typography.caption,
+                        style: typography.caption!.copyWith(color: AppColors.labelColorFood),
                         textAlign: TextAlign.center,
                         // softWrap: true,
                         overflow: TextOverflow.visible,
                       ),
                     ),
                   );
+                }
               } else {
                 widget = Icon(
                   Icons.add,
@@ -445,29 +341,25 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           decoration: AppDecorations.boxLarge.copyWith(
             color: AppColors.onPrimary,
           ),
-          child: TouchMouseScrollable(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  close(),
-                  Text(
-                    intl.recipe(meal.food!.title ?? ''),
-                    style: typography.bodyText2,
-                    textAlign: TextAlign.center,
-                  ),
-                  Space(height: 2.h),
-                  Text(
-                    meal.food!.description ?? '',
-                    style: typography.caption,
-                    textAlign: TextAlign.start,
-                    softWrap: true,
-                  ),
-                  Space(height: 2.h),
-                ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              close(),
+              Text(
+                intl.recipe(meal.food!.title ?? ''),
+                style: typography.bodyText2,
+                textAlign: TextAlign.center,
               ),
-            ),
+              Space(height: 2.h),
+              Text(
+                meal.food!.description ?? '',
+                style: typography.caption,
+                textAlign: TextAlign.start,
+                softWrap: true,
+              ),
+              Space(height: 2.h),
+            ],
           ),
         ),
       ),

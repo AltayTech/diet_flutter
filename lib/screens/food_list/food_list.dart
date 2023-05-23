@@ -1,22 +1,18 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/extensions/bool.dart';
-import 'package:behandam/screens/food_list/appbar_box_advice_video.dart';
 import 'package:behandam/screens/food_list/bloc.dart';
 import 'package:behandam/screens/food_list/change_menu.dart';
 import 'package:behandam/screens/food_list/food_list_appbar.dart';
 import 'package:behandam/screens/food_list/food_meals.dart';
 import 'package:behandam/screens/food_list/provider.dart';
+import 'package:behandam/screens/food_list/week_day.dart';
 import 'package:behandam/screens/widget/bottom_nav.dart';
-import 'package:behandam/screens/widget/dialog.dart';
 import 'package:behandam/screens/widget/progress.dart';
-import 'package:behandam/screens/widget/toolbar.dart';
-import 'package:behandam/screens/widget/toolbar_empty.dart';
-import 'package:behandam/themes/colors.dart';
-import 'package:behandam/utils/image.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
+import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
-import 'package:touch_mouse_behavior/touch_mouse_behavior.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../routes.dart';
@@ -34,33 +30,21 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   @override
   void initState() {
     super.initState();
-    bloc = FoodListBloc();
-    bloc.getFoodMenu(fillFood: true);
+    bloc = FoodListBloc(true);
     initListener();
   }
 
   void initListener() {
     bloc.showServerError.listen((event) {
-      Navigator.of(context).pop();
-    });
-
-    bloc.navigateTo.listen((event) {
-      if (event.contains('package')) {
-        if (event.contains('reg'))
-          context.vxNav
-              .clearAndPushAll([Uri.parse('${Routes.regStart}'), Uri.parse(Routes.package)]);
-        else
-          context.vxNav
-              .clearAndPushAll([Uri.parse(Routes.renewStart), Uri.parse(Routes.renewPackage)]);
-      } else if (event.contains('survey')) {
-        context.vxNav.push(Uri.parse(Routes.surveyCallSupport), params: bloc.getSurveyData);
+      if (event.contains('payment/bill')) {
+        context.vxNav
+            .clearAndPush(Uri.parse('/${event.toString().split('/')[0]}${Routes.regimeType}'));
       } else if (!Routes.listView.contains(event)) {
         context.vxNav.clearAndPush(Uri.parse('/$event'));
       } else
         context.vxNav.replace(Uri.parse('/$event'));
     });
-
-    bloc.popLoading.listen((event) {
+    bloc.navigateTo.listen((event) {
       Navigator.of(context).pop();
     });
   }
@@ -74,101 +58,129 @@ class _FoodListPageState extends ResourcefulState<FoodListPage> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return FoodListProvider(
       bloc,
-      child: body(),
+      child: Scaffold(
+        body: SafeArea(child: body()),
+      ),
     );
   }
 
   Widget body() {
     return StreamBuilder(
       stream: bloc.loadingContent,
-      initialData: true,
       builder: (_, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasData && !snapshot.requireData)
-          return Scaffold(
-            appBar: ToolbarEmpty(),
-            body: SafeArea(
-              child: Container(
-                height: 100.h,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: TouchMouseScrollable(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Stack(
-                                children: [
-                                  FoodListAppbar(),
-                                  AppbarBoxAdviceVideo(),
-                                ],
-                              ),
-                              Space(height: 2.h),
-                              ChangeMenu(),
-                              Space(height: 2.h),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                                child: FoodMeals(),
-                              ),
-                              Space(
-                                height: 1.h,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                                  child: InkWell(
-                                      onTap: () {
-                                        DialogUtils.showDialogProgress(context: context);
-                                        bloc.checkFitamin();
-                                        // _launchURL(vitrinBloc.url);
-                                      },
-                                      child: ImageUtils.fromLocal(
-                                        (MemoryApp.userInformation != null &&
-                                                MemoryApp.userInformation!.hasFitaminService
-                                                    .isNullOrFalse)
-                                            ? 'assets/images/vitrin/fitamin_banner_02.png'
-                                            : 'assets/images/vitrin/fitamin_banner.png',
-                                      )),
-                                ),
-                              ),
-                              Space(
-                                height: 2.h,
-                              ),
-                            ],
-                          ),
-                        ),
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          FoodListAppbar(),
+                          appbarStackBox(),
+                        ],
                       ),
-                    ),
-                    BottomNav(currentTab: BottomNavItem.DIET),
-                  ],
+                      Space(height: 2.h),
+                      ChangeMenu(),
+                      Space(height: 2.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.w),
+                        child: FoodMeals(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        return Scaffold(
-            appBar: Toolbar(titleBar: intl.foodList),
-            body: SafeArea(
-                child: Container(
-                    height: 100.h,
-                    child: Column(children: [
-                      Expanded(child: Center(child: Progress())),
-                      BottomNav(currentTab: BottomNavItem.DIET)
-                    ]))));
+              BottomNav(currentTab: BottomNavItem.DIET),
+            ],
+          ),
+        );
       },
     );
   }
 
+  Widget appbarStackBox() {
+    return Positioned(
+      bottom: 0,
+      right: 0,
+      left: 0,
+      child: Card(
+        shape: AppShapes.rectangleMedium,
+        elevation: 1,
+        margin: EdgeInsets.symmetric(horizontal: 3.w),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          child: StreamBuilder(
+            stream: bloc.selectedWeekDay,
+            builder: (_, AsyncSnapshot<WeekDay?> snapshot) {
+              if (snapshot.hasData) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        appbarStackBoxText(snapshot.requireData!),
+                        style: typography.caption,
+                        softWrap: true,
+                      ),
+                    ),
+                    SubmitButton(
+                      label: isToday(snapshot.requireData!) ? intl.showAdvices : intl.goToToday,
+                      size: Size(40.w, 5.h),
+                      onTap: isToday(snapshot.requireData!)
+                          ? () => VxNavigator.of(context).push(Uri(path: Routes.advice))
+                          : () =>
+                              bloc.changeDateWithString(DateTime.now().toString().substring(0, 10)),
+                    ),
+                  ],
+                );
+              }
+              return Center(child: Progress());
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  String appbarStackBoxText(WeekDay weekday) {
+    String text = '';
+    if (isToday(weekday)) {
+      debugPrint('format ${weekday.jalaliDate.formatter.dd}');
+      text = intl.todayAdvicesForYou;
+    } else {
+      text = intl.viewingMenu(
+          '${DateTimeUtils.weekDayArabicName(weekday.jalaliDate.formatter.wN)} ${weekday.jalaliDate.formatter.d} ${weekday.jalaliDate.formatter.mN}');
+    }
+    return text;
+  }
+
+  bool isToday(WeekDay weekDay) {
+    return weekDay.gregorianDate.toString().substring(0, 10) ==
+        DateTime.now().toString().substring(0, 10);
+  }
+
   @override
-  void onRetryLoadingPage() {
-    bloc.onRetryLoadingPage();
-    bloc.getFoodMenu(fillFood: true);
+  void onRetryAfterMaintenance() {
+    // TODO: implement onRetryAfterMaintenance
   }
 
   @override
   void onRetryAfterNoInternet() {
-    //if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-    //bloc.onRetryAfterNoInternet();
+    // TODO: implement onRetryAfterNoInternet
+  }
+
+  @override
+  void onRetryLoadingPage() {
+    // TODO: implement onRetryLoadingPage
+  }
+
+  @override
+  void onShowMessage(String value) {
+    // TODO: implement onShowMessage
   }
 }

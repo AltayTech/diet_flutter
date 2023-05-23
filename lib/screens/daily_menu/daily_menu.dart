@@ -16,6 +16,7 @@ import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/date_time.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -41,7 +42,6 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   Tween<double> _tween = Tween(begin: 0.9, end: 1.3);
   WeekDay? selectedWeekDay;
   bool isInitial = false;
-  Meals? selectedMeal;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
 
     refreshDailyMenu.on<ListFood>().listen((ListFood value) {
       debugPrint('return ${value}');
-      bloc.onMealFoodDaily(value, selectedMeal!.id);
+      bloc.onMealFoodDaily(value);
     });
   }
 
@@ -113,7 +113,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
                       Text(
                         snapshot.hasData
                             ? intl.selectFood(
-                                '${snapshot.requireData.jalaliDate.formatter.wN} ${snapshot.requireData.jalaliDate.formatter.d} ${snapshot.requireData.jalaliDate.formatter.mN}')
+                                '${DateTimeUtils.weekDayArabicName(snapshot.requireData.jalaliDate.formatter.wN)} ${snapshot.requireData.jalaliDate.formatter.d} ${snapshot.requireData.jalaliDate.formatter.mN}')
                             : '',
                         style: typography.subtitle2,
                         softWrap: true,
@@ -342,7 +342,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
   }
 
   void openFoodListPage(Meals meal) {
-    selectedMeal = meal;
+    bloc.selectedMeal = meal;
     VxNavigator.of(context).waitAndPush(Uri(path: Routes.listFood), params: meal).then((value) {});
   }
 
@@ -359,7 +359,7 @@ class _DailyMenuPageState extends ResourcefulState<DailyMenuPage>
 
   @override
   void onRetryAfterNoInternet() {
-    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
-    bloc.onRetryAfterNoInternet();
+/*    if (!MemoryApp.isShowDialog) DialogUtils.showDialogProgress(context: context);
+    bloc.onRetryAfterNoInternet();*/
   }
 }

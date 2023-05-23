@@ -1,21 +1,19 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:behandam/app/app.dart';
-import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/utils/fake_ui.dart'
-    if (dart.library.html) 'package:behandam/utils/real_ui.dart' as ui;
 import 'package:behandam/widget/sizer/sizer.dart';
 import 'package:chewie/chewie.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import "package:universal_html/html.dart" as html;
+
 import 'package:video_player/video_player.dart';
 
 abstract class CallBackListener {
   void notifyChange();
+}
+
+abstract class ClickItem {
+  void Click();
 }
 
 class CustomVideo extends StatefulWidget {
@@ -27,11 +25,7 @@ class CustomVideo extends StatefulWidget {
   bool? isStart;
   Function? onCompletion;
   bool? isFile;
-  Function(ChewieController chewieController)? callBackListener;
-  String? src;
-  final double startAt = 0;
-  final bool autoplay = false;
-  final bool controls = true;
+  Function(ChewieController chewieController) ? callBackListener;
 
   CustomVideo(
       {Key? key,
@@ -43,15 +37,14 @@ class CustomVideo extends StatefulWidget {
       this.isStart,
       this.onCompletion,
       this.isFile,
-      this.callBackListener,
-      this.src})
+      this.callBackListener})
       : super(key: key);
 
   @override
   MyWidgetPlayer createState() => MyWidgetPlayer(click, image, title, url, isLooping, isFile);
 }
 
-class MyWidgetPlayer extends State<CustomVideo> {
+class MyWidgetPlayer extends State<CustomVideo> implements ClickItem {
   Function? click;
   String? title;
   String? image;
@@ -59,13 +52,18 @@ class MyWidgetPlayer extends State<CustomVideo> {
   bool? isLooping;
   bool? isFile;
 
+  // Duration? _position;
+  // Duration? _duration;
+  // bool _isPlaying = false;
+  // bool _isEnd = false;
   late VideoPlayerController _controller;
   double? aspect;
   var playerWidget;
-  bool logEvent = false;
   ChewieController? chewieController;
   bool _initializeVideoPlayerFuture = false, showBottomSheet = true;
 
+  //double width;
+  // double height;
   MyWidgetPlayer(this.click, this.image, this.title, this.url, this.isLooping, this.isFile) {
     if (isLooping == null) this.isLooping = false;
   }
@@ -73,32 +71,45 @@ class MyWidgetPlayer extends State<CustomVideo> {
   @override
   void initState() {
     super.initState();
-    kIsWeb ? webPlayer() : setData();
+
+    // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+
+    setData();
+    /*  _controller.addL
+istener(() {
+
+        Timer.run(() {
+          this.setState((){
+            _position = _controller.value.position;
+          });
+        });
+        setState(() {
+          _duration = _controller.value.duration;
+        });
+        _duration?.compareTo(_position) == 0 || _duration?.compareTo(_position) == -1 ? this.setState((){
+          _isEnd = true;
+        }) : this.setState((){
+          _isEnd = false;
+        });
+
+        if(_isEnd){
+          _controller.seekTo(new Duration(milliseconds: 0));
+        }
+      });*/
+
+    /*_controller = VideoPlayerController.network(url)
+        ..initialize().then((_) {
+          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+          setState(() {
+            // aspect= _controller.value.aspectRatio;
+            Fimber.d("aspect Ratio =>$aspect");
+            _controller.setLooping(false);
+          });
+        });*/
+    // }
   }
 
-  void webPlayer() {
-    widget.src = widget.url;
-    String? URL = widget.src! + '#t=${widget.startAt}';
-    // Do not remove the below comment - Fix for missing ui.platformViewRegistry in dart.ui
-    // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(widget.src!, (int viewId) {
-      final video = html.VideoElement()
-        ..src = URL
-        ..autoplay = widget.autoplay
-        ..controls = widget.controls
-        ..style.border = 'none'
-        ..style.borderColor = 'red'
-        ..style.height = '100%'
-        ..style.width = '100%';
-
-      // Allows Safari iOS to play the video inline
-      video.setAttribute('playsinline', 'true');
-
-      return video;
-    });
-  }
-
-  void setData() async {
+  Future<void> setData() async {
     try {
       if (url == null) {
         _controller = VideoPlayerController.asset('assets/video.mp4');
@@ -114,22 +125,8 @@ class MyWidgetPlayer extends State<CustomVideo> {
             widget.onCompletion!();
             showBottomSheet = false;
           }
+
           setState(() => {});
-        }
-        if (_controller.value.isPlaying && !logEvent) {
-          logEvent = true;
-          try {
-            MemoryApp.analytics!.logEvent(
-                name: "play_video",
-                parameters: {'page': '${navigator.currentConfiguration!.path}'});
-          } catch (e) {}
-        } else if (!_controller.value.isPlaying && logEvent) {
-          logEvent = false;
-          try {
-            MemoryApp.analytics!.logEvent(
-                name: "stop_video",
-                parameters: {'page': '${navigator.currentConfiguration!.path}'});
-          } catch (e) {}
         }
       });
 
@@ -142,15 +139,18 @@ class MyWidgetPlayer extends State<CustomVideo> {
         looping: this.isLooping!,
         showControlsOnInitialize: true,
       );
-
-      if (widget.callBackListener != null) widget.callBackListener!.call(chewieController!);
-
       if (chewieController != null && chewieController!.videoPlayerController.value.isInitialized) {
         setState(() {
           _initializeVideoPlayerFuture = true;
+          //chewieController!.togglePause();
         });
       }
-    } catch (e) {}
+/*      if(chewieController != null && chewieController!.videoPlayerController.value.isInitialized)
+        _initializeVideoPlayerFuture = Future.delayed(Duration(seconds: 1));*/
+
+    } catch (e) {
+      //Fimber.d("error video ${e.toString()}");
+    }
   }
 
   @override
@@ -163,9 +163,7 @@ class MyWidgetPlayer extends State<CustomVideo> {
 //Color(0xff62D0C5)
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb)
-      return HtmlElementView(viewType: widget.src!);
-    else if (_initializeVideoPlayerFuture) {
+    if (_initializeVideoPlayerFuture) {
       return Scaffold(
         body: Stack(
           children: [
@@ -176,19 +174,23 @@ class MyWidgetPlayer extends State<CustomVideo> {
                       // transform: Matrix4.translationValues(0.0, -35.0, 0.0),
                       borderRadius: BorderRadius.circular(10),
                       child: Chewie(
-                        key: new PageStorageKey(url!),
+                        key: PageStorageKey(url!),
                         controller: chewieController!,
                       ))),
             ),
           ],
         ),
       );
-    } else
+    } else {
       return Center(
         child: SpinKitCircle(
           color: AppColors.primary,
           size: 7.w,
         ),
       );
+    }
   }
+
+  @override
+  void Click() {}
 }
