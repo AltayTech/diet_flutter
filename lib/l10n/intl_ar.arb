@@ -134,6 +134,8 @@
   "saveDailyMenu": "احفظ وجبات القائمة اليومية",
   "and": "و",
   "selectFoodForAllMeals": "اختر الطعام لجميع الوجبات",
+  "mealStartAt": "وقت البدء",
+  "mealEndAt": "وقت الانتهاء",
   "timeOfTheMeal": "أفضل وقت لتناول هذه الوجبة من الساعة {start} حتى الساعة {end} .",
   "@timeOfTheMeal": {
     "placeholders": {

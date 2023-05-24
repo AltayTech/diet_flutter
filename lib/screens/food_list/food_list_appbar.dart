@@ -54,7 +54,7 @@ class _FoodListAppbarState extends ResourcefulState<FoodListAppbar> {
         child: Container(
           decoration: AppDecorations.boxNoRadius.copyWith(
               gradient: LinearGradient(
-                  colors: [AppColors.primary,AppColors.primary, AppColors.primary.withOpacity(0.2)],
+                  colors: [AppColors.primary,AppColors.primary, AppColors.primary],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter)),
           padding: EdgeInsets.symmetric(vertical: 2.h),

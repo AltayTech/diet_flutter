@@ -79,7 +79,7 @@ class AppColors {
       case ThemeAppColor.DEFAULT:
         accentColor = Color.fromRGBO(250, 114, 126, 1);
         primaryColorDark = Color(0xff67DAFF);
-        primary = Color(0xff03A9F4);
+        primary = Color(0xff6190ff);
         onPrimary = Colors.white;
         primaryVariantLight = Color.fromRGBO(87, 206, 121, 1);
         iconsColor = Color(0xffC2C2C2);
