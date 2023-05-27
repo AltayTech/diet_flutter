@@ -1,5 +1,6 @@
 import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/const_&_model/food_meal_alarm.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:behandam/screens/widget/dialog.dart';
@@ -7,6 +8,7 @@ import 'package:behandam/screens/widget/empty_box.dart';
 import 'package:behandam/screens/widget/search_no_result.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
+import 'package:behandam/utils/food_meals_notif.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -48,13 +50,16 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
           }
           return Column(
             children: [
-              ...snapshot.requireData!.meals!.map((meal) => mealItem(meal)).toList(),
+              ...snapshot.requireData!.meals!
+                  .mapIndexed((meal, index) => mealItem(meal, index))
+                  .toList(),
+              Space(height: 5.h)
             ],
           );
         });
   }
 
-  Widget mealItem(Meals meal) {
+  Widget mealItem(Meals meal, int index) {
     final isCurrentMeal = checkCurrentMeal(meal);
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
@@ -67,8 +72,8 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                 children: <Widget>[
                   Container(
                     height: meal.startAt.isNotNullAndEmpty && meal.startAt.isNotNullAndEmpty
-                        ? meal.food?.description != null
-                            ? 33.h
+                        ? meal.food!.foodItems != null && meal.food!.foodItems!.length > 1
+                            ? (meal.food!.foodItems!.length * 3) * 35
                             : 25.h
                         : 18.h,
                     margin: EdgeInsets.only(bottom: 2.w, top: 1.h),
@@ -115,16 +120,42 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                               ),
                             ),
                             if (meal.startAt.isNotNullAndEmpty && meal.startAt.isNotNullAndEmpty)
-                              Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.black.withOpacity(0.4)),
-                                  child: ImageUtils.fromLocal(
-                                      'assets/images/diet/notification_icon.svg',
-                                      color: Colors.white,
-                                      width: 6.w,
-                                      height: 6.w))
+                              GestureDetector(
+                                onTap: () async {
+                                  FoodMealAlarm foodMealAlarm = FoodMealAlarm(
+                                      id: index,
+                                      title: meal.title,
+                                      dateTime: DateTime(
+                                              int.parse(snapshot.data!.gregorianDate
+                                                  .toString()
+                                                  .substring(0, 4)),
+                                              int.parse(snapshot.data!.gregorianDate
+                                                  .toString()
+                                                  .substring(5, 7)),
+                                              int.parse(snapshot.data!.gregorianDate
+                                                  .toString()
+                                                  .substring(8, 10)),
+                                              int.parse(meal.startAt!.substring(0, 2)),
+                                              int.parse(meal.startAt!.substring(3, 5)))
+                                          .toString());
+
+                                  if (!await FoodMealsNotif.checkSetAlarm(foodMealAlarm)) {
+                                    FoodMealsNotif.disableAlarm(foodMealAlarm);
+                                  } else {
+                                    FoodMealsNotif.setFoodMealAlarm(foodMealAlarm);
+                                  }
+                                },
+                                child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: AppColors.primary.withOpacity(0.4)),
+                                    child: ImageUtils.fromLocal(
+                                        'assets/images/diet/notification_icon.svg',
+                                        color: Colors.white,
+                                        width: 6.w,
+                                        height: 6.w)),
+                              )
                           ],
                         ),
                         Space(height: 1.h),
@@ -164,7 +195,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                           ),
                         Space(height: 1.h),
                         if (meal.food?.foodItems != null && meal.food!.foodItems!.isNotEmpty)
-                          foodItems(meal, isCurrentMeal && isToday(snapshot.data)),
+                          Expanded(child: foodItems(meal, isCurrentMeal && isToday(snapshot.data))),
                       ],
                     ),
                   ),
@@ -173,7 +204,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                 ],
               ),
             ),
-            alternateFood(meal),
+            alternateFood(meal, isCurrentMeal),
           ],
         );
       },
@@ -197,7 +228,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     return (timeOfDay.hour * 60) + timeOfDay.minute;
   }
 
-  Widget alternateFood(Meals meal) {
+  Widget alternateFood(Meals meal, bool isCurrentMeal) {
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
       builder: (_, AsyncSnapshot<WeekDay> snapshot) {
@@ -215,7 +246,9 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
                 decoration: BoxDecoration(
-                    color: AppColors.onPrimary,
+                    color: isCurrentMeal && isToday(snapshot.data)
+                        ? AppColors.primary.withOpacity(0.4)
+                        : AppColors.onPrimary,
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(15), topRight: Radius.circular(15))),
                 child: Row(
@@ -338,6 +371,7 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
               return widget;
             },
           ).toList(),
+          Space(height: 2.h)
         ],
       ),
     );

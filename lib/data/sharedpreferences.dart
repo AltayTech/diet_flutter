@@ -74,6 +74,14 @@ abstract class AppSharedPreferences {
     preference.setString(_keyFcmButtonActions, notifResponse ?? _nullString);
   }
 
+  static Future<String> get foodMealsAlarms async {
+    return await _getString(_keyFoodMealsAlarms) ?? '';
+  }
+
+  static Future<void> setFoodMealsAlarms(String? foodMeals) async {
+    preference.setString(_keyFoodMealsAlarms, foodMeals ?? _nullString);
+  }
+
   static const _keyIsLoggedIn = 'isLoggedIn';
   static const _keyAuthToken = 'authToken';
   static const _keyLocaleCode = 'localeCode';
@@ -82,4 +90,5 @@ abstract class AppSharedPreferences {
   static const _keyFcmToken = 'fcmToken';
   static const _nullString = 'null';
   static const _keyDeeplink = 'deeplink';
+  static const _keyFoodMealsAlarms = 'foodMealsAlarms';
 }

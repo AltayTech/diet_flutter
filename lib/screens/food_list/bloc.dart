@@ -6,12 +6,14 @@ import 'package:behandam/app/bloc.dart';
 import 'package:behandam/base/live_event.dart';
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/base/utils.dart';
+import 'package:behandam/const_&_model/food_meal_alarm.dart';
 import 'package:behandam/data/entity/list_food/daily_menu.dart';
 import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/memory_cache.dart';
 import 'package:behandam/themes/colors.dart';
+import 'package:behandam/utils/food_meals_notif.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shamsi_date/shamsi_date.dart';
@@ -71,7 +73,7 @@ class FoodListBloc {
 
   void _loadContent({bool invalidate = false, bool fillFood = true}) {
     _loadingContent.value = true;
-    _repository.foodList(_date.value, invalidate: invalidate).then((value) {
+    _repository.foodList(_date.value, invalidate: invalidate).then((value) async {
       if (value.data?.menu != null) {
         debugPrint('food list ${value.data?.menu?.title} / $fillFood');
         _foodList.value = value.data;
@@ -82,16 +84,31 @@ class FoodListBloc {
             _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
 
             if (_foodList.value!.meals![i].startAt != null) {
-              setAlarmMeals(
-                  i,
-                  _foodList.value!.meals![i].title,
-                  _foodList.value!.meals![i].food!.title!,
-                  DateTime(
-                      int.parse(_date.value.substring(0, 4)),
-                      int.parse(_date.value.substring(5, 7)),
-                      int.parse(_date.value.substring(8, 10)),
-                      int.parse(_foodList.value!.meals![i].startAt!.substring(0, 2)),
-                      int.parse(_foodList.value!.meals![i].startAt!.substring(3, 5))));
+              FoodMealAlarm foodMealAlarm = FoodMealAlarm(
+                  id: i,
+                  title: _foodList.value!.meals![i].title,
+                  dateTime: DateTime(
+                          int.parse(_date.value.substring(0, 4)),
+                          int.parse(_date.value.substring(5, 7)),
+                          int.parse(_date.value.substring(8, 10)),
+                          int.parse(_foodList.value!.meals![i].startAt!.substring(0, 2)),
+                          int.parse(_foodList.value!.meals![i].startAt!.substring(3, 5)))
+                      .toString());
+
+              if (!await FoodMealsNotif.checkSetAlarm(foodMealAlarm)) {
+                setAlarmMeals(
+                    i,
+                    _foodList.value!.meals![i].title,
+                    _foodList.value!.meals![i].food!.title!,
+                    DateTime(
+                        int.parse(_date.value.substring(0, 4)),
+                        int.parse(_date.value.substring(5, 7)),
+                        int.parse(_date.value.substring(8, 10)),
+                        int.parse(_foodList.value!.meals![i].startAt!.substring(0, 2)),
+                        int.parse(_foodList.value!.meals![i].startAt!.substring(3, 5))));
+
+                FoodMealsNotif.setFoodMealAlarm(foodMealAlarm);
+              }
             }
           }
         }
@@ -151,8 +168,7 @@ class FoodListBloc {
     Gregorian jalaliDate = Gregorian.fromDateTime(gregorianDate);
     List<WeekDay> data = [];
     debugPrint(
-        'date2 $gregorianDate / $jalaliDate / ${WeekDay(
-            gregorianDate: gregorianDate, jalaliDate: jalaliDate)}');
+        'date2 $gregorianDate / $jalaliDate / ${WeekDay(gregorianDate: gregorianDate, jalaliDate: jalaliDate)}');
     data.add(WeekDay(
         gregorianDate: gregorianDate,
         jalaliDate: jalaliDate,
@@ -163,14 +179,13 @@ class FoodListBloc {
           gregorianDate: gregorianDate.add(Duration(days: i)),
           jalaliDate: gregorianDate.add(Duration(days: i)).toGregorian(),
           isSelected:
-          gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
+              gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
       debugPrint(
-          'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(
-              Duration(days: i))} /');
+          'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
     }
     _weekDays.value = data;
     _selectedWeekDay.value = _weekDays.value!.firstWhere(
-            (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
+        (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
     _previousWeekDay = _selectedWeekDay.value;
   }
 
@@ -219,8 +234,7 @@ class FoodListBloc {
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     debugPrint(
-        'newfood ${_foodList.valueOrNull?.meals?[index!].title} / ${_foodList.valueOrNull
-            ?.meals?[index!].newFood?.toJson()}');
+        'newfood ${_foodList.valueOrNull?.meals?[index!].title} / ${_foodList.valueOrNull?.meals?[index!].newFood?.toJson()}');
     onReplacingFood(mealId);
   }
 
@@ -264,9 +278,7 @@ class FoodListBloc {
   }
 
   void makingFoodEmpty(int mealId) {
-    _foodList.valueOrNull?.meals
-        ?.firstWhere((element) => element.id == mealId)
-        .newFood = null;
+    _foodList.valueOrNull?.meals?.firstWhere((element) => element.id == mealId).newFood = null;
   }
 
   void nextStep() {
@@ -289,7 +301,7 @@ class FoodListBloc {
   void onMealFoodDaily(ListFood newFood) {
     debugPrint('newfood1 ${newFood.toJson()}');
     final index =
-    _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == selectedMeal.id);
+        _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == selectedMeal.id);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     // _foodList.safeValue=_foodList.valueOrNull;
