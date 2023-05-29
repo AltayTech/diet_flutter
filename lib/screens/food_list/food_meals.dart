@@ -143,23 +143,11 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                                       id: index,
                                       title: meal.title,
                                       type: meal.mealTypeId,
-                                      time: DateTime(
-                                          int.parse(snapshot.data!.gregorianDate
-                                              .toString()
-                                              .substring(0, 4)),
-                                          int.parse(snapshot
-                                              .data!.gregorianDate
-                                              .toString()
-                                              .substring(5, 7)),
-                                          int.parse(snapshot
-                                              .data!.gregorianDate
-                                              .toString()
-                                              .substring(8, 10)),
+                                      time:
                                           int.parse(meal.startAt!
-                                              .substring(0, 2)),
+                                              .substring(0, 2)).toString() +
                                           int.parse(
-                                              meal.startAt!.substring(3, 5)))
-                                          .toString());
+                                              meal.startAt!.substring(3, 5)).toString());
 
                                   FoodMealAlarm? foodMeal =
                                   await FoodMealsNotificationManager
