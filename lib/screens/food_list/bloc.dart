@@ -12,11 +12,13 @@ import 'package:behandam/data/entity/list_food/list_food.dart';
 import 'package:behandam/data/entity/list_view/food_list.dart';
 import 'package:behandam/data/entity/regime/regime_type.dart';
 import 'package:behandam/data/memory_cache.dart';
+import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/utils/food_meals_notif.dart';
+import 'package:behandam/utils/food_meals_notification_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shamsi_date/shamsi_date.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import 'week_day.dart';
 
@@ -73,7 +75,9 @@ class FoodListBloc {
 
   void _loadContent({bool invalidate = false, bool fillFood = true}) {
     _loadingContent.value = true;
-    _repository.foodList(_date.value, invalidate: invalidate).then((value) async {
+    _repository
+        .foodList(_date.value, invalidate: invalidate)
+        .then((value) async {
       if (value.data?.menu != null) {
         debugPrint('food list ${value.data?.menu?.title} / $fillFood');
         _foodList.value = value.data;
@@ -81,36 +85,72 @@ class FoodListBloc {
           _foodList.value?.meals?.sort((a, b) => a.order.compareTo(b.order));
           for (int i = 0; i < _foodList.value!.meals!.length; i++) {
             _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
-            _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
+            _foodList.value!.meals![i].bgColor =
+                AppColors.mealColors[i]['bgColor'];
 
+            // add notification alarm
             if (_foodList.value!.meals![i].startAt != null) {
               FoodMealAlarm foodMealAlarm = FoodMealAlarm(
                   id: i,
+                  type: _foodList.value!.meals![i].mealTypeId,
                   title: _foodList.value!.meals![i].title,
-                  dateTime: DateTime(
+                  time: int.parse(_foodList.value!.meals![i].startAt!
+                              .substring(0, 2))
+                          .toString() +
+                      int.parse(_foodList.value!.meals![i].startAt!
+                              .substring(3, 5))
+                          .toString());
+
+              FoodMealAlarm? meal =
+                  await FoodMealsNotificationManager.checkIsExistAlarm(
+                      foodMealAlarm);
+
+              if (meal != null) {
+                if (FoodMealsNotificationManager.checkSetAlarm(meal)) {
+                  FoodMealsNotificationManager.setAlarmMeals(
+                      i,
+                      _foodList.value!.meals![i].title,
+                      _foodList.value!.meals![i].food!.title!,
+                      DateTime(
                           int.parse(_date.value.substring(0, 4)),
                           int.parse(_date.value.substring(5, 7)),
                           int.parse(_date.value.substring(8, 10)),
-                          int.parse(_foodList.value!.meals![i].startAt!.substring(0, 2)),
-                          int.parse(_foodList.value!.meals![i].startAt!.substring(3, 5)))
-                      .toString());
+                          int.parse(_foodList.value!.meals![i].startAt!
+                              .substring(0, 2)),
+                          int.parse(_foodList.value!.meals![i].startAt!
+                              .substring(3, 5))));
+                }
+              } else {
+                if (await AppSharedPreferences.firstSetFoodMealAlarm) {
+                  if (_foodList.value!.meals![i].title == 'الفطور' ||
+                      _foodList.value!.meals![i].title == 'الغداء' ||
+                      _foodList.value!.meals![i].title == 'عشاء ') {
+                    foodMealAlarm.isEnabled = true;
 
-              if (!await FoodMealsNotif.checkSetAlarm(foodMealAlarm)) {
-                setAlarmMeals(
-                    i,
-                    _foodList.value!.meals![i].title,
-                    _foodList.value!.meals![i].food!.title!,
-                    DateTime(
-                        int.parse(_date.value.substring(0, 4)),
-                        int.parse(_date.value.substring(5, 7)),
-                        int.parse(_date.value.substring(8, 10)),
-                        int.parse(_foodList.value!.meals![i].startAt!.substring(0, 2)),
-                        int.parse(_foodList.value!.meals![i].startAt!.substring(3, 5))));
+                    FoodMealsNotificationManager.setAlarmMeals(
+                        i,
+                        _foodList.value!.meals![i].title,
+                        _foodList.value!.meals![i].food!.title!,
+                        DateTime(
+                            int.parse(_date.value.substring(0, 4)),
+                            int.parse(_date.value.substring(5, 7)),
+                            int.parse(_date.value.substring(8, 10)),
+                            int.parse(_foodList.value!.meals![i].startAt!
+                                .substring(0, 2)),
+                            int.parse(_foodList.value!.meals![i].startAt!
+                                .substring(3, 5))));
+                  } else {
+                    foodMealAlarm.isEnabled = false;
+                  }
+                }
 
-                FoodMealsNotif.setFoodMealAlarm(foodMealAlarm);
+                foodMealAlarm.type = _foodList.value!.meals![i].mealTypeId;
+                FoodMealsNotificationManager.setFoodMealAlarm(foodMealAlarm);
               }
             }
+            // add notification alarm
           }
+          await AppSharedPreferences.setFirstSetFoodMealAlarm(true);
         }
         setTheme();
         fillWeekDays();
@@ -118,22 +158,6 @@ class FoodListBloc {
         _showServerError.fire(value.next);
       }
     }).whenComplete(() => _loadingContent.value = false);
-  }
-
-  Future<void> setAlarmMeals(int id, String title, String body, DateTime dateTime) async {
-    final alarmSettings = AlarmSettings(
-      id: id,
-      dateTime: dateTime,
-      assetAudioPath: 'assets/notif_sound/notification-sound.mp3',
-      //loopAudio: true,
-      vibrate: true,
-      fadeDuration: 3.0,
-      notificationTitle: title,
-      notificationBody: body,
-      enableNotificationOnKill: true,
-    );
-
-    await Alarm.set(alarmSettings: alarmSettings);
   }
 
   bool checkDefaultUnit(RatioFoodItem ratioFoodItem) {
@@ -161,7 +185,8 @@ class FoodListBloc {
   void fillWeekDays() {
     DateTime gregorianDate;
     if (_foodList.hasValue) {
-      gregorianDate = DateTime.parse(_foodList.value!.menu!.startedAt!).toUtc().toLocal();
+      gregorianDate =
+          DateTime.parse(_foodList.value!.menu!.startedAt!).toUtc().toLocal();
     } else {
       gregorianDate = DateTime.now().toUtc().toLocal();
     }
@@ -178,14 +203,17 @@ class FoodListBloc {
       data.add(WeekDay(
           gregorianDate: gregorianDate.add(Duration(days: i)),
           jalaliDate: gregorianDate.add(Duration(days: i)).toGregorian(),
-          isSelected:
-              gregorianDate.add(Duration(days: i)).toString().substring(0, 10) == _date.value));
+          isSelected: gregorianDate
+                  .add(Duration(days: i))
+                  .toString()
+                  .substring(0, 10) ==
+              _date.value));
       debugPrint(
           'week day ${data.length} / ${data.last.gregorianDate} / ${gregorianDate.add(Duration(days: i))} /');
     }
     _weekDays.value = data;
-    _selectedWeekDay.value = _weekDays.value!.firstWhere(
-        (element) => element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
+    _selectedWeekDay.value = _weekDays.value!.firstWhere((element) =>
+        element!.gregorianDate.toString().substring(0, 10) == _date.value)!;
     _previousWeekDay = _selectedWeekDay.value;
   }
 
@@ -200,7 +228,8 @@ class FoodListBloc {
         if (element!.gregorianDate.toString().substring(0, 10) == newDate) {
           element.isSelected = true;
           _selectedWeekDay.value = element;
-          debugPrint('change date 2 ${_selectedWeekDay.value.isSelected} / ${element.isSelected}');
+          debugPrint(
+              'change date 2 ${_selectedWeekDay.value.isSelected} / ${element.isSelected}');
         } else {
           element.isSelected = false;
         }
@@ -222,7 +251,8 @@ class FoodListBloc {
       if (_foodList.value?.meals != null)
         for (int i = 0; i < _foodList.value!.meals!.length; i++) {
           _foodList.value!.meals![i].color = AppColors.mealColors[i]['color'];
-          _foodList.value!.meals![i].bgColor = AppColors.mealColors[i]['bgColor'];
+          _foodList.value!.meals![i].bgColor =
+              AppColors.mealColors[i]['bgColor'];
         }
       setTheme();
     }).whenComplete(() => _loadingContent.value = false);
@@ -230,7 +260,8 @@ class FoodListBloc {
 
   void onMealFood(ListFood newFood, int mealId) {
     debugPrint('newfood1 ${newFood.toJson()}');
-    final index = _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == mealId);
+    final index = _foodList.valueOrNull?.meals
+        ?.indexWhere((element) => element.id == mealId);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     debugPrint(
@@ -241,14 +272,16 @@ class FoodListBloc {
   onDailyMenu() {
     _loadingContent.value = true;
     List<DailyFood> foods = [];
-    int day = _weekDays.value!
-        .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
+    int day = _weekDays.value!.indexWhere((element) =>
+        element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
     debugPrint('newfood3 ${_foodList.valueOrNull?.meals?[0].newFood?.id}');
     _foodList.valueOrNull?.meals?.forEach((meal) {
-      debugPrint('daily menu newfood ${meal.id} / ${meal.title} / ${meal.newFood?.toJson()}');
-      if (meal.newFood?.id != null)
-        foods.add(DailyFood(
-            meal.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
+      debugPrint(
+          'daily menu newfood ${meal.id} / ${meal.title} / ${meal.newFood?.toJson()}');
+      if (meal.newFood?.id != null) {
+        foods.add(DailyFood(meal.newFood!.id!, meal.id, day + 1,
+            meal.newFood?.selectedFreeFood?.id ?? null));
+      }
       debugPrint('daily menu change ${foods.last.toJson()}');
     });
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
@@ -262,11 +295,12 @@ class FoodListBloc {
   void onReplacingFood(int mealId) {
     _loadingContent.value = true;
     List<DailyFood> foods = [];
-    int day = _weekDays.value!
-        .indexWhere((element) => element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
-    final meal = _foodList.value?.meals?.firstWhere((element) => element.id == mealId);
-    foods.add(DailyFood(
-        meal!.newFood!.id!, meal.id, day + 1, meal.newFood?.selectedFreeFood?.id ?? null));
+    int day = _weekDays.value!.indexWhere((element) =>
+        element!.gregorianDate == _selectedWeekDay.value.gregorianDate);
+    final meal =
+        _foodList.value?.meals?.firstWhere((element) => element.id == mealId);
+    foods.add(DailyFood(meal!.newFood!.id!, meal.id, day + 1,
+        meal.newFood?.selectedFreeFood?.id ?? null));
     debugPrint('replace Food ${foods.last.toJson()}');
     DailyMenuRequestData requestData = DailyMenuRequestData(foods);
     _repository.dailyMenu(requestData).then((value) {
@@ -278,7 +312,9 @@ class FoodListBloc {
   }
 
   void makingFoodEmpty(int mealId) {
-    _foodList.valueOrNull?.meals?.firstWhere((element) => element.id == mealId).newFood = null;
+    _foodList.valueOrNull?.meals
+        ?.firstWhere((element) => element.id == mealId)
+        .newFood = null;
   }
 
   void nextStep() {
@@ -300,8 +336,8 @@ class FoodListBloc {
 
   void onMealFoodDaily(ListFood newFood) {
     debugPrint('newfood1 ${newFood.toJson()}');
-    final index =
-        _foodList.valueOrNull?.meals?.indexWhere((element) => element.id == selectedMeal.id);
+    final index = _foodList.valueOrNull?.meals
+        ?.indexWhere((element) => element.id == selectedMeal.id);
     // _foodList.valueOrNull?.meals[index!].food = newFood;
     _foodList.valueOrNull?.meals?[index!].newFood = newFood;
     // _foodList.safeValue=_foodList.valueOrNull;

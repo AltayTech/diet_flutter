@@ -82,6 +82,14 @@ abstract class AppSharedPreferences {
     preference.setString(_keyFoodMealsAlarms, foodMeals ?? _nullString);
   }
 
+  static Future<bool> get firstSetFoodMealAlarm async {
+    return preference.getBool(_keyFirstSetFoodMealAlarm) ?? false;
+  }
+
+  static Future<void> setFirstSetFoodMealAlarm(bool? firstSet) async {
+    preference.setBool(_keyFirstSetFoodMealAlarm, firstSet ?? false);
+  }
+
   static const _keyIsLoggedIn = 'isLoggedIn';
   static const _keyAuthToken = 'authToken';
   static const _keyLocaleCode = 'localeCode';
@@ -91,4 +99,5 @@ abstract class AppSharedPreferences {
   static const _nullString = 'null';
   static const _keyDeeplink = 'deeplink';
   static const _keyFoodMealsAlarms = 'foodMealsAlarms';
+  static const _keyFirstSetFoodMealAlarm = 'firstSetFoodMealAlarm';
 }

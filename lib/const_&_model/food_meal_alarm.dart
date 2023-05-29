@@ -2,24 +2,27 @@ import 'dart:convert';
 
 class FoodMealAlarm {
   int? id;
-  final String? title;
-  String? dateTime;
+  int? type;
+  String? title;
+  String? time;
   bool isEnabled;
 
-  FoodMealAlarm({this.id, this.title, this.dateTime, this.isEnabled = true});
+  FoodMealAlarm({this.id, this.type, this.title, this.time, this.isEnabled = true});
 
   factory FoodMealAlarm.fromJson(Map<String, dynamic> jsonData) {
     return FoodMealAlarm(
         id: jsonData['id'],
+        type: jsonData['type'],
         title: jsonData['title'],
-        dateTime: jsonData['dateTime'],
+        time: jsonData['time'],
         isEnabled: jsonData['isEnabled']);
   }
 
   static Map<String, dynamic> toMap(FoodMealAlarm foodMealAlarm) => {
         'id': foodMealAlarm.id,
+        'type': foodMealAlarm.type,
         'title': foodMealAlarm.title,
-        'dateTime': foodMealAlarm.dateTime,
+        'time': foodMealAlarm.time,
         'isEnabled': foodMealAlarm.isEnabled
       };
 
@@ -40,7 +43,13 @@ class FoodMealAlarm {
       other is FoodMealAlarm &&
           runtimeType == other.runtimeType &&
           id == other.id &&
+          type == other.type &&
           title == other.title &&
-          dateTime == other.dateTime &&
+          time == other.time &&
           isEnabled == other.isEnabled;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => id.hashCode;
+
 }
