@@ -5,11 +5,10 @@ import 'package:behandam/data/sharedpreferences.dart';
 class FoodMealsNotificationManager {
   static Future<List<FoodMealAlarm>> getAlarms() async {
     // Fetch and decode data
-    final String foodMealsAlarms = (await AppSharedPreferences.foodMealsAlarms);
+    final String foodMealsAlarms = (AppSharedPreferences.foodMealsAlarms);
 
     if (foodMealsAlarms.isNotEmpty) {
-      final List<FoodMealAlarm> foodMealsAlarm =
-          FoodMealAlarm.decode(foodMealsAlarms);
+      final List<FoodMealAlarm> foodMealsAlarm = FoodMealAlarm.decode(foodMealsAlarms);
 
       return foodMealsAlarm;
     }
@@ -17,33 +16,30 @@ class FoodMealsNotificationManager {
     return [];
   }
 
-  static Future<FoodMealAlarm?> checkIsExistAlarm(
-      FoodMealAlarm foodMealAlarm) async {
+  static FoodMealAlarm? checkIsExistAlarm(FoodMealAlarm foodMealAlarm) {
     // Fetch and decode data
-    final String foodMealsAlarms = (await AppSharedPreferences.foodMealsAlarms);
+    final String foodMealsAlarms = AppSharedPreferences.foodMealsAlarms;
 
     if (foodMealsAlarms.isNotEmpty) {
-      final List<FoodMealAlarm> prefFoodMealsAlarm =
-          FoodMealAlarm.decode(foodMealsAlarms);
+      final List<FoodMealAlarm> prefFoodMealsAlarm = FoodMealAlarm.decode(foodMealsAlarms);
 
       FoodMealAlarm? meal;
 
       try {
-        meal = prefFoodMealsAlarm
-            .firstWhere((element) =>
-            prefFoodMealsAlarm.contains(foodMealAlarm));
-      } catch(e) {
+        meal =
+            prefFoodMealsAlarm.firstWhere((element) => element == foodMealAlarm);
+      } catch (e) {
         print(e.toString());
       }
 
-      return meal;
+       return meal;
     }
 
     return null;
   }
 
   static bool checkSetAlarm(FoodMealAlarm foodMealAlarm) {
-    if (foodMealAlarm.isEnabled) {
+    if (foodMealAlarm.isEnabled!) {
       return true;
     } else {
       return false;
@@ -53,40 +49,53 @@ class FoodMealsNotificationManager {
   static Future<void> setFoodMealAlarm(FoodMealAlarm foodMealAlarm) async {
     late String encodedData;
     // Fetch and decode data
-    final String data = (await AppSharedPreferences.foodMealsAlarms);
+    final String data = (AppSharedPreferences.foodMealsAlarms);
     if (data.isNotEmpty) {
       final List<FoodMealAlarm> prefFoodMealsAlarm = FoodMealAlarm.decode(data);
 
-      FoodMealAlarm? meal = await checkIsExistAlarm(foodMealAlarm);
+      FoodMealAlarm? meal = checkIsExistAlarm(foodMealAlarm);
 
       if (meal != null) {
         // set data
-        encodedData =
-            FoodMealAlarm.encode([...prefFoodMealsAlarm, foodMealAlarm]);
+        encodedData = FoodMealAlarm.encode([...prefFoodMealsAlarm]);
 
         await AppSharedPreferences.setFoodMealsAlarms(encodedData);
 
         return;
       }
-    }
-    // set data
-    encodedData = FoodMealAlarm.encode([foodMealAlarm]);
 
-    // write all contact when not new contact
-    await AppSharedPreferences.setFoodMealsAlarms(encodedData);
+      // set data
+      encodedData = FoodMealAlarm.encode([...prefFoodMealsAlarm, foodMealAlarm]);
+
+      // write all contact when not new contact
+      await AppSharedPreferences.setFoodMealsAlarms(encodedData);
+    } else {
+      // set data
+      encodedData = FoodMealAlarm.encode([foodMealAlarm]);
+
+      // write all contact when not new contact
+      await AppSharedPreferences.setFoodMealsAlarms(encodedData);
+    }
   }
 
   static Future<void> disableAlarm(FoodMealAlarm foodMealAlarm) async {
     late String encodedData;
     // Fetch and decode data
-    final String data = (await AppSharedPreferences.foodMealsAlarms);
+    final String data = (AppSharedPreferences.foodMealsAlarms);
     if (data.isNotEmpty) {
       final List<FoodMealAlarm> prefFoodMealsAlarm = FoodMealAlarm.decode(data);
 
       Alarm.stop(foodMealAlarm.id!);
-      foodMealAlarm.isEnabled = false;
 
-      prefFoodMealsAlarm[foodMealAlarm.id!] = foodMealAlarm;
+      try {
+        int index =
+            prefFoodMealsAlarm.indexWhere((element) => element == foodMealAlarm);
+
+        foodMealAlarm.isEnabled = false;
+        prefFoodMealsAlarm[index] = foodMealAlarm;
+      } catch (e) {
+        print(e.toString());
+      }
 
       // set data
       encodedData = FoodMealAlarm.encode([...prefFoodMealsAlarm]);
@@ -98,12 +107,19 @@ class FoodMealsNotificationManager {
   static Future<void> enableAlarm(FoodMealAlarm foodMealAlarm) async {
     late String encodedData;
     // Fetch and decode data
-    final String data = (await AppSharedPreferences.foodMealsAlarms);
+    final String data = (AppSharedPreferences.foodMealsAlarms);
     if (data.isNotEmpty) {
       final List<FoodMealAlarm> prefFoodMealsAlarm = FoodMealAlarm.decode(data);
 
-      foodMealAlarm.isEnabled = true;
-      prefFoodMealsAlarm[foodMealAlarm.id!] = foodMealAlarm;
+      try {
+        int index =
+            prefFoodMealsAlarm.indexWhere((element) => element == foodMealAlarm);
+
+        foodMealAlarm.isEnabled = true;
+        prefFoodMealsAlarm[index] = foodMealAlarm;
+      } catch (e) {
+        print(e.toString());
+      }
 
       // set data
       encodedData = FoodMealAlarm.encode([...prefFoodMealsAlarm]);
@@ -112,8 +128,7 @@ class FoodMealsNotificationManager {
     }
   }
 
-  static Future<void> setAlarmMeals(
-      int id, String title, String body, DateTime dateTime) async {
+  static Future<void> setAlarmMeals(int id, String title, String body, DateTime dateTime) async {
     final alarmSettings = AlarmSettings(
       id: id,
       dateTime: dateTime,

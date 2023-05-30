@@ -74,8 +74,8 @@ abstract class AppSharedPreferences {
     preference.setString(_keyFcmButtonActions, notifResponse ?? _nullString);
   }
 
-  static Future<String> get foodMealsAlarms async {
-    return await _getString(_keyFoodMealsAlarms) ?? '';
+  static String get foodMealsAlarms {
+    return preference.getString(_keyFoodMealsAlarms) ?? '';
   }
 
   static Future<void> setFoodMealsAlarms(String? foodMeals) async {

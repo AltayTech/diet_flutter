@@ -46,6 +46,7 @@ class FoodListBloc {
   final _navigateTo = LiveEvent();
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
+  final _onChangeAlarmEnable = BehaviorSubject<bool>();
   final _foodList = BehaviorSubject<FoodListData?>();
   final _date = BehaviorSubject<String>();
   final _selectedWeekDay = BehaviorSubject<WeekDay>();
@@ -58,6 +59,8 @@ class FoodListBloc {
   String? get pdfPath => _pdfPath;
 
   Stream<bool> get loadingContent => _loadingContent.stream;
+
+  Stream<bool> get onChangeAlarmEnable => _onChangeAlarmEnable.stream;
 
   Stream get showServerError => _showServerError.stream;
 
@@ -92,7 +95,7 @@ class FoodListBloc {
             if (_foodList.value!.meals![i].startAt != null) {
               FoodMealAlarm foodMealAlarm = FoodMealAlarm(
                   id: i,
-                  type: _foodList.value!.meals![i].mealTypeId,
+                  type: _foodList.value!.meals![i].id,
                   title: _foodList.value!.meals![i].title,
                   time: int.parse(_foodList.value!.meals![i].startAt!
                               .substring(0, 2))
@@ -101,8 +104,7 @@ class FoodListBloc {
                               .substring(3, 5))
                           .toString());
 
-              FoodMealAlarm? meal =
-                  await FoodMealsNotificationManager.checkIsExistAlarm(
+              FoodMealAlarm? meal = FoodMealsNotificationManager.checkIsExistAlarm(
                       foodMealAlarm);
 
               if (meal != null) {
@@ -121,7 +123,7 @@ class FoodListBloc {
                               .substring(3, 5))));
                 }
               } else {
-                if (await AppSharedPreferences.firstSetFoodMealAlarm) {
+                if (!await AppSharedPreferences.firstSetFoodMealAlarm) {
                   if (_foodList.value!.meals![i].title == 'الفطور' ||
                       _foodList.value!.meals![i].title == 'الغداء' ||
                       _foodList.value!.meals![i].title == 'عشاء ') {
@@ -142,9 +144,11 @@ class FoodListBloc {
                   } else {
                     foodMealAlarm.isEnabled = false;
                   }
+                } else {
+                  foodMealAlarm.isEnabled = false;
                 }
 
-                foodMealAlarm.type = _foodList.value!.meals![i].mealTypeId;
+                foodMealAlarm.type = _foodList.value!.meals![i].id;
                 FoodMealsNotificationManager.setFoodMealAlarm(foodMealAlarm);
               }
             }
@@ -158,6 +162,10 @@ class FoodListBloc {
         _showServerError.fire(value.next);
       }
     }).whenComplete(() => _loadingContent.value = false);
+  }
+
+  void updateAlarmEnableUi() {
+    _onChangeAlarmEnable.value = true;
   }
 
   bool checkDefaultUnit(RatioFoodItem ratioFoodItem) {
@@ -345,6 +353,7 @@ class FoodListBloc {
 
   void dispose() {
     _loadingContent.close();
+    _onChangeAlarmEnable.close();
     _foodList.close();
     _navigateTo.close();
     _date.close();

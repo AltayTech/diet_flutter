@@ -5,9 +5,9 @@ class FoodMealAlarm {
   int? type;
   String? title;
   String? time;
-  bool isEnabled;
+  bool? isEnabled;
 
-  FoodMealAlarm({this.id, this.type, this.title, this.time, this.isEnabled = true});
+  FoodMealAlarm({this.id, this.type, this.title, this.time, this.isEnabled = false});
 
   factory FoodMealAlarm.fromJson(Map<String, dynamic> jsonData) {
     return FoodMealAlarm(
@@ -44,12 +44,5 @@ class FoodMealAlarm {
           runtimeType == other.runtimeType &&
           id == other.id &&
           type == other.type &&
-          title == other.title &&
-          time == other.time &&
-          isEnabled == other.isEnabled;
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => id.hashCode;
-
+          time == other.time;
 }
