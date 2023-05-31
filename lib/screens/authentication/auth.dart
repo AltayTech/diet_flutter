@@ -31,8 +31,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   String dropdownValue = 'One';
   late String myGeo;
   bool _validate = false;
-  late String phoneNumber;
-  late String number;
+  late String phoneNumber = '';
+  late String number = '';
   late AuthenticationBloc authBloc;
   Country? _selectedLocation;
   bool check = false;

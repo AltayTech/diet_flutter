@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:alarm/alarm.dart';
 import 'package:behandam/const_&_model/food_meal_alarm.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class FoodMealsNotificationManager {
   static Future<List<FoodMealAlarm>> getAlarms() async {
@@ -32,7 +35,7 @@ class FoodMealsNotificationManager {
         print(e.toString());
       }
 
-       return meal;
+      return meal;
     }
 
     return null;
@@ -85,11 +88,11 @@ class FoodMealsNotificationManager {
     if (data.isNotEmpty) {
       final List<FoodMealAlarm> prefFoodMealsAlarm = FoodMealAlarm.decode(data);
 
-      Alarm.stop(foodMealAlarm.id!);
+      _stopAlarm(foodMealAlarm.id!);
 
       try {
         int index =
-            prefFoodMealsAlarm.indexWhere((element) => element == foodMealAlarm);
+        prefFoodMealsAlarm.indexWhere((element) => element == foodMealAlarm);
 
         foodMealAlarm.isEnabled = false;
         prefFoodMealsAlarm[index] = foodMealAlarm;
@@ -104,6 +107,20 @@ class FoodMealsNotificationManager {
     }
   }
 
+  static Future<void> _stopAlarm(int id) async {
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      var androidInfo = await deviceInfo.androidInfo;
+
+      if (androidInfo.version.sdkInt <= 26) {
+        return;
+      }
+    }
+
+    Alarm.stop(id);
+  }
+
+
   static Future<void> enableAlarm(FoodMealAlarm foodMealAlarm) async {
     late String encodedData;
     // Fetch and decode data
@@ -113,7 +130,7 @@ class FoodMealsNotificationManager {
 
       try {
         int index =
-            prefFoodMealsAlarm.indexWhere((element) => element == foodMealAlarm);
+        prefFoodMealsAlarm.indexWhere((element) => element == foodMealAlarm);
 
         foodMealAlarm.isEnabled = true;
         prefFoodMealsAlarm[index] = foodMealAlarm;
@@ -129,6 +146,15 @@ class FoodMealsNotificationManager {
   }
 
   static Future<void> setAlarmMeals(int id, String title, String body, DateTime dateTime) async {
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      var androidInfo = await deviceInfo.androidInfo;
+
+      if (androidInfo.version.sdkInt <= 26) {
+        return;
+      }
+    }
+
     final alarmSettings = AlarmSettings(
       id: id,
       dateTime: dateTime,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:behandam/base/errors.dart';
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/const_&_model/food_meal_alarm.dart';
@@ -10,6 +12,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/food_meals_notification_manager.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 
@@ -30,12 +33,34 @@ class FoodMeals extends StatefulWidget {
 class _FoodMealsState extends ResourcefulState<FoodMeals> {
   late FoodListBloc bloc;
 
+  int androidSdk = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    checkAndroidVersion();
+  }
+
   @override
   Widget build(BuildContext context) {
     bloc = FoodListProvider.of(context);
     super.build(context);
 
     return foodMeals();
+  }
+
+  Future<int> checkAndroidVersion() async {
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      var androidInfo = await deviceInfo.androidInfo;
+
+      androidSdk = androidInfo.version.sdkInt;
+
+      return androidSdk;
+    } else {
+      return 0;
+    }
   }
 
   Widget foodMeals() {
@@ -162,7 +187,9 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                                       softWrap: true,
                                     ),
                                   ),
-                                  if (meal.startAt.isNotNullAndEmpty &&
+                                  if (Platform.isAndroid &&
+                                      androidSdk >= 26 &&
+                                      meal.startAt.isNotNullAndEmpty &&
                                       meal.startAt.isNotNullAndEmpty)
                                     GestureDetector(
                                       onTap: () async {

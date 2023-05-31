@@ -9,6 +9,7 @@ import 'package:behandam/themes/colors.dart';
 import 'package:behandam/themes/locale.dart';
 import 'package:behandam/utils/fcm.dart';
 import 'package:behandam/utils/firebase_options.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,17 +26,29 @@ Future<void> entryPoint() async {
     await AppSharedPreferences.initialize();
     AppLocale.initialize();
     AppColors(themeAppColor: ThemeAppColor.BLUE);
-    await Alarm.init();
-   // _initFireBase();
-   // _handleCaughtErrors();
+    try {
+      if (Platform.isAndroid) {
+        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+        var androidInfo = await deviceInfo.androidInfo;
+        if (androidInfo.version.sdkInt >= 26) {
+          await Alarm.init();
+        }
+      } else {
+        await Alarm.init();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    // _initFireBase();
+    // _handleCaughtErrors();
     runApp(App());
-  }, (Object error, StackTrace stack)async {
+  }, (Object error, StackTrace stack) async {
     print('error StackTrace => ${stack.toString()}');
     if (error is DioError || error is HttpException) {
       /// this kind of error is already handled in DioErrorHandlerInterceptor
       return;
     }
- //   FirebaseCrashlytics.instance.recordError(error, stack);
+    //   FirebaseCrashlytics.instance.recordError(error, stack);
   });
 }
 
@@ -44,7 +57,7 @@ void _initFireBase() async {
     await Firebase.initializeApp(
       options: await DefaultFirebaseConfig.platformOptions,
     );
-    debugPrint('Firebase.app ${ Firebase.apps.first.name}');
+    debugPrint('Firebase.app ${Firebase.apps.first.name}');
     await AppFcm.initialize();
     if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled == false) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
@@ -54,7 +67,7 @@ void _initFireBase() async {
     print("not install firebase");
   }
   try {
- /*   MemoryApp.analytics = FirebaseAnalytics.instance;*/
+    /*   MemoryApp.analytics = FirebaseAnalytics.instance;*/
     // firebaseAnalyticsObserver = FirebaseAnalyticsObserver(analytics: MemoryApp.analytics!);
   } catch (Exception) {
     print("not install FirebaseAnalytics");
