@@ -72,9 +72,15 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
 
   double getFoodItemHeight(int length) {
     double height = 200;
+
+    if (length == 2) {
+      height += 50;
+      return height;
+    }
+
     for (int i = 2; i < length; i++) {
       if (i % 2 == 0) {
-        height += 100;
+        height += 135;
       }
     }
 
@@ -85,10 +91,12 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
     final isCurrentMeal = checkCurrentMeal(meal);
 
     double height = meal.startAt.isNotNullAndEmpty && meal.endAt.isNotNullAndEmpty
-        ? meal.food!.foodItems != null && meal.food!.foodItems!.length > 2
+        ? meal.food!.foodItems != null && meal.food!.foodItems!.length >= 2
             ? getFoodItemHeight(meal.food!.foodItems!.length)
             : 200
-        : 200;
+        : meal.description == null
+            ? 175
+            : 200;
 
     return StreamBuilder(
       stream: bloc.selectedWeekDay,
@@ -186,20 +194,15 @@ class _FoodMealsState extends ResourcefulState<FoodMeals> {
                                           bloc.updateAlarmEnableUi();
                                         }
                                       },
-                                      child: Container(
-                                          padding: const EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              color: foodMeal != null && foodMeal!.isEnabled!
-                                                  ? AppColors.primary.withOpacity(0.4)
-                                                  : Colors.transparent),
-                                          child: ImageUtils.fromLocal(
+                                      child: foodMeal != null && foodMeal!.isEnabled!
+                                          ? ImageUtils.fromLocal(
                                               'assets/images/diet/notification_icon.svg',
-                                              color: foodMeal != null && foodMeal!.isEnabled!
-                                                  ? Colors.white
-                                                  : Colors.black,
                                               width: 6.w,
-                                              height: 6.w)),
+                                              height: 6.w)
+                                          : ImageUtils.fromLocal(
+                                              'assets/images/diet/notification_icon_disable.svg',
+                                              width: 6.w,
+                                              height: 6.w),
                                     )
                                 ],
                               ),
