@@ -116,7 +116,7 @@ class ErrorHandlerInterceptor extends Interceptor {
         'Request URI: ${err.requestOptions.uri}\n'
         'Request Body: ${err.requestOptions.data}\n'
         'Request Headers: $headers';
-    _crashlytics.recordError(err.error, err.stackTrace, reason: reason);
+    //_crashlytics.recordError(err.error, err.stackTrace, reason: reason);
   }
 
   void _handleMaintenanceError() async {
