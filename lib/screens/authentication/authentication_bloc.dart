@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:behandam/data/entity/auth/country.dart';
 import 'package:behandam/data/entity/auth/register.dart';
@@ -11,6 +12,7 @@ import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/extensions/string.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:country_calling_code_picker/picker.dart' as picker;
+import 'package:http/http.dart' as http;
 import '../../base/live_event.dart';
 import '../../base/repository.dart';
 
@@ -86,6 +88,30 @@ class AuthenticationBloc {
     Country c;
     c = _countries.value.where((country) => country.isoCode!.contains(countryFlag)).toList().first;
     return c;
+  }
+
+  Future<String?> getCountryFromPublicIP() async {
+    try {
+      Uri url = Uri.parse('https://api.country.is');
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        // The response body is the IP in plain text, so just
+        // return it as-is.
+        return json.decode(response.body)["country"];
+      } else {
+        // The request failed with a non-200 code
+        // The ipify.org API has a lot of guaranteed uptime
+        // promises, so this shouldn't ever actually happen.
+        print(response.statusCode);
+        print(response.body);
+        return null;
+      }
+    } catch (e) {
+      // Request failed due to an error, most likely because
+      // the phone isn't connected to the internet.
+      print(e);
+      return null;
+    }
   }
 
   void selectDefaultCountry() {

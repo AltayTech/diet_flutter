@@ -53,9 +53,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
   }
 
   void findCountryCodeByIp() async {
-    final geo =
-        await Ipify.geo('at_5GgRPPGVt1ya5sUIHp35cieN97IvN').then((value) {
-      myGeo = value.location?.country ?? 'KW';
+    final geo = await authBloc.getCountryFromPublicIP().then((value) {
+      myGeo = value ?? 'KW';
       Country country = authBloc.findCountryByIp(myGeo);
       authBloc.setCountry(country);
       _selectedLocation = country;
@@ -136,9 +135,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 );
               } else {
                 check = false;
-                return Center(
-                    child: Container(
-                        width: 15.w, height: 15.w, child: Progress()));
+                return Center(child: Container(width: 15.w, height: 15.w, child: Progress()));
               }
             }),
       )),
@@ -207,12 +204,9 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                         hintText: intl.mobile,
                         // errorText: _validate ? intl.fillAllField : null,
                         hintStyle: typography.bodySmall!.copyWith(
-                            color: AppColors.primary,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500),
+                            color: AppColors.primary, fontSize: 14.sp, fontWeight: FontWeight.w500),
                         suffixIcon: selectCountry(),
-                        suffixIconConstraints:
-                            BoxConstraints(maxWidth: 30.w, minWidth: 15.w)),
+                        suffixIconConstraints: BoxConstraints(maxWidth: 30.w, minWidth: 15.w)),
                     onSubmitted: (String) {
                       click(_selectedLocation!);
                     },
@@ -239,17 +233,11 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                   if (phoneNumber.isNotEmpty) {
                     if (phoneNumber.startsWith('0')) {
                       while (phoneNumber.startsWith('0')) {
-                        phoneNumber =
-                            phoneNumber.replaceFirst(RegExp(r'0'), '');
+                        phoneNumber = phoneNumber.replaceFirst(RegExp(r'0'), '');
                       }
-                    } else if ((snapshot.requireData.code!.length +
-                                phoneNumber.length) <
-                            7 ||
-                        (snapshot.requireData.code!.length +
-                                phoneNumber.length) >
-                            15) {
-                      Utils.getSnackbarMessage(
-                          context, intl.errorMobileCondition);
+                    } else if ((snapshot.requireData.code!.length + phoneNumber.length) < 7 ||
+                        (snapshot.requireData.code!.length + phoneNumber.length) > 15) {
+                      Utils.getSnackbarMessage(context, intl.errorMobileCondition);
                       return;
                     }
                     number = snapshot.requireData.code! + phoneNumber;
@@ -270,8 +258,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
       height: 7.h,
       margin: const EdgeInsets.only(left: 8),
       decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10), topLeft: Radius.circular(10)),
+          borderRadius:
+              BorderRadius.only(bottomLeft: Radius.circular(10), topLeft: Radius.circular(10)),
           color: Color.fromRGBO(255, 255, 255, 0.1),
           border: Border(right: BorderSide.none)),
       child: StreamBuilder(
@@ -299,8 +287,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                         flex: 0,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50.0),
-                          child: ImageUtils.fromLocal(
-                              _selectedLocation?.flag ?? '',
+                          child: ImageUtils.fromLocal(_selectedLocation?.flag ?? '',
                               width: 6.w,
                               package: picker.countryCodePackageName,
                               height: 6.w,
@@ -310,8 +297,7 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                       Expanded(child: Space(width: 1.w)),
                       const Expanded(
                         flex: 0,
-                        child: Icon(Icons.keyboard_arrow_down,
-                            color: Colors.grey, size: 20),
+                        child: Icon(Icons.keyboard_arrow_down, color: Colors.grey, size: 20),
                       ),
                     ],
                   )),
@@ -348,14 +334,10 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                 // errorText: _validate ? intl.fillAllField : null,
                 label: Text(intl.search),
                 labelStyle: TextStyle(
-                    color: AppColors.penColor,
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w400),
+                    color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
               ),
               style: TextStyle(
-                  color: AppColors.penColor,
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w400),
+                  color: AppColors.penColor, fontSize: 10.sp, fontWeight: FontWeight.w400),
               onChanged: authBloc.searchCountry,
             ),
             Space(height: 2.h),
@@ -370,10 +352,8 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                           // shrinkWrap: true,
                           itemBuilder: (_, index) => GestureDetector(
                             onTap: () {
-                              authBloc
-                                  .setCountry(filterListCountry.data![index]);
-                              _selectedLocation =
-                                  filterListCountry.data![index];
+                              authBloc.setCountry(filterListCountry.data![index]);
+                              _selectedLocation = filterListCountry.data![index];
                               Navigator.of(context).pop();
                             },
                             child: Container(
@@ -384,16 +364,12 @@ class _AuthScreenState extends ResourcefulState<AuthScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (filterListCountry.data![index].flag !=
-                                        null)
+                                    if (filterListCountry.data![index].flag != null)
                                       ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(2.0),
+                                        borderRadius: BorderRadius.circular(2.0),
                                         child: ImageUtils.fromLocal(
-                                            filterListCountry
-                                                .data![index].flag!,
-                                            package:
-                                                picker.countryCodePackageName,
+                                            filterListCountry.data![index].flag!,
+                                            package: picker.countryCodePackageName,
                                             width: 7.w,
                                             fit: BoxFit.fill,
                                             height: 5.w),
