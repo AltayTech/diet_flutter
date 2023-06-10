@@ -99,6 +99,8 @@ dependencies:
   dart_ipify: ^1.1.1
   alarm: ^1.0.5
   http: ^0.13.6
+  pedometer: ^3.0.0
+  syncfusion_flutter_gauges: ^20.1.55
 
 dependency_overrides:
   provider: ^6.0.5
@@ -139,6 +141,7 @@ flutter:
     - assets/images/foodlist/advice/
     - assets/images/foodlist/advice/
     - assets/images/shop/
+    - assets/images/pedometer/
     - assets/notif_sound/
   fonts:
     - family: Cairo-regular

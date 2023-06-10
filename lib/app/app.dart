@@ -22,6 +22,7 @@ import 'package:behandam/screens/payment/debit_card.dart';
 import 'package:behandam/screens/payment/fail.dart';
 import 'package:behandam/screens/payment/success.dart';
 import 'package:behandam/screens/payment/wait.dart';
+import 'package:behandam/screens/pedometer/pedometer.dart';
 import 'package:behandam/screens/profile/edit_profile.dart';
 import 'package:behandam/screens/profile/inbox_list.dart';
 import 'package:behandam/screens/profile/profile.dart';
@@ -259,7 +260,7 @@ class MyObs extends VxObserver {
 
 final navigator = VxNavigator(
   routes: {
-    Routes.splash: (_, __) => MaterialPage(child: routePage(SplashScreen())),
+    Routes.splash: (_, __) => MaterialPage(child: routePage(PedometerPage())),
     Routes.editProfile: (_, __) => MaterialPage(child: routePage(EditProfileScreen())),
     Routes.profile: (_, __) => MaterialPage(child: routePage(ProfileScreen())),
     Routes.auth: (_, __) => MaterialPage(child: routePage(AuthScreen())),
@@ -367,6 +368,7 @@ final navigator = VxNavigator(
     Routes.shopBill: (_, param) => MaterialPage(child: routePage(ShopBillPage()), arguments: param),
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
+    Routes.pedometer: (_, __) => MaterialPage(child: routePage(const PedometerPage())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),

@@ -886,7 +886,7 @@ packages:
     source: hosted
     version: "0.15.3"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
@@ -1260,6 +1260,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
+  pedometer:
+    dependency: "direct main"
+    description:
+      name: pedometer
+      sha256: "16d7a3df91b9ad72304cf47924dfe9c1abd50304fbf23245edbc89d8429957c1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   permission_handler:
     dependency: "direct main"
     description:
@@ -1678,6 +1686,14 @@ packages:
     description:
       name: syncfusion_flutter_core
       sha256: "3979f0b1c5a97422cadae52d476c21fa3e0fb671ef51de6cae1d646d8b99fe1f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "20.4.54"
+  syncfusion_flutter_gauges:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_gauges
+      sha256: "6b7a901a33345511080d74770dfcdc37d30a15667c73819932786b95b3ec2dfb"
       url: "https://pub.dev"
     source: hosted
     version: "20.4.54"
