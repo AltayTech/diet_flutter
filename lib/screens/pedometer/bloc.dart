@@ -2,16 +2,8 @@ import 'dart:async';
 
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
-import 'package:behandam/data/entity/fast/fast.dart';
-import 'package:behandam/data/memory_cache.dart';
-import 'package:behandam/screens/food_list/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shamsi_date/shamsi_date.dart';
-import 'package:behandam/extensions/bool.dart';
-import 'package:behandam/extensions/object.dart';
-import 'package:behandam/extensions/string.dart';
 
 enum StepCountStatus {
   WALKING('walking'),
