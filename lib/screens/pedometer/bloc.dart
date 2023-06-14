@@ -27,7 +27,7 @@ enum StepCountStatus {
 
 class PedometerBloc {
   PedometerBloc() {
-    initPlatformState();
+
   }
 
   final _repository = Repository.getInstance();
@@ -72,10 +72,12 @@ class PedometerBloc {
 
   void onPedestrianStatusError(error) {
     /// Handle the error
+    print('pedestrian_error');
   }
 
   void onStepCountError(error) {
     /// Handle the error
+    print('step_count_error');
   }
 
   Future<void> initPlatformState() async {

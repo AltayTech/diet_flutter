@@ -1,14 +1,11 @@
 import 'package:behandam/base/resourceful_state.dart';
-import 'package:behandam/data/entity/advice/advice.dart';
-import 'package:behandam/screens/advice/bloc.dart';
 import 'package:behandam/screens/pedometer/bloc.dart';
-import 'package:behandam/screens/widget/progress.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
-import 'package:behandam/themes/shapes.dart';
 import 'package:behandam/utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class PedometerPage extends StatefulWidget {
@@ -26,6 +23,8 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
   void initState() {
     super.initState();
     bloc = PedometerBloc();
+
+    checkPermission();
   }
 
   @override
@@ -52,7 +51,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                   children: [pedometerRadialGauge(snapshot.requireData, bloc.getLastStepStatus)],
                 );
               }
-              return pedometerRadialGauge(300, StepCountStatus.STOPPED);
+              return pedometerRadialGauge(0, StepCountStatus.STOPPED);
             },
           ),
         ),
@@ -86,6 +85,18 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
             positionFactor: 0.5)
       ])
     ]);
+  }
+
+  Future<void> checkPermission() async {
+    if (!await Permission.activityRecognition.isGranted) {
+      Permission.activityRecognition.request().then((value) {
+        if (value == PermissionStatus.granted) {
+          bloc.initPlatformState();
+        }
+      });
+    } else {
+      bloc.initPlatformState();
+    }
   }
 
   @override
