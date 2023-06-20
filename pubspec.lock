@@ -1263,10 +1263,11 @@ packages:
   pedometer:
     dependency: "direct main"
     description:
-      path: pedometer
-      relative: true
-    source: path
-    version: "3.0.0"
+      name: pedometer
+      sha256: "259f968bbe193ea28cf69d0ac1ff28198dfc76c8a34ccc2b72a4cb058e2a0086"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   permission_handler:
     dependency: "direct main"
     description:

@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:behandam/base/resourceful_state.dart';
 import 'package:behandam/screens/pedometer/bloc.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -48,10 +51,10 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
               if (snapshot.hasData) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [pedometerRadialGauge(snapshot.requireData, bloc.getLastStepStatus)],
+                  children: [pedometer(snapshot.requireData, bloc.getLastStepStatus)],
                 );
               }
-              return pedometerRadialGauge(0, StepCountStatus.STOPPED);
+              return pedometer(0, StepCountStatus.STOPPED);
             },
           ),
         ),
@@ -59,9 +62,13 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
     );
   }
 
+  Widget pedometer(int stepCount, StepCountStatus status) {
+    return Column(children: [pedometerRadialGauge(stepCount, status), pedometerInfo()]);
+  }
+
   Widget pedometerRadialGauge(int stepCount, StepCountStatus status) {
     return SfRadialGauge(axes: <RadialAxis>[
-      RadialAxis(minimum: 0, maximum: 5000, pointers: <GaugePointer>[
+      RadialAxis(minimum: 0, maximum: 6000, pointers: <GaugePointer>[
         MarkerPointer(value: stepCount.toDouble())
       ], annotations: <GaugeAnnotation>[
         GaugeAnnotation(
@@ -73,7 +80,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                     style: typography.bodyLarge!
                         .copyWith(fontSize: 28.sp, fontWeight: FontWeight.bold)),
                 Space(height: 2.h),
-                Text('5000',
+                Text('6000',
                     style: typography.bodyLarge!.copyWith(
                         fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppColors.primary)),
                 Text(intl.goal,
@@ -87,16 +94,82 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
     ]);
   }
 
+  Widget pedometerInfo() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 48),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Column(
+          children: [
+            ImageUtils.fromLocal('assets/images/pedometer/calorie_burn.svg'),
+            Text(
+              '399',
+              style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'kcal',
+              style: typography.labelSmall,
+            )
+          ],
+        ),
+        Column(
+          children: [
+            ImageUtils.fromLocal('assets/images/pedometer/watch.svg'),
+            Text(
+              '159',
+              style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'min',
+              style: typography.labelSmall,
+            )
+          ],
+        ),
+        Column(children: [
+          ImageUtils.fromLocal('assets/images/pedometer/kilometer.svg'),
+          Text(
+            '6',
+            style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+          ),
+          Text(
+            'km',
+            style: typography.labelSmall,
+          )
+        ]),
+      ]),
+    );
+  }
+
   Future<void> checkPermission() async {
-    if (!await Permission.activityRecognition.isGranted) {
-      Permission.activityRecognition.request().then((value) {
-        if (value == PermissionStatus.granted) {
-          bloc.initPlatformState();
-        }
-      });
+    if (Platform.isAndroid && await getAndroidSdk() >= 29) {
+      if (!await Permission.activityRecognition.isGranted) {
+        Permission.activityRecognition.request().then((value) {
+          if (value == PermissionStatus.granted) {
+            bloc.initPlatformState();
+          }
+        });
+      } else {
+        bloc.initPlatformState();
+      }
     } else {
-      bloc.initPlatformState();
+      if (!await Permission.sensors.isGranted) {
+        Permission.sensors.request().then((value) {
+          if (value == PermissionStatus.granted) {
+            bloc.initPlatformState();
+          }
+        });
+      } else {
+        bloc.initPlatformState();
+      }
     }
+  }
+
+  Future<int> getAndroidSdk() async {
+    if (Platform.isAndroid) {
+      var androidInfo = await DeviceInfoPlugin().androidInfo;
+      var sdkInt = androidInfo.version.sdkInt;
+      return sdkInt;
+    }
+    return 0;
   }
 
   @override
