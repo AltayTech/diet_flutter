@@ -50,11 +50,11 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
           child: StreamBuilder<double>(
             initialData: 0,
             stream: bloc.stepCountBlocStream,
-            builder: (_, snapshot) {
-              if (snapshot.hasData) {
+            builder: (_, step) {
+              if (step.hasData) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [pedometer(snapshot.data!.toInt(), StepCountStatus.WALKING)],
+                  children: [pedometer(step.data!.toInt(), StepCountStatus.WALKING)],
                 );
               } else {
                 return pedometer(0, StepCountStatus.STOPPED);
@@ -141,15 +141,27 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
         ),
         Column(children: [
           ImageUtils.fromLocal('assets/images/pedometer/kilometer.svg'),
-          Text(
-            '6',
-            style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+          StreamBuilder<double>(
+              stream: bloc.kilometerCountBlocStream,
+              initialData: 0,
+              builder: (context, kilometer) {
+                if (kilometer.hasData) {
+                  return Text(
+                    kilometer.data.toString(),
+                    style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                  );
+                }
+                return Text(
+                  '0',
+                  style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                );
+              }
           ),
           Text(
             'km',
             style: typography.labelSmall,
           )
-        ]),
+        ])
       ]),
     );
   }

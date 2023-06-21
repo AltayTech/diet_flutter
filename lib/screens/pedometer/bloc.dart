@@ -19,12 +19,16 @@ enum StepCountStatus {
 }
 
 class PedometerBloc {
-  PedometerBloc();
+  PedometerBloc() {
+    _stepCount.value = 0;
+    _kilometerCount.value = 0;
+  }
 
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _advices = BehaviorSubject<AdviceData>();
   final _stepCount = BehaviorSubject<double>();
+  final _kilometerCount = BehaviorSubject<double>();
   final _pedestrianStatus = BehaviorSubject<StepCountStatus>();
   List<double> _accelData = List.filled(3, 0.0);
   List<double> _gyroData = List.filled(3, 0.0);
@@ -37,6 +41,8 @@ class PedometerBloc {
 
   Stream<double> get stepCountBlocStream => _stepCount.stream;
 
+  Stream<double> get kilometerCountBlocStream => _kilometerCount.stream;
+
   Stream<StepCountStatus> get pedestrianStatusBlocStream => _pedestrianStatus.stream;
 
   StepCountStatus get getLastStepStatus => _pedestrianStatus.value;
@@ -48,13 +54,12 @@ class PedometerBloc {
     );
 
     _accelSubscription = stream.listen((sensorEvent) {
-      if (!_stepCount.hasValue) {
-        _stepCount.value = 0;
-      }
       _accelData = sensorEvent.data;
+
       debugPrint('data 0 => ${sensorEvent.data[0]}');
       debugPrint('data 1 => ${sensorEvent.data[1]}');
       debugPrint('data 2 => ${sensorEvent.data[2]}');
+
       if (sensorEvent.data[0] > 1 &&
           sensorEvent.data[1] > 1 &&
           sensorEvent.data[2] > 1 &&
@@ -62,6 +67,7 @@ class PedometerBloc {
           sensorEvent.data[0] != sensorEvent.data[1] &&
           sensorEvent.data[1] != sensorEvent.data[2]) {
         _stepCount.value = _stepCount.value + 0.15;
+        _kilometerCount.value = _stepCount.value / 3265;
       }
     });
   }
@@ -77,5 +83,6 @@ class PedometerBloc {
     _advices.close();
     _pedestrianStatus.close();
     _stepCount.close();
+    _kilometerCount.close();
   }
 }
