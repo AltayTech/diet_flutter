@@ -28,7 +28,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
     bloc = PedometerBloc();
 
     checkPermission();
-    
+
     bloc.startPedometer();
   }
 
@@ -72,29 +72,40 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
 
   Widget pedometerRadialGauge(int stepCount, StepCountStatus status) {
     return SfRadialGauge(axes: <RadialAxis>[
-      RadialAxis(minimum: 0, maximum: 6000, pointers: <GaugePointer>[
-        MarkerPointer(value: stepCount.toDouble())
-      ], annotations: <GaugeAnnotation>[
-        GaugeAnnotation(
-            widget: Column(
-              children: [
-                ImageUtils.fromLocal('assets/images/pedometer/shoe.svg'),
-                Space(height: 2.h),
-                Text('$stepCount',
-                    style: typography.bodyLarge!
-                        .copyWith(fontSize: 28.sp, fontWeight: FontWeight.bold)),
-                Space(height: 2.h),
-                Text('6000',
-                    style: typography.bodyLarge!.copyWith(
-                        fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppColors.primary)),
-                Text(intl.goal,
-                    style: typography.bodyLarge!
-                        .copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold))
-              ],
-            ),
-            angle: 90,
-            positionFactor: 0.5)
-      ])
+      RadialAxis(
+          minimum: 0,
+          maximum: 6000,
+          showLabels: true,
+          showLastLabel: true,
+          showFirstLabel: true,
+          showTicks: false,
+          showAxisLine: true,
+          pointers: <GaugePointer>[
+            MarkerPointer(value: stepCount.toDouble())
+          ],
+          annotations: <GaugeAnnotation>[
+            GaugeAnnotation(
+                widget: Column(
+                  children: [
+                    ImageUtils.fromLocal('assets/images/pedometer/shoe.svg'),
+                    Space(height: 2.h),
+                    Text('$stepCount',
+                        style: typography.bodyLarge!
+                            .copyWith(fontSize: 28.sp, fontWeight: FontWeight.bold)),
+                    Space(height: 2.h),
+                    Text('6000',
+                        style: typography.bodyLarge!.copyWith(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary)),
+                    Text(intl.goal,
+                        style: typography.bodyLarge!
+                            .copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold))
+                  ],
+                ),
+                angle: 90,
+                positionFactor: 0.5)
+          ])
     ]);
   }
 
