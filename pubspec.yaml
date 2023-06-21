@@ -99,8 +99,8 @@ dependencies:
   dart_ipify: ^1.1.1
   alarm: ^1.0.5
   http: ^0.13.6
-  pedometer: ^4.0.0
   syncfusion_flutter_gauges: ^20.1.55
+  flutter_sensors: ^1.0.1
 
 dependency_overrides:
   provider: ^6.0.5

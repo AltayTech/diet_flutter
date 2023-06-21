@@ -28,6 +28,8 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
     bloc = PedometerBloc();
 
     checkPermission();
+    
+    bloc.startPedometer();
   }
 
   @override
@@ -45,16 +47,18 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-          child: StreamBuilder<int>(
+          child: StreamBuilder<double>(
+            initialData: 0,
             stream: bloc.stepCountBlocStream,
             builder: (_, snapshot) {
               if (snapshot.hasData) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [pedometer(snapshot.requireData, bloc.getLastStepStatus)],
+                  children: [pedometer(snapshot.data!.toInt(), StepCountStatus.WALKING)],
                 );
+              } else {
+                return pedometer(0, StepCountStatus.STOPPED);
               }
-              return pedometer(0, StepCountStatus.STOPPED);
             },
           ),
         ),
@@ -144,21 +148,21 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
       if (!await Permission.activityRecognition.isGranted) {
         Permission.activityRecognition.request().then((value) {
           if (value == PermissionStatus.granted) {
-            bloc.initPlatformState();
+            bloc.startPedometer();
           }
         });
       } else {
-        bloc.initPlatformState();
+        bloc.startPedometer();
       }
     } else {
       if (!await Permission.sensors.isGranted) {
         Permission.sensors.request().then((value) {
           if (value == PermissionStatus.granted) {
-            bloc.initPlatformState();
+            bloc.startPedometer();
           }
         });
       } else {
-        bloc.initPlatformState();
+        bloc.startPedometer();
       }
     }
   }

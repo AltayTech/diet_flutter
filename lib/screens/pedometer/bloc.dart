@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
-import 'package:pedometer/pedometer.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_sensors/flutter_sensors.dart';
 import 'package:rxdart/rxdart.dart';
 
 enum StepCountStatus {
@@ -18,68 +19,57 @@ enum StepCountStatus {
 }
 
 class PedometerBloc {
-  PedometerBloc() {
-
-  }
+  PedometerBloc();
 
   final _repository = Repository.getInstance();
   final _loadingContent = BehaviorSubject<bool>();
   final _advices = BehaviorSubject<AdviceData>();
-  final _stepCount = BehaviorSubject<int>();
+  final _stepCount = BehaviorSubject<double>();
   final _pedestrianStatus = BehaviorSubject<StepCountStatus>();
+  List<double> _accelData = List.filled(3, 0.0);
+  List<double> _gyroData = List.filled(3, 0.0);
+  StreamSubscription? _accelSubscription;
+  StreamSubscription? _gyroSubscription;
 
   Stream<bool> get loadingContent => _loadingContent.stream;
 
   Stream<AdviceData> get advices => _advices.stream;
 
-  Stream<int> get stepCountBlocStream => _stepCount.stream;
+  Stream<double> get stepCountBlocStream => _stepCount.stream;
 
   Stream<StepCountStatus> get pedestrianStatusBlocStream => _pedestrianStatus.stream;
 
-  Stream<StepCount>? stepCountStream;
-
-  Stream<PedestrianStatus>? pedestrianStatusStream;
-
   StepCountStatus get getLastStepStatus => _pedestrianStatus.value;
 
-  void onStepCount(StepCount event) {
-    /// Handle step count changed
-    int steps = event.steps;
-    DateTime timeStamp = event.timeStamp;
+  Future<void> startPedometer() async {
+    final stream = await SensorManager().sensorUpdates(
+      sensorId: Sensors.ACCELEROMETER,
+      interval: Sensors.SENSOR_DELAY_NORMAL,
+    );
 
-    _stepCount.value = steps;
+    _accelSubscription = stream.listen((sensorEvent) {
+      if (!_stepCount.hasValue) {
+        _stepCount.value = 0;
+      }
+      _accelData = sensorEvent.data;
+      debugPrint('data 0 => ${sensorEvent.data[0]}');
+      debugPrint('data 1 => ${sensorEvent.data[1]}');
+      debugPrint('data 2 => ${sensorEvent.data[2]}');
+      if (sensorEvent.data[0] > 1 &&
+          sensorEvent.data[1] > 1 &&
+          sensorEvent.data[2] > 1 &&
+          sensorEvent.data[2] != 9 &&
+          sensorEvent.data[0] != sensorEvent.data[1] &&
+          sensorEvent.data[1] != sensorEvent.data[2]) {
+        _stepCount.value = _stepCount.value + 0.15;
+      }
+    });
   }
 
-  void onPedestrianStatusChanged(PedestrianStatus event) {
-    /// Handle status changed
-    String status = event.status;
-    DateTime timeStamp = event.timeStamp;
-
-    _pedestrianStatus.value = status == 'walking'
-        ? StepCountStatus.WALKING
-        : status == 'stopped'
-            ? StepCountStatus.STOPPED
-            : StepCountStatus.UNKNOWN;
-  }
-
-  void onPedestrianStatusError(error) {
-    /// Handle the error
-    print('pedestrian_error');
-  }
-
-  void onStepCountError(error) {
-    /// Handle the error
-    print('step_count_error');
-  }
-
-  Future<void> initPlatformState() async {
-    /// Init streams
-    pedestrianStatusStream = await Pedometer.pedestrianStatusStream;
-    stepCountStream = await Pedometer.stepCountStream;
-
-    /// Listen to streams and handle errors
-    stepCountStream!.listen(onStepCount).onError(onStepCountError);
-    pedestrianStatusStream!.listen(onPedestrianStatusChanged).onError(onPedestrianStatusError);
+  void stopPedometer() {
+    if (_accelSubscription == null) return;
+    _accelSubscription?.cancel();
+    _accelSubscription = null;
   }
 
   void dispose() {
