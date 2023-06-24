@@ -22,6 +22,8 @@ class PedometerBloc {
   PedometerBloc() {
     _stepCount.value = 0;
     _kilometerCount.value = 0;
+    _calorieBurnCount.value = 0;
+    _minCount.value = 159;
   }
 
   final _repository = Repository.getInstance();
@@ -29,6 +31,8 @@ class PedometerBloc {
   final _advices = BehaviorSubject<AdviceData>();
   final _stepCount = BehaviorSubject<double>();
   final _kilometerCount = BehaviorSubject<double>();
+  final _calorieBurnCount = BehaviorSubject<double>();
+  final _minCount = BehaviorSubject<int>();
   final _pedestrianStatus = BehaviorSubject<StepCountStatus>();
   List<double> _accelData = List.filled(3, 0.0);
   List<double> _gyroData = List.filled(3, 0.0);
@@ -41,7 +45,11 @@ class PedometerBloc {
 
   Stream<double> get stepCountBlocStream => _stepCount.stream;
 
-  Stream<double> get kilometerCountBlocStream => _kilometerCount.stream;
+  Stream<double> get kilometerCount => _kilometerCount.stream;
+
+  Stream<double> get calorieBurnCount => _calorieBurnCount.stream;
+
+  Stream<int> get minCount => _minCount.stream;
 
   Stream<StepCountStatus> get pedestrianStatusBlocStream => _pedestrianStatus.stream;
 
@@ -68,6 +76,7 @@ class PedometerBloc {
           sensorEvent.data[1] != sensorEvent.data[2]) {
         _stepCount.value = _stepCount.value + 0.15;
         _kilometerCount.value = _stepCount.value / 3265;
+        _calorieBurnCount.value = _kilometerCount.value * 48.33;
       }
     });
   }
@@ -84,5 +93,7 @@ class PedometerBloc {
     _pedestrianStatus.close();
     _stepCount.close();
     _kilometerCount.close();
+    _calorieBurnCount.close();
+    _minCount.close();
   }
 }

@@ -116,9 +116,21 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
         Column(
           children: [
             ImageUtils.fromLocal('assets/images/pedometer/calorie_burn.svg'),
-            Text(
-              '399',
-              style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+            StreamBuilder<double>(
+                stream: bloc.calorieBurnCount,
+                initialData: 0,
+                builder: (context, calorieBurn) {
+                  if (calorieBurn.hasData) {
+                    return Text(
+                      calorieBurn.data.toString(),
+                      style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                    );
+                  }
+                  return Text(
+                    '0',
+                    style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                  );
+                }
             ),
             Text(
               'kcal',
@@ -129,9 +141,21 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
         Column(
           children: [
             ImageUtils.fromLocal('assets/images/pedometer/watch.svg'),
-            Text(
-              '159',
-              style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+            StreamBuilder<int>(
+                stream: bloc.minCount,
+                initialData: 0,
+                builder: (context, min) {
+                  if (min.hasData) {
+                    return Text(
+                      min.data.toString(),
+                      style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                    );
+                  }
+                  return Text(
+                    '0',
+                    style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                  );
+                }
             ),
             Text(
               'min',
@@ -142,7 +166,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
         Column(children: [
           ImageUtils.fromLocal('assets/images/pedometer/kilometer.svg'),
           StreamBuilder<double>(
-              stream: bloc.kilometerCountBlocStream,
+              stream: bloc.kilometerCount,
               initialData: 0,
               builder: (context, kilometer) {
                 if (kilometer.hasData) {
