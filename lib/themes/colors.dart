@@ -29,8 +29,13 @@ class AppColors {
   static late Color labelTab;
   static late Color warning = Colors.orange.shade100;
 
-  static const btnColorsGradient =
-  LinearGradient(colors: [Color(0xff67DAFF), Color(0xff03A9F4)]);
+  static const btnColorsGradient = LinearGradient(colors: [Color(0xff67DAFF), Color(0xff03A9F4)]);
+  static const pedometerChartColorsGradient = LinearGradient(
+      colors: [Color(0xff6C98FF), Color(0xffA86CFF)],
+      begin: FractionalOffset(0.0, 0.0),
+      end: FractionalOffset(0.0, 0.5),
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp);
   static const penColor = Color(0xff666666);
   static const redBar = Color(0xffFF5757);
   static const looseType = Color(0xfff6ded5);
@@ -64,6 +69,8 @@ class AppColors {
   static const chartBorder = Color.fromARGB(255, 255, 87, 87);
   static const pinkPass = Color(0xffFFE2E2);
   static const orange = Color(0xffFDB237);
+  static const primaryWhite = Color(0xffF5F6FA);
+  static const black = Color(0xff525252);
   static var colorPackages = [
     {
       'barColor': Color.fromARGB(255, 249, 203, 202),
@@ -92,7 +99,7 @@ class AppColors {
         arcColor = Color(0xFAEDECEC);
         btnColor = Color(0xff03A9F4);
         labelColor = Color(0xf48e8e8e);
-        backLabelColorFood = Color.fromARGB(19,48,159,140);
+        backLabelColorFood = Color.fromARGB(19, 48, 159, 140);
         labelColorFood = Color(0xff309F8C);
         labelTab = Color(0xffffffff);
         statusTicketClose = Colors.grey[700]!;
@@ -133,7 +140,7 @@ class AppColors {
         background = Color.fromARGB(255, 245, 245, 245);
         colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
         colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
-        backLabelColorFood = Color.fromARGB(19,48,159,140);
+        backLabelColorFood = Color.fromARGB(19, 48, 159, 140);
         labelColorFood = Color(0xff309F8C);
         colorCardGray = Color.fromRGBO(245, 245, 245, 1);
         colorTextApp = Color.fromRGBO(147, 147, 147, 1);
@@ -163,7 +170,7 @@ class AppColors {
         background = Color.fromARGB(255, 245, 245, 245);
         colorTextDepartmentTicket = Color.fromRGBO(210, 210, 210, 1);
         colorSelectDepartmentTicket = Color.fromRGBO(243, 243, 249, 1);
-        backLabelColorFood = Color.fromARGB(19,48,159,140);
+        backLabelColorFood = Color.fromARGB(19, 48, 159, 140);
         labelColorFood = Color(0xff309F8C);
         colorCardGray = Color.fromRGBO(245, 245, 245, 1);
         colorTextApp = Color.fromRGBO(147, 147, 147, 1);

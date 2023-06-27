@@ -75,7 +75,7 @@ class PedometerBloc {
           sensorEvent.data[0] != sensorEvent.data[1] &&
           sensorEvent.data[1] != sensorEvent.data[2]) {
         _stepCount.value = _stepCount.value + 0.15;
-        _kilometerCount.value = _stepCount.value / 3265;
+        _kilometerCount.value = _stepCount.value / 1350;
         _calorieBurnCount.value = _kilometerCount.value * 48.33;
       }
     });

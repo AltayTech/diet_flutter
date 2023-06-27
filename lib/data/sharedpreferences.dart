@@ -82,6 +82,22 @@ abstract class AppSharedPreferences {
     preference.setString(_keyFoodMealsAlarms, foodMeals ?? _nullString);
   }
 
+  static String get pedometer {
+    return preference.getString(_keyPedometer) ?? '';
+  }
+
+  static Future<void> setPedometer(String? pedometer) async {
+    preference.setString(_keyPedometer, pedometer ?? _nullString);
+  }
+
+  static bool get pedometerOn {
+    return preference.getBool(_keyPedometerOn) ?? false;
+  }
+
+  static Future<void> setPedometerOn(bool? pedometerOn) async {
+    preference.setBool(_keyPedometerOn, pedometerOn ?? false);
+  }
+
   static Future<bool> get firstSetFoodMealAlarm async {
     return preference.getBool(_keyFirstSetFoodMealAlarm) ?? false;
   }
@@ -100,4 +116,6 @@ abstract class AppSharedPreferences {
   static const _keyDeeplink = 'deeplink';
   static const _keyFoodMealsAlarms = 'foodMealsAlarms';
   static const _keyFirstSetFoodMealAlarm = 'firstSetFoodMealAlarm';
+  static const _keyPedometer = 'pedometer';
+  static const _keyPedometerOn = 'pedometerOn';
 }

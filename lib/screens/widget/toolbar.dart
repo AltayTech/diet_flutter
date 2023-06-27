@@ -8,13 +8,14 @@ class Toolbar extends AppBar {
   Color? color;
 
   Toolbar({required this.titleBar}) {
-    color = AppColors.primary;
+    color = AppColors.primaryWhite;
     item = Text(
       titleBar,
       textAlign: TextAlign.center,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 13.sp,
+        fontSize: 14.sp,
+        color: AppColors.black
       ),
     );
   }
@@ -28,4 +29,7 @@ class Toolbar extends AppBar {
 
   @override
   bool? get centerTitle => true;
+
+  @override
+  double? get elevation => 0;
 }

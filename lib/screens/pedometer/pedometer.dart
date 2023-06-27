@@ -1,7 +1,11 @@
 import 'dart:io';
 
+import 'package:behandam/app/app.dart';
 import 'package:behandam/base/resourceful_state.dart';
+import 'package:behandam/data/sharedpreferences.dart';
 import 'package:behandam/screens/pedometer/bloc.dart';
+import 'package:behandam/screens/widget/custom_button.dart';
+import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
@@ -9,7 +13,15 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+
+class _ChartData {
+  _ChartData(this.x, this.y);
+
+  final String x;
+  final double y;
+}
 
 class PedometerPage extends StatefulWidget {
   const PedometerPage({Key? key}) : super(key: key);
@@ -21,6 +33,7 @@ class PedometerPage extends StatefulWidget {
 class _PedometerPageState extends ResourcefulState<PedometerPage> {
   late PedometerBloc bloc;
   String? previousName;
+  late List<_ChartData> data;
 
   @override
   void initState() {
@@ -30,6 +43,18 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
     checkPermission();
 
     bloc.startPedometer();
+
+    data = [
+      _ChartData('17', 2500),
+      _ChartData('18', 4000),
+      _ChartData('19', 8000),
+      _ChartData('20', 7000),
+      _ChartData('21', 5500),
+      _ChartData('22', 3000),
+      _ChartData('23', 4500),
+      _ChartData('24', 3400),
+      _ChartData('Today', 6200),
+    ];
   }
 
   @override
@@ -43,7 +68,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
     super.build(context);
 
     return Scaffold(
-      appBar: Toolbar(titleBar: intl.pedometer),
+      appBar: Toolbar(titleBar: intl.appName),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -54,7 +79,24 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
               if (step.hasData) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [pedometer(step.data!.toInt(), StepCountStatus.WALKING)],
+                  children: [
+                    pedometer(step.data!.toInt(), StepCountStatus.WALKING),
+                    SfCartesianChart(
+                        primaryXAxis: CategoryAxis(),
+                        primaryYAxis: NumericAxis(minimum: 1000, maximum: 10000, interval: 1000),
+                        series: <ChartSeries<_ChartData, String>>[
+                          ColumnSeries<_ChartData, String>(
+                            dataSource: data,
+                            borderRadius: BorderRadius.circular(15),
+                            width: 0.5,
+                            spacing: 0.7,
+                            xValueMapper: (_ChartData data, _) => data.x,
+                            yValueMapper: (_ChartData data, _) => data.y,
+                            name: 'Gold',
+                            gradient: AppColors.pedometerChartColorsGradient,
+                          )
+                        ])
+                  ],
                 );
               } else {
                 return pedometer(0, StepCountStatus.STOPPED);
@@ -87,20 +129,26 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
             GaugeAnnotation(
                 widget: Column(
                   children: [
-                    ImageUtils.fromLocal('assets/images/pedometer/shoe.svg'),
+                    AppSharedPreferences.pedometerOn
+                        ? GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                AppSharedPreferences.setPedometerOn(false);
+                              });
+                            },
+                            child: ImageUtils.fromLocal('assets/images/pedometer/shoe.svg'))
+                        : GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                AppSharedPreferences.setPedometerOn(true);
+                              });
+                            },
+                            child: ImageUtils.fromLocal('assets/images/pedometer/shoe_off.svg')),
                     Space(height: 2.h),
                     Text('$stepCount',
                         style: typography.bodyLarge!
                             .copyWith(fontSize: 28.sp, fontWeight: FontWeight.bold)),
                     Space(height: 2.h),
-                    Text('6000',
-                        style: typography.bodyLarge!.copyWith(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary)),
-                    Text(intl.goal,
-                        style: typography.bodyLarge!
-                            .copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold))
                   ],
                 ),
                 angle: 90,
@@ -130,8 +178,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                     '0',
                     style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
                   );
-                }
-            ),
+                }),
             Text(
               'kcal',
               style: typography.labelSmall,
@@ -155,8 +202,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                     '0',
                     style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
                   );
-                }
-            ),
+                }),
             Text(
               'min',
               style: typography.labelSmall,
@@ -179,8 +225,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                   '0',
                   style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
                 );
-              }
-          ),
+              }),
           Text(
             'km',
             style: typography.labelSmall,
