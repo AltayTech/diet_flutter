@@ -71,10 +71,8 @@ class PedometerBloc {
       if (sensorEvent.data[0] > 1 &&
           sensorEvent.data[1] > 1 &&
           sensorEvent.data[2] > 1 &&
-          sensorEvent.data[2] != 9 &&
-          sensorEvent.data[0] != sensorEvent.data[1] &&
-          sensorEvent.data[1] != sensorEvent.data[2]) {
-        _stepCount.value = _stepCount.value + 0.15;
+          sensorEvent.data[2] != 9) {
+        _stepCount.value = _stepCount.value + 0.2;
         _kilometerCount.value = _stepCount.value / 1350;
         _calorieBurnCount.value = _kilometerCount.value * 48.33;
       }

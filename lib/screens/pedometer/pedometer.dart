@@ -170,7 +170,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                 builder: (context, calorieBurn) {
                   if (calorieBurn.hasData) {
                     return Text(
-                      calorieBurn.data.toString(),
+                      calorieBurn.data!.toStringAsFixed(2),
                       style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
                     );
                   }
@@ -217,7 +217,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
               builder: (context, kilometer) {
                 if (kilometer.hasData) {
                   return Text(
-                    kilometer.data.toString(),
+                    kilometer.data!.toStringAsFixed(2),
                     style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
                   );
                 }

@@ -95,7 +95,7 @@ abstract class AppSharedPreferences {
   }
 
   static Future<void> setPedometerOn(bool? pedometerOn) async {
-    preference.setBool(_keyPedometerOn, pedometerOn ?? false);
+    preference.setBool(_keyPedometerOn, pedometerOn ?? true);
   }
 
   static Future<bool> get firstSetFoodMealAlarm async {
