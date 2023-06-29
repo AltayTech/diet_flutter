@@ -40,9 +40,13 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
     super.initState();
     bloc = PedometerBloc();
 
-    checkPermission();
+    if (AppSharedPreferences.pedometerOn) {
+      checkPermission();
+    }
 
-    bloc.startPedometer();
+    bloc.pedometerOn.listen((event) {
+
+    });
 
     data = [
       _ChartData('17', 2500),
@@ -83,7 +87,8 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                     pedometer(step.data!.toInt(), StepCountStatus.WALKING),
                     SfCartesianChart(
                         primaryXAxis: CategoryAxis(),
-                        primaryYAxis: NumericAxis(minimum: 1000, maximum: 10000, interval: 1000),
+                        primaryYAxis: NumericAxis(
+                            minimum: 1000, maximum: 10000, interval: 1000),
                         series: <ChartSeries<_ChartData, String>>[
                           ColumnSeries<_ChartData, String>(
                             dataSource: data,
@@ -109,51 +114,62 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
   }
 
   Widget pedometer(int stepCount, StepCountStatus status) {
-    return Column(children: [pedometerRadialGauge(stepCount, status), pedometerInfo()]);
+    return Column(
+        children: [pedometerRadialGauge(stepCount, status), pedometerInfo()]);
   }
 
   Widget pedometerRadialGauge(int stepCount, StepCountStatus status) {
-    return SfRadialGauge(axes: <RadialAxis>[
-      RadialAxis(
-          minimum: 0,
-          maximum: 6000,
-          showLabels: true,
-          showLastLabel: true,
-          showFirstLabel: true,
-          showTicks: false,
-          showAxisLine: true,
-          pointers: <GaugePointer>[
-            MarkerPointer(value: stepCount.toDouble())
-          ],
-          annotations: <GaugeAnnotation>[
-            GaugeAnnotation(
-                widget: Column(
-                  children: [
-                    AppSharedPreferences.pedometerOn
-                        ? GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                AppSharedPreferences.setPedometerOn(false);
-                              });
-                            },
-                            child: ImageUtils.fromLocal('assets/images/pedometer/shoe.svg'))
-                        : GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                AppSharedPreferences.setPedometerOn(true);
-                              });
-                            },
-                            child: ImageUtils.fromLocal('assets/images/pedometer/shoe_off.svg')),
-                    Space(height: 2.h),
-                    Text('$stepCount',
-                        style: typography.bodyLarge!
-                            .copyWith(fontSize: 28.sp, fontWeight: FontWeight.bold)),
-                    Space(height: 2.h),
-                  ],
-                ),
-                angle: 90,
-                positionFactor: 0.5)
-          ])
+    return Stack(children: [
+      SfRadialGauge(axes: <RadialAxis>[
+        RadialAxis(
+            minimum: 0,
+            maximum: 6000,
+            showLabels: true,
+            showLastLabel: true,
+            showFirstLabel: true,
+            showTicks: false,
+            showAxisLine: true,
+            pointers: <GaugePointer>[
+              MarkerPointer(value: stepCount.toDouble())
+            ],
+            annotations: <GaugeAnnotation>[
+              GaugeAnnotation(
+                  widget: Column(
+                    children: [
+                      Space(height: 8.h),
+                      Text('$stepCount',
+                          style: typography.bodyLarge!.copyWith(
+                              fontSize: 28.sp, fontWeight: FontWeight.bold)),
+                      Space(height: 2.h),
+                    ],
+                  ),
+                  angle: 90,
+                  positionFactor: 0.5)
+            ])
+      ]),
+      Positioned(
+        left: 0,
+        right: 0,
+        top: 80,
+        child: StreamBuilder<bool>(
+          stream: bloc.pedometerOn,
+          builder: (context, pedometerOn) {
+            return GestureDetector(
+                onTap: () {
+                  if (pedometerOn.data!) {
+                    checkPermission();
+                  } else {
+                    bloc.stopPedometer();
+                  }
+
+                  bloc.setPedometerOn(!pedometerOn.data!);
+                },
+                child: pedometerOn.data!
+                    ? ImageUtils.fromLocal('assets/images/pedometer/shoe.svg')
+                    : ImageUtils.fromLocal('assets/images/pedometer/shoe_off.svg'));
+          }
+        ),
+      )
     ]);
   }
 
@@ -171,12 +187,14 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                   if (calorieBurn.hasData) {
                     return Text(
                       calorieBurn.data!.toStringAsFixed(2),
-                      style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                      style: typography.bodyLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
                     );
                   }
                   return Text(
                     '0',
-                    style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                    style: typography.bodyLarge!
+                        .copyWith(fontWeight: FontWeight.bold),
                   );
                 }),
             Text(
@@ -195,12 +213,14 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                   if (min.hasData) {
                     return Text(
                       min.data.toString(),
-                      style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                      style: typography.bodyLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
                     );
                   }
                   return Text(
                     '0',
-                    style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                    style: typography.bodyLarge!
+                        .copyWith(fontWeight: FontWeight.bold),
                   );
                 }),
             Text(
@@ -218,12 +238,14 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                 if (kilometer.hasData) {
                   return Text(
                     kilometer.data!.toStringAsFixed(2),
-                    style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                    style: typography.bodyLarge!
+                        .copyWith(fontWeight: FontWeight.bold),
                   );
                 }
                 return Text(
                   '0',
-                  style: typography.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                  style: typography.bodyLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
                 );
               }),
           Text(

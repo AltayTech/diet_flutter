@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
+import 'package:behandam/data/sharedpreferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sensors/flutter_sensors.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,6 +25,7 @@ class PedometerBloc {
     _kilometerCount.value = 0;
     _calorieBurnCount.value = 0;
     _minCount.value = 159;
+    _pedometerOn.value = AppSharedPreferences.pedometerOn;
   }
 
   final _repository = Repository.getInstance();
@@ -33,6 +35,7 @@ class PedometerBloc {
   final _kilometerCount = BehaviorSubject<double>();
   final _calorieBurnCount = BehaviorSubject<double>();
   final _minCount = BehaviorSubject<int>();
+  final _pedometerOn = BehaviorSubject<bool>();
   final _pedestrianStatus = BehaviorSubject<StepCountStatus>();
   List<double> _accelData = List.filled(3, 0.0);
   List<double> _gyroData = List.filled(3, 0.0);
@@ -51,32 +54,57 @@ class PedometerBloc {
 
   Stream<int> get minCount => _minCount.stream;
 
+  Stream<bool> get pedometerOn => _pedometerOn.stream;
+
   Stream<StepCountStatus> get pedestrianStatusBlocStream => _pedestrianStatus.stream;
 
   StepCountStatus get getLastStepStatus => _pedestrianStatus.value;
 
+  void setPedometerOn(bool turnOn) {
+    AppSharedPreferences.setPedometerOn(turnOn);
+    _pedometerOn.value = turnOn;
+  }
+
   Future<void> startPedometer() async {
-    final stream = await SensorManager().sensorUpdates(
-      sensorId: Sensors.ACCELEROMETER,
-      interval: Sensors.SENSOR_DELAY_NORMAL,
-    );
+    if (_pedometerOn.value) {
+      final stream = await SensorManager().sensorUpdates(
+        sensorId: Sensors.ACCELEROMETER,
+        interval: Sensors.SENSOR_DELAY_NORMAL,
+      );
 
-    _accelSubscription = stream.listen((sensorEvent) {
-      _accelData = sensorEvent.data;
+      _accelSubscription = stream.listen((sensorEvent) {
+        _accelData = sensorEvent.data;
 
-      debugPrint('data 0 => ${sensorEvent.data[0]}');
-      debugPrint('data 1 => ${sensorEvent.data[1]}');
-      debugPrint('data 2 => ${sensorEvent.data[2]}');
+        debugPrint('sensor data 0 => ${sensorEvent.data[0]}');
+        debugPrint('sensor data 1 => ${sensorEvent.data[1]}');
+        debugPrint('sensor data 2 => ${sensorEvent.data[2]}');
 
-      if (sensorEvent.data[0] > 1 &&
-          sensorEvent.data[1] > 1 &&
-          sensorEvent.data[2] > 1 &&
-          sensorEvent.data[2] != 9) {
-        _stepCount.value = _stepCount.value + 0.2;
-        _kilometerCount.value = _stepCount.value / 1350;
-        _calorieBurnCount.value = _kilometerCount.value * 48.33;
-      }
-    });
+        if (sensorEvent.data[0] > 1 &&
+            sensorEvent.data[1] > 1 &&
+            sensorEvent.data[2] != sensorEvent.data[0] &&
+            sensorEvent.data[2] != sensorEvent.data[1] &&
+            sensorEvent.data[2] > sensorEvent.data[0] &&
+            sensorEvent.data[2] > sensorEvent.data[1] &&
+            sensorEvent.data[2] != 9) {
+          increaseData();
+        } else if (sensorEvent.data[0] < 9 &&
+            sensorEvent.data[1] < 0 &&
+            sensorEvent.data[2] < 9) {
+          increaseData();
+        } else if (sensorEvent.data[0] < 0 &&
+            sensorEvent.data[1] < 0 &&
+            sensorEvent.data[2] < 9) {
+          increaseData();
+        }
+      });
+      _accelSubscription!.resume();
+    }
+  }
+
+  void increaseData() {
+    _stepCount.value = _stepCount.value + 0.5;
+    _kilometerCount.value = _stepCount.value / 1350;
+    _calorieBurnCount.value = _kilometerCount.value * 48.33;
   }
 
   void stopPedometer() {
@@ -93,5 +121,6 @@ class PedometerBloc {
     _kilometerCount.close();
     _calorieBurnCount.close();
     _minCount.close();
+    _pedometerOn.close();
   }
 }

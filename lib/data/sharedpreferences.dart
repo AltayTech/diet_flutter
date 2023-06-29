@@ -91,10 +91,10 @@ abstract class AppSharedPreferences {
   }
 
   static bool get pedometerOn {
-    return preference.getBool(_keyPedometerOn) ?? false;
+    return preference.getBool(_keyPedometerOn) ?? true;
   }
 
-  static Future<void> setPedometerOn(bool? pedometerOn) async {
+  static void setPedometerOn(bool? pedometerOn) {
     preference.setBool(_keyPedometerOn, pedometerOn ?? true);
   }
 
