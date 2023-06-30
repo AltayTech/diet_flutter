@@ -45,7 +45,11 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
     }
 
     bloc.pedometerOn.listen((event) {
-
+      if (event) {
+        checkPermission();
+      } else {
+        bloc.stopPedometer();
+      }
     });
 
     data = [
@@ -153,18 +157,13 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
         top: 80,
         child: StreamBuilder<bool>(
           stream: bloc.pedometerOn,
+          initialData: AppSharedPreferences.pedometerOn,
           builder: (context, pedometerOn) {
             return GestureDetector(
                 onTap: () {
-                  if (pedometerOn.data!) {
-                    checkPermission();
-                  } else {
-                    bloc.stopPedometer();
-                  }
-
-                  bloc.setPedometerOn(!pedometerOn.data!);
+                  bloc.setPedometerOn(!pedometerOn.requireData);
                 },
-                child: pedometerOn.data!
+                child: pedometerOn.requireData
                     ? ImageUtils.fromLocal('assets/images/pedometer/shoe.svg')
                     : ImageUtils.fromLocal('assets/images/pedometer/shoe_off.svg'));
           }

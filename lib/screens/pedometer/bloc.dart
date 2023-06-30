@@ -97,7 +97,6 @@ class PedometerBloc {
           increaseData();
         }
       });
-      _accelSubscription!.resume();
     }
   }
 
