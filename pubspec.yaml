@@ -97,10 +97,12 @@ dependencies:
   need_resume: ^1.0.6
   public_ip: ^0.1.0
   dart_ipify: ^1.1.1
-  alarm: ^1.0.5
+  alarm: ^1.1.5
   http: ^0.13.6
   syncfusion_flutter_gauges: ^20.1.55
   flutter_sensors: ^1.0.1
+  flutter_background_service: ^3.0.1
+  flutter_local_notifications: ^14.1.1
 
 dependency_overrides:
   provider: ^6.0.5

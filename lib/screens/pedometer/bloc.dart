@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:behandam/base/repository.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/sharedpreferences.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_sensors/flutter_sensors.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -56,7 +59,8 @@ class PedometerBloc {
 
   Stream<bool> get pedometerOn => _pedometerOn.stream;
 
-  Stream<StepCountStatus> get pedestrianStatusBlocStream => _pedestrianStatus.stream;
+  Stream<StepCountStatus> get pedestrianStatusBlocStream =>
+      _pedestrianStatus.stream;
 
   StepCountStatus get getLastStepStatus => _pedestrianStatus.value;
 
@@ -97,6 +101,8 @@ class PedometerBloc {
           increaseData();
         }
       });
+
+      await initializeService();
     }
   }
 
@@ -110,6 +116,130 @@ class PedometerBloc {
     if (_accelSubscription == null) return;
     _accelSubscription?.cancel();
     _accelSubscription = null;
+  }
+
+  Future<void> initializeService() async {
+    // this will be used as notification channel id
+    const notificationChannelId = 'my_foreground';
+
+    // this will be used for notification id, So you can update your custom notification with this id.
+    var notificationId = 888;
+
+    final service = FlutterBackgroundService();
+
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      notificationChannelId, // id
+      'DrFit Pedometer', // title
+      description:
+          'This channel is used for important notifications.', // description
+      importance: Importance.max, // importance must be at low or higher level
+    );
+
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    await service.configure(
+      androidConfiguration: AndroidConfiguration(
+        // this will be executed when app is in foreground or background in separated isolate
+        onStart: onStart,
+        // auto start service
+        autoStart: true,
+        isForegroundMode: true,
+        notificationChannelId: notificationChannelId,
+        // this must match with notification channel you created above.
+        initialNotificationTitle: 'AWESOME SERVICE',
+        initialNotificationContent: 'Initializing',
+        foregroundServiceNotificationId: notificationId,
+      ),
+      iosConfiguration: IosConfiguration(
+        // auto start service
+        autoStart: true,
+
+        // this will be executed when app is in foreground in separated isolate
+        onForeground: onStart,
+
+        // you have to enable background fetch capability on xcode project
+        onBackground: (service) {
+          return true;
+        },
+      ),
+    );
+
+    service.startService();
+  }
+
+  @pragma('vm:entry-point')
+  void onStart(ServiceInstance service) async {
+    // Only available for flutter 3.0.0 and later
+    DartPluginRegistrant.ensureInitialized();
+
+    // For flutter prior to version 3.0.0
+    // We have to register the plugin manually
+
+    await AppSharedPreferences.initialize();
+    //await preferences.setString("hello", "world");
+
+    /// OPTIONAL when use custom notification
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+    if (service is AndroidServiceInstance) {
+      service.on('setAsForeground').listen((event) {
+        service.setAsForegroundService();
+      });
+
+      service.on('setAsBackground').listen((event) {
+        service.setAsBackgroundService();
+      });
+    }
+
+    service.on('stopService').listen((event) {
+      service.stopSelf();
+    });
+
+    // bring to foreground
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
+      if (service is AndroidServiceInstance) {
+        if (await service.isForegroundService()) {
+          /// OPTIONAL for use custom notification
+          /// the notification id must be equals with AndroidConfiguration when you call configure() method.
+          flutterLocalNotificationsPlugin.show(
+            888,
+            'COOL SERVICE',
+            'Awesome ${DateTime.now()}',
+            const NotificationDetails(
+              android: AndroidNotificationDetails(
+                'my_foreground',
+                'MY FOREGROUND SERVICE',
+                icon: 'ic_bg_service_small',
+                ongoing: true,
+              ),
+            ),
+          );
+
+          // if you don't using custom notification, uncomment this
+          service.setForegroundNotificationInfo(
+            title: "My App Service",
+            content: "Updated at ${DateTime.now()}",
+          );
+        }
+      }
+
+      /// you can see this log in logcat
+      print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
+
+      service.invoke(
+        'update',
+        {
+          "current_date": DateTime.now().toIso8601String(),
+        },
+      );
+    });
   }
 
   void dispose() {
