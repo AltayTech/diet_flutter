@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:behandam/base/repository.dart';
+import 'package:behandam/const_&_model/pedometer.dart';
 import 'package:behandam/data/entity/advice/advice.dart';
 import 'package:behandam/data/sharedpreferences.dart';
+import 'package:behandam/utils/pedometer_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
@@ -25,11 +27,17 @@ enum StepCountStatus {
 
 class PedometerBloc {
   PedometerBloc() {
-    _stepCount.value = 0;
     _kilometerCount.value = 0;
     _calorieBurnCount.value = 0;
     _minCount.value = 159;
     _pedometerOn.value = AppSharedPreferences.pedometerOn;
+
+    Pedometer? pedometer = PedometerManager.getTodayStep();
+    double count = 0;
+    if (pedometer != null) {
+      count = pedometer.count ?? 0;
+      _stepCount.value = count.toDouble();
+    }
   }
 
   final _repository = Repository.getInstance();
@@ -47,6 +55,7 @@ class PedometerBloc {
   StreamSubscription? _gyroSubscription;
   static const notificationChannelId = 'pedometer_foreground';
   static const notificationId = 888;
+  static const stepIncrease = 0.5;
 
   Stream<bool> get loadingContent => _loadingContent.stream;
 
@@ -74,6 +83,13 @@ class PedometerBloc {
 
   Future<void> startPedometer() async {
     if (_pedometerOn.value) {
+      Pedometer? pedometer = PedometerManager.getTodayStep();
+      double count = 0;
+      if (pedometer != null) {
+        count = pedometer.count ?? 0;
+        _stepCount.value = count.toDouble();
+      }
+
       final stream = await SensorManager().sensorUpdates(
         sensorId: Sensors.ACCELEROMETER,
         interval: Sensors.SENSOR_DELAY_NORMAL,
@@ -110,7 +126,7 @@ class PedometerBloc {
   }
 
   void increaseData() {
-    _stepCount.value = _stepCount.value + 1;
+    _stepCount.value = _stepCount.value + stepIncrease;
     _kilometerCount.value = _stepCount.value / 1350;
     _calorieBurnCount.value = _kilometerCount.value * 48.33;
   }
@@ -129,7 +145,8 @@ class PedometerBloc {
       'DrFit Pedometer', // title
       description:
           'This channel is used for important notifications.', // description
-      importance: Importance.max, // importance must be at low or higher level
+      importance: Importance.low, // importance must be at low or higher level
+      playSound: false,
     );
 
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -149,8 +166,9 @@ class PedometerBloc {
         isForegroundMode: true,
         notificationChannelId: notificationChannelId,
         // this must match with notification channel you created above.
-        initialNotificationTitle: 'AWESOME SERVICE',
-        initialNotificationContent: 'Initializing',
+        initialNotificationTitle: 'DrDiet',
+        initialNotificationContent:
+            'This channel is used for important notifications',
         foregroundServiceNotificationId: notificationId,
       ),
       iosConfiguration: IosConfiguration(
@@ -179,32 +197,72 @@ class PedometerBloc {
     // We have to register the plugin manually
 
     await AppSharedPreferences.initialize();
-    //await preferences.setString("hello", "world");
+    Pedometer? pedometer = PedometerManager.getTodayStep();
+    double count = 0;
+    if (pedometer != null) {
+      count = pedometer.count ?? 0;
+    }
+
+    // bring to foreground
+    final stream = await SensorManager().sensorUpdates(
+      sensorId: Sensors.ACCELEROMETER,
+      interval: Sensors.SENSOR_DELAY_NORMAL,
+    );
+
+    stream.listen((sensorEvent) {
+      if (sensorEvent.data[0] > 1 &&
+          sensorEvent.data[1] > 1 &&
+          sensorEvent.data[2] != sensorEvent.data[0] &&
+          sensorEvent.data[2] != sensorEvent.data[1] &&
+          sensorEvent.data[2] > sensorEvent.data[0] &&
+          sensorEvent.data[2] > sensorEvent.data[1] &&
+          sensorEvent.data[2] != 9) {
+        count = count + stepIncrease;
+        increaseDataOnService(service, count);
+      } else if (sensorEvent.data[0] < 9 &&
+          sensorEvent.data[1] < 0 &&
+          sensorEvent.data[2] < 9) {
+        count = count + stepIncrease;
+        increaseDataOnService(service, count);
+      } else if (sensorEvent.data[0] < 0 &&
+          sensorEvent.data[1] < 0 &&
+          sensorEvent.data[2] < 9) {
+        count = count + stepIncrease;
+        increaseDataOnService(service, count);
+      }
+    });
+  }
+
+  @pragma('vm:entry-point')
+  static Future<void> increaseDataOnService(
+      ServiceInstance service, double count) async {
+    // save data
+    DateTime dateTime = DateTime.now();
+    Pedometer pedometer =
+        Pedometer(count: count, date: dateTime.toString().substring(0, 10));
+    PedometerManager.setPedometer(pedometer);
 
     /// OPTIONAL when use custom notification
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
 
-    // bring to foreground
-    Timer.periodic(const Duration(seconds: 1), (timer) async {
-      if (service is AndroidServiceInstance) {
-        if (await service.isForegroundService()) {
-          flutterLocalNotificationsPlugin.show(
-            notificationId,
-            'COOL SERVICE',
-            'Awesome ${DateTime.now()}',
-            const NotificationDetails(
-              android: AndroidNotificationDetails(
-                notificationChannelId,
-                'MY FOREGROUND SERVICE',
-                icon: 'ic_bg_service_small',
+    if (service is AndroidServiceInstance) {
+      if (await service.isForegroundService()) {
+        flutterLocalNotificationsPlugin.show(
+          notificationId,
+          'Steps ${count.toInt()}',
+          'Your target is 10,000 steps',
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+                notificationChannelId, 'DrDiet PEDOMETER FOREGROUND SERVICE',
                 ongoing: true,
-              ),
-            ),
-          );
-        }
+                autoCancel: false,
+                importance: Importance.low,
+                icon: '@mipmap/ic_launcher'),
+          ),
+        );
       }
-    });
+    }
   }
 
   void dispose() {

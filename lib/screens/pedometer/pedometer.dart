@@ -38,6 +38,7 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
   @override
   void initState() {
     super.initState();
+
     bloc = PedometerBloc();
 
     if (AppSharedPreferences.pedometerOn) {
