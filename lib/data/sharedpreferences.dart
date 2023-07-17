@@ -82,18 +82,22 @@ abstract class AppSharedPreferences {
     preference.setString(_keyFoodMealsAlarms, foodMeals ?? _nullString);
   }
 
+  @pragma('vm:entry-point')
   static String get pedometer {
     return preference.getString(_keyPedometer) ?? '';
   }
 
+  @pragma('vm:entry-point')
   static Future<void> setPedometer(String? pedometer) async {
     preference.setString(_keyPedometer, pedometer ?? _nullString);
   }
 
+  @pragma('vm:entry-point')
   static bool get pedometerOn {
     return preference.getBool(_keyPedometerOn) ?? true;
   }
 
+  @pragma('vm:entry-point')
   static void setPedometerOn(bool? pedometerOn) {
     preference.setBool(_keyPedometerOn, pedometerOn ?? true);
   }

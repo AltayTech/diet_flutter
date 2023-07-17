@@ -6,21 +6,25 @@ class Pedometer {
 
   Pedometer({this.count, this.date});
 
+  @pragma('vm:entry-point')
   factory Pedometer.fromJson(Map<String, dynamic> jsonData) {
     return Pedometer(count: jsonData['count'], date: jsonData['time']);
   }
 
+  @pragma('vm:entry-point')
   static Map<String, dynamic> toMap(Pedometer pedometer) => {
         'count': pedometer.count,
         'time': pedometer.date,
       };
 
+  @pragma('vm:entry-point')
   static String encode(List<Pedometer> foodMealAlarm) => json.encode(
         foodMealAlarm
             .map<Map<String, dynamic>>((element) => Pedometer.toMap(element))
             .toList(),
       );
 
+  @pragma('vm:entry-point')
   static List<Pedometer> decode(String pedometer) =>
       (json.decode(pedometer) as List<dynamic>)
           .map<Pedometer>((item) => Pedometer.fromJson(item))

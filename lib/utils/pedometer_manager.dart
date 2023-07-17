@@ -8,7 +8,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 class PedometerManager {
-  static Future<List<Pedometer>> getSteps() async {
+  @pragma('vm:entry-point')
+  static List<Pedometer> getSteps() {
     // Fetch and decode data
     final String steps = (AppSharedPreferences.pedometer);
 
@@ -21,6 +22,7 @@ class PedometerManager {
     return [];
   }
 
+  @pragma('vm:entry-point')
   static Pedometer? getTodayStep() {
     // Fetch and decode data
     final String steps = AppSharedPreferences.pedometer;
@@ -45,6 +47,7 @@ class PedometerManager {
     return null;
   }
 
+  @pragma('vm:entry-point')
   static Pedometer? checkIsExistPedometer(Pedometer pedometer) {
     // Fetch and decode data
     final String steps = AppSharedPreferences.pedometer;
@@ -66,7 +69,8 @@ class PedometerManager {
     return null;
   }
 
-  static Future<void> setPedometer(Pedometer pedometer) async {
+  @pragma('vm:entry-point')
+  static setPedometer(Pedometer pedometer) {
     late String encodedData;
     // Fetch and decode data
     final String data = (AppSharedPreferences.pedometer);
@@ -79,7 +83,7 @@ class PedometerManager {
         // set data
         encodedData = Pedometer.encode([...prefPedometer]);
 
-        await AppSharedPreferences.setPedometer(encodedData);
+        AppSharedPreferences.setPedometer(encodedData);
 
         return;
       }
@@ -88,13 +92,13 @@ class PedometerManager {
       encodedData = Pedometer.encode([...prefPedometer, pedometer]);
 
       // write all contact when not new contact
-      await AppSharedPreferences.setPedometer(encodedData);
+      AppSharedPreferences.setPedometer(encodedData);
     } else {
       // set data
       encodedData = Pedometer.encode([pedometer]);
 
       // write all contact when not new contact
-      await AppSharedPreferences.setPedometer(encodedData);
+      AppSharedPreferences.setPedometer(encodedData);
     }
   }
 }

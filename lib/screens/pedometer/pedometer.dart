@@ -9,6 +9,7 @@ import 'package:behandam/screens/widget/submit_button.dart';
 import 'package:behandam/screens/widget/toolbar.dart';
 import 'package:behandam/themes/colors.dart';
 import 'package:behandam/utils/image.dart';
+import 'package:behandam/utils/pedometer_manager.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:logifan/widgets/space.dart';
@@ -53,17 +54,10 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
       }
     });
 
-    data = [
-      _ChartData('17', 2500),
-      _ChartData('18', 4000),
-      _ChartData('19', 8000),
-      _ChartData('20', 7000),
-      _ChartData('21', 5500),
-      _ChartData('22', 3000),
-      _ChartData('23', 4500),
-      _ChartData('24', 3400),
-      _ChartData('Today', 6200),
-    ];
+    data = PedometerManager.getSteps()
+        .map((pedometer) =>
+            _ChartData(pedometer.date!.substring(8, 10), pedometer.count!))
+        .toList();
   }
 
   @override
@@ -90,22 +84,23 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     pedometer(step.data!.toInt(), StepCountStatus.WALKING),
-                    SfCartesianChart(
-                        primaryXAxis: CategoryAxis(),
-                        primaryYAxis: NumericAxis(
-                            minimum: 1000, maximum: 10000, interval: 1000),
-                        series: <ChartSeries<_ChartData, String>>[
-                          ColumnSeries<_ChartData, String>(
-                            dataSource: data,
-                            borderRadius: BorderRadius.circular(15),
-                            width: 0.5,
-                            spacing: 0.7,
-                            xValueMapper: (_ChartData data, _) => data.x,
-                            yValueMapper: (_ChartData data, _) => data.y,
-                            name: 'Gold',
-                            gradient: AppColors.pedometerChartColorsGradient,
-                          )
-                        ])
+                    if (data.isNotEmpty)
+                      SfCartesianChart(
+                          primaryXAxis: CategoryAxis(),
+                          primaryYAxis: NumericAxis(
+                              minimum: 1000, maximum: 10000, interval: 1000),
+                          series: <ChartSeries<_ChartData, String>>[
+                            ColumnSeries<_ChartData, String>(
+                              dataSource: data,
+                              borderRadius: BorderRadius.circular(15),
+                              width: 0.5,
+                              spacing: 0.7,
+                              xValueMapper: (_ChartData data, _) => data.x,
+                              yValueMapper: (_ChartData data, _) => data.y,
+                              name: 'Gold',
+                              gradient: AppColors.pedometerChartColorsGradient,
+                            )
+                          ])
                   ],
                 );
               } else {
@@ -157,18 +152,18 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
         right: 0,
         top: 80,
         child: StreamBuilder<bool>(
-          stream: bloc.pedometerOn,
-          initialData: AppSharedPreferences.pedometerOn,
-          builder: (context, pedometerOn) {
-            return GestureDetector(
-                onTap: () {
-                  bloc.setPedometerOn(!pedometerOn.requireData);
-                },
-                child: pedometerOn.requireData
-                    ? ImageUtils.fromLocal('assets/images/pedometer/shoe.svg')
-                    : ImageUtils.fromLocal('assets/images/pedometer/shoe_off.svg'));
-          }
-        ),
+            stream: bloc.pedometerOn,
+            initialData: AppSharedPreferences.pedometerOn,
+            builder: (context, pedometerOn) {
+              return GestureDetector(
+                  onTap: () {
+                    bloc.setPedometerOn(!pedometerOn.requireData);
+                  },
+                  child: pedometerOn.requireData
+                      ? ImageUtils.fromLocal('assets/images/pedometer/shoe.svg')
+                      : ImageUtils.fromLocal(
+                          'assets/images/pedometer/shoe_off.svg'));
+            }),
       )
     ]);
   }

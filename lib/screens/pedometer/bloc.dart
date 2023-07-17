@@ -147,6 +147,7 @@ class PedometerBloc {
           'This channel is used for important notifications.', // description
       importance: Importance.low, // importance must be at low or higher level
       playSound: false,
+      enableVibration: false,
     );
 
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -258,6 +259,11 @@ class PedometerBloc {
                 ongoing: true,
                 autoCancel: false,
                 importance: Importance.low,
+                priority: Priority.low,
+                playSound: false,
+                vibrationPattern: null,
+                enableVibration: false,
+                onlyAlertOnce: true,
                 icon: '@mipmap/ic_launcher'),
           ),
         );
