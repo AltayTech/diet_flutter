@@ -11,6 +11,7 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_sensors/flutter_sensors.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
 enum StepCountStatus {
@@ -83,9 +84,12 @@ class PedometerBloc {
 
   Future<void> startPedometer() async {
     if (_pedometerOn.value) {
+      DateTime today = DateTime.now();
+
       Pedometer? pedometer = PedometerManager.getTodayStep();
       double count = 0;
-      if (pedometer != null) {
+      if (pedometer != null &&
+          pedometer.date == today.toString().substring(0, 10)) {
         count = pedometer.count ?? 0;
         _stepCount.value = count.toDouble();
       }
@@ -110,13 +114,9 @@ class PedometerBloc {
             sensorEvent.data[2] > sensorEvent.data[1] &&
             sensorEvent.data[2] != 9) {
           increaseData();
-        } else if (sensorEvent.data[0] < 9 &&
-            sensorEvent.data[1] < 0 &&
-            sensorEvent.data[2] < 9) {
+        } else if (sensorEvent.data[0] < 9 && sensorEvent.data[2] < 9) {
           increaseData();
-        } else if (sensorEvent.data[0] < 0 &&
-            sensorEvent.data[1] < 0 &&
-            sensorEvent.data[2] < 9) {
+        } else if (sensorEvent.data[0] < 0 && sensorEvent.data[2] < 9) {
           increaseData();
         }
       });
@@ -131,7 +131,14 @@ class PedometerBloc {
     _calorieBurnCount.value = _kilometerCount.value * 48.33;
   }
 
-  void stopPedometer() {
+  void stopPedometer() async {
+    final service = FlutterBackgroundService();
+    var isRunning = await service.isRunning();
+
+    if (isRunning) {
+      service.invoke("stopService");
+    }
+
     if (_accelSubscription == null) return;
     _accelSubscription?.cancel();
     _accelSubscription = null;
@@ -139,54 +146,57 @@ class PedometerBloc {
 
   Future<void> initializeService() async {
     final service = FlutterBackgroundService();
+    var isRunning = await service.isRunning();
 
-    const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      notificationChannelId, // id
-      'DrFit Pedometer', // title
-      description:
-          'This channel is used for important notifications.', // description
-      importance: Importance.low, // importance must be at low or higher level
-      playSound: false,
-      enableVibration: false,
-    );
+    if (!isRunning) {
+      const AndroidNotificationChannel channel = AndroidNotificationChannel(
+        notificationChannelId, // id
+        'DrFit Pedometer', // title
+        description:
+        'This channel is used for important notifications.', // description
+        importance: Importance.low, // importance must be at low or higher level
+        playSound: false,
+        enableVibration: false,
+      );
 
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
 
-    await service.configure(
-      androidConfiguration: AndroidConfiguration(
-        // this will be executed when app is in foreground or background in separated isolate
-        onStart: onStart,
-        // auto start service
-        autoStart: true,
-        isForegroundMode: true,
-        notificationChannelId: notificationChannelId,
-        // this must match with notification channel you created above.
-        initialNotificationTitle: 'DrDiet',
-        initialNotificationContent:
-            'This channel is used for important notifications',
-        foregroundServiceNotificationId: notificationId,
-      ),
-      iosConfiguration: IosConfiguration(
-        // auto start service
-        autoStart: true,
+      await service.configure(
+        androidConfiguration: AndroidConfiguration(
+          // this will be executed when app is in foreground or background in separated isolate
+          onStart: onStart,
+          // auto start service
+          autoStart: true,
+          isForegroundMode: true,
+          notificationChannelId: notificationChannelId,
+          // this must match with notification channel you created above.
+          initialNotificationTitle: 'DrDiet',
+          initialNotificationContent:
+          'This channel is used for important notifications',
+          foregroundServiceNotificationId: notificationId,
+        ),
+        iosConfiguration: IosConfiguration(
+          // auto start service
+          autoStart: true,
 
-        // this will be executed when app is in foreground in separated isolate
-        onForeground: onStart,
+          // this will be executed when app is in foreground in separated isolate
+          onForeground: onStart,
 
-        // you have to enable background fetch capability on xcode project
-        onBackground: (service) {
-          return true;
-        },
-      ),
-    );
+          // you have to enable background fetch capability on xcode project
+          onBackground: (service) {
+            return true;
+          },
+        ),
+      );
 
-    service.startService();
+      service.startService();
+    }
   }
 
   @pragma('vm:entry-point')
@@ -198,9 +208,13 @@ class PedometerBloc {
     // We have to register the plugin manually
 
     await AppSharedPreferences.initialize();
+
+    DateTime today = DateTime.now();
+
     Pedometer? pedometer = PedometerManager.getTodayStep();
     double count = 0;
-    if (pedometer != null) {
+    if (pedometer != null &&
+        pedometer.date == today.toString().substring(0, 10)) {
       count = pedometer.count ?? 0;
     }
 
@@ -220,14 +234,10 @@ class PedometerBloc {
           sensorEvent.data[2] != 9) {
         count = count + stepIncrease;
         increaseDataOnService(service, count);
-      } else if (sensorEvent.data[0] < 9 &&
-          sensorEvent.data[1] < 0 &&
-          sensorEvent.data[2] < 9) {
+      } else if (sensorEvent.data[0] < 9 && sensorEvent.data[2] < 9) {
         count = count + stepIncrease;
         increaseDataOnService(service, count);
-      } else if (sensorEvent.data[0] < 0 &&
-          sensorEvent.data[1] < 0 &&
-          sensorEvent.data[2] < 9) {
+      } else if (sensorEvent.data[0] < 0 && sensorEvent.data[2] < 9) {
         count = count + stepIncrease;
         increaseDataOnService(service, count);
       }
@@ -251,7 +261,7 @@ class PedometerBloc {
       if (await service.isForegroundService()) {
         flutterLocalNotificationsPlugin.show(
           notificationId,
-          'Steps ${count.toInt()}',
+          '${count.toInt()} steps',
           'Your target is 10,000 steps',
           const NotificationDetails(
             android: AndroidNotificationDetails(

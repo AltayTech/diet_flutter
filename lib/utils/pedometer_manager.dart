@@ -81,6 +81,9 @@ class PedometerManager {
 
       if (step != null) {
         // set data
+        prefPedometer.remove(step);
+        prefPedometer.add(pedometer);
+
         encodedData = Pedometer.encode([...prefPedometer]);
 
         AppSharedPreferences.setPedometer(encodedData);

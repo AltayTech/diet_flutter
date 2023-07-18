@@ -18,8 +18,8 @@ class Pedometer {
       };
 
   @pragma('vm:entry-point')
-  static String encode(List<Pedometer> foodMealAlarm) => json.encode(
-        foodMealAlarm
+  static String encode(List<Pedometer> pedometers) => json.encode(
+        pedometers
             .map<Map<String, dynamic>>((element) => Pedometer.toMap(element))
             .toList(),
       );
@@ -30,6 +30,7 @@ class Pedometer {
           .map<Pedometer>((item) => Pedometer.fromJson(item))
           .toList();
 
+  @pragma('vm:entry-point')
   @override
   bool operator ==(Object other) =>
       // 2 books are equal if and only if they are both Book and have exactly

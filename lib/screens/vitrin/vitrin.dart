@@ -78,9 +78,11 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                       child: Column(
                         children: [
                           InkWell(
-                              onTap: () => _launchURL('https://user.drkermanidiet.com/user/#/list/takhsisvazn'),
+                              onTap: () => context.vxNav
+                                  .push(Uri.parse(Routes.pedometer)),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
                                 child: ImageUtils.fromLocal(
                                     'assets/images/vitrin/dr1.jpg',
                                     width: 100.w,
@@ -89,9 +91,24 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                               )),
                           SizedBox(height: 2.h),
                           InkWell(
-                              onTap: () => _launchURL('https://www.youtube.com/@drkermanidiet'),
+                              onTap: () => _launchURL(
+                                  'https://user.drkermanidiet.com/user/#/list/takhsisvazn'),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                child: ImageUtils.fromLocal(
+                                    'assets/images/vitrin/dr1.jpg',
+                                    width: 100.w,
+                                    fit: BoxFit.fill,
+                                    height: 15.h),
+                              )),
+                          SizedBox(height: 2.h),
+                          InkWell(
+                              onTap: () => _launchURL(
+                                  'https://www.youtube.com/@drkermanidiet'),
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
                                 child: ImageUtils.fromLocal(
                                     'assets/images/vitrin/dr2.jpg',
                                     width: 100.w,
@@ -100,9 +117,11 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                               )),
                           SizedBox(height: 2.h),
                           InkWell(
-                              onTap: () => _launchURL('https://user.drkermanidiet.com/user/#/list/takhsisvazn'),
+                              onTap: () => _launchURL(
+                                  'https://user.drkermanidiet.com/user/#/list/takhsisvazn'),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
                                 child: ImageUtils.fromLocal(
                                     'assets/images/vitrin/dr3.jpg',
                                     width: 100.w,
@@ -114,7 +133,8 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                               onTap: () => _launchURL(
                                   'https://user.drkermanidiet.com/user/#/list/practice'),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
                                 child: ImageUtils.fromLocal(
                                     'assets/images/vitrin/dr4.png',
                                     width: 100.w,
@@ -122,7 +142,7 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                                     height: 15.h),
                               )),
                           SizedBox(height: 2.h),
-                       /*   Row(children: [
+                          /*   Row(children: [
                             Expanded(
                               child: InkWell(
                                 onTap: (){
@@ -159,7 +179,6 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),
