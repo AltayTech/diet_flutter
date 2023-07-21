@@ -91,6 +91,19 @@ class _VitrinScreenState extends ResourcefulState<VitrinScreen> {
                               )),
                           SizedBox(height: 2.h),
                           InkWell(
+                              onTap: () => context.vxNav
+                                  .push(Uri.parse(Routes.doctorBook)),
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                child: ImageUtils.fromLocal(
+                                    'assets/images/vitrin/dr1.jpg',
+                                    width: 100.w,
+                                    fit: BoxFit.fill,
+                                    height: 15.h),
+                              )),
+                          SizedBox(height: 2.h),
+                          InkWell(
                               onTap: () => _launchURL(
                                   'https://user.drkermanidiet.com/user/#/list/takhsisvazn'),
                               child: ClipRRect(

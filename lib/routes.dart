@@ -82,6 +82,7 @@ abstract class Routes {
   static const userCrm = '/user-crm';
   static const shopPaymentOnlineSuccess = '/shop/payment/online/success';
   static const pedometer = '/pedometer';
+  static const doctorBook = '/doctor-book';
   /// All available routes to Navigator
   static final all = <String, Widget Function(BuildContext)>{
     //   home: (context) => HomePage(),

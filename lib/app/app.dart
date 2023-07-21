@@ -13,6 +13,7 @@ import 'package:behandam/screens/authentication/verify.dart';
 import 'package:behandam/screens/calendar/calendar.dart';
 import 'package:behandam/screens/daily_menu/daily_menu.dart';
 import 'package:behandam/screens/daily_menu/list_food.dart';
+import 'package:behandam/screens/doctor_book/doctor_book.dart';
 import 'package:behandam/screens/fast/fast_pattern.dart';
 import 'package:behandam/screens/food_list/alert_list.dart';
 import 'package:behandam/screens/food_list/change_meal_food.dart';
@@ -369,6 +370,7 @@ final navigator = VxNavigator(
     RegExp(r"\/shop\/categories\/[0-9]+"): (uri, __) =>
         MaterialPage(child: routePage(CategoryPage()), arguments: uri.pathSegments[2]),
     Routes.pedometer: (_, __) => MaterialPage(child: routePage(const PedometerPage())),
+    Routes.doctorBook: (_, __) => MaterialPage(child: routePage(const DoctorBookPage())),
   },
   notFoundPage: (uri, params) => MaterialPage(
     key: ValueKey('not-found-page'),
