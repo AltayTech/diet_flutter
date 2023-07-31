@@ -37,7 +37,9 @@ class PedometerBloc {
     double count = 0;
     if (pedometer != null) {
       count = pedometer.count ?? 0;
-      _stepCount.value = count.toDouble();
+      _stepCount.value = count;
+      _kilometerCount.value = count / 1350;
+      _calorieBurnCount.value = _kilometerCount.value * 48.33;
     }
   }
 
@@ -84,6 +86,8 @@ class PedometerBloc {
 
   Future<void> startPedometer() async {
     if (_pedometerOn.value) {
+      await AppSharedPreferences.reload();
+
       DateTime today = DateTime.now();
 
       Pedometer? pedometer = PedometerManager.getTodayStep();
@@ -99,7 +103,7 @@ class PedometerBloc {
         interval: Sensors.SENSOR_DELAY_NORMAL,
       );
 
-      _accelSubscription = stream.listen((sensorEvent) {
+      _accelSubscription = stream.listen((sensorEvent) async {
         _accelData = sensorEvent.data;
 
         debugPrint('sensor data 0 => ${sensorEvent.data[0]}');
@@ -113,11 +117,14 @@ class PedometerBloc {
             sensorEvent.data[2] > sensorEvent.data[0] &&
             sensorEvent.data[2] > sensorEvent.data[1] &&
             sensorEvent.data[2] != 9) {
-          increaseData();
+          count = count + stepIncrease;
+          await increaseData(count);
         } else if (sensorEvent.data[0] < 9 && sensorEvent.data[2] < 9) {
-          increaseData();
+          count = count + stepIncrease;
+          await increaseData(count);
         } else if (sensorEvent.data[0] < 0 && sensorEvent.data[2] < 9) {
-          increaseData();
+          count = count + stepIncrease;
+          await increaseData(count);
         }
       });
 
@@ -125,9 +132,9 @@ class PedometerBloc {
     }
   }
 
-  void increaseData() {
-    _stepCount.value = _stepCount.value + stepIncrease;
-    _kilometerCount.value = _stepCount.value / 1350;
+  Future<void> increaseData(double increaseAmount) async {
+    _stepCount.value = increaseAmount;
+    _kilometerCount.value = increaseAmount / 1350;
     _calorieBurnCount.value = _kilometerCount.value * 48.33;
   }
 
@@ -208,6 +215,7 @@ class PedometerBloc {
     // We have to register the plugin manually
 
     await AppSharedPreferences.initialize();
+    await AppSharedPreferences.reload();
 
     DateTime today = DateTime.now();
 
@@ -285,10 +293,12 @@ class PedometerBloc {
     _loadingContent.close();
     _advices.close();
     _pedestrianStatus.close();
-    _stepCount.close();
-    _kilometerCount.close();
-    _calorieBurnCount.close();
     _minCount.close();
     _pedometerOn.close();
+
+    // this streams must not dispose because values change in async function
+    /*_stepCount.close();
+    _kilometerCount.close();
+    _calorieBurnCount.close();*/
   }
 }

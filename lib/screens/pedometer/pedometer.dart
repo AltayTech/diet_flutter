@@ -88,11 +88,11 @@ class _PedometerPageState extends ResourcefulState<PedometerPage> {
                       SfCartesianChart(
                           primaryXAxis: CategoryAxis(),
                           primaryYAxis: NumericAxis(
-                              minimum: 1000, maximum: 10000, interval: 1000),
+                              minimum: 0, maximum: 15000, interval: 2500),
                           series: <ChartSeries<_ChartData, String>>[
                             ColumnSeries<_ChartData, String>(
                               dataSource: data,
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(12),
                               width: 0.5,
                               spacing: 0.7,
                               xValueMapper: (_ChartData data, _) => data.x,

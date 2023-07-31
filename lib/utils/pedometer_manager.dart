@@ -16,6 +16,10 @@ class PedometerManager {
     if (steps.isNotEmpty) {
       final List<Pedometer> step = Pedometer.decode(steps);
 
+      if (step.length > 7) {
+        return step.sublist(step.length - 7, step.length);
+      }
+
       return step;
     }
 

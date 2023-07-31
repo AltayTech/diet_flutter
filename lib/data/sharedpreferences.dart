@@ -5,8 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AppSharedPreferences {
   static late SharedPreferences preference;
+
   static Future<void> initialize() async {
     preference = await SharedPreferences.getInstance();
+  }
+
+  static Future<void> reload() async {
+    preference.reload();
   }
 
   static Future<String?> _getString(String key) async {
