@@ -139,11 +139,14 @@ class PedometerBloc {
   }
 
   void stopPedometer() async {
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
     final service = FlutterBackgroundService();
     var isRunning = await service.isRunning();
 
     if (isRunning) {
       service.invoke("stopService");
+      await flutterLocalNotificationsPlugin.cancelAll();
     }
 
     if (_accelSubscription == null) return;
@@ -208,48 +211,64 @@ class PedometerBloc {
 
   @pragma('vm:entry-point')
   static Future<void> onStart(ServiceInstance service) async {
-    // Only available for flutter 3.0.0 and later
-    DartPluginRegistrant.ensureInitialized();
+    final s = FlutterBackgroundService();
+    var isRunning = await s.isRunning();
 
-    // For flutter prior to version 3.0.0
-    // We have to register the plugin manually
+    if (isRunning) {
+      // Only available for flutter 3.0.0 and later
+      DartPluginRegistrant.ensureInitialized();
 
-    await AppSharedPreferences.initialize();
-    await AppSharedPreferences.reload();
+      await AppSharedPreferences.initialize();
+      await AppSharedPreferences.reload();
 
-    DateTime today = DateTime.now();
-
-    Pedometer? pedometer = PedometerManager.getTodayStep();
-    double count = 0;
-    if (pedometer != null &&
-        pedometer.date == today.toString().substring(0, 10)) {
-      count = pedometer.count ?? 0;
-    }
-
-    // bring to foreground
-    final stream = await SensorManager().sensorUpdates(
-      sensorId: Sensors.ACCELEROMETER,
-      interval: Sensors.SENSOR_DELAY_NORMAL,
-    );
-
-    stream.listen((sensorEvent) {
-      if (sensorEvent.data[0] > 1 &&
-          sensorEvent.data[1] > 1 &&
-          sensorEvent.data[2] != sensorEvent.data[0] &&
-          sensorEvent.data[2] != sensorEvent.data[1] &&
-          sensorEvent.data[2] > sensorEvent.data[0] &&
-          sensorEvent.data[2] > sensorEvent.data[1] &&
-          sensorEvent.data[2] != 9) {
-        count = count + stepIncrease;
-        increaseDataOnService(service, count);
-      } else if (sensorEvent.data[0] < 9 && sensorEvent.data[2] < 9) {
-        count = count + stepIncrease;
-        increaseDataOnService(service, count);
-      } else if (sensorEvent.data[0] < 0 && sensorEvent.data[2] < 9) {
-        count = count + stepIncrease;
-        increaseDataOnService(service, count);
+      if (service is AndroidServiceInstance) {
+        service.on('setAsForeground').listen((event) {
+          service.setAsForegroundService();
+        });
+        service.on('setAsBackground').listen((event) {
+          service.setAsBackgroundService();
+        });
       }
-    });
+      service.on('stopService').listen((event) {
+        service.stopSelf();
+      });
+
+      DateTime today = DateTime.now();
+
+      Pedometer? pedometer = PedometerManager.getTodayStep();
+      double count = 0;
+      if (pedometer != null &&
+          pedometer.date == today.toString().substring(0, 10)) {
+        count = pedometer.count ?? 0;
+      }
+
+      if (AppSharedPreferences.pedometerOn) {
+        // bring to foreground
+        final stream = await SensorManager().sensorUpdates(
+          sensorId: Sensors.ACCELEROMETER,
+          interval: Sensors.SENSOR_DELAY_NORMAL,
+        );
+
+        stream.listen((sensorEvent) {
+          if (sensorEvent.data[0] > 1 &&
+              sensorEvent.data[1] > 1 &&
+              sensorEvent.data[2] != sensorEvent.data[0] &&
+              sensorEvent.data[2] != sensorEvent.data[1] &&
+              sensorEvent.data[2] > sensorEvent.data[0] &&
+              sensorEvent.data[2] > sensorEvent.data[1] &&
+              sensorEvent.data[2] != 9) {
+            count = count + stepIncrease;
+            increaseDataOnService(service, count);
+          } else if (sensorEvent.data[0] < 9 && sensorEvent.data[2] < 9) {
+            count = count + stepIncrease;
+            increaseDataOnService(service, count);
+          } else if (sensorEvent.data[0] < 0 && sensorEvent.data[2] < 9) {
+            count = count + stepIncrease;
+            increaseDataOnService(service, count);
+          }
+        });
+      }
+    }
   }
 
   @pragma('vm:entry-point')
@@ -275,7 +294,7 @@ class PedometerBloc {
             android: AndroidNotificationDetails(
                 notificationChannelId, 'DrDiet PEDOMETER FOREGROUND SERVICE',
                 ongoing: true,
-                autoCancel: false,
+                autoCancel: true,
                 importance: Importance.low,
                 priority: Priority.low,
                 playSound: false,
